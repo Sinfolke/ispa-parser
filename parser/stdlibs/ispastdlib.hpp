@@ -1328,8 +1328,8 @@ protected:
     }
     static void PANIC_MODE() {}
 public:
-    virtual MatchResult<RULE_T, NODES...> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
-    virtual MatchResult<RULE_T, NODES...> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
+    virtual MatchResult<RULE_T, std::variant<NODES...>> getRule(typename Lexer_base<TOKEN_T>::lazy_iterator &pos) = 0;
+    virtual MatchResult<RULE_T, std::variant<NODES...>> getRule(typename Lexer_base<TOKEN_T>::iterator &pos) = 0;
     virtual void parseFromTokens() = 0;
     virtual void lazyParse() = 0;
     // Constructors

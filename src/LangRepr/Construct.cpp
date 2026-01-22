@@ -259,8 +259,6 @@ namespace LangRepr {
             if (t.isSymbol()) {
                 Name actual_name;
                 const auto &first = t.getSymbol().path[0];
-                if (std::holds_alternative<std::string>(first) && std::get<std::string>(first) == "Types")
-                    t.getSymbol().path.erase(t.getSymbol().path.begin());
                 for (const auto &part : t.getSymbol().path) {
                     if (!std::holds_alternative<std::string>(part))
                         return;
@@ -1108,8 +1106,25 @@ namespace LangRepr {
 
         }
         for (const auto &fun_data : ir.getData()) {
+            std::function<void(LangAPI::Type&)> fun_data_type_modifier = [&](LangAPI::Type& t) {
+                if (t.isSymbol()) {
+                    auto &sym = t.getSymbol();
+                    sym.path.insert(sym.path.begin(), "Types");
+                } else {
+                    for (auto &tp : t.template_parameters) {
+                        if (std::holds_alternative<LangAPI::Type>(tp))
+                            fun_data_type_modifier(std::get<LangAPI::Type>(tp));
+                    }
+                }
+            };
             LangAPI::Symbol fun_data_symbol = fun_data.name;
             fun_data_symbol.path.insert(fun_data_symbol.path.begin(), "Types");
+            for (auto &statement : fun_data.members) {
+                if (statement.isVariable()) {
+                    auto &var = statement.getVariable();
+                    fun_data_type_modifier(var.type);
+                }
+            }
             parser.data.push_back(
                 std::make_pair(
                     std::make_shared<LangAPI::Declaration>(

@@ -113,33 +113,20 @@ namespace Parser {
 		cll_function_parameters,
 	};
 	namespace FlatTypes {
-		struct cll_TYPE;
-		struct cll_expr_compare;
-		struct rule_CSEQUENCE;
-		struct rule_data_block_regular_datablock_key;
-		struct cll_expr;
-		struct cll_expr_term;
-		struct rule_data_block_regular_datablock;
-		struct cll_loop_while;
-		struct cll__variable;
-		struct cll_loop_for;
 		struct cll__var;
-		struct _use_unit;
-		struct _use;
 		struct cll_expr_arithmetic;
-		struct cll_stmt;
-		struct object;
-		struct cll_expr_value;
-		struct array;
+		struct rule;
+		struct cll_expr;
+		struct cll_TYPE;
+		struct cll_expr_term;
+		struct _use_unit;
 		struct rule_member;
 		struct main;
-		struct moduleImport;
-		struct cll;
-		struct cll_expr_group;
-		struct moduleImport_from;
-		struct rule_group;
-		struct cll__if;
-		struct cll_method_call;
+		struct rvalue;
+		struct cll_function_call;
+		struct cll_stmt;
+		struct cll_expr_compare;
+		struct cll_expr_value;
 		struct AUTO_2 {
 			 char value;
 		};
@@ -277,6 +264,9 @@ namespace Parser {
 		struct AUTO_6 {
 			 char value;
 		};
+		struct cll_LOGICAL_OP {
+			 std::variant<::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
+		};
 		struct NAME {
 			 ::ISPA_STD::Node<Tokens, ID> value;
 		};
@@ -311,56 +301,105 @@ namespace Parser {
 			 ::ISPA_STD::MatchResult<Tokens, rule_CSEQUENCE_SYMBOL> begin;
 			 ::ISPA_STD::MatchResult<Tokens, rule_CSEQUENCE_SYMBOL> end;
 		};
+		struct rule_quantifier {
+			 std::variant<::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, QUESTION_MARK>> value;
+		};
 		struct cll_function_body_decl {
 			 ::ISPA_STD::Node<Rules, cll_function_parameters> value;
 		};
-		struct rule_data_block {
-			 std::variant<::ISPA_STD::Node<Rules, rule_data_block_templated_datablock>, ::ISPA_STD::Node<Rules, std::shared_ptr<rule_data_block_regular_datablock>>> value;
+		struct moduleImport_from {
+			 std::variant<::ISPA_STD::Node<Rules, moduleImport_from_import_list>, ::ISPA_STD::Node<Tokens, MULTIPLE>> what;
+			 ::ISPA_STD::Node<Tokens, ID> from;
+		};
+		struct rule_CSEQUENCE {
+			 char _not;
+			 std::vector<std::variant<::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_DIAPASON>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_ESCAPE>>> val;
+		};
+		struct moduleImport {
+			 std::variant<::ISPA_STD::Node<Rules, moduleImport_from>, ::ISPA_STD::Node<Tokens, ID>> value;
 		};
 		struct cll_TEMPLATE {
 			 ::ISPA_STD::MatchResult<Tokens, std::shared_ptr<cll_TYPE>> first;
 			 std::vector<::ISPA_STD::MatchResult<Tokens, std::shared_ptr<cll_TYPE>>> second;
 		};
-		struct rvalue {
-			 std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, ID>, ::ISPA_STD::Node<Tokens, AT>, ::ISPA_STD::Node<Rules, std::shared_ptr<array>>, ::ISPA_STD::Node<Rules, std::shared_ptr<object>>, ::ISPA_STD::Node<Tokens, BOOLEAN>> value;
+		struct _use {
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>> first;
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>>> second;
 		};
-		struct cll_function_arguments {
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> first;
-			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> second;
+		struct cll_method_call {
+			 ::ISPA_STD::Node<Tokens, ID> name;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_function_call>> body;
 		};
-		struct cll_LOGICAL_OP {
-			 std::variant<::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
+		struct cll_expr_group {
+			 ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>> value;
 		};
-		struct rule_quantifier {
-			 std::variant<::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, QUESTION_MARK>> value;
+		struct rule_data_block_regular_datablock_key {
+			 ::ISPA_STD::Node<Tokens, ID> name;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> dt;
 		};
-		struct cll_function_body_call {
-			 ::ISPA_STD::Node<Rules, cll_function_arguments> value;
+		struct rule_nested_rule {
+			 ::ISPA_STD::Node<Rules, std::shared_ptr<rule>> value;
+		};
+		struct cll__variable {
+			 std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pre;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> brace_expression;
+			 std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pos;
+			 ::ISPA_STD::Node<Tokens, ID> name;
+		};
+		struct cll_loop_while {
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct array {
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> value;
+		};
+		struct cll_loop_for {
+			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> decl;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> end;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> cond;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct object {
+			 std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
+			 std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> values;
 		};
 		struct cll_expr_logical {
 			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_compare>> left;
 			 std::vector<::ISPA_STD::Node<Tokens, cll_LOGICAL_OP>> op;
 			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_compare>>> right;
 		};
-		struct cll_function_call {
-			 ::ISPA_STD::Node<Tokens, ID> name;
-			 ::ISPA_STD::MatchResult<Rules, cll_function_body_call> body;
+		struct rule_group {
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> value;
+		};
+		struct cll__if {
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
+		};
+		struct cll_function_arguments {
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> first;
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> second;
+		};
+		struct rule_data_block_regular_datablock {
+			 std::variant<::ISPA_STD::Node<Rules, rule_data_block_regular_datablock_key>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> value;
+		};
+		struct cll {
+			 std::variant<::ISPA_STD::Node<Rules, cll__if>, ::ISPA_STD::Node<Rules, cll_loop_for>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>, ::ISPA_STD::Node<Rules, cll_loop_while>> value;
+		};
+		struct cll_function_body_call {
+			 ::ISPA_STD::Node<Rules, cll_function_arguments> value;
+		};
+		struct rule_data_block {
+			 std::variant<::ISPA_STD::Node<Rules, rule_data_block_templated_datablock>, ::ISPA_STD::Node<Rules, rule_data_block_regular_datablock>> value;
 		};
 		struct cll_TYPE {
 			 char type;
 			 ::ISPA_STD::MatchResult<Tokens, cll_TEMPLATE> templ;
 		};
-		struct rule_CSEQUENCE {
-			 char _not;
-			 std::vector<std::variant<::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_DIAPASON>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_ESCAPE>>> val;
-		};
-		struct _use {
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>> first;
-			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<_use_unit>>> second;
-		};
-		struct rule_data_block_regular_datablock_key {
+		struct cll_function_call {
 			 ::ISPA_STD::Node<Tokens, ID> name;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> dt;
+			 ::ISPA_STD::MatchResult<Rules, cll_function_body_call> body;
 		};
 		struct cll_expr {
 			 ::ISPA_STD::Node<Rules, cll_expr_logical> value;
@@ -376,73 +415,34 @@ namespace Parser {
 			 ::ISPA_STD::Node<Tokens, cll_ASSIGNMENT_OP> op;
 			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
 		};
-		struct cll_loop_while {
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
-		};
-		struct cll_loop_for {
-			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> decl;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> end;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> cond;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
-		};
-		struct cll__variable {
-			 std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pre;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> brace_expression;
-			 std::variant<::ISPA_STD::Node<Tokens, AUTO_21>, ::ISPA_STD::Node<Tokens, AUTO_20>> pos;
-			 ::ISPA_STD::Node<Tokens, ID> name;
+		struct rvalue {
+			 std::variant<::ISPA_STD::Node<Tokens, ID>, ::ISPA_STD::Node<Tokens, BOOLEAN>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, AT>, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Rules, object>, ::ISPA_STD::Node<Rules, array>> value;
 		};
 		struct _use_unit {
 			 ::ISPA_STD::Node<Tokens, ID> name;
-			 ::ISPA_STD::MatchResult<Rules, rvalue> value;
+			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<rvalue>> value;
 		};
 		struct cll_expr_arithmetic {
 			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_term>> first;
 			 std::variant<::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, MINUS>> operators;
 			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_term>>> sequence;
 		};
-		struct main {
-			 std::variant<::ISPA_STD::Node<Rules, rule>, ::ISPA_STD::Node<Tokens, NAME>, ::ISPA_STD::Node<Rules, std::shared_ptr<_use>>, ::ISPA_STD::Node<Tokens, SPACEMODE>> value;
+		struct rule {
+			 ::ISPA_STD::Node<Tokens, ID> name;
+			 ::ISPA_STD::MatchResult<Rules, rule_data_block> data_block;
+			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> rule;
+			 std::vector<::ISPA_STD::MatchResult<Rules, rule_nested_rule>> nested_rules;
 		};
-		struct array {
-			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> value;
+		struct main {
+			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rule>>, ::ISPA_STD::Node<Rules, _use>, ::ISPA_STD::Node<Tokens, NAME>, ::ISPA_STD::Node<Tokens, SPACEMODE>> value;
 		};
 		struct rule_member {
 			 std::variant<::ISPA_STD::Node<Rules, rule_value>, ::ISPA_STD::Node<Rules, rule_keyvalue>> prefix;
 			 ::ISPA_STD::MatchResult<Rules, rule_quantifier> quantifier;
-			 std::variant<::ISPA_STD::Node<Tokens, DOT>, ::ISPA_STD::Node<Tokens, std::shared_ptr<rule_CSEQUENCE>>, ::ISPA_STD::Node<Tokens, rule_ESCAPED>, ::ISPA_STD::Node<Tokens, rule_BIN>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Rules, std::shared_ptr<rule_group>>, ::ISPA_STD::Node<Rules, rule_name>, ::ISPA_STD::Node<Tokens, rule_NOSPACE>, ::ISPA_STD::Node<Tokens, rule_HEX>, ::ISPA_STD::Node<Tokens, rule_OP>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll>>, ::ISPA_STD::Node<Tokens, LINEAR_COMMENT>> val;
-		};
-		struct rule_group {
-			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> value;
+			 std::variant<::ISPA_STD::Node<Rules, rule_name>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, rule_HEX>, ::ISPA_STD::Node<Tokens, DOT>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE>, ::ISPA_STD::Node<Tokens, rule_BIN>, ::ISPA_STD::Node<Tokens, rule_OP>, ::ISPA_STD::Node<Rules, cll>, ::ISPA_STD::Node<Tokens, rule_ESCAPED>, ::ISPA_STD::Node<Rules, rule_group>, ::ISPA_STD::Node<Tokens, LINEAR_COMMENT>, ::ISPA_STD::Node<Tokens, rule_NOSPACE>> val;
 		};
 		struct cll_expr_value {
-			 std::variant<::ISPA_STD::Node<Rules, rvalue>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr_group>>, ::ISPA_STD::Node<Rules, cll_function_call>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_method_call>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll__variable>>> value;
-		};
-		struct rule_data_block_regular_datablock {
-			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rule_data_block_regular_datablock_key>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>> value;
-		};
-		struct moduleImport {
-			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<moduleImport_from>>, ::ISPA_STD::Node<Tokens, ID>> value;
-		};
-		struct cll_expr_group {
-			 ::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>> value;
-		};
-		struct cll {
-			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<cll_expr>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_loop_for>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll__if>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_loop_while>>> value;
-		};
-		struct cll__if {
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> expr;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_stmt>> stmt;
-		};
-		struct moduleImport_from {
-			 std::variant<::ISPA_STD::Node<Rules, moduleImport_from_import_list>, ::ISPA_STD::Node<Tokens, MULTIPLE>> what;
-			 ::ISPA_STD::Node<Tokens, ID> from;
-		};
-		struct object {
-			 std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
-			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>> value;
-			 std::variant<::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
-			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr>>> values;
+			 std::variant<::ISPA_STD::Node<Rules, std::shared_ptr<rvalue>>, ::ISPA_STD::Node<Rules, std::shared_ptr<cll_function_call>>, ::ISPA_STD::Node<Rules, cll_method_call>, ::ISPA_STD::Node<Rules, cll_expr_group>, ::ISPA_STD::Node<Rules, cll__variable>> value;
 		};
 		struct cll_stmt {
 			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<rule_member>>> value;
@@ -451,10 +451,6 @@ namespace Parser {
 			 ::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_arithmetic>> first;
 			 std::vector<::ISPA_STD::Node<Tokens, cll_COMPARE_OP>> operators;
 			 std::vector<::ISPA_STD::MatchResult<Rules, std::shared_ptr<cll_expr_arithmetic>>> sequence;
-		};
-		struct cll_method_call {
-			 ::ISPA_STD::Node<Tokens, ID> name;
-			 ::ISPA_STD::MatchResult<Rules, cll_function_call> body;
 		};
 	}
 	namespace Types {
@@ -560,6 +556,7 @@ namespace Parser {
 			using keyvalue = FlatTypes::rule_keyvalue;
 			using member = FlatTypes::rule_member;
 			using name = FlatTypes::rule_name;
+			using nested_rule = FlatTypes::rule_nested_rule;
 			using quantifier = FlatTypes::rule_quantifier;
 			using value = FlatTypes::rule_value;
 		};
@@ -920,7 +917,7 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_value(Iterator pos)
 		{
-			std::variant<::ISPA_STD::Node<Rules, Types::rvalue>, ::ISPA_STD::Node<Rules, Types::cll::expr::group>, ::ISPA_STD::Node<Rules, Types::cll::function_call>, ::ISPA_STD::Node<Rules, Types::cll::method_call>, ::ISPA_STD::Node<Rules, Types::cll::_variable>> _0;
+			std::variant<::ISPA_STD::Node<Rules, Types::rvalue>, ::ISPA_STD::Node<Rules, Types::cll::function_call>, ::ISPA_STD::Node<Rules, Types::cll::method_call>, ::ISPA_STD::Node<Rules, Types::cll::expr::group>, ::ISPA_STD::Node<Rules, Types::cll::_variable>> _0;
 			bool success_1;
 			int dfa_lookup_result_2;
 			success_1 = true;
@@ -952,15 +949,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_function_arguments(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _4;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _7;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr>> shadow_9;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _4;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_6;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _7;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr>> shadow_9;
 			success_1 = false;
 			_0 = cll_expr(pos);
 			if (!(_0.status)) {
@@ -998,11 +995,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_method_call(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, DOT> _2;
+			::ISPA_STD::Node<Tokens, Types::DOT> _2;
 			bool success_3;
-			::ISPA_STD::MatchResult<Rules, Types, cll::function_call> _4;
+			::ISPA_STD::MatchResult<Rules, Types::cll::function_call> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
@@ -1036,9 +1033,9 @@ namespace Parser {
 			std::variant<::ISPA_STD::Node<Rules, Types::moduleImport::from::import_list>, ::ISPA_STD::Node<Tokens, Types::MULTIPLE>> _0;
 			bool success_1;
 			int dfa_lookup_result_2;
-			::ISPA_STD::Node<Tokens, Types, AUTO_8> _3;
+			::ISPA_STD::Node<Tokens, Types::AUTO_8> _3;
 			bool success_4;
-			::ISPA_STD::Node<Tokens, Types, ID> _5;
+			::ISPA_STD::Node<Tokens, Types::ID> _5;
 			bool success_6;
 			success_1 = true;
 			dfa_lookup_result_2 = ISPA_STD::DFA<Tokens>::decide(dfa_span_1, pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE);
@@ -1075,15 +1072,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_function_parameters(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _4;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_6;
-			::ISPA_STD::Node<Tokens, Types, ID> _7;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> shadow_9;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _4;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_6;
+			::ISPA_STD::Node<Tokens, Types::ID> _7;
+			std::vector<::ISPA_STD::Node<Tokens, Types::ID>> shadow_9;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
 				return ;
@@ -1146,21 +1143,21 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_data_block_templated_datablock(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AT> _0;
+			::ISPA_STD::Node<Tokens, Types::AT> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, AUTO_0> _2;
+			::ISPA_STD::Node<Tokens, Types::AUTO_0> _2;
 			bool success_3;
 			bool success_14;
 			bool success_11;
 			bool success_7;
 			bool success_5;
-			::ISPA_STD::Node<Tokens, Types, ID> _6;
+			::ISPA_STD::Node<Tokens, Types::ID> _6;
 			bool success_9;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _10;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_12;
-			::ISPA_STD::Node<Tokens, Types, ID> _13;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> shadow_15;
-			::ISPA_STD::Node<Tokens, Types, AUTO_2> _18;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _10;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_12;
+			::ISPA_STD::Node<Tokens, Types::ID> _13;
+			std::vector<::ISPA_STD::Node<Tokens, Types::ID>> shadow_15;
+			::ISPA_STD::Node<Tokens, Types::AUTO_2> _18;
 			bool success_19;
 			success_1 = false;
 			if (!(*pos == Tokens::AT)) {
@@ -1234,12 +1231,12 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_data_block_regular_datablock(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_0> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_0> _0;
 			bool success_1;
 			std::variant<::ISPA_STD::Node<Rules, Types::rule::data_block::regular_datablock::key>, ::ISPA_STD::Node<Rules, Types::cll::expr>> _2;
 			bool success_3;
 			int dfa_lookup_result_4;
-			::ISPA_STD::Node<Tokens, Types, AUTO_2> _5;
+			::ISPA_STD::Node<Tokens, Types::AUTO_2> _5;
 			bool success_6;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_0)) {
@@ -1275,11 +1272,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_function_body_decl(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_3> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_3> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::function_parameters> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::function_parameters> _2;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_4> _4;
+			::ISPA_STD::Node<Tokens, Types::AUTO_4> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_3)) {
@@ -1310,12 +1307,12 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_group(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_3> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_3> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, rule::member> _2;
+			::ISPA_STD::MatchResult<Rules, Types::rule::member> _2;
 			bool success_3;
-			std::vector<::ISPA_STD::MatchResult<Rules, rule::member>> shadow_4;
-			::ISPA_STD::Node<Tokens, Types, AUTO_4> _5;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::rule::member>> shadow_4;
+			::ISPA_STD::Node<Tokens, Types::AUTO_4> _5;
 			bool success_6;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_3)) {
@@ -1345,17 +1342,17 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_name(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_5> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_5> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, ID> _2;
+			::ISPA_STD::Node<Tokens, Types::ID> _2;
 			bool success_3;
 			bool success_10;
 			bool success_7;
 			bool success_5;
-			::ISPA_STD::Node<Tokens, Types, DOT> _6;
-			std::vector<::ISPA_STD::Node<Tokens, DOT>> shadow_8;
-			::ISPA_STD::Node<Tokens, Types, ID> _9;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> shadow_11;
+			::ISPA_STD::Node<Tokens, Types::DOT> _6;
+			std::vector<::ISPA_STD::Node<Tokens, Types::DOT>> shadow_8;
+			::ISPA_STD::Node<Tokens, Types::ID> _9;
+			std::vector<::ISPA_STD::Node<Tokens, Types::ID>> shadow_11;
 			if (*pos == Tokens::AUTO_5) {
 				success_1 = false;
 			}
@@ -1399,11 +1396,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_keyvalue(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AT> _0;
+			::ISPA_STD::Node<Tokens, Types::AT> _0;
 			bool success_1;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, ID> _4;
+			::ISPA_STD::Node<Tokens, Types::ID> _4;
 			success_1 = false;
 			if (!(*pos == Tokens::AT)) {
 				return ;
@@ -1437,10 +1434,10 @@ namespace Parser {
 			bool success_1;
 			std::variant<::ISPA_STD::Node<Rules, Types::rule::value>, ::ISPA_STD::Node<Rules, Types::rule::keyvalue>> _2;
 			int dfa_lookup_result_4;
-			std::variant<::ISPA_STD::Node<Tokens, Types::DOT>, ::ISPA_STD::Node<Tokens, Types::rule::CSEQUENCE>, ::ISPA_STD::Node<Tokens, Types::rule::ESCAPED>, ::ISPA_STD::Node<Tokens, Types::rule::BIN>, ::ISPA_STD::Node<Tokens, Types::STRING>, ::ISPA_STD::Node<Rules, Types::rule::group>, ::ISPA_STD::Node<Rules, Types::rule::name>, ::ISPA_STD::Node<Tokens, Types::rule::NOSPACE>, ::ISPA_STD::Node<Tokens, Types::rule::HEX>, ::ISPA_STD::Node<Tokens, Types::rule::OP>, ::ISPA_STD::Node<Rules, Types::cll>, ::ISPA_STD::Node<Tokens, Types::LINEAR_COMMENT>> _6;
+			std::variant<::ISPA_STD::Node<Rules, Types::rule::name>, ::ISPA_STD::Node<Tokens, Types::STRING>, ::ISPA_STD::Node<Tokens, Types::rule::HEX>, ::ISPA_STD::Node<Tokens, Types::DOT>, ::ISPA_STD::Node<Tokens, Types::rule::CSEQUENCE>, ::ISPA_STD::Node<Tokens, Types::rule::BIN>, ::ISPA_STD::Node<Tokens, Types::rule::OP>, ::ISPA_STD::Node<Rules, Types::cll>, ::ISPA_STD::Node<Tokens, Types::rule::ESCAPED>, ::ISPA_STD::Node<Rules, Types::rule::group>, ::ISPA_STD::Node<Tokens, Types::LINEAR_COMMENT>, ::ISPA_STD::Node<Tokens, Types::rule::NOSPACE>> _6;
 			bool success_7;
 			int dfa_lookup_result_8;
-			::ISPA_STD::MatchResult<Rules, Types, rule::quantifier> _9;
+			::ISPA_STD::MatchResult<Rules, Types::rule::quantifier> _9;
 			bool success_10;
 			_0 = _2;
 			success_1 = false;
@@ -1525,20 +1522,20 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, AUTO_6> _2;
+			::ISPA_STD::Node<Tokens, Types::AUTO_6> _2;
 			bool success_3;
 			bool success_7;
-			::ISPA_STD::MatchResult<Rules, Types, rule::member> _4;
+			::ISPA_STD::MatchResult<Rules, Types::rule::member> _4;
 			bool success_5;
-			std::vector<::ISPA_STD::MatchResult<Rules, rule::member>> shadow_6;
-			::ISPA_STD::MatchResult<Rules, Types, rule::data_block> _8;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::rule::member>> shadow_6;
+			::ISPA_STD::MatchResult<Rules, Types::rule::data_block> _8;
 			bool success_9;
-			::ISPA_STD::MatchResult<Rules, Types, rule::nested_rule> _10;
+			::ISPA_STD::MatchResult<Rules, Types::rule::nested_rule> _10;
 			bool success_11;
-			std::vector<::ISPA_STD::MatchResult<Rules, rule::nested_rule>> shadow_12;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _13;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::rule::nested_rule>> shadow_12;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _13;
 			bool success_14;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
@@ -1595,9 +1592,9 @@ namespace Parser {
 		template<typename Iterator>
 		auto _use_unit(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, rvalue> _2;
+			::ISPA_STD::MatchResult<Rules, Types::rvalue> _2;
 			bool success_3;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
@@ -1617,12 +1614,12 @@ namespace Parser {
 		auto main(Iterator pos)
 		{
 			bool success_3;
-			std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>> _0;
+			std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>> _0;
 			bool success_1;
 			bool success_7;
-			std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>> _2;
+			std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>> _2;
 			int dfa_lookup_result_4;
-			std::vector<std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>>> shadow_6;
+			std::vector<std::variant<::ISPA_STD::Node<Rules, Types::rule>, ::ISPA_STD::Node<Rules, Types::_use>, ::ISPA_STD::Node<Tokens, Types::NAME>, ::ISPA_STD::Node<Tokens, Types::SPACEMODE>>> shadow_6;
 			_0 = _2;
 			success_1 = false;
 			auto begin_5 = pos;
@@ -1663,15 +1660,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto moduleImport_from_import_list(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _4;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_6;
-			::ISPA_STD::Node<Tokens, Types, ID> _7;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> shadow_9;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _4;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_6;
+			::ISPA_STD::Node<Tokens, Types::ID> _7;
+			std::vector<::ISPA_STD::Node<Tokens, Types::ID>> shadow_9;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
 				return ;
@@ -1710,15 +1707,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_compare(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::arithmetic> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::arithmetic> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, cll::COMPARE_OP> _4;
-			std::vector<::ISPA_STD::Node<Tokens, cll::COMPARE_OP>> shadow_6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::arithmetic> _7;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr::arithmetic>> shadow_9;
+			::ISPA_STD::Node<Tokens, Types::cll::COMPARE_OP> _4;
+			std::vector<::ISPA_STD::Node<Tokens, Types::cll::COMPARE_OP>> shadow_6;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::arithmetic> _7;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr::arithmetic>> shadow_9;
 			success_1 = false;
 			_0 = cll_expr_arithmetic(pos);
 			if (!(_0.status)) {
@@ -1756,16 +1753,16 @@ namespace Parser {
 		template<typename Iterator>
 		auto moduleDeclaration(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_9> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_9> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, ID> _2;
+			::ISPA_STD::Node<Tokens, Types::ID> _2;
 			bool success_3;
 			bool success_9;
 			bool success_7;
 			bool success_5;
-			::ISPA_STD::Node<Tokens, Types, AUTO_10> _6;
-			::ISPA_STD::Node<Tokens, Types, ID> _8;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _11;
+			::ISPA_STD::Node<Tokens, Types::AUTO_10> _6;
+			::ISPA_STD::Node<Tokens, Types::ID> _8;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _11;
 			bool success_12;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_9)) {
@@ -1821,12 +1818,12 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_stmt(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_0> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_0> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, rule::member> _2;
+			::ISPA_STD::MatchResult<Rules, Types::rule::member> _2;
 			bool success_3;
-			std::vector<::ISPA_STD::MatchResult<Rules, rule::member>> shadow_4;
-			::ISPA_STD::Node<Tokens, Types, AUTO_2> _5;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::rule::member>> shadow_4;
+			::ISPA_STD::Node<Tokens, Types::AUTO_2> _5;
 			bool success_6;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_0)) {
@@ -1856,12 +1853,12 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_11> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_11> _0;
 			bool success_1;
-			std::variant<::ISPA_STD::Node<Rules, Types::cll::expr>, ::ISPA_STD::Node<Rules, Types::cll::loop_for>, ::ISPA_STD::Node<Rules, Types::cll::_var>, ::ISPA_STD::Node<Rules, Types::cll::_if>, ::ISPA_STD::Node<Rules, Types::cll::loop_while>> _2;
+			std::variant<::ISPA_STD::Node<Rules, Types::cll::_if>, ::ISPA_STD::Node<Rules, Types::cll::loop_for>, ::ISPA_STD::Node<Rules, Types::cll::_var>, ::ISPA_STD::Node<Rules, Types::cll::expr>, ::ISPA_STD::Node<Rules, Types::cll::loop_while>> _2;
 			bool success_3;
 			int dfa_lookup_result_4;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _5;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _5;
 			bool success_6;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_11)) {
@@ -1909,11 +1906,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_group(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_3> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_3> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _2;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_4> _4;
+			::ISPA_STD::Node<Tokens, Types::AUTO_4> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_3)) {
@@ -1944,7 +1941,7 @@ namespace Parser {
 		template<typename Iterator>
 		auto rvalue(Iterator pos)
 		{
-			std::variant<::ISPA_STD::Node<Tokens, Types::NUMBER>, ::ISPA_STD::Node<Tokens, Types::STRING>, ::ISPA_STD::Node<Tokens, Types::ID>, ::ISPA_STD::Node<Tokens, Types::AT>, ::ISPA_STD::Node<Rules, Types::array>, ::ISPA_STD::Node<Rules, Types::object>, ::ISPA_STD::Node<Tokens, Types::BOOLEAN>> _0;
+			std::variant<::ISPA_STD::Node<Tokens, Types::ID>, ::ISPA_STD::Node<Tokens, Types::BOOLEAN>, ::ISPA_STD::Node<Tokens, Types::STRING>, ::ISPA_STD::Node<Tokens, Types::AT>, ::ISPA_STD::Node<Tokens, Types::NUMBER>, ::ISPA_STD::Node<Rules, Types::object>, ::ISPA_STD::Node<Rules, Types::array>> _0;
 			bool success_1;
 			int dfa_lookup_result_2;
 			success_1 = true;
@@ -1984,17 +1981,17 @@ namespace Parser {
 		template<typename Iterator>
 		auto array(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_12> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_12> _0;
 			bool success_1;
 			bool success_10;
 			bool success_7;
 			bool success_3;
 			bool success_5;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _6;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr>> shadow_8;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _9;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_11;
-			::ISPA_STD::Node<Tokens, Types, AUTO_13> _14;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _6;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr>> shadow_8;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _9;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_11;
+			::ISPA_STD::Node<Tokens, Types::AUTO_13> _14;
 			bool success_15;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_12)) {
@@ -2055,15 +2052,15 @@ namespace Parser {
 			bool success_1;
 			std::variant<::ISPA_STD::Node<Tokens, Types::AUTO_21>, ::ISPA_STD::Node<Tokens, Types::AUTO_20>> _2;
 			int dfa_lookup_result_4;
-			::ISPA_STD::Node<Tokens, Types, ID> _6;
+			::ISPA_STD::Node<Tokens, Types::ID> _6;
 			bool success_7;
 			bool success_15;
 			bool success_13;
 			bool success_11;
 			bool success_9;
-			::ISPA_STD::Node<Tokens, Types, AUTO_12> _10;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _12;
-			::ISPA_STD::Node<Tokens, Types, AUTO_13> _14;
+			::ISPA_STD::Node<Tokens, Types::AUTO_12> _10;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _12;
+			::ISPA_STD::Node<Tokens, Types::AUTO_13> _14;
 			bool success_20;
 			std::variant<::ISPA_STD::Node<Tokens, Types::AUTO_21>, ::ISPA_STD::Node<Tokens, Types::AUTO_20>> _17;
 			bool success_18;
@@ -2155,7 +2152,7 @@ namespace Parser {
 		template<typename Iterator>
 		auto object(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_0> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_0> _0;
 			bool success_1;
 			bool success_27;
 			bool success_23;
@@ -2168,19 +2165,19 @@ namespace Parser {
 			bool success_3;
 			std::variant<::ISPA_STD::Node<Tokens, Types::NUMBER>, ::ISPA_STD::Node<Tokens, Types::ID>> _4;
 			int dfa_lookup_result_6;
-			::ISPA_STD::Node<Tokens, Types, AUTO_6> _7;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _9;
+			::ISPA_STD::Node<Tokens, Types::AUTO_6> _7;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _9;
 			bool success_12;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _13;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_15;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _13;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_15;
 			std::variant<::ISPA_STD::Node<Tokens, Types::NUMBER>, ::ISPA_STD::Node<Tokens, Types::ID>> _16;
 			int dfa_lookup_result_18;
-			::ISPA_STD::Node<Tokens, Types, AUTO_6> _19;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_6>> shadow_21;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _22;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr>> shadow_24;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _26;
-			::ISPA_STD::Node<Tokens, Types, AUTO_2> _29;
+			::ISPA_STD::Node<Tokens, Types::AUTO_6> _19;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_6>> shadow_21;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _22;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr>> shadow_24;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _26;
+			::ISPA_STD::Node<Tokens, Types::AUTO_2> _29;
 			bool success_30;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_0)) {
@@ -2292,15 +2289,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll__var(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, cll::TYPE> _0;
+			::ISPA_STD::Node<Tokens, Types::cll::TYPE> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, ID> _2;
+			::ISPA_STD::Node<Tokens, Types::ID> _2;
 			bool success_3;
 			bool success_9;
 			bool success_7;
 			bool success_5;
-			::ISPA_STD::Node<Tokens, Types, cll::ASSIGNMENT_OP> _6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _8;
+			::ISPA_STD::Node<Tokens, Types::cll::ASSIGNMENT_OP> _6;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _8;
 			if (*pos == Tokens::cll::TYPE) {
 				success_1 = false;
 			}
@@ -2341,15 +2338,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_logical(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::compare> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::compare> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, cll::LOGICAL_OP> _4;
-			std::vector<::ISPA_STD::Node<Tokens, cll::LOGICAL_OP>> shadow_6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::compare> _7;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr::compare>> shadow_9;
+			::ISPA_STD::Node<Tokens, Types::cll::LOGICAL_OP> _4;
+			std::vector<::ISPA_STD::Node<Tokens, Types::cll::LOGICAL_OP>> shadow_6;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::compare> _7;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr::compare>> shadow_9;
 			success_1 = false;
 			_0 = cll_expr_compare(pos);
 			if (!(_0.status)) {
@@ -2387,15 +2384,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_term(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::value> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::value> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
 			std::variant<::ISPA_STD::Node<Tokens, Types::MODULO>, ::ISPA_STD::Node<Tokens, Types::MULTIPLE>, ::ISPA_STD::Node<Tokens, Types::DIVIDE>> _4;
 			int dfa_lookup_result_6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::value> _7;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr::value>> shadow_9;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::value> _7;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr::value>> shadow_9;
 			success_1 = false;
 			_0 = cll_expr_value(pos);
 			if (!(_0.status)) {
@@ -2440,7 +2437,7 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::logical> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::logical> _0;
 			bool success_1;
 			success_1 = false;
 			_0 = cll_expr_logical(pos);
@@ -2454,9 +2451,9 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_function_call(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::function_body_call> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::function_body_call> _2;
 			bool success_3;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
@@ -2478,9 +2475,9 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_value(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_14> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_14> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, ID> _2;
+			::ISPA_STD::Node<Tokens, Types::ID> _2;
 			bool success_3;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_14)) {
@@ -2523,7 +2520,7 @@ namespace Parser {
 		template<typename Iterator>
 		auto moduleImport(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_15> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_15> _0;
 			bool success_1;
 			std::variant<::ISPA_STD::Node<Rules, Types::moduleImport::from>, ::ISPA_STD::Node<Tokens, Types::ID>> _2;
 			bool success_3;
@@ -2553,9 +2550,9 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_nested_rule(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_5> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_5> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, rule> _2;
+			::ISPA_STD::MatchResult<Rules, Types::rule> _2;
 			bool success_3;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_5)) {
@@ -2577,11 +2574,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_function_body_call(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_3> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_3> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::function_arguments> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::function_arguments> _2;
 			bool success_3;
-			::ISPA_STD::Node<Tokens, Types, AUTO_4> _4;
+			::ISPA_STD::Node<Tokens, Types::AUTO_4> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_3)) {
@@ -2612,15 +2609,15 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_expr_arithmetic(Iterator pos)
 		{
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::term> _0;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::term> _0;
 			bool success_1;
 			bool success_8;
 			bool success_5;
 			bool success_3;
 			std::variant<::ISPA_STD::Node<Tokens, Types::PLUS>, ::ISPA_STD::Node<Tokens, Types::MINUS>> _4;
 			int dfa_lookup_result_6;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr::term> _7;
-			std::vector<::ISPA_STD::MatchResult<Rules, cll::expr::term>> shadow_9;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr::term> _7;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::cll::expr::term>> shadow_9;
 			success_1 = false;
 			_0 = cll_expr_term(pos);
 			if (!(_0.status)) {
@@ -2661,11 +2658,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll__if(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_16> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_16> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _2;
 			bool success_3;
-			::ISPA_STD::MatchResult<Rules, Types, cll::stmt> _4;
+			::ISPA_STD::MatchResult<Rules, Types::cll::stmt> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_16)) {
@@ -2695,11 +2692,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto rule_data_block_regular_datablock_key(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, ID> _0;
+			::ISPA_STD::Node<Tokens, Types::ID> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, AUTO_17> _2;
+			::ISPA_STD::Node<Tokens, Types::AUTO_17> _2;
 			bool success_3;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _4;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::ID)) {
@@ -2730,26 +2727,26 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_loop_for(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_18> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_18> _0;
 			bool success_1;
-			::ISPA_STD::Node<Tokens, Types, AUTO_3> _2;
+			::ISPA_STD::Node<Tokens, Types::AUTO_3> _2;
 			bool success_3;
 			bool success_7;
 			std::variant<::ISPA_STD::Node<Rules, Types::cll::_var>, ::ISPA_STD::Node<Rules, Types::cll::expr>> _4;
 			bool success_5;
 			std::variant<::ISPA_STD::Node<Rules, Types::cll::_var>, ::ISPA_STD::Node<Rules, Types::cll::expr>> _6;
 			int dfa_lookup_result_8;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _10;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _10;
 			bool success_11;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _12;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _12;
 			bool success_13;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _14;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _14;
 			bool success_15;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _16;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _16;
 			bool success_17;
-			::ISPA_STD::Node<Tokens, Types, AUTO_4> _18;
+			::ISPA_STD::Node<Tokens, Types::AUTO_4> _18;
 			bool success_19;
-			::ISPA_STD::MatchResult<Rules, Types, cll::stmt> _20;
+			::ISPA_STD::MatchResult<Rules, Types::cll::stmt> _20;
 			bool success_21;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_18)) {
@@ -2838,11 +2835,11 @@ namespace Parser {
 		template<typename Iterator>
 		auto cll_loop_while(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_19> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_19> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, cll::expr> _2;
+			::ISPA_STD::MatchResult<Rules, Types::cll::expr> _2;
 			bool success_3;
-			::ISPA_STD::MatchResult<Rules, Types, cll::stmt> _4;
+			::ISPA_STD::MatchResult<Rules, Types::cll::stmt> _4;
 			bool success_5;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_19)) {
@@ -2872,18 +2869,18 @@ namespace Parser {
 		template<typename Iterator>
 		auto _use(Iterator pos)
 		{
-			::ISPA_STD::Node<Tokens, Types, AUTO_22> _0;
+			::ISPA_STD::Node<Tokens, Types::AUTO_22> _0;
 			bool success_1;
-			::ISPA_STD::MatchResult<Rules, Types, _use::unit> _2;
+			::ISPA_STD::MatchResult<Rules, Types::_use::unit> _2;
 			bool success_3;
 			bool success_10;
 			bool success_7;
 			bool success_5;
-			::ISPA_STD::Node<Tokens, Types, AUTO_1> _6;
-			std::vector<::ISPA_STD::Node<Tokens, AUTO_1>> shadow_8;
-			::ISPA_STD::MatchResult<Rules, Types, _use::unit> _9;
-			std::vector<::ISPA_STD::MatchResult<Rules, _use::unit>> shadow_11;
-			::ISPA_STD::Node<Tokens, Types, AUTO_7> _13;
+			::ISPA_STD::Node<Tokens, Types::AUTO_1> _6;
+			std::vector<::ISPA_STD::Node<Tokens, Types::AUTO_1>> shadow_8;
+			::ISPA_STD::MatchResult<Rules, Types::_use::unit> _9;
+			std::vector<::ISPA_STD::MatchResult<Rules, Types::_use::unit>> shadow_11;
+			::ISPA_STD::Node<Tokens, Types::AUTO_7> _13;
 			bool success_14;
 			success_1 = false;
 			if (!(*pos == Tokens::AUTO_22)) {

@@ -600,7 +600,6 @@ auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) ->
         }
     } else if (mem.isName()) {
         LangAPI::Symbol sym {mem.getName().name};
-        sym.path.insert(sym.path.begin(), "Types");
         type = { corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule, LangAPI::Type { sym }};
     } else type = LangAPI::ValueType::String;
     return type;
