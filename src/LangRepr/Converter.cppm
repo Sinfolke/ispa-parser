@@ -112,6 +112,9 @@ export namespace LangRepr {
                     converter_lib.loadfun<void, ::Converter::Statement*>(std::string("delete_") + lang + "_statement")
                 );
         }
+        ~Converter() {
+            converter_lib.loadfun<void>(std::string("close"))();
+        }
         auto build() -> void {
             decls->openFile(namespace_name);
             decls->initImports();

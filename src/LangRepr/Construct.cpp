@@ -1,6 +1,7 @@
 module LangRepr.Construct;
 
 import LLIR.API;
+import NFA;
 import DFA.API;
 
 import constants;
@@ -534,7 +535,7 @@ namespace LangRepr {
         // Constructs the lambda for EmptyState with proper data vector type.
         // If dfa_type is Multi, provide node_types (template params for MultiTableDataVector) for correct emission
         auto makeEmptyStateLambda = [&](DFA::DfaType dfa_type, const stdu::vector<std::string> &name, const stdu::vector<std::string> &clear_name,
-                                        const stdu::vector<LangAPI::Type>* node_types = nullptr) -> LangAPI::Lambda {
+                                        const NFA::DataBlock &nfa_dtb, const stdu::vector<LangAPI::Type>* node_types = nullptr) -> LangAPI::Lambda {
             stdu::vector<std::pair<LangAPI::Type, std::string>> params;
             params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaEmptyStateMemberBegin}}, "mb"});
             params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaEmptyStateGroupBegin}}, "gb"});
@@ -546,9 +547,9 @@ namespace LangRepr {
                         tp.push_back(std::make_shared<LangAPI::Type>(ty));
                     }
                 }
-                params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaMultiTableEmptyStateLambdaParameter, .template_parameters = std::move(tp)}}, "data"});
+                params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaMultiTableEmptyStateLambdaParameter, .template_parameters = std::move(tp)}}, "dv"});
             } else {
-                params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaCharTableEmptyStateLambdaParameter}}, "data"});
+                params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaCharTableEmptyStateLambdaParameter}}, "dv"});
             }
 
             LangAPI::Statements body;
@@ -556,22 +557,33 @@ namespace LangRepr {
             const auto &data_block = data_blocks.at(clear_name);
             long long member_pos = 0;
             if (data_block.is_inclosed_map()) {
+                const auto &templated_data_block = std::get<NFA::TemplatedDataBlock>(nfa_dtb);
+                for (const auto &[mname, mdata] : templated_data_block) {
+                    cpuf::printf("[{}, {}] tdtb: {}", name, member_pos, mname);
+                }
                 body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
                 for (const auto &[mname, mdata] : data_block.getInclosedMap()) {
+                    cpuf::printf("mname: {}", mname);
                     stdu::vector<std::string> msymbol_array = {mname};
                     LangAPI::StorageSymbol msymbol = msymbol_array;
+                    LangAPI::Symbol position_manager = (templated_data_block.at(mname).first == NFA::StoreCstNode::CST_GROUP ? "gb" : "mb");
                     msymbol.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"});
-                    body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = member_pos}), LangAPI::Symbol::createExpression(LangAPI::Symbol {"mb"}), LangAPI::Symbol::createExpression(LangAPI::Symbol {"gb"})}}));
+                    body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = member_pos}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
                     member_pos++;
                 }
                 body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
             } else if (!data_block.empty()) {
                 const auto &block = data_block.getRegularDataBlock();
+                const auto &sv_data_block = std::get<NFA::SingleValueDataBlock>(nfa_dtb);
                 LangAPI::StorageSymbol msymbol;
+                LangAPI::Symbol position_manager = (sv_data_block == NFA::StoreCstNode::CST_GROUP ? "gb" : "mb");
                 msymbol.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"});
                 msymbol.path = {"value"};
                 body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
-                body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = 0}), LangAPI::Symbol::createExpression(LangAPI::Symbol {"mb"}), LangAPI::Symbol::createExpression(LangAPI::Symbol {"gb"})}}));
+                body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = 0}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
+                body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
+            } else {
+                body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
                 body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
             }
             return LangAPI::Lambda{ .parameters = std::move(params), .statements = std::move(body) };
@@ -668,6 +680,7 @@ namespace LangRepr {
             state_exports_cache.emplace(count, std::make_pair(s, transition_size));
             state_referred_tables[count];
             stdu::vector<LangAPI::Expression> transitions;
+            const stdu::vector<std::string> *clear_name;
             stdu::vector<std::string> token_name = {"Tokens"};
             stdu::vector<std::string> token_type = {"Types"};
             LangAPI::Lambda construct_lambda;
@@ -702,6 +715,7 @@ namespace LangRepr {
             } else {
                 const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
                 if (sorted_transitions.empty() && !state.else_goto) {
+                    clear_name = &state.rule_name;
                     token_name.insert(token_name.end(), state.rule_name.begin(), state.rule_name.end());
                     token_type.insert(token_type.end(), state.rule_name.begin(), state.rule_name.end());
                     if (state.rule_name.empty()) {
@@ -718,9 +732,9 @@ namespace LangRepr {
                         } else {
                             node_types_ptr = &empty_nodes;
                         }
-                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type,  state.rule_name, node_types_ptr);
+                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type,  state.rule_name, state.dtb, node_types_ptr);
                     } else {
-                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name);
+                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb);
                     }
                     empty = true;
                 }
@@ -878,7 +892,7 @@ namespace LangRepr {
 	                std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
 	                .name = std::string("dfa_state_") + std::to_string(count),
 	                .type = s,
-                    .value = empty ? LangAPI::IspaLibDfaEmptyState::createExpression(LangAPI::IspaLibDfaEmptyState {.token_name = token_name, .construction_lambda = std::make_shared<LangAPI::Lambda>(construct_lambda)}) : LangAPI::Array::createExpression(LangAPI::Array { .values = transitions}),
+                    .value = empty ? LangAPI::IspaLibDfaEmptyState::createExpression(LangAPI::IspaLibDfaEmptyState {.token_name = *clear_name, .construction_lambda = std::make_shared<LangAPI::Lambda>(construct_lambda)}) : LangAPI::Array::createExpression(LangAPI::Array { .values = transitions}),
                     .is_static = true
 	            })),
                 LangAPI::Visibility::Private
@@ -1123,6 +1137,12 @@ namespace LangRepr {
                 if (statement.isVariable()) {
                     auto &var = statement.getVariable();
                     fun_data_type_modifier(var.type);
+                } else if (statement.isExpression()) {
+                    auto &expr = statement.getExpression();
+                    if (expr.size() == 1 && expr.front().isDfaLookup()) {
+                        auto &dfa_lookup = expr.front().getDfaLookup();
+                        fun_data_type_modifier(dfa_lookup.return_type);
+                    }
                 }
             }
             parser.data.push_back(
@@ -1148,7 +1168,7 @@ namespace LangRepr {
         //constructTokensAndRulesEnumToString();
         constructTypesNamespace();
         constructLexer();
-        constructParser();
+        // constructParser();
         LangAPI::Namespace ns;
         ns.name = namespace_name;
         ns.declarations = std::move(holder.get());

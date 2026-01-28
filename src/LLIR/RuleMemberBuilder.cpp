@@ -820,8 +820,14 @@ void LLIR::OpBuilder::build() {
         dfas.get().push_back(std::move(dfa));
         auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
         dfa_call_result.type.type = LangAPI::ValueType::Int;
+        LangAPI::Type lookup = LangAPI::ValueType::Variant;
+        for (const auto &member : op) {
+            if (member.isName()) {
+                lookup.template_parameters.push_back(LangAPI::Type {LangAPI::Symbol {member.getName().name}});
+            }
+        }
         statements.push_back(LangAPI::Variable::createStatement(dfa_call_result));
-        statements.push_back(LangAPI::DfaLookup::createStatement(LangAPI::DfaLookup {.dfa_count = dfa_index, .output_name = dfa_call_result.name}));
+        statements.push_back(LangAPI::DfaLookup::createStatement(LangAPI::DfaLookup {.dfa_count = dfa_index, .return_type = lookup, .output_name = dfa_call_result.name}));
         LangAPI::Switch ss {.expression = LangAPI::Symbol::createExpression(LangAPI::Symbol { dfa_call_result.name }) };
         for (int i = 0; i < op.size(); ++i) {
             ss.cases.emplace_back();

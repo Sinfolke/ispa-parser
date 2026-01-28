@@ -19,7 +19,6 @@ namespace Cpp {
     auto Declarations::closeFile(const std::string &namespace_name) -> void {
         output.writeln("#endif // {}_H", corelib::text::ToUpper(namespace_name));
     }
-
     auto Declarations::initImports() -> void {
         output.writeln("#include <string>");
         output.writeln("#include <vector>");
@@ -148,7 +147,9 @@ namespace Cpp {
         output.write("{} {} {}", v.is_static ? "static" : "", Core::convertType(v.type), v.name);
         if (!v.value.empty()) {
             if (v.is_static) {
-                Core::cpp_file << corelib::text::join(Core::symbol_path, "::") << "::" << v.name << " = " << Core::convertExpression(v.value) << ";\n";
+                auto cpp_sym_path = Core::symbol_path;
+                cpp_sym_path.erase(cpp_sym_path.begin());
+                Core::cpp_file << Core::convertType(v.type) << ' ' << corelib::text::join(cpp_sym_path, "::") << "::" << v.name << " = " << Core::convertExpression(v.value) << ";\n";
             } else {
                 output.dwrite(" = {}", Core::convertExpression(v.value));
             }

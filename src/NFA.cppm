@@ -11,15 +11,7 @@ public:
     enum class StoreCstNode {
         CST_NODE, CST_GROUP
     };
-    using TemplatedDataBlock = stdu::vector< // vector of key -> value
-        std::pair< // key -> value
-            std::string, // key name,
-            std::pair<
-                StoreCstNode, //what to store,
-                std::size_t //cst member index | group index
-            >
-        >
-    >;
+    using TemplatedDataBlock = utype::unordered_map<std::string, std::pair<StoreCstNode, std::size_t>>;
     using SingleValueDataBlock = StoreCstNode; // cst node index | group index
     using DataBlock = std::variant<std::monostate, TemplatedDataBlock, SingleValueDataBlock>;
     struct TransitionValue {

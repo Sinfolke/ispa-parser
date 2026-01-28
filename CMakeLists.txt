@@ -47,7 +47,8 @@ function(precompile_std target)
                     # installed via package manager
                     "/usr/include/c++/v1/std.cppm"
                     "/usr/local/include/c++/v1/std.cppm"
-                    "/lib/clang/*/include/c++/v1/std.cppm"
+                    "/lib/clang/**/include/c++/v1/std.cppm"
+                    "/lib/llvm-*/share/libc++/v1/std.cppm"
                     # installed after manual build
                     "/usr/lib/clang/**/std.cppm"
                     "/usr/local/clang/**/std.cppm"

@@ -547,16 +547,38 @@ void NFA::buildAcceptMap() {
 void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
     for (const auto &mem : rules) {
         if (!mem.prefix.empty()) {
+            if (dtb->getTemplatedDataBlock().names.size() <= prefix_index) {
+                return;
+            }
             const auto &name = dtb->getTemplatedDataBlock().names[prefix_index++];
             if (mem.isGroup()) {
-                templated_data_block.emplace_back(name, std::make_pair(StoreCstNode::CST_GROUP, group_index++));
-                generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+                templated_data_block.emplace(name, std::make_pair(StoreCstNode::CST_GROUP, group_index++));
             } else {
-                templated_data_block.emplace_back(name, std::make_pair(StoreCstNode::CST_NODE, index++));
+                templated_data_block.emplace(name, std::make_pair(StoreCstNode::CST_NODE, index++));
             }
         }
         if (mem.isGroup()) {
             generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+        } else if (mem.isOp()) {
+            std::size_t start_prefix_index = prefix_index;
+            std::size_t max_prefix_index = prefix_index;
+            std::size_t start_index = index;
+            std::size_t max_index = index;
+            std::size_t start_group_index = group_index;
+            std::size_t max_group_index = group_index;
+
+            for (const auto &opt : mem.getOp().options) {
+                std::size_t current_prefix_index = start_prefix_index;
+                std::size_t current_index = start_index;
+                std::size_t current_group_index = start_group_index;
+                generateTemplatedDataBlockFromRules({opt}, templated_data_block, current_prefix_index, current_index, current_group_index);
+                max_prefix_index = std::max(max_prefix_index, current_prefix_index);
+                max_index = std::max(max_index, current_index);
+                max_group_index = std::max(max_group_index, current_group_index);
+            }
+            prefix_index = max_prefix_index;
+            index = max_index;
+            group_index = max_group_index;
         }
     }
 }

@@ -1219,6 +1219,7 @@ export namespace LangAPI {
             else return dfa_count < other.dfa_count;
         }
         std::size_t dfa_count;
+        LangAPI::Type return_type;
         std::string output_name;
     private:
         friend struct ::uhash;

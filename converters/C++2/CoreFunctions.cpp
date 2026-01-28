@@ -37,7 +37,7 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
             case LangAPI::ValueType::Variant:
                 return std::string("std::variant<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Box:
-                return std::string("std::shared_ptr<") + convertTemplates(type.template_parameters) + ">";
+                return std::string("std::unique_ptr<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Span:
                 return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
@@ -193,9 +193,9 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::DfaEmptyStateMemberBegin:
             return "::ISPA_STD::DFAAPI::MemberBegin";
         case LangAPI::StdlibExports::DfaCstStore:
-            return "::ISPA_STD::DFAAPI::cst_store";
+            return "::ISPA_STD::DFAAPI::cst_store<Tokens>";
         case LangAPI::StdlibExports::DfaCstGroupStore:
-            return "::ISPA_STD::DFAAPI::cst_group_store";
+            return "::ISPA_STD::DFAAPI::cst_group_store<Tokens>";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -281,7 +281,7 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                 break;
             case LangAPI::ExpressionValueType::DfaLookup: {
                 const auto &lookup = expr.getDfaLookup();
-                out << lookup.output_name << " = ISPA_STD::DFA<Tokens>::decide(dfa_span_"  << std::to_string(lookup.dfa_count) << ", pos, &ISPA_STD::LLParser_base<Tokens, Rules>::PANIC_MODE)";
+                out << lookup.output_name << " = ISPA_STD::DFA<Tokens, " + convertType(lookup.return_type) << ">::decide(dfa_span_"  << std::to_string(lookup.dfa_count) << ", pos, &Parser::PANIC_MODE)";
                 break;
             }
             case LangAPI::ExpressionValueType::ReportError:
@@ -382,7 +382,7 @@ auto Core::buildStatements(const LangAPI::Statements &statements) -> void {
 auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
     // use lower level interaction to writer to output lambda in correct place with correct indentation
     std::ostringstream out;
-    out << "(";
+    out << "[](";
     bool first = true;
     for (const auto &p : lambda.parameters) {
         if (!first) {

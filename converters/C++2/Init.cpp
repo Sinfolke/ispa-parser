@@ -6,4 +6,8 @@ extern "C" void init(const char* name) {
     Core::symbol_path.push_back(name);
     Core::cpp_file.open(Core::name + ".cpp");
     Core::cpp_file << "#include \"" << Core::name << ".h\"\n";
+    Core::cpp_file << "namespace " << name << " {\n";
+}
+extern "C" void close() {
+    Core::cpp_file << "}\n";
 }
