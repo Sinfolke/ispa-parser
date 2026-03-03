@@ -83,6 +83,11 @@ auto DFA::Base::getEmptyState() -> std::size_t& {
         throw Error("Dfa has no empty state registered");
     return empty_state;
 }
+
+auto DFA::Base::hasOneEmptyState() -> bool {
+    return empty_state != NULL_STATE;
+}
+
 auto DFA::Base::getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t {
     if (!dfa_index_to_empty_state_map_.empty())
         return dfa_index_to_empty_state_map_.at(dfaIndex);

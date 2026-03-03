@@ -69,7 +69,7 @@ void DFA::Collection<DfaTable>::getStateSet(StateSet_t &state_set) const {
             }
 
             state_set.location_in_set[std::make_pair(dfa_index, local_state_index)] = global_index;
-            state_set.state_in_dfa_location_map[global_index] = dfa_index;
+            state_set.state_in_dfa_location_map[global_index] = std::make_pair(dfa_index, local_state_index);
 
             ++local_state_index;
         }

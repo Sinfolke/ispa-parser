@@ -1,5 +1,7 @@
 module LangRepr.Construct;
 
+import Dump;
+
 import LLIR.API;
 import NFA;
 import DFA.API;
@@ -265,9 +267,6 @@ namespace LangRepr {
                         return;
                     actual_name.push_back(std::get<std::string>(part));
                 }
-                for (const auto &name : needs_box) {
-                    cpuf::printf("{} == {}: {}", actual_name, name, actual_name == name);
-                }
                 if (!needs_box.contains(actual_name))
                     return;
                 t.template_parameters = {LangAPI::Type {LangAPI::Symbol {corelib::text::join(actual_name, "_")}}};
@@ -440,19 +439,26 @@ namespace LangRepr {
             .default_visibility = LangAPI::Visibility::Private
         };
 
+        struct StateData{
+            LangAPI::IspaLibSymbol type;
+            stdu::vector<stdu::vector<std::string>> names;
+            int transition_size;
+        };
         const auto &dfas = lexer_builder.getDFAS().get();
         std::size_t count = 0;
         auto states = lexer_builder.getDFAS().getStateSet();
 
         // construct states
-        utype::unordered_map<std::size_t, std::pair<LangAPI::IspaLibSymbol, int>> state_exports_cache;
+        utype::unordered_map<std::size_t, StateData> state_exports_cache;
 
         // Tracks which DFA tables are referenced by MultiTable transitions and their node type lists (unique, stable order)
-        utype::unordered_map<std::size_t, stdu::vector<LangAPI::Type>> referenced_by_multitable;
+        utype::unordered_map<std::size_t, stdu::vector<std::pair<LangAPI::Type, stdu::vector<std::string>>>> referenced_by_multitable;
+        utype::unordered_map<std::size_t, stdu::vector<stdu::vector<std::string>>> multitable_nodes;
         utype::unordered_map<std::size_t, stdu::vector<LangAPI::IspaLibSymbol>> state_multi_types;
         utype::unordered_map<std::size_t, bool> state_force_char_table;
         // For each state id, remember which DFA tables it references via MultiTable transitions
         utype::unordered_map<std::size_t, stdu::vector<std::size_t>> state_referred_tables;
+        utype::unordered_map<std::size_t, LangAPI::Type> state_build_type;
 
         // Build reverse map for DFA names
         utype::unordered_map<std::size_t, stdu::vector<std::string>> dfa_index_to_name;
@@ -462,6 +468,38 @@ namespace LangRepr {
 
         // Small local helpers to reduce duplication and improve readability
         using TypeParam = std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>;
+
+        // Recursively ensure that every LangAPI::Symbol used as a type has "Types" prefixed to its path.
+        // This is required because many generated types live under the Types:: namespace and nested
+        // template arguments must be adjusted as well.
+        auto ensureTypesNsFull = [&](auto &self, LangAPI::Type &t) -> void {
+            if (t.isSymbol()) {
+                auto &sym = t.getSymbol();
+                bool has_types_prefix = false;
+                if (!sym.path.empty() && std::holds_alternative<std::string>(sym.path.front())) {
+                    has_types_prefix = (std::get<std::string>(sym.path.front()) == std::string("Types"));
+                }
+                if (!has_types_prefix) {
+                    sym.path.insert(sym.path.begin(), std::string("Types"));
+                }
+            } else if (t.isIspaLibSymbol()) {
+                auto &isym = t.getIspaLibSymbol();
+                for (auto &tp : isym.template_parameters) {
+                    if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(tp)) {
+                        auto &pt = *std::get<std::shared_ptr<LangAPI::Type>>(tp);
+                        self(self, pt);
+                    }
+                }
+            }
+            // If it's a ValueType, nothing to do. Also process Type's own template_parameters.
+            for (auto &tp : t.template_parameters) {
+                if (std::holds_alternative<LangAPI::Type>(tp)) {
+                    auto &nt = std::get<LangAPI::Type>(tp);
+                    self(self, nt);
+                }
+            }
+        };
+        auto ensureTypesNs = [&](LangAPI::Type &t) { ensureTypesNsFull(ensureTypesNsFull, t); };
 
         auto getTransitionCount = [](const auto &transitions) -> int {
             if (std::holds_alternative<DFA::FullCharTable>(transitions)) {
@@ -487,18 +525,11 @@ namespace LangRepr {
 
         auto buildStateSymbol = [&](DFA::DfaType state_type, LangAPI::Symbol tn, DFA::DfaType dfa_type) -> LangAPI::IspaLibSymbol {
             LangAPI::IspaLibSymbol s;
-            cpuf::dprintf("path: {");
-            for (const auto part : tn.path) {
-                if (std::holds_alternative<std::string>(part)) {
-                    cpuf::dprintf("{}, ", std::get<std::string>(part).c_str());
-                } else {
-                    cpuf::dprintf("<functionCall>, ");
-                }
-            }
-            cpuf::printf("}");
             tn.path.insert(tn.path.begin(), "Types");
             auto makeReturnType = [&]() -> std::shared_ptr<LangAPI::Type> {
-                return std::make_shared<LangAPI::Type>(tn);
+                auto rt = std::make_shared<LangAPI::Type>(tn);
+                ensureTypesNs(*rt);
+                return rt;
             };
             switch (state_type) {
                 case DFA::DfaType::Char:
@@ -509,22 +540,17 @@ namespace LangRepr {
                     break;
                 case DFA::DfaType::Multi:
                     s.exports = LangAPI::StdlibExports::DfaMultiTableState;
-                    s.template_parameters = { makeReturnType(), makeMultiTransitionParamForNode(tn) };
+                    s.template_parameters = { makeReturnType() };
                     break;
                 default:
                     switch (dfa_type) {
                         case DFA::DfaType::Char:
                             s.exports = LangAPI::StdlibExports::DfaCharEmptyState;
-                            // CharEmptyState<Tokens, ReturnType>
-                            s.template_parameters.clear();
                             s.template_parameters.push_back(makeReturnType());
                             break;
                         case DFA::DfaType::Multi:
                             s.exports = LangAPI::StdlibExports::DfaMultiTableEmptyState;
-                            // MultiTableEmptyState<Tokens, ReturnType, Nodes...>
-                            s.template_parameters.clear();
                             s.template_parameters.push_back(makeReturnType());
-                            s.template_parameters.push_back(makeMultiTransitionParamForNode(tn));
                             break;
                         default: break;
                     }
@@ -535,16 +561,18 @@ namespace LangRepr {
         // Constructs the lambda for EmptyState with proper data vector type.
         // If dfa_type is Multi, provide node_types (template params for MultiTableDataVector) for correct emission
         auto makeEmptyStateLambda = [&](DFA::DfaType dfa_type, const stdu::vector<std::string> &name, const stdu::vector<std::string> &clear_name,
-                                        const NFA::DataBlock &nfa_dtb, const stdu::vector<LangAPI::Type>* node_types = nullptr) -> LangAPI::Lambda {
+                                        const NFA::DataBlock &nfa_dtb, const stdu::vector<LangAPI::Symbol>& node_types) -> LangAPI::Lambda {
             stdu::vector<std::pair<LangAPI::Type, std::string>> params;
             params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaEmptyStateMemberBegin}}, "mb"});
             params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaEmptyStateGroupBegin}}, "gb"});
             if (dfa_type == DFA::DfaType::Multi) {
                 stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> tp;
-                if (node_types) {
-                    tp.reserve(node_types->size());
-                    for (const auto &ty : *node_types) {
-                        tp.push_back(std::make_shared<LangAPI::Type>(ty));
+                if (!node_types.empty()) {
+                    tp.reserve(node_types.size());
+                    for (const auto &ty : node_types) {
+                        auto p = std::make_shared<LangAPI::Type>(ty);
+                        ensureTypesNs(*p);
+                        tp.push_back(std::move(p));
                     }
                 }
                 params.push_back({LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaMultiTableEmptyStateLambdaParameter, .template_parameters = std::move(tp)}}, "dv"});
@@ -556,19 +584,29 @@ namespace LangRepr {
             const auto data_blocks = lexer_builder.getDataBlocks();
             const auto &data_block = data_blocks.at(clear_name);
             long long member_pos = 0;
+            LangAPI::IspaLibSymbol call_sym {.exports = LangAPI::StdlibExports::DfaCstStore};
+            for (const auto &s : node_types) {
+                auto p = std::make_shared<LangAPI::Type>(s);
+                ensureTypesNs(*p);
+                call_sym.template_parameters.push_back(std::move(p));
+            }
             if (data_block.is_inclosed_map()) {
                 const auto &templated_data_block = std::get<NFA::TemplatedDataBlock>(nfa_dtb);
-                for (const auto &[mname, mdata] : templated_data_block) {
-                    cpuf::printf("[{}, {}] tdtb: {}", name, member_pos, mname);
-                }
-                body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
+                LangAPI::Type data_t { LangAPI::Symbol {name} };
+                ensureTypesNs(data_t);
+                body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = std::move(data_t)}));
                 for (const auto &[mname, mdata] : data_block.getInclosedMap()) {
-                    cpuf::printf("mname: {}", mname);
                     stdu::vector<std::string> msymbol_array = {mname};
                     LangAPI::StorageSymbol msymbol = msymbol_array;
                     LangAPI::Symbol position_manager = (templated_data_block.at(mname).first == NFA::StoreCstNode::CST_GROUP ? "gb" : "mb");
+                    call_sym.exports = templated_data_block.at(mname).first == NFA::StoreCstNode::CST_GROUP ? LangAPI::StdlibExports::DfaCstGroupStore : LangAPI::StdlibExports::DfaCstStore;
+                    auto tp = std::make_shared<LangAPI::Type>(mdata.second);
+                    ensureTypesNs(*tp);
+                    call_sym.template_parameters.insert(call_sym.template_parameters.begin(), std::move(tp));
                     msymbol.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"});
-                    body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = member_pos}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
+
+                    body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = call_sym, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = member_pos}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
+                    call_sym.template_parameters.erase(call_sym.template_parameters.begin());
                     member_pos++;
                 }
                 body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
@@ -577,121 +615,96 @@ namespace LangRepr {
                 const auto &sv_data_block = std::get<NFA::SingleValueDataBlock>(nfa_dtb);
                 LangAPI::StorageSymbol msymbol;
                 LangAPI::Symbol position_manager = (sv_data_block == NFA::StoreCstNode::CST_GROUP ? "gb" : "mb");
+                call_sym.exports = sv_data_block == NFA::StoreCstNode::CST_GROUP ? LangAPI::StdlibExports::DfaCstGroupStore : LangAPI::StdlibExports::DfaCstStore;
+                {
+                    auto tp = std::make_shared<LangAPI::Type>(block.second);
+                    ensureTypesNs(*tp);
+                    call_sym.template_parameters.insert(call_sym.template_parameters.begin(), std::move(tp));
+                }
                 msymbol.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"});
                 msymbol.path = {"value"};
-                body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
-                body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstStore}, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = 0}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
+                {
+                    LangAPI::Type data_t { LangAPI::Symbol {name} };
+                    ensureTypesNs(data_t);
+                    body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = std::move(data_t)}));
+                }
+                body.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall {.symbol = call_sym, .args = {LangAPI::StorageSymbol::createExpression(msymbol), LangAPI::Int::createExpression(LangAPI::Int {.value = 0}), LangAPI::Symbol::createExpression(position_manager), LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"})}}));
                 body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
             } else {
-                body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = LangAPI::Type {LangAPI::Symbol {name}}}));
+                {
+                    LangAPI::Type data_t { LangAPI::Symbol {name} };
+                    ensureTypesNs(data_t);
+                    body.push_back(LangAPI::Variable::createStatement(LangAPI::Variable {.name = "data", .type = std::move(data_t)}));
+                }
                 body.push_back(LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"data"})}));
             }
             return LangAPI::Lambda{ .parameters = std::move(params), .statements = std::move(body) };
         };
-        // Prepass: compute, for each referenced DFA table, the complete ordered list of node types used by MultiTable transitions pointing to it
-        {
-            std::size_t idx = 0;
-            for (const auto &state : states.state_set) {
-                const auto dfa_idx = states.state_in_dfa_location_map.at(idx);
-                const auto &dfa = dfas.at(dfa_idx);
-                auto [type, tn_path] = states.state_to_type.at(idx);
-                // Some states might carry an empty type name; fall back to the rule name to avoid emitting plain `Types`
-                if (tn_path.empty()) {
-                    if (dfa_index_to_name.contains(dfa_idx)) {
-                        tn_path = dfa_index_to_name.at(dfa_idx);
-                    }
-                }
-                LangAPI::Symbol tn = tn_path;
-                LangAPI::IspaLibSymbol s_pre = buildStateSymbol(type, tn, dfa.getType());
-                const int transition_size = getTransitionCount(state.transitions);
-                s_pre.template_parameters.insert(s_pre.template_parameters.begin(), makeIntRValue(transition_size));
-
-                if (std::holds_alternative<DFA::SortedTransitions>(state.transitions)) {
-                    const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
-                    for (const auto &[symbol, transition] : sorted_transitions) {
-                        if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
-                            const auto &sym_name = std::get<stdu::vector<std::string>>(symbol);
-                            const auto referred_index = lexer_builder.getNameToDFAIndex().at(sym_name);
-                            const bool ref_char = dfas.at(referred_index).getType() == DFA::DfaType::Char;
-                            if (!ref_char) {
-                                // Try to get the DfaMultiTransition type from state symbol parameters when available
-                                LangAPI::Type new_t;
-                                bool took_from_state = false;
-                                if (s_pre.template_parameters.size() > 1 && std::holds_alternative<std::shared_ptr<LangAPI::Type>>(s_pre.template_parameters[1])) {
-                                    new_t = *std::get<std::shared_ptr<LangAPI::Type>>(s_pre.template_parameters[1]);
-                                    took_from_state = true;
-                                }
-                                // Fallback: synthesize DfaMultiTransition<Types::<tn>> from the referred DFA's name
-                                if (!took_from_state) {
-                                    auto makeMultiForTn = [&](const LangAPI::Symbol &symTn){
-                                        auto tmp = LangAPI::IspaLibSymbol{ .exports = LangAPI::StdlibExports::DfaMultiTransition };
-                                        LangAPI::Symbol tn_copy = symTn;
-                                        tn_copy.path.insert(tn_copy.path.begin(), "Types");
-                                        stdu::vector<TypeParam> params;
-                                        params.push_back(std::make_shared<LangAPI::Type>(tn_copy));
-                                        tmp.template_parameters = std::move(params);
-                                        return LangAPI::Type{tmp};
-                                    };
-                                    new_t = makeMultiForTn(sym_name);
-                                }
-                                if (new_t.isIspaLibSymbol() && new_t.getIspaLibSymbol().exports == LangAPI::StdlibExports::DfaMultiTransition) {
-                                    // State’s multitable node type is the first template parameter of DfaMultiTransition
-                                    if (!new_t.getIspaLibSymbol().template_parameters.empty() && std::holds_alternative<std::shared_ptr<LangAPI::Type>>(new_t.getIspaLibSymbol().template_parameters[0])) {
-                                        const auto &ty = *std::get<std::shared_ptr<LangAPI::Type>>(new_t.getIspaLibSymbol().template_parameters[0]);
-                                        auto &vec = referenced_by_multitable[referred_index];
-                                        if (std::find(vec.begin(), vec.end(), ty) == vec.end()) vec.push_back(ty);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                ++idx;
-            }
-        }
-
-        // Sort node lists deterministically (by textual representation) for each referenced table
-
-        for (auto &p : referenced_by_multitable) {
-            std::sort(p.second.begin(), p.second.end(), [](const LangAPI::Type &a, const LangAPI::Type &b){
-            std::stringstream sa; sa << a;
-            std::stringstream sb; sb << b;
-            return sa.str() < sb.str();
-            });
-        }
-
         for (const auto &state : states.state_set) {
-            const auto dfa_idx = states.state_in_dfa_location_map.at(count);
+
+            const auto [dfa_idx, state_idx] = states.state_in_dfa_location_map.at(count);
+            const auto &dfa = dfas.at(dfa_idx);
+
+            // We only care about SortedTransitions
+            if (!std::holds_alternative<DFA::SortedTransitions>(state.transitions)) {
+                ++count;
+                continue;
+            }
+
+            const auto &[type, tn_path] = states.state_to_type.at(count);
+
+            const auto &sorted_transitions =
+                std::get<DFA::SortedTransitions>(state.transitions);
+
+            for (const auto &[symbol, transition] : sorted_transitions) {
+
+                // Only MultiTable transitions (vector<string> symbol)
+                if (!std::holds_alternative<stdu::vector<std::string>>(symbol))
+                    continue;
+
+                const auto &sym_name =
+                    std::get<stdu::vector<std::string>>(symbol);
+
+                const auto referred_dfa_index =
+                    lexer_builder.getNameToDFAIndex().at(sym_name);
+
+                // Only care if current DFA is Multi
+                if (dfa.getType() != DFA::DfaType::Multi)
+                    continue;
+
+                // Extract node type from this state
+                LangAPI::Type node_type { LangAPI::Symbol {sym_name} };
+
+                auto &vec1 = referenced_by_multitable[referred_dfa_index];
+                auto &vec2 = multitable_nodes[dfa_idx];
+                if (std::find_if(vec1.begin(), vec1.end(), [&](const auto &vec_part) { return vec_part.first == node_type; }) == vec1.end()) {
+                    vec1.push_back({node_type, sym_name});
+                }
+                if (std::find(vec2.begin(), vec2.end(), sym_name) == vec2.end()) {
+                    vec2.push_back(sym_name);
+                }
+            }
+
+            ++count;
+        }
+        count = 0;
+        for (const auto &state : states.state_set) {
+            const auto [dfa_idx, local_state_index] = states.state_in_dfa_location_map.at(count);
             const auto &dfa = dfas.at(dfa_idx);
             auto [type, tn_path] = states.state_to_type.at(count);
-            if (tn_path.empty()) {
-                if (dfa_index_to_name.contains(dfa_idx)) {
-                    tn_path = dfa_index_to_name.at(dfa_idx);
-                }
-            }
             LangAPI::Symbol tn = tn_path;
             LangAPI::Symbol return_type_sym = tn;
             return_type_sym.path.insert(return_type_sym.path.begin(), "Types");
 
-            LangAPI::IspaLibSymbol s = buildStateSymbol(type, tn, dfa.getType());
             const int transition_size = getTransitionCount(state.transitions);
-            s.template_parameters.insert(s.template_parameters.empty() ? s.template_parameters.begin() : s.template_parameters.begin() + 1, makeIntRValue(transition_size));
+            auto s = buildStateSymbol(type, tn, dfa.getType());
 
-            state_exports_cache.emplace(count, std::make_pair(s, transition_size));
-            state_referred_tables[count];
             stdu::vector<LangAPI::Expression> transitions;
             const stdu::vector<std::string> *clear_name;
             stdu::vector<std::string> token_name = {"Tokens"};
             stdu::vector<std::string> token_type = {"Types"};
             LangAPI::Lambda construct_lambda;
-            // Collect distinct MultiTableTransition type signatures used in this state (to form MultiTableState<Tokens, N, ...>)
-            // Ensure per-state storage exists
-            state_multi_types[count];
-            auto add_state_multi = [&](const LangAPI::IspaLibSymbol &sym){
-                auto &vec = state_multi_types[count];
-                if (std::find(vec.begin(), vec.end(), sym) == vec.end()) vec.push_back(sym);
-            };
-            bool force_char_table_state = false;
+            stdu::vector<stdu::vector<std::string>> names;
             bool empty = false;
             if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
                 const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
@@ -714,178 +727,100 @@ namespace LangRepr {
                 }
             } else {
                 const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
-                if (sorted_transitions.empty() && !state.else_goto) {
+                if (sorted_transitions.empty() && state.else_goto == 0) {
                     clear_name = &state.rule_name;
                     token_name.insert(token_name.end(), state.rule_name.begin(), state.rule_name.end());
                     token_type.insert(token_type.end(), state.rule_name.begin(), state.rule_name.end());
-                    if (state.rule_name.empty()) {
-                        std::cout << dfa << std::endl;
-                    }
+                    stdu::vector<LangAPI::Symbol> node_types;
                     // Prepare lambda with correct data vector type
                     if (dfa.getType() == DFA::DfaType::Multi) {
-                        const auto current_dfa_index = states.state_in_dfa_location_map.at(count);
-                        const auto it_nodes = referenced_by_multitable.find(current_dfa_index);
-                        const stdu::vector<LangAPI::Type>* node_types_ptr = nullptr;
-                        stdu::vector<LangAPI::Type> empty_nodes;
-                        if (it_nodes != referenced_by_multitable.end()) {
-                            node_types_ptr = &it_nodes->second;
-                        } else {
-                            node_types_ptr = &empty_nodes;
+                        for (const auto &node_type : multitable_nodes.at(dfa_idx)) {
+                            LangAPI::Symbol sym {node_type};
+                            sym.path.insert(sym.path.begin(), "Types");
+                            node_types.push_back(sym);
+                            s.template_parameters.push_back(std::make_shared<LangAPI::Type>(sym));
                         }
-                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type,  state.rule_name, state.dtb, node_types_ptr);
-                    } else {
-                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb);
                     }
+                    construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb, node_types);
                     empty = true;
-                }
+                    s.exports = dfa.getType() == DFA::DfaType::Char ? LangAPI::StdlibExports::DfaCharEmptyState : LangAPI::StdlibExports::DfaMultiTableEmptyState;
+                } else s.template_parameters.push_back(std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = transition_size}));
+                bool is_referring_char_table = !empty && std::all_of(sorted_transitions.begin(), sorted_transitions.end(), [&] (const auto & transition_pair) {
+                    return dfas.at(lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(transition_pair.first))).getType() == DFA::DfaType::Char;
+                });
                 for (const auto &[symbol, transition] : sorted_transitions) {
-                    decltype(LangAPI::IspaLibDfaTransition::symbol) assign_symbol;
-                    bool is_referring_char_table = false;
+                    stdu::vector<std::string> name;
                     if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
                         const auto &sym_name = std::get<stdu::vector<std::string>>(symbol);
-                        const auto referred_idx = lexer_builder.getNameToDFAIndex().at(sym_name);
-                        assign_symbol = referred_idx;
-                        is_referring_char_table = dfas.at(referred_idx).getType() == DFA::DfaType::Char;
-                    } else {
-                        assign_symbol = std::get<char>(symbol);
-                    }
-                    LangAPI::Type new_s;
-                    if (is_referring_char_table) {
-                        // CharTableTransition<Tokens, ReturnType>
-                        LangAPI::IspaLibSymbol tmp {LangAPI::StdlibExports::DfaCharTableTransition};
-                        tmp.template_parameters = { std::make_shared<LangAPI::Type>(return_type_sym) };
-                        new_s = tmp;
-                    } else if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
-                        // Derive MultiTransition type safely
-                        if (s.template_parameters.size() > 1 && std::holds_alternative<std::shared_ptr<LangAPI::Type>>(s.template_parameters[1])) {
-                            const LangAPI::Type &first = *std::get<std::shared_ptr<LangAPI::Type>>(s.template_parameters[1]);
-                            new_s = first.isIspaLibSymbol() ? first : *std::get<std::shared_ptr<LangAPI::Type>>(s.template_parameters[2]);
-                        } else {
-                            // Build MultiTransition with node list aligned to the referenced table (if known),
-                            // otherwise fall back to current state's node type
-                            const auto referred_dfa_index = std::get<std::size_t>(assign_symbol);
-                            const auto it_nodes = referenced_by_multitable.find(referred_dfa_index);
-                            stdu::vector<TypeParam> params;
-                            if (it_nodes != referenced_by_multitable.end() && !it_nodes->second.empty()) {
-                                for (const auto &ty : it_nodes->second) params.push_back(std::make_shared<LangAPI::Type>(ty));
-                            } else {
-                                // Fallback to state tn;
-                                params.push_back(std::make_shared<LangAPI::Type>(return_type_sym));
-                            }
-                            new_s = LangAPI::IspaLibSymbol { .exports = LangAPI::StdlibExports::DfaMultiTransition, .template_parameters = std::move(params) };
-                        }
-                        // Symbol refers to another DFA table which must be generated as MultiTable since this transition is MultiTable
-                        const auto referred_dfa_index = std::get<std::size_t>(assign_symbol);
-                        // Record that current state references this table
-                        auto &refs = state_referred_tables[count];
-                        if (std::find(refs.begin(), refs.end(), referred_dfa_index) == refs.end()) {
-                            refs.push_back(referred_dfa_index);
-                        }
-                        // Collect node types from the MultiTable transition type so that the referenced table knows it must be MultiTable with these nodes
-                        if (new_s.isIspaLibSymbol() && new_s.getIspaLibSymbol().exports == LangAPI::StdlibExports::DfaMultiTransition) {
-                            for (const auto &tp : new_s.getIspaLibSymbol().template_parameters) {
-                                if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(tp)) {
-                                    const auto &ty = *std::get<std::shared_ptr<LangAPI::Type>>(tp);
-                                    auto &vec = referenced_by_multitable[referred_dfa_index];
-                                    if (std::find(vec.begin(), vec.end(), ty) == vec.end()) vec.push_back(ty);
-                                }
-                            }
-                            // Align this transition's node list with the referenced table's node list (deterministic)
-                            const auto &vec = referenced_by_multitable[referred_dfa_index];
-                            stdu::vector<TypeParam> params;
-                            params.reserve(vec.size());
-                            for (const auto &ty : vec) params.push_back(std::make_shared<LangAPI::Type>(ty));
-                            new_s = LangAPI::IspaLibSymbol { .exports = LangAPI::StdlibExports::DfaMultiTransition, .template_parameters = params };
-                        }
-                }
-                // Track MultiTableTransition signatures used in this state
-                if (new_s.isIspaLibSymbol() && new_s.getIspaLibSymbol().exports == LangAPI::StdlibExports::DfaMultiTransition) {
-                    add_state_multi(new_s.getIspaLibSymbol());
-                }
-                if (is_referring_char_table) {
-                    state_force_char_table[count] = true;
-                }
-                if (is_referring_char_table) {
-                    force_char_table_state = true;
-                }
-                transitions.push_back(
-                LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
-                        .symbol = assign_symbol,
-                        .next = transition.next,
-                        .new_cst_node = transition.new_cst_node,
-                        .new_member = transition.new_member,
-                        .close_cst_node = transition.close_cst_node,
-                        .new_group = transition.new_group,
-                        .group_close = transition.group_close,
-                        .accept = transition.accept_index,
-                        .transition_type = new_s.getIspaLibSymbol(),
-                        .is_refferring_char_table = is_referring_char_table
-                    })
-                );
-            }
-        }
-        {
-            // If this is an empty state inside a Multi DFA, its type must be a dedicated EmptyState,
-            // not a MultiTableState. Otherwise, for non-empty states that reference other DFAs,
-            // set MultiTableState with proper template parameters.
-            if (empty) {
-                if (dfa.getType() == DFA::DfaType::Multi) {
-                    // Multi-table EmptyState must include node list template args
-                    s.exports = LangAPI::StdlibExports::DfaMultiTableEmptyState;
-                    stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> new_params;
-                    // ReturnType first
-                    new_params.push_back(std::make_shared<LangAPI::Type>(return_type_sym));
-                    const auto current_dfa_index = states.state_in_dfa_location_map.at(count);
-                    const auto &nodes_vec = referenced_by_multitable[current_dfa_index];
-                    for (const auto &node_ty : nodes_vec) new_params.push_back(std::make_shared<LangAPI::Type>(node_ty));
-                    s.template_parameters = std::move(new_params);
-                } else if (dfa.getType() == DFA::DfaType::Char) {
-                    // Char-table EmptyState
-                    s.exports = LangAPI::StdlibExports::DfaCharEmptyState;
-                    // CharEmptyState<Tokens, ReturnType>
-                    s.template_parameters.clear();
-                    s.template_parameters.push_back(std::make_shared<LangAPI::Type>(return_type_sym));
-                }
-            } else if (dfa.getType() == DFA::DfaType::Multi && !state_referred_tables[count].empty()) {
-                s.exports = LangAPI::StdlibExports::DfaMultiTableState;
-                // Rebuild template parameters: first the transition count, then each distinct MultiTableTransition signature
-                auto ntrans = std::make_shared<LangAPI::RValue>(LangAPI::Int::createRValue(LangAPI::Int{ .value = transition_size }));
-                stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> new_params;
-                // ReturnType, then transition count
-                new_params.push_back(std::make_shared<LangAPI::Type>(return_type_sym));
-                new_params.push_back(ntrans);
-                // Deterministic order: by referred table index; de-duplicate packs that are identical
-                auto &refs = state_referred_tables[count];
-                std::sort(refs.begin(), refs.end());
-                stdu::vector<stdu::vector<LangAPI::Type>> seen_packs; // keep node packs we've already added
-                for (auto dfa_idx : refs) {
-                    // Build MultiTableTransition<Tokens, nodes...> where nodes is referenced_by_multitable[dfa_idx]
-                    const auto &nodes_vec = referenced_by_multitable[dfa_idx];
-                    // check if this node pack is already present
-                    bool already = std::any_of(seen_packs.begin(), seen_packs.end(), [&](const auto &p){ return p == nodes_vec; });
-                    if (already) continue;
-                    seen_packs.push_back(nodes_vec);
+                        const auto referred_dfa_idx = lexer_builder.getNameToDFAIndex().at(sym_name);
 
-                    stdu::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
-                    if (nodes_vec.empty()) {
-                        stdu::vector<LangAPI::Type> names = dfa.availableTypes();
-                        if (names.size() == 1) {
-                            nested_params.push_back(std::make_shared<LangAPI::Type>(names.front()));
-                        } else {
-                            nested_params.push_back(std::make_shared<LangAPI::Type>(LangAPI::ValueType::Variant));
-                            for (const auto &name : names) {
-                                std::get<std::shared_ptr<LangAPI::Type>>(nested_params.back())->template_parameters.push_back(name);
+                        // Record that this state references that DFA table
+                        auto &refs = state_referred_tables[count];
+                        if (std::find(refs.begin(), refs.end(), referred_dfa_idx) == refs.end())
+                            refs.push_back(referred_dfa_idx);
+
+                        LangAPI::IspaLibSymbol new_s;
+                        std::vector<TypeParam> params;
+                        // Fetch frozen node pack
+                        const auto it_nodes = referenced_by_multitable.find(referred_dfa_idx);
+                        if (it_nodes == referenced_by_multitable.end() || it_nodes->second.empty())
+                            throw Error("Undefined node pack for multitable transition");
+                        for (const auto &ty : it_nodes->second) {
+                            auto sym = ty.first.getSymbol();
+                            sym.path.insert(sym.path.begin(), "Types");
+                            params.push_back(std::make_shared<LangAPI::Type>(sym));
+                            if (is_referring_char_table) {
+                                s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Type {LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaCharTableTransition, {std::make_shared<LangAPI::Type>(sym)}}}));
+                            } else {
+                                s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Type {LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaMultiTransition, {std::make_shared<LangAPI::Type>(sym)}}}));
                             }
+                            names.push_back(ty.second);
                         }
+                        if (is_referring_char_table) {
+                            const auto &referred_dfa = dfas.at(referred_dfa_idx);
+                            new_s = LangAPI::IspaLibSymbol {
+                                .exports = LangAPI::StdlibExports::DfaCharTableTransition,
+                                .template_parameters = std::move(params)
+                            };
+                        } else {
+                            new_s = {
+                                .exports = LangAPI::StdlibExports::DfaMultiTransition,
+                                .template_parameters = std::move(params)
+                            };
+                        }
+                        transitions.push_back(
+                            LangAPI::IspaLibDfaTransition::createExpression(
+                                LangAPI::IspaLibDfaTransition{
+                                    .symbol = referred_dfa_idx,
+                                    .next = transition.next,
+                                    .new_cst_node = transition.new_cst_node,
+                                    .new_member = transition.new_member,
+                                    .close_cst_node = transition.close_cst_node,
+                                    .new_group = transition.new_group,
+                                    .group_close = transition.group_close,
+                                    .accept = transition.accept_index,
+                                    .transition_type = new_s,
+                                    .is_refferring_char_table = is_referring_char_table
+                                }
+                            )
+                        );
                     } else {
-                        for (const auto &node_ty : nodes_vec) {
-                            nested_params.push_back(std::make_shared<LangAPI::Type>(node_ty));
-                        }
+                        transitions.push_back(
+                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
+                                 .symbol = std::get<char>(symbol),
+                                 .next = transition.next,
+                                 .new_cst_node = transition.new_cst_node,
+                                 .new_member = transition.new_member,
+                                 .close_cst_node = transition.close_cst_node,
+                                 .new_group = transition.new_group,
+                                 .group_close = transition.group_close,
+                                 .accept = transition.accept_index,
+                                 .transition_type = s,
+                                 .is_refferring_char_table = false
+                             })
+                         );
                     }
-                    LangAPI::Type mtt { LangAPI::IspaLibSymbol { .exports = LangAPI::StdlibExports::DfaMultiTransition, .template_parameters = nested_params } };
-                    new_params.push_back(std::make_shared<LangAPI::Type>(mtt));
                 }
-                s.template_parameters = std::move(new_params);
             }
             lexer.data.push_back(
                 std::make_pair(
@@ -898,196 +833,180 @@ namespace LangRepr {
                 LangAPI::Visibility::Private
                 )
             );
+            state_exports_cache.emplace(count, decltype(state_exports_cache)::node_type::mapped_type {s, names, transition_size});
+            ++count;
         }
-        ++count;
-    }
-    // construct DFA tables
-    for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
-	    const auto &dfa = dfas.at(dfa_count);
-	    stdu::vector<LangAPI::Expression> dfa_table_states;
-	    stdu::vector<LangAPI::Type> table_nodes; // deterministic order of node types for this table
-	    utype::unordered_set<stdu::vector<LangAPI::IspaLibSymbol>> multitables; // collect unique node types within this table
-	    bool multitable = false;
-	    const bool forced_multitable = referenced_by_multitable.count(dfa_count) != 0;
-	    for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
-		    const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
-		    auto [type, size] = state_exports_cache.at(state_id);
-		    const auto &state = states.state_set.get().at(state_id);
-		    // If this table is forced to be multitable due to external references, mark every state as SpanMultiTableState
-		    if (forced_multitable) {
-			    type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
-			    type.template_parameters.clear();
-			    for (const auto &tp : referenced_by_multitable.at(dfa_count)) type.template_parameters.push_back(std::make_shared<LangAPI::Type>(tp));
-			    multitable = true;
-		    }
-		    if (type.exports == LangAPI::StdlibExports::DfaMultiTableState && std::holds_alternative<DFA::SortedTransitions>(state.transitions) && !std::get<DFA::SortedTransitions>(state.transitions).empty() && !state_force_char_table[state_id]) {
-			    type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
-			    // type.template_parameters.erase(type.template_parameters.begin());
-			    multitable = true;
-			    // Collect node types from this state's multitable transitions into table-level node set
-			    multitables.insert(state_multi_types.at(state_id));
-		    } else {
-			    if (!multitable && !forced_multitable) {
-				    type.exports = LangAPI::StdlibExports::DfaSpanCharTableState;
-				    type.template_parameters.clear();
-			    } else {
-				    // In a MultiTable, even pure-char states are represented as SpanMultiTableState
-				    type.exports = LangAPI::StdlibExports::DfaSpanMultiTableState;
-				    type.template_parameters.clear();
-				    if (referenced_by_multitable.count(dfa_count)) {
-					    for (const auto &tp : referenced_by_multitable.at(dfa_count)) type.template_parameters.push_back(std::make_shared<LangAPI::Type>(tp));
-				    }
-				    multitable = true;
-			    }
-		    }
-		    stdu::vector<stdu::vector<LangAPI::IspaLibSymbol>> multitables_sorted {multitables.begin(), multitables.end()};
-		    std::sort(multitables_sorted.begin(), multitables_sorted.end());
-		    if (type.exports == LangAPI::StdlibExports::DfaSpanCharTableState) {
-			    dfa_table_states.push_back(LangAPI::IspaLibDfaSpanCharState::createExpression(LangAPI::IspaLibDfaSpanCharState {.else_goto = state.else_goto, .else_goto_accept = state.else_goto_accept, .state_id = state_id}));
-		    } else {
-			    dfa_table_states.push_back(LangAPI::IspaLibDfaSpanMultiTableState::createExpression(
-				    LangAPI::IspaLibDfaSpanMultiTableState {
-					    .else_goto = state.else_goto,
-					    .else_goto_accept = state.else_goto_accept,
-					    .state_id = state_id,
-					    .mutli_table_transitions = std::accumulate(
-						    type.template_parameters.begin(),
-						    type.template_parameters.end(),
-						    std::vector<LangAPI::IspaLibSymbol>{},
-						    [](auto acc, const std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>& t) {
-							    if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(t)) {
-								    const auto &tp = *std::get<std::shared_ptr<LangAPI::Type>>(t);
-								    if (tp.isIspaLibSymbol()) {
-									    acc.push_back(tp.getIspaLibSymbol());
-								    }
-							    }
-							    return acc;
-						    })
-				    }
-			    ));
-		    }
-	    }
-        // If this DFA table is referenced by MultiTable transitions elsewhere, force MultiTable kind and merge required node types
-        if (referenced_by_multitable.contains(dfa_count)) {
-            multitable = true;
-            // Do not insert into multitables from referenced_by_multitable directly here,
-            // because referenced_by_multitable holds Types (node types), not MultiTransition signatures.
-            // Table parameter construction below uses referenced_by_multitable to build params deterministically.
-        }
-        // Build deterministic template parameter list for MultiTable: use precomputed referenced_by_multitable order when available
-        std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> table_params;
-        // ReturnType first for both CharTable and MultiTable families
-        auto names = dfa.availableTypes();
-        std::shared_ptr<LangAPI::Type> return_type_ptr;
-        if (names.size() == 1) {
-            return_type_ptr = std::make_shared<LangAPI::Type>(names.front());
-        } else {
-            return_type_ptr = std::make_shared<LangAPI::Type>(LangAPI::ValueType::Variant);
-            for (const auto &name : names) {
-                return_type_ptr->template_parameters.push_back(name);
-            }
-        }
-        table_params.push_back(return_type_ptr);
-        if (referenced_by_multitable.contains(dfa_count)) {
-            // referenced_by_multitable holds node Types; wrap each node-pack into DfaMultiTransition<Tokens, nodes...>
-            const auto &nodes = referenced_by_multitable.at(dfa_count);
-            if (!nodes.empty()) {
-              // Build nested params from node list
-              std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
-              nested_params.reserve(nodes.size());
-              for (const auto &node_ty : nodes) {
-                  nested_params.push_back(std::make_shared<LangAPI::Type>(node_ty));
-              }
-              LangAPI::Type multi_type {
-                  LangAPI::IspaLibSymbol {
-                      .exports = LangAPI::StdlibExports::DfaMultiTransition,
-                      .template_parameters = nested_params
-                  }
-              };
-              table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
+        // construct DFA tables
+        for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
+	        const auto &dfa = dfas.at(dfa_count);
+	        stdu::vector<LangAPI::Expression> dfa_table_states;
+            std::shared_ptr<LangAPI::Type> return_type_ptr;
+	        bool multitable = dfa.getType() == DFA::DfaType::Multi;
+
+            auto dfa_available_types = dfa.availableTypes();
+            if (dfa_available_types.size() == 1) {
+                return_type_ptr = std::make_shared<LangAPI::Type>(dfa_available_types.front());
             } else {
-              // Fallback to Tokens as a placeholder to avoid empty template argument list
-              std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
-              for (const auto &name : names) {
-                nested_params.push_back(std::make_shared<LangAPI::Type>(name));
-              }
-              LangAPI::Type multi_type {
-                  LangAPI::IspaLibSymbol {
-                      .exports = LangAPI::StdlibExports::DfaMultiTransition,
-                      .template_parameters = nested_params
-                  }
+                return_type_ptr = std::make_shared<LangAPI::Type>(LangAPI::ValueType::Variant);
+                for (const auto &name : dfa_available_types) {
+                    return_type_ptr->template_parameters.push_back(LangAPI::Type(name));
+                }
+            }
+            auto table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
+                std::make_shared<LangAPI::Type>(*return_type_ptr),
+                std::make_shared<LangAPI::RValue>(
+                    LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
+                )
               };
-              table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
-            }
-        } else {
-            for (const auto &tp : multitables) {
-                // 1. Convert the vector of IspaLibSymbol (tp) into a vector of shared_ptr<Type> variants
-                std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> nested_params;
-                if (tp.empty()) {
-                  // If for some reason we have an empty node list for a MultiTransition,
-                  // fallback to Tokens as a placeholder to avoid empty template argument list
-                  // which is not supported by the MultiTableTransition template.
-                  nested_params.push_back(std::make_shared<LangAPI::Type>(LangAPI::Symbol{stdu::vector<std::string>{"Tokens"}}));
-                } else {
-                  for (const auto& symbol : tp) {
-                    // Since IspaLibSymbol can implicitly convert to LangAPI::Type, we wrap that type in a shared_ptr.
-                    nested_params.push_back(std::make_shared<LangAPI::Type>(symbol));
-                  }
+            if (multitable) {
+                for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
+                    const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
+                    auto [type, names, size] = state_exports_cache.at(state_id);
+                    const auto &state = states.state_set.get().at(state_id);
+                    if (!type.template_parameters.empty() && type.exports != LangAPI::StdlibExports::DfaCharTableState && !(std::holds_alternative<DFA::SortedTransitions>(state.transitions) && std::get<DFA::SortedTransitions>(state.transitions).empty())) {
+                        table_params.push_back(type.template_parameters.back());
+                    }
                 }
-
-	                // 2. Construct the outer LangAPI::Type (DfaMultiTransition<...>)
-	                LangAPI::Type multi_type {
-		                LangAPI::IspaLibSymbol {
-			                .exports = LangAPI::StdlibExports::DfaMultiTransition,
-			                .template_parameters = nested_params // Use the correctly wrapped parameters
-		                }
-	                };
-
-	                // 3. Wrap the outer type in a shared_ptr and push it to table_params
-	                table_params.push_back(std::make_shared<LangAPI::Type>(multi_type));
+            }
+            // Decide table kind based on computed multitable flag, not by parameter count
+            LangAPI::Variable dfa_table_var {
+                .name = "dfa_table_" + std::to_string(dfa_count),
+                .type = LangAPI::Type {
+                    LangAPI::IspaLibSymbol {
+                        multitable ? LangAPI::StdlibExports::DfaMultiTable : LangAPI::StdlibExports::DfaCharTable,
+                        table_params
+                    }
+                },
+                .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states }),
+                .is_static = true
+            };
+            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
 	        }
-        }
-        // Prepend the table size for the table typedefs
-        // Define the correct parameters for the DfaCharTable case: <ReturnType, N>
-        auto char_table_names = dfa.availableTypes();
-        LangAPI::Type char_table_type {};
-        if (char_table_names.size() == 1) {
-            char_table_type = char_table_names.front();
-        } else {
-            char_table_type = LangAPI::ValueType::Variant;
-            for (const auto &name : char_table_names) {
-                char_table_type.template_parameters.push_back(name);
-            }
-        }
-        auto char_table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
-          std::make_shared<LangAPI::Type>(char_table_type),
-          std::make_shared<LangAPI::RValue>(
-              LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
-          )
-        };
+	        holder.push(lexer);
 
-        // After ReturnType, prepend table size as shared_ptr<RValue> holding Int
-        table_params.insert(
-          table_params.begin() + 1,
-          std::make_shared<LangAPI::RValue>(
-              LangAPI::Int::createRValue(LangAPI::Int{ .value = static_cast<long long>(dfa_table_states.size()) })
-          )
-        );
-        // Decide table kind based on computed multitable flag, not by parameter count
-        LangAPI::Variable dfa_table_var {
-            .name = "dfa_table_" + std::to_string(dfa_count),
-            .type = LangAPI::Type {
-                LangAPI::IspaLibSymbol {
-                    multitable ? LangAPI::StdlibExports::DfaMultiTable : LangAPI::StdlibExports::DfaCharTable,
-                    multitable ? table_params : char_table_params
+            // Debug DFA and State relationships
+            {
+                // Map index back to name for readability
+                std::map<std::size_t, stdu::vector<std::string>> idx_to_name;
+                for (const auto& [name, idx] : lexer_builder.getNameToDFAIndex()) {
+                    idx_to_name[idx] = name;
                 }
-            },
-            .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states }),
-            .is_static = true
-        };
-        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
-	    }
-	    holder.push(lexer);
+
+                if (dumper.shouldDump("dfa_relations")) {
+                    std::ofstream out(dumper.makeDumpPath("dfa_relations.txt"));
+                    if (out.is_open()) {
+                        out << "DFA Relationships and Dependencies\n";
+                        out << "================================\n\n";
+
+                        for (std::size_t i = 0; i < dfas.size(); ++i) {
+                            const auto& dfa = dfas.at(i);
+                            out << "DFA " << i;
+                            if (idx_to_name.count(i)) {
+                                out << " (" << corelib::text::join(idx_to_name[i], "::") << ")";
+                            }
+                            out << "\n";
+                            out << "  Type: " << (dfa.getType() == DFA::DfaType::Char ? "Char" : "Multi") << "\n";
+
+                            // Show which node types this table supports (if it's a MultiTable)
+                            if (referenced_by_multitable.count(i)) {
+                                out << "  Supported Node Types (as MultiTable):\n";
+                                for (const auto& type : referenced_by_multitable.at(i)) {
+                                    cpuf::printf("\t{}: {}\n", type.second, type.first);
+                                }
+                            }
+
+                            // Show references to other DFAs
+                            std::set<std::size_t> refs;
+                            for (std::size_t s_idx = 0; s_idx < dfa.get().size(); ++s_idx) {
+                                const auto& state_id = states.location_in_set.at({i, s_idx});
+                                if (state_referred_tables.count(state_id)) {
+                                    for (auto ref_idx : state_referred_tables.at(state_id)) {
+                                        refs.insert(ref_idx);
+                                    }
+                                }
+                            }
+
+                            if (!refs.empty()) {
+                                out << "  Depends on:\n";
+                                for (auto ref_idx : refs) {
+                                    out << "    -> DFA " << ref_idx;
+                                    if (idx_to_name.count(ref_idx)) {
+                                        out << " (" << corelib::text::join(idx_to_name[ref_idx], "::") << ")";
+                                    }
+                                    out << "\n";
+                                }
+                            }
+                            out << "\n";
+                        }
+                    }
+                }
+
+                if (dumper.shouldDump("state_relations")) {
+                    std::ofstream out(dumper.makeDumpPath("state_relations.txt"));
+                    if (out.is_open()) {
+                        std::size_t s_idx = 0;
+                        for (const auto &state : states.state_set) {
+                            const auto [dfa_idx, state_idx] = states.state_in_dfa_location_map.at(s_idx);
+                            out << "Global State " << s_idx << " (DFA " << dfa_idx;
+                            if (idx_to_name.count(dfa_idx)) {
+                                out << " [" << corelib::text::join(idx_to_name[dfa_idx], "::") << "]";
+                            }
+                            out << ")\n";
+
+                            if (state_exports_cache.count(s_idx)) {
+                                const auto& [s_type, s_name, n_trans] = state_exports_cache.at(s_idx);
+                                out << "  Export Type: " << s_type.exports << " (Transitions: " << n_trans << ")\n";
+                                if (!s_type.template_parameters.empty()) {
+                                    out << "  Template Parameters:\n";
+                                    for (const auto& tp : s_type.template_parameters) {
+                                        if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(tp)) {
+                                            out << "    - Type: " << *std::get<std::shared_ptr<LangAPI::Type>>(tp) << "\n";
+                                        } else {
+                                            out << "    - RValue: " << *std::get<std::shared_ptr<LangAPI::RValue>>(tp) << "\n";
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (state_multi_types.count(s_idx) && !state_multi_types.at(s_idx).empty()) {
+                                out << "  Multi-Transition Signatures used:\n";
+                                for (const auto& sym : state_multi_types.at(s_idx)) {
+                                    out << "    - " << (int)sym.exports << " <";
+                                    for (const auto& tp : sym.template_parameters) {
+                                        if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(tp)) {
+                                            out << *std::get<std::shared_ptr<LangAPI::Type>>(tp) << ", ";
+                                        }
+                                    }
+                                    out << ">\n";
+                                }
+                            }
+
+                            if (std::holds_alternative<DFA::SortedTransitions>(state.transitions)) {
+                                const auto &sorted = std::get<DFA::SortedTransitions>(state.transitions);
+                                if (sorted.empty()) {
+                                    out << "  (Empty/Accepting State)\n";
+                                } else {
+                                    out << "  Transitions:\n";
+                                    for (const auto &[symbol, transition] : sorted) {
+                                        out << "    - ";
+                                        if (std::holds_alternative<char>(symbol)) {
+                                            out << "'" << std::get<char>(symbol) << "'";
+                                        } else if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
+                                            out << "DFA Ref: " << corelib::text::join(std::get<stdu::vector<std::string>>(symbol), "::");
+                                        }
+                                        out << " -> Next: " << transition.next << " (Accept: " << transition.accept_index << ")\n";
+                                    }
+                                }
+                            } else if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
+                                out << "  (Full Char Table Transitions)\n";
+                            }
+
+                            out << "\n";
+                            s_idx++;
+                        }
+                    }
+                }
+            }
     }
     auto Construct::constructParser() -> void {
         LangAPI::IspaLibSymbol parser_symbol {LangAPI::StdlibExports::Parser};

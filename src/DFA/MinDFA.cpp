@@ -78,12 +78,10 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
     for (auto &el : sdfa.getIndexToEmptyStateMap()) {
         el.second = old_to_new.at(el.second);
     }
-    if (!sdfa.isMerged()) {
-        sdfa.getEmptyState() = old_to_new.at(sdfa.getEmptyState());
-    }
     // Step 5: Finalize
     sdfa.get() = std::move(new_states);
 }
+
 void DFA::MinDFA::accumulateTerminalStates(SDFA &sdfa, std::size_t i, std::unordered_set<std::size_t> &terminals, std::unordered_set<std::size_t> &visited) {
     stdu::vector<std::size_t> path;
     const auto &state = sdfa.get()[i];
@@ -217,10 +215,224 @@ void DFA::MinDFA::terminateEarly() {
 }
 
 void DFA::MinDFA::minimize(SDFA &sdfa) {
-    removeDublicateStates(sdfa);
+    // 0) Quick hygiene passes to simplify the input graph
     terminateEarly(sdfa);
     removeSelfLoop(sdfa);
+    removeDublicateStates(sdfa);
     removeUnreachableStates(sdfa);
+
+    // 1) Build a global alphabet (all explicit symbols) and remember which states have else_goto
+    stdu::vector<NFA::TransitionKey> alphabet;
+    alphabet.reserve(64);
+    {
+        utype::unordered_set<NFA::TransitionKey> seen_sym;
+        for (const auto &st : sdfa.get()) {
+            for (const auto &kv : st.transitions) {
+                if (seen_sym.insert(kv.first).second) {
+                    alphabet.push_back(kv.first);
+                }
+            }
+        }
+    }
+
+    auto get_transition = [&](const SingleState &s, const NFA::TransitionKey &sym) -> std::pair<TransitionValue, std::size_t> {
+        if (auto it = s.transitions.find(sym); it != s.transitions.end()) {
+            return {it->second, it->second.next};
+        }
+        // No explicit transition: fall back to else_goto with neutral output
+        return {TransitionValue {}, s.else_goto ? s.else_goto : s.else_goto};
+    };
+
+    // 3) Initial partitioning by per-symbol outputs and else_goto_accept (Mealy-style)
+    //    Also include each state's mapped empty-state to avoid merging states that differ
+    //    only by the path-specific empty state used by construction.
+    stdu::vector<std::size_t> state_block(sdfa.get().size(), 0);
+    std::unordered_map<std::size_t, std::size_t> sig_to_block; // hash(signature) -> block id
+    stdu::vector<stdu::vector<std::size_t>> blocks;
+    blocks.reserve(sdfa.get().size());
+
+    // Helper to obtain the effective empty state for a given DFA state id.
+    auto get_effective_empty_for_state = [&](std::size_t sid) -> std::size_t {
+        const auto &emap = sdfa.getEmptyStateMap();
+        if (!emap.empty()) {
+            if (auto it = emap.find(sid); it != emap.end()) {
+                return it->second;
+            }
+            // If per-state map exists but this state has no entry, treat as missing
+            return NULL_STATE;
+        }
+        if (sdfa.hasOneEmptyState()) {
+            return sdfa.getEmptyState();
+        }
+        return NULL_STATE;
+    };
+
+    auto build_output_signature = [&](std::size_t sid) -> std::size_t {
+        const SingleState &s = sdfa.get()[sid];
+        // Hash the outputs (TransitionValue without `next`) for each symbol present in the global alphabet;
+        // also include presence/identity of else_goto_accept and whether else_goto exists.
+        std::size_t h = 1469598103934665603ull; // FNV-1a basis
+        auto mix = [&](std::size_t v) {
+            h ^= v; h *= 1099511628211ull;
+        };
+        for (const auto &sym : alphabet) {
+            if (auto it = s.transitions.find(sym); it != s.transitions.end()) {
+                const auto &tv = it->second; // TransitionValue
+                // Exclude `next` from hash: only outputs matter for initial grouping
+                mix(std::hash<bool>{}(tv.new_cst_node));
+                mix(std::hash<bool>{}(tv.new_member));
+                mix(std::hash<bool>{}(tv.close_cst_node));
+                mix(std::hash<std::size_t>{}(tv.new_group));
+                mix(std::hash<std::size_t>{}(tv.group_close));
+                mix(std::hash<std::size_t>{}(tv.accept_index));
+                mix(std::hash<bool>{}(tv.consume));
+                mix(std::hash<bool>{}(tv.optional));
+                mix(std::hash<bool>{}(tv.last));
+            } else {
+                // Missing explicit edge -> else path with neutral output
+                const auto &tv = TransitionValue {};
+                mix(std::hash<bool>{}(tv.new_cst_node));
+                mix(std::hash<bool>{}(tv.new_member));
+                mix(std::hash<bool>{}(tv.close_cst_node));
+                mix(std::hash<std::size_t>{}(tv.new_group));
+                mix(std::hash<std::size_t>{}(tv.group_close));
+                mix(std::hash<std::size_t>{}(tv.accept_index));
+                mix(std::hash<bool>{}(tv.consume));
+                mix(std::hash<bool>{}(tv.optional));
+                mix(std::hash<bool>{}(tv.last));
+            }
+        }
+        mix(std::hash<std::size_t>{}(s.else_goto));
+        mix(std::hash<std::size_t>{}(s.else_goto_accept));
+        // Include the effective empty state id to keep states with different empty targets separate
+        mix(std::hash<std::size_t>{}(get_effective_empty_for_state(sid)));
+        return h;
+    };
+
+    for (std::size_t i = 0; i < sdfa.get().size(); ++i) {
+        const auto sig = build_output_signature(i);
+        auto [it, inserted] = sig_to_block.emplace(sig, blocks.size());
+        if (inserted) blocks.emplace_back();
+        std::size_t bid = it->second;
+        state_block[i] = bid;
+        blocks[bid].push_back(i);
+    }
+
+    // 4) Refinement: split blocks until stable using (output, target_block) per symbol
+    bool changed = true;
+    stdu::vector<std::size_t> new_block_of_state(sdfa.get().size());
+    while (changed) {
+        changed = false;
+        stdu::vector<stdu::vector<std::size_t>> next_blocks;
+        next_blocks.reserve(blocks.size());
+        for (const auto &block : blocks) {
+            if (block.size() <= 1) {
+                next_blocks.push_back(block);
+                continue;
+            }
+            // Map signature -> list of states
+            std::unordered_map<std::size_t, stdu::vector<std::size_t>> groups;
+            for (auto sid : block) {
+                const auto &s = sdfa.get()[sid];
+                std::size_t h = 1469598103934665603ull;
+                auto mix = [&](std::size_t v) { h ^= v; h *= 1099511628211ull; };
+                for (const auto &sym : alphabet) {
+                    auto [tv, nxt] = get_transition(s, sym);
+                    // outputs (without next)
+                    mix(std::hash<bool>{}(tv.new_cst_node));
+                    mix(std::hash<bool>{}(tv.new_member));
+                    mix(std::hash<bool>{}(tv.close_cst_node));
+                    mix(std::hash<std::size_t>{}(tv.new_group));
+                    mix(std::hash<std::size_t>{}(tv.group_close));
+                    mix(std::hash<std::size_t>{}(tv.accept_index));
+                    mix(std::hash<bool>{}(tv.consume));
+                    mix(std::hash<bool>{}(tv.optional));
+                    mix(std::hash<bool>{}(tv.last));
+                    // target partition id (or special for NULL_STATE)
+                    std::size_t pid = (nxt == NULL_STATE) ? std::numeric_limits<std::size_t>::max() : state_block[nxt];
+                    mix(pid + 0x9e3779b97f4a7c15ull);
+                }
+                mix(std::hash<std::size_t>{}(s.else_goto));
+                mix(std::hash<std::size_t>{}(s.else_goto_accept));
+                // Also refine by the partition of the effective empty state, so that
+                // states that route to different (or differently-refined) empty states
+                // split appropriately.
+                {
+                    const auto empty_sid = get_effective_empty_for_state(sid);
+                    // Guard against out-of-range indices coming from malformed/mismatched
+                    // empty state mappings. If the empty state id is NULL_STATE or outside
+                    // the current state_block range, treat it as a special partition id
+                    // (i.e., do not use it for splitting with a concrete partition).
+                    std::size_t pid = (empty_sid == NULL_STATE || empty_sid >= state_block.size())
+                                      ? std::numeric_limits<std::size_t>::max()
+                                      : state_block[empty_sid];
+                    mix(pid + 0x517cc1b727220a95ull);
+                }
+                groups[h].push_back(sid);
+            }
+            if (groups.size() == 1) {
+                next_blocks.push_back(block);
+            } else {
+                changed = true;
+                for (auto &kv : groups) {
+                    next_blocks.push_back(std::move(kv.second));
+                }
+            }
+        }
+        if (changed) {
+            blocks = std::move(next_blocks);
+            for (std::size_t bid = 0; bid < blocks.size(); ++bid) {
+                for (auto s : blocks[bid]) state_block[s] = bid;
+            }
+        }
+    }
+
+    // 5) Build minimized DFA: pick representative for each block and remap transitions to block ids
+    States<SingleState> new_states(nullptr);
+    stdu::vector<std::size_t> block_to_new(blocks.size(), NULL_STATE);
+    for (std::size_t bid = 0; bid < blocks.size(); ++bid) {
+        const auto repr = blocks[bid].front();
+        std::size_t nid = new_states.makeNew();
+        new_states[nid] = sdfa.get()[repr];
+        block_to_new[bid] = nid;
+    }
+    for (auto &st : new_states) {
+        for (auto &kv : st.transitions) {
+            auto nxt = kv.second.next;
+            if (nxt != NULL_STATE)
+                kv.second.next = block_to_new[state_block[nxt]];
+        }
+        if (st.else_goto) {
+            st.else_goto = block_to_new[state_block[st.else_goto]];
+        }
+    }
+
+    // 6) Rebuild empty state maps according to new indices
+    std::unordered_map<std::size_t, std::size_t> old_to_new;
+    for (std::size_t sid = 0; sid < sdfa.get().size(); ++sid) {
+        old_to_new[sid] = block_to_new[state_block[sid]];
+    }
+    DfaEmptyStateMap new_empty_state_map;
+    for (auto &el : sdfa.getEmptyStateMap()) {
+        new_empty_state_map[old_to_new.at(el.first)] = old_to_new.at(el.second);
+    }
+    sdfa.getEmptyStateMap() = std::move(new_empty_state_map);
+    for (auto &el : sdfa.getIndexToEmptyStateMap()) {
+        el.second = old_to_new.at(el.second);
+    }
+    if (sdfa.hasOneEmptyState()) {
+        // Remap the single empty state only if it exists in the mapping to avoid out_of_range
+        const std::size_t old_empty = sdfa.getEmptyState();
+        if (auto it = old_to_new.find(old_empty); it != old_to_new.end()) {
+            sdfa.getEmptyState() = it->second;
+        } else {
+            // If the old empty state has been removed during minimization, null it out safely
+            sdfa.getEmptyState() = NULL_STATE;
+        }
+    }
+
+    // 7) Finalize
+    sdfa.get() = std::move(new_states);
 }
 void DFA::MinDFA::minimize() {
     minimize(sdfa);

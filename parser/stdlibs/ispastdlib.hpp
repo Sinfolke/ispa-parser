@@ -20,6 +20,8 @@
 #include <algorithm>
 #include <iostream>
 #include <unordered_set>
+
+#include "old/ispastdlib.hpp"
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -323,11 +325,11 @@ namespace DFAAPI {
     template<typename TOKEN_T> using TokenTransition = Transition<TOKEN_T>;
 
     // CharTableTransition needs ReturnType because CharEmptyState needs it
-    template<typename TOKEN_T, typename ReturnType>
+    template<typename TOKEN_T, typename ReferingReturnType>
     using CharTableTransition = Transition<
         Span<const std::variant<
             SpanState<CharTransition>,
-            CharEmptyState<TOKEN_T, ReturnType>
+            CharEmptyState<TOKEN_T, ReferingReturnType>
         >>
     >;
 
@@ -339,15 +341,13 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename ReturnType, typename ...MULTITRANSITIONS>
     using AnyTransition = std::variant<
         CharTransition,
-        CharTableTransition<TOKEN_T, ReturnType>,
         MULTITRANSITIONS...
     >;
 
-    // state types (add ReturnType where inner transition aliases require it)
-    template<std::size_t N> using CharState = State<N, CharTransition>;
+    using CharState = State<std::numeric_limits<unsigned char>::max() + 1, CharTransition>;
 
-    template<typename TOKEN_T, typename ReturnType, std::size_t N>
-    using CharTableState = State<N, CharTableTransition<TOKEN_T, ReturnType>>;
+    template<typename TOKEN_T, typename ReturnType, std::size_t N, typename ...CharTableTransitions>
+    using CharTableState = std::variant<State<N, CharTableTransitions>...>;
 
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
 
@@ -357,8 +357,8 @@ namespace DFAAPI {
     // span state types
     using SpanCharState = SpanState<CharTransition>;
 
-    template<typename TOKEN_T, typename ReturnType>
-    using SpanCharTableState = SpanState<CharTableTransition<TOKEN_T, ReturnType>>;
+    template<typename TOKEN_T, typename ReferingReturnType>
+    using SpanCharTableState = SpanState<CharTableTransition<TOKEN_T, ReferingReturnType>>;
 
     template<typename TOKEN_T, typename ReturnType>
     using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
@@ -373,16 +373,16 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename ReturnType, std::size_t N>
     using TokenTable = std::array<SpanTokenTableState<TOKEN_T, ReturnType>, N>;
 
-    template<typename TOKEN_T, typename ReturnType, std::size_t N, typename ...MULTITABLES>
+    template<typename TOKEN_T, typename ReturnType, std::size_t N, typename ...MULTITRANSITIONS>
     using MultiTable = std::array<std::variant<
         SpanCharState,
-        SpanMultiTableState<TOKEN_T, ReturnType, MULTITABLES...>,
-        MultiTableEmptyState<TOKEN_T, ReturnType, MULTITABLES...>
+        SpanMultiTableState<TOKEN_T, ReturnType, MULTITRANSITIONS...>,
+        MultiTableEmptyState<TOKEN_T, ReturnType, MULTITRANSITIONS...>
     >, N>;
 
     // span table types
-    template<typename TOKEN_T, typename ReturnT>
-    using SpanCharTable = Span<const std::variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T, ReturnT>>>;
+    template<typename TOKEN_T, typename ReturnT, typename ReferingReturnType>
+    using SpanCharTable = Span<const std::variant<SpanCharTableState<TOKEN_T, ReferingReturnType>, CharEmptyState<TOKEN_T, ReturnT>>>;
 
     template<typename TOKEN_T>
     using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
@@ -451,13 +451,13 @@ namespace DFAAPI {
             }
         }
     }
-    template<typename TOKEN_T, typename STORAGE_T, typename MultiTableDataVector, typename Node>
-    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const MultiTableDataVector &dv) {
+    template<typename TOKEN_T, typename STORAGE_T, typename ...Nodes>
+    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const MultiTableDataVector<Nodes...> &dv) {
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
         auto offset = end - start;
 
-        if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
+        if constexpr ((std::is_same_v<STORAGE_T, std::vector<Nodes>> || ...)) {
             storage.assign(dv.begin() + start, dv.begin() + end);
         } else {
             if (offset > 1)
@@ -473,34 +473,14 @@ namespace DFAAPI {
                     } else {
                         storage = str;
                     }
-                } else if constexpr (std::is_same_v<STORAGE_T, Node>) {
-                    if (std::holds_alternative<std::string>(dv[start])) {
-                        storage.data() = std::get<std::string>(dv[start]);
+                } else if constexpr ((std::is_same_v<STORAGE_T, Nodes> || ...)) {
+                    if (std::holds_alternative<STORAGE_T>(dv[start])) {
+                        storage = std::get<STORAGE_T>(dv[start]);
                     } else {
-                        storage.data() = std::get<Node>(dv[start]);
+                        throw std::runtime_error("ISPA internal error: Variant does not hold a Node while data type requires it");
                     }
                 } else {
-                    if constexpr (std::is_same_v<STORAGE_T, std::string>) {
-                        if (std::holds_alternative<std::string>(dv[start])) {
-                            storage = std::get<std::string>(dv[start]);
-                        } else {
-                            throw std::runtime_error("Variant does not hold a string for storage assignment");
-                        }
-                    } else if constexpr (std::is_same_v<STORAGE_T, Node>) {
-                        if (std::holds_alternative<Node>(dv[start])) {
-                            storage = std::get<Node>(dv[start]);
-                        } else {
-                            throw std::runtime_error("Variant does not hold a Node<TOKEN_T> for storage assignment");
-                        }
-                    } else if constexpr (std::is_same_v<STORAGE_T, std::vector<Node>>) {
-                        if (std::holds_alternative<Node>(dv[start])) {
-                            storage.push_back(std::get<Node>(dv[start]));
-                        } else {
-                            throw std::runtime_error("Variant does not hold a Node<TOKEN_T> for storage assignment");
-                        }
-                    } else {
-                        static_assert(always_false<STORAGE_T>, "Unsupported type for storage assignment");
-                    }
+                    static_assert(always_false<STORAGE_T>, "ISPA internal error: Unsupported type for storage assignment");
                 }
             }
         }
@@ -588,15 +568,15 @@ namespace DFAAPI {
     template<typename T>
     struct is_char_table : std::false_type {};
 
-    template<typename Token, typename Return_t>
-    struct is_char_table<DFAAPI::SpanCharTable<Token, Return_t>> : std::true_type {
+    template<typename Token, typename Return_t, typename ReferringReturnType>
+    struct is_char_table<DFAAPI::SpanCharTable<Token, Return_t ,ReferringReturnType>> : std::true_type {
         using token_type  = Token;
         using return_type = Return_t;
     };
 
 }
-template<typename TOKEN_T, typename Return_t, typename ...MULTITABLES>
-using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, Return_t>, MULTITABLES...>;
+template<typename TOKEN_T, typename Return_t, typename ReferringReturnType, typename ...MULTITABLES>
+using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, Return_t, ReferringReturnType>, MULTITABLES...>;
 template<typename TOKEN_T, typename ...FCDT_VARIANTS>
 using fcdt_table = std::array<std::variant<FCDT_VARIANTS...>, std::numeric_limits<unsigned char>::max() + 1>;
 
@@ -617,8 +597,8 @@ protected:
         }
         return nullptr;
     }
-    template<typename IT, typename PanicModeFunc, typename DataStorageType>
-    static auto match(const DFAAPI::SpanCharTable<TOKEN_T, Return_t> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, DataStorageType> {
+    template<typename IT, typename ReferringReturnType, typename PanicModeFunc, typename DataStorageType>
+    static auto match(const DFAAPI::SpanCharTable<TOKEN_T, Return_t, ReferringReturnType> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, DataStorageType> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;

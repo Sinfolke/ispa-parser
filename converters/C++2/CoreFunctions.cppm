@@ -39,4 +39,16 @@ export namespace Core {
     auto convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string;
     // rvalue
     auto convertRValue(const LangAPI::RValue &rvalue) -> std::string;
+
+    auto optionalTemplates(const auto &template_parameters) -> std::string {
+        if (!template_parameters.empty()) {
+            return "<" + convertTemplates(template_parameters) + ">";
+        }
+        return "";
+    }
+    auto optionalTemplatesWithTokensParameter(const auto &template_parameters) -> std::string {
+        if (!template_parameters.empty()) {
+            return "<Tokens, " + convertTemplates(template_parameters) + ">";
+        } else return "<Tokens>";
+    }
 }

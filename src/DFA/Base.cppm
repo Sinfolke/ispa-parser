@@ -32,6 +32,7 @@ namespace DFA {
 
         auto getEmptyState(std::size_t stateIndex) const -> std::size_t;
         auto getEmptyState() -> std::size_t&;
+        auto hasOneEmptyState() -> bool;
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
 
