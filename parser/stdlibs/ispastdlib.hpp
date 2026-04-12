@@ -335,7 +335,7 @@ namespace DFAAPI {
 
     // MultiTableTransition needs ReturnType and NODES to build MultiTableEmptyState / SpanMultiTable
     template<typename TOKEN_T, typename ReturnType, typename ...NODES>
-    using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T, ReturnType, MultiTableDataVector<NODES...>, NODES...>>;
+    using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T, ReturnType, NODES...>>;
 
     // AnyTransition likewise must carry ReturnType and any multi transitions' node types
     template<typename TOKEN_T, typename ReturnType, typename ...MULTITRANSITIONS>
@@ -347,7 +347,7 @@ namespace DFAAPI {
     using CharState = State<std::numeric_limits<unsigned char>::max() + 1, CharTransition>;
 
     template<typename TOKEN_T, typename ReturnType, std::size_t N, typename ...CharTableTransitions>
-    using CharTableState = std::variant<State<N, CharTableTransitions>...>;
+    using CharTableState = State<N, std::variant<CharTableTransitions...>>;
 
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
 
@@ -377,12 +377,13 @@ namespace DFAAPI {
     using MultiTable = std::array<std::variant<
         SpanCharState,
         SpanMultiTableState<TOKEN_T, ReturnType, MULTITRANSITIONS...>,
-        MultiTableEmptyState<TOKEN_T, ReturnType, MULTITRANSITIONS...>
+        MultiTableEmptyState<TOKEN_T, ReturnType, MULTITRANSITIONS...>,
+        CharEmptyState<TOKEN_T, ReturnType>
     >, N>;
 
     // span table types
-    template<typename TOKEN_T, typename ReturnT, typename ReferingReturnType>
-    using SpanCharTable = Span<const std::variant<SpanCharTableState<TOKEN_T, ReferingReturnType>, CharEmptyState<TOKEN_T, ReturnT>>>;
+    template<typename TOKEN_T, typename ReferingReturnType>
+    using SpanCharTable = Span<const std::variant<SpanCharState, CharEmptyState<TOKEN_T, ReferingReturnType>>>;
 
     template<typename TOKEN_T>
     using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
@@ -419,16 +420,14 @@ namespace DFAAPI {
         using state_variant_t = std::variant<
             SpanCharState,
             SpanMultiTableState<TOKEN_T, ReturnType, NODES...>,
-            MultiTableEmptyState<TOKEN_T, ReturnType, NODES...>
+            MultiTableEmptyState<TOKEN_T, ReturnType, NODES...>,
+            CharEmptyState<TOKEN_T, ReturnType>
         >;
 
         Span<state_variant_t> states;
     };
-
     template<typename TOKEN_T, typename STORAGE_T>
     void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
-        std::cout << "member begin size: " << mb.size() << ", data vector size: " << dv.size() << ", pos: " << pos;
-        std::flush(std::cout);
         auto start = mb[pos];
         auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
         auto offset = end - start;
@@ -486,27 +485,41 @@ namespace DFAAPI {
         }
     }
 
-    template<typename TOKEN_T, typename T, typename DATAVECTOR, typename Node>
-    void cst_group_store(T &storage, std::size_t pos, const DFAAPI::GroupBegin gb, const DATAVECTOR &dv) {
+    template<typename TOKEN_T, typename STORAGE_T>
+    void cst_group_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::GroupBegin &gb, const CharTableDataVector &dv) {
         if (pos >= gb.size())
             return;
         auto [start, end] = gb[pos];
-        if constexpr (std::is_same_v<T, std::string>) {
+        if constexpr (std::is_same_v<STORAGE_T, std::string>) {
             for (; start != end; ++start) {
-                if constexpr (std::is_same_v<DATAVECTOR, CharTableDataVector>) {
-                    storage += dv[start];
-                } else {
-                    if (!std::holds_alternative<std::string>(dv[start]))
-                        throw std::runtime_error("Ispa internal error: group cannot be assigned as complete entity when one of parts is not a string");
-                    storage += std::get<std::string>(dv[start]);
-                }
+                storage += dv[start];
             }
         } else {
             // is is std::vector expecting group value sequence
             for (; start != end; ++start) {
-                storage.push_back(std::get<Node>(dv[start]));
+                storage.push_back(dv[start]);
             }
 
+        }
+    }
+    template<typename TOKEN_T, typename STORAGE_T, typename ...Nodes>
+    void cst_group_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::GroupBegin &gb, const MultiTableDataVector<Nodes...> &dv) {
+        if (pos >= gb.size())
+            return;
+        auto [start, end] = gb[pos];
+        if constexpr ((std::is_same_v<STORAGE_T, std::vector<Nodes>> || ...)) {
+            storage.assign(dv.begin() + start, dv.begin() + end);
+        } else if constexpr (std::is_same_v<STORAGE_T, std::string>) {
+            for (; start != end; ++start) {
+                if (!std::holds_alternative<std::string>(dv[start]))
+                    throw std::runtime_error("Ispa internal error: group cannot be assigned as complete entity when one of parts is not a string");
+                storage += std::get<std::string>(dv[start]);
+            }
+        } else if constexpr ((std::is_same_v<STORAGE_T, Nodes> || ...)) {
+            // is is std::vector expecting group value sequence
+            for (; start != end; ++start) {
+                storage.push_back(std::get<STORAGE_T>(dv[start]));
+            }
         }
     }
     inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t group_begin_index) {
@@ -568,15 +581,15 @@ namespace DFAAPI {
     template<typename T>
     struct is_char_table : std::false_type {};
 
-    template<typename Token, typename Return_t, typename ReferringReturnType>
-    struct is_char_table<DFAAPI::SpanCharTable<Token, Return_t ,ReferringReturnType>> : std::true_type {
+    template<typename Token, typename ReferringReturnType>
+    struct is_char_table<DFAAPI::SpanCharTable<Token ,ReferringReturnType>> : std::true_type {
         using token_type  = Token;
-        using return_type = Return_t;
+        using return_type = ReferringReturnType;
     };
 
 }
 template<typename TOKEN_T, typename Return_t, typename ReferringReturnType, typename ...MULTITABLES>
-using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, Return_t, ReferringReturnType>, MULTITABLES...>;
+using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, ReferringReturnType>, MULTITABLES...>;
 template<typename TOKEN_T, typename ...FCDT_VARIANTS>
 using fcdt_table = std::array<std::variant<FCDT_VARIANTS...>, std::numeric_limits<unsigned char>::max() + 1>;
 
@@ -598,7 +611,7 @@ protected:
         return nullptr;
     }
     template<typename IT, typename ReferringReturnType, typename PanicModeFunc, typename DataStorageType>
-    static auto match(const DFAAPI::SpanCharTable<TOKEN_T, Return_t, ReferringReturnType> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, DataStorageType> {
+    static auto match(const DFAAPI::SpanCharTable<TOKEN_T, ReferringReturnType> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, DataStorageType> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;

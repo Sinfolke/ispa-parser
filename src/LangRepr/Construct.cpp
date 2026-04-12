@@ -697,6 +697,9 @@ namespace LangRepr {
             return_type_sym.path.insert(return_type_sym.path.begin(), "Types");
 
             const int transition_size = getTransitionCount(state.transitions);
+            // Force MultiTableState for states that belong to a Multi DFA, even if
+            // their per-state inferred type says Char. Multi DFAs must use
+            // MultiTable* state kinds so transitions can reference tables.
             auto s = buildStateSymbol(type, tn, dfa.getType());
 
             stdu::vector<LangAPI::Expression> transitions;
@@ -745,14 +748,35 @@ namespace LangRepr {
                     empty = true;
                     s.exports = dfa.getType() == DFA::DfaType::Char ? LangAPI::StdlibExports::DfaCharEmptyState : LangAPI::StdlibExports::DfaMultiTableEmptyState;
                 } else s.template_parameters.push_back(std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = transition_size}));
-                bool is_referring_char_table = !empty && std::all_of(sorted_transitions.begin(), sorted_transitions.end(), [&] (const auto & transition_pair) {
-                    return dfas.at(lexer_builder.getNameToDFAIndex().at(std::get<stdu::vector<std::string>>(transition_pair.first))).getType() == DFA::DfaType::Char;
-                });
+                // Determine if all DFA-reference transitions in this state point to Char tables.
+                // Ignore plain char-symbol transitions when making this decision.
+                bool is_referring_char_table = false;
+                if (!empty) {
+                    bool has_ref_transitions = false;
+                    bool all_char_refs = true;
+                    for (const auto &transition_pair : sorted_transitions) {
+                        if (std::holds_alternative<stdu::vector<std::string>>(transition_pair.first)) {
+                            has_ref_transitions = true;
+                            const auto &ref_name = std::get<stdu::vector<std::string>>(transition_pair.first);
+                            const auto &ref_dfa = dfas.at(lexer_builder.getNameToDFAIndex().at(ref_name));
+                            if (ref_dfa.getType() != DFA::DfaType::Char) {
+                                all_char_refs = false;
+                                break;
+                            }
+                        }
+                    }
+                    is_referring_char_table = has_ref_transitions && all_char_refs;
+                }
+                if (is_referring_char_table) {
+                    s.exports = LangAPI::StdlibExports::DfaCharTableState;
+                }
                 for (const auto &[symbol, transition] : sorted_transitions) {
                     stdu::vector<std::string> name;
                     if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
                         const auto &sym_name = std::get<stdu::vector<std::string>>(symbol);
                         const auto referred_dfa_idx = lexer_builder.getNameToDFAIndex().at(sym_name);
+                        const auto &referred_dfa = dfas.at(referred_dfa_idx);
+                        bool local_is_referring_char_table = referred_dfa.getType() == DFA::DfaType::Char;
 
                         // Record that this state references that DFA table
                         auto &refs = state_referred_tables[count];
@@ -769,15 +793,14 @@ namespace LangRepr {
                             auto sym = ty.first.getSymbol();
                             sym.path.insert(sym.path.begin(), "Types");
                             params.push_back(std::make_shared<LangAPI::Type>(sym));
-                            if (is_referring_char_table) {
+                            if (local_is_referring_char_table) {
                                 s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Type {LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaCharTableTransition, {std::make_shared<LangAPI::Type>(sym)}}}));
                             } else {
                                 s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Type {LangAPI::IspaLibSymbol {LangAPI::StdlibExports::DfaMultiTransition, {std::make_shared<LangAPI::Type>(sym)}}}));
                             }
                             names.push_back(ty.second);
                         }
-                        if (is_referring_char_table) {
-                            const auto &referred_dfa = dfas.at(referred_dfa_idx);
+                        if (local_is_referring_char_table) {
                             new_s = LangAPI::IspaLibSymbol {
                                 .exports = LangAPI::StdlibExports::DfaCharTableTransition,
                                 .template_parameters = std::move(params)
@@ -800,7 +823,7 @@ namespace LangRepr {
                                     .group_close = transition.group_close,
                                     .accept = transition.accept_index,
                                     .transition_type = new_s,
-                                    .is_refferring_char_table = is_referring_char_table
+                                    .is_refferring_char_table = local_is_referring_char_table
                                 }
                             )
                         );
@@ -911,7 +934,11 @@ namespace LangRepr {
                             if (referenced_by_multitable.count(i)) {
                                 out << "  Supported Node Types (as MultiTable):\n";
                                 for (const auto& type : referenced_by_multitable.at(i)) {
-                                    cpuf::printf("\t{}: {}\n", type.second, type.first);
+                                    out << "\t[";
+                                    for (const auto& name : type.second) {
+                                        out << name << ", ";
+                                    }
+                                    out << "]" << ": " << type.first << '\n';
                                 }
                             }
 
