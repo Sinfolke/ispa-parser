@@ -194,8 +194,7 @@ namespace LangAPI {
             case StdlibExports::DfaCharTableState: os << "DfaCharTableState"; break;
             case StdlibExports::DfaTokenState: os << "DfaTokenState"; break;
             case StdlibExports::DfaMultiTableState: os << "DfaMultiTableState"; break;
-            case StdlibExports::DfaCharEmptyState: os << "DfaCharEmptyState"; break;
-            case StdlibExports::DfaMultiTableEmptyState: os << "DfaMultiTableEmptyState"; break;
+            case StdlibExports::EmptyState: os << "EmptyState"; break;
             case StdlibExports::DfaSpanCharTableState: os << "DfaSpanCharTableState"; break;
             case StdlibExports::DfaSpanTokenTableState: os << "DfaSpanTokenTableState"; break;
             case StdlibExports::DfaSpanMultiTableState: os << "DfaSpanMultiTableState"; break;

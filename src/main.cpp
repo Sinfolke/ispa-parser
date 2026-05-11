@@ -172,7 +172,7 @@ int main(int argc, char** argv) {
         auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), args.language, ast.getName());
         LangRepr::Converter converter(repr, args.language_str, ast.getName());
         converter.build();
-        std::ofstream out("Parser.h");
+        std::ofstream out(ast.getName() + ".h");
         out << converter.get().get();
     }
     // } else {

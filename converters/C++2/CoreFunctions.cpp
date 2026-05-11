@@ -143,7 +143,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Node:
             return std::string("::ISPA_STD::Node<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
-            return std::string("::ISPA_STD::Lexer_base<Tokens") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
+            return std::string("::ISPA_STD::Lexer_base<") + (symbol.template_parameters.empty() ? "" : convertTemplates(symbol.template_parameters)) + ">";
         case LangAPI::StdlibExports::Parser:
             return std::string("::ISPA_STD::LLParser_base<Tokens, Rules") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
         case LangAPI::StdlibExports::DfaCharTransition:
@@ -162,12 +162,8 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::TokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaMultiTableState:
             return "::ISPA_STD::DFAAPI::MultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaCharEmptyState:
-            // CharEmptyState requires <Tokens, ReturnType>
-            // ReturnType is provided via template_parameters
-            return "::ISPA_STD::DFAAPI::CharEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaMultiTableEmptyState:
-            return "::ISPA_STD::DFAAPI::MultiTableEmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::EmptyState:
+            return "::ISPA_STD::DFAAPI::EmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaCharTable:
             return "::ISPA_STD::DFAAPI::CharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaTokenTable:
