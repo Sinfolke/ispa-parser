@@ -103,6 +103,7 @@ namespace LangAPI {
             case ValueType::Variant: os << "Variant"; break;
             case ValueType::Box: os << "Box"; break;
             case ValueType::Any: os << "Any"; break;
+            case ValueType::Const: os << "Const"; break;
         }
         return os;
     }
@@ -204,11 +205,10 @@ namespace LangAPI {
             case StdlibExports::ParserFunctionParameter: os << "ParserFunctionParameter"; break;
             case StdlibExports::DfaEmptyStateGroupBegin: os << "DfaEmptyStateGroupBegin"; break;
             case StdlibExports::DfaEmptyStateMemberBegin: os << "DfaEmptyStateMemberBegin"; break;
-            case StdlibExports::DfaCharTableEmptyStateLambdaParameter: os << "DfaCharTableEmptyStateLambdaParameter"; break;
-            case StdlibExports::DfaMultiTableEmptyStateLambdaParameter: os << "DfaMultiTableEmptyStateLambdaParameter"; break;
-            case StdlibExports::DfaSpanCharTableEmptyStateLambdaParameter: os << "DfaSpanCharTableEmptyStateLambdaParameter"; break;
-            case StdlibExports::DfaCstStore: os << "DfaCstStore"; break;
-            case StdlibExports::DfaCstGroupStore: os << "DfaCstGroupStore"; break;
+            case StdlibExports::DfaCharDataVector: os << "DfaCharDataVector"; break;
+            case StdlibExports::DfaMultiDataVector: os << "DfaMultiDataVector"; break;
+            case StdlibExports::DfaUniversalDataVector: os << "DfaMultiDataVector"; break;
+            case StdlibExports::DfaCstBuilder: os << "DfaCstdBuilder"; break;
         }
         return os;
     }
@@ -309,7 +309,9 @@ namespace LangAPI {
     }
 
     auto operator<<(std::ostream &os, const Inheritance &obj) -> std::ostream& {
-        os << obj.name;
+        std::visit([&](const auto &el) {
+            os << el;
+        }, obj.name);
         printExpressionArgs(os, obj.args);
         return os;
     }

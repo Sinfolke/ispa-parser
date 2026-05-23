@@ -72,7 +72,7 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const
     };
     enum class RValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span
@@ -97,8 +97,8 @@ export namespace LangAPI {
         DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
         DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter,
         DfaEmptyStateGroupBegin, DfaEmptyStateMemberBegin,
-        DfaCharTableEmptyStateLambdaParameter, DfaMultiTableEmptyStateLambdaParameter, DfaSpanCharTableEmptyStateLambdaParameter,
-        DfaCstStore, DfaCstGroupStore
+        DfaCharDataVector, DfaMultiDataVector, DfaUniversalDataVector,
+        DfaCstBuilder
     };
 
 
@@ -360,6 +360,7 @@ export namespace LangAPI {
     };
     struct FunctionCall : ExpressionValueLevel {
         std::string name;
+        stdu::vector<std::variant<Type, RValue>> template_parameters;
         stdu::vector<Expression> args;
 
         bool operator==(const FunctionCall& other) const {
@@ -445,6 +446,8 @@ export namespace LangAPI {
     struct IspaLibSymbol {
         StdlibExports exports;
         stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
+        bool Const = false;
+        bool Reference = false;
         bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
         bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
         bool operator<(const IspaLibSymbol& other) const {
@@ -478,7 +481,7 @@ export namespace LangAPI {
         }
     };
     struct Inheritance : RValueLevel {
-        Symbol name;
+        std::variant<Symbol, IspaLibSymbol> name;
         stdu::vector<Expression> args;
 
         bool operator==(const Inheritance& other) const {

@@ -552,9 +552,11 @@ void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember
             }
             const auto &name = dtb->getTemplatedDataBlock().names[prefix_index++];
             if (mem.isGroup()) {
-                templated_data_block.emplace(name, std::make_pair(StoreCstNode::CST_GROUP, group_index++));
+                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_GROUP, .cst_index = group_index++, .AST = &mem});
+            } else if (mem.isOp()) {
+                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_CONDITION, .cst_index = index++, .AST = &mem});
             } else {
-                templated_data_block.emplace(name, std::make_pair(StoreCstNode::CST_NODE, index++));
+                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_NODE, .cst_index = index++, .AST = &mem});
             }
         }
         if (mem.isGroup()) {
@@ -582,12 +584,16 @@ void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember
         }
     }
 }
-void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, SingleValueDataBlock &single_data_block, bool &isAlreadyConstructed) {
+void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed) {
     if (isAlreadyConstructed)
         return;
     for (const auto &mem : rules) {
         if (!mem.prefix.empty()) {
-            single_data_block = mem.isGroup() ? StoreCstNode::CST_GROUP : StoreCstNode::CST_NODE;
+            single_data_block = {
+                .type = mem.isGroup() ? StoreCstNode::CST_GROUP : mem.isOp() ? StoreCstNode::CST_CONDITION : StoreCstNode::CST_NODE,
+                .cst_index = 0,
+                .AST = &mem,
+            };
             isAlreadyConstructed = true;
             return;
         }
@@ -629,7 +635,7 @@ void NFA::build(bool addStoreActions) {
             generateTemplatedDataBlockFromRules(*rules, templated_data_block, prefix_index, index, group_index);
             nfadtb = templated_data_block;
         } else if (dtb->isRegularDataBlock()) {
-            SingleValueDataBlock single_value_data_block;
+            TemplatedDataBlockValue single_value_data_block;
             bool isAlreadyConstructed = false;
             generateSingleDataBlockFromRules(*rules, single_value_data_block, isAlreadyConstructed);
             nfadtb = single_value_data_block;

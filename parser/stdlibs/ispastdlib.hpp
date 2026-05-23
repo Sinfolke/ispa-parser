@@ -301,7 +301,7 @@ namespace DFAAPI {
 
     using CharTableDataVector = std::vector<std::string>;
     template<typename Token> using MultiTableDataVector = std::vector<std::variant<std::string, Token>>;
-
+    template<typename Token> using UniversalDataVector = std::variant<CharTableDataVector, MultiTableDataVector<Token>>;
     template<typename TOKEN_T, typename Token>
     struct SpanMultiTable;
 
@@ -329,13 +329,14 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename Token>
     using AnyTransition = std::variant<
         CharTransition,
+        CharTableTransition<TOKEN_T, Token>,
         MultiTableTransition<TOKEN_T, Token>
     >;
 
     using CharState = State<std::numeric_limits<unsigned char>::max() + 1, CharTransition>;
 
-    template<typename TOKEN_T, typename ReturnType, std::size_t N, typename ...CharTableTransitions>
-    using CharTableState = State<N, std::variant<CharTableTransitions...>>;
+    template<typename TOKEN_T, typename Token, std::size_t N>
+    using CharTableState = State<N, CharTableTransition<TOKEN_T, Token>>;
 
     template<typename TOKEN_T, std::size_t N> using TokenTableState = State<N, TokenTransition<TOKEN_T>>;
 
@@ -364,6 +365,7 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename Token, std::size_t N>
     using MultiTable = std::array<std::variant<
         SpanCharState,
+        SpanCharTableState<TOKEN_T, Token>,
         SpanMultiTableState<TOKEN_T, Token>,
         EmptyState<TOKEN_T, Token>
     >, N>;
@@ -380,7 +382,7 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename Token>
     struct EmptyState {
         TOKEN_T name;
-        std::function<Token (const MemberBegin &, const GroupBegin &, const std::variant<CharTableDataVector, MultiTableDataVector<Token>>&)> ast_builder;
+        std::function<Token (const MemberBegin &, const GroupBegin &, const UniversalDataVector<Token>&)> ast_builder;
     };
 
     template<typename Key>
@@ -423,14 +425,15 @@ namespace DFAAPI {
         std::size_t group_count = 0;
         template<std::size_t N, typename... ConditionTypesArray, std::size_t... I>
         void condition_impl(
-            const std::vector<std::pair<std::size_t, std::size_t>>& indices_with_group,
+            const std::vector<int> indices_with_group,
             std::index_sequence<I...>
         ) {
             const auto& value = data.at(mb.at(member_count));
             bool matched = false;
 
             (
-                [&]<typename Expected>() {
+                [&](const auto &type_tag) {
+                    using Expected = std::decay_t<typename decltype(type_tag)::type>;
                     if (!matched && std::holds_alternative<Expected>(value)) {
                         std::get<N>(raw_data) = std::get<Expected>(value);
                         matched = true;
@@ -444,7 +447,7 @@ namespace DFAAPI {
                 return;
             }
 
-            for (const auto& [_, group_index] : indices_with_group) {
+            for (const auto& group_index : indices_with_group) {
                 group<N>(group_index);
                 return;
             }
@@ -478,7 +481,7 @@ namespace DFAAPI {
             member_count += gb.at(i).second - gb.at(i).first;
         }
         template<std::size_t N, typename... ConditionTypesArray>
-        void condition(const std::vector<std::pair<std::size_t, std::size_t>>& indices_with_group) {
+        void condition(const std::vector<int> indices_with_group) {
             condition_impl<N, ConditionTypesArray...>(
                 indices_with_group,
                 std::index_sequence_for<ConditionTypesArray...>{}
@@ -492,102 +495,6 @@ namespace DFAAPI {
             return token;
         }
     };
-    template<typename TOKEN_T, typename STORAGE_T>
-    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const CharTableDataVector &dv) {
-        auto start = mb[pos];
-        auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
-        auto offset = end - start;
-
-        if constexpr (std::is_same_v<STORAGE_T, std::vector<decltype(dv[0])>>) {
-            storage.assign(dv.begin() + start, dv.begin() + end);
-        } else {
-            if (offset > 1)
-                throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
-
-            if (offset) {
-                const auto &str = dv[start];
-                if constexpr (std::is_same_v<STORAGE_T, char>) {
-                    storage = str.empty() ? '\0' : str[0];
-                } else if constexpr (std::is_same_v<STORAGE_T, std::string>) {
-                    storage = str;
-                } else {
-                    throw std::runtime_error("ISPA internal error: unsupported storage type for CharTableDataVector");
-                }
-            }
-        }
-    }
-    template<typename TOKEN_T, typename STORAGE_T, typename ...Nodes>
-    void cst_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::MemberBegin &mb, const MultiTableDataVector<Nodes...> &dv) {
-        auto start = mb[pos];
-        auto end = pos + 1 == mb.size() ? dv.size() : mb[pos + 1];
-        auto offset = end - start;
-
-        if constexpr ((std::is_same_v<STORAGE_T, std::vector<Nodes>> || ...)) {
-            storage.assign(dv.begin() + start, dv.begin() + end);
-        } else {
-            if (offset > 1)
-                throw std::runtime_error("ISPA internal error: node type error: offset is over 1, but the data type is not a vector");
-
-            if (offset) {
-                if constexpr (std::is_same_v<STORAGE_T, char> || std::is_same_v<STORAGE_T, std::string>) {
-                    if (!std::holds_alternative<std::string>(dv[start]))
-                        throw std::runtime_error("ISPA internal error: expected string type while holding token");
-                    const auto &str = std::get<std::string>(dv[start]);
-                    if constexpr (std::is_same_v<STORAGE_T, char>) {
-                        storage = str.empty() ? '\0' : str[0];
-                    } else {
-                        storage = str;
-                    }
-                } else if constexpr ((std::is_same_v<STORAGE_T, Nodes> || ...)) {
-                    if (std::holds_alternative<STORAGE_T>(dv[start])) {
-                        storage = std::get<STORAGE_T>(dv[start]);
-                    } else {
-                        throw std::runtime_error("ISPA internal error: Variant does not hold a Node while data type requires it");
-                    }
-                } else {
-                    static_assert(always_false<STORAGE_T>, "ISPA internal error: Unsupported type for storage assignment");
-                }
-            }
-        }
-    }
-
-    template<typename TOKEN_T, typename STORAGE_T>
-    void cst_group_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::GroupBegin &gb, const CharTableDataVector &dv) {
-        if (pos >= gb.size())
-            return;
-        auto [start, end] = gb[pos];
-        if constexpr (std::is_same_v<STORAGE_T, std::string>) {
-            for (; start != end; ++start) {
-                storage += dv[start];
-            }
-        } else {
-            // is is std::vector expecting group value sequence
-            for (; start != end; ++start) {
-                storage.push_back(dv[start]);
-            }
-
-        }
-    }
-    template<typename TOKEN_T, typename STORAGE_T, typename ...Nodes>
-    void cst_group_store(STORAGE_T &storage, std::size_t pos, const DFAAPI::GroupBegin &gb, const MultiTableDataVector<Nodes...> &dv) {
-        if (pos >= gb.size())
-            return;
-        auto [start, end] = gb[pos];
-        if constexpr ((std::is_same_v<STORAGE_T, std::vector<Nodes>> || ...)) {
-            storage.assign(dv.begin() + start, dv.begin() + end);
-        } else if constexpr (std::is_same_v<STORAGE_T, std::string>) {
-            for (; start != end; ++start) {
-                if (!std::holds_alternative<std::string>(dv[start]))
-                    throw std::runtime_error("Ispa internal error: group cannot be assigned as complete entity when one of parts is not a string");
-                storage += std::get<std::string>(dv[start]);
-            }
-        } else if constexpr ((std::is_same_v<STORAGE_T, Nodes> || ...)) {
-            // is is std::vector expecting group value sequence
-            for (; start != end; ++start) {
-                storage.push_back(std::get<STORAGE_T>(dv[start]));
-            }
-        }
-    }
     inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t group_begin_index) {
         if (lowest_open_index >= index)
             return;
@@ -763,7 +670,7 @@ class AdvancedDFA : DFA<TOKEN_T, Token> {
     template<typename DataVector, typename Value>
     static void append_if_open(DataVector& data, bool closed, Value&& value) {
         if (!closed) {
-            if constexpr (std::is_same_v<std::remove_cvref_t<Value>, char>) {
+            if constexpr (std::is_same_v<std::decay_t<Value>, char>) {
                 std::get<std::string>(data.back()) += value;
             } else {
                 data.push_back(std::forward<Value>(value));
@@ -832,7 +739,7 @@ protected:
                                     apply_transition_effects(t, member_begin, group_begin, inclosed_groups, lowest_open_index, data, closed);
                                     matched = true;
                                 }
-                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTableTransition<TOKEN_T, Return_T>>) {
+                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTableTransition<TOKEN_T, Token>>) {
                                 printf("t.symbol size: %zu, pos: %c\n", t.symbol.size(), *pos);
                                 if (auto res = DFA<TOKEN_T, Token>::match(t.symbol, pos, nullptr); res.status) {
                                     printf("Successfull match\n");
@@ -947,8 +854,8 @@ protected:
         -> Token
     {
         while (*pos != '\0') {
-            std::visit([&]<typename Option>(const Option &option) {
-
+            std::visit([&](const auto &option) {
+                using Option = std::decay_t<decltype(option)>;
                 if constexpr (std::is_same_v<Option, std::monostate>) {
                     panic_mode(pos);
                     return;
@@ -1049,11 +956,11 @@ public:
             return static_cast<ptrdiff_t>(counter) - static_cast<ptrdiff_t>(iterator.counter);
         }
 
-        const std::variant<NODES...>& operator*() const {
+        const Token& operator*() const {
             return current;
         }
 
-        const std::variant<NODES...>* operator->() const {
+        const Token* operator->() const {
             return &current;
         }
 

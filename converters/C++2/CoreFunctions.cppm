@@ -35,7 +35,8 @@ export namespace Core {
     auto buildStatement(const LangAPI::Statement &stmt) -> void;
     auto buildStatements(const LangAPI::Statements &statements) -> void;
     auto convertLambda(const LangAPI::Lambda &lambda) -> std::string;
-    auto convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string;
+    auto convertFunctionParams(const stdu::vector<LangAPI::Expression> &args);
+    auto convertFunctionCall(const LangAPI::FunctionCall &call, bool need_template = false) -> std::string;
     auto convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string;
     // rvalue
     auto convertRValue(const LangAPI::RValue &rvalue) -> std::string;

@@ -9,11 +9,23 @@ public:
     static constexpr auto NULL_STATE = std::numeric_limits<std::size_t>::max();
     using TransitionKey = std::variant<stdu::vector<std::string>, char>;
     enum class StoreCstNode {
-        CST_NODE, CST_GROUP
+        CST_NODE, CST_GROUP, CST_CONDITION
     };
-    using TemplatedDataBlock = utype::unordered_map<std::string, std::pair<StoreCstNode, std::size_t>>;
-    using SingleValueDataBlock = StoreCstNode; // cst node index | group index
-    using DataBlock = std::variant<std::monostate, TemplatedDataBlock, SingleValueDataBlock>;
+    struct TemplatedDataBlockValue : uhash {
+        StoreCstNode type;
+        std::size_t cst_index;
+        const AST::RuleMember *AST = nullptr;
+        auto operator==(const TemplatedDataBlockValue &other) const -> bool {
+            return type == other.type && cst_index == other.cst_index && AST == other.AST;
+        }
+    private:
+        friend struct ::uhash;
+        auto members() const  {
+            return std::tie(type, cst_index, AST);
+        }
+    };
+    using TemplatedDataBlock = utype::unordered_map<std::string, TemplatedDataBlockValue>;
+    using DataBlock = std::variant<std::monostate, TemplatedDataBlock, TemplatedDataBlockValue>;
     struct TransitionValue {
         std::size_t next;
         bool new_cst_node = false;
@@ -87,7 +99,7 @@ private:
         std::size_t &index,
         std::size_t &group_index
         );
-    void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, SingleValueDataBlock &single_data_block, bool &isAlreadyConstructed);
+    void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed);
 public:
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}

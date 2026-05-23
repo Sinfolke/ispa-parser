@@ -94,12 +94,12 @@ auto DFA::operator<<(std::ostream &os, const CharMachineDFA &dfa) -> std::ostrea
             os << "\t[rule_name] = " << corelib::text::join(state.rule_name, "::") << "\n";
         if (!std::holds_alternative<std::monostate>(state.dtb)) {
             os << "\t[dtb] = {";
-            if (std::holds_alternative<NFA::SingleValueDataBlock>(state.dtb)) {
-                os << (std::get<NFA::SingleValueDataBlock>(state.dtb) == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << "}\n";
+            if (std::holds_alternative<NFA::TemplatedDataBlockValue>(state.dtb)) {
+                os << (std::get<NFA::TemplatedDataBlockValue>(state.dtb).type == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << "}\n";
             } else {
                 os << '\n';
                 for (const auto &[name, data] : std::get<NFA::TemplatedDataBlock>(state.dtb)) {
-                    os << "\t\t" << name << ": {" << (data.first == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << ", " << data.second << "}\n";
+                    os << "\t\t" << name << ": {" << (data.type == NFA::StoreCstNode::CST_GROUP ? "group" : "node") << ", " << data.cst_index << "}\n";
                 }
                 os << "\t}\n";
             }

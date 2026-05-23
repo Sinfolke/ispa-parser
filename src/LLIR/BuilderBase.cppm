@@ -38,6 +38,10 @@ export namespace LLIR {
         // helper functions to create structures
         auto assignSvar(const LangAPI::Variable &svar, bool value) -> LangAPI::Statement;
         auto getBuilderData() -> BuilderDataWrapper;
+
+        // deduce type functions
+        static auto deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type;
+        static auto deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type;
     protected:
         LangAPI::Statements statements;
         stdu::vector<LLIR::ExportsAfterBuild> exports_list;
@@ -53,10 +57,6 @@ export namespace LLIR {
         auto getNextTerminal(stdu::vector<AST::RuleMember> symbols, std::size_t pos) ->  std::set<stdu::vector<std::string>>;
         auto getErrorName(const AST::RuleMember &rule) -> std::string;
         auto getLookaheadTerminals(const AST::RuleMember& symbols, const stdu::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
-
-        // deduce type functions
-        static auto deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type;
-        auto deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type;
 
         // raise vars on top functions
         void getVariablesToTable(LangAPI::Statements &data, LangAPI::Statements& table, std::string &var_name, bool retain_value, bool recursive);

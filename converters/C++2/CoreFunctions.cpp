@@ -133,7 +133,7 @@ auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::st
             res += ")";
         } else {
             // Append function call to the current storage symbol chain
-            res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
+            res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part), true);
         }
     }
     return res;
@@ -179,18 +179,18 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::ParserFunctionParameter:
             return "Iterator";
-        case LangAPI::StdlibExports::DfaCharTableEmptyStateLambdaParameter:
+        case LangAPI::StdlibExports::DfaCharDataVector:
             return "::ISPA_STD::DFAAPI::CharTableDataVector";
-        case LangAPI::StdlibExports::DfaMultiTableEmptyStateLambdaParameter:
+        case LangAPI::StdlibExports::DfaMultiDataVector:
             return "::ISPA_STD::DFAAPI::MultiTableDataVector<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaUniversalDataVector:
+            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::UniversalDataVector") + "<" + convertTemplates(symbol.template_parameters) + ">" + std::string(symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::DfaEmptyStateGroupBegin:
-            return "::ISPA_STD::DFAAPI::GroupBegin";
+            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::GroupBegin") + (symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::DfaEmptyStateMemberBegin:
-            return "::ISPA_STD::DFAAPI::MemberBegin";
-        case LangAPI::StdlibExports::DfaCstStore:
-            return "::ISPA_STD::DFAAPI::cst_store" + optionalTemplatesWithTokensParameter(symbol.template_parameters);
-        case LangAPI::StdlibExports::DfaCstGroupStore:
-            return "::ISPA_STD::DFAAPI::cst_group_store" + optionalTemplatesWithTokensParameter(symbol.template_parameters);
+            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::MemberBegin") + (symbol.Reference ? "&" : "");
+        case LangAPI::StdlibExports::DfaCstBuilder:
+            return "::ISPA_STD::DFAAPI::Builder<" + convertTemplates(symbol.template_parameters) + ">";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -397,14 +397,27 @@ auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
     stmts_converter->getWriter() = prev_writer;
     return out.str();
 }
-auto Core::convertFunctionCall(const LangAPI::FunctionCall &call) -> std::string {
-    std::string str = call.name + "(";
+auto Core::convertFunctionParams(const stdu::vector<LangAPI::Expression> &args) {
+    std::string str;
     bool first = true;
-    for (const auto &param : call.args) {
+    for (const auto &param : args) {
         if (!first) str += ", ";
         str += convertExpression(param);
         first = false;
     }
+    return str;
+}
+auto Core::convertFunctionCall(const LangAPI::FunctionCall &call, bool need_template) -> std::string {
+    std::string str ;
+    if (need_template && !call.template_parameters.empty())
+        str += "template ";
+    str += call.name;
+    if (!call.template_parameters.empty()) {
+
+        str += "<" + convertTemplates(call.template_parameters) + ">";
+    }
+    str += "(";
+    str += convertFunctionParams(call.args);
     str += ")";
     return str;
 }
@@ -508,9 +521,19 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             return convertSymbol(rvalue.getSymbol());
         case LangAPI::RValueType::StorageSymbol:
             return convertStorageSymbol(rvalue.getStorageSymbol());
-        case LangAPI::RValueType::Inheritance:
-            // TODO: Make inheritance
-            return "";
+        case LangAPI::RValueType::Inheritance: {
+            const auto &inheritance = rvalue.getInheritance();
+            std::string res;
+            if (std::holds_alternative<LangAPI::Symbol>(inheritance.name)) {
+                res += convertSymbol(std::get<LangAPI::Symbol>(inheritance.name));
+            } else {
+                res += convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(inheritance.name));
+            }
+            res += '(';
+            res += convertFunctionParams(inheritance.args);
+            res += ')';
+            return res;
+        }
         case LangAPI::RValueType::IspaLibDfaTransition: {
             const auto &transition = rvalue.getIspaLibDfaTransition();
             auto number_or_null = [](std::size_t number) -> std::string {
