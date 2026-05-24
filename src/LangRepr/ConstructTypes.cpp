@@ -35,8 +35,8 @@ auto collectReferencedNames(const LangAPI::Type &type) -> std::pair<utype::unord
 }
 namespace LangRepr {
     auto ConstructTypes::constructTokensAndRulesEnum() -> void {
-        LangAPI::Enum tokens_enum("Tokens");
-        LangAPI::Enum rules_enum("Rules");
+        LangAPI::Enum tokens_enum("Tokens", {"NONE"});
+        LangAPI::Enum rules_enum("Rules", {"NONE"});
         for (const auto &dtb : lexer_builder.getDataBlocks()) {
             tokens_enum.value.push_back(corelib::text::join(dtb.first, "_"));
         }

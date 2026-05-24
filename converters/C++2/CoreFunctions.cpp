@@ -172,6 +172,9 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::MultiTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaSpanMultiTableState:
             return "::ISPA_STD::DFAAPI::SpanMultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaSpanCharState:
+            // SpanCharTableState<Tokens, ReturnType>
+            return "::ISPA_STD::DFAAPI::SpanCharState";
         case LangAPI::StdlibExports::DfaSpanCharTableState:
             // SpanCharTableState<Tokens, ReturnType>
             return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";

@@ -35,9 +35,20 @@ export namespace AST {
         void transform();
         void createInitialItemSet();
         auto createUsePlacesTable() -> UsePlaceTable&;
+        bool isMemberNullable(const AST::RuleMember& member) const;
         void computeNullableSet();
         void constructFirstSet(const stdu::vector<AST::Rule>& options, const stdu::vector<std::string> &nonterminal, bool &changed);
         void constructFirstSet();
+        // Helper function to collect the FIRST set of an arbitrary RuleMember (Name or Group)
+        void collectMemberFirst(const AST::RuleMember& member, std::set<stdu::vector<std::string>>& outFirst);
+        // Tailored recursive function to handle updating FOLLOW relations inside groups/sequences cleanly
+        void processFollowForSequence(
+            const stdu::vector<std::string>& lhs_name,
+            const stdu::vector<AST::RuleMember>& members,
+            bool is_left_recursive,
+            bool& hasChanges,
+            stdu::vector<stdu::vector<std::string>>& prev_depend
+        );
         void constructFollowSet();
         void formatFirstOrFollowSet(std::ostringstream &oss, AST::First &set);
     public:

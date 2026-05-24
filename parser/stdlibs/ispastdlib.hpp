@@ -327,11 +327,33 @@ namespace DFAAPI {
     using MultiTableTransition = Transition<SpanMultiTable<TOKEN_T, Token>>;
 
     template<typename TOKEN_T, typename Token>
-    using AnyTransition = std::variant<
-        CharTransition,
-        CharTableTransition<TOKEN_T, Token>,
-        MultiTableTransition<TOKEN_T, Token>
-    >;
+    struct AnyTransition {
+        using Type = std::variant<
+            CharTransition,
+            CharTableTransition<TOKEN_T, Token>,
+            MultiTableTransition<TOKEN_T, Token>
+        >;
+        Type value;
+
+        AnyTransition(const CharTransition &t) : value(t) {}
+        AnyTransition(const CharTableTransition<TOKEN_T, Token> &t) : value(t) {}
+        AnyTransition(const MultiTableTransition<TOKEN_T, Token> &t) : value(t) {}
+        template<typename ...Args>
+        AnyTransition(const std::variant<Args...>& v) {
+            value = std::visit([](const auto &t) -> Type {
+                using T = std::decay_t<decltype(t)>;
+
+                // Compile-time check: Can our underlying variant hold this type?
+                if constexpr (std::is_constructible_v<Type, T>) {
+                    return t;
+                } else {
+                    // Throw a meaningful compile-time error or a clean runtime fallback
+                    throw std::runtime_error("ISPA Engine Error: Cannot convert type into AnyTransition");
+                }
+            }, v);
+        }
+    };
+
 
     using CharState = State<std::numeric_limits<unsigned char>::max() + 1, CharTransition>;
 
@@ -346,8 +368,8 @@ namespace DFAAPI {
     // span state types
     using SpanCharState = SpanState<CharTransition>;
 
-    template<typename TOKEN_T, typename ReferingReturnType>
-    using SpanCharTableState = SpanState<CharTableTransition<TOKEN_T, ReferingReturnType>>;
+    template<typename TOKEN_T, typename Token>
+    using SpanCharTableState = SpanState<CharTableTransition<TOKEN_T, Token>>;
 
     template<typename TOKEN_T>
     using SpanTokenTableState = SpanState<TokenTransition<TOKEN_T>>;
@@ -402,83 +424,149 @@ namespace DFAAPI {
         std::size_t else_goto;
         std::size_t else_goto_accept;
         Span<T> transitions;
+
+        SpanState(std::size_t else_goto, std::size_t else_goto_accept, Span<T> transitions) :
+        else_goto(else_goto), else_goto_accept(else_goto_accept), transitions(transitions) {}
+        template<std::size_t N>
+        SpanState(std::size_t else_goto, std::size_t else_goto_accept, std::array<T, N> transitions) :
+        else_goto(else_goto), else_goto_accept(else_goto_accept), transitions(Span {transitions.data(), transitions.size()}) {}
     };
 
     template<typename TOKEN_T, typename Token>
-    struct SpanMultiTable {
+        struct SpanMultiTable {
+        // 1. Align this variant to have the exact same 4 options as MultiTable
         using state_variant_t = std::variant<
             SpanCharState,
+            SpanCharTableState<TOKEN_T, Token>, // Added to fix structural mismatch
             SpanMultiTableState<TOKEN_T, Token>,
             EmptyState<TOKEN_T, Token>
         >;
 
-        Span<state_variant_t> states;
+        // 2. Add 'const' inside the Span so it can bind to static tables safely
+        Span<const state_variant_t> states;
     };
-    template<typename ResultToken, typename DataVector, typename ...Args>
+    template<typename ResultToken, typename Token, typename ...Args>
     class Builder {
         ResultToken token;
         std::tuple<Args...> raw_data;
-        const DataVector &data;
+        const UniversalDataVector<Token> &data;
         const MemberBegin &mb;
         const GroupBegin& gb;
         std::size_t member_count = 0;
         std::size_t group_count = 0;
+
+
+        template <typename T>
+        struct is_variant : std::false_type {};
+        template <typename... A>
+        struct is_variant<std::variant<A...>> : std::true_type {};
+        template <typename T>
+        static constexpr bool is_variant_v = is_variant<T>::value;
+
         template<std::size_t N, typename... ConditionTypesArray, std::size_t... I>
         void condition_impl(
             const std::vector<int> indices_with_group,
             std::index_sequence<I...>
         ) {
-            const auto& value = data.at(mb.at(member_count));
-            bool matched = false;
+            std::visit([&](const auto &data) {
+                const auto& value = data.at(mb.at(member_count));
+                bool matched = false;
 
-            (
-                [&](const auto &type_tag) {
-                    using Expected = std::decay_t<typename decltype(type_tag)::type>;
-                    if (!matched && std::holds_alternative<Expected>(value)) {
-                        std::get<N>(raw_data) = std::get<Expected>(value);
-                        matched = true;
-                    }
-                }.template operator()<ConditionTypesArray>(),
-                ...
-            );
+                using ValueType = std::decay_t<decltype(value)>;
 
-            if (matched) {
-                ++member_count;
-                return;
-            }
+                (
+                    ([&]() {
+                        using Expected = std::decay_t<ConditionTypesArray>;
 
-            for (const auto& group_index : indices_with_group) {
-                group<N>(group_index);
-                return;
-            }
+                        if constexpr (is_variant_v<ValueType>) {
+                            // Scenario A: The container holds tokens wrapped inside variants
+                            if (!matched && std::holds_alternative<Expected>(value)) {
+                                // Check if the tuple/variant slot can accept this type
+                                if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, const Expected&>) {
+                                    std::get<N>(raw_data) = std::get<Expected>(value);
+                                    matched = true;
+                                }
+                            }
+                        } else {
+                            // Scenario B: The container holds raw data string primitives
+                            if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, const ValueType&>) {
+                                if (!matched) {
+                                    std::get<N>(raw_data) = value;
+                                    matched = true;
+                                }
+                            }
+                        }
+                    }()), ...
+                );
 
-            throw std::runtime_error("ISPA internal error: no condition matched");
+                if (matched) {
+                    ++member_count;
+                    return;
+                }
+
+                for (const auto& group_index : indices_with_group) {
+                    group<N>(group_index);
+                    return;
+                }
+
+                throw std::runtime_error("ISPA internal error: no condition matched");
+            }, data);
         }
     public:
-        Builder(const DataVector &data, const MemberBegin &mb, const GroupBegin& gb) :
+        Builder(const UniversalDataVector<Token> &data, const MemberBegin &mb, const GroupBegin& gb) :
         data(data), mb(mb), gb(gb) {}
         template<std::size_t N>
         auto element(std::size_t i = null_state) -> void {
             if (i == null_state) {
                 i = member_count++;
             }
-            using Expected = std::remove_cv_t<std::remove_reference_t<decltype(std::get<N>(raw_data))>>;
-            std::get<N>(raw_data) = std::get<Expected>(data.at(mb.at(i)));
+
+            // Use std::visit to safely unpack whichever vector variant 'data' holds
+            std::visit([&](const auto& actual_data) {
+                using ElementType = std::decay_t<decltype(actual_data.at(0))>;
+                using Expected = std::remove_cv_t<std::remove_reference_t<decltype(std::get<N>(raw_data))>>;
+
+                if constexpr (is_variant_v<ElementType>) {
+                    // Scenario A: It's a vector of tokens/variants
+                    std::get<N>(raw_data) = std::get<Expected>(actual_data.at(mb.at(i)));
+                } else {
+                    // Scenario B: It's a vector of flat types (like std::string)
+                    if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, decltype(actual_data.at(mb.at(i)))>) {
+                        std::get<N>(raw_data) = actual_data.at(mb.at(i));
+                    }
+                }
+            }, data);
         }
+
         template<std::size_t N>
         auto group(std::size_t i = null_state) -> void {
             if (i == null_state) {
                 i = group_count++;
             }
-            std::string concated_string;
-            for (std::size_t i2 = gb.at(i).first; i2 != gb.at(i).second; ++i2) {
-                try {
-                    concated_string += std::get<std::string>(data.at(i2));
-                } catch (const std::bad_variant_access &) {
-                    throw std::runtime_error("ISPA internal error: expected string in group at data index " + std::to_string(i2));                }
-            }
-            std::get<N>(raw_data) = std::move(concated_string);
-            member_count += gb.at(i).second - gb.at(i).first;
+
+            std::visit([&](const auto& actual_data) {
+                using ElementType = std::decay_t<decltype(actual_data.at(0))>;
+                std::string concated_string;
+
+                for (std::size_t i2 = gb.at(i).first; i2 != gb.at(i).second; ++i2) {
+                    if constexpr (is_variant_v<ElementType>) {
+                        // Scenario A: Extract from inner variant sequence
+                        try {
+                            concated_string += std::get<std::string>(actual_data.at(i2));
+                        } catch (const std::bad_variant_access &) {
+                            throw std::runtime_error("ISPA internal error: expected string in group at data index " + std::to_string(i2));
+                        }
+                    } else {
+                        // Scenario B: Vector of flat items, append cleanly
+                        if constexpr (std::is_convertible_v<ElementType, std::string>) {
+                            concated_string += actual_data.at(i2);
+                        }
+                    }
+                }
+
+                std::get<N>(raw_data) = std::move(concated_string);
+                member_count += gb.at(i).second - gb.at(i).first;
+            }, data);
         }
         template<std::size_t N, typename... ConditionTypesArray>
         void condition(const std::vector<int> indices_with_group) {
@@ -488,7 +576,9 @@ namespace DFAAPI {
             );
         }
         auto build() -> ResultToken {
-            token = std::make_from_tuple<ResultToken>(raw_data);
+            token = std::apply([](auto&&... args) {
+                return ResultToken{std::forward<decltype(args)>(args)...};
+            }, raw_data);
             return token;
         }
         auto get() -> ResultToken {

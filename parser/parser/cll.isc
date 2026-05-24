@@ -25,14 +25,13 @@ cll:
     #LOGICAL_OR:
         '||' | 'or'
     ;
-
-    #TYPE:
-        ( @ 'var' | 'num' | 'bool' | 'str' | (@ 'arr' @ TEMPLATE) | (@ 'obj' @ TEMPLATE) )
+    #type:
+        ( @ 'var' | 'num' | 'bool' | 'str' | (@ 'arr' @ templ) | (@ 'obj' @ templ) )
 
         @{type, templ}
     ;
-    #TEMPLATE:
-        '<' @ TYPE (',' @ TYPE)* '>'
+    #templ:
+        '<' @ type (',' @ type)* '>'
 
         @{first, second}
     ;
@@ -113,7 +112,7 @@ cll:
         @{name, body}
     ;
     #_var:
-        @ TYPE? @ ID (@ ASSIGNMENT_OP @ expr)?
+        @ type? @ ID (@ ASSIGNMENT_OP @ expr)?
 
         @{type, id, op, value}
     ;

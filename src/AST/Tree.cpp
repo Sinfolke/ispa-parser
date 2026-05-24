@@ -357,6 +357,34 @@ auto AST::Tree::getInitialItemSet() -> InitialItemSet & {
     return initial_item_set;
 }
 
+// Helper function to determine if a single rule member is nullable
+bool AST::Tree::isMemberNullable(const AST::RuleMember& member) const {
+    if (member.isNospace()) {
+        return true;
+    }
+
+    if (member.isName()) {
+        return nullable.count(member.getName().name) > 0;
+    }
+
+    if (member.isGroup()) {
+        // A group (A | B | C) is nullable if ANY of its alternative productions are completely nullable
+        for (const auto& alt_rule : member.getGroup().values) {
+            bool alt_all_nullable = true;
+            if (!isMemberNullable(alt_rule)) {
+                alt_all_nullable = false;
+                break;
+            }
+            if (alt_all_nullable) {
+                return true; // Found a completely nullable path through this group
+            }
+        }
+        return false;
+    }
+
+    return false;
+}
+
 void AST::Tree::computeNullableSet() {
     bool changed;
     do {
@@ -365,23 +393,18 @@ void AST::Tree::computeNullableSet() {
             for (const auto &prod : productions) {
                 bool allNullable = true;
                 for (const auto &sym : prod.rule_members) {
-                    if (!sym.isName()) {
-                        allNullable = false;
-                        break;
-                    }
-                    const auto &rule = sym.getName();
-                    if (!nullable.count(rule.name)) {
+                    if (!isMemberNullable(sym)) {
                         allNullable = false;
                         break;
                     }
                 }
-                if (allNullable && nullable.insert(nonterminal).second)
+                if (allNullable && nullable.insert(nonterminal).second) {
                     changed = true;
+                }
             }
         }
     } while (changed);
 }
-
 void AST::Tree::constructFirstSet(const stdu::vector<AST::Rule>& options, const stdu::vector<std::string>& nonterminal, bool& changed) {
     logger.increaseIndentLevel();
     for (const auto& option : options) {
@@ -389,23 +412,59 @@ void AST::Tree::constructFirstSet(const stdu::vector<AST::Rule>& options, const 
         for (const auto& member : option.rule_members) {
             if (member.isNospace())
                 continue;
-            if (!member.isName())
-                throw Error("Non-RuleMemberName class, rule {}", nonterminal);
+
+            // Handle Groups native to your structural API
+            if (member.isGroup()) {
+                logger.log("Encountered inline group inside rule {}", nonterminal);
+                const auto& groupValues = member.getGroup().values;
+
+                // Synthesize a temporary single-rule container matching your signature
+                AST::Rule tempRule;
+                tempRule.rule_members = groupValues;
+                constructFirstSet(stdu::vector<AST::Rule>{tempRule}, nonterminal, changed);
+
+                if (!isMemberNullable(member)) {
+                    nullable_prefix = false;
+                    break;
+                }
+                continue;
+            }
+
+            if (member.isOp()) {
+                logger.log("Encountered operator options block inside rule {}", nonterminal);
+                AST::Rule tempRule;
+                tempRule.rule_members = member.getOp().options;
+                constructFirstSet(stdu::vector<AST::Rule>{tempRule}, nonterminal, changed);
+
+                if (!isMemberNullable(member)) {
+                    nullable_prefix = false;
+                    break;
+                }
+                continue;
+            }
+
+            if (!member.isName()) {
+                // If it is a string asset, terminal representation, or hex block
+                if (member.isString() || member.isCsequence() || member.isHex() || member.isBin()) {
+                    nullable_prefix = false;
+                    break;
+                }
+                throw Error("Unhandled RuleMember variant, rule {} but index {}", nonterminal, member.value.index());
+            }
 
             const auto& rule_name = member.getName();
             auto& currentFirst = first[nonterminal];
 
             if (rule_name.name == nonterminal) {
                 logger.log("rule.name == non-terminal -> continue");
-                continue;  // Avoid self-loop
+                continue;
             }
 
-            if (corelib::text::isLower(rule_name.name.back())) {
-                // Nonterminal
+            if (rule_name.isNonterminal()) {
                 const auto& otherFirst = first[rule_name.name];
-                logger.log("inserting non-terminal's[{}] first set: {} to {}", rule_name.name, otherFirst, nonterminal);
+                logger.log("inserting non-terminal's[{}] first set: to {}", rule_name.name, nonterminal);
                 for (const auto& el : otherFirst) {
-                    if (corelib::text::isUpper(el.back()) && el != stdu::vector<std::string>{"ε"}) continue;
+                    if (corelib::text::isUpper(el.back()) && el != stdu::vector<std::string>{"ε"} ) continue;
                     if (currentFirst.insert(el).second)
                         changed = true;
                 }
@@ -414,9 +473,7 @@ void AST::Tree::constructFirstSet(const stdu::vector<AST::Rule>& options, const 
                     nullable_prefix = false;
                     break;
                 }
-
             } else {
-                // Terminal
                 logger.log("inserting terminal {} to {}", rule_name.name, nonterminal);
                 if (currentFirst.insert(rule_name.name).second) {
                     changed = true;
@@ -456,6 +513,107 @@ void AST::Tree::constructFirstSet() {
     } while (changed);
 }
 
+void AST::Tree::collectMemberFirst(const AST::RuleMember& member, std::set<stdu::vector<std::string>>& outFirst) {
+    if (member.isNospace()) return;
+
+    if (member.isName()) {
+        const auto& nameInfo = member.getName();
+        if (nameInfo.isTerminal()) {
+            outFirst.insert(nameInfo.name);
+        } else {
+            const auto& f = first[nameInfo.name];
+            outFirst.insert(f.begin(), f.end());
+        }
+        return;
+    }
+
+    if (member.isGroup()) {
+        for (const auto& sub : member.getGroup().values) {
+            collectMemberFirst(sub, outFirst);
+            if (!isMemberNullable(sub)) break;
+        }
+    }
+
+    if (member.isOp()) {
+        for (const auto& opt : member.getOp().options) {
+            collectMemberFirst(opt, outFirst);
+        }
+    }
+}
+
+void AST::Tree::processFollowForSequence(
+    const stdu::vector<std::string>& lhs_name,
+    const stdu::vector<AST::RuleMember>& members,
+    bool is_left_recursive,
+    bool& hasChanges,
+    stdu::vector<stdu::vector<std::string>>& prev_depend
+) {
+    for (std::size_t i = 0; i < members.size(); ++i) {
+        if (members[i].isNospace()) continue;
+
+        if (members[i].isName()) {
+            const auto& nameInfo = members[i].getName();
+            auto current_n = nameInfo.name;
+            if (nameInfo.isTerminal()) continue;
+
+            if (lhs_name == current_n) {
+                auto f = first[lhs_name];
+                for (auto &e : f) {
+                    if (e == stdu::vector<std::string>{"ε"}) continue;
+                    if (follow[lhs_name].insert(e).second) hasChanges = true;
+                }
+                prev_depend.push_back(lhs_name);
+                continue;
+            }
+
+            if (is_left_recursive) {
+                auto prev_size = follow[current_n].size();
+                follow[current_n].insert(follow[lhs_name].begin(), follow[lhs_name].end());
+                if (prev_size != follow[current_n].size()) hasChanges = true;
+                prev_depend.push_back(current_n);
+            }
+
+            std::size_t next_idx = i + 1;
+            bool reached_end_or_nullable = true;
+
+            while (next_idx < members.size()) {
+                if (members[next_idx].isNospace()) { next_idx++; continue; }
+
+                std::set<stdu::vector<std::string>> next_first;
+                collectMemberFirst(members[next_idx], next_first);
+
+                for (const auto& e : next_first) {
+                    if (e == stdu::vector<std::string>{"ε"}) continue;
+                    if (follow[current_n].insert(e).second) hasChanges = true;
+                }
+
+                if (!isMemberNullable(members[next_idx])) {
+                    reached_end_or_nullable = false;
+                    if (members[next_idx].isName()) {
+                        prev_depend.push_back(members[next_idx].getName().name);
+                    }
+                    break;
+                }
+                next_idx++;
+            }
+
+            if (reached_end_or_nullable) {
+                auto &f_lhs = follow[lhs_name];
+                for (auto &sym : f_lhs) {
+                    if (follow[current_n].insert(sym).second) hasChanges = true;
+                }
+            }
+        }
+        else if (members[i].isGroup()) {
+            // Process the internal vector of structural members recursively
+            processFollowForSequence(lhs_name, members[i].getGroup().values, is_left_recursive, hasChanges, prev_depend);
+        }
+        else if (members[i].isOp()) {
+            processFollowForSequence(lhs_name, members[i].getOp().options, is_left_recursive, hasChanges, prev_depend);
+        }
+    }
+}
+
 void AST::Tree::constructFollowSet() {
     if (!follow.empty())
         return;
@@ -466,115 +624,45 @@ void AST::Tree::constructFollowSet() {
     stdu::vector<stdu::vector<std::string>> prev_depend;
     stdu::vector<stdu::vector<std::string>> changed;
     Tlog::Branch lb(logger, "AST/constructFollowSet.log");
+
     do {
         hasChanges = false;
         prevDependedChanged = false;
         prev_depend.clear();
         changed.clear();
+
         for (const auto &[name, options] : initial_item_set) {
-            bool is_left_recursive = false;
             if (corelib::text::isUpper(name.back()))
                 continue;
+
             for (const auto &rules : options) {
                 if (rules.rule_members.empty())
                     continue;
+
+                // Determine left-recursion properties exactly like original layout
+                bool is_left_recursive = false;
                 auto rules_members_it = rules.rule_members.begin();
-                while (rules_members_it->isNospace())
+                while (rules_members_it != rules.rule_members.end() && rules_members_it->isNospace())
                     rules_members_it++;
-                if (!rules_members_it->isName())
-                    throw Error("Not RuleMemberName for rule {}", name);
-                if (!rules.rule_members.empty() && name == rules_members_it->getName().name) {
+
+                if (rules_members_it != rules.rule_members.end() &&
+                    rules_members_it->isName() &&
+                    name == rules_members_it->getName().name) {
                     is_left_recursive = true;
                 }
-                logger.dlog("Processing {} -> ", name);
-                for (auto it = rules_members_it; it != rules.rule_members.end(); it++) {
-                    if (it->isNospace())
-                        continue;
-                    if (!it->isName()) {
-                        throw Error("Not RuleMemberName: {}, {}, name: {}", it->isGroup(), it->isOp(), name);
-                    }
-                    auto current_n = it->getName().name;
-                    const stdu::vector<std::string> *current = &it->getName().name;
-                    if (corelib::text::isUpper(current_n.back())) {
-                        continue;
-                    }
 
-                    if (name == *current) {
-                        // include first(name)
-                        auto f = first[name];
-                        logger.dlog("[right recursion] first[name: {}]: {}, ", name, first[name]);
-                        for (auto &e : f) {
-                            if (e == stdu::vector<std::string>{"ε"}) {
-                                continue;
-                            }
-                            if (follow[name].insert(e).second)
-                                hasChanges = true;
-                        }
-                        prev_depend.push_back(name);
-                        continue;
-                    }
-                    if (is_left_recursive && corelib::text::isLower(current->back())) {
-                        auto prev_size = follow[*current].size();
-                        logger.log("[left_recursion] follow[current.name: {}]: {}, ", *current, follow[*current]);
-                        follow[*current].insert(follow[name].begin(), follow[name].end());
-                        if (prev_size != follow[*current].size())
-                            hasChanges = true;
-                        prev_depend.push_back(*current);
-                    }
-                    auto next_it = it + 1;
-                    while (next_it != rules.rule_members.end() && !next_it->isName())
-                        next_it++;
-                    if (next_it == rules.rule_members.end()) {
-                        if (name != *current) { // prevent self-insertion
-                            auto &f_lhs = follow[name];
-                            logger.log("current -> {}, [end of rule] follow[name: {}]: {}, ", *current, name, follow[name]);
-                            for (auto &sym : f_lhs) {
-                                if (follow[*current].insert(sym).second)
-                                    hasChanges = true;
-                            }
-                        } else {
-                            logger.log("[end of rule - skip self follow insertion] {} ", name);
-                        }
-                    } else {
-                        auto next = next_it->getName();
-                        if (next.isTerminal()) {
-                            // terminal - just push
-                            logger.dlog("[next is terminal] follow[name: {}]: {} insert {}, ", name, follow[name], next.name);
-                            if (follow[*current].insert(next.name).second)
-                                hasChanges = true;
-                        } else {
-                            // non-terminal, insert it's first
-                            logger.dlog("[next is non-terminal] first[name: {}]: {}, ", name, follow[name]);
-                            auto f = first[next.name];
-                            bool has_epsilon = false;
-                            for (auto &e : f) {
-                                if (e == stdu::vector<std::string>{"ε"}) {
-                                    has_epsilon = true;
-                                    continue;
-                                }
-                                if (follow[*current].insert(e).second)
-                                    hasChanges = true;
-                            }
-                            if (has_epsilon) {
-                                // if ε in FIRST(next), add FOLLOW of LHS
-                                auto &f_lhs = follow[name];
-                                logger.dlog("[has_epsilon] follow[name: {}]: {}", name, follow[name]);
-                                for (auto &sym : f_lhs) {
-                                    if (follow[*current].insert(sym).second)
-                                        hasChanges = true;
-                                }
-                            }
-                            prev_depend.push_back(next.name);
-                        }
-                    }
-                }
+                logger.dlog("Processing {} -> ", name);
+
+                // Hand over full execution loop down to the group safe scanner
+                processFollowForSequence(name, rules.rule_members, is_left_recursive, hasChanges, prev_depend);
             }
+
             if (hasChanges) {
                 changed.push_back(name);
             }
         }
+
         if (!hasChanges) {
-            // slight optimization: perform check only if this could be last iteration
             for (auto &change_symbol : changed) {
                 if (std::find(prev_depend.begin(), prev_depend.end(), change_symbol) != prev_depend.end()) {
                     prevDependedChanged = true;

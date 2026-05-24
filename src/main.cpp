@@ -11,6 +11,7 @@ import logging;
 import Dump;
 import AST.Tree;
 import AST.Pass;
+import Semantic;
 import LRParser;
 import ELRParser;
 import LALRParser;
@@ -102,7 +103,11 @@ int main(int argc, char** argv) {
         std::ofstream dumpFile(dumper.makeDumpPath("DFA"), std::ios::trunc);
     AST::Builder ast_builder(modules);
     ast_builder.build();
+
+    // semantic check
     auto ast = ast_builder.get();
+    Semantic semantic(ast);
+    semantic.checkTokenRecursion();
     std::ofstream treeAPIO("treeAPI.txt");
     std::ofstream initialItemSet("tree.txt");
     for (const auto &[name, value] : ast.getTreeMap()) {

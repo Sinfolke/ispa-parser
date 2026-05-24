@@ -134,30 +134,17 @@ namespace LangRepr {
         // declare builder
         auto builder_internal_type = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCstBuilder,
             .template_parameters = {
+                std::make_shared<LangAPI::Type>(ensureTypesNs(LangAPI::Type {LangAPI::Symbol {name}})),
                 std::make_shared<LangAPI::Type>(Token),
-                std::make_shared<LangAPI::Type>(std::get<LangAPI::Type>(params.back())),
             }
         };
         auto builder_symbol = LangAPI::Symbol {"builder"};
-        auto builder = LangAPI::Variable {
-            .name = "builder",
-            .type = builder_internal_type,
-            .value = LangAPI::Inheritance::createExpression(LangAPI::Inheritance {
-                .name = builder_internal_type,
-                .args = {
-                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"}),
-                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"mb"}),
-                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"gb"})
-                }
-            })
-        };
-        body.push_back(LangAPI::Variable::createStatement(builder));
         if (data_block.is_inclosed_map()) {
             const auto &templated_data_block = std::get<NFA::TemplatedDataBlock>(nfa_dtb);
             long long N = 0;
             for (const auto &[mname, mdata] : data_block.getInclosedMap()) {
                 // add this node type to builder
-                builder_internal_type.template_parameters.push_back(std::make_shared<LangAPI::Type>(mdata.second));
+                builder_internal_type.template_parameters.push_back(std::make_shared<LangAPI::Type>(ensureTypesNs(mdata.second)));
                 auto current_templated_data_block = templated_data_block.at(mname);
                 body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, mdata.first, mdata.second, current_templated_data_block, N)));
                 ++N;
@@ -165,9 +152,23 @@ namespace LangRepr {
         } else if (!data_block.empty()) {
             const auto &[data, type] = data_block.getRegularDataBlock();
             const auto &sv_data_block = std::get<NFA::TemplatedDataBlockValue>(nfa_dtb);
+            builder_internal_type.template_parameters.push_back(std::make_shared<LangAPI::Type>(ensureTypesNs(type)));
             body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, data, type, sv_data_block, 0)));
         }
-        // return builder.build();
+        auto args = LangAPI::Inheritance {
+            .name = builder_internal_type,
+            .args = {
+                LangAPI::Symbol::createExpression(LangAPI::Symbol {"dv"}),
+                LangAPI::Symbol::createExpression(LangAPI::Symbol {"mb"}),
+                LangAPI::Symbol::createExpression(LangAPI::Symbol {"gb"})
+            }
+        };
+        auto builder = LangAPI::Variable {
+            .name = "builder",
+            .type = builder_internal_type,
+            .value = LangAPI::Inheritance::createExpression(args)
+        };
+        body.insert(body.begin(), LangAPI::Variable::createStatement(builder));;
         LangAPI::StorageSymbol return_storage_symbol;
         return_storage_symbol.what = LangAPI::Symbol::createExpression(builder_symbol);
         return_storage_symbol.path = {LangAPI::FunctionCall {.name = "build"}};
@@ -184,7 +185,8 @@ namespace LangRepr {
         const auto &dfas = lexer_builder.getDFAS().get();
         auto states = lexer_builder.getDFAS().getStateSet();
         auto lexer = createLexerClass();
-
+        std::unordered_set<std::size_t> char_table_states;
+        std::unordered_set<std::size_t> multi_table_states;
         for (const auto &state : states.state_set) {
             const auto [dfa_idx, local_state_index] = states.state_in_dfa_location_map.at(count);
             const auto &dfa = dfas.at(dfa_idx);
@@ -219,12 +221,16 @@ namespace LangRepr {
                 }
             } else {
                 const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
-                if (sorted_transitions.empty() && state.else_goto == 0) {
-                    token_type.insert(token_type.end(), state.rule_name.begin(), state.rule_name.end());
-
-                    construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb);
+                if (sorted_transitions.empty()) {
                     empty = true;
-                    s.exports = LangAPI::StdlibExports::EmptyState;
+                    if (state.else_goto == 0) {
+                        token_type.insert(token_type.end(), state.rule_name.begin(), state.rule_name.end());
+
+                        construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb);
+                        s.exports = LangAPI::StdlibExports::EmptyState;
+                    } else {
+                        s.exports = LangAPI::StdlibExports::DfaCharState;
+                    }
                 } else s.template_parameters.push_back(makeIntRValue(transition_size));
                 // Determine if all DFA-reference transitions in this state point to Char tables.
                 // Ignore plain char-symbol transitions when making this decision.
@@ -244,10 +250,14 @@ namespace LangRepr {
                         }
                     }
                     is_referring_char_table = has_ref_transitions && all_char_refs;
+                    if (is_referring_char_table) {
+                        s.exports = LangAPI::StdlibExports::DfaCharTableState;
+                        char_table_states.insert(count);
+                    } else {
+                        multi_table_states.insert(count);
+                    }
                 }
-                if (is_referring_char_table) {
-                    s.exports = LangAPI::StdlibExports::DfaCharTableState;
-                }
+
                 for (const auto &[symbol, transition] : sorted_transitions) {
                     if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
                         const auto &sym_name = std::get<stdu::vector<std::string>>(symbol);
@@ -307,7 +317,7 @@ namespace LangRepr {
 	                std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
 	                .name = std::string("dfa_state_") + std::to_string(count),
 	                .type = s,
-                    .value = empty ? LangAPI::IspaLibDfaEmptyState::createExpression(LangAPI::IspaLibDfaEmptyState {.token_name = state.rule_name, .construction_lambda = std::make_shared<LangAPI::Lambda>(construct_lambda)}) : LangAPI::Array::createExpression(LangAPI::Array { .values = transitions}),
+                    .value = empty && state.else_goto == 0 ? LangAPI::IspaLibDfaEmptyState::createExpression(LangAPI::IspaLibDfaEmptyState {.token_name = state.rule_name, .construction_lambda = std::make_shared<LangAPI::Lambda>(construct_lambda)}) : LangAPI::Array::createExpression(LangAPI::Array { .values = transitions}),
                     .is_static = true
 	            })),
                 LangAPI::Visibility::Private
@@ -317,13 +327,49 @@ namespace LangRepr {
         }
         // construct DFA tables
         for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
-	        const auto &dfa = dfas.at(dfa_count);
-	        stdu::vector<LangAPI::Expression> dfa_table_states;
-	        bool multitable = dfa.getType() == DFA::DfaType::Multi;
+            const auto &dfa = dfas.at(dfa_count);
+            std::vector<LangAPI::Expression> dfa_table_states;
+            bool multitable = dfa.getType() == DFA::DfaType::Multi;
 
             for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
                 const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
-                dfa_table_states.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol {std::string("dfa_state_") + std::to_string(state_id)}));
+                const auto &state_type = states.state_to_type.at(state_id).first;
+                const auto &state = states.state_set.get().at(state_id);
+
+                if (std::holds_alternative<DFA::SortedTransitions>(state.transitions) && std::get<DFA::SortedTransitions>(state.transitions).empty() && state.else_goto == 0) {
+                    dfa_table_states.push_back(
+                        LangAPI::Symbol::createExpression(LangAPI::Symbol {"Lexer", "dfa_state_" + std::to_string(state_id)})
+                    );
+                } else {
+                    // FIX: Query the exact structural properties that dictate the state's variable declaration type
+                    LangAPI::StdlibExports selected_export;
+
+                    if (multi_table_states.contains(state_id)) {
+                        // If the header pass declared this state_id as a MultiTableState
+                        selected_export = LangAPI::StdlibExports::DfaSpanMultiTableState;
+                    } else if (char_table_states.contains(state_id)) {
+                        // If the header pass declared this state_id as a CharTableState
+                        selected_export = LangAPI::StdlibExports::DfaSpanCharTableState;
+                    } else {
+                        // Default fallback matching static ::ISPA_STD::DFAAPI::CharState definitions
+                        selected_export = LangAPI::StdlibExports::DfaSpanCharState;
+                    }
+
+                    LangAPI::IspaLibSymbol span_type = {
+                        .exports = selected_export,
+                        .template_parameters = {std::make_shared<LangAPI::Type>(Token)}
+                    };
+                    dfa_table_states.push_back(LangAPI::RValue::createExpression(
+                        LangAPI::RValue {LangAPI::Inheritance {
+                            .name = span_type,
+                            .args = {
+                                LangAPI::Int::createExpression(LangAPI::Int {.value = static_cast<long long>(state.else_goto)}),
+                                LangAPI::Int::createExpression(LangAPI::Int {.value = static_cast<long long>(state.else_goto_accept)}),
+                                LangAPI::Symbol::createExpression(LangAPI::Symbol {"Lexer", "dfa_state_" + std::to_string(state_id)})
+                            }
+                        }}
+                    ));
+                }
             }
 
             auto table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
@@ -331,8 +377,8 @@ namespace LangRepr {
                 std::make_shared<LangAPI::RValue>(
                     LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
                 )
-              };
-            // Decide table kind based on computed multitable flag, not by parameter count
+            };
+
             LangAPI::Variable dfa_table_var {
                 .name = "dfa_table_" + std::to_string(dfa_count),
                 .type = LangAPI::Type {
@@ -345,7 +391,7 @@ namespace LangRepr {
                 .is_static = true
             };
             lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
-	    }
+        }
         holder.push(lexer);
     }
 }
