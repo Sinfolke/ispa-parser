@@ -455,49 +455,97 @@ namespace DFAAPI {
         std::size_t member_count = 0;
         std::size_t group_count = 0;
 
-
+        // --- 1. Core Type Traits ---
         template <typename T>
         struct is_variant : std::false_type {};
+
         template <typename... A>
         struct is_variant<std::variant<A...>> : std::true_type {};
+
         template <typename T>
         static constexpr bool is_variant_v = is_variant<T>::value;
 
+        // --- 2. Smart Target Assignment ---
+        // Safely assigns or constructs a source value into a target slot, even if the target is an AST Node or a Variant of Nodes.
+        template <typename Target, typename Source>
+        constexpr bool smart_assign(Target& target, Source&& source) {
+            using T = std::decay_t<Target>;
+            using S = std::decay_t<Source>;
+
+            // A. Direct Assignment (Same types)
+            if constexpr (std::is_assignable_v<Target&, S>) {
+                target = std::forward<Source>(source);
+                return true;
+            }
+            // B. Constructor Initialization (e.g., Node(source))
+            else if constexpr (std::is_constructible_v<T, S>) {
+                target = T(std::forward<Source>(source));
+                return true;
+            }
+            // C. String -> Char Lexer optimization boundary
+            else if constexpr (std::is_same_v<T, char> && std::is_convertible_v<S, std::string>) {
+                if (!source.empty()) {
+                    target = source[0];
+                    return true;
+                }
+                return false;
+            }
+            // D. Target is a Variant (e.g., std::variant<NodeA, NodeB>)
+            else if constexpr (is_variant_v<T>) {
+                return assign_to_variant_alternative(target, std::forward<Source>(source));
+            }
+
+            return false;
+        }
+
+        // Helper to attempt construction on the internal types of a target variant
+        template <typename... Vars, typename Source>
+        constexpr bool assign_to_variant_alternative(std::variant<Vars...>& target_variant, Source&& source) {
+            bool assigned = false;
+            // Fold expression: attempt to construct/assign each type in the variant. Short circuits on first success.
+            ( ... || ([&]() {
+                if constexpr (std::is_assignable_v<Vars&, Source> || std::is_constructible_v<Vars, Source>) {
+                    target_variant = Vars(std::forward<Source>(source));
+                    assigned = true;
+                    return true;
+                }
+                return false;
+            }()) );
+            return assigned;
+        }
+
+        // --- 3. Internal Condition Matching ---
         template<std::size_t N, typename... ConditionTypesArray, std::size_t... I>
-        void condition_impl(
-            const std::vector<int> indices_with_group,
-            std::index_sequence<I...>
-        ) {
-            std::visit([&](const auto &data) {
-                const auto& value = data.at(mb.at(member_count));
+        void condition_impl(const std::vector<int>& indices_with_group, std::index_sequence<I...>) {
+            std::visit([&](const auto &actual_data) {
+                const auto& value = actual_data.at(mb.at(member_count));
                 bool matched = false;
+                auto& target_slot = std::get<N>(raw_data);
 
-                using ValueType = std::decay_t<decltype(value)>;
+                // Recursive lambda: digs through arbitrarily nested variants
+                auto match_and_assign = [&](auto& self, const auto& val) -> void {
+                    if (matched) return;
 
-                (
-                    ([&]() {
-                        using Expected = std::decay_t<ConditionTypesArray>;
+                    using ValType = std::decay_t<decltype(val)>;
 
-                        if constexpr (is_variant_v<ValueType>) {
-                            // Scenario A: The container holds tokens wrapped inside variants
-                            if (!matched && std::holds_alternative<Expected>(value)) {
-                                // Check if the tuple/variant slot can accept this type
-                                if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, const Expected&>) {
-                                    std::get<N>(raw_data) = std::get<Expected>(value);
+                    if constexpr (is_variant_v<ValType>) {
+                        std::visit([&](const auto& inner) { self(self, inner); }, val);
+                    } else {
+                        // Fold expression to check against all expected ConditionTypes
+                        ( ... || ([&]() {
+                            using Expected = std::decay_t<ConditionTypesArray>;
+                            if constexpr (std::is_same_v<ValType, Expected>) {
+                                if (smart_assign(target_slot, val)) {
                                     matched = true;
+                                    return true;
                                 }
                             }
-                        } else {
-                            // Scenario B: The container holds raw data string primitives
-                            if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, const ValueType&>) {
-                                if (!matched) {
-                                    std::get<N>(raw_data) = value;
-                                    matched = true;
-                                }
-                            }
-                        }
-                    }()), ...
-                );
+                            return false;
+                        }()) );
+                    }
+                };
+
+                match_and_assign(match_and_assign, value);
 
                 if (matched) {
                     ++member_count;
@@ -512,62 +560,68 @@ namespace DFAAPI {
                 throw std::runtime_error("ISPA internal error: no condition matched");
             }, data);
         }
+
     public:
-        Builder(const UniversalDataVector<Token> &data, const MemberBegin &mb, const GroupBegin& gb) :
-        data(data), mb(mb), gb(gb) {}
+        Builder(const UniversalDataVector<Token> &data, const MemberBegin &mb, const GroupBegin& gb)
+            : data(data), mb(mb), gb(gb) {}
+
         template<std::size_t N>
         auto element(std::size_t i = null_state) -> void {
-            if (i == null_state) {
-                i = member_count++;
-            }
+            if (i == null_state) i = member_count++;
 
-            // Use std::visit to safely unpack whichever vector variant 'data' holds
             std::visit([&](const auto& actual_data) {
-                using ElementType = std::decay_t<decltype(actual_data.at(0))>;
-                using Expected = std::remove_cv_t<std::remove_reference_t<decltype(std::get<N>(raw_data))>>;
+                const auto& val = actual_data.at(mb.at(i));
+                auto& target_slot = std::get<N>(raw_data);
+                bool assigned = false;
 
-                if constexpr (is_variant_v<ElementType>) {
-                    // Scenario A: It's a vector of tokens/variants
-                    std::get<N>(raw_data) = std::get<Expected>(actual_data.at(mb.at(i)));
-                } else {
-                    // Scenario B: It's a vector of flat types (like std::string)
-                    if constexpr (std::is_assignable_v<decltype(std::get<N>(raw_data))&, decltype(actual_data.at(mb.at(i)))>) {
-                        std::get<N>(raw_data) = actual_data.at(mb.at(i));
+                // Recursive unwrap and assign
+                auto unwrap_and_assign = [&](auto& self, const auto& current_val) -> void {
+                    if (assigned) return;
+
+                    using ValType = std::decay_t<decltype(current_val)>;
+                    if constexpr (is_variant_v<ValType>) {
+                        std::visit([&](const auto& inner) { self(self, inner); }, current_val);
+                    } else {
+                        assigned = smart_assign(target_slot, current_val);
                     }
-                }
+                };
+
+                unwrap_and_assign(unwrap_and_assign, val);
             }, data);
         }
 
         template<std::size_t N>
         auto group(std::size_t i = null_state) -> void {
-            if (i == null_state) {
-                i = group_count++;
-            }
+            if (i == null_state) i = group_count++;
 
             std::visit([&](const auto& actual_data) {
-                using ElementType = std::decay_t<decltype(actual_data.at(0))>;
                 std::string concated_string;
 
-                for (std::size_t i2 = gb.at(i).first; i2 != gb.at(i).second; ++i2) {
-                    if constexpr (is_variant_v<ElementType>) {
-                        // Scenario A: Extract from inner variant sequence
-                        try {
-                            concated_string += std::get<std::string>(actual_data.at(i2));
-                        } catch (const std::bad_variant_access &) {
-                            throw std::runtime_error("ISPA internal error: expected string in group at data index " + std::to_string(i2));
-                        }
+                // Safe recursive string extraction from any variant depth
+                auto extract_string = [&](auto& self, const auto& current_val) -> void {
+                    using ValType = std::decay_t<decltype(current_val)>;
+                    if constexpr (is_variant_v<ValType>) {
+                        std::visit([&](const auto& inner) { self(self, inner); }, current_val);
+                    } else if constexpr (std::is_convertible_v<ValType, std::string>) {
+                        concated_string += current_val;
                     } else {
-                        // Scenario B: Vector of flat items, append cleanly
-                        if constexpr (std::is_convertible_v<ElementType, std::string>) {
-                            concated_string += actual_data.at(i2);
-                        }
+                        throw std::runtime_error("ISPA internal error: expected string-convertible type in group");
                     }
+                };
+
+                for (std::size_t idx = gb.at(i).first; idx != gb.at(i).second; ++idx) {
+                    extract_string(extract_string, actual_data.at(idx));
                 }
 
-                std::get<N>(raw_data) = std::move(concated_string);
+                // Assign the concatenated string safely (handles strings, Node(string), and variants of Nodes)
+                if (!smart_assign(std::get<N>(raw_data), std::move(concated_string))) {
+                    throw std::runtime_error("ISPA structural error: Target slot cannot accept or construct from group string.");
+                }
+
                 member_count += gb.at(i).second - gb.at(i).first;
             }, data);
         }
+
         template<std::size_t N, typename... ConditionTypesArray>
         void condition(const std::vector<int> indices_with_group) {
             condition_impl<N, ConditionTypesArray...>(
@@ -575,12 +629,14 @@ namespace DFAAPI {
                 std::index_sequence_for<ConditionTypesArray...>{}
             );
         }
+
         auto build() -> ResultToken {
             token = std::apply([](auto&&... args) {
                 return ResultToken{std::forward<decltype(args)>(args)...};
             }, raw_data);
             return token;
         }
+
         auto get() -> ResultToken {
             return token;
         }

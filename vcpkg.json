@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "dependencies": [
     "boost-dynamic-bitset",
-    "boost-container"
+    "boost-container",
+    "tsl-ordered-map"
   ]
 }

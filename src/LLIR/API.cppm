@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 export module LLIR.API;
 
 import LangAPI;
@@ -5,7 +7,7 @@ import hash;
 import dstd;
 
 export namespace LLIR {
-    using inclosed_map = std::unordered_map<std::string, std::pair<LangAPI::Expression, LangAPI::Type>>;
+    using inclosed_map = tsl::ordered_map<std::string, std::pair<LangAPI::Expression, LangAPI::Type>>;
     using regular_data_block = std::pair<LangAPI::Expression, LangAPI::Type>;
     struct DataBlock {
         std::variant<std::monostate, regular_data_block, inclosed_map> value;

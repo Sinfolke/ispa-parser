@@ -47,6 +47,19 @@ namespace LangRepr {
         }
         return t;
     };
+    auto ConstructLexer::extractRawSymbol(const LangAPI::Type &t) -> stdu::vector<LangAPI::Type> {
+        if (t.isSymbol())
+            return {t};
+        if (!t.template_parameters.empty()) {
+            std::vector<LangAPI::Type> types;
+            for (auto &p : t.template_parameters) {
+                auto r = extractRawSymbol(std::get<LangAPI::Type>(p));
+                types.insert(types.end(), r.begin(), r.end());
+            }
+            return types;
+        }
+        return {t};
+    };
     auto ConstructLexer::getStateType(DFA::DfaType state_type) -> LangAPI::IspaLibSymbol {
         LangAPI::IspaLibSymbol s;
         auto makeReturnType = [&]() -> std::shared_ptr<LangAPI::Type> {
@@ -73,8 +86,6 @@ namespace LangRepr {
 
     auto ConstructLexer::buildLambdaContent(
         LangAPI::Symbol builder_sym,
-        const LangAPI::Expression &expr,
-        const LangAPI::Type &type,
         const NFA::TemplatedDataBlockValue &data_block,
         long long N
     ) -> LangAPI::StorageSymbol {
@@ -94,7 +105,8 @@ namespace LangRepr {
                 if (element.isGroup())
                     indices_with_groups.values.push_back(LangAPI::Int::createExpression(LangAPI::Int {.value = el_count}));
                 el_count++;
-                template_parameters.push_back(ensureTypesNs(LLIR::BuilderBase::deduceVarTypeByRuleMember(element)));
+                auto raw_sym_vec = extractRawSymbol(ensureTypesNs(LLIR::BuilderBase::deduceVarTypeByRuleMember(element)));
+                template_parameters.insert(template_parameters.end(), raw_sym_vec.begin(), raw_sym_vec.end());
             }
             args = {LangAPI::Array::createExpression(indices_with_groups)};
         } else {
@@ -124,9 +136,9 @@ namespace LangRepr {
                 .exports = LangAPI::StdlibExports::DfaUniversalDataVector,
                 .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type {Token})},
                 .Const = true,
-                .Reference = true}
-            }, "dv"}
-        );
+                .Reference = true
+            }
+        }, "dv"});
 
         LangAPI::Statements body;
         const auto data_blocks = lexer_builder.getDataBlocks();
@@ -146,14 +158,14 @@ namespace LangRepr {
                 // add this node type to builder
                 builder_internal_type.template_parameters.push_back(std::make_shared<LangAPI::Type>(ensureTypesNs(mdata.second)));
                 auto current_templated_data_block = templated_data_block.at(mname);
-                body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, mdata.first, mdata.second, current_templated_data_block, N)));
+                body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, current_templated_data_block, N)));
                 ++N;
             }
         } else if (!data_block.empty()) {
             const auto &[data, type] = data_block.getRegularDataBlock();
             const auto &sv_data_block = std::get<NFA::TemplatedDataBlockValue>(nfa_dtb);
             builder_internal_type.template_parameters.push_back(std::make_shared<LangAPI::Type>(ensureTypesNs(type)));
-            body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, data, type, sv_data_block, 0)));
+            body.push_back(LangAPI::StorageSymbol::createStatement(buildLambdaContent(builder_symbol, sv_data_block, 0)));
         }
         auto args = LangAPI::Inheritance {
             .name = builder_internal_type,

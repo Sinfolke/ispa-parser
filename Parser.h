@@ -182,8 +182,8 @@ namespace Parser {
 		};
 		struct NUMBER {
 			 std::string sign;
-			 std::string dec;
 			 std::string main;
+			 std::string dec;
 		};
 		struct AUTO_30 {
 			 char value;
@@ -397,9 +397,9 @@ namespace Parser {
 		};
 		struct cll__variable {
 			 std::variant<::ISPA_STD::Node<Tokens, AUTO_30>, ::ISPA_STD::Node<Tokens, AUTO_29>> pre;
+			 ::ISPA_STD::Node<Tokens, ID> name;
 			 ::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> brace_expression;
 			 std::variant<::ISPA_STD::Node<Tokens, AUTO_30>, ::ISPA_STD::Node<Tokens, AUTO_29>> pos;
-			 ::ISPA_STD::Node<Tokens, ID> name;
 		};
 		struct rule_data_block_regular_datablock_key {
 			 ::ISPA_STD::Node<Tokens, ID> name;
@@ -407,8 +407,8 @@ namespace Parser {
 		};
 		struct cll_loop_for {
 			 std::variant<::ISPA_STD::Node<Rules, std::unique_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::unique_ptr<cll_expr>>> decl;
-			 ::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> end;
 			 ::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> cond;
+			 ::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> end;
 			 ::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_stmt>> stmt;
 		};
 		struct cll_templ {
@@ -453,8 +453,8 @@ namespace Parser {
 		};
 		struct rule_member {
 			 std::variant<::ISPA_STD::Node<Rules, rule_value>, ::ISPA_STD::Node<Rules, rule_keyvalue>> prefix;
-			 ::ISPA_STD::MatchResult<Rules, rule_quantifier> quantifier;
 			 std::variant<::ISPA_STD::Node<Rules, rule_name>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, rule_HEX>, ::ISPA_STD::Node<Tokens, DOT>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE>, ::ISPA_STD::Node<Tokens, rule_BIN>, ::ISPA_STD::Node<Tokens, rule_OP>, ::ISPA_STD::Node<Rules, cll>, ::ISPA_STD::Node<Tokens, rule_ESCAPED>, ::ISPA_STD::Node<Rules, rule_group>, ::ISPA_STD::Node<Tokens, LINEAR_COMMENT>, ::ISPA_STD::Node<Tokens, rule_NOSPACE>> val;
+			 ::ISPA_STD::MatchResult<Rules, rule_quantifier> quantifier;
 		};
 		struct _use_unit {
 			 ::ISPA_STD::Node<Tokens, ID> name;
@@ -467,8 +467,8 @@ namespace Parser {
 		};
 		struct rule {
 			 ::ISPA_STD::Node<Tokens, ID> name;
-			 ::ISPA_STD::MatchResult<Rules, rule_data_block> data_block;
 			 std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<rule_member>>> rule;
+			 ::ISPA_STD::MatchResult<Rules, rule_data_block> data_block;
 			 std::vector<::ISPA_STD::MatchResult<Rules, rule_nested_rule>> nested_rules;
 		};
 		struct main {

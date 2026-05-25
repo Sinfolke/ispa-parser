@@ -18,14 +18,13 @@ export namespace LangRepr {
     public:
         auto makeIntRValue(int v) -> std::shared_ptr<LangAPI::RValue>;
         auto ensureTypesNs(LangAPI::Type t) -> LangAPI::Type;
+        auto extractRawSymbol(const LangAPI::Type &t) -> stdu::vector<LangAPI::Type>;
         auto createTypeToken() -> LangAPI::TypeAlias;
         auto createLexerClass() -> LangAPI::Class;
         auto getTransitionCount(const std::variant<DFA::FullCharTable, DFA::SortedTransitions> &transition) -> std::size_t;
         auto getStateType(DFA::DfaType state_type) -> LangAPI::IspaLibSymbol;
         auto buildLambdaContent(
             LangAPI::Symbol builder_sym,
-            const LangAPI::Expression &expr,
-            const LangAPI::Type &type,
             const NFA::TemplatedDataBlockValue &data_block,
             long long N
         ) -> LangAPI::StorageSymbol;
