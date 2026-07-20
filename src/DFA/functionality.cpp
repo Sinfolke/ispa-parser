@@ -1,12 +1,27 @@
 module DFA.functionality;
 
 import DFA.API;
+import DFA.Base;
 import DFA.MDFA;
 import DFA.SDFA;
 import DFA.MinDFA;
 import DFA.SortedDFA;
 import DFA.CharMachineDFA;
+import corelib;
 import std;
+
+// Selects a representative (name, datablock) for empty/fallback states.
+// It must skip states with an empty rule_name (e.g. freshly created empty
+// states), otherwise an empty name could be propagated to other empty states.
+template<typename DfaT>
+static auto pickRepresentativeName(DfaT &dfa)
+    -> std::pair<stdu::vector<std::string>, NFA::DataBlock> {
+    for (const auto &[name, datablock] : dfa.getDfaNames(dfa)) {
+        if (!name.empty())
+            return {name, datablock};
+    }
+    return {};
+}
 
 auto DFA::buildDfaIndexToEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaIndexToEmptyStateMap {
     DfaIndexToEmptyStateMap dfa_index_to_empty_state_map;
@@ -15,23 +30,32 @@ auto DFA::buildDfaIndexToEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaIndexToEm
     for (std::size_t dfa_idx = 0; dfa_idx < dfas.size(); ++dfa_idx) {
         auto &dfa = dfas[dfa_idx];
 
-        // scan this DFA's states, starting from index 1 to skip start state
         std::size_t empty_global = std::numeric_limits<std::size_t>::max();
         for (std::size_t local = 1; local < dfa.get().size(); ++local) {
             if (dfa.get()[local].transitions.empty()) {
-                empty_global = global_offset + local;
+                const auto [name, datablock] = pickRepresentativeName(dfa);
+                dfa.get()[local].rule_name = name;
+                dfa.get()[local].dtb = datablock;
+
+                empty_global = global_offset + local; // <-- Fixed
                 break;
             }
         }
 
-        // if none found, append one:
+        // Fallback: if none found, append one and initialize it properly
         if (empty_global == std::numeric_limits<std::size_t>::max()) {
-            empty_global = global_offset + dfa.get().makeNew();
+            // Capture the representative name BEFORE creating the new empty
+            // state, so the new (still unnamed) state does not pollute the
+            // name set with an empty entry.
+            const auto [name, datablock] = pickRepresentativeName(dfa);
+            std::size_t local_new = dfa.get().makeNew();
+            empty_global = global_offset + local_new;
+
+            dfa.get()[local_new].rule_name = name;
+            dfa.get()[local_new].dtb = datablock;
         }
 
         dfa_index_to_empty_state_map[dfa_idx] = empty_global;
-
-        // advance offset for next DFA
         global_offset += dfa.get().size();
     }
     return dfa_index_to_empty_state_map;
@@ -60,7 +84,13 @@ auto DFA::buildDfaEmptyStateMap(stdu::vector<MDFA> &dfas, const stdu::vector<NFA
             count++;
         }
         if (!delayed.empty()) {
+            // Capture the representative name BEFORE creating the new empty
+            // state, so the new (still unnamed) state does not pollute the
+            // name set with an empty entry.
+            const auto [name, datablock] = pickRepresentativeName(dfa);
             empty_state = dfa.get().makeNew();
+            dfa.get()[empty_state].rule_name = name;
+            dfa.get()[empty_state].dtb = datablock;
             for (const auto id : delayed) {
                 dfa_empty_state_map[id] = empty_state;
             }

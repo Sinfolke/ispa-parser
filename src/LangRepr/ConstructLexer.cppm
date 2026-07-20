@@ -30,6 +30,7 @@ export namespace LangRepr {
         ) -> LangAPI::StorageSymbol;
         auto makeEmptyStateLambda(DFA::DfaType dfa_type, const stdu::vector<std::string> &name, const stdu::vector<std::string> &clear_name,
                                     const NFA::DataBlock &nfa_dtb) -> LangAPI::Lambda;
+        auto makeFCDT(std::unordered_set<std::size_t> nested_char_table_states, std::unordered_set<std::size_t> multi_table_states) -> LangAPI::Variable;
         auto constructLexer() -> void;
         ConstructLexer(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir) : holder(holder), lexer_builder(lexer_builder), ir(ir) {}
 

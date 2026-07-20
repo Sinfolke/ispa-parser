@@ -35,7 +35,7 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
             case LangAPI::ValueType::RuleResult:
                 return std::string("::ISPA_STD::MatchResult<Rules, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Variant:
-                return std::string("std::variant<") + convertTemplates(type.template_parameters) + ">";
+                return std::string("std::variant<std::monostate, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Box:
                 return std::string("std::unique_ptr<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Span:
@@ -97,6 +97,8 @@ auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     for (const auto &part : symbol.path) {
         if (std::holds_alternative<std::string>(part)) {
             res += std::get<std::string>(part);
+        } else if (std::holds_alternative<LangAPI::IspaLibSymbol>(part)) {
+            res += convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(part));
         } else {
             // Append function call as a symbol path segment (do not overwrite the accumulated path)
             res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
@@ -143,9 +145,11 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Node:
             return std::string("::ISPA_STD::Node<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
-            return std::string("::ISPA_STD::Lexer_base<") + (symbol.template_parameters.empty() ? "" : convertTemplates(symbol.template_parameters)) + ">";
+            return std::string("::ISPA_STD::Lexer_base") + (symbol.template_parameters.empty() ? "" : ("<Tokens, " + convertTemplates(symbol.template_parameters) + ">"));
         case LangAPI::StdlibExports::Parser:
             return std::string("::ISPA_STD::LLParser_base<Tokens, Rules") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
+        case LangAPI::StdlibExports::LexerMakeTokenParameter:
+            return (symbol.Const ? "const " : "") + std::string("char*") + (symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::DfaCharTransition:
             return "::ISPA_STD::DFAAPI::CharTransition";
         case LangAPI::StdlibExports::DfaCharTableTransition:
@@ -180,6 +184,16 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::DfaSpanTokenTableState:
             return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaNestedCharTable:
+            return "::ISPA_STD::DFAAPI::NestedCharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaSpanCharTable:
+            return "::ISPA_STD::DFAAPI::SpanCharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaSpanNestedCharTable:
+            return "::ISPA_STD::DFAAPI::SpanCharNestedTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaSpanMultiTable:
+            return "::ISPA_STD::DFAAPI::SpanMultiTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaSpanTokenTable:
+            return "::ISPA_STD::DFAAPI::SpanTokenTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::ParserFunctionParameter:
             return "Iterator";
         case LangAPI::StdlibExports::DfaCharDataVector:
@@ -194,6 +208,10 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::MemberBegin") + (symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::DfaCstBuilder:
             return "::ISPA_STD::DFAAPI::Builder<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::FCDTVariant:
+            return "::ISPA_STD::FCDTVariant<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::FCDTTable:
+            return "::ISPA_STD::FCDTTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -207,6 +225,9 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                 break;
             case LangAPI::ExpressionValueType::RValue:
                 out << convertRValue(expr.getRValue());
+                break;
+            case LangAPI::ExpressionValueType::EmptyInitializer:
+                out << "{}";
                 break;
             case LangAPI::ExpressionValueType::ExpressionElement:
                 out << convertExpressionElement(expr.getExpressionElement());
@@ -414,7 +435,7 @@ auto Core::convertFunctionCall(const LangAPI::FunctionCall &call, bool need_temp
     std::string str ;
     if (need_template && !call.template_parameters.empty())
         str += "template ";
-    str += call.name;
+    str += convertSymbol(*call.name);
     if (!call.template_parameters.empty()) {
 
         str += "<" + convertTemplates(call.template_parameters) + ">";
@@ -605,6 +626,12 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::IspaLibDfaEmptyState: {
             const auto &state = rvalue.getIspaLibDfaEmptyState();
             return "{ Tokens::" + corelib::text::join(state.token_name, "_") + ", " + convertLambda(*state.construction_lambda) + " }";
+        }
+        case LangAPI::RValueType::IspaLibDfaSpan: {
+            std::ostringstream out_content;
+            const auto &span = rvalue.getIspaLibDfaSpan();
+            out_content << convertIspaLibSymbol(span.type) << "{" << convertSymbol(span.assing_name) << ".data(), " << convertSymbol(span.assing_name) << ".size()}";
+            return out_content.str();
         }
         case LangAPI::RValueType::Reference:
             return "&" + convertRValue(*rvalue.getReference().value);

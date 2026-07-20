@@ -75,10 +75,10 @@ export namespace LangAPI {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span
     };
     enum class ExpressionValueType {
-        Empty, RValue, ExpressionElement, FunctionCall, IspaLibFunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
+        Empty, EmptyInitializer, RValue, ExpressionElement, FunctionCall, IspaLibFunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
         ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError, Lambda
     };
     enum class ArrayMethods {
@@ -92,13 +92,15 @@ export namespace LangAPI {
         Cpp
     };
     enum class StdlibExports {
-        Node, MatchResult, Lexer, Parser, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
+        Node, MatchResult, Lexer, Parser, LexerMakeTokenParameter, DfaTokenTransition, DfaCharTransition, DfaCharTableTransition,
         DfaMultiTransition, DfaCharState, DfaCharTableState, DfaTokenState, DfaMultiTableState, EmptyState,
         DfaSpanCharState, DfaSpanCharTableState, DfaSpanTokenTableState, DfaSpanMultiTableState,
-        DfaCharTable, DfaTokenTable, DfaMultiTable, ParserFunctionParameter,
+        DfaCharTable, DfaNestedCharTable, DfaTokenTable, DfaMultiTable,
+        DfaSpanCharTable, DfaSpanNestedCharTable, DfaSpanTokenTable, DfaSpanMultiTable,
+        ParserFunctionParameter,
         DfaEmptyStateGroupBegin, DfaEmptyStateMemberBegin,
         DfaCharDataVector, DfaMultiDataVector, DfaUniversalDataVector,
-        DfaCstBuilder
+        DfaCstBuilder, FCDTVariant, FCDTTable
     };
 
 
@@ -179,7 +181,7 @@ export namespace LangAPI {
     struct Type;
     struct Lambda;
     struct IspaLibSymbol;
-
+    struct Symbol;
     struct Char : RValueLevel {
         char value;
         bool escaped = false;
@@ -359,7 +361,7 @@ export namespace LangAPI {
         }
     };
     struct FunctionCall : ExpressionValueLevel {
-        std::string name;
+        std::shared_ptr<Symbol> name;
         stdu::vector<std::variant<Type, RValue>> template_parameters;
         stdu::vector<Expression> args;
 
@@ -378,8 +380,26 @@ export namespace LangAPI {
             return std::tie(name, args);
         }
     };
+    struct IspaLibSymbol {
+        StdlibExports exports;
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
+        bool Const = false;
+        bool Reference = false;
+        bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
+        bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
+        bool operator<(const IspaLibSymbol& other) const {
+            if (exports != other.exports) return exports < other.exports;
+            else return template_parameters < other.template_parameters;
+        }
+        friend auto operator<<(std::ostream& os, const IspaLibSymbol &c) -> std::ostream&;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(exports);
+        }
+    };
     struct Symbol : RValueLevel {
-        using PathPart = std::variant<FunctionCall, std::string>;
+        using PathPart = std::variant<FunctionCall, IspaLibSymbol, std::string>;
         stdu::vector<PathPart> path;
 
         template<typename... Args>
@@ -408,7 +428,7 @@ export namespace LangAPI {
     };
 
     struct StorageSymbol : RValueLevel {
-        using PathPart = std::variant<FunctionCall, ArrayMethodCall, std::string>;
+        using PathPart = std::variant<FunctionCall, ArrayMethodCall, IspaLibSymbol, std::string>;
         Expression what;
         stdu::vector<PathPart> path;
 
@@ -441,24 +461,6 @@ export namespace LangAPI {
         friend struct ::uhash;
         auto members() const {
             return std::tie(what, path);
-        }
-    };
-    struct IspaLibSymbol {
-        StdlibExports exports;
-        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
-        bool Const = false;
-        bool Reference = false;
-        bool operator==(const IspaLibSymbol& other) const { return exports == other.exports; }
-        bool operator!=(const IspaLibSymbol& other) const { return !(*this == other); }
-        bool operator<(const IspaLibSymbol& other) const {
-            if (exports != other.exports) return exports < other.exports;
-            else return template_parameters < other.template_parameters;
-        }
-        friend auto operator<<(std::ostream& os, const IspaLibSymbol &c) -> std::ostream&;
-    private:
-        friend struct ::uhash;
-        auto members() const {
-            return std::tie(exports);
         }
     };
     struct IspaLibFunctionCall : ExpressionValueLevel {
@@ -643,6 +645,24 @@ export namespace LangAPI {
             return std::tie(token_name, construction_lambda);
         }
     };
+    struct IspaLibDfaSpan : RValueLevel {
+        IspaLibSymbol type;
+        LangAPI::Symbol assing_name;
+        auto operator==(const IspaLibDfaSpan& other) const {
+            return type == other.type && assing_name == other.assing_name;
+        }
+        auto operator!=(const IspaLibDfaSpan& other) const { return !(*this == other); }
+        auto operator<(const IspaLibDfaSpan& other) const {
+            if (type != other.type) return type < other.type;
+            else return assing_name < other.assing_name;
+        }
+        friend auto operator<<(std::ostream& os, const IspaLibDfaSpan &c) -> std::ostream&;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(type);
+        }
+    };
     struct Reference : RValueLevel {
         std::shared_ptr<RValue> value;
 
@@ -677,8 +697,19 @@ export namespace LangAPI {
             return std::tie(sym);
         }
     };
+    struct EmptyInitializer : ExpressionValueLevel {
+        bool operator==(const EmptyInitializer&) const { return true; }
+        bool operator!=(const EmptyInitializer&) const { return false; }
+        bool operator<(const EmptyInitializer&) const { return false; }
+        friend auto operator<<(std::ostream& os, const EmptyInitializer &c) -> std::ostream&;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie();
+        }
+    };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, Reference, Span> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -723,6 +754,7 @@ export namespace LangAPI {
         bool isIspaLibDfaSpanState()  const { return std::holds_alternative<IspaLibDfaSpanCharState>(value); }
         bool isIspaLibDfaSpanMultiTableState()  const { return std::holds_alternative<IspaLibDfaSpanMultiTableState>(value); }
         bool isIspaLibDfaEmptyState()  const { return std::holds_alternative<IspaLibDfaEmptyState>(value); }
+        bool isIspaLibDfaSpan()  const { return std::holds_alternative<IspaLibDfaSpan>(value); }
         // bool isIspaLibDfaState()  const { return std::holds_alternative<IspaLibDfaState>(value); }
         bool isReference()  const { return std::holds_alternative<Reference>(value); }
         bool isSpan()  const { return std::holds_alternative<Span>(value); }
@@ -745,6 +777,7 @@ export namespace LangAPI {
         IspaLibDfaSpanCharState&  getIspaLibDfaSpanState()  { return std::get<IspaLibDfaSpanCharState>(value); }
         IspaLibDfaSpanMultiTableState&  getIspaLibDfaMultiTableState()  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
         IspaLibDfaEmptyState&  getIspaLibDfaEmptyState()  { return std::get<IspaLibDfaEmptyState>(value); }
+        IspaLibDfaSpan&  getIspaLibDfaSpan()  { return std::get<IspaLibDfaSpan>(value); }
         // IspaLibDfaState&  getIspaLibDfaState()  { return std::get<IspaLibDfaState>(value); }
         Reference&  getReference()  { return std::get<Reference>(value); }
         Span&  getSpan()  { return std::get<Span>(value); }
@@ -765,6 +798,7 @@ export namespace LangAPI {
         const IspaLibDfaSpanCharState&  getIspaLibDfaSpanCharState() const  { return std::get<IspaLibDfaSpanCharState>(value); }
         const IspaLibDfaSpanMultiTableState&  getIspaLibDfaSpanMultiTableState() const  { return std::get<IspaLibDfaSpanMultiTableState>(value); }
         const IspaLibDfaEmptyState&  getIspaLibDfaEmptyState() const  { return std::get<IspaLibDfaEmptyState>(value); }
+        const IspaLibDfaSpan&  getIspaLibDfaSpan() const { return std::get<IspaLibDfaSpan>(value); }
         // const IspaLibDfaState&  getIspaLibDfaState() const  { return std::get<IspaLibDfaState>(value); }
         const Reference&  getReference() const  { return std::get<Reference>(value); }
         const Span&  getSpan() const  { return std::get<Span>(value); }
@@ -952,6 +986,7 @@ export namespace LangAPI {
         stdu::vector<std::pair<Type, std::string>> parameters;
         Statements statements;
         stdu::vector<std::string> template_parameters;
+        bool override = false;
         bool operator==(const Function& other) const {
             return type == other.type && name == other.name && parameters == other.parameters && statements == other.statements;
         }
@@ -1289,6 +1324,7 @@ export namespace LangAPI {
     struct ExpressionValue : ExpressionLevel {
         std::variant<
             std::monostate,
+            EmptyInitializer,
             RValue,
             ExpressionElement,
             FunctionCall,
@@ -1335,6 +1371,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const ExpressionValue &c) -> std::ostream&;
         // ======= isXXX functions =======
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
+        bool isEmptyInitializer() const { return std::holds_alternative<EmptyInitializer>(value); }
         bool isRvalue() const { return std::holds_alternative<RValue>(value); }
         bool isExpressionElement() const { return std::holds_alternative<ExpressionElement>(value); }
         bool isFunctionCall() const { return std::holds_alternative<FunctionCall>(value); }

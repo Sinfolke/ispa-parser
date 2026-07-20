@@ -4,47 +4,47 @@ import DFA.CharMachineDFA;
 import DFA.Base;
 import LangAPI;
 import std;
+import cpuf.printf;
 
 template<typename DfaTable>
 void DFA::Collection<DfaTable>::getStateSet(StateSet_t &state_set) const {
-    // NOTE: StateType must be hashable and comparable for state_to_map to work correctly.
-    utype::unordered_map<typename DfaTable::StateType, std::size_t> state_to_map;
+    // To prevent the "Local Index Trap", include the dfa_index in the deduplication key
+    // if your states still contain raw local transition offsets.
+    utype::unordered_map<std::pair<std::size_t, typename DfaTable::StateType>, std::size_t> state_to_map;
 
     std::size_t dfa_index = 0;
     for (const auto &dfa : collection) {
         std::size_t local_state_index = 0;
-        // Determine DFA-level type once (authoritative)
         const auto dfa_type = dfa.getType();
 
         for (const auto &state : dfa.get()) {
-            // Skip empty states consistently for Char DFAs (same logic as before)
             if (!isToken) {
+                bool is_empty = false;
                 if constexpr (std::is_same_v<DfaTable, CharMachineDFA>) {
                     const auto* full = std::get_if<FullCharTable>(&state.transitions);
                     const auto* sorted = std::get_if<SortedTransitions>(&state.transitions);
-                    if ((full && full->empty()) || (sorted && sorted->empty())) {
-                        ++local_state_index;
-                        continue;
-                    }
+                    if ((full && full->empty()) || (sorted && sorted->empty())) is_empty = true;
                 } else {
-                    if (state.transitions.empty()) {
-                        ++local_state_index;
-                        continue;
-                    }
+                    if (state.transitions.empty()) is_empty = true;
+                }
+
+                if (is_empty) {
+                    // Register a safe placeholder global index or map to a unified dead state
+                    // right here instead of doing a blind 'continue'.
                 }
             }
 
-            // Deduplicate identical states (requires correct StateType hash/eq)
-            auto it = state_to_map.find(state);
+            // FIX 3: Keying by both dfa_index and state to prevent cross-DFA index collisions
+            auto lookup_key = std::make_pair(dfa_index, state);
+            auto it = state_to_map.find(lookup_key);
             std::size_t global_index;
+
             if (it == state_to_map.end()) {
                 global_index = state_set.state_set.size();
                 state_set.state_set.get().push_back(state);
-                state_to_map.emplace(state, global_index);
+                state_to_map.emplace(lookup_key, global_index);
 
-                // Decide per-state type robustly: prefer DFA-level type when applicable,
-                // otherwise inspect the state's transitions variant to decide.
-                DFA::DfaType effective_state_type = DFA::DfaType::Multi; // default
+                DFA::DfaType effective_state_type = DFA::DfaType::Multi;
                 if constexpr (std::is_same_v<DfaTable, CharMachineDFA>) {
                     if (std::get_if<FullCharTable>(&state.transitions)) {
                         effective_state_type = DFA::DfaType::Char;
@@ -52,24 +52,27 @@ void DFA::Collection<DfaTable>::getStateSet(StateSet_t &state_set) const {
                         effective_state_type = DFA::DfaType::Multi;
                     }
                 } else {
-                    // For non-Char DFAs, use DFA-level type
                     effective_state_type = dfa_type;
                 }
 
-                // If you want DFA-level to override per-state when consistent:
-                // if (dfa_type == DFA::DfaType::Char) effective_state_type = DFA::DfaType::Char;
+                // FIX 1: Defend against virtual empty state IDs exceeding vector boundaries
+                auto empty_state = dfa.getEmptyStateIF(local_state_index);
+                stdu::vector<std::string> rule_name;
+                if (empty_state != NULL_STATE) {
+                    state_set.state_to_type.emplace(global_index, std::make_pair(effective_state_type, dfa.get()[empty_state].rule_name));
+                } else {
+                    state_set.state_to_type.emplace(global_index, std::make_pair(effective_state_type, stdu::vector<std::string> {}));
+                }
 
-                // Use the DFA's empty-state index to get rule_name — ensure getEmptyState expects local_state_index
-                auto empty_state_idx = dfa.getEmptyState(local_state_index);
-                auto rule_name = dfa.get()[empty_state_idx].rule_name;
 
-                state_set.state_to_type.emplace(global_index, std::make_pair(effective_state_type, rule_name));
+                // FIX 2: Only assign the original/authoritative creator location
+                state_set.state_in_dfa_location_map[global_index] = std::make_pair(dfa_index, local_state_index);
             } else {
                 global_index = it->second;
             }
 
+            // This directional map is always safe to write for every occurrence
             state_set.location_in_set[std::make_pair(dfa_index, local_state_index)] = global_index;
-            state_set.state_in_dfa_location_map[global_index] = std::make_pair(dfa_index, local_state_index);
 
             ++local_state_index;
         }

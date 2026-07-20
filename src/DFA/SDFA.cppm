@@ -6,6 +6,7 @@ import DFA.States;
 import DFA.MDFA;
 import DFA.Base;
 import hash;
+import cpuf.op;
 import dstd;
 import std;
 export namespace DFA {
@@ -26,9 +27,11 @@ export namespace DFA {
 
         auto &get() const       { return states; }
         auto &get()             { return states; }
+        auto check_dfa() -> void;
 
         auto clear() -> void;
 
         auto getType() const -> DfaType;
+        friend auto operator<<(std::ostream& os, const SDFA& dfa) -> std::ostream&;
     };
 }

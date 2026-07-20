@@ -22,6 +22,8 @@
 #include <unordered_set>
 
 #include "old/ispastdlib.hpp"
+#include "old/ispastdlib.hpp"
+#include "old/ispastdlib.hpp"
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -137,7 +139,7 @@ class Span {
 
         Span() : data_(nullptr), size_(0) {}
 
-        Span(T* data, size_type size)
+        Span(pointer data, size_type size)
             : data_(data), size_(size) {}
 
         template<std::size_t N>
@@ -151,7 +153,6 @@ class Span {
         >
         Span(const Span<U>& other) noexcept
             : data_(other.data()), size_(other.size()) {}
-
         [[nodiscard]] pointer data() const { return data_; }
         [[nodiscard]] size_type size() const { return size_; }
         [[nodiscard]] bool empty() const { return size_ == 0; }
@@ -317,7 +318,7 @@ namespace DFAAPI {
 
     template<typename TOKEN_T, typename Token>
     using CharTableTransition = Transition<
-        Span<const std::variant<
+        Span<std::variant<
             SpanState<CharTransition>,
             EmptyState<TOKEN_T, Token>
         >>
@@ -377,10 +378,11 @@ namespace DFAAPI {
     template<typename TOKEN_T, typename Token>
     using SpanMultiTableState = SpanState<AnyTransition<TOKEN_T, Token>>;
 
-    // non-span table types (need ReturnType for CharEmptyState / MultiTableEmptyState)
+    // non-span table types
     template<typename TOKEN_T, typename Token, std::size_t N>
     using CharTable = std::array<std::variant<SpanCharState, EmptyState<TOKEN_T, Token>>, N>;
-
+    template<typename TOKEN_T, typename Token, std::size_t N>
+    using NestedCharTable = std::array<std::variant<SpanCharTableState<TOKEN_T, Token>, EmptyState<TOKEN_T, Token>>, N>;
     template<typename TOKEN_T, std::size_t N>
     using TokenTable = std::array<SpanTokenTableState<TOKEN_T>, N>;
 
@@ -394,10 +396,11 @@ namespace DFAAPI {
 
     // span table types
     template<typename TOKEN_T, typename Token>
-    using SpanCharTable = Span<const std::variant<SpanCharState, EmptyState<TOKEN_T, Token>>>;
-
+    using SpanCharTable = Span<std::variant<SpanCharState, EmptyState<TOKEN_T, Token>>>;
+    template<typename TOKEN_T, typename Token>
+    using SpanNestedCharTable = Span<std::variant<SpanCharTableState<TOKEN_T, Token>, EmptyState<TOKEN_T, Token>>>;
     template<typename TOKEN_T>
-    using SpanTokenTable = Span<const SpanState<TokenTransition<TOKEN_T>>>;
+    using SpanTokenTable = Span<SpanState<TokenTransition<TOKEN_T>>>;
 
     // structures
 
@@ -428,8 +431,11 @@ namespace DFAAPI {
         SpanState(std::size_t else_goto, std::size_t else_goto_accept, Span<T> transitions) :
         else_goto(else_goto), else_goto_accept(else_goto_accept), transitions(transitions) {}
         template<std::size_t N>
-        SpanState(std::size_t else_goto, std::size_t else_goto_accept, std::array<T, N> transitions) :
-        else_goto(else_goto), else_goto_accept(else_goto_accept), transitions(Span {transitions.data(), transitions.size()}) {}
+        SpanState(std::size_t else_goto, std::size_t else_goto_accept, std::array<T, N>& transitions) :
+                else_goto(else_goto),
+                else_goto_accept(else_goto_accept),
+                transitions(transitions.data(), N)
+        {}
     };
 
     template<typename TOKEN_T, typename Token>
@@ -443,7 +449,14 @@ namespace DFAAPI {
         >;
 
         // 2. Add 'const' inside the Span so it can bind to static tables safely
-        Span<const state_variant_t> states;
+        Span<state_variant_t> states;
+
+        SpanMultiTable() = default;
+
+        SpanMultiTable(state_variant_t* ptr, std::size_t size)
+            : states(ptr, size) {}
+        SpanMultiTable(const Span<state_variant_t> &span)
+            : states(span) {}
     };
     template<typename ResultToken, typename Token, typename ...Args>
     class Builder {
@@ -465,24 +478,36 @@ namespace DFAAPI {
         template <typename T>
         static constexpr bool is_variant_v = is_variant<T>::value;
 
-        // --- 2. Smart Target Assignment ---
-        // Safely assigns or constructs a source value into a target slot, even if the target is an AST Node or a Variant of Nodes.
+        // C++17 structural replacement for the variant constructor loop
+        template <typename... Vars, typename Source>
+        constexpr bool assign_to_variant_alternative(std::variant<Vars...>& target_variant, Source&& source) {
+            bool assigned = false;
+            // C++17 fold expression over comma operator to check options
+            (..., ([&]() {
+                using Alternative = Vars;
+                if constexpr (std::is_constructible_v<Alternative, Source>) {
+                    if (!assigned) {
+                        target_variant.template emplace<Alternative>(std::forward<Source>(source));
+                        assigned = true;
+                    }
+                }
+            }()));
+            return assigned;
+        }
+
         template <typename Target, typename Source>
         constexpr bool smart_assign(Target& target, Source&& source) {
             using T = std::decay_t<Target>;
             using S = std::decay_t<Source>;
 
-            // A. Direct Assignment (Same types)
             if constexpr (std::is_assignable_v<Target&, S>) {
                 target = std::forward<Source>(source);
                 return true;
             }
-            // B. Constructor Initialization (e.g., Node(source))
             else if constexpr (std::is_constructible_v<T, S>) {
                 target = T(std::forward<Source>(source));
                 return true;
             }
-            // C. String -> Char Lexer optimization boundary
             else if constexpr (std::is_same_v<T, char> && std::is_convertible_v<S, std::string>) {
                 if (!source.empty()) {
                     target = source[0];
@@ -490,28 +515,11 @@ namespace DFAAPI {
                 }
                 return false;
             }
-            // D. Target is a Variant (e.g., std::variant<NodeA, NodeB>)
             else if constexpr (is_variant_v<T>) {
+                // Safe, fast, and completely C++17 compliant
                 return assign_to_variant_alternative(target, std::forward<Source>(source));
             }
-
             return false;
-        }
-
-        // Helper to attempt construction on the internal types of a target variant
-        template <typename... Vars, typename Source>
-        constexpr bool assign_to_variant_alternative(std::variant<Vars...>& target_variant, Source&& source) {
-            bool assigned = false;
-            // Fold expression: attempt to construct/assign each type in the variant. Short circuits on first success.
-            ( ... || ([&]() {
-                if constexpr (std::is_assignable_v<Vars&, Source> || std::is_constructible_v<Vars, Source>) {
-                    target_variant = Vars(std::forward<Source>(source));
-                    assigned = true;
-                    return true;
-                }
-                return false;
-            }()) );
-            return assigned;
         }
 
         // --- 3. Internal Condition Matching ---
@@ -595,6 +603,12 @@ namespace DFAAPI {
             if (i == null_state) i = group_count++;
 
             std::visit([&](const auto& actual_data) {
+                if (group_count >= actual_data.size()) {
+                    std::cerr << "CRITICAL: Attempting to access group " << N
+                              << " but data size is " << actual_data.size() << std::endl;
+                    // Breakpoint here
+                    throw "";
+                }
                 std::string concated_string;
 
                 // Safe recursive string extraction from any variant depth
@@ -641,49 +655,44 @@ namespace DFAAPI {
             return token;
         }
     };
-    inline void openGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t &lowest_open_index, std::size_t group_begin_index) {
-        if (lowest_open_index >= index)
-            return;
-        auto how_much_to_open = index - lowest_open_index;
-        for (; how_much_to_open > 0; --how_much_to_open) {
-            inclosed_groups.push_back(gb.size());
-            gb.emplace_back(group_begin_index, 0);
-        }
-        lowest_open_index = index + 1;
-    }
-    inline void closeGroups(GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t group_end_index) {
-        // Close all groups up to and including the specified closing_group_index
-        while (!inclosed_groups.empty()) {
-            auto current_group = inclosed_groups.back();
+}
+template<typename TOKEN_T, typename Token>
+using FCDTVariant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, Token>, DFAAPI::SpanNestedCharTable<TOKEN_T, Token>, DFAAPI::SpanMultiTable<TOKEN_T, Token>>;
+template<typename TOKEN_T, typename Token>
+using FCDTTable = std::array<FCDTVariant<TOKEN_T, Token>, std::numeric_limits<unsigned char>::max() + 1>;
 
-            // Close it
-            gb[current_group].second = group_end_index;
+namespace DFA {
+    inline void openGroups(DFAAPI::GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t group_begin_index) {
+        if (gb.size() <= index) {
+            gb.resize(index + 1, {0, 0});
+        }
+        gb[index] = {group_begin_index, 0}; // Reset to start
+        inclosed_groups.push_back(index);
+    }
+
+    inline void closeGroups(DFAAPI::GroupBegin &gb, std::vector<std::size_t> &inclosed_groups, std::size_t index, std::size_t group_end_index) {
+        while (!inclosed_groups.empty()) {
+            auto current_group_id = inclosed_groups.back();
+
+            // Safety: ensure the ID exists in our storage
+            if (current_group_id < gb.size()) {
+                gb[current_group_id].second = group_end_index;
+            }
+
             inclosed_groups.pop_back();
 
-            if (current_group == index) {
-                // Done closing all nested groups within this group
+            if (current_group_id == index) {
                 break;
             }
         }
     }
-
-}
-template<typename TOKEN_T, typename Return_t, typename ReferringReturnType, typename ...MULTITABLES>
-using fcdt_variant = std::variant<std::monostate, DFAAPI::SpanCharTable<TOKEN_T, ReferringReturnType>, MULTITABLES...>;
-template<typename TOKEN_T, typename ...FCDT_VARIANTS>
-using fcdt_table = std::array<std::variant<FCDT_VARIANTS...>, std::numeric_limits<unsigned char>::max() + 1>;
-
-template<typename TOKEN_T, typename Token>
-class DFA {
-
-protected:
-    static auto find_key(const DFAAPI::SpanCharState &state, const char* pos) -> const DFAAPI::CharTransition* {
+    inline auto find_key(const DFAAPI::SpanCharState &state, const char* pos) -> const DFAAPI::CharTransition* {
         if (const auto &t = state.transitions[*pos]; t.next != DFAAPI::null_state)
             return &t;
         return nullptr;
     }
-    template <typename IT>
-    static auto find_key(const DFAAPI::SpanTokenTableState<TOKEN_T> &state, IT &pos) -> const DFAAPI::TokenTransition<TOKEN_T>* {
+    template<typename TOKEN_T, typename IT>
+    inline auto find_key(const DFAAPI::SpanTokenTableState<TOKEN_T> &state, const IT &pos) -> const DFAAPI::TokenTransition<TOKEN_T>* {
         for (const auto &t : state.transitions) {
             if (t.symbol == pos->name()) {
                 return &t;
@@ -691,8 +700,72 @@ protected:
         }
         return nullptr;
     }
-    template<typename IT, typename ReferringReturnType, typename PanicModeFunc, typename DataStorageType>
-    static auto match(const DFAAPI::SpanCharTable<TOKEN_T, ReferringReturnType> table, IT pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, DataStorageType> {
+    template<typename Transition, typename DataVector>
+    static void apply_transition_effects(
+        const Transition& tr,
+        DFAAPI::MemberBegin& member_begin,
+        DFAAPI::GroupBegin& group_begin,
+        std::vector<std::size_t>& inclosed_groups,
+        DataVector& data,
+        bool& closed
+    ) {
+        // 1. Mark member boundaries if needed
+        if (tr.new_member) {
+            member_begin.push_back(data.size());
+        }
+
+        // 2. Consume/Create the CST node first so data.size() updates
+        if (tr.new_cst_node) {
+            data.emplace_back("");
+            closed = false;
+        }
+
+        // 3. Close groups (now includes the new node if using standard half-open intervals [start, end))
+        if (tr.group_close != DFAAPI::null_state) {
+            closeGroups(group_begin, inclosed_groups, tr.group_close, data.size());
+        }
+
+        // 4. Open new groups (starts at the index of the NEXT node to be added)
+        if (tr.new_group != DFAAPI::null_state) {
+            openGroups(group_begin, inclosed_groups, tr.new_group, data.size());
+        }
+
+        // 5. Finalize node state flags
+        if (tr.close_cst_node) {
+            closed = true;
+        }
+    }
+    template<typename DataVector, typename Value>
+    static void append_if_open(DataVector& data, bool closed, Value&& value) {
+        if (!closed) {
+            if constexpr (std::is_same_v<std::decay_t<Value>, char>) {
+                std::get<std::string>(data.back()) += value;
+            } else {
+                data.push_back(std::forward<Value>(value));
+            }
+        }
+    }
+    template<typename Transition, typename DataVector, typename AdvanceFunc, typename AppendFunc>
+    static void commit_match(
+        const Transition& tr,
+        AdvanceFunc&& advance,
+        AppendFunc&& append,
+        DFAAPI::MemberBegin& member_begin,
+        DFAAPI::GroupBegin& group_begin,
+        std::vector<std::size_t>& inclosed_groups,
+        DataVector& data,
+        bool& closed,
+        std::size_t& state
+    ) {
+            advance();
+            state = tr.next;
+            apply_transition_effects(
+                tr, member_begin, group_begin, inclosed_groups,data, closed
+            );
+            append();
+    }
+    template<typename TOKEN_T, typename Token, typename PanicModeFunc>
+    auto match(const DFAAPI::SpanCharTable<TOKEN_T, Token> table, const char* pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, Token> {
         std::size_t state = 0;
         DFAAPI::MemberBegin member_begin;
         DFAAPI::GroupBegin group_begin;
@@ -702,52 +775,239 @@ protected:
         std::size_t lowest_open_index = 0;
         auto start = pos;
         bool closed = true;
-        do {
+        while (true) {
+            if (std::holds_alternative<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state])) {
+                break;
+            }
+
             const auto &s = std::get<DFAAPI::SpanCharState>(table[state]);
             decltype(auto) new_state = find_key(s, pos);
             if (new_state != nullptr) {
                 pos++;
                 state = new_state->next;
-                if (new_state->new_member) {
-                    member_begin.push_back(data.size());
-                }
-                if (new_state->group_close != DFAAPI::null_state) {
-                    DFAAPI::closeGroups(group_begin, inclosed_groups, new_state->group_close, data.size());
-                }
-                if (new_state->new_group != DFAAPI::null_state) {
-                    DFAAPI::openGroups(group_begin, inclosed_groups, new_state->new_group, lowest_open_index, data.size());
-                }
-                if (new_state->close_cst_node) {
-                    closed = true;
-                }
-                if (new_state->new_cst_node) {
-                    data.emplace_back();
-                    closed = false;
-                }
+                apply_transition_effects(*new_state, member_begin, group_begin, inclosed_groups, data, closed);
                 if (!closed) {
                     data.back() += new_state->symbol;
                 }
             } else if (s.else_goto) {
+                std::cout << "Current state: " << state << ". Else goto to " << s.else_goto << std::endl;
                 state = s.else_goto;
+                std::cout << "New state: " << state << std::endl;
             } else {
                 if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
                     if (panic_mode != nullptr) {
                         // TODO: Throw error here
+                        if (*pos == '\0') {
+                           break;
+                        }
                         panic_mode(pos);
                         continue;
                     }
                 }
                 return {};
             }
-        } while (!std::holds_alternative<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state]));
+        }
         for (const auto id : inclosed_groups) {
             group_begin[id].second = data.size();
         }
+        std::cout << "result: [" << std::string(start, pos - start) << "; len=" << pos - start << "\n";
         const auto e_state = std::get<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state]);
-        return MatchResult<TOKEN_T, DataStorageType> {true, Node<TOKEN_T, DataStorageType> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, data) }};
+        return MatchResult<TOKEN_T, Token> {true, Node<TOKEN_T, Token> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, DFAAPI::UniversalDataVector<Token> {data}) }};
     }
-    template<typename IT, typename PanicModeFunc>
-    static auto decide(const DFAAPI::SpanTokenTable<TOKEN_T> &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
+    template<typename TOKEN_T, typename Token, typename PanicModeFunc>
+    static auto advanced_match(const DFAAPI::SpanMultiTable<TOKEN_T, Token> &table, const char* pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, Token> {
+        std::size_t state = 0;
+        DFAAPI::MemberBegin member_begin;
+        DFAAPI::GroupBegin group_begin;
+        DFAAPI::MultiTableDataVector<Token> data;
+
+        std::vector<std::size_t> inclosed_groups;
+        std::size_t lowest_open_index = 0; // Initialized to prevent undefined behavior
+        auto start = pos;
+        bool closed = true;
+        bool failed = false;
+
+        do {
+            const auto &current_state = table.states[state];
+
+            if (std::holds_alternative<DFAAPI::SpanCharState>(current_state)) {
+                auto &t = std::get<DFAAPI::SpanCharState>(current_state);
+                decltype(auto) new_state = find_key(t, pos);
+                if (new_state == nullptr) {
+                    if (t.else_goto) {
+                        state = t.else_goto;
+                        continue;
+                    }
+                    failed = true;
+                    break;
+                }
+                pos++;
+                apply_transition_effects(*new_state, member_begin, group_begin, inclosed_groups, data, closed);
+                state = new_state->next; // Added to ensure the state pointer actually progresses
+            } else {
+                std::visit([&](const auto &t) {
+                    using T = std::decay_t<decltype(t)>;
+
+                    // 1. Handle CharTable State
+                    if constexpr (std::is_same_v<T, DFAAPI::SpanCharTableState<TOKEN_T, Token>>) {
+                        bool matched = false;
+                        for (const auto &option : t.transitions) {
+                            // option is directly a CharTableTransition (No inner std::visit needed)
+                            if (auto res = match<TOKEN_T, Token, PanicModeFunc>(option.symbol, pos, nullptr); res.status) {
+                                pos += res.node.length();
+                                apply_transition_effects(option, member_begin, group_begin, inclosed_groups, data, closed);
+                                state = option.next;
+                                matched = true;
+                                break;
+                            }
+                        }
+                        if (!matched) {
+                            if (t.else_goto) { state = t.else_goto; }
+                            else { failed = true; }
+                        }
+                    }
+                    // 2. Handle MultiTable State (Contains explicit sub-variants)
+                    else if constexpr (std::is_same_v<T, DFAAPI::SpanMultiTableState<TOKEN_T, Token>>) {
+                        bool matched = false;
+                        for (const auto &option : t.transitions) {
+                            // Pass option.value to std::visit because AnyTransition holds the variant inside '.value'
+                            std::visit([&](const auto &sub_t) {
+                                using SubT = std::decay_t<decltype(sub_t)>;
+
+                                if constexpr (std::is_same_v<SubT, DFAAPI::CharTransition>) {
+                                    if (*pos == sub_t.symbol) {
+                                        pos++;
+                                        state = sub_t.next;
+                                        apply_transition_effects(sub_t, member_begin, group_begin, inclosed_groups, data, closed);
+                                        matched = true;
+                                    }
+                                } else if constexpr (std::is_same_v<SubT, DFAAPI::CharTableTransition<TOKEN_T, Token>>) {
+                                    if (auto res = match<TOKEN_T, Token, PanicModeFunc>(sub_t.symbol, pos, nullptr); res.status) {
+                                        pos += res.node.length();
+                                        apply_transition_effects(sub_t, member_begin, group_begin, inclosed_groups, data, closed);
+                                        state = sub_t.next;
+                                        matched = true;
+                                    }
+                                } else if constexpr (std::is_same_v<SubT, DFAAPI::MultiTableTransition<TOKEN_T, Token>>) {
+                                    if (auto res = advanced_match<TOKEN_T, Token, PanicModeFunc>(sub_t.symbol, pos, nullptr); res.status) {
+                                        pos += res.node.length();
+                                        apply_transition_effects(sub_t, member_begin, group_begin, inclosed_groups, data, closed);
+                                        state = sub_t.next;
+                                        matched = true;
+                                    }
+                                }
+                            }, option.value);
+
+                            if (matched) break;
+                        }
+                        if (!matched) {
+                            if (t.else_goto) {
+                                state = t.else_goto;
+                                std::cout << "Else goto in advanced to state " << state << std::endl;
+                            }
+                            else { failed = true; }
+                        }
+                    }
+                    // 3. Fallback for EmptyState (Prunes it cleanly at compile-time)
+                    else {
+                        // Do nothing; handled by outer loop termination
+                    }
+                }, current_state);
+            }
+        } while (!std::holds_alternative<DFAAPI::EmptyState<TOKEN_T, Token>>(table.states[state]) && !failed);
+
+        if (failed) {
+            if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
+                if (panic_mode != nullptr) {
+                    panic_mode(pos);
+                }
+            }
+            return {};
+        }
+
+        for (const auto id : inclosed_groups) {
+            group_begin[id].second = data.size();
+        }
+        const auto &e_state = std::get<DFAAPI::EmptyState<TOKEN_T, Token>>(table.states[state]);
+        return MatchResult<TOKEN_T, Token> {true, Node<TOKEN_T, Token> { 0, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0, 0, e_state.name, e_state.ast_builder(member_begin, group_begin, DFAAPI::UniversalDataVector<Token> {data}) }};
+    }
+    template<typename TOKEN_T, typename Token, typename PanicModeFunc>
+    static auto advanced_match(const DFAAPI::SpanNestedCharTable<TOKEN_T, Token> &table, const char* pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, Token> {
+        std::size_t state = 0;
+        DFAAPI::MemberBegin member_begin;
+        DFAAPI::GroupBegin group_begin;
+        DFAAPI::MultiTableDataVector<Token> data; // Tied to the Token type parameter
+
+        std::vector<std::size_t> inclosed_groups;
+        std::size_t lowest_open_index = 0;
+        auto start = pos;
+        bool closed = true;
+        bool failed = false;
+
+        // Loop until we hit an Accepting/EmptyState or encounter a match failure
+        while (!std::holds_alternative<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state]) && !failed) {
+            if (std::holds_alternative<DFAAPI::SpanCharTableState<TOKEN_T, Token>>(table[state])) {
+                const auto &curr_state = std::get<DFAAPI::SpanCharTableState<TOKEN_T, Token>>(table[state]);
+                bool matched = false;
+
+                // Iterate through the transitions for the current state
+                for (const auto &t : curr_state.transitions) {
+                    // t.symbol is a SpanCharTable. We run the base match function over it.
+                    if (auto res = match<TOKEN_T, Token, PanicModeFunc>(t.symbol, pos, nullptr); res.status) {
+                        pos += res.node.length(); // Advance the stream pointer by match length
+                        apply_transition_effects(t, member_begin, group_begin, inclosed_groups, data, closed);
+                        state = t.next;           // Move to the next DFA state
+                        matched = true;
+                        break;                    // Transition found, break out of inner look ahead
+                    }
+                }
+
+                // Fallback strategy if no explicit nested table transition matched
+                if (!matched) {
+                    if (curr_state.else_goto != DFAAPI::null_state) {
+                        state = curr_state.else_goto;
+                    } else {
+                        failed = true;
+                    }
+                }
+            } else {
+                // Safety fallback if the state variant layout is corrupted
+                failed = true;
+            }
+        }
+
+        if (failed) {
+            if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
+                if (panic_mode != nullptr) {
+                    panic_mode(pos);
+                }
+            }
+            return {}; // Return un-matched / empty result
+        }
+
+        // Close any unclosed capturing groups at termination
+        for (const auto id : inclosed_groups) {
+            group_begin[id].second = data.size();
+        }
+
+        // We have safely reached an Accepting State
+        const auto &e_state = std::get<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state]);
+        return MatchResult<TOKEN_T, Token> {
+            true,
+            Node<TOKEN_T, Token> {
+                0, /* todo */
+                start,
+                pos,
+                static_cast<std::size_t>(std::distance(start, pos)),
+                0, /* todo */
+                0, /* todo */
+                e_state.name,
+                e_state.ast_builder(member_begin, group_begin, DFAAPI::UniversalDataVector<Token> {data})
+            }
+        };
+    }
+    template<typename TOKEN_T, typename IT, typename PanicModeFunc>
+    auto decide(const DFAAPI::SpanTokenTable<TOKEN_T> &table, IT &pos, PanicModeFunc panic_mode) -> std::size_t {
         std::size_t state = 0;
         std::size_t accept = std::numeric_limits<std::size_t>::max();
         do {
@@ -775,162 +1035,9 @@ protected:
         return accept;
     }
 };
-template<typename TOKEN_T, typename Token>
-class AdvancedDFA : DFA<TOKEN_T, Token> {
-    static auto find_key(const DFAAPI::SpanCharState &state, const char* pos) -> const DFAAPI::CharTransition* {
-        for (const auto &transition : state.transitions) {
-            if (*pos == transition.symbol) {
-                printf("lookup for symbol %c successfull\n", *pos);
-                return &transition;
-            }
-        }
-        return nullptr;
-    }
-    template<typename Transition, typename DataVector>
-    static void apply_transition_effects(
-        const Transition& tr,
-        DFAAPI::MemberBegin& member_begin,
-        DFAAPI::GroupBegin& group_begin,
-        std::vector<std::size_t>& inclosed_groups,
-        std::size_t& lowest_open_index,
-        DataVector& data,
-        bool& closed
-    ) {
-            if (tr.new_member) {
-                member_begin.push_back(data.size());
-            }
-            if (tr.group_close != DFAAPI::null_state) {
-                DFAAPI::closeGroups(group_begin, inclosed_groups, tr.group_close, data.size());
-            }
-            if (tr.new_group != DFAAPI::null_state) {
-                DFAAPI::openGroups(group_begin, inclosed_groups, tr.new_group, lowest_open_index, data.size());
-            }
-            if (tr.close_cst_node) {
-                closed = true;
-            }
-            if (tr.new_cst_node) {
-                data.emplace_back();
-                closed = false;
-            }
-    }
-    template<typename DataVector, typename Value>
-    static void append_if_open(DataVector& data, bool closed, Value&& value) {
-        if (!closed) {
-            if constexpr (std::is_same_v<std::decay_t<Value>, char>) {
-                std::get<std::string>(data.back()) += value;
-            } else {
-                data.push_back(std::forward<Value>(value));
-            }
-        }
-    }
-    template<typename Transition, typename DataVector, typename AdvanceFunc, typename AppendFunc>
-    static void commit_match(
-        const Transition& tr,
-        AdvanceFunc&& advance,
-        AppendFunc&& append,
-        DFAAPI::MemberBegin& member_begin,
-        DFAAPI::GroupBegin& group_begin,
-        std::vector<std::size_t>& inclosed_groups,
-        std::size_t& lowest_open_index,
-        DataVector& data,
-        bool& closed,
-        std::size_t& state
-    ) {
-            advance();
-            state = tr.next;
-            apply_transition_effects(
-                tr, member_begin, group_begin, inclosed_groups,
-                lowest_open_index, data, closed
-            );
-            append();
-    }
-protected:
-    template<typename PanicModeFunc>
-    static auto match(const DFAAPI::SpanMultiTable<TOKEN_T, Token> &table, const char* pos, PanicModeFunc panic_mode) -> MatchResult<TOKEN_T, Token> {
-        std::size_t state = 0;
-        DFAAPI::MemberBegin member_begin;
-        DFAAPI::GroupBegin group_begin;
-        DFAAPI::MultiTableDataVector<TOKEN_T> data;
-
-        std::vector<std::size_t> inclosed_groups;
-        std::size_t lowest_open_index;
-        auto start = pos;
-        bool closed = true;
-        bool failed = false;
-        do {
-            if (std::holds_alternative<DFAAPI::SpanCharState>(table[state])) {
-                auto &t = std::get<DFAAPI::SpanCharState>(table[state]);
-                decltype(auto) new_state = find_key(t, pos);
-                if (new_state == nullptr) {
-                    if (t.else_goto) {
-                        state = t.else_goto;
-                        return;
-                    }
-                    failed = true;
-                    return;
-                }
-                pos++;
-                apply_transition_effects(new_state, member_begin, group_begin, inclosed_groups, lowest_open_index, data, closed);
-            } else {
-                std::visit([&](const auto &t) {
-                    bool matched = false;
-                    for (const auto &option : t.transitions) {
-                        // Each option is:
-                        //   std::variant<SpanCharTableState, SpanCallableTokenState<TOKEN_T>, SpanMultiTableState<TOKEN_T>, SpanEmptyTableState>
-                        std::visit([&](const auto &t) {
-                            if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTransition>) {
-                                if (*pos == t.symbol) {
-                                    pos++;
-                                    state = t.next;
-                                    apply_transition_effects(t, member_begin, group_begin, inclosed_groups, lowest_open_index, data, closed);
-                                    matched = true;
-                                }
-                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::CharTableTransition<TOKEN_T, Token>>) {
-                                printf("t.symbol size: %zu, pos: %c\n", t.symbol.size(), *pos);
-                                if (auto res = DFA<TOKEN_T, Token>::match(t.symbol, pos, nullptr); res.status) {
-                                    printf("Successfull match\n");
-                                    pos += res.node.length();
-                                    apply_transition_effects(t, member_begin, group_begin, inclosed_groups, lowest_open_index, data, closed);
-                                    matched = true;
-                                } else {
-                                    printf("Not matched\n");
-                                }
-                            } else if constexpr (std::is_same_v<std::decay_t<decltype(t)>, DFAAPI::MultiTableTransition<TOKEN_T, Token>>) {
-                                if (auto res = AdvancedDFA::match<PanicModeFunc>(t.symbol, pos, nullptr); res.status) {
-                                    pos += res.node.length();
-                                    apply_transition_effects(t, member_begin, group_begin, inclosed_groups, lowest_open_index, data, closed);
-                                    matched = true;
-                                }
-                            } else throw std::runtime_error("Unknown transition type");
-                        }, option);
-                        if (matched) {
-                            break; // If matched, stop iterating other options
-                        } else {
-                             // Fallback to else_goto if exists
-                             if (t.else_goto) {
-                                 state = t.else_goto;
-                             } else {
-                                 failed = true;
-                             }
-                         }
-                    }
-                }, table.states[state]);
-            }
-        } while (!std::holds_alternative<DFAAPI::EmptyState<TOKEN_T, Token>>(table.states[state]) && !failed);
-        if (failed) {
-            printf("Failed is set: leaving\n");
-            return {};
-        }
-        for (const auto id : inclosed_groups) {
-            group_begin[id].second = data.size();
-        }
-        const auto &e_state = std::get<DFAAPI::EmptyState<TOKEN_T, Token>>(table.states[state]);
-        return e_state.ast_builder(member_begin, group_begin, data);
-    }
-};
 using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
 template<class TOKEN_T, typename Token>
-class Lexer_base : AdvancedDFA<TOKEN_T, Token> {
+class Lexer_base {
 protected:
     const char* _in = nullptr;
     TokenFlow<TOKEN_T, Token> tokens;
@@ -993,32 +1100,38 @@ protected:
             error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
     }
     static void panic_mode(const char* &pos) {
+        std::cout << "Panic mode reached at position " << *pos << std::endl;
         if (*pos != '\0')
             ++pos;
     }
-    auto fcdt_lookup(const fcdt_table<TOKEN_T, Token> &fcdt, const char* &pos)
+    auto fcdt_lookup(const FCDTTable<TOKEN_T, Token> &fcdt, const char* &pos)
         -> Token
     {
-        while (*pos != '\0') {
-            std::visit([&](const auto &option) {
+        if (*pos != '\0') {
+            return std::visit([&](const auto &option) -> Node<TOKEN_T, Token>{
                 using Option = std::decay_t<decltype(option)>;
                 if constexpr (std::is_same_v<Option, std::monostate>) {
                     panic_mode(pos);
-                    return;
+                    return {};
                 }
 
                 else if constexpr (std::is_same_v<Option, DFAAPI::SpanCharTable<TOKEN_T, Token>>) {
 
-                    if (auto val = Option::match(option, pos, &Lexer_base::panic_mode); val.status)
+                    if (auto val = DFA::match(option, pos, &Lexer_base::panic_mode); val.status)
                     {
                         pos += val.node.length();
                         return val.node;
                     }
                 }
-
-                else if constexpr (std::is_same_v<Option, DFAAPI::SpanMultiTable<TOKEN_T, Token>>) {
+                else if constexpr (std::is_same_v<Option, DFAAPI::SpanNestedCharTable<TOKEN_T, Token>>) {
+                    if (auto val = DFA::advanced_match(option, pos, &Lexer_base::panic_mode); val.status)
+                    {
+                        pos += val.node.length();
+                        return val.node;
+                    }
+                } else if constexpr (std::is_same_v<Option, DFAAPI::SpanMultiTable<TOKEN_T, Token>>) {
                     if (auto val =
-                        Option::match(option, pos, &Lexer_base::panic_mode);
+                        DFA::advanced_match(option, pos, &Lexer_base::panic_mode);
                         val.status)
                     {
                         pos += val.node.length();
@@ -1027,8 +1140,8 @@ protected:
                 }
 
                 panic_mode(pos);
-
-            }, fcdt[*pos]);
+                return {};
+            }, fcdt[static_cast<unsigned char>(*pos)]);
         }
 
         return {};
@@ -1256,17 +1369,16 @@ public:
     TokenFlow<TOKEN_T, Token>& makeTokens() {
         if (_in == nullptr)
             throw Lexer_No_Input_exception();
-        Node<TOKEN_T, Token> result;
+        Token result;
         const char* pos = _in;
         while (*pos != '\0') {
             result = makeToken(pos);
-            if (result.empty()) {
+            if (std::holds_alternative<std::monostate>(result)) {
                 if (!error_controller.empty()) {
                     const auto &el = error_controller.begin()->second;
                     printf("Lexer[error controller]: %zu:%zu: %s\n", el.line, el.column, el.message.c_str());
                     errors.push_back(el);
                 }
-                pos++;
             } else {
                 push(result);
             }

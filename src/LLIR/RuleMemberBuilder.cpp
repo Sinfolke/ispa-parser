@@ -844,7 +844,7 @@ void LLIR::OpBuilder::build() {
                         .name = var.name,
                         .value = LangAPI::FunctionCall::createExpression(
                             LangAPI::FunctionCall {
-                                .name = corelib::text::join(nonterminal, "_"),
+                                .name = std::make_shared<LangAPI::Symbol>(corelib::text::join(nonterminal, "_")),
                                 .args = {
                                     LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false})
                                 }

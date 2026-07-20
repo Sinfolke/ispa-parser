@@ -220,4 +220,15 @@ namespace corelib::text {
         }
         return joined;
     }
+    stdu::vector<std::string> split(const std::string &str, const std::string &delimiter) {
+        stdu::vector<std::string> tokens;
+        std::size_t pos = 0;
+        std::size_t prev_pos = 0;
+        while ((pos = str.find(delimiter, prev_pos)) != std::string::npos) {
+            tokens.push_back(str.substr(prev_pos, pos - prev_pos));
+            prev_pos = pos + delimiter.length();
+        }
+        tokens.push_back(str.substr(prev_pos));
+        return tokens;
+    }
 }

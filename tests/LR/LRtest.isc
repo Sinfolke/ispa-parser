@@ -1,5 +1,0 @@
-use name: "Parser";
-main: expr;
-expr: term '+' term;
-term: (term '*' term) | NUMBER;
-NUMBER: [0-9]+;

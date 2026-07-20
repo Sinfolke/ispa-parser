@@ -1,3 +1,0 @@
-expr: term '+' term;
-term: NUMBER '+' NUMBER;
-NUMBER: [0-9]+;

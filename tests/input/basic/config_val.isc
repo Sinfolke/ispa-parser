@@ -1,0 +1,11 @@
+CONFIG_VAL:
+      @ '0'
+    | (('-' '-') @ [a-z]+)
+    | (@ 'ex')
+    | (@ [0-9] 'if' @ [0-9] 'else' @ [0-9])
+    | (@ 'set' | 'get')
+
+    @{op_or_num, if_branch, else_branch}
+;
+
+main: CONFIG_VAL;

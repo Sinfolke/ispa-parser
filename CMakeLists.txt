@@ -4,12 +4,23 @@ project(ISPA LANGUAGES CXX)
 # FUNCTIONS
 # =============================================
 function(get_file_range output_var)
+    # Parse out an optional EXCLUDE keyword argument
+    cmake_parse_arguments(ARG "" "EXCLUDE" "" ${ARGN})
+    # ARG_UNPARSED_ARGUMENTS will now hold your original glob patterns ("tests/*.cpp")
+
     set(result "")
-    foreach(path IN LISTS ARGN)
+    foreach(path IN LISTS ARG_UNPARSED_ARGUMENTS)
         file(GLOB_RECURSE temp CONFIGURE_DEPENDS ${path})
         list(APPEND result ${temp})
     endforeach()
+
     list(REMOVE_DUPLICATES result)
+
+    # If the user passed an EXCLUDE regex, filter the list now
+    if(ARG_EXCLUDE)
+        list(FILTER result EXCLUDE REGEX "${ARG_EXCLUDE}")
+    endif()
+
     set(${output_var} ${result} PARENT_SCOPE)
 endfunction()
 function(add_raw_module target source_target)
@@ -154,7 +165,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(RopeString)
 # FIND LIBRARIES
 find_package(Boost REQUIRED)
-
+find_package(yaml-cpp CONFIG REQUIRED)
 # =============================================
 # Global Configuration
 # =============================================
@@ -230,6 +241,7 @@ add_compile_definitions(
 add_library(ispa_modules STATIC)
 get_file_range(ISPA_MODULES
         ${SRC_DIR}/*.cppm
+        ${SRC_DIR}/runtime/*.cppm
         ${PARSER_DIR}/*.cppm
         ${INCLUDE_DIR}/*.cppm
         external/*.cppm
@@ -251,6 +263,7 @@ add_executable(ispa)
 get_file_range(ISPA_SOURCES
         ${PARSER_DIR}/*.cpp
         ${SRC_DIR}/*.cpp
+        ${SRC_DIR}/runtime/*.cpp
         external/cpuf/*.cpp
 )
 target_sources(ispa PRIVATE ${ISPA_SOURCES})
@@ -333,46 +346,40 @@ target_link_libraries(ispa PRIVATE
         #fmt_m
 )
 
-# =============================================
-# Testing Configuration
-# =============================================
-add_library(tests INTERFACE)
-target_compile_definitions(tests INTERFACE
-        __ROOT_DIR__="${CMAKE_CURRENT_SOURCE_DIR}/tests"
-)
-target_include_directories(tests INTERFACE
-        tests
-)
-function(add_ispa_test test_name test_file test_dir tester)
-    if(NOT EXISTS "${tester}")
-        message(FATAL_ERROR "Tester not found: ${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory}/tester.cpp")
-    endif()
-    add_executable(${test_name} ${tester})
-    target_link_libraries(${test_name} PRIVATE tests)
-    target_compile_definitions(${test_name} PRIVATE
-            __PROCESS_FILE__="${test_file}"
-            __TEST_DIR__="${test_dir}"
-    )
-    add_test(NAME ${test_name} COMMAND ${test_name})
-    set_tests_properties(${test_name} PROPERTIES TIMEOUT 2)
-endfunction()
-function(add_test_dir directory)
-    get_file_range(TEST_FILES tests/${directory}/*.isc)
+# TESTING
 
-    foreach(TEST_FILE IN LISTS TEST_FILES)
-        get_filename_component(TEST_NAME "${TEST_FILE}" NAME_WE)
-        add_ispa_test(${TEST_NAME} "${TEST_FILE}" ${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory} "${CMAKE_CURRENT_SOURCE_DIR}/tests/${directory}/tester.cpp")
-    endforeach()
-endfunction()
-
-# =============================================
-# Testing
-# =============================================
 enable_testing()
-add_test_dir(NFA-DFA)
+set(ISPA_SOURCES_FOR_TESTS ${ISPA_SOURCES})
+list(REMOVE_ITEM ISPA_SOURCES_FOR_TESTS "${SRC_DIR}/main.cpp")
+find_package(GTest REQUIRED)
+get_file_range(TEST_SOURCE_FILES  EXCLUDE "tests/compile/" "tests/*.cpp")
+get_file_range(TEST_MODULE_FILES  EXCLUDE "tests/compile/" "tests/*.cppm")
 
-#add_test(
-#        NAME mainTest
-#        COMMAND ${CMAKE_BINARY_DIR}/ispa --dir parser/parser --lang cpp -a LL
-#        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#)
+add_executable(tests ${TEST_SOURCE_FILES} ${ISPA_SOURCES_FOR_TESTS})
+target_sources(tests
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES FILES
+        ${TEST_MODULE_FILES}
+)
+target_include_directories(tests PRIVATE 
+    "tests/lib"
+     ${INCLUDE_DIRS}
+
+)
+target_compile_definitions(tests PRIVATE
+        ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+        TEST_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests"
+        BINARY_DIR="${CMAKE_CURRENT_BINARY_DIR}"
+)
+target_link_libraries(tests
+        PRIVATE
+        ispa_modules
+        cxx_std_module
+        GTest::gtest
+        GTest::gtest_main
+
+        yaml-cpp::yaml-cpp
+)
+
+include(GoogleTest)
+gtest_discover_tests(tests)

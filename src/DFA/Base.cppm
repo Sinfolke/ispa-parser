@@ -31,14 +31,23 @@ namespace DFA {
         auto &getIndexToEmptyStateMap()       { return dfa_index_to_empty_state_map_; }
 
         auto getEmptyState(std::size_t stateIndex) const -> std::size_t;
+        auto getEmptyStateIF(std::size_t stateIndex) const -> std::size_t;
         auto getEmptyState() -> std::size_t&;
         auto hasOneEmptyState() -> bool;
         auto getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t;
         auto isMerged() -> bool;
-
         static auto getTransitionKeyType(const NFA::TransitionKey &transition_key) -> DfaType;
         template<typename Transitions>
         static auto getStateType(const Transitions &transitions) -> DfaType;
 
+        template<typename DfaType>
+        auto getDfaNames(const DfaType &dfa) -> stdu::vector<std::pair<stdu::vector<std::string>, NFA::DataBlock>> {
+            utype::unordered_set<std::pair<stdu::vector<std::string>, NFA::DataBlock>> names;
+            for (const auto &state : dfa.get()) {
+                names.insert(std::make_pair(state.rule_name, state.dtb));
+            };
+            return {names.begin(), names.end()};
+        }
+        virtual auto check_dfa() -> void {};
     };
 }

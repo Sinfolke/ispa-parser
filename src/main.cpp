@@ -133,17 +133,18 @@ int main(int argc, char** argv) {
         opath = args.output;
     }
     std::filesystem::path output_path = opath;
-    output_path.append(ast.getName());
     LexerBuilder lexer_data(ast);
     lexer_data.build();
     lexer_data.getFCDT().print();
-    std::ofstream dumpDFAFile(dumper.makeDumpPath("DFA"));
-    if (!dumpDFAFile.is_open())
-        throw Error("failed to open DFA for dump");
-    for (const auto &dfa : lexer_data.getDFAS()) {
-        dumpDFAFile << dfa;
+    if (dumper.shouldDump("DFA")) {
+        std::ofstream dumpDFAFile(dumper.makeDumpPath("DFA"));
+        if (!dumpDFAFile.is_open())
+            throw Error("failed to open DFA for dump");
+        for (const auto &dfa : lexer_data.getDFAS()) {
+            dumpDFAFile << dfa;
+        }
+        dumpDFAFile.close();
     }
-    dumpDFAFile.close();
     // if (args.algorithm == Args::Algorithm::LR0) {
     //     LRParser LRIR(ast);
     //     // LRIR.printTables("tables");
@@ -172,13 +173,31 @@ int main(int argc, char** argv) {
     //     auto converter = std::unique_ptr<LRConverter_base>(converter_fun(ELRIR, ast));
     //     converter->output(output_path);
     if (args.algorithm == Args::Algorithm::LL) {
+        std::string name;
+        if (!ast.getName().empty()) {
+            name = ast.getName();
+            output_path.append(ast.getName());
+        } else {
+            name = std::filesystem::path(args.output).filename();
+            cpuf::printf("args.output: {} using filename: {}\n", args.output, name.c_str());
+        }
         LLIR::Builder builder(ast, false);
         auto IR = builder.get();
-        auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), args.language, ast.getName());
-        LangRepr::Converter converter(repr, args.language_str, ast.getName());
+        auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), args.language, name);
+        LangRepr::Converter converter(repr, args.language_str, name);
         converter.build();
-        std::ofstream out(ast.getName() + ".h");
+        output_path.replace_extension(".h");
+        cpuf::printf("header -> {}", output_path.string());
+        std::ofstream out(output_path);
         out << converter.get().get();
+
+        auto source = converter.getSource();
+        if (source.has_value()) {
+            output_path.replace_extension(".cpp");
+            cpuf::printf("source -> {}", output_path.string());
+            std::ofstream out_source(output_path);
+            out_source << source.value();
+        }
     }
     // } else {
     //     throw Error("Unknown algorithm");

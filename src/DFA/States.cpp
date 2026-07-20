@@ -91,7 +91,7 @@ auto DFA::States<State>::canBeEndState(const std::size_t current) -> std::size_t
             if (stateVariant.empty()) {
                 return current;
             }
-            if (state.else_goto) {
+            if (state.else_goto != NULL_STATE) {
                  return canBeEndState(state.else_goto);
             }
             return NULL_STATE;
@@ -100,7 +100,7 @@ auto DFA::States<State>::canBeEndState(const std::size_t current) -> std::size_t
         if (state.transitions.empty()) {
             return current;
         }
-        if (state.else_goto) {
+        if (state.else_goto != NULL_STATE) {
             return canBeEndState(state.else_goto);
         }
     }

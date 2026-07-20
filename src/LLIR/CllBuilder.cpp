@@ -193,7 +193,7 @@ void LLIR::CllExprBuilder::build() {
     result = CllExprLogicalToIR(expr.value);
 }
 void LLIR::CllFunctionBuilder::build() {
-    result.name = call.name;
+    result.name = std::make_shared<LangAPI::Symbol> (call.name);
     result.args = FunctionBodyCallToIR(call.body);
 }
 void LLIR::CllMethodCallBuilder::build() {

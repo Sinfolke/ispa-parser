@@ -1,0 +1,6 @@
+HTTP_METHOD:
+    @ 'GET' | 'POST' | 'PUT'
+    {@}
+;
+
+main: HTTP_METHOD;

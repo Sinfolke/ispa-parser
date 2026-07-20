@@ -18,6 +18,7 @@ export namespace corelib {
         std::string ToUpper(std::string str);
         std::string ToLower(std::string str);
         std::string join(const stdu::vector<std::string> &elements, const std::string &delimiter);
+        stdu::vector<std::string> split(const std::string &str, const std::string &delimiter);
         char getCharFromEscaped(char in);
         std::string getCharFromEscapedAsStr(char in, bool string);
         std::string getEscapedAsStr(char in, bool string);

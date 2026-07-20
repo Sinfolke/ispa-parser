@@ -7,7 +7,7 @@ auto DFA::TokenMachineDFA::build() -> const States<SingleState> & {
     for (auto &state : sdfa.get()) {
         for (const auto &terminal : terminals) {
             if (!state.transitions.contains(terminal)) {
-                state.transitions.emplace(terminal, TransitionValue {NULL_STATE, false, false, false, NULL_STATE, NULL_STATE, NULL_STATE, false, false, false});
+                state.transitions.emplace(terminal, TransitionValue {NULL_STATE, false, false, false, NULL_STATE, NULL_STATE, NULL_STATE, false, false});
             }
         }
     }

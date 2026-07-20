@@ -53,7 +53,7 @@ export namespace LangRepr {
                         decls->closeTemplateParameters();
                     }
                 }
-                decls->createFunction(func_decl.type, func_decl.name, func_decl.parameters);
+                decls->createFunction(func_decl);
                 buildStatements(func_decl.statements);
                 decls->closeFunction();
             }
@@ -100,7 +100,6 @@ export namespace LangRepr {
     public:
         Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name) :
         converter_lib("libispa-converter-" + lang), holder(holder), lang(lang), decls(nullptr, nullptr), stmts(nullptr, nullptr), namespace_name(namespace_name) {
-            converter_lib.loadfun<void, const char*>(std::string("init"))(namespace_name.c_str());
             decls = std::unique_ptr<::Converter::Declarations, void(*)(::Converter::Declarations*)>
                 (
                     converter_lib.loadfun<::Converter::Declarations*, ::Converter::Writer*>(std::string("create_") + lang + "_declarations")(&output),
@@ -112,14 +111,26 @@ export namespace LangRepr {
                     converter_lib.loadfun<void, ::Converter::Statement*>(std::string("delete_") + lang + "_statement")
                 );
         }
-        ~Converter() {
-            converter_lib.loadfun<void>(std::string("close"))();
-        }
+        ~Converter() {}
         auto build() -> void {
+            converter_lib.loadfun<void, const char*>(std::string("init"))(namespace_name.c_str());
             decls->openFile(namespace_name);
             decls->initImports();
             buildDeclarations(holder.get());
             decls->closeFile(namespace_name);
+            converter_lib.loadfun<void>(std::string("close"))();
+        }
+        auto getSource() -> std::optional<std::string> {
+            try {
+                auto getSourceFun = converter_lib.loadfun<std::optional<std::string>*>(std::string("getSource"));
+                auto ptr = getSourceFun();
+                if (ptr == nullptr) return std::nullopt;
+                auto res = *ptr;
+                delete ptr;
+                return res;
+            } catch (...) {
+                return std::nullopt;
+            }
         }
         auto get() { return output; }
     };

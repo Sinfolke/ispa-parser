@@ -21,6 +21,12 @@ void Assert(bool condition, const char* format, Args&&... args) {
         throw Error(format, std::forward<Args>(args)...);
     }
 };
+export template<typename ...Args>
+void AssertNe(bool condition, const char* format, Args&&... args) {
+    if (condition) {
+        throw Error(format, std::forward<Args>(args)...);
+    }
+};
 // base user error class
 export class UBase : std::exception {
 public:

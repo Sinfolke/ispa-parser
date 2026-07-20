@@ -78,6 +78,14 @@ auto DFA::Base::getEmptyState(std::size_t stateIndex) const -> std::size_t {
         return empty_state;
     throw Error("Dfa has no empty state registered");
 }
+
+auto DFA::Base::getEmptyStateIF(std::size_t stateIndex) const -> std::size_t {
+    auto it = dfa_empty_state_map_.find(stateIndex);
+    if (it != dfa_empty_state_map_.end())
+        return it->second;
+    return NULL_STATE;
+}
+
 auto DFA::Base::getEmptyState() -> std::size_t& {
     if (empty_state == NULL_STATE)
         throw Error("Dfa has no empty state registered");

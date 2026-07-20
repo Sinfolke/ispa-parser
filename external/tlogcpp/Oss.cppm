@@ -49,9 +49,10 @@ export namespace Tlog {
         }
         std::string format_str(std::string str) const {
             str.insert(0, std::string(indent_level, '\t'));
-            for (std::size_t i = 0; i < str.size(); i++) {
+            for (std::size_t i = 0; i < str.size(); ++i) {
                 if (str[i] == '\n') {
-                    str.insert(i, std::string(indent_level, '\t'));
+                    str.insert(i + 1, indent_level, '\t');
+                    i += indent_level;
                 }
             }
             return str;
@@ -81,14 +82,12 @@ export namespace Tlog {
         void dprint(Format format, Args&&... args) {
             auto new_f = format_str(format);
             vprintf(new_f, std::forward<Args>(args)...);
-            of.flush();
         }
         template<typename Format, typename ...Args>
         void print(Format format, Args&&... args) {
             auto new_f = format_str(format);
             vprintf(new_f, std::forward<Args>(args)...);
             of << '\n';
-            of.flush();
         }
         void increaseIndentLevel() {
             indent_level++;

@@ -1,0 +1,6 @@
+TEMPLATED_TYPE:
+    'template' 'type' @ '==' | '!=' @ 'int' | 'str' | 'bool'
+    @{op, type}
+;
+
+main: TEMPLATED_TYPE;

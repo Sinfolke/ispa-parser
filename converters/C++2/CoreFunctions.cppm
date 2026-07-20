@@ -18,7 +18,7 @@ export namespace Core {
     Converter::Writer *writer;
     std::string name;
     stdu::vector<std::string> symbol_path;
-    std::ofstream cpp_file;
+    std::stringstream cpp_file;
     bool templated = false;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;

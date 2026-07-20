@@ -127,6 +127,7 @@ namespace LangAPI {
             case RValueType::IspaLibDfaSpanCharState: os << "IspaLibDfaSpanCharState"; break;
             case RValueType::IspaLibDfaSpanMultiTableState: os << "IspaLibDfaSpanMultiTableState"; break;
             case RValueType::IspaLibDfaEmptyState: os << "IspaLibDfaEmptyState"; break;
+            case RValueType::IspaLibDfaSpan: os << "IspaLibDfaSpan"; break;
             case RValueType::Reference: os << "Reference"; break;
             case RValueType::Span: os << "Span"; break;
         }
@@ -136,6 +137,7 @@ namespace LangAPI {
     auto operator<<(std::ostream &os, ExpressionValueType e) -> std::ostream& {
         switch (e) {
             case ExpressionValueType::Empty: os << "Empty"; break;
+            case ExpressionValueType::EmptyInitializer: os << "EmptyInitializer"; break;
             case ExpressionValueType::RValue: os << "RValue"; break;
             case ExpressionValueType::ExpressionElement: os << "ExpressionElement"; break;
             case ExpressionValueType::FunctionCall: os << "FunctionCall"; break;
@@ -187,6 +189,7 @@ namespace LangAPI {
             case StdlibExports::MatchResult: os << "MatchResult"; break;
             case StdlibExports::Lexer: os << "Lexer"; break;
             case StdlibExports::Parser: os << "Parser"; break;
+            case StdlibExports::LexerMakeTokenParameter: os << "LexerMakeTokenParameter"; break;
             case StdlibExports::DfaTokenTransition: os << "DfaTokenTransition"; break;
             case StdlibExports::DfaCharTransition: os << "DfaCharTransition"; break;
             case StdlibExports::DfaCharTableTransition: os << "DfaCharTableTransition"; break;
@@ -210,6 +213,13 @@ namespace LangAPI {
             case StdlibExports::DfaMultiDataVector: os << "DfaMultiDataVector"; break;
             case StdlibExports::DfaUniversalDataVector: os << "DfaMultiDataVector"; break;
             case StdlibExports::DfaCstBuilder: os << "DfaCstdBuilder"; break;
+            case StdlibExports::DfaNestedCharTable: os << "DfaNestedCharTable"; break;
+            case StdlibExports::DfaSpanCharTable: os << "DfaSpanCharTable"; break;
+            case StdlibExports::DfaSpanNestedCharTable: os << "DfaSpanNestedCharTable"; break;
+            case StdlibExports::DfaSpanTokenTable: os << "DfaSpanTokenTable"; break;
+            case StdlibExports::DfaSpanMultiTable: os << "DfaSpanMultiTable"; break;
+            case StdlibExports::FCDTVariant: os << "FCDTVariant"; break;
+            case StdlibExports::FCDTTable: os << "FCDTTable"; break;
         }
         return os;
     }
@@ -371,7 +381,14 @@ namespace LangAPI {
         os << "Span<" << obj.type << "> of " << obj.sym;
         return os;
     }
-
+    auto operator<<(std::ostream &os, const EmptyInitializer &obj) -> std::ostream& {
+        os << "{}";
+        return os;
+    }
+    auto operator<<(std::ostream &os, const IspaLibDfaSpan &obj) -> std::ostream& {
+        os << "Span<" << obj.type << "> {" << obj.assing_name << "}";
+        return os;
+    }
     auto operator<<(std::ostream &os, const RValue &obj) -> std::ostream& {
         std::visit([&os](const auto &value) { if constexpr (!std::is_same_v<std::decay_t<decltype(value)>, std::monostate>) os << value; }, obj.get());
         return os;

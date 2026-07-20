@@ -92,13 +92,8 @@ private:
     void buildAcceptMap();
     void getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result);
     auto getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t>;
-    void generateTemplatedDataBlockFromRules(
-        const stdu::vector<AST::RuleMember> &rules,
-        TemplatedDataBlock &templated_data_block,
-        std::size_t &prefix_index,
-        std::size_t &index,
-        std::size_t &group_index
-        );
+    void generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
+    void generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
     void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed);
 public:
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table) {}

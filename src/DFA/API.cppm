@@ -20,14 +20,13 @@ export namespace DFA {
         std::size_t new_group = NULL_STATE;
         std::size_t group_close = NULL_STATE;
         std::size_t accept_index = NULL_STATE;
-        bool consume = true;
         bool optional = false;
         bool last = false;
         bool operator==(const TransitionValue &other) const = default;
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept_index);
+            return std::tie(next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept_index, optional, last);
         }
     };
     struct MultiTransitionValue {
@@ -44,7 +43,7 @@ export namespace DFA {
     struct State {
         std::unordered_set<std::size_t> nfa_states; // the NFA states this DFA state represents
         Transition transitions;
-        std::size_t else_goto = 0;
+        std::size_t else_goto = NULL_STATE;
         std::size_t else_goto_accept = NULL_STATE;
         stdu::vector<std::string> rule_name;
         NFA::DataBlock dtb;
@@ -76,7 +75,7 @@ export namespace DFA {
     using CharMachineStateVariant = std::variant<FullCharTable, SortedTransitions>;
     using CharMachineState = State<CharMachineStateVariant>;
     using SortedState = State<SortedTransitions>;
-    using SeenSymbol = utype::unordered_map<NFA::TransitionKey, utype::unordered_set<std::unordered_set<std::size_t>>>;
+    using SeenSymbol = utype::unordered_map<stdu::vector<std::size_t>, std::size_t>;
     using WalkedState = utype::unordered_map<std::size_t, std::size_t>;
     using DfaEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;
     using DfaIndexToEmptyStateMap = std::unordered_map<std::size_t, std::size_t>;

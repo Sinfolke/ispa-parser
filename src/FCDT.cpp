@@ -17,16 +17,16 @@ void FCDT::skipNospace(stdu::vector<AST::RuleMember>::const_iterator &it, const 
 }
 
 
-auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char> {
+auto FCDT::determineFirstCharacter(const AST::RuleMember &mem, std::unordered_set<std::string> &visited) -> std::unordered_set<char> {
     if (mem.isGroup()) {
         auto it = mem.getGroup().values.cbegin();
         skipNospace(it, mem.getGroup().values.cend());
-        return determineFirstCharacter(*it);
+        return determineFirstCharacter(*it, visited);
     }
     if (mem.isOp()) {
         std::unordered_set<char> chars;
         for (const auto &option :  mem.getOp().options) {
-            auto result = determineFirstCharacter(option);
+            auto result = determineFirstCharacter(option, visited);
             chars.insert(result.begin(), result.end());
         }
         return chars;
@@ -47,21 +47,26 @@ auto FCDT::determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered
             chars.insert(corelib::text::getEscapedFromChar(c));
         }
         for (auto [from, to] : csequence.diapasons) {
-            for (; from <= to; from++) {
-                chars.insert(from);
+            for (int i = static_cast<unsigned char>(from); i <= static_cast<unsigned char>(to); i++) {
+                chars.insert(static_cast<char>(i));
             }
         }
         return chars;
     }
     if (mem.isAny()) {
         std::unordered_set<char> chars;
-        for (char c = 0; c < std::numeric_limits<unsigned char>::max(); c++) {
-            chars.insert(c);
+        for (int c = 0; c < 256; c++) {
+            chars.insert(static_cast<char>(c));
         }
         return chars;
     }
     if (mem.isName()) {
-        return determineFirstCharacter(ast[mem.getName().name].rule_members[0]);
+        const auto &name = mem.getName().name.back();
+        if (visited.contains(name)) {
+            return {};
+        }
+        visited.insert(name);
+        return determineFirstCharacter(ast[mem.getName().name].rule_members[0], visited);
     }
     throw Error("Unexpected member");
 
@@ -83,7 +88,8 @@ void FCDT::build() {
         }
         auto it = rule.second.rule_members.cbegin();
         skipNospace(it, rule.second.rule_members.cend());
-        for (const auto &c : determineFirstCharacter(*it)) {
+        std::unordered_set<std::string> visited;
+        for (const auto &c : determineFirstCharacter(*it, visited)) {
             table[static_cast<unsigned char>(c)].push_back(rule.first);
         }
     }

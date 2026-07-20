@@ -28,5 +28,7 @@ export namespace DFA {
         auto clear() -> void;
 
         auto getType() const -> DfaType;
+        auto check_dfa() -> void override;
+        friend auto operator<<(std::ostream &os, const MDFA &dfa) -> std::ostream&;
     };
 }

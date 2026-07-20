@@ -4,6 +4,8 @@
   "dependencies": [
     "boost-dynamic-bitset",
     "boost-container",
-    "tsl-ordered-map"
+    "tsl-ordered-map",
+    "gtest",
+    "yaml-cpp"
   ]
 }

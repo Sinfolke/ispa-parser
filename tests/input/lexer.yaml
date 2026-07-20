@@ -1,0 +1,95 @@
+bootloader: lexer
+
+tests:
+
+  # BASIC
+
+  - name: templated_type
+    path: basic/templated_type.isc
+    input: "template type == str"
+
+    expect:
+      - for: TEMPLATED_TYPE
+        value:
+          op: '=='
+          type: 'str'
+
+
+  - name: id
+    path: basic/id.isc
+    input: "helloWorld1234"
+
+    expect:
+      - for: ID
+        value: 'helloWorld1234'
+  - name: serial_code
+    path: basic/serial_code.isc
+    input: "Xf"
+
+    expect:
+      - for: SERIAL_CODE
+        value: 'f'
+  - name: html_cells
+    path: basic/html_cells.isc
+    input: "< td> <td> <td >"
+
+    expect:
+      - for: HTML_CELLS
+        value:
+          - 'td'
+          - 'td'
+          - 'td'
+  - name: http_method
+    path: basic/http_method.isc
+    input:
+      - "GET"
+      - "POST"
+      - "PUT"
+
+    expect:
+      -
+        - for: HTTP_METHOD
+          value: 'GET'
+      -
+        - for: HTTP_METHOD
+          value: 'POST'
+      -
+        - for: HTTP_METHOD
+          value: 'PUT'
+  - name: config_val
+    path: basic/config_val.isc
+    input:
+      - '0'
+      - '--help'
+      - 'ex'
+      - '2 if 3 else 4'
+      - 'set'
+      - 'get'
+
+    expect:
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: '0'
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: 'help'
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: 'ex'
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: '2'
+            if_branch: '3'
+            else_branch: '4'
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: 'set'
+      -
+        - for: CONFIG_VAL
+          value:
+            op_or_num: 'get'

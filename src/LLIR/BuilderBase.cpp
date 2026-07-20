@@ -110,7 +110,7 @@ auto LLIR::BuilderBase::createDefaultStatements() -> LangAPI::Statements {
     return LangAPI::Expression::createStatements(increasePos());
 }
 auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const LangAPI::Variable &var, const std::string &name, LangAPI::Expression &expr) -> LangAPI::Statement  {
-    LangAPI::FunctionCall function_call = {.name = name, .args = {LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false}) }};
+    LangAPI::FunctionCall function_call = {.name = std::make_shared<LangAPI::Symbol>(name), .args = {LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false}) }};
     LangAPI::VariableAssignment assignment = {
         .name = var.name,
         .value = LangAPI::FunctionCall::createExpression(function_call)

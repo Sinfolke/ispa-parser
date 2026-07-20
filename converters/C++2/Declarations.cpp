@@ -96,17 +96,17 @@ namespace Cpp {
         }
     }
 
-    auto Declarations::createFunction(const LangAPI::Type& type, const std::string &name, const decltype(LangAPI::Function::parameters) &parameters) -> void {
-        output.write("auto {}(", name);
-        for (const auto &p : parameters) {
+    auto Declarations::createFunction(const LangAPI::Function &func) -> void {
+        output.write("auto {}(", func.name);
+        for (const auto &p : func.parameters) {
             output.dwrite("{} {}, ", Core::convertType(p.first), p.second);
         }
         output.pop_back();
         output.pop_back();
-        output.dwrite(")\n");
+        output.dwrite(") -> {}{}", Core::convertType(func.type), func.override ? " override" : "");
         output.writeln("{");
         output.increaseIndentation();
-        Core::symbol_path.push_back(name);
+        Core::symbol_path.push_back(func.name);
     }
     auto Declarations::closeFunction() -> void {
         output.decreaseIndentation();

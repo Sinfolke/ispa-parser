@@ -23,6 +23,7 @@ private:
     DFA::Collection<DFA::CharMachineDFA> dfas;
     LLIR::IR function_ir;
     FCDT fcdt;
+    stdu::vector<std::size_t> new_fcdt;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
     NameToDfaMap name_to_dfa;
@@ -34,6 +35,7 @@ public:
     void build();
     auto& getDFAS() { return dfas; }
     auto& getFCDT() { return fcdt; }
+    auto& getNewFCDT() { return new_fcdt; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
     auto& getFunctionsIR() { return function_ir; }

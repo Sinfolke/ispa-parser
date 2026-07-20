@@ -1,2 +1,0 @@
-term: NUMBER;
-NUMBER: [0-9]+;

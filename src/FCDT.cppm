@@ -13,7 +13,7 @@ private:
     Table table;
     AST::Tree &ast;
     void skipNospace(stdu::vector<AST::RuleMember>::const_iterator &it, const stdu::vector<AST::RuleMember>::const_iterator &end);
-    auto determineFirstCharacter(const AST::RuleMember &mem) -> std::unordered_set<char>;
+    auto determineFirstCharacter(const AST::RuleMember &mem, std::unordered_set<std::string> &visited) -> std::unordered_set<char>;
 public:
     FCDT(AST::Tree &ast) : ast(ast) {}
     void build();

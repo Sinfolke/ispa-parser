@@ -57,7 +57,14 @@ export struct uhash {
     std::size_t operator()(const T& value) const {
         return std::hash<T>{}(value);
     }
-
+    template<typename... Ts>
+    std::size_t operator()(const std::tuple<Ts...>& t) const {
+        std::size_t h = 0;
+        for_each_in_tuple(t, [&](const auto& value) {
+            hash_combine(h, uhash{}(value));
+        });
+        return h;
+    }
     // Fallback for pairs
     template <typename T1, typename T2>
     std::size_t operator()(const std::pair<T1, T2>& p) const {

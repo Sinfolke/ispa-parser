@@ -288,7 +288,7 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         for (char c : chars) {
             auto &t = states[start].transitions[c];
             t.next = end;
-            if (addStoreActions && !member.prefix.empty()) {
+            if ((addStoreActions && !member.prefix.empty()) || store_entire_group) {
                 t.new_cst_node = true;
                 t.new_member = true;
             }
@@ -362,8 +362,6 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
 }
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, bool addStoreActions) -> StateRange {
     if (member.isNospace()) {
-        if (!add_space_skip_places.empty())
-            add_space_skip_places.pop_back();
         no_add_space_skip_next = true;
         return {NULL_STATE, NULL_STATE};
     }
@@ -496,19 +494,12 @@ auto NFA::investigateHasNext(std::size_t place, const stdu::vector<std::string> 
 void NFA::addSpaceSkip() {
     for (const auto &place : add_space_skip_places) {
         std::unordered_set<std::size_t> visited;
-
-        if (is_char_table) {
-            for (const auto c : constants::whitespace_chars) {
-                // Check if already handled
-                if (!investigateHasNext(place, c, visited)) {
-                    // Add direct self-loop for whitespace char
-                    states[place].skip_chars.push_back(c);
-                }
-            }
-        } else {
-            if (!investigateHasNext(place, constants::whitespace, visited)) {
-                // Add direct self-loop for whitespace token
-                states[place].transitions[constants::whitespace] = { place };
+        auto &state = states[place];
+        for (const auto c : constants::whitespace_chars) {
+            // Check if already handled
+            if (!investigateHasNext(place, c, visited)) {
+                // Add direct self-loop for whitespace char
+                state.transitions[c] = {place};
             }
         }
     }
@@ -544,46 +535,58 @@ void NFA::buildAcceptMap() {
         }
     }
 }
-void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
-    for (const auto &mem : rules) {
-        if (!mem.prefix.empty()) {
-            if (dtb->getTemplatedDataBlock().names.size() <= prefix_index) {
-                return;
-            }
-            const auto &name = dtb->getTemplatedDataBlock().names[prefix_index++];
-            if (mem.isGroup()) {
-                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_GROUP, .cst_index = group_index++, .AST = &mem});
-            } else if (mem.isOp()) {
-                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_CONDITION, .cst_index = index++, .AST = &mem});
-            } else {
-                templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_NODE, .cst_index = index++, .AST = &mem});
-            }
+// Helper function to process a single rule member safely preserving original AST lifetimes
+void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
+    if (!mem.prefix.empty()) {
+        if (dtb->getTemplatedDataBlock().names.size() <= prefix_index) {
+            return;
         }
+        const auto &name = dtb->getTemplatedDataBlock().names[prefix_index++];
         if (mem.isGroup()) {
-            generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+            templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_GROUP, .cst_index = group_index++, .AST = &mem});
         } else if (mem.isOp()) {
-            std::size_t start_prefix_index = prefix_index;
-            std::size_t max_prefix_index = prefix_index;
-            std::size_t start_index = index;
-            std::size_t max_index = index;
-            std::size_t start_group_index = group_index;
-            std::size_t max_group_index = group_index;
-
-            for (const auto &opt : mem.getOp().options) {
-                std::size_t current_prefix_index = start_prefix_index;
-                std::size_t current_index = start_index;
-                std::size_t current_group_index = start_group_index;
-                generateTemplatedDataBlockFromRules({opt}, templated_data_block, current_prefix_index, current_index, current_group_index);
-                max_prefix_index = std::max(max_prefix_index, current_prefix_index);
-                max_index = std::max(max_index, current_index);
-                max_group_index = std::max(max_group_index, current_group_index);
-            }
-            prefix_index = max_prefix_index;
-            index = max_index;
-            group_index = max_group_index;
+            templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_CONDITION, .cst_index = index++, .AST = &mem});
+        } else {
+            templated_data_block.emplace(name, TemplatedDataBlockValue {.type = StoreCstNode::CST_NODE, .cst_index = index++, .AST = &mem});
         }
     }
+
+    if (mem.isGroup()) {
+        generateTemplatedDataBlockFromRules(mem.getGroup().values, templated_data_block, prefix_index, index, group_index);
+    } else if (mem.isOp()) {
+        std::size_t start_prefix_index = prefix_index;
+        std::size_t max_prefix_index = prefix_index;
+        std::size_t start_index = index;
+        std::size_t max_index = index;
+        std::size_t start_group_index = group_index;
+        std::size_t max_group_index = group_index;
+
+        for (const auto &opt : mem.getOp().options) {
+            std::size_t current_prefix_index = start_prefix_index;
+            std::size_t current_index = start_index;
+            std::size_t current_group_index = start_group_index;
+
+            // FIX: Pass opt directly into the single-rule handler. No temporary vector created!
+            generateTemplatedDataBlockFromSingleRule(opt, templated_data_block, current_prefix_index, current_index, current_group_index);
+
+            max_prefix_index = std::max(max_prefix_index, current_prefix_index);
+            max_index = std::max(max_index, current_index);
+            max_group_index = std::max(max_group_index, current_group_index);
+        }
+        prefix_index = max_prefix_index;
+        index = max_index;
+        group_index = max_group_index;
+    }
 }
+
+// Main entry wrapper
+void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
+    for (const auto &mem : rules) {
+        generateTemplatedDataBlockFromSingleRule(mem, templated_data_block, prefix_index, index, group_index);
+    }
+}
+
+// Patched single block builder (added Op recursion branch)
 void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed) {
     if (isAlreadyConstructed)
         return;
@@ -599,6 +602,11 @@ void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &
         }
         if (mem.isGroup()) {
             generateSingleDataBlockFromRules(mem.getGroup().values, single_data_block, isAlreadyConstructed);
+            if (isAlreadyConstructed)
+                return;
+        } else if (mem.isOp()) {
+            // FIX: Safely recurse into choice blocks directly using the existing vector reference
+            generateSingleDataBlockFromRules(mem.getOp().options, single_data_block, isAlreadyConstructed);
             if (isAlreadyConstructed)
                 return;
         }

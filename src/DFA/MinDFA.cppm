@@ -22,13 +22,11 @@ export namespace DFA {
         void terminateEarly();
         void removeUnreachableStates();
         void removeSelfLoop();
-        void removeLeadingStates();
     public:
         static void removeDublicateStates(SDFA &sdfa);
         static void terminateEarly(SDFA &sdfa);
         static void removeUnreachableStates(SDFA &sdfa);
         static void removeSelfLoop(SDFA &sdfa);
-        static void removeLeadingStates(SDFA &sdfa);
         static void minimize(SDFA &sdfa);
         void minimize();
         MinDFA(SDFA &sdfa_) : sdfa(sdfa_), states(nullptr), Base(sdfa_.getEmptyState()) {};

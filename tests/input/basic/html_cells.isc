@@ -1,0 +1,5 @@
+HTML_CELLS:
+    ('<' @ 'td' '>')+
+    {@}
+;
+main: HTML_CELLS;

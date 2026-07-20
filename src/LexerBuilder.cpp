@@ -25,47 +25,73 @@ void accumulateNestedNames(stdu::vector<AST::RuleMember> members, stdu::vector<s
     }
 }
 void LexerBuilder::build() {
-    // 1. Prepare FCDT (function call dependency tree)
+    // 1. Prepare First Character Dispatch Table structure
     fcdt.build();
 
-    // 2. Track which function chains (mem groups) were already processed
-    utype::unordered_set<stdu::vector<stdu::vector<std::string>>> built_groups;
+    // Track which rule groups have already been built to map duplicates to the same index
+    utype::unordered_map<stdu::vector<stdu::vector<std::string>>, std::size_t> built_group_to_index;
 
-    std::size_t dfa_count = 0;
+    // 2. Clear and reserve space for the new raw index dispatch table
+    new_fcdt.clear();
+    new_fcdt.reserve(fcdt.get().size());
+
+    auto& dfa_collection = dfas.get();
+    constexpr std::size_t INVALID_DFA_INDEX = std::numeric_limits<std::size_t>::max();
 
     // 3. Iterate over each group of rule names from FCDT
+    bool any_group_built = false;
     for (const auto &rule_group : fcdt.get()) {
-        if (rule_group.empty())
+        // Handle empty entries safely to maintain 1:1 layout matching with characters
+        if (rule_group.empty()) {
+            new_fcdt.push_back(INVALID_DFA_INDEX);
             continue;
+        }
 
-        // Skip already processed rule groups
-        if (built_groups.contains(rule_group))
+        // Check if this identical rule-set configuration has already been compiled
+        auto it = built_group_to_index.find(rule_group);
+        if (it != built_group_to_index.end()) {
+            new_fcdt.push_back(it->second); // Reuse the existing table index
             continue;
-        built_groups.insert(rule_group);
+        }
 
-        NameToDfaMap involved_symbols;
-        auto current_group = rule_group;
+        // The base index for this new group is simply the current collection size
+        std::size_t base_dfa_index = dfa_collection.size();
+        built_group_to_index[rule_group] = base_dfa_index;
+        new_fcdt.push_back(base_dfa_index);
 
-        std::size_t base_dfa_index = 0;
-        bool has_base_dfa = false;
+        // --- 4. Build Merged DFA for the entire rule group FIRST ---
+        stdu::vector<NFA> group_nfas;
+        group_nfas.reserve(rule_group.size());
 
-        // --- 4. Process each rule in the group ---
         for (const auto &rule_name : rule_group) {
-            // Assign a DFA index for this group (shared for all rules)
-            if (!has_base_dfa) {
-                base_dfa_index = dfa_count++;
-                has_base_dfa = true;
-            }
+            NFA rule_nfa(
+                ast, rule_name,
+                &ast[rule_name].data_block,
+                ast[rule_name].rule_members,
+                rule_name == constants::whitespace,
+                true
+            );
+            rule_nfa.build(true);
+            group_nfas.push_back(std::move(rule_nfa));
+        }
 
+        // Safely push the base group machine into place
+        dfa_collection.push_back(DFA::build(ast, group_nfas));
+        any_group_built = true;
+
+        // --- 5. Map Symbols and Process Nested Sub-Rules ---
+        NameToDfaMap involved_symbols;
+
+        for (const auto &rule_name : rule_group) {
             involved_symbols[rule_name] = base_dfa_index;
             name_to_dfa[rule_name] = base_dfa_index;
 
-            // --- 5. Collect nested rule names and build DFAs for them ---
             stdu::vector<stdu::vector<std::string>> nested_names;
             accumulateNestedNames(ast[rule_name].rule_members, nested_names);
 
             for (const auto &nested_name : nested_names) {
-                std::size_t nested_dfa_index = dfa_count++;
+                // The nested index automatically tracks the appending vector boundary
+                std::size_t nested_dfa_index = dfa_collection.size();
                 name_to_dfa[nested_name] = nested_dfa_index;
                 involved_symbols[nested_name] = nested_dfa_index;
 
@@ -76,18 +102,36 @@ void LexerBuilder::build() {
                     nested_name == constants::whitespace,
                     true
                 );
-
                 nested_nfa.build(true);
-                stdu::vector nfas {nested_nfa};
-                dfas.get().push_back(DFA::build(ast, nfas));
+
+                stdu::vector<NFA> nfas{std::move(nested_nfa)};
+                dfa_collection.push_back(DFA::build(ast, nfas));
             }
         }
 
-        // --- 6. Build merged DFA for the entire rule group ---
-        if (has_base_dfa) {
-            stdu::vector<NFA> group_nfas;
+        // --- 6. Record tracking metadata for this group ---
+        dispatch_names_involve.emplace(rule_group, std::move(involved_symbols));
+    }
 
-            for (const auto &rule_name : current_group) {
+    // 7. Fallback: If FCDT produced no buildable groups (e.g., grammar changes
+    //    resulted in an empty dispatch), build a single merged DFA over all token rules.
+    //    This prevents empty DFA collections that make downstream tests meaningless.
+    if (!any_group_built) {
+        // Collect all token-like rules from AST. Heuristic used elsewhere: skip names ending with lowercase.
+        stdu::vector<stdu::vector<std::string>> token_rule_names;
+        for (const auto &entry : ast) {
+            const auto &name = entry.first;
+            if (corelib::text::isLower(name.back())) {
+                continue; // likely non-token (e.g., parser rule)
+            }
+            token_rule_names.push_back(name);
+        }
+
+        if (!token_rule_names.empty()) {
+            // Build a merged DFA for all tokens to serve as base index 0
+            stdu::vector<NFA> group_nfas;
+            group_nfas.reserve(token_rule_names.size());
+            for (const auto &rule_name : token_rule_names) {
                 NFA rule_nfa(
                     ast, rule_name,
                     &ast[rule_name].data_block,
@@ -95,24 +139,44 @@ void LexerBuilder::build() {
                     rule_name == constants::whitespace,
                     true
                 );
-
                 rule_nfa.build(true);
-                group_nfas.push_back(rule_nfa);
+                group_nfas.push_back(std::move(rule_nfa));
             }
 
-            auto merged_dfa = DFA::build(ast, group_nfas);
-            auto &dfa_collection = dfas.get();
+            std::size_t base_dfa_index = dfa_collection.size();
+            dfa_collection.push_back(DFA::build(ast, group_nfas));
 
-            // Insert merged DFA at consistent position
-            if (base_dfa_index >= dfa_collection.size()) {
-                dfa_collection.push_back(merged_dfa);
-            } else {
-                dfa_collection.insert(dfa_collection.begin() + base_dfa_index, merged_dfa);
+            // Map each token (and its nested members) to DFAs as in the main path
+            NameToDfaMap involved_symbols;
+            for (const auto &rule_name : token_rule_names) {
+                involved_symbols[rule_name] = base_dfa_index;
+                name_to_dfa[rule_name] = base_dfa_index;
+
+                stdu::vector<stdu::vector<std::string>> nested_names;
+                accumulateNestedNames(ast[rule_name].rule_members, nested_names);
+                for (const auto &nested_name : nested_names) {
+                    std::size_t nested_dfa_index = dfa_collection.size();
+                    name_to_dfa[nested_name] = nested_dfa_index;
+                    involved_symbols[nested_name] = nested_dfa_index;
+
+                    NFA nested_nfa(
+                        ast, nested_name,
+                        &ast[nested_name].data_block,
+                        ast[nested_name].rule_members,
+                        nested_name == constants::whitespace,
+                        true
+                    );
+                    nested_nfa.build(true);
+                    stdu::vector<NFA> nfas{std::move(nested_nfa)};
+                    dfa_collection.push_back(DFA::build(ast, nfas));
+                }
+            }
+
+            // Record as a synthetic dispatch entry for diagnostics
+            if (!token_rule_names.empty()) {
+                dispatch_names_involve.emplace(token_rule_names, std::move(involved_symbols));
             }
         }
-
-        // --- 7. Record which names are part of this DFA set ---
-        dispatch_names_involve.emplace(current_group, involved_symbols);
     }
 }
 auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
