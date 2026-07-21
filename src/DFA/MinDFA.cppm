@@ -29,10 +29,10 @@ export namespace DFA {
         static void removeSelfLoop(SDFA &sdfa);
         static void minimize(SDFA &sdfa);
         void minimize();
-        MinDFA(SDFA &sdfa_) : sdfa(sdfa_), states(nullptr), Base(sdfa_.getEmptyState()) {};
-        MinDFA(SDFA &sdfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : sdfa(sdfa_), states(nullptr), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
-        MinDFA(const NFA &nfa, SDFA &sdfa_) : sdfa(sdfa_), states(&nfa), Base(sdfa_.getEmptyState()) {};
-        MinDFA(const NFA &nfa, SDFA &sdfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : sdfa(sdfa_), states(&nfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map) {};
+        MinDFA(SDFA &sdfa_, bool merged) : sdfa(sdfa_), states(nullptr), Base(sdfa_.getEmptyState(), merged) {};
+        MinDFA(SDFA &sdfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, bool merged) : sdfa(sdfa_), states(nullptr), Base(dfa_empty_state_map, dfa_index_to_empty_state_map, merged) {};
+        MinDFA(const NFA &nfa, SDFA &sdfa_, bool merged) : sdfa(sdfa_), states(&nfa), Base(sdfa_.getEmptyState(), merged) {};
+        MinDFA(const NFA &nfa, SDFA &sdfa_, const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, bool merged) : sdfa(sdfa_), states(&nfa), Base(dfa_empty_state_map, dfa_index_to_empty_state_map, merged) {};
 
         auto &get() { return states; }
         auto &get() const { return states; }

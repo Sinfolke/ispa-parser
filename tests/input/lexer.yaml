@@ -24,11 +24,11 @@ tests:
         value: 'helloWorld1234'
   - name: serial_code
     path: basic/serial_code.isc
-    input: "Xf"
+    input: "XF"
 
     expect:
       - for: SERIAL_CODE
-        value: 'f'
+        value: 'F'
   - name: html_cells
     path: basic/html_cells.isc
     input: "< td> <td> <td >"

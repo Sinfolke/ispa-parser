@@ -52,7 +52,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
     struct MergedMetadata {
         bool new_cst_node = false, new_member = false, close_cst_node = false;
         bool optional = false, last = false;
-        std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE;
+        std::size_t new_group = NFA::NULL_STATE, close_group = NFA::NULL_STATE, accept_index = NULL_STATE;
     };
 
     auto aggregateMetadata = [](const stdu::vector<MultiTransitionValue> &alts) {
@@ -65,6 +65,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
             m.last          |= alt.value.last;
             if (alt.value.new_group != NFA::NULL_STATE)   m.new_group = alt.value.new_group;
             if (alt.value.group_close != NFA::NULL_STATE) m.close_group = alt.value.group_close;
+            if (alt.value.accept_index != NULL_STATE) m.accept_index = alt.value.accept_index;
         }
         return m;
     };
@@ -73,7 +74,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
 
     auto makeMergedTransitionValue = [&](std::size_t next_state) {
         return MultiTransitionValue{next_state, meta.new_cst_node, meta.new_member, meta.close_cst_node,
-                                     meta.new_group, meta.close_group, meta.optional, meta.last};
+                                     meta.new_group, meta.close_group, meta.accept_index, meta.optional, meta.last};
     };
 
     if (const auto cached = seen.find(target_set); cached != seen.end()) {
@@ -225,7 +226,7 @@ void DFA::SDFA::unrollMultiTransition(std::size_t state_id, const NFA::Transitio
             return a.value.next < b.value.next;
         });
         targets.erase(std::unique(targets.begin(), targets.end(), [](const auto &a, const auto &b) {
-            return a.value.next == b.value.next;
+            return a.value == b.value;
         }), targets.end());
 
         if (targets.size() > 1) {

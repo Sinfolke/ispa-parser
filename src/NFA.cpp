@@ -61,6 +61,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
             break;
     }
 }
+
 void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     // NO STORE ACTIONS IN THIS FUNCTION AS IT ONLY MEET FOR DECISTION LOOKUP NOT LEXING
     std::size_t inner_start = states.size();
@@ -81,8 +82,6 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
     // now handle quantifier
     switch (member.quantifier) {
         case '?':
-            // epsilon -> end
-            // fragment -> end
             states[start].epsilon_transitions.insert(inner_start);
             states[start].epsilon_transitions.insert(end);
             states[inner_end].epsilon_transitions.insert(end);
@@ -90,7 +89,6 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             states[start].optional = true;
             break;
         case '+': {
-            // loop at end
             states[start].epsilon_transitions.insert(inner_start);
             states[inner_end].epsilon_transitions.insert(inner_start); // loop
             states[inner_end].epsilon_transitions.insert(end);         // or exit
@@ -99,8 +97,6 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             break;
         }
         case '*': {
-            // epsilon -> end
-            // loop zero or more
             states[start].epsilon_transitions.insert(inner_start);  // enter
             states[start].epsilon_transitions.insert(end);          // or skip
             states[inner_end].epsilon_transitions.insert(inner_start); // loop
@@ -111,7 +107,6 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
             break;
         }
         default:
-            // normal sequence
             states[start].epsilon_transitions.insert(inner_start);
             states[inner_end].epsilon_transitions.insert(end);
             break;
@@ -129,8 +124,10 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         states[s].optional = states[inner_start].optional;
     }
 }
+
 void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     std::size_t last = start;
+    bool was_storing_group = store_entire_group;
     store_entire_group = true;
     for (const auto &sub : group) {
         auto fragment = buildStateFragment(sub, false, addStoreActions);
@@ -139,7 +136,7 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         states[last].epsilon_transitions.insert(fragment.start);
         last = fragment.end;
     }
-    store_entire_group = false;
+    store_entire_group = was_storing_group;
     // Link final fragment to end
     states[last].epsilon_transitions.insert(end);
     if (isLastMember && !isWhitespaceToken) {
@@ -148,20 +145,14 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     }
     switch (member.quantifier) {
         case '?':
-            // Allow skipping the group entirely
             states[start].epsilon_transitions.insert(end);
             break;
         case '+':
-            // Loop back, but no skipping
             states[last].epsilon_transitions.insert(start);
             break;
         case '*':
-            // Loop and allow skipping
-            // Allow skipping entire group before any run
             states[start].epsilon_transitions.insert(end);
-            // After completing the group, loop back to start (but not skip again)
             states[last].epsilon_transitions.insert(start);
-
             break;
         default:
             break;
@@ -185,6 +176,7 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
         states[s].optional = states[start].optional;
     }
 }
+
 void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     constexpr auto NO_NEXT_AFTER = std::numeric_limits<std::size_t>::max();
     std::size_t current = start;
@@ -223,12 +215,10 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
     // Handle quantifiers
     switch (member.quantifier) {
         case '?':
-            // Can skip the entire string
             states[start].epsilon_transitions.insert(end);
             states[start].optional = true;
             break;
         case '+':
-            // Loop only
             if (next_after != NO_NEXT_AFTER) {
                 states[inner_end].transitions[str[0]] = {next_after, true, false};
                 states[inner_end].epsilon_transitions.insert(end);
@@ -257,6 +247,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
         states[s].optional = states[start].optional;
     }
 }
+
 void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
     const auto &chars = csequence.characters;
     const auto &escaped = csequence.escaped;
@@ -284,7 +275,6 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
                 break;
         }
     } else {
-        // Add transitions for each character from start to end
         for (char c : chars) {
             auto &t = states[start].transitions[c];
             t.next = end;
@@ -321,12 +311,10 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
     auto loop_state = states.size();
     switch (member.quantifier) {
         case '?':
-            // Allow skipping the group
             states[start].epsilon_transitions.insert(end);
             states[start].optional = true;
             break;
         case '+': {
-            // Allow skipping the loop_state only
             for (auto &t : states[start].transitions) {
                 t.second.next = loop_state;
             }
@@ -334,13 +322,18 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             states.push_back(first);
             for (auto &t : states[loop_state].transitions) {
                 t.second.new_member = false;
+                t.second.new_cst_node = false;
+                t.second.close_cst_node = false;
             }
-            // skip to end
             states[loop_state].epsilon_transitions.insert(end);
             states[loop_state].optional = true;
+
+            // Close CST node when exiting the loop fragment to `end`
+            if (addStoreActions)
+                cst_node_close_propagate.push_back(end);
             break;
-        } case '*': {
-            // allow skip both start and loop_state
+        }
+        case '*': {
             for (auto &t : states[start].transitions) {
                 t.second.next = loop_state;
             }
@@ -348,18 +341,27 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
             states.push_back(first);
             for (auto &t : states[loop_state].transitions) {
                 t.second.new_member = false;
+                t.second.new_cst_node = false;
+                t.second.close_cst_node = false;
             }
-            // skip to end
             states[start].epsilon_transitions.insert(end);
             states[loop_state].epsilon_transitions.insert(end);
 
             states[start].optional = true;
             states[loop_state].optional = true;
+
+            // Close CST node when exiting the loop fragment to `end`
+            if (addStoreActions)
+                cst_node_close_propagate.push_back(end);
             break;
-        } default:
+        }
+        default:
+            if (addStoreActions)
+                cst_node_close_propagate.push_back(end);
             break;
     }
 }
+
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, bool addStoreActions) -> StateRange {
     if (member.isNospace()) {
         no_add_space_skip_next = true;
@@ -373,7 +375,6 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
         if (name.isTerminal()) {
             handleTerminal(member, name.name, start, end, isLastMember, addStoreActions);
         } else {
-            // Check cache
             auto it = fragment_cache.find(name.name);
             if (it != fragment_cache.end()) {
                 return {it->second.start, it->second.end};
@@ -386,7 +387,6 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
 
             processing.erase(name.name);
 
-            // Cache the constructed fragment
             fragment_cache[name.name] = {start, end};
         }
     } else if (member.isOp()) {
@@ -394,6 +394,13 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
         auto cached_no_space_skip = no_add_space_skip_next;
         auto cached_group_count = group_count;
         bool was_group = false;
+
+        // FIX 1: Set store_entire_group if the outer Op member carries a capture prefix (@)[cite: 7]
+        bool was_storing_group = store_entire_group;
+        if (!member.prefix.empty()) {
+            store_entire_group = true;
+        }
+
         for (const auto &option : op.options) {
             no_add_space_skip_next = cached_no_space_skip;
             group_count = cached_group_count;
@@ -416,6 +423,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
                 states[s].last = states[start].last;
             }
         }
+
+        store_entire_group = was_storing_group;
+
         if (was_group && cached_group_count == group_count) {
             group_count++;
         }
@@ -441,6 +451,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
     no_add_space_skip_next = false;
     return {start, end};
 }
+
 void NFA::getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result) {
     const auto &state = states[state_id];
     if (state.transitions.empty() && state.epsilon_transitions.empty())
@@ -452,11 +463,13 @@ void NFA::getStatesToPropagate(std::size_t state_id, std::unordered_set<std::siz
         getStatesToPropagate(epsilon, result);
     }
 }
+
 auto NFA::getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t> {
     std::unordered_set<std::size_t> result;
     getStatesToPropagate(id, result);
     return result;
 }
+
 auto NFA::investigateHasNext(std::size_t place, char c, std::unordered_set<std::size_t> &visited) -> bool {
     for (const auto &[name, next] : states[place].transitions) {
         if (std::holds_alternative<char>(name)) {
@@ -474,6 +487,7 @@ auto NFA::investigateHasNext(std::size_t place, char c, std::unordered_set<std::
         return investigateHasNext(x, c, visited);
     });
 }
+
 auto NFA::investigateHasNext(std::size_t place, const stdu::vector<std::string> &name, std::unordered_set<std::size_t> &visited) -> bool {
     for (const auto &[n, next] : states[place].transitions) {
         if (std::holds_alternative<stdu::vector<std::string>>(n)) {
@@ -491,23 +505,20 @@ auto NFA::investigateHasNext(std::size_t place, const stdu::vector<std::string> 
         return investigateHasNext(x, name, visited);
     });
 }
+
 void NFA::addSpaceSkip() {
     for (const auto &place : add_space_skip_places) {
         std::unordered_set<std::size_t> visited;
         auto &state = states[place];
         for (const auto c : constants::whitespace_chars) {
-            // Check if already handled
             if (!investigateHasNext(place, c, visited)) {
-                // Add direct self-loop for whitespace char
                 state.transitions[c] = {place};
             }
         }
     }
 }
 
-
 void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited) {
-    // Stop if already visited with this accept_index (to prevent infinite recursion)
     if (!visited.insert(index).second)
         return;
 
@@ -516,7 +527,6 @@ void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::
     }
     accept_map[index] = accept_index;
 
-    // Recurse through all transitions, including epsilon
     for (const auto &[symbol, target] : states[index].transitions) {
         acceptMapVisitState(target.next, accept_index, visited);
     }
@@ -524,6 +534,7 @@ void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::
         acceptMapVisitState(e + 1, accept_index, visited);
     }
 }
+
 void NFA::buildAcceptMap() {
     accept_map.clear();
     for (std::size_t i = 0; i < states.size(); ++i) {
@@ -535,7 +546,7 @@ void NFA::buildAcceptMap() {
         }
     }
 }
-// Helper function to process a single rule member safely preserving original AST lifetimes
+
 void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
     if (!mem.prefix.empty()) {
         if (dtb->getTemplatedDataBlock().names.size() <= prefix_index) {
@@ -566,7 +577,6 @@ void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, T
             std::size_t current_index = start_index;
             std::size_t current_group_index = start_group_index;
 
-            // FIX: Pass opt directly into the single-rule handler. No temporary vector created!
             generateTemplatedDataBlockFromSingleRule(opt, templated_data_block, current_prefix_index, current_index, current_group_index);
 
             max_prefix_index = std::max(max_prefix_index, current_prefix_index);
@@ -579,14 +589,12 @@ void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, T
     }
 }
 
-// Main entry wrapper
 void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
     for (const auto &mem : rules) {
         generateTemplatedDataBlockFromSingleRule(mem, templated_data_block, prefix_index, index, group_index);
     }
 }
 
-// Patched single block builder (added Op recursion branch)
 void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed) {
     if (isAlreadyConstructed)
         return;
@@ -605,7 +613,6 @@ void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &
             if (isAlreadyConstructed)
                 return;
         } else if (mem.isOp()) {
-            // FIX: Safely recurse into choice blocks directly using the existing vector reference
             generateSingleDataBlockFromRules(mem.getOp().options, single_data_block, isAlreadyConstructed);
             if (isAlreadyConstructed)
                 return;
@@ -623,7 +630,6 @@ void NFA::build(bool addStoreActions) {
             if (end != NULL_STATE)
                 states[end].epsilon_transitions.insert(states.size());
         }
-        // register one accept state for the last state in rule sequence
         auto [start, end] = buildStateFragment(rules->back(), true, addStoreActions);
         if (states.empty()) {
             throw Error("NFA cannot be empty");
@@ -667,7 +673,10 @@ void NFA::build(bool addStoreActions) {
         for (const auto state_id : propagate_states) {
             auto &state = states[state_id];
             for (auto &t : state.transitions) {
-                t.second.close_cst_node = true;
+                // DO NOT set close_cst_node if this transition is also opening a new CST node!
+                if (!t.second.new_cst_node) {
+                    t.second.close_cst_node = true;
+                }
             }
         }
     }
@@ -676,7 +685,7 @@ void NFA::build(bool addStoreActions) {
     }
     buildAcceptMap();
 }
-// Print a single state
+
 std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
     if (s.transitions.empty()) {
         os << "\t(none)\n";
@@ -723,13 +732,9 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
         os << "\tdata: \n";
         os << "\t\t[name]: " << s.rule_name << "\n";
     }
-    // if (!s.dtb.empty()) {
-    //     os << "\t\t" << s.dtb;
-    // }
     return os;
 }
 
-// Print all states in the vector
 std::ostream& operator<<(std::ostream& os, const NFA& nfa) {
     for (std::size_t i = 0; i < nfa.getStates().size(); ++i) {
         os << "State " << i << ":\n" << nfa.getStates()[i] << "\n";

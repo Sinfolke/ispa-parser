@@ -20,10 +20,10 @@ namespace DFA {
         auto getType(const States<StateType> &states) const -> DfaType;
     public:
         Base() = default;
-        Base(std::size_t empty_state) : empty_state(empty_state) {}
-        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map) : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), merged(true) {};
-        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, std::size_t empty_state)
-        : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), empty_state(empty_state), merged(true) {}
+        Base(std::size_t empty_state, bool merged = false) : empty_state(empty_state), merged(merged) {}
+        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, bool merged = false) : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), merged(merged) {};
+        Base(const DfaEmptyStateMap &dfa_empty_state_map, const DfaIndexToEmptyStateMap &dfa_index_to_empty_state_map, std::size_t empty_state, bool merged = false)
+        : dfa_empty_state_map_(dfa_empty_state_map), dfa_index_to_empty_state_map_(dfa_index_to_empty_state_map), empty_state(empty_state), merged(merged) {}
         virtual ~Base() = default;
         auto &getEmptyStateMap()        const { return dfa_empty_state_map_; }
         auto &getEmptyStateMap()              { return dfa_empty_state_map_; }

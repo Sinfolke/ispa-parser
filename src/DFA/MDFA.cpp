@@ -67,7 +67,7 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
             for (const auto &[symbol, id] : state.transitions) {
                 TransitionValue incoming_val {
                     id.next, id.new_cst_node, id.new_member, id.close_cst_node,
-                    id.new_group, id.group_close, nfa.getAcceptMap().at(id.next),
+                    id.new_group, id.group_close, allow_accept_index ? nfa.getAcceptMap().at(id.next) : NULL_STATE,
                     // change to state.optional, state.last when needed
                     false, false
                 };
@@ -232,8 +232,23 @@ auto DFA::MDFA::check_dfa() -> void {
                     const auto &nested_name = std::get<stdu::vector<std::string>>(sym);
                     AssertNe(nested_name.empty(), "Empty nested_name in state {}", index);
                 }
+                std::size_t capture_count = 0;
+                std::size_t nfa_capture_count = 0;
                 for (const auto &t : transitions) {
                     Assert(states.size() >= t.value.next, "Out of bound transition {} in state {}", t.value.next, index);
+                    if (t.value.new_member) {
+                        capture_count++;
+                    }
+                }
+                for (const auto nfa_state : state.nfa_states) {
+                    for (const auto &[sym, transition]: nfa.getStates()[nfa_state].transitions) {
+                        if (transition.new_member) {
+                            nfa_capture_count++;
+                        }
+                    }
+                }
+                if (capture_count < nfa_capture_count) {
+                    throw Error("Capture count mismatch in state {}", index);
                 }
             }
             ++index;

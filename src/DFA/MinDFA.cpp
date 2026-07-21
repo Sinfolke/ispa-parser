@@ -14,28 +14,25 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
 
     std::unordered_map<std::size_t, std::size_t> duplicate_to_orig;
 
-    auto same_transition = [](TransitionValue lhs, TransitionValue rhs) {
-        // `accept_index` is tied to NFA-origin numbering and does not affect
-        // the observable DFA shape used by dump/dispatch.
-        lhs.accept_index = NULL_STATE;
-        rhs.accept_index = NULL_STATE;
+    auto same_transition = [](const TransitionValue &lhs, const TransitionValue &rhs) {
         return lhs == rhs;
     };
 
     auto same_state = [&](const SingleState &a, const SingleState &b) {
         if (a.transitions.size() != b.transitions.size())
             return false;
-        if (a.else_goto != b.else_goto ||
-            a.else_goto_accept != b.else_goto_accept ||
-            a.rule_name != b.rule_name ||
-            a.dtb != b.dtb)
-            return false;
-
-        for (const auto &[sym, t] : a.transitions) {
-            auto it = b.transitions.find(sym);
-            if (it == b.transitions.end())
+        if (a.transitions.empty() && b.transitions.empty()) {
+            if (a.rule_name != b.rule_name || a.dtb != b.dtb)
                 return false;
-            if (!same_transition(t, it->second))
+        } else {
+            for (const auto &[sym, t] : a.transitions) {
+                auto it = b.transitions.find(sym);
+                if (it == b.transitions.end())
+                    return false;
+                if (!same_transition(t, it->second))
+                    return false;
+            }
+            if (a.else_goto != b.else_goto || a.else_goto_accept != b.else_goto_accept)
                 return false;
         }
         return true;
@@ -311,230 +308,11 @@ void DFA::MinDFA::terminateEarly() {
 }
 
 void DFA::MinDFA::minimize(SDFA &sdfa) {
-    removeUnreachableStates(sdfa);
-    // `terminateEarly` can prematurely cut still-live continuation paths
-    // (e.g. keyword tails sharing prefixes), so keep full transitions here.
+    terminateEarly(sdfa);
     removeSelfLoop(sdfa);
-
-
-    constexpr std::size_t DEAD = std::numeric_limits<std::size_t>::max();
-
-    struct Signature {
-        // Each edge stores the transition symbol together with the full
-        // TransitionValue payload (its `next` field repurposed to hold the
-        // target block id). This ensures that states which reach equivalent
-        // blocks but perform different semantic actions (accept_index,
-        // new_cst_node, new_member, close_cst_node, new_group, group_close,
-        // ...) are NOT merged during minimization.
-        std::vector<std::pair<NFA::TransitionKey, TransitionValue>> edges;
-        std::size_t else_block = DEAD;
-        std::size_t else_goto_accept = DEAD;
-        stdu::vector<std::string> rule_name;
-        NFA::DataBlock dtb;
-
-        bool operator==(const Signature &o) const = default;
-
-    private:
-        friend struct ::uhash;
-        auto members() const {
-            return std::tie(edges, else_block, else_goto_accept, rule_name, dtb);
-        }
-    };
-
-    // --------------------------
-    // 1) alphabet
-    // --------------------------
-    stdu::vector<NFA::TransitionKey> alphabet;
-    utype::unordered_set<NFA::TransitionKey> seen;
-
-    for (const auto &st : sdfa.get()) {
-        for (const auto &kv : st.transitions) {
-            if (seen.insert(kv.first).second)
-                alphabet.push_back(kv.first);
-        }
-    }
-
-    // --------------------------
-    // helper
-    // --------------------------
-    auto get_transition = [&](const SingleState &s,
-                              const NFA::TransitionKey &sym)
-        -> std::pair<TransitionValue, std::size_t>
-    {
-        if (auto it = s.transitions.find(sym); it != s.transitions.end())
-            return {it->second, it->second.next};
-
-        return {TransitionValue{}, s.else_goto};
-    };
-
-    // --------------------------
-    // initial partition
-    // --------------------------
-    stdu::vector<std::size_t> state_block(sdfa.get().size(), 0);
-
-    utype::unordered_map<Signature, std::size_t> sig_to_block;
-    stdu::vector<stdu::vector<std::size_t>> blocks;
-
-    auto build_signature = [&](std::size_t sid) -> Signature {
-        Signature sig;
-        const auto &s = sdfa.get()[sid];
-
-        sig.edges.reserve(alphabet.size());
-
-        for (const auto &sym : alphabet) {
-            auto [tv, nxt] = get_transition(s, sym);
-            std::size_t bid = (nxt == NULL_STATE)
-                ? DEAD
-                : state_block[nxt];
-
-            // Repurpose `next` to carry the destination block id so that both
-            // the target block AND the transition actions participate in the
-            // signature equality/hash.
-            tv.next = bid;
-
-            // `accept_index` is an NFA-origin index and may legitimately differ
-            // between otherwise equivalent DFA states. It is not part of the
-            // externally observable DFA structure dumped in `Dumps/DFA.txt`,
-            // and keeping it in the minimization signature prevents expected
-            // merges like the duplicate states in the first COMPARE_OP DFA.
-            tv.accept_index = NULL_STATE;
-            sig.edges.emplace_back(sym, tv);
-        }
-
-        // Edges are built in a fixed alphabet order for every state, so the
-        // sequences are already aligned and no sorting is required.
-        if (sig.edges.empty()) {
-            sig.rule_name = s.rule_name;
-            sig.dtb = s.dtb;
-        } else {
-            sig.else_block = (s.else_goto == NULL_STATE)
-                ? DEAD
-                : state_block[s.else_goto];
-
-            sig.else_goto_accept = s.else_goto_accept;
-        }
-        return sig;
-    };
-
-    for (std::size_t i = 0; i < sdfa.get().size(); ++i) {
-        Signature sig = build_signature(i);
-
-        auto [it, inserted] = sig_to_block.emplace(sig, blocks.size());
-        if (inserted) blocks.emplace_back();
-
-        blocks[it->second].push_back(i);
-    }
-
-    // Pass 2: Commit the initial block assignments BEFORE refinement
-    for (std::size_t b = 0; b < blocks.size(); ++b) {
-        for (auto s : blocks[b]) {
-            state_block[s] = b;
-        }
-    }
-
-    // --------------------------
-    // refinement
-    // --------------------------
-    bool changed = true;
-
-    while (changed) {
-        changed = false;
-        stdu::vector<stdu::vector<std::size_t>> next_blocks;
-
-        for (const auto &block : blocks) {
-            if (block.size() <= 1) {
-                next_blocks.push_back(block);
-                continue;
-            }
-
-            utype::unordered_map<Signature, stdu::vector<std::size_t>> groups;
-
-            for (auto sid : block) {
-                groups[build_signature(sid)].push_back(sid);
-            }
-
-            if (groups.size() == 1) {
-                next_blocks.push_back(block);
-            } else {
-                changed = true;
-                for (auto &g : groups)
-                    next_blocks.push_back(std::move(g.second));
-            }
-        }
-
-        if (changed) {
-            blocks = std::move(next_blocks);
-
-            for (std::size_t b = 0; b < blocks.size(); ++b)
-                for (auto s : blocks[b])
-                    state_block[s] = b;
-        }
-    }
-
-    // --------------------------
-    // rebuild DFA
-    // --------------------------
-    States<SingleState> new_states(nullptr);
-    stdu::vector<std::size_t> block_to_new(blocks.size(), NULL_STATE);
-
-    for (std::size_t b = 0; b < blocks.size(); ++b) {
-        auto repr = blocks[b].front();
-        std::size_t nid = new_states.makeNew();
-        new_states[nid] = sdfa.get()[repr];
-        block_to_new[b] = nid;
-    }
-
-    for (auto &st : new_states) {
-        for (auto &kv : st.transitions) {
-            if (kv.second.next != NULL_STATE)
-                kv.second.next = block_to_new[state_block[kv.second.next]];
-        }
-
-        if (st.else_goto != NULL_STATE)
-            st.else_goto = block_to_new[state_block[st.else_goto]];
-    }
-
-    // --------------------------
-    // remap auxiliary structures
-    // --------------------------
-    std::unordered_map<std::size_t, std::size_t> old_to_new;
-
-    for (std::size_t i = 0; i < sdfa.get().size(); ++i)
-        old_to_new[i] = block_to_new[state_block[i]];
-
-    DfaEmptyStateMap new_map;
-
-    for (auto &e : sdfa.getEmptyStateMap()) {
-        if (old_to_new.contains(e.first) && old_to_new.contains(e.second))
-            new_map[old_to_new[e.first]] = old_to_new[e.second];
-    }
-
-    sdfa.getEmptyStateMap() = std::move(new_map);
-
-    DfaIndexToEmptyStateMap new_index_to_empty_state_map;
-
-    for (auto &e : sdfa.getIndexToEmptyStateMap()) {
-        if (old_to_new.contains(e.first) && old_to_new.contains(e.second))
-            new_index_to_empty_state_map[old_to_new[e.first]] = old_to_new[e.second];
-    }
-
-    sdfa.getIndexToEmptyStateMap() = std::move(new_index_to_empty_state_map);
-
-    if (sdfa.hasOneEmptyState()) {
-        auto old = sdfa.getEmptyState();
-        sdfa.getEmptyState() =
-            old_to_new.contains(old) ? old_to_new[old] : NULL_STATE;
-    }
-
-    sdfa.get() = std::move(new_states);
-
-    // Run explicit duplicate-state compaction on the rebuilt DFA.
-    // This is especially important for identical empty/fallback states,
-    // which may still appear after partition rebuild.
     removeDublicateStates(sdfa);
-
-    // Keep only states reachable from the start after all rewrites.
     removeUnreachableStates(sdfa);
+    removeDublicateStates(sdfa);
 }
 void DFA::MinDFA::minimize() {
     minimize(sdfa);

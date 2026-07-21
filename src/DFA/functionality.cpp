@@ -133,7 +133,7 @@ auto DFA::mergeDFAS(stdu::vector<MDFA> &dfas) -> MDFA {
 auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> TokenMachineDFA {
     MDFA mdfa(nfa); mdfa.build();
     SDFA sdfa(mdfa); sdfa.build();
-    MinDFA min_dfa(sdfa); min_dfa.minimize();
+    MinDFA min_dfa(sdfa, false); min_dfa.minimize();
     TokenMachineDFA machine_dfa(ast, min_dfa); machine_dfa.build();
     return machine_dfa;
 }
@@ -148,7 +148,7 @@ auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -
     auto dfa_index_to_empty_state_map = buildDfaIndexToEmptyStateMap(dfas);
     auto dfa = mergeDFAS(dfas);
     SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sdfa.build();
-    MinDFA min_dfa(sdfa, sdfa.getEmptyStateMap(), sdfa.getIndexToEmptyStateMap()); min_dfa.minimize();
+    MinDFA min_dfa(sdfa, sdfa.getEmptyStateMap(), sdfa.getIndexToEmptyStateMap(), true); min_dfa.minimize();
     SortedDFA sorted_dfa(ast, min_dfa, min_dfa.getEmptyStateMap(), min_dfa.getIndexToEmptyStateMap()); sorted_dfa.sort();
     CharMachineDFA machine_dfa(ast, sorted_dfa, sorted_dfa.getEmptyStateMap(), sorted_dfa.getIndexToEmptyStateMap()); machine_dfa.build();
     return machine_dfa;

@@ -87,11 +87,6 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         }
     }
 
-    auto normalize = [](TransitionValue tv) {
-        tv.accept_index = NULL_STATE;
-        return tv;
-    };
-
     auto same_transitions = [&](const CharMachineStateVariant &a, const CharMachineStateVariant &b) {
         if (a.index() != b.index())
             return false;
@@ -99,7 +94,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             const auto &ta = std::get<FullCharTable>(a);
             const auto &tb = std::get<FullCharTable>(b);
             for (std::size_t i = 0; i < ta.size(); ++i) {
-                if (normalize(ta[i]) != normalize(tb[i]))
+                if (ta[i] != tb[i])
                     return false;
             }
             return true;
@@ -109,7 +104,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         if (ta.size() != tb.size())
             return false;
         for (std::size_t i = 0; i < ta.size(); ++i) {
-            if (ta[i].first != tb[i].first || normalize(ta[i].second) != normalize(tb[i].second))
+            if (ta[i].first != tb[i].first || ta[i].second != tb[i].second)
                 return false;
         }
         return true;

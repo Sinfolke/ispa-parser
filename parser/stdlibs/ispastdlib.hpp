@@ -720,19 +720,14 @@ namespace DFA {
             closed = false;
         }
 
-        // 3. Close groups (now includes the new node if using standard half-open intervals [start, end))
+        // 3. Close groups
         if (tr.group_close != DFAAPI::null_state) {
             closeGroups(group_begin, inclosed_groups, tr.group_close, data.size());
         }
 
-        // 4. Open new groups (starts at the index of the NEXT node to be added)
+        // 4. Open new groups
         if (tr.new_group != DFAAPI::null_state) {
             openGroups(group_begin, inclosed_groups, tr.new_group, data.size());
-        }
-
-        // 5. Finalize node state flags
-        if (tr.close_cst_node) {
-            closed = true;
         }
     }
     template<typename DataVector, typename Value>
@@ -784,15 +779,18 @@ namespace DFA {
             decltype(auto) new_state = find_key(s, pos);
             if (new_state != nullptr) {
                 pos++;
+                std::cout << "transition to state " << new_state->next << " because symbol matched" << std::endl;
                 state = new_state->next;
                 apply_transition_effects(*new_state, member_begin, group_begin, inclosed_groups, data, closed);
                 if (!closed) {
                     data.back() += new_state->symbol;
                 }
-            } else if (s.else_goto) {
-                std::cout << "Current state: " << state << ". Else goto to " << s.else_goto << std::endl;
+                if (new_state->close_cst_node) {
+                    closed = true;
+                }
+            } else if (s.else_goto != DFAAPI::null_state) {
+                std::cout << "transition to state " << s.else_goto << " because else_goto" << std::endl;
                 state = s.else_goto;
-                std::cout << "New state: " << state << std::endl;
             } else {
                 if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
                     if (panic_mode != nullptr) {
@@ -800,6 +798,7 @@ namespace DFA {
                         if (*pos == '\0') {
                            break;
                         }
+                        std::cout << "Running panic mode on state " << state << std::endl;
                         panic_mode(pos);
                         continue;
                     }
@@ -810,7 +809,10 @@ namespace DFA {
         for (const auto id : inclosed_groups) {
             group_begin[id].second = data.size();
         }
-        std::cout << "result: [" << std::string(start, pos - start) << "; len=" << pos - start << "\n";
+        std::cerr << "data.size(): " << data.size() << std::endl;
+        for (const auto &part : data) {
+            std::cerr << "token part: " << part << std::endl;
+        }
         const auto e_state = std::get<DFAAPI::EmptyState<TOKEN_T, Token>>(table[state]);
         return MatchResult<TOKEN_T, Token> {true, Node<TOKEN_T, Token> { 0 /*todo*/, start, pos, static_cast<std::size_t>(std::distance(start, pos)), 0 /*todo*/, 0 /*todo*/, e_state.name, e_state.ast_builder(member_begin, group_begin, DFAAPI::UniversalDataVector<Token> {data}) }};
     }
