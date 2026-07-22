@@ -129,47 +129,72 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     std::size_t last = start;
     bool was_storing_group = store_entire_group;
     store_entire_group = true;
+
+    std::size_t group_entry = NULL_STATE;
+
     for (const auto &sub : group) {
         auto fragment = buildStateFragment(sub, false, addStoreActions);
         if (fragment.invalid())
             continue;
+
+        if (group_entry == NULL_STATE) {
+            group_entry = fragment.start; // Capture first inner state
+        }
+
         states[last].epsilon_transitions.insert(fragment.start);
         last = fragment.end;
     }
     store_entire_group = was_storing_group;
+
     // Link final fragment to end
     states[last].epsilon_transitions.insert(end);
+
+    // Keep accept_index on start for early path decision lookup
     if (isLastMember && !isWhitespaceToken) {
         states[start].accept_index = accept_index++;
         states[start].last = true;
     }
+
+    // Loop back to group_entry (inner content), NOT start!
+    // This prevents re-entering the whitespace-skip logic on loop iterations.
+    std::size_t loop_target = (group_entry != NULL_STATE) ? group_entry : start;
+
     switch (member.quantifier) {
         case '?':
             states[start].epsilon_transitions.insert(end);
+            states[start].optional = true;
             break;
         case '+':
-            states[last].epsilon_transitions.insert(start);
+            states[last].epsilon_transitions.insert(loop_target); // Loop inner content
+            states[last].epsilon_transitions.insert(end);         // Allow exit to accept state
             break;
         case '*':
-            states[start].epsilon_transitions.insert(end);
-            states[last].epsilon_transitions.insert(start);
+            states[start].epsilon_transitions.insert(end);         // Skip group
+            states[last].epsilon_transitions.insert(loop_target); // Loop inner content
+            states[last].epsilon_transitions.insert(end);         // Allow exit to accept state
+            states[start].optional = true;
             break;
         default:
             break;
     }
-    // add to transitions group opening
-    if (addStoreActions) {
-        auto propagate_states = getStatesToPropagate(start);
-        for (const auto &s : propagate_states) {
-            auto &state = states[s];
-            for (auto &t : state.transitions) {
-                t.second.new_group = group_count;
+
+    // Capture group actions
+    if (addStoreActions && group_entry != NULL_STATE) {
+        std::size_t current_group = group_count++;
+        auto open_states = getStatesToPropagate(group_entry);
+        open_states.insert(group_entry);
+
+        for (const auto s : open_states) {
+            for (auto &t : states[s].transitions) {
+                t.second.new_group = current_group;
             }
         }
-        group_close_propagate.emplace_back(end, group_count++);
+        group_close_propagate.emplace_back(end, current_group);
     }
+
     if (!states[start].last && !states[start].optional)
         return;
+
     auto states_to_propagate_last = getStatesToPropagate(start);
     for (const auto s : states_to_propagate_last) {
         states[s].last = states[start].last;

@@ -1,59 +1,108 @@
-# ispa
-### Warning
-  something you may find here may not be actually implemented for now,
-  It helps to have strict plans and quicks up implementation when you have it's details
-### What is this
- ispa is a parser generator to generate standalone parser from rules. The generated parser does not rely on any library; its output is a direct implementation of your rule, aiming to be simple and minimalistic while retaining most of the potential benefits. With the common language logic (CLL) inside you can parse any complex input. AST construction is done with simple data blocks where you just specify how the data of your rule should be stored in your node.
-### How to implement project
- The language ispa written is C++
- 1. Make sure the syntax definion is done
- 2. Do bootstrap. Write the parser for the syntax of this parser
- 3. Begin to write the main code of the parser
- 4. Hand-write the parser
- 5. Create rules to walk on parser tree if need some optimisations or else before the compilation
- 6. Convert rules into IR. First convert high level constructs, then cll and accessor
- 7. Optimize the IR
- 8. Since the parser is for multiple languages each language has own shared library for output. First it should output only C++ results.
- 9. After all done i can adjust parser rule syntax and do bootstrap
-10. Ensure bootstrapping works out of box
-11. Add proper error handling (panic mode, error production)
-     1. Create Error IR
-     2. For every error case automatically determine rules for recovery
-     3. lower to LLIR
-     4. Insert error handling instead of every return {}
-12. Add modules
-13. Add templates 
-14. Add inheritance 
-15. Add internal error handling for parser in rules 
-### Todo
-  Add handle of variables in Rule_other (*?)
+# ISPA Parser Generator
 
-  Add handle of ${} in string (?)
+**ISPA Parser** is a high-performance, infrastructure-level parser generator written from scratch in modern C++ (C++20/C++23). It enables high-level declarative grammar specifications using ISPA Syntax Containers (`.isc`), features automatic Abstract Syntax Tree (AST) synthesis, and employs Common Language Logic (CLL) to keep grammar definitions language-agnostic.
 
-  Necessary:
+---
 
-    Add handle of qualifier in matched() function
-    Add remove of unused variables (IR optimization)
-    Add insertion of NOT when one rule shadows another
-    Add automatic generation of recovery by panic mode strategy
-    ? Add automatic generation of recovery by error production
-    ? Add automatic generation of error by phase level recovery
+## 🚀 Current State
 
-    Add handling of OR groups in DFA through conditional assignment
-    Add handling of OR groups in Parser (LLIR) through worst case declaration
+- **Language Support**: Currently targets native **C++17 and upper**.
+- **Parsing Algorithms**:
+  - **LL(*) / Custom LL Engines**: It's core is implemented and highly tested. It's just needed to switch to LL(*) algorithm for DFA-based predictions
+  - **LR(1) / LALR / LR(*)**: Core theory and initial algorithmic pass completed and passing preliminary unit tests. Currently need some refinement over new IRs
+- **Lexing**: Deterministic Finite Automata (DFA) based tokenization layer with custom lexer generation.
+- **AST Generation**: Fully automatic AST construction with field mapping and typed captures (primitives, arrays, objects).
+---
+
+## ✨ Features
+- **Declarative AST Mapping**: Automatically capture tokens and sub-rules using `@` and map captured fields directly into structural tree representations via `@{field1, field2, ...}`.
+- **Nested Rules & Encapsulation**: Declare sub-rules, nested tokens (`#subrule`), and local context rules directly within parent rules.
+---
+
+## 📝 Syntax & Usage (Documentation)
+
+### 1. Basic Rule Structure & Captures (`@` and `@{...}`)
+
+Captures (`@`) specify which matched elements should be stored in the AST node. The binding construct `@{...}` maps captured items to named properties in the node output.
+
+```ispa
+condition:
+    'if' '(' @ expr ')' @ stmt 'else' @ stmt
+    @{expression, true_stmt, false_stmt}
+    ;
+```
+
+### 2. Sub-Rules & Nested Rules (`#rule`)
+
+Rules can contain encapsulated nested rules (`#name`) to prevent global namespace pollution:
+
+```ispa
+expr:
+    #logical
     
-    Conditional Assignment:
-        assign depends on which branch has been choosen. 
-        The elements are not assigned in this branch are assigned with empty value
-    Worst case declaration:
-        Declare as much variables as needed to represent largest option.
-        Assign one by one, leaving the non-captured in this case empty
+    #logical:
+        @ compare (@ LOGICAL_OP @ compare)*
+        @{left, op, right}
+        ;
+    #compare:
+        @ arithmetic (@ COMPARE_OP @ arithmetic)*
+        @{first, operators, sequence}
+        ;
+    ;
+```
 
-    Change tree to use std::variant and inheritance instead of std::any and ISPA_STD::Node
-    Change LLIR to use std::optional for values that may not be assigned
-### Parser syntax
-  
-  see ```concepts/syntax```
+### 3. Alternative Choices & Values
 
-### Latest commit changes
-  - Testing of parser output
+```ispa
+stmt:
+    ( '{' @ #value '}' )
+    | @ #value
+    {@}
+    ;
+```
+
+### 4. Grammar Inheritance & Templates
+
+Base rules can be extended or overridden, allowing grammar modularity:
+- Define reusable templates with slot placeholders.
+- Extend base grammars to produce customized syntaxes without re-writing entire rule trees.
+---
+
+## 🔄 Recent Changes
+
+- Refined AST generation pipeline and field-mapping bindings.
+- Expanded C++20 module/header generation for cleaner compiled output.
+- Enhanced parser table generators and DFA lexer state machine optimizations.
+---
+
+## ⚠️ Known Issues
+
+> *This section is intentionally left open for specific issue tracking.*
+
+- [ ] *Slow compilation by most major C++ compilers*
+
+---
+
+## 🔮 Future Roadmap
+
+- [ ] **PLL Algorithm**: Finalize custom Parallel/Polynomial LL algorithm to seamlessly resolve left-recursion in LL parsers while preserving structural parity with LR parsers.
+- [ ] **Multi-Target Code Generation**:
+  - [ ] Python target emitter
+- [ ] **Full LR Parser Stabilization**: Finalize integration and production readiness for LR(1), LALR, and LR(*) modes.
+- [ ] **Grammar Standard Library (StdLib)**: Pre-packaged standard grammar definitions for common formats (JSON, XML, Math Expressions, C-like statements).
+- [ ] Add features described in **concepts/**
+---
+
+## 🛠️ Build & Requirements
+
+- **Compiler**: C++20 or C++23 compliant compiler (`GCC 11+`, `Clang 13+`, or `MSVC 2022+`)
+- **Build System**: CMake 3.20+
+- **Dependencies**: Integrated via CMake / `vcpkg`
+
+**Note: Compilation is currently stable on Linux only with clang compiler. Windows support is planned for a future release.**
+
+```bash
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build .
+```
