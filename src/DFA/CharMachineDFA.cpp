@@ -9,6 +9,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
     auto &states = this->states.get();
     auto states_size = sorted_states.size();
 
+    // Partition states to separate character transitions from multi-type transitions
     for (std::size_t i = 0; i < states_size; i++) {
         auto type = sorted_dfa.getStateType(sorted_states[i].transitions);
         auto initial_else_goto = sorted_states[i].else_goto;
@@ -17,12 +18,10 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
             std::size_t current_type = sorted_states[i].transitions.begin()->first.index();
             std::size_t partitioned_state = i;
 
-            // FIX 1: Track partitions by index, avoiding pointer invalidation on reallocation
             std::size_t current_partition_idx = std::numeric_limits<std::size_t>::max();
             std::size_t erase_from = sorted_states[i].transitions.size();
 
             for (std::size_t j = 0; j < sorted_states[i].transitions.size(); ++j) {
-                // Fetch copies of symbol and value to protect against references changing layout
                 auto symbol = sorted_states[i].transitions[j].first;
                 auto value = sorted_states[i].transitions[j].second;
 
@@ -42,7 +41,7 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
                     getIndexToEmptyStateMap()[new_state] = getIndexToEmptyStateMap()[partitioned_state];
 
                     current_type = symbol.index();
-                    current_partition_idx = new_state; // Safe index assignment
+                    current_partition_idx = new_state;
                     partitioned_state = new_state;
                 }
 
@@ -58,7 +57,8 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         }
     }
 
-    bool has_multi_state = false;
+    // Directly populate output states without deduplication
+    states.reserve(sorted_states.size());
     for (auto &state : sorted_states) {
         if (state.transitions.empty()) {
             states.emplace_back(state.nfa_states, std::variant<FullCharTable, SortedTransitions> {SortedTransitions {}}, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
@@ -68,13 +68,10 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
         if (std::holds_alternative<char>(state.transitions.begin()->first)) {
             FullCharTable char_table;
 
-            // Initialize entire table with fallback markers cleanly
             TransitionValue default_transition;
             default_transition.next = NULL_STATE;
-            char_table.fill(default_transition); // Assumes FullCharTable is an array-like wrapper
+            char_table.fill(default_transition);
 
-            // FIX 2 & 3: Directly map sorted transitions.
-            // Eliminates find_if bottleneck and covers full 0-255 character range safely.
             for (const auto &[symbol, value] : state.transitions) {
                 auto unsigned_char_idx = static_cast<unsigned char>(std::get<char>(symbol));
                 char_table[unsigned_char_idx] = value;
@@ -82,104 +79,17 @@ auto DFA::CharMachineDFA::build() -> const States<CharMachineState>& {
 
             states.emplace_back(state.nfa_states, char_table, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         } else {
-            has_multi_state = true;
             states.emplace_back(state.nfa_states, state.transitions, state.else_goto, state.else_goto_accept, state.rule_name, state.dtb);
         }
     }
 
-    auto same_transitions = [&](const CharMachineStateVariant &a, const CharMachineStateVariant &b) {
-        if (a.index() != b.index())
-            return false;
-        if (std::holds_alternative<FullCharTable>(a)) {
-            const auto &ta = std::get<FullCharTable>(a);
-            const auto &tb = std::get<FullCharTable>(b);
-            for (std::size_t i = 0; i < ta.size(); ++i) {
-                if (ta[i] != tb[i])
-                    return false;
-            }
-            return true;
-        }
-        const auto &ta = std::get<SortedTransitions>(a);
-        const auto &tb = std::get<SortedTransitions>(b);
-        if (ta.size() != tb.size())
-            return false;
-        for (std::size_t i = 0; i < ta.size(); ++i) {
-            if (ta[i].first != tb[i].first || ta[i].second != tb[i].second)
-                return false;
-        }
-        return true;
-    };
-
-    auto same_state = [&](const CharMachineState &a, const CharMachineState &b) {
-        return a.else_goto == b.else_goto &&
-               a.else_goto_accept == b.else_goto_accept &&
-               a.rule_name == b.rule_name &&
-               a.dtb == b.dtb &&
-               same_transitions(a.transitions, b.transitions);
-    };
-
-    stdu::vector<std::size_t> old_to_new(states.size(), NULL_STATE);
-    stdu::vector<CharMachineState> compact;
-    compact.reserve(states.size());
-
-    for (std::size_t i = 0; i < states.size(); ++i) {
-        bool merged = false;
-        for (std::size_t j = 0; j < compact.size(); ++j) {
-            if (same_state(states[i], compact[j])) {
-                old_to_new[i] = j;
-                merged = true;
-                break;
-            }
-        }
-        if (!merged) {
-            old_to_new[i] = compact.size();
-            compact.push_back(states[i]);
-        }
-    }
-
-    for (auto &state : compact) {
-        if (std::holds_alternative<FullCharTable>(state.transitions)) {
-            auto &table = std::get<FullCharTable>(state.transitions);
-            for (auto &t : table) {
-                if (t.next != NULL_STATE)
-                    t.next = old_to_new[t.next];
-            }
-        } else {
-            auto &transitions = std::get<SortedTransitions>(state.transitions);
-            for (auto &[symbol, t] : transitions) {
-                if (t.next != NULL_STATE)
-                    t.next = old_to_new[t.next];
-            }
-        }
-        if (state.else_goto != NULL_STATE)
-            state.else_goto = old_to_new[state.else_goto];
-    }
-
-    DfaEmptyStateMap new_empty_state_map;
-    for (const auto &[from, to] : getEmptyStateMap()) {
-        if (from < old_to_new.size() && to < old_to_new.size())
-            new_empty_state_map[old_to_new[from]] = old_to_new[to];
-    }
-    getEmptyStateMap() = std::move(new_empty_state_map);
-
-    DfaIndexToEmptyStateMap new_index_to_empty_state_map;
-    for (const auto &[from, to] : getIndexToEmptyStateMap()) {
-        if (from < old_to_new.size() && to < old_to_new.size())
-            new_index_to_empty_state_map[old_to_new[from]] = old_to_new[to];
-    }
-    getIndexToEmptyStateMap() = std::move(new_index_to_empty_state_map);
-
-    if (hasOneEmptyState()) {
-        auto old = getEmptyState();
-        getEmptyState() = old < old_to_new.size() ? old_to_new[old] : NULL_STATE;
-    }
-
-    states = std::move(compact);
     return this->states;
 }
+
 auto DFA::CharMachineDFA::getType() const -> DfaType {
     return Base::getType(states);
 }
+
 auto DFA::CharMachineDFA::clear() -> void {
     states.clear();
 }

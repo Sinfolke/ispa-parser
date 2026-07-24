@@ -56,7 +56,15 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                    a.optional == b.optional &&
                    a.last == b.last;
         };
-
+        std::size_t best_accept_nfa_state = NULL_STATE;
+        for (std::size_t nfa_index : current) {
+            const auto &nstate = nfa.getStates().at(nfa_index);
+            if (nstate.transitions.empty()) {
+                if (best_accept_nfa_state == NULL_STATE || nstate.accept_index < nfa.getStates().at(best_accept_nfa_state).accept_index) {
+                    best_accept_nfa_state = nfa_index;
+                }
+            }
+        }
         // 2. When building input_symbols, group target NFA states that share the same output
         utype::unordered_map<NFA::TransitionKey, stdu::vector<std::pair<TransitionValue, std::size_t>>> input_symbols;
         logger.log("---- [1] DFA TRANSITION CONSTRUCTION ----");
@@ -88,13 +96,23 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 }
             }
         }
-        if (input_symbols.empty() && !rule_name.empty()) {
-            // final state
-            logger.log("Final state is {}, rule_name: {}", current_dfa_index, rule_name);
-            states[current_dfa_index].rule_name = rule_name;
-            states[current_dfa_index].dtb = dtb;
-            empty_state = current_dfa_index;
-            continue;
+        if (input_symbols.empty()) {
+            if (!rule_name.empty()) {
+                // final state
+                states[current_dfa_index].rule_name = rule_name;
+                states[current_dfa_index].dtb = dtb;
+                empty_state = current_dfa_index;
+            }
+            continue;  // <-- either way, no transitions means no else_goto candidate
+        } else if (best_accept_nfa_state != NULL_STATE) {
+            if (empty_state == NULL_STATE) {
+                empty_state = states.makeNew();
+                states[empty_state].rule_name = rule_name;
+                states[empty_state].dtb = dtb;
+            }
+            states[current_dfa_index].else_goto = empty_state;
+            states[current_dfa_index].else_goto_accept =
+                nfa.getStates().at(best_accept_nfa_state).accept_index;
         }
         logger.decreaseIndentLevel();
         logger.log("---- [2] DFA CONFLICT RESOLUTION ----");

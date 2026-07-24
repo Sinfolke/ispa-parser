@@ -95,7 +95,7 @@ Base rules can be extended or overridden, allowing grammar modularity:
 
 ## 🛠️ Build & Requirements
 
-- **Compiler**: C++20 or C++23 compliant compiler (`GCC 11+`, `Clang 13+`, or `MSVC 2022+`)
+- **Compiler**: C++20 or C++23 compliant compiler (`GCC 15+`, `Clang 20+`)
 - **Build System**: CMake 3.20+
 - **Dependencies**: Integrated via CMake / `vcpkg`
 

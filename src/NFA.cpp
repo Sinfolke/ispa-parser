@@ -133,12 +133,20 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
     std::size_t group_entry = NULL_STATE;
 
     for (const auto &sub : group) {
+        // Save space skip state and disable it if we're inside a loop group to prevent state 2 whitespace trapping
+        auto cached_no_space = no_add_space_skip_next;
+        if (member.quantifier == '+' || member.quantifier == '*') {
+            no_add_space_skip_next = true;
+        }
+
         auto fragment = buildStateFragment(sub, false, addStoreActions);
+        no_add_space_skip_next = cached_no_space;
+
         if (fragment.invalid())
             continue;
 
         if (group_entry == NULL_STATE) {
-            group_entry = fragment.start; // Capture first inner state
+            group_entry = fragment.start;
         }
 
         states[last].epsilon_transitions.insert(fragment.start);
@@ -190,6 +198,21 @@ void NFA::handleGroup(const AST::RuleMember &member, const stdu::vector<AST::Rul
             }
         }
         group_close_propagate.emplace_back(end, current_group);
+    }
+
+    if (!states[start].last && !states[start].optional)
+        return;
+
+    // Ensure the exit state of the group inherits last/optional propagation
+    // from the inner fragment's last state, not just `start`
+    auto group_exit_states = getStatesToPropagate(end);
+    for (const auto s : group_exit_states) {
+        if (isLastMember) {
+            states[s].last = true;
+        }
+        if (member.quantifier == '*' || member.quantifier == '?') {
+            states[s].optional = true;
+        }
     }
 
     if (!states[start].last && !states[start].optional)
@@ -556,7 +579,7 @@ void NFA::acceptMapVisitState(std::size_t index, std::size_t accept_index, std::
         acceptMapVisitState(target.next, accept_index, visited);
     }
     for (const auto &e : states[index].epsilon_transitions) {
-        acceptMapVisitState(e + 1, accept_index, visited);
+        acceptMapVisitState(e, accept_index, visited);
     }
 }
 

@@ -10,29 +10,60 @@ import dstd;
 import std;
 
 void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
-    constexpr std::size_t DEAD = std::numeric_limits<std::size_t>::max();
-
     std::unordered_map<std::size_t, std::size_t> duplicate_to_orig;
 
-    auto same_transition = [](const TransitionValue &lhs, const TransitionValue &rhs) {
-        return lhs == rhs;
+    // Helper to check transition equivalence, accounting for self-loops
+    auto same_transition = [](const TransitionValue &lhs, const TransitionValue &rhs, std::size_t a_idx, std::size_t b_idx) {
+        // First check non-destination metadata (e.g., condition/action/accepting attributes)
+        // Adjust these attribute checks if your TransitionValue has specific metadata fields
+        if (
+            lhs.new_cst_node != rhs.new_cst_node ||
+            lhs.new_member != rhs.new_member ||
+            lhs.close_cst_node != rhs.close_cst_node ||
+            lhs.new_group != rhs.new_group ||
+            lhs.group_close != rhs.group_close ||
+            lhs.accept_index != rhs.accept_index ||
+            lhs.optional != rhs.optional ||
+            lhs.last != rhs.last
+            ) {
+            return false;
+        }
+
+        // Check target state equivalence
+        bool lhs_is_self = (lhs.next == a_idx);
+        bool rhs_is_self = (rhs.next == b_idx);
+
+        // Both are self-loops
+        if (lhs_is_self && rhs_is_self) {
+            return true;
+        }
+
+        // Standard target check if not self-loops
+        return lhs.next == rhs.next;
     };
 
-    auto same_state = [&](const SingleState &a, const SingleState &b) {
+    auto same_state = [&](const SingleState &a, std::size_t a_idx, const SingleState &b, std::size_t b_idx) {
         if (a.transitions.size() != b.transitions.size())
             return false;
+
         if (a.transitions.empty() && b.transitions.empty()) {
             if (a.rule_name != b.rule_name || a.dtb != b.dtb)
                 return false;
         } else {
+            // Compare standard transitions
             for (const auto &[sym, t] : a.transitions) {
                 auto it = b.transitions.find(sym);
                 if (it == b.transitions.end())
                     return false;
-                if (!same_transition(t, it->second))
+                if (!same_transition(t, it->second, a_idx, b_idx))
                     return false;
             }
-            if (a.else_goto != b.else_goto || a.else_goto_accept != b.else_goto_accept)
+
+            // Compare fallback/else transitions
+            if (a.else_goto_accept != b.else_goto_accept)
+                return false;
+
+            if (a.else_goto != b.else_goto)
                 return false;
         }
         return true;
@@ -47,7 +78,7 @@ void DFA::MinDFA::removeDublicateStates(SDFA &sdfa) {
         bool matched = false;
 
         for (std::size_t j : representatives) {
-            if (same_state(sdfa.get()[i], sdfa.get()[j])) {
+            if (same_state(sdfa.get()[i], i, sdfa.get()[j], j)) {
                 duplicate_to_orig[i] = j;
                 matched = true;
                 break;
