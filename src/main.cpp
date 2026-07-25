@@ -183,6 +183,17 @@ int main(int argc, char** argv) {
         }
         LLIR::Builder builder(ast, false);
         auto IR = builder.get();
+
+        if (dumper.shouldDump("DFA")) {
+            std::ofstream dumpDFAFile(dumper.makeDumpPath("TokenDFA"));
+            if (!dumpDFAFile.is_open())
+                throw Error("failed to open DFA for dump");
+            for (const auto &dfa : IR.getDfas()) {
+                dumpDFAFile << dfa;
+            }
+            dumpDFAFile.close();
+        }
+
         auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), args.language, name);
         LangRepr::Converter converter(repr, args.language_str, name);
         converter.build();

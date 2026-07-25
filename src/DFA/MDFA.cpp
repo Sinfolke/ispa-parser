@@ -56,6 +56,22 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                    a.optional == b.optional &&
                    a.last == b.last;
         };
+        auto is_terminal_closure = [&](const Closure &closure) -> bool {
+            if (closure.empty() || nfa.isCharNfa())
+                return false;
+            std::optional<std::size_t> accept;
+            for (std::size_t nfa_index : closure) {
+                auto it = nfa.getAcceptMap().find(nfa_index);
+                std::size_t a = (it != nfa.getAcceptMap().end()) ? it->second : NFA::NULL_STATE;
+                if (!accept.has_value()) {
+                    accept = a;
+                } else if (*accept != a) {
+                    return false; // still ambiguous - must keep consuming input
+                }
+            }
+            return accept.has_value() && *accept != NFA::NULL_STATE;
+        };
+
         std::size_t best_accept_nfa_state = NULL_STATE;
         for (std::size_t nfa_index : current) {
             const auto &nstate = nfa.getStates().at(nfa_index);
@@ -183,11 +199,22 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 }
 
                 if (!dfa_state_map.contains(closure_set)) {
-                    auto new_idx = states.makeNew();
-                    states[new_idx].rule_name = rule_name;
-                    states[new_idx].dtb = dtb;
-                    dfa_state_map.emplace(closure_set, new_idx);
-                    work.push(closure_set);
+                    if (is_terminal_closure(closure_set)) {
+                        // Outcome already known from this closure alone - redirect
+                        // straight to the sink instead of building a real subtree.
+                        if (empty_state == NULL_STATE) {
+                            empty_state = states.makeNew();
+                            states[empty_state].rule_name = rule_name;
+                            states[empty_state].dtb = dtb;
+                        }
+                        dfa_state_map.emplace(closure_set, empty_state);
+                    } else {
+                        auto new_idx = states.makeNew();
+                        states[new_idx].rule_name = rule_name;
+                        states[new_idx].dtb = dtb;
+                        dfa_state_map.emplace(closure_set, new_idx);
+                        work.push(closure_set);
+                    }
                 }
                 std::size_t target_index = dfa_state_map.at(closure_set);
                 states[current_dfa_index].transitions[symbol].push_back({
@@ -201,11 +228,20 @@ auto DFA::MDFA::build() -> const States<MultiState>& {
                 const auto *transition = conf->value;
                 if (!conf_closure.empty()) {
                     if (!dfa_state_map.contains(conf_closure)) {
-                        auto new_idx = states.makeNew();
-                        states[new_idx].rule_name = rule_name;
-                        states[new_idx].dtb = dtb;
-                        dfa_state_map.emplace(conf_closure, new_idx);
-                        work.push(conf_closure);
+                        if (is_terminal_closure(conf_closure)) {
+                            if (empty_state == NULL_STATE) {
+                                empty_state = states.makeNew();
+                                states[empty_state].rule_name = rule_name;
+                                states[empty_state].dtb = dtb;
+                            }
+                            dfa_state_map.emplace(conf_closure, empty_state);
+                        } else {
+                            auto new_idx = states.makeNew();
+                            states[new_idx].rule_name = rule_name;
+                            states[new_idx].dtb = dtb;
+                            dfa_state_map.emplace(conf_closure, new_idx);
+                            work.push(conf_closure);
+                        }
                     }
 
                     std::size_t target_index = dfa_state_map.at(conf_closure);

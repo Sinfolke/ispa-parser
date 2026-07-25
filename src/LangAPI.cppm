@@ -1186,7 +1186,7 @@ export namespace LangAPI {
         }
     };
     struct VariableAssignment : ExpressionValueLevel {
-        std::string name;
+        std::variant<Symbol, StorageSymbol> name;
         OperatorType type = OperatorType::Assign;
         Expression value;
 
@@ -1513,8 +1513,8 @@ export namespace LangAPI {
         }
     };
     struct Statement : StatementsLevel {
-        std::variant<Variable, If, While, DoWhile, Switch, Expression> value;
-
+        std::variant<std::monostate, Variable, If, While, DoWhile, Switch, Expression> value;
+        Statement() = default;
         template<typename T>
         requires std::is_constructible_v<decltype(value), T>
         Statement(T value) : value(value) {}

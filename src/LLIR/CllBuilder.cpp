@@ -176,7 +176,7 @@ void LLIR::CllVarBuilder::build() {
         }
     }
     statements.push_back(var.type.type.empty() ?
-        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = std::move(variable.name), .value = std::move(variable.value)})
+        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {variable.name}, .value = std::move(variable.value)})
             :
         LangAPI::Variable::createStatement(variable)
     );

@@ -521,7 +521,8 @@ namespace LangAPI {
     }
 
     auto operator<<(std::ostream &os, const VariableAssignment &obj) -> std::ostream& {
-        return os << obj.name << ' ' << obj.type << "=" << ' ' << obj.value << ';';
+        std::visit([&os](const auto &v) { os << v; }, obj.name);
+        return os << ' ' << obj.type << "=" << ' ' << obj.value << ';';
     }
 
     auto operator<<(std::ostream &os, const CounterIncreament &obj) -> std::ostream& {
@@ -597,7 +598,11 @@ namespace LangAPI {
     }
 
     auto operator<<(std::ostream &os, const Statement &obj) -> std::ostream& {
-        std::visit([&os](const auto &v) { os << v; }, obj.value);
+        std::visit([&os](const auto &v) {
+            if constexpr (!std::is_same_v<std::decay_t<decltype(v)>, std::monostate>) {
+                os << v;
+            }
+        }, obj.value);
         return os;
     }
 }

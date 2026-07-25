@@ -39,4 +39,5 @@ export namespace DFA {
 
         auto clear() -> void;
     };
+    auto operator<<(std::ostream &os, const TokenMachineDFA &dfa) -> std::ostream&;
 }

@@ -59,7 +59,7 @@ auto LLIR::BuilderBase::createSuccessVariable() -> LangAPI::Variable {
 auto LLIR::BuilderBase::createAssignUvarBlock(LangAPI::Statements &statements, const LangAPI::Variable &uvar, const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> void {
     if (!uvar.name.empty()) {
         statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                .name = uvar.name,
+                .name = LangAPI::Symbol {uvar.name},
                 .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {
                     shadow_var.name.empty() ? var.name : shadow_var.name
                 })
@@ -69,7 +69,7 @@ auto LLIR::BuilderBase::createAssignUvarBlock(LangAPI::Statements &statements, c
 }
 void LLIR::BuilderBase::handle_plus_qualifier(const AST::RuleMember &rule, LangAPI::ConditionalElement loop, const LangAPI::Variable &uvar, const LangAPI::Variable &var, LangAPI::Variable &shadow_var, bool addError) {
     auto postCheckVar = createSuccessVariable();
-    loop.stmt.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = postCheckVar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true} )}));
+    loop.stmt.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {postCheckVar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true} )}));
     statements.push_back(LangAPI::Variable::createStatement(postCheckVar));
     statements.push_back(LangAPI::While::createStatement(loop));
     addPostLoopCheck(rule, postCheckVar, addError);
@@ -86,23 +86,23 @@ void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Lang
 }
 auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, const LangAPI::Variable &svar) -> LangAPI::Statements {
     if (var.type == LangAPI::ValueType::Char) {
-        return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
+        return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
     } else if (var.type == LangAPI::ValueType::Token) {
         return {
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}),
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
+            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}),
+            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
             LangAPI::Expression::createStatement(increasePos())
         };
     } else {
         return {
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
+            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
             LangAPI::Expression::createStatement(increasePos())
         };
     }
 }
 auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &svar) -> LangAPI::Statements {
     return {
-        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true})}),
+        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true})}),
         LangAPI::Expression::createStatement(increasePos())
     };
 }
@@ -112,7 +112,7 @@ auto LLIR::BuilderBase::createDefaultStatements() -> LangAPI::Statements {
 auto LLIR::BuilderBase::createDefaultCall(LangAPI::Statements &block, const LangAPI::Variable &var, const std::string &name, LangAPI::Expression &expr) -> LangAPI::Statement  {
     LangAPI::FunctionCall function_call = {.name = std::make_shared<LangAPI::Symbol>(name), .args = {LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false}) }};
     LangAPI::VariableAssignment assignment = {
-        .name = var.name,
+        .name = LangAPI::Symbol {var.name},
         .value = LangAPI::FunctionCall::createExpression(function_call)
     };
     LangAPI::StorageSymbol sym;
@@ -348,7 +348,7 @@ auto LLIR::BuilderBase::CllAssignmentOpToIR(const char op) -> LangAPI::OperatorT
     return CllOpToIR(op);
 }
 auto LLIR::BuilderBase::assignSvar(const LangAPI::Variable &svar, bool value) -> LangAPI::Statement {
-    return LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = value })});
+    return LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = value })});
 }
 
 
@@ -616,7 +616,7 @@ void LLIR::BuilderBase::getVariablesToTable(LangAPI::Statements& data, LangAPI::
 
             // Optionally retain value
             if (!variable.value.empty() && retain_value) {
-                data.insert(data.begin() + i, LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = variable.name, .value = LangAPI::RValue::createExpression(variable.value) }));
+                data.insert(data.begin() + i, LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {variable.name}, .value = LangAPI::RValue::createExpression(variable.value) }));
                 ++i; // skip over inserted assignment
             }
 

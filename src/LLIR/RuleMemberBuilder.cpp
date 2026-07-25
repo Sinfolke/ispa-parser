@@ -181,7 +181,7 @@ auto LLIR::MemberBuilder::build() -> void {
     }
 }
 void LLIR::GroupBuilder::build() {
-    auto var = createEmptyVariable(generateVariableName());
+    auto var = createEmptyVariable("group" + generateVariableName());
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
     auto svar = createSuccessVariable();
     auto prev_insideLoop = insideLoop;
@@ -211,14 +211,14 @@ void LLIR::GroupBuilder::build() {
             for (const auto &v : builder.getReturnVars()) {
                 if (v.var.name.empty())
                     continue;
-                fetch_var_statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Symbol::createExpression(LangAPI::Symbol { v.var.name })}));
+                fetch_var_statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Symbol::createExpression(LangAPI::Symbol { v.var.name })}));
             }
             break;
         case LangAPI::ValueType::Token:
         case LangAPI::ValueType::Rule:
         case LangAPI::ValueType::Variant:
             // it is token so perform a single assign
-            fetch_var_statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {builder.getReturnVars()[0].var.name})}));
+            fetch_var_statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {builder.getReturnVars()[0].var.name})}));
 
             var.type = builder.getReturnVars()[0].var.type;
             if (var.type.isValueType())
@@ -262,7 +262,7 @@ void LLIR::GroupBuilder::build() {
         shadow_var = add_shadow_variable(builder.getData(), shadow_var_assign_block, var);
     }
     group_success_condition.stmt = {
-        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = svar.name, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true })}),
+        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true })}),
     };
     createAssignUvarBlock(group_success_condition.stmt, uvar, var, shadow_var);
     group_success_condition.stmt.push_back(LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {}));
@@ -510,7 +510,7 @@ void LLIR::NameBuilder::build() {
     auto name = rule.getName().name;
     //cpuf::printf(", name: %s\n", name_str);
     auto uvar = !rule.prefix.name.empty() ? createEmptyVariable(rule.prefix.name) : createEmptyVariable("");
-    auto var = createEmptyVariable(generateVariableName());
+    auto var = createEmptyVariable(corelib::text::join(name, "_") + generateVariableName());
     auto svar = createSuccessVariable();
     LangAPI::Variable shadow_var;
     bool isCallingToken = corelib::text::isUpper(name.back());
@@ -808,7 +808,7 @@ void LLIR::OpBuilder::build() {
             auto &ss_case = ss.cases.back();
             ss_case.second = builder.getData();
             ss_case.second.emplace_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                .name = var.name,
+                .name = LangAPI::Symbol {var.name},
                 .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {
                     builder.getReturnVars().back().uvar.name
                 })
@@ -836,12 +836,12 @@ void LLIR::OpBuilder::build() {
             if (op[i].isName() && op[i].getName().isTerminal()) {
                 // insert variable assignment
                 //cs.block.push_back(assignSvar(svar, var_assign_values::True));
-                cs.second.emplace_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = var.name, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}));
+                cs.second.emplace_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}));
             } else if (op[i].isName() && op[i].getName().isNonterminal()) {
                 const auto &nonterminal = op[i].getName().name;
                 cs.second.emplace_back(LangAPI::VariableAssignment::createStatement(
                     LangAPI::VariableAssignment {
-                        .name = var.name,
+                        .name = LangAPI::Symbol {var.name},
                         .value = LangAPI::FunctionCall::createExpression(
                             LangAPI::FunctionCall {
                                 .name = std::make_shared<LangAPI::Symbol>(corelib::text::join(nonterminal, "_")),

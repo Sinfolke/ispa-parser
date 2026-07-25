@@ -272,7 +272,11 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                         type = "%=";
                         break;
                 }
-                out << var.name << " " << type << " " << convertExpression(var.value);
+                if (std::holds_alternative<LangAPI::Symbol>(var.name))
+                    out << convertSymbol(std::get<LangAPI::Symbol>(var.name));
+                else
+                    out << convertStorageSymbol(std::get<LangAPI::StorageSymbol>(var.name));
+                out << " " << type << " " << convertExpression(var.value);
                 break;
             }
             case LangAPI::ExpressionValueType::CounterIncreament:
@@ -300,7 +304,7 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                 break;
             case LangAPI::ExpressionValueType::DfaLookup: {
                 const auto &lookup = expr.getDfaLookup();
-                out << lookup.output_name << " = ISPA_STD::DFA<Tokens, " + convertType(lookup.return_type) << ">::decide(dfa_span_"  << std::to_string(lookup.dfa_count) << ", pos, &Parser::PANIC_MODE)";
+                out << lookup.output_name << " = ::ISPA_STD::DFA::decide(dfa_table_"  << std::to_string(lookup.dfa_count) << ", pos, &Parser::PANIC_MODE)";
                 break;
             }
             case LangAPI::ExpressionValueType::ReportError:

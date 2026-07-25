@@ -558,10 +558,14 @@ void NFA::addSpaceSkip() {
     for (const auto &place : add_space_skip_places) {
         std::unordered_set<std::size_t> visited;
         auto &state = states[place];
-        for (const auto c : constants::whitespace_chars) {
-            if (!investigateHasNext(place, c, visited)) {
-                state.transitions[c] = {place};
+        if (is_char_table) {
+            for (const auto c : constants::whitespace_chars) {
+                if (!investigateHasNext(place, c, visited)) {
+                    state.transitions[c] = {place};
+                }
             }
+        } else {
+            state.transitions[constants::whitespace] = {place};
         }
     }
 }
