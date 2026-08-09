@@ -1,463 +1,148 @@
 # Advanced Rules & Fail Blocks
 
 ## Overview
-
-Advanced Rules extend the parser framework with **declarative semantic validation**, **custom diagnostics**, and **structured error recovery**. Instead of treating parsing failures as opaque exceptions or simple backtracking events, failures become explicit control-flow constructs within the grammar itself.
-
-The primary goal is to make grammar definitions expressive enough to describe both syntax and context-sensitive validation while keeping the generated parser deterministic and efficient.
-
-Unlike traditional parser generators that rely on embedding an interpreted scripting language, Advanced Rules are compiled into an intermediate representation (IR) and ultimately into native parser code, resulting in **zero runtime interpreter overhead**.
-
+Advanced rules and fail blocks are build on embedded Python-like pseudocode.
+They are aimed to be as possible more compatible to Python.
+But they are not designed to embedd existing python logic,
+as they server primary as **Embedded Common Logic of the Language**
 ---
 
-# Design Goals
-
-Advanced Rules are designed to provide:
-
-* Declarative semantic validation
-* Context-sensitive parsing
-* Structured parser recovery
-* Rich compiler diagnostics
-* Deterministic execution
-* Zero runtime scripting overhead
-
-Rather than executing embedded Python or another dynamic language, all semantic control flow is analyzed during generation and compiled into efficient parser logic.
-
+### Advanced Rules design goal
+1. Context sensitive Lexing and Parsing
+2. Advanced AST manipulations
+3. Control of parsing state
 ---
+### Fail blocks design goal
+1. Meangful error messages
+2. In-grammar recovery strategies
+3. AST manipulations based on errors encountered"
 
 # Motivation
 
-Traditional parser generators typically provide one of the following approaches:
+Traditional parser generators are always known for pure error handling and hard to read semantic actions
 
-* Simple syntax errors
-* Exceptions
-* Backtracking
-* Embedded scripting languages
-
-While embedded scripting is flexible, it has several drawbacks:
-
-* Runtime overhead
-* Hard-to-analyze control flow
-* Reduced portability
-* Increased complexity
-* Limited optimization opportunities
-
-Advanced Rules solve these issues by introducing a restricted, deterministic language that is compiled directly into parser control flow.
-
+### Advanced rules
+1. Allow to describe your grammar in language-agnostic way
+2. Let you parse as complex languages as you can imagine
+3. Synchronize your parser with errors better
+4. Provide enough abstractions to write grammar in low effort
+5. Removes need to care and know about internals
+### Fail blocks
+1. Let you write whatever error message you want
+2. Let you emmit several error messages based on context
+3. Let you recover parsing state based on context
+4. Removes post-passes on parser output
 ---
-
-# Advanced Rules
-
-An **Advanced Rule** behaves like a normal grammar production while adding support for:
-
-* semantic dependencies
-* conditional execution
-* semantic assertions
-* custom diagnostics
-* recovery directives
-* explicit success/failure control
-
 ## Basic Syntax
-
+### Advanced Rule
 ```ispa
-advanced rule_name {
-    depends SemanticDependency
-
-    match @ MY_TOKEN
-
-    if SemanticDependency.checkCondition(@):
-        error(""Error message goes here")
+array {
+    match '[' @ Expression* ']'
+    expr = @
+    if len(expr.value) == 0:
+        return @Undef{}
+    return expr.value
 }
-```
-
----
-
-# Rule Directives
-
-## `depends`
-
-Declares external semantic providers required by the rule.
-
-These providers may include:
-
-* symbol tables
-* type systems
-* keyword resolvers
-* module registries
-* custom semantic analyzers
-
-Example:
-
-```ispa
-depends Semantic
-```
-
----
-
-## `match`
-
-Consumes a token or invokes another grammar rule.
-
-Examples:
-
-```ispa
-match Identifier
-
-match expression
-```
-
----
-
-## Token References
-
-Previously matched values can be referenced using the `@` operator.
-
-```ispa
-match ID
-
-Semantic.resolve(@)
-```
-
-# Fail Blocks
-
-Fail blocks describe **how parsing should respond when a rule cannot continue**.
-
-Instead of immediately aborting parsing, they provide structured recovery behavior and diagnostics.
-
-A fail block may:
-
-* inspect parser state
-* inspect matched values
-* emit diagnostics
-* recover parsing
-* abort parsing
-* synchronize with later grammar constructs
-
----
-## Named Fail Block
-
-Failures may be defined separately from the grammar.
-
-```ispa
-fail declaration.invalid_identifier(name) {
-
-    error("Invalid identifier: " + name)
-
-    recover
-}
-```
-
-Rules can invoke them using:
-
-```ispa
-%invalid_identifier
-```
-
-This separates parsing logic from diagnostic logic.
-
----
-
-# Captured Parameters
-
-Fail blocks may receive information from the parser.
-
-## Uncaptured Tokens
-
-Access raw tokens that were not captured.
-
-```ispa
-uncap[0]
-```
-
-Example:
-
-```ispa
-unexpected = uncap[-1]
-```
-
----
-
-## Captured Values
-
-Access captured grammar values.
-
-```ispa
-cap[0]
-```
-
-Example:
-
-```ispa
-expr = cap[1]
-```
-
----
-
-## Named Variables
-
-Rules may explicitly pass named variables.
-
-```ispa
-fail declaration.invalid(name = @ID)
-```
-
-Inside the fail block:
-
-```ispa
-name
-```
-
----
-
-# Recovery Model
-
-Every parser failure belongs to one of three categories.
-
-```
-                  Fail Triggered
-                        │
-        ┌───────────────┼───────────────┐
-        │               │               │
-        ▼               ▼               ▼
-   Hard Fail     Recoverable Fail    Soft Fail
-        │               │               │
-        ▼               ▼               ▼
- Abort Parsing   Synchronize Parser   Emit Diagnostic
-```
-
----
-
-## Hard Fail
-
-A hard fail aborts parsing immediately.
-
-This is the default behavior when no recovery directive is issued.
-
-Typical uses include:
-
-* unrecoverable grammar errors
-* corrupted parser state
-* invalid language constructs
-
----
-
-## Recoverable Fail
-
-Recoverable failures allow parsing to continue.
-
-Typical recovery strategies include:
-
-* skipping invalid tokens
-* synchronizing at rule boundaries
-* panic mode
-
-This enables reporting multiple diagnostics during a single parse.
-
----
-
-## Soft Fail
-
-A soft fail emits diagnostics without changing parser state.
-
-Typical uses include:
-
-* warnings
-* deprecated syntax
-* style diagnostics
-* optional semantic validation
-
----
-
-# Error Handling Functions
-
-## `error`
-
-Emits a compiler diagnostic.
-
-```ispa
-error("Expected expression")
-```
-
-Diagnostics are associated with the current parser location.
-
----
-
-## `panic_mode()`
-
-Performs panic-mode recovery.
-
-```ispa
-panic_mode()
-```
-
-The parser discards tokens until a synchronization token (such as `;` or `}`) is encountered.
-
----
-
-## `recover`
-
-Immediately clears the current failure and resumes parsing.
-
-```ispa
-recover
-```
-
----
-
-## `recover after <rule>`
-
-Resumes parsing after reaching the boundary of another grammar rule.
-
-```ispa
-recover after declaration
-```
-
-This enables more precise synchronization.
-
----
-
-# Complete Example
-
-```ispa
-advanced statement {
-
-    depends Semantic
-
-    match ID
-
-    if Semantic.isKeyword(@ID):
-        fail statement.invalid_identifier(uncap[0])
-
-    let t = Semantic.resolveType(@ID)
-
-    if t.type == TEMPLATE {
-
-        match '<'
-
-        match expr (',' expr)*
-
-        match '>'
-
-        Semantic.registerTemplateUsage(@ID)
-
-    } else {
-
-        Semantic.registerVariable(@ID)
-
+mul_or_pointer {
+    depends class Semantic:
+        method isType(ID)
+    match @ Expression '*' @ Expression?
+    fexpr, sexpr = @
+    
+    if len(fexpr) == 1 and fexpr.value instanceof ID:
+        t: ID = fexpr.value
+        if Semantic.isType(t)
+            return @Pointer {
+                type: t, 
+                name: cast(ID, sexpr.value)
+            }
+    return @Mul {
+        left: fexpr, 
+        right: sexpr
     }
 }
+```
 
-fail statement.invalid_identifier(name = uncap[0]) {
+match → command to do matching as in regular rule within Advanced rule
 
-    if name == "class" or name == "struct" {
+depends → add external dependency to this rule. 
+This is **user written target language code**, or, in big future, a separate file with python pseudocode
 
-        error("Type declaration keywords are not allowed here")
+@ → the match sequence with **Nodes**
 
-        panic_mode()
+`return @Pointer{
+    type: t,
+    name: cast(ID, sexpr.value)
+ }` → this is mostly standard python, except `@Pointer` means AST node
 
-    } else {
+As you can see, **ISPA** aims to embeedd as possible more clean python, providing some generator manipulations
 
-        error("Invalid variable identifier: " + name)
+### Fail blocks
 
-        recover
-
+```ispa
+STRING: 
+    '"' @ [^"\n] %quote_close '"'
+    {@}
+; 
+array: 
+    '[' @ Expression* %brace_cls ']'
+    {@}
+;
+mul_or_pointer {
+    depends class Semantic:
+        method isType(ID)
+    match @ Expression '*' @ Expression?
+    fexpr, sexpr = @
+    
+    if len(fexpr) == 1 and fexpr.value instanceof ID:
+        t: ID = fexpr.value
+        if Semantic.isType(t)
+            return @Pointer {
+                type: t, 
+                name: cast(ID, sexpr.value)
+            }
+    return @Mul {
+        left: fexpr, 
+        right: sexpr
     }
-
+}
+fail STRING.quote_close(cur, pos, ast, cst) { 
+    if cur == '\n': 
+    // now we traverse the whole partial AST that has already been accumulated to find '"' to consider end of STRING
+    i = ast.value.size(); 
+    while i != 0: 
+        if ast.value[i] == '"': 
+            if ast.value[i - 1] == '\\': 
+                error("Closing quote should not be escaped") 
+                return i // the fail block expects new parsing position to be returned in this concept
+    i = 0 
+    while i < ast.value.size():
+        if ast.value[i] == ' ': 
+            error("Unclosed string quote") 
+            return i 
+        error("unclosed quote") 
+    return pos // recover from '\n' 
+} 
+fail array.brace_cls(cur: Token) { 
+    if current == ',' // in Parser mode this will map to auto generated ']' token 
+        error("Trailing comma")
+    elif current == '[':
+        error("Missing comma")
+    else:
+        error("Missing ']'")
 }
 ```
 
----
+The fail block can be also used in advanced rules:
 
-# Compilation Model
+```ispa
+complex {
+    match '{' @ ID '}'
+    if len(@) == 1:
+        fail short_id
+}
 
-Advanced Rules are **not interpreted** during parser execution.
-
-Instead, they are compiled into deterministic parser logic.
-
-The compilation pipeline consists of several stages.
-
-## 1. Static Analysis
-
-The generator validates the semantic subset used inside Advanced Rules.
-
-Supported constructs include:
-
-* assignments
-* conditionals
-* comparisons
-* semantic function calls
-* fail invocations
-
-Because the language is intentionally restricted, all control flow can be analyzed ahead of time.
-
----
-
-## 2. Intermediate Representation
-
-Validated rules are transformed into an intermediate representation (IR).
-
-The IR models:
-
-* parser states
-* semantic conditions
-* diagnostics
-* recovery paths
-* control-flow edges
-
-This representation is deterministic and suitable for optimization.
-
----
-
-## 3. Control Flow Graph Generation
-
-The IR is lowered into a control-flow graph (CFG).
-
-Each conditional, semantic check, and recovery directive becomes explicit control flow rather than interpreted script execution.
-
----
-
-## 4. Native Code Generation
-
-Finally, the CFG is translated into the selected backend language.
-
-Possible targets include:
-
-* C++
-* Rust
-* TypeScript
-* other supported generators
-
-The generated parser executes semantic validation directly as native code with no embedded interpreter.
-
----
-
-# Advantages
-
-Advanced Rules provide several advantages over traditional embedded scripting approaches:
-
-* Zero runtime interpreter overhead
-* Deterministic control flow
-* Rich, context-aware diagnostics
-* Declarative parser recovery
-* Portable generated code
-* Compile-time validation of semantic logic
-* Easier optimization during code generation
-* Clear separation between grammar definition and error handling
-
----
-
-# Future Extensions
-
-The current design leaves room for additional capabilities, including:
-
-* pattern matching expressions
-* user-defined recovery strategies
-* custom diagnostic categories
-* warning levels
-* fix-it hints
-* localized diagnostic messages
-* parser tracing and debugging support
-* richer semantic dependency injection
-* optimization passes over the generated control-flow graph
-
-These extensions can be introduced without changing the core execution model, as all semantic logic is represented through the intermediate representation rather than a runtime scripting engine.
+fail short_id(cur, pos) {   // pass arbitary parameters after pos for more context
+    error("Your Name is too short for 'complex' rule!!!")
+}
+```

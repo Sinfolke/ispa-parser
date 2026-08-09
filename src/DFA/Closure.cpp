@@ -13,24 +13,26 @@ void DFA::Closure::epsilonClosure(const stdu::vector<std::size_t> &source) {
 
         const auto &epsilons = nfa.getStates().at(current_id).epsilon_transitions;
 
-        for (std::size_t target_state : epsilons) {
-            if (!new_closure.contains(target_state)) {
-                new_closure.insert(target_state);
-                work.push(target_state);
+        for (auto target_state : epsilons) {
+            if (!new_closure.contains(target_state.next)) {
+                new_closure.insert(target_state.next);
+                work.push(target_state.next);
             }
         }
     }
     closure.assign(new_closure.begin(), new_closure.end());
 }
 
-void DFA::Closure::move(){
+void DFA::Closure::move() {
     std::unordered_set<std::size_t> result;
 
     for (auto state_id : current) {
         const auto &state = nfa.getStates().at(state_id);
         auto it = state.transitions.find(*symbol);
         if (it != state.transitions.end()) {
-            result.insert(it->second.next);  // assuming only one target per symbol
+            for (auto next_id : it->second) {
+                result.insert(next_id.next);
+            }
         }
     }
 

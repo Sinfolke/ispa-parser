@@ -22,6 +22,8 @@ export namespace DFA {
         Closure(const NFA &nfa, const stdu::vector<std::size_t> &current);
         Closure(const NFA &nfa, const stdu::vector<std::size_t> &current, const NFA::TransitionKey &symbol);
 
+        auto begin() { return closure.begin(); }
+        auto end() { return closure.end(); }
         auto begin() const { return closure.begin(); }
         auto end() const { return closure.end(); }
         auto cbegin() { return closure.cbegin(); }

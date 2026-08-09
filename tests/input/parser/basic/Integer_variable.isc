@@ -1,0 +1,17 @@
+ID:
+    @ ([a-zA-Z_] [a-zA-Z0-9_]*)
+
+    {@}
+;
+INTEGER:
+    @ [0-9]+
+    {@}
+;
+
+integer_variable:
+    'int' @ ID '=' @ INTEGER
+
+    @{name, value}
+;
+
+main: integer_variable;

@@ -80,7 +80,7 @@ void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Lang
         stmt.insert(stmt.begin(), LangAPI::ReportError::createExpression(LangAPI::ReportError { .message = getErrorName(rule) }));
     }
     LangAPI::If post_loop_condition;
-    post_loop_condition.expr = { { { LangAPI::ExpressionElement::Not, LangAPI::Symbol::createExpressionValue(LangAPI::Symbol { var.name }) } } };
+    post_loop_condition.expr = LangAPI::Expression { stdu::vector<LangAPI::ExpressionValue> { { LangAPI::ExpressionElement::Not, LangAPI::Symbol::createExpressionValue(LangAPI::Symbol { var.name }) } } };
     post_loop_condition.stmt = std::move(stmt);
     statements.push_back(LangAPI::If::createStatement(post_loop_condition));
 }

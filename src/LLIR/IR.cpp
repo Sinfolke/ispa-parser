@@ -36,7 +36,7 @@ LLIR::DataBlockList LLIR::IR::getDataBlocks() const {
 auto LLIR::IR::getData() const -> const stdu::vector<Production> & {
     return data;
 }
-auto LLIR::IR::getDfas() const -> const DFA::Collection<DFA::TokenMachineDFA> & {
+auto LLIR::IR::getDfas() const -> const stdu::vector<DFA::DFA> & {
     return dfa_collection;
 }
 

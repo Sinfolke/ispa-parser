@@ -8,7 +8,7 @@ import std;
 export namespace DFA {
     template<typename State>
     class States {
-        const NFA *nfa;
+        const NFA *nfa = nullptr;
         stdu::vector<State> states;
         auto leadToEmptyState(std::size_t current, std::unordered_set<std::size_t> &visited) const -> std::size_t;
         auto leadToEmptyStateDfa(const std::size_t current, std::unordered_set<std::size_t> &visited) -> std::size_t;
@@ -31,6 +31,8 @@ export namespace DFA {
         auto size() const -> std::size_t;
         auto clear() -> void;
 
+        auto begin() { return states.begin(); }
+        auto end()   { return states.end();   }
         auto begin() const { return states.begin(); }
         auto end()   const { return states.end();   }
 

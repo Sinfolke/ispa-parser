@@ -18,8 +18,10 @@ export namespace Core {
     Converter::Writer *writer;
     std::string name;
     stdu::vector<std::string> symbol_path;
+    bool forward_declared = false;
     std::stringstream cpp_file;
     bool templated = false;
+    std::stringstream init_content;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;
     auto convertTemplates(const decltype(LangAPI::Type::template_parameters) &template_parameters) -> std::string;
@@ -52,4 +54,15 @@ export namespace Core {
             return "<Tokens, " + convertTemplates(template_parameters) + ">";
         } else return "<Tokens>";
     }
+    auto flushInitContent() -> void;
+    // Forward declarations of overloads
+    auto ensureNamespaced(const std::string &ns, const LangAPI::Symbol &sym) -> LangAPI::Symbol;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::StorageSymbol &ssym) -> LangAPI::StorageSymbol;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::Type &type) -> LangAPI::Type;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::FunctionCall &fc) -> LangAPI::FunctionCall;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::RValue &rval) -> LangAPI::RValue;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::ExpressionValue &val) -> LangAPI::ExpressionValue;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::Expression &expr) -> LangAPI::Expression;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::Statement &stmt) -> LangAPI::Statement;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::Statements &stmts) -> LangAPI::Statements;
 }

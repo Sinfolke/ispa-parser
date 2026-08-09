@@ -225,6 +225,7 @@ add_compile_definitions(
         __SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}"
         PROGRAM_VERSION="0.1.0 beta"
         O_LEVEL=${O_LEVEL}
+        DSTD_NO_DEBUG=1
 )
 #get_file_range(FMT_MODULES ${fmt_SOURCE_DIR}/src/fmt.cc)
 #add_library(fmt_m STATIC)

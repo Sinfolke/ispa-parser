@@ -2,8 +2,7 @@ export module LLIR.Builder.Data;
 import LangAPI;
 import AST.Tree;
 import AST.API;
-import DFA.TokenMachineDFA;
-import DFA.Collection;
+import DFA;
 import dstd;
 import std;
 
@@ -24,8 +23,8 @@ namespace LLIR {
         SymbolFollow symbol_follow;
         bool has_symbol_follow = true;
         AST::Tree &tree;
-        DFA::Collection<DFA::TokenMachineDFA> &dfas;
-        BuilderData(AST::Tree &tree, DFA::Collection<DFA::TokenMachineDFA> &dfas) : tree(tree), dfas(dfas) {}
+        stdu::vector<DFA::DFA> *dfas;
+        BuilderData(AST::Tree &tree, stdu::vector<DFA::DFA> *dfas) : tree(tree), dfas(dfas) {}
         auto reset() -> void {
             variable_count = 0;
             isToken = false;

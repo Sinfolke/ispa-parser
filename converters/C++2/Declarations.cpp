@@ -70,6 +70,7 @@ namespace Cpp {
         Core::symbol_path.push_back(the_class.name);
     }
     auto Declarations::closeClass() -> void {
+        Core::flushInitContent();
         output.decreaseIndentation();
         output.writeln("};");
         Core::symbol_path.pop_back();
@@ -98,21 +99,32 @@ namespace Cpp {
 
     auto Declarations::createFunction(const LangAPI::Function &func) -> void {
         output.write("auto {}(", func.name);
-        for (const auto &p : func.parameters) {
-            output.dwrite("{} {}, ", Core::convertType(p.first), p.second);
+        if (!func.parameters.empty()) {
+            for (const auto &p : func.parameters) {
+                output.dwrite("{} {}, ", Core::convertType(p.first), p.second);
+            }
+            output.pop_back();
+            output.pop_back();
         }
-        output.pop_back();
-        output.pop_back();
         output.dwrite(") -> {}{}", Core::convertType(func.type), func.override ? " override" : "");
-        output.writeln("{");
-        output.increaseIndentation();
-        Core::symbol_path.push_back(func.name);
+        if (!func.statements.empty()) {
+            output.dwriteln("{");
+            output.increaseIndentation();
+            Core::symbol_path.push_back(func.name);
+        } else {
+            output.dwriteln(";");
+            Core::forward_declared = true;
+        }
     }
     auto Declarations::closeFunction() -> void {
-        output.decreaseIndentation();
-        output.write("}\n");
-        Core::symbol_path.pop_back();
-        Core::templated = false;
+        if (Core::forward_declared) {
+            Core::forward_declared = false;
+        } else {
+            output.decreaseIndentation();
+            output.write("}\n");
+            Core::symbol_path.pop_back();
+            Core::templated = false;
+        }
     }
     auto Declarations::openTemplateParameters() -> void {
         output.write("template<");
@@ -145,13 +157,16 @@ namespace Cpp {
     }
     auto Declarations::createVariable(const LangAPI::Variable &v) -> void {
         output.write("{} {} {}", v.is_static ? "static" : "", Core::convertType(v.type), v.name);
-        if (!v.value.empty()) {
-            if (v.is_static) {
+        if (v.is_static) {
+            if (!v.set.empty()) {
+                for (const auto &expr : v.set) {
+                    Core::init_content << Core::convertExpression(Core::ensureNamespaced(v.name, expr)) << ";\n";
+                }
+            }
+            if (!v.value.empty()) {
                 auto cpp_sym_path = Core::symbol_path;
                 cpp_sym_path.erase(cpp_sym_path.begin());
                 Core::cpp_file << Core::convertType(v.type) << ' ' << corelib::text::join(cpp_sym_path, "::") << "::" << v.name << " = " << Core::convertExpression(v.value) << ";\n";
-            } else {
-                output.dwrite(" = {}", Core::convertExpression(v.value));
             }
         }
         output.dwriteln(";");

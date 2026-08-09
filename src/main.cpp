@@ -23,6 +23,7 @@ import hash;
 import AST.Builder;
 import fcdt;
 import LexerBuilder;
+import DFA;
 import dstd;
 import std;
 
@@ -135,14 +136,11 @@ int main(int argc, char** argv) {
     std::filesystem::path output_path = opath;
     LexerBuilder lexer_data(ast);
     lexer_data.build();
-    lexer_data.getFCDT().print();
     if (dumper.shouldDump("DFA")) {
         std::ofstream dumpDFAFile(dumper.makeDumpPath("DFA"));
         if (!dumpDFAFile.is_open())
             throw Error("failed to open DFA for dump");
-        for (const auto &dfa : lexer_data.getDFAS()) {
-            dumpDFAFile << dfa;
-        }
+        dumpDFAFile << lexer_data.getDFA();
         dumpDFAFile.close();
     }
     // if (args.algorithm == Args::Algorithm::LR0) {

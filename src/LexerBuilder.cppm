@@ -6,8 +6,7 @@ import LangAPI;
 import LLIR.API;
 import LLIR.IR;
 import fcdt;
-import DFA.Collection;
-import DFA.CharMachineDFA;
+import DFA;
 import dstd;
 import std;
 export class LexerBuilder {
@@ -20,9 +19,8 @@ public:
 
 private:
     AST::Tree &ast;
-    DFA::Collection<DFA::CharMachineDFA> dfas;
+    DFA::ClassifiedDFA dfa;
     LLIR::IR function_ir;
-    FCDT fcdt;
     stdu::vector<std::size_t> new_fcdt;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
@@ -31,16 +29,14 @@ private:
     std::size_t highest_states_count = 0;
     std::size_t highest_transition_count = 0;
 public:
-    LexerBuilder(AST::Tree &ast) : ast(ast), fcdt(ast) {};
+    LexerBuilder(AST::Tree &ast) : ast(ast) {};
     void build();
-    auto& getDFAS() { return dfas; }
-    auto& getFCDT() { return fcdt; }
+    auto& getDFA() { return dfa; }
+    auto& getDFA() const { return dfa; }
     auto& getNewFCDT() { return new_fcdt; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
     auto& getFunctionsIR() { return function_ir; }
-    auto& getDFAS() const { return dfas; }
-    auto& getFCDT() const { return fcdt; }
     auto& getDfaCompatibleTable() const { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() const { return dispatch_names_involve; }
     auto& getNameToDFAIndex() const { return name_to_dfa; }
@@ -48,6 +44,4 @@ public:
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
     auto getDataBlocks() const -> LLIR::DataBlockList;
-    auto getStateSet() const -> DFA::Collection<DFA::CharMachineDFA>::StateSet_t;
-
 };

@@ -18,27 +18,10 @@ auto File::getGrammarFile(std::string name) -> std::filesystem::path {
 
     if (std::filesystem::exists(direct))
         return direct;
-
-    // Backward-compatible fallback for fixtures stored in tests/input/basic/*.isc
-    const auto basic_subdir = [&] {
-        if (name_path.has_extension())
-            return input_root / "basic" / name_path.filename();
-        return input_root / "basic" / (name + ".isc");
-    }();
-    if (std::filesystem::exists(basic_subdir))
-        return basic_subdir;
-
-    // Legacy test name fallback: `basic` used to map to `basic.isc`.
-    // In newer layouts grammars live in `tests/input/basic/*.isc`.
-    if (name == "basic") {
-        const auto templated_type = input_root / "basic" / "templated_type.isc";
-        if (std::filesystem::exists(templated_type))
-            return templated_type;
-    }
-
-    // Keep old behavior for diagnostics in callers when neither path exists.
-    return direct;
+    throw std::runtime_error("Grammar file not found: " + name);
 }
 auto File::getYamlConfigFile(std::string name) -> std::filesystem::path {
-    return std::filesystem::path(TEST_ROOT_DIR) / "input" / (name + ".yaml");
+    std::filesystem::path file_path = name;
+    file_path.replace_extension(".yaml");
+    return std::filesystem::path(TEST_ROOT_DIR) / "input" / file_path;
 }

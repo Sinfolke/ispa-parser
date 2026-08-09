@@ -10,6 +10,8 @@ import dstd;
 auto Core::convertType(const LangAPI::Type &type) -> std::string {
     if (type.isValueType()) {
         switch (type.getValueType()) {
+            case LangAPI::ValueType::Void:
+                return "void";
             case LangAPI::ValueType::Char:
                 return "char";
             case LangAPI::ValueType::Int:
@@ -112,7 +114,8 @@ auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
 auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::string {
     std::string res = convertExpression(symbol.what);
     for (const auto &part : symbol.path) {
-        res += ".";
+        if (!std::holds_alternative<LangAPI::StorageOffset>(part))
+            res += ".";
         if (std::holds_alternative<std::string>(part)) {
             res += std::get<std::string>(part);
         } else if (std::holds_alternative<LangAPI::ArrayMethodCall>(part)) {
@@ -133,6 +136,8 @@ auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::st
                 first = false;
             }
             res += ")";
+        } else if (std::holds_alternative<LangAPI::StorageOffset>(part)) {
+            res += "[" + convertExpression(std::get<LangAPI::StorageOffset>(part).offset) + "]";
         } else {
             // Append function call to the current storage symbol chain
             res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part), true);
@@ -150,68 +155,16 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return std::string("::ISPA_STD::LLParser_base<Tokens, Rules") + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
         case LangAPI::StdlibExports::LexerMakeTokenParameter:
             return (symbol.Const ? "const " : "") + std::string("char*") + (symbol.Reference ? "&" : "");
-        case LangAPI::StdlibExports::DfaCharTransition:
-            return "::ISPA_STD::DFAAPI::CharTransition";
-        case LangAPI::StdlibExports::DfaCharTableTransition:
-            return "::ISPA_STD::DFAAPI::CharTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaTokenTransition:
-            return "::ISPA_STD::DFAAPI::TokenTransition<Tokens>";
-        case LangAPI::StdlibExports::DfaMultiTransition:
-            return "::ISPA_STD::DFAAPI::MultiTableTransition<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaCharState:
-            return "::ISPA_STD::DFAAPI::CharState";
-        case LangAPI::StdlibExports::DfaCharTableState:
-            return "::ISPA_STD::DFAAPI::CharTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaTokenState:
-            return "::ISPA_STD::DFAAPI::TokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaMultiTableState:
-            return "::ISPA_STD::DFAAPI::MultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::EmptyState:
-            return "::ISPA_STD::DFAAPI::EmptyState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaCharTable:
-            return "::ISPA_STD::DFAAPI::CharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaTokenTable:
-            return "::ISPA_STD::DFAAPI::TokenTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaMultiTable:
-            return "::ISPA_STD::DFAAPI::MultiTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanMultiTableState:
-            return "::ISPA_STD::DFAAPI::SpanMultiTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanCharState:
-            // SpanCharTableState<Tokens, ReturnType>
-            return "::ISPA_STD::DFAAPI::SpanCharState";
-        case LangAPI::StdlibExports::DfaSpanCharTableState:
-            // SpanCharTableState<Tokens, ReturnType>
-            return "::ISPA_STD::DFAAPI::SpanCharTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanTokenTableState:
-            return "::ISPA_STD::DFAAPI::SpanTokenTableState<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaNestedCharTable:
-            return "::ISPA_STD::DFAAPI::NestedCharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanCharTable:
-            return "::ISPA_STD::DFAAPI::SpanCharTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanNestedCharTable:
-            return "::ISPA_STD::DFAAPI::SpanCharNestedTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanMultiTable:
-            return "::ISPA_STD::DFAAPI::SpanMultiTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaSpanTokenTable:
-            return "::ISPA_STD::DFAAPI::SpanTokenTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::ParserFunctionParameter:
             return "Iterator";
-        case LangAPI::StdlibExports::DfaCharDataVector:
-            return "::ISPA_STD::DFAAPI::CharTableDataVector";
-        case LangAPI::StdlibExports::DfaMultiDataVector:
-            return "::ISPA_STD::DFAAPI::MultiTableDataVector<" + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::DfaUniversalDataVector:
-            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::UniversalDataVector") + "<" + convertTemplates(symbol.template_parameters) + ">" + std::string(symbol.Reference ? "&" : "");
-        case LangAPI::StdlibExports::DfaEmptyStateGroupBegin:
-            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::GroupBegin") + (symbol.Reference ? "&" : "");
-        case LangAPI::StdlibExports::DfaEmptyStateMemberBegin:
-            return (symbol.Const ? "const " : "") + std::string("::ISPA_STD::DFAAPI::MemberBegin") + (symbol.Reference ? "&" : "");
-        case LangAPI::StdlibExports::DfaCstBuilder:
-            return "::ISPA_STD::DFAAPI::Builder<" + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::FCDTVariant:
-            return "::ISPA_STD::FCDTVariant<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
-        case LangAPI::StdlibExports::FCDTTable:
-            return "::ISPA_STD::FCDTTable<Tokens, " + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaState:
+            return "::ISPA_STD::DFAAPI::State<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaTable:
+            return "::ISPA_STD::DFAAPI::Table<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaAcceptTable:
+            return "::ISPA_STD::DFAAPI::AcceptTable<" + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::DfaClassTable:
+            return "::ISPA_STD::DFAAPI::CharToClass<" + convertTemplates(symbol.template_parameters) + ">";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -466,7 +419,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::Undef:
             throw Error("RValue type is undefined");
         case LangAPI::RValueType::Char:
-            return "'" + (rvalue.getChar().escaped ? std::string("\\") : std::string()) + std::string(1, rvalue.getChar().value) + "'";
+            return "'" + (rvalue.getChar().escaped ? std::string("\\") + std::string(1, rvalue.getChar().value) : corelib::text::getEscapedAsStr(rvalue.getChar().value, false)) + "'";
         case LangAPI::RValueType::Int:
             return std::to_string(rvalue.getInt().value);
         case LangAPI::RValueType::Bool:
@@ -506,6 +459,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                 // For empty std::array initializers print just {}
                 res += "{}";
             } else {
+                res += ";";
                 res += "{{";
                 for (const auto &el : array.values) {
                     res += convertExpression(el) + ", ";
@@ -569,9 +523,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             };
             std::ostringstream out_content;
             out_content << convertIspaLibSymbol(transition.transition_type) << "{ ";
-            if (std::holds_alternative<char>(transition.symbol)) {
-                out_content << std::string("'") << corelib::text::getEscapedAsStr(std::get<char>(transition.symbol), false) << "'";
-            } else if (std::holds_alternative<std::size_t>(transition.symbol)) {
+            if (std::holds_alternative<std::size_t>(transition.symbol)) {
                 const auto sym = std::to_string(std::get<std::size_t>(transition.symbol));
                 // When referring to another DFA table as a symbol, the expected key type depends on transition kind:
                 // - CharTableTransition expects Span<const variant<SpanState<CharTransition>, CharEmptyState<TOKEN_T>>> → plain ::ISPA_STD::Span{...}
@@ -587,10 +539,11 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                                 << convertTemplates(transition.transition_type.template_parameters)
                                 << ">{ ::ISPA_STD::Span {dfa_table_" << sym << ".data(), dfa_table_" << sym << ".size()} }";
                 }
-            } else {
+                out_content << ", ";
+            } else if (!std::holds_alternative<char>(transition.symbol)) {
                 out_content << "Tokens::" << corelib::text::join(std::get<stdu::vector<std::string>>(transition.symbol), "_");
+                out_content << ", ";
             }
-            out_content << ", ";
             out_content << number_or_null(transition.next) << ", "
             << std::boolalpha << transition.new_cst_node << ", "
             << std::boolalpha << transition.new_member << ", "
@@ -644,4 +597,188 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         default:
             throw Error("Unknown RValue type: {}", (int) rvalue.type());
     }
+}
+auto Core::flushInitContent() -> void {
+    if (init_content.str().empty()) {
+        return;
+    }
+    cpp_file << "void " << corelib::text::join(symbol_path, "::") << "::init() {\n";
+    cpp_file << init_content.str();
+    cpp_file << "}\n";
+    init_content.clear();
+}
+// ----------------------------------------------------------------------------
+// 1. Symbol & StorageSymbol
+// ----------------------------------------------------------------------------
+auto Core::ensureNamespaced(const std::string &name, const LangAPI::Symbol &sym) -> LangAPI::Symbol {
+    if (name.empty() || sym.path.empty()) {
+        return sym;
+    }
+
+    LangAPI::Symbol result = sym;
+    if (const auto *first_str = std::get_if<std::string>(&result.path.front())) {
+        if (*first_str == name) {
+            result.path.insert(result.path.begin(), Core::symbol_path.begin(), Core::symbol_path.end());
+        }
+    }
+    return result;
+}
+
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::StorageSymbol &ssym) -> LangAPI::StorageSymbol {
+    LangAPI::StorageSymbol result = ssym;
+    result.what = ensureNamespaced(ns, result.what);
+
+    for (auto &part : result.path) {
+        if (auto *fc = std::get_if<LangAPI::FunctionCall>(&part)) {
+            *fc = ensureNamespaced(ns, *fc);
+        } else if (auto *offset = std::get_if<LangAPI::StorageOffset>(&part)) {
+            offset->offset = ensureNamespaced(ns, offset->offset);
+        }
+    }
+    return result;
+}
+
+// ----------------------------------------------------------------------------
+// 2. Types & Function Calls
+// ----------------------------------------------------------------------------
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::Type &type) -> LangAPI::Type {
+    LangAPI::Type result = type;
+
+    // Namespace underlying symbol if this Type wraps a LangAPI::Symbol
+    if (result.isSymbol()) {
+        result.type = ensureNamespaced(ns, result.getSymbol());
+    }
+
+    // Recursively process template parameters
+    for (auto &param : result.template_parameters) {
+        std::visit([&ns](auto &arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, LangAPI::Type>) {
+                arg = ensureNamespaced(ns, arg);
+            } else if constexpr (std::is_same_v<T, LangAPI::RValue>) {
+                arg = ensureNamespaced(ns, arg);
+            }
+        }, param);
+    }
+
+    return result;
+}
+
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::FunctionCall &fc) -> LangAPI::FunctionCall {
+    LangAPI::FunctionCall result = fc;
+    if (result.name) {
+        result.name = std::make_shared<LangAPI::Symbol>(ensureNamespaced(ns, *result.name));
+    }
+    for (auto &arg : result.args) {
+        arg = ensureNamespaced(ns, arg);
+    }
+    return result;
+}
+
+// ----------------------------------------------------------------------------
+// 3. RValue
+// ----------------------------------------------------------------------------
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::RValue &rval) -> LangAPI::RValue {
+    LangAPI::RValue result = rval;
+
+    if (result.isSymbol()) {
+        result.getSymbol() = ensureNamespaced(ns, result.getSymbol());
+    } else if (result.isStorageSymbol()) {
+        result.getStorageSymbol() = ensureNamespaced(ns, result.getStorageSymbol());
+    } else if (result.isArray()) {
+        for (auto &v : result.getArray().values) {
+            v = ensureNamespaced(ns, v);
+        }
+    } else if (result.isMap()) {
+        for (auto &v : result.getMap().values) {
+            v = ensureNamespaced(ns, v);
+        }
+    } else if (result.isReference()) {
+        if (result.getReference().value) {
+            result.getReference().value = std::make_shared<LangAPI::RValue>(
+                ensureNamespaced(ns, *result.getReference().value)
+            );
+        }
+    } else if (result.isSpan()) {
+        result.getSpan().sym = ensureNamespaced(ns, result.getSpan().sym);
+    }
+
+    return result;
+}
+
+// ----------------------------------------------------------------------------
+// 4. ExpressionValue & Expression
+// ----------------------------------------------------------------------------
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::ExpressionValue &val) -> LangAPI::ExpressionValue {
+    LangAPI::ExpressionValue result = val;
+
+    if (result.isRvalue()) {
+        result.getRValue() = ensureNamespaced(ns, result.getRValue());
+    } else if (result.isFunctionCall()) {
+        result.getFunctionCall() = ensureNamespaced(ns, result.getFunctionCall());
+    } else if (result.isReturn()) {
+        result.getReturn().value = ensureNamespaced(ns, result.getReturn().value);
+    } else if (result.isVariableAssignment()) {
+        auto &assign = result.getVariableAssignment();
+        std::visit([&ns](auto &target) {
+            target = ensureNamespaced(ns, target);
+        }, assign.name);
+        assign.value = ensureNamespaced(ns, assign.value);
+    } else if (result.isLambda()) {
+        auto &lam = result.getLambda();
+        lam.statements = ensureNamespaced(ns, lam.statements);
+    }
+
+    return result;
+}
+
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::Expression &expr) -> LangAPI::Expression {
+    LangAPI::Expression result;
+    result.reserve(expr.size());
+
+    for (const auto &val : expr) {
+        result.push_back(ensureNamespaced(ns, val));
+    }
+
+    return result;
+}
+
+// ----------------------------------------------------------------------------
+// 5. Statements & Control Flow
+// ----------------------------------------------------------------------------
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::Statement &stmt) -> LangAPI::Statement {
+    LangAPI::Statement result = stmt;
+
+    if (result.isExpression()) {
+        result.getExpression() = ensureNamespaced(ns, result.getExpression());
+    } else if (result.isIf()) {
+        auto &if_stmt = result.getIf();
+        if_stmt.expr = ensureNamespaced(ns, if_stmt.expr);
+        if_stmt.stmt = ensureNamespaced(ns, if_stmt.stmt);
+        if_stmt.else_stmt = ensureNamespaced(ns, if_stmt.else_stmt);
+    } else if (result.isWhile() || result.isDoWhile()) {
+        auto &cond = result.getWhileOrDoWhile();
+        cond.expr = ensureNamespaced(ns, cond.expr);
+        cond.stmt = ensureNamespaced(ns, cond.stmt);
+    } else if (result.isSwitch()) {
+        auto &sw = result.getSwitch();
+        sw.expression = ensureNamespaced(ns, sw.expression);
+        for (auto &[rval, stmts] : sw.cases) {
+            rval = ensureNamespaced(ns, rval);
+            stmts = ensureNamespaced(ns, stmts);
+        }
+    }
+
+    return result;
+}
+
+auto Core::ensureNamespaced(const std::string &ns, const LangAPI::Statements &stmts) -> LangAPI::Statements {
+    LangAPI::Statements result;
+    result.reserve(stmts.size());
+
+    for (const auto &s : stmts) {
+        result.push_back(ensureNamespaced(ns, s));
+    }
+
+    return result;
 }

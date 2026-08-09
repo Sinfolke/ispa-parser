@@ -27,8 +27,7 @@ export namespace LangRepr {
             const NFA::TemplatedDataBlockValue &data_block,
             long long N
         ) -> LangAPI::StorageSymbol;
-        auto makeEmptyStateLambda(DFA::DfaType dfa_type, const stdu::vector<std::string> &name, const stdu::vector<std::string> &clear_name,
-                                    const NFA::DataBlock &nfa_dtb) -> LangAPI::Lambda;
+        auto makeEmptyStateLambda(const stdu::vector<std::string> &name, const stdu::vector<std::string> &clear_name) -> LangAPI::Lambda;
         ConstructBase(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir) : holder(holder), lexer_builder(lexer_builder), ir(ir) {}
 
         ~ConstructBase() {}

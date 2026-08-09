@@ -2,8 +2,7 @@ export module LLIR.Builder.DataWrapper;
 import LangAPI;
 import LLIR.Builder.Data;
 import AST.Tree;
-import DFA.Collection;
-import DFA.TokenMachineDFA;
+import DFA;
 import dstd;
 import std;
 
@@ -23,7 +22,7 @@ export namespace LLIR {
         BuilderData::SymbolFollow &symbol_follow;
         bool &has_symbol_follow;
         AST::Tree &tree;
-        DFA::Collection<DFA::TokenMachineDFA> &dfas;
+        stdu::vector<DFA::DFA> *dfas;
         BuilderDataWrapper(LLIR::BuilderData &data) : BuilderDataWrapper(
             data.variable_count, data.isToken, data.insideLoop,
             data.addSpaceSkip, data.isFirst, data.tokensOnly,
@@ -45,7 +44,7 @@ export namespace LLIR {
             stdu::vector<std::pair<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>> &symbol_follow,
             bool &has_symbol_follow,
             AST::Tree &tree,
-            DFA::Collection<DFA::TokenMachineDFA> &dfas
+            stdu::vector<DFA::DFA> *dfas
         ) :
             variable_count(variable_count),
             isToken(isToken),

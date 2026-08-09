@@ -1,0 +1,15 @@
+bootloader: lexer
+
+tests:
+
+  # BASIC
+
+  - name: integer_variable
+    path: basic/Integer_variable.isc
+    input: "int my_variable123 = 45"
+
+    expect:
+      - for: TEMPLATED_TYPE
+        value:
+          op: '=='
+          type: 'str'

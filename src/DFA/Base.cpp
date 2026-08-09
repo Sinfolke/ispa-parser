@@ -70,22 +70,6 @@ auto DFA::Base::getStateType(const Transitions &transitions) -> DfaType {
     }
     return DfaType::Char;
 }
-
-auto DFA::Base::getEmptyState(std::size_t stateIndex) const -> std::size_t {
-    if (!dfa_empty_state_map_.empty())
-        return dfa_empty_state_map_.at(stateIndex);
-    if (empty_state != NULL_STATE)
-        return empty_state;
-    throw Error("Dfa has no empty state registered");
-}
-
-auto DFA::Base::getEmptyStateIF(std::size_t stateIndex) const -> std::size_t {
-    auto it = dfa_empty_state_map_.find(stateIndex);
-    if (it != dfa_empty_state_map_.end())
-        return it->second;
-    return NULL_STATE;
-}
-
 auto DFA::Base::getEmptyState() -> std::size_t& {
     if (empty_state == NULL_STATE)
         throw Error("Dfa has no empty state registered");
@@ -95,20 +79,12 @@ auto DFA::Base::getEmptyState() -> std::size_t& {
 auto DFA::Base::hasOneEmptyState() -> bool {
     return empty_state != NULL_STATE;
 }
-
-auto DFA::Base::getEmptyStateByDfaId(std::size_t dfaIndex) -> std::size_t {
-    if (!dfa_index_to_empty_state_map_.empty())
-        return dfa_index_to_empty_state_map_.at(dfaIndex);
-    throw Error("Dfa is not merged, but the dfa_index_to_empty_state_map is called");
-}
 auto DFA::Base::isMerged() -> bool {
     return merged;
 }
 template auto DFA::Base::getStateType(const Transitions &transitions) -> DfaType;
-template auto DFA::Base::getStateType(const MultiTransitions &transitions) -> DfaType;
 template auto DFA::Base::getStateType(const SortedTransitions &transitions) -> DfaType;
 template auto DFA::Base::getStateType(const CharMachineStateVariant &transitions) -> DfaType;
 template auto DFA::Base::getType(const States<SingleState> &states) const -> DfaType;
-template auto DFA::Base::getType(const States<MultiState> &states) const -> DfaType;
 template auto DFA::Base::getType(const States<SortedState> &states) const -> DfaType;
 template auto DFA::Base::getType(const States<CharMachineState> &states) const -> DfaType;

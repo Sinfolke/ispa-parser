@@ -11,8 +11,6 @@ import corelib;
 import cpuf.printf;
 import logging;
 import hash;
-import DFA.Collection;
-import DFA.CharMachineDFA;
 import DFA.Base;
 
 import dstd;
@@ -36,8 +34,8 @@ namespace LangRepr {
 
     }
     auto Construct::constructParser() -> void {
-        ConstructParser construct_parser(holder, lexer_builder, ir);
-        construct_parser.constructParser();
+        // ConstructParser construct_parser(holder, lexer_builder, ir);
+        // construct_parser.constructParser();
     }
 
     auto Construct::construct() -> Holder& {

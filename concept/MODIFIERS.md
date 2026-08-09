@@ -52,13 +52,3 @@ WHITESPACE: [ ]+;
 #### Common Use Cases:
 * Ignoring spaces, tabs, and newlines.
 * Stripping single-line and block comments (`// ...`, `/* ... */`).
-
----
-
-## 🛠️ Summary of Common Modifiers
-
-| Modifier | Target | Description |
-| :--- | :--- | :--- |
-| `[inline]` | Rules | Inlines node values directly into the calling AST node. |
-| `[skip]` | Tokens | Discards matched token patterns during lexing (e.g., whitespace, comments). |
----

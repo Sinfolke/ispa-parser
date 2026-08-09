@@ -1,4 +1,5 @@
 module LangAPI;
+
 namespace LangAPI {
     template<typename Param>
     inline void printTemplateParameters(std::ostream &os, stdu::vector<Param> params) {
@@ -42,7 +43,15 @@ namespace LangAPI {
         return os << '"' << s.value << '"';
     }
 
-
+    auto operator<(const Declarations& a, const Declarations& b) -> bool {
+        return a.size() < b.size();
+    }
+    auto operator<(const Statements& a, const Statements& b) -> bool {
+        return a.size() < b.size();
+    }
+    auto operator<(const Expression& a, const Expression& b) -> bool {
+        return a.size() < b.size();
+    }
     auto operator<<(std::ostream &os, ExpressionElement e) -> std::ostream& {
         switch (e) {
             case ExpressionElement::GroupOpen: os << "GroupOpen"; break;
@@ -84,6 +93,7 @@ namespace LangAPI {
     auto operator<<(std::ostream &os, ValueType v) -> std::ostream& {
         switch (v) {
             case ValueType::Undef: os << "Undef"; break;
+            case ValueType::Void: os << "Void"; break;
             case ValueType::Char: os << "Char"; break;
             case ValueType::Int: os << "Int"; break;
             case ValueType::Bool: os << "Bool"; break;
@@ -190,36 +200,11 @@ namespace LangAPI {
             case StdlibExports::Lexer: os << "Lexer"; break;
             case StdlibExports::Parser: os << "Parser"; break;
             case StdlibExports::LexerMakeTokenParameter: os << "LexerMakeTokenParameter"; break;
-            case StdlibExports::DfaTokenTransition: os << "DfaTokenTransition"; break;
-            case StdlibExports::DfaCharTransition: os << "DfaCharTransition"; break;
-            case StdlibExports::DfaCharTableTransition: os << "DfaCharTableTransition"; break;
-            case StdlibExports::DfaMultiTransition: os << "DfaMultiTransition"; break;
-            case StdlibExports::DfaCharState: os << "DfaCharState"; break;
-            case StdlibExports::DfaCharTableState: os << "DfaCharTableState"; break;
-            case StdlibExports::DfaTokenState: os << "DfaTokenState"; break;
-            case StdlibExports::DfaMultiTableState: os << "DfaMultiTableState"; break;
-            case StdlibExports::EmptyState: os << "EmptyState"; break;
-            case StdlibExports::DfaSpanCharState: os << "DfaSpanCharState"; break;
-            case StdlibExports::DfaSpanCharTableState: os << "DfaSpanCharTableState"; break;
-            case StdlibExports::DfaSpanTokenTableState: os << "DfaSpanTokenTableState"; break;
-            case StdlibExports::DfaSpanMultiTableState: os << "DfaSpanMultiTableState"; break;
-            case StdlibExports::DfaCharTable: os << "DfaCharTable"; break;
-            case StdlibExports::DfaTokenTable: os << "DfaTokenTable"; break;
-            case StdlibExports::DfaMultiTable: os << "DfaMultiTable"; break;
+            case StdlibExports::DfaState: os << "DfaState"; break;
+            case StdlibExports::DfaTable: os << "DfaTable"; break;
+            case StdlibExports::DfaClassTable: os << "DfaClassTable"; break;
+            case StdlibExports::DfaAcceptTable: os << "DfaAcceptTable"; break;
             case StdlibExports::ParserFunctionParameter: os << "ParserFunctionParameter"; break;
-            case StdlibExports::DfaEmptyStateGroupBegin: os << "DfaEmptyStateGroupBegin"; break;
-            case StdlibExports::DfaEmptyStateMemberBegin: os << "DfaEmptyStateMemberBegin"; break;
-            case StdlibExports::DfaCharDataVector: os << "DfaCharDataVector"; break;
-            case StdlibExports::DfaMultiDataVector: os << "DfaMultiDataVector"; break;
-            case StdlibExports::DfaUniversalDataVector: os << "DfaMultiDataVector"; break;
-            case StdlibExports::DfaCstBuilder: os << "DfaCstdBuilder"; break;
-            case StdlibExports::DfaNestedCharTable: os << "DfaNestedCharTable"; break;
-            case StdlibExports::DfaSpanCharTable: os << "DfaSpanCharTable"; break;
-            case StdlibExports::DfaSpanNestedCharTable: os << "DfaSpanNestedCharTable"; break;
-            case StdlibExports::DfaSpanTokenTable: os << "DfaSpanTokenTable"; break;
-            case StdlibExports::DfaSpanMultiTable: os << "DfaSpanMultiTable"; break;
-            case StdlibExports::FCDTVariant: os << "FCDTVariant"; break;
-            case StdlibExports::FCDTTable: os << "FCDTTable"; break;
         }
         return os;
     }
@@ -241,16 +226,56 @@ namespace LangAPI {
         }
         return os;
     }
+    bool operator==(const Array &a, const Array &b) {
+        return a.values == b.values && a.template_parameters == b.template_parameters;
+    }
+    bool operator<(const Array &a, const Array &b) {
+        return a.values < b.values;
+    }
     auto operator<<(std::ostream& os, const Array &arr) -> std::ostream& {
         printTemplateParameters(os, arr.template_parameters);
         printExpressionArgs(os, arr.values);
         return os;
     }
+
+    bool operator==(const FixedSizeArray &a, const FixedSizeArray &other) {
+        return a.values == other.values && a.template_parameters == other.template_parameters;
+    }
+
+    bool operator<(const FixedSizeArray &a, const FixedSizeArray &other) {
+        if (a.values != other.values) return a.values < other.values;
+        else if (a.template_parameters.size() != other.template_parameters.size()) return a.template_parameters.size() < other.template_parameters.size();
+        else for (std::size_t i = 0; i < a.template_parameters.size(); ++i) {
+            if (a.template_parameters[i].index() != other.template_parameters[i].index()) return a.template_parameters[i].index() < other.template_parameters[i].index();
+            else if (std::holds_alternative<std::shared_ptr<Type>>(a.template_parameters[i])) {
+                if (const auto &a_ = std::get<std::shared_ptr<Type>>(a.template_parameters[i]), &b_ = std::get<std::shared_ptr<Type>>(other.template_parameters[i]); a_ != b_) {
+                    return a_ < b_;
+                };
+            } else if (std::holds_alternative<std::shared_ptr<RValue>>(a.template_parameters[i])) {
+                if (const auto &a_ = std::get<std::shared_ptr<RValue>>(a.template_parameters[i]), &b_ = std::get<std::shared_ptr<RValue>>(other.template_parameters[i]); a_ != b_) {
+                    return a_ < b_;
+                }
+            }
+        }
+        return false;
+    }
+
     auto operator<<(std::ostream& os, const FixedSizeArray &arr)  -> std::ostream&{
         printTemplateParameters(os, arr.template_parameters);
         printExpressionArgs(os, arr.values);
         return os;
     }
+
+    bool operator==(const Map &a, const Map &b) {
+        return a.keys == b.keys && a.values == b.values && a.template_parameters == b.template_parameters;
+    }
+
+    bool operator<(const Map &a, const Map &b) {
+        if (a.keys != b.keys) return a.keys < b.keys;
+        else if (a.values != b.values) return a.values < b.values;
+        else return a.template_parameters < b.template_parameters;
+    }
+
     auto operator<<(std::ostream& os, const Map &map) -> std::ostream& {
         printTemplateParameters(os, map.template_parameters);
         os << '{';
@@ -273,6 +298,15 @@ namespace LangAPI {
         return os;
     }
 
+    bool operator==(const ArrayMethodCall &a, const ArrayMethodCall &b) {
+        return a.method == b.method && a.args == b.args;
+    }
+
+    bool operator<(const ArrayMethodCall &a, const ArrayMethodCall &b) {
+        if (a.method != b.method) return a.method < b.method;
+        else return a.args < b.args;
+    }
+
     auto operator<<(std::ostream& os, const ArrayMethodCall &amc)  -> std::ostream&{
         os << amc.method;
         os << "(";
@@ -280,13 +314,27 @@ namespace LangAPI {
         os << ")";
         return os;
     }
+    FunctionCall::~FunctionCall() = default;
+    bool operator==(const FunctionCall &a, const FunctionCall &b) {
+        return a.name == b.name && a.args == b.args;
+    }
+
+    bool operator<(const FunctionCall &a, const FunctionCall &b) {
+        if (a.name != b.name) return a.name < b.name;
+        else return a.args < b.args;
+    }
 
     auto operator<<(std::ostream& os, const FunctionCall &fc)  -> std::ostream& {
         os << fc.name;
         printExpressionArgs(os, fc.args);
         return os;
     }
-
+    bool operator==(const Symbol &a, const Symbol &b) {
+        return a.path == b.path;
+    }
+    bool operator<(const Symbol &a, const Symbol &b) {
+        return a.path < b.path;
+    }
     auto operator<<(std::ostream &os, const Symbol &obj) -> std::ostream& {
         bool first = true;
         for (const auto &part : obj.path) {
@@ -297,7 +345,23 @@ namespace LangAPI {
         }
         return os;
     }
-
+    bool operator==(const StorageOffset &a, const StorageOffset &b) {
+        return a.offset == b.offset;
+    }
+    bool operator<(const StorageOffset &a, const StorageOffset &b) {
+        return a.offset < b.offset;
+    }
+    auto operator<<(std::ostream &os, const StorageOffset &obj) -> std::ostream& {
+        os << "[" << obj.offset << "]";
+        return os;
+    }
+    bool operator==(const StorageSymbol &a, const StorageSymbol &b){
+        return a.what == b.what && a.path == b.path;
+    }
+    bool operator<(const StorageSymbol &a, const StorageSymbol &b) {
+        if (a.what != b.what) return a.what < b.what;
+        else return a.path < b.path;
+    }
     auto operator<<(std::ostream &os, const StorageSymbol &obj) -> std::ostream& {
         os << "(" << obj.what << ")";
         for (const auto &part : obj.path) {
@@ -306,19 +370,37 @@ namespace LangAPI {
         }
         return os;
     }
-
+    bool operator==(const IspaLibSymbol &a, const IspaLibSymbol &b) {
+        return a.exports == b.exports;
+    }
+    bool operator<(const IspaLibSymbol &a, const IspaLibSymbol &b) {
+        if (a.exports != b.exports) return a.exports < b.exports;
+        else return a.template_parameters < b.template_parameters;
+    }
     auto operator<<(std::ostream &os, const IspaLibSymbol &obj) -> std::ostream& {
         os << obj.exports;
         printTemplateParametersShared(os, obj.template_parameters);
         return os;
     }
-
+    bool operator==(const IspaLibFunctionCall &a, const IspaLibFunctionCall &b) {
+        return a.symbol == b.symbol && a.args == b.args;
+    }
+    bool operator<(const IspaLibFunctionCall &a, const IspaLibFunctionCall &b) {
+        if (a.symbol != b.symbol) return a.symbol < b.symbol;
+        else return a.args < b.args;
+    }
     auto operator<<(std::ostream &os, const IspaLibFunctionCall &obj) -> std::ostream& {
         os << obj.symbol;
         printExpressionArgs(os, obj.args);
         return os;
     }
-
+    bool operator==(const Inheritance &a, const Inheritance &b) {
+        return a.name == b.name && a.args == b.args;
+    }
+    bool operator<(const Inheritance &a, const Inheritance &b) {
+        if (a.name != b.name) return a.name < b.name;
+        else return a.args < b.args;
+    }
     auto operator<<(std::ostream &os, const Inheritance &obj) -> std::ostream& {
         std::visit([&](const auto &el) {
             os << el;
@@ -448,14 +530,29 @@ namespace LangAPI {
         }
         return os;
     }
-
+    bool operator==(const Namespace &a, const Namespace &b) {
+        return a.name == b.name && a.declarations == b.declarations;
+    }
+    bool operator<(const Namespace &a, const Namespace &b) {
+        if (a.name != b.name) return a.name < b.name;
+        else return a.declarations < b.declarations;
+    }
     auto operator<<(std::ostream &os, const Namespace &obj) -> std::ostream& {
         os << "namespace " << obj.name << "{\n";
         os << obj.declarations;
         os << "}\n";
         return os;
     }
-
+    bool operator==(const Function &a, const Function &b) {
+        return a.type == b.type &&  a.name == b.name &&  a.parameters == b.parameters && a.statements == b.statements;
+    }
+    bool operator<(const Function &a, const Function &b) {
+        if (a.type != b.type) return a.type < b.type;
+        if (a.name != b.name) return a.name < b.name;
+        else if (a.parameters != b.parameters) return a.parameters < b.parameters;
+        else if (a.statements != b.statements) return a.statements < b.statements;
+        else return a.template_parameters < b.template_parameters;
+    }
     auto operator<<(std::ostream &os, const Function &obj) -> std::ostream& {
         if (!obj.template_parameters.empty()) {
             os << "template<";
@@ -494,6 +591,14 @@ namespace LangAPI {
         return os << "};\n";
     }
 
+    bool operator==(const Variable &a, const Variable &b) {
+        return a.name == b.name && a.type == b.type && a.value == b.value;
+    }
+    bool operator<(const Variable &a, const Variable &b) {
+        if (a.name != b.name) return a.name < b.name;
+        else if (a.type != b.type) return a.type < b.type;
+        else return a.value < b.value;
+    }
     auto operator<<(std::ostream &os, const Variable &obj) -> std::ostream& {
         os << obj.type << ' ' << obj.name << " = " << obj.value;
         return os;
@@ -512,6 +617,12 @@ namespace LangAPI {
         return os << "continue;";
     }
 
+    bool operator==(const Return &a, const Return &b) {
+        return a.value == b.value;
+    }
+    bool operator<(const Return &a, const Return &b) {
+        return a.value < b.value;
+    }
     auto operator<<(std::ostream &os, const Return &obj) -> std::ostream& {
         return os << "return " << obj.value << ";";
     }
@@ -519,7 +630,14 @@ namespace LangAPI {
     auto operator<<(std::ostream &os, const StringCompare &obj) -> std::ostream& {
         return os << "[string_compare]";
     }
-
+    bool operator==(const VariableAssignment &a, const VariableAssignment &b) {
+        return a.name == b.name && a.type == b.type && a.value == b.value;
+    }
+    bool operator<(const VariableAssignment &a, const VariableAssignment &b) {
+        if (a.name != b.name) return a.name < b.name;
+        else if (a.type != b.type) return a.type < b.type;
+        else return a.value < b.value;
+    }
     auto operator<<(std::ostream &os, const VariableAssignment &obj) -> std::ostream& {
         std::visit([&os](const auto &v) { os << v; }, obj.name);
         return os << ' ' << obj.type << "=" << ' ' << obj.value << ';';
@@ -556,7 +674,13 @@ namespace LangAPI {
     auto operator<<(std::ostream &os, const ReportError &obj) -> std::ostream& {
         return os << "[report_error]";
     }
-
+    bool operator==(const Lambda &a, const Lambda &b) {
+        return a.parameters == b.parameters && a.statements == b.statements;
+    }
+    bool operator<(const Lambda &a, const Lambda &b) {
+        if (a.parameters != b.parameters) return a.parameters < b.parameters;
+        else return a.statements < b.statements;
+    }
     auto operator<<(std::ostream &os, const Lambda &obj) -> std::ostream& {
         os << "[]";
         bool first = true;
@@ -575,7 +699,19 @@ namespace LangAPI {
         std::visit([&os](const auto &v) { os << v; }, obj.value);
         return os;
     }
-
+    bool operator==(const ConditionalElement &a, const ConditionalElement &b) {
+        return a.expr == b.expr && a.stmt == b.stmt;
+    }
+    bool operator<(const ConditionalElement &a, const ConditionalElement &b) {
+        if (a.expr != b.expr) return a.expr < b.expr;
+        else return a.stmt < b.stmt;
+    }
+    bool operator==(const If& a, const If &b) {
+        return static_cast<ConditionalElement>(a) == static_cast<ConditionalElement>(b) && a.else_stmt == b.else_stmt;
+    }
+    bool operator<(const If& a, const If &b) {
+        return static_cast<ConditionalElement>(a) < static_cast<ConditionalElement>(b) && a.else_stmt < b.else_stmt;
+    }
     auto operator<<(std::ostream &os, const If &obj) -> std::ostream& {
         return os << "if (" << obj.expr << ") {\n" << obj.stmt << "} else {\n" << obj.else_stmt << "}";
     }
@@ -587,7 +723,13 @@ namespace LangAPI {
     auto operator<<(std::ostream &os, const DoWhile &obj) -> std::ostream& {
         return os << "do {\n" << obj.stmt << "} while (" << obj.expr << ");";
     }
-
+    bool operator==(const Switch &a, const Switch &b) {
+        return a.expression == b.expression && a.cases == b.cases;
+    }
+    bool operator<(const Switch &a, const Switch &b) {
+        if (a.expression != b.expression) return a.expression < b.expression;
+        else return a.cases < b.cases;
+    }
     auto operator<<(std::ostream &os, const Switch &obj) -> std::ostream& {
         os << "switch (" << obj.expression << ") {\n";
         for (const auto &[value, statements] : obj.cases) {

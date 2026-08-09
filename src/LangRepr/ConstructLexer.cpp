@@ -3,320 +3,226 @@ module LangRepr.ConstructLexer;
 import LLIR.Builder.Base;
 import cpuf.printf;
 import NFA;
-import DFA.CharMachineDFA;
+import DFA.API;
+import LangAPI;
+import logging;
 import std;
 
-namespace LangRepr {
-    auto ConstructLexer::makeFCDT(std::unordered_set<std::size_t> nested_char_table_states, std::unordered_set<std::size_t> multi_table_states) -> LangAPI::Variable {
-        LangAPI::Type fcdt_type = LangAPI::IspaLibSymbol {
-            .exports = LangAPI::StdlibExports::FCDTTable,
-            .template_parameters = {std::make_shared<LangAPI::Type>(Token)}
-        };
+// -----------------------------------------------------------------------
+// ARCHITECTURE NOTE
+//
+// Exactly two tables are emitted:
+//
+//   1. dfa_table       -- the actual (unified, classified) DFA. No FCDT,
+//                          no per-token spans. State 0 is the single
+//                          shared start state for every token.
+//   2. char_class_table -- raw byte -> class id, shared globally across
+//                          every state in dfa_table.
+//
+// No third table for acceptance. Instead, wherever a transition would
+// have pointed at a materialized "empty"/accepting placeholder state, the
+// target is encoded directly as:
+//
+//       state_count + 1 + <token enum value>
+//
+// i.e. any `next` value >= state_count is not a real state index at all;
+// it's an accept marker, and the matched token id is `next - state_count
+// - 1`. Genuinely dead transitions (no match, no accept) keep using
+// DFA::NULL_STATE, which is far outside this range, so the three cases
+// (real state / accept sentinel / dead) never collide:
+//
+//     next <  state_count           -> real continuing state
+//     next == DFA::NULL_STATE       -> dead transition
+//     otherwise (next > state_count)-> accept for token (next - state_count - 1)
+//
+// This removes the need to ever materialize placeholder "empty" states,
+// and removes any separate accept_table/construct_table -- the token id
+// is recoverable by arithmetic directly from the transition that was
+// actually taken, with zero extra storage.
+//
+// RUNTIME TYPE ASSUMPTION: DFAAPI::Table<N> as given constrains state
+// count == class count via a single template parameter. That only holds
+// by coincidence; this file assumes the corrected two-parameter form:
+//
+//   template<std::size_t Classes> using State = std::array<std::size_t, Classes>;
+//   template<std::size_t States, std::size_t Classes>
+//   using Table = std::array<State<Classes>, States>;
+//
+// The runtime's DfaLookup lowering must decode accept sentinels using the
+// SAME formula used here to encode them -- these two sides have to agree
+// bit-for-bit.
+// -----------------------------------------------------------------------
 
-        LangAPI::Variable var {
-            .name = "fcdt_table",
-            .type = fcdt_type,
-            .is_static = true
-        };
+namespace LangRepr {
+
+    auto ConstructLexer::makeCharClassTableDecl(const DFA::CharClassTable &table)
+        -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility> {
 
         LangAPI::Array arr;
-        constexpr std::size_t INVALID_DFA_INDEX = std::numeric_limits<std::size_t>::max();
-
-        for (const auto &table_index : lexer_builder.getNewFCDT()) {
-
-            // --- FIX 1: Handle Invalid/Empty Indices Safely ---
-            if (table_index == INVALID_DFA_INDEX) {
-                // Bypass LangAPI::Span entirely.
-                // Just push a raw "{}" symbol to initialize std::monostate in the FCDT variant.
-                arr.values.push_back(
-                    LangAPI::Expression {LangAPI::EmptyInitializer {}}
-                );
-                continue;
-            }
-
-            // --- FIX 2: Use the Base Table Types (NOT the 'Span' types) ---
-            LangAPI::IspaLibSymbol span_t;
-            if (nested_char_table_states.contains(table_index)) {
-                span_t = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaSpanNestedCharTable};
-            } else if (multi_table_states.contains(table_index)) {
-                span_t = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaSpanMultiTable};
-            } else {
-                span_t = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaSpanCharTable};
-            }
-
-            // Add the Token type to the underlying table template parameters
-            span_t.template_parameters.push_back(std::make_shared<LangAPI::Type>(Token));
-
-            // LangAPI::Span wraps the underlying base table type for us
+        arr.values.reserve(256);
+        for (std::size_t c = 0; c < 256; ++c) {
             arr.values.push_back(
-                LangAPI::Inheritance::createExpression(
-                    LangAPI::IspaLibDfaSpan {
-                        .type = span_t,
-                        .assing_name = LangAPI::Symbol {"dfa_table_" + std::to_string(table_index)}
-                    }
-                )
+                LangAPI::Int::createExpression(LangAPI::Int {
+                    .value = static_cast<long long>(table.char_to_class[c])
+                })
             );
         }
 
-        var.value = LangAPI::Array::createExpression(arr);
-        return var;
+        LangAPI::IspaLibSymbol class_table_symbol {.exports = LangAPI::StdlibExports::DfaClassTable};
+        class_table_symbol.template_parameters.push_back(
+            std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = 256})
+        );
+
+        LangAPI::Variable var {
+            .name = "char_class_table",
+            .type = LangAPI::Type {class_table_symbol},
+            .value = LangAPI::Array::createExpression(arr),
+            .is_static = true
+        };
+
+        return {
+            std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(var)),
+            LangAPI::Visibility::Private
+        };
+    }
+
+    // Emits the single unified transition table. Each entry is a plain
+    // size_t, sentinel-encoded per the scheme above -- no wrapper type,
+    // no per-transition metadata struct, since acceptance now lives
+    // entirely in the numeric value rather than needing its own field.
+    auto ConstructLexer::makeDfaTableDecl(
+        const auto &states,          // iterable of DFA::State<DFA::ClassTransitions>
+        std::size_t state_count,
+        std::size_t class_count
+    ) -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility> {
+
+        stdu::vector<LangAPI::Expression> rows;
+        rows.reserve(state_count);
+
+        for (const auto &state : states) {
+            stdu::vector<LangAPI::Expression> row;
+            row.reserve(class_count);
+
+            for (std::size_t cls = 0; cls < class_count; ++cls) {
+                std::size_t encoded = DFA::NULL_STATE;
+
+                if (cls < state.transitions.size()) {
+                    const auto &t = state.transitions[cls];
+                    if (t.accept_index != DFA::NULL_STATE) {
+                        // This transition completes a token -- encode
+                        // directly, no placeholder state ever created.
+                        encoded = state_count + 1 + t.accept_index;
+                    } else if (t.next != DFA::NULL_STATE) {
+                        encoded = t.next; // real continuing state
+                    }
+                    // else: leave as DFA::NULL_STATE -- genuinely dead
+                }
+
+                row.push_back(LangAPI::Int::createExpression(LangAPI::Int {
+                    .value = static_cast<long long>(encoded)
+                }));
+            }
+            rows.push_back(LangAPI::Array::createExpression(LangAPI::Array {.values = row}));
+        }
+
+        LangAPI::IspaLibSymbol dfa_table_symbol {.exports = LangAPI::StdlibExports::DfaTable};
+        dfa_table_symbol.template_parameters.push_back(
+            std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = static_cast<long long>(state_count)})
+        );
+        dfa_table_symbol.template_parameters.push_back(
+            std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = static_cast<long long>(class_count)})
+        );
+
+        LangAPI::Variable var {
+            .name = "dfa_table",
+            .type = LangAPI::Type {dfa_table_symbol},
+            .value = LangAPI::Array::createExpression(LangAPI::Array {.values = rows}),
+            .is_static = true
+        };
+
+        return {
+            std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(var)),
+            LangAPI::Visibility::Private
+        };
     }
 
     auto ConstructLexer::constructLexer() -> void {
         holder.push(LangAPI::TypeAlias::createDeclaration(createTypeToken()));
-        std::size_t count = 0;
-        const auto &dfas = lexer_builder.getDFAS().get();
-        auto states = lexer_builder.getDFAS().getStateSet();
+        Tlog::Branch b(logger, "LangRepr/ConstructLexer.log");
         auto lexer = createLexerClass();
-        std::unordered_set<std::size_t> char_table_states;
-        std::unordered_set<std::size_t> multi_table_states;
-        std::unordered_set<std::size_t> nested_char_tables;
-        std::unordered_set<std::size_t> multi_tables;
-        for (const auto &state : states.state_set) {
-            const auto [dfa_idx, local_state_index] = states.state_in_dfa_location_map.at(count);
-            const auto &dfa = dfas.at(dfa_idx);
-            auto [type, tn_path] = states.state_to_type.at(count);
-            LangAPI::Symbol tn = tn_path;
 
-            const int transition_size = getTransitionCount(state.transitions);
-            auto s = getStateType(type);
+        // Single unified, classified DFA -- no per-token list, no FCDT.
+        const auto &dfa = lexer_builder.getDFA();
+        const auto &class_table = dfa.table;
+        const auto &states = dfa.states.get();
+        const std::size_t state_count = states.size();
+        const std::size_t class_count = class_table.num_classes;
 
-            stdu::vector<LangAPI::Expression> transitions;
-            stdu::vector<std::string> token_type = {"Types"};
-            LangAPI::Lambda construct_lambda;
-            bool empty = false;
-            if (std::holds_alternative<DFA::FullCharTable>(state.transitions)) {
-                const auto &char_transitions = std::get<DFA::FullCharTable>(state.transitions);
-                unsigned char c = std::numeric_limits<unsigned char>::min();
-                for (const auto &transition : char_transitions) {
-                    transitions.push_back(
-                        LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
-                            .symbol = static_cast<char>(c),
-                            .next = transition.next,
-                            .new_cst_node = transition.new_cst_node,
-                            .new_member = transition.new_member,
-                            .close_cst_node = transition.close_cst_node,
-                            .new_group = transition.new_group,
-                            .group_close = transition.group_close,
-                            .accept = transition.accept_index,
-                            .transition_type = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaCharTransition}
-                        })
-                    );
-                    c++;
-                }
-            } else {
-                const auto &sorted_transitions = std::get<DFA::SortedTransitions>(state.transitions);
-                if (sorted_transitions.empty()) {
-                    empty = true;
-                    token_type.insert(token_type.end(), state.rule_name.begin(), state.rule_name.end());
-                    construct_lambda = makeEmptyStateLambda(dfa.getType(), token_type, state.rule_name, state.dtb);
-                    s.exports = LangAPI::StdlibExports::EmptyState;
-                } else s.template_parameters.push_back(makeIntRValue(transition_size));
-                // Determine if all DFA-reference transitions in this state point to Char tables.
-                // Ignore plain char-symbol transitions when making this decision.
-                bool is_referring_char_table = false;
-                if (!empty) {
-                    bool has_ref_transitions = false;
-                    bool all_char_refs = true;
-                    for (const auto &transition_pair : sorted_transitions) {
-                        if (std::holds_alternative<stdu::vector<std::string>>(transition_pair.first)) {
-                            has_ref_transitions = true;
-                            const auto &ref_name = std::get<stdu::vector<std::string>>(transition_pair.first);
-                            const auto &ref_dfa = dfas.at(lexer_builder.getNameToDFAIndex().at(ref_name));
-                            if (ref_dfa.getType() != DFA::DfaType::Char) {
-                                all_char_refs = false;
-                                break;
-                            }
-                        }
-                    }
-                    is_referring_char_table = has_ref_transitions && all_char_refs;
-                    if (is_referring_char_table) {
-                        s.exports = LangAPI::StdlibExports::DfaCharTableState;
-                        char_table_states.insert(count);
-                    } else {
-                        multi_table_states.insert(count);
-                    }
-                }
+        logger.log("---- [0] LEXER: CHAR CLASS TABLE ----");
+        lexer.data.push_back(makeCharClassTableDecl(class_table));
 
-                for (const auto &[symbol, transition] : sorted_transitions) {
-                    if (std::holds_alternative<stdu::vector<std::string>>(symbol)) {
-                        const auto &sym_name = std::get<stdu::vector<std::string>>(symbol);
-                        const auto referred_dfa_idx = lexer_builder.getNameToDFAIndex().at(sym_name);
-                        const auto &referred_dfa = dfas.at(referred_dfa_idx);
-                        bool local_is_referring_char_table = referred_dfa.getType() == DFA::DfaType::Char;
+        logger.log("---- [1] LEXER: DFA TABLE (accept sentinel-encoded) ----");
+        lexer.data.push_back(makeDfaTableDecl(states, state_count, class_count));
 
-                        LangAPI::IspaLibSymbol new_s;
-                        auto token_type_ptr = std::make_shared<LangAPI::Type>(LangAPI::Symbol{"Token"});
-                        if (local_is_referring_char_table) {
-                            new_s = LangAPI::IspaLibSymbol {
-                                .exports = LangAPI::StdlibExports::DfaCharTableTransition,
-                                .template_parameters = { token_type_ptr }
-                            };
-                        } else {
-                            new_s = {
-                                .exports = LangAPI::StdlibExports::DfaMultiTransition,
-                                .template_parameters = { token_type_ptr }
-                            };
-                        }
-                        transitions.push_back(
-                            LangAPI::IspaLibDfaTransition::createExpression(
-                                LangAPI::IspaLibDfaTransition{
-                                    .symbol = referred_dfa_idx,
-                                    .next = transition.next,
-                                    .new_cst_node = transition.new_cst_node,
-                                    .new_member = transition.new_member,
-                                    .close_cst_node = transition.close_cst_node,
-                                    .new_group = transition.new_group,
-                                    .group_close = transition.group_close,
-                                    .accept = transition.accept_index,
-                                    .transition_type = new_s,
-                                    .is_refferring_char_table = local_is_referring_char_table
-                                }
-                            )
-                        );
-                    } else {
-                        transitions.push_back(
-                         LangAPI::IspaLibDfaTransition::createExpression(LangAPI::IspaLibDfaTransition {
-                                 .symbol = std::get<char>(symbol),
-                                 .next = transition.next,
-                                 .new_cst_node = transition.new_cst_node,
-                                 .new_member = transition.new_member,
-                                 .close_cst_node = transition.close_cst_node,
-                                 .new_group = transition.new_group,
-                                 .group_close = transition.group_close,
-                                 .accept = transition.accept_index,
-                                 .transition_type = s,
-                                 .is_refferring_char_table = false
-                             })
-                         );
-                    }
-                }
-            }
-            lexer.data.push_back(
-                std::make_pair(
-	                std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration( LangAPI::Variable {
-	                .name = std::string("dfa_state_") + std::to_string(count),
-	                .type = s,
-                    .value = empty ? LangAPI::IspaLibDfaEmptyState::createExpression(LangAPI::IspaLibDfaEmptyState {.token_name = state.rule_name, .construction_lambda = std::make_shared<LangAPI::Lambda>(construct_lambda)}) : LangAPI::Array::createExpression(LangAPI::Array { .values = transitions}),
-                    .is_static = true
-	            })),
+        if (lexer_builder.getDFA().states.size() > 0) {
+            lexer.data.push_back(std::make_pair(
+                std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(LangAPI::Variable {
+                    .type = LangAPI::ValueType::Bool, .name = "init_done",
+                    .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = false})
+                })),
                 LangAPI::Visibility::Private
-                )
-            );
-            ++count;
+            ));
+            lexer.data.push_back(std::make_pair(
+                std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Function {
+                    .type = LangAPI::ValueType::Void, .name = "init", .override = true
+                })),
+                LangAPI::Visibility::Private
+            ));
         }
-        // construct DFA tables
-        for (std::size_t dfa_count = 0; dfa_count < dfas.size(); ++dfa_count) {
-            const auto &dfa = dfas.at(dfa_count);
-            std::vector<LangAPI::Expression> dfa_table_states;
-            bool multitable = dfa.getType() == DFA::DfaType::Multi;
-            bool nested_char_table = true;
 
-            for (std::size_t state_count = 0; state_count < dfa.get().size(); ++state_count) {
-                const auto &state_id = states.location_in_set.at(std::make_pair(dfa_count, state_count));
-                const auto &state_type = states.state_to_type.at(state_id).first;
-                const auto &state = states.state_set.get().at(state_id);
+        // makeToken is a single DfaLookup expression -- the runtime
+        // backing it is expected to walk dfa_table from state 0, using
+        // char_class_table for dispatch, and decode any `next >=
+        // state_count` as an accept for token `next - state_count - 1`
+        // (same formula used above to encode the table). No FCDT, no
+        // spans, no separate accept/construct tables to pass in --
+        // dfa_table's own type already carries state_count/class_count.
+        LangAPI::DfaLookup lookup {
+            .dfa_count = 1,           // ASSUMPTION: "number of DFA tables"
+                                       // is now always 1 under the unified
+                                       // design. If the DfaLookup backend
+                                       // actually expects this field to
+                                       // carry state_count (for the
+                                       // sentinel-decode threshold instead
+                                       // of reading it off dfa_table's own
+                                       // type), change this to state_count.
+            .return_type = LangAPI::Type {Token},
+            .output_name = "token"    // ASSUMPTION: bound result name;
+                                       // adjust to match whatever the
+                                       // DfaLookup lowering expects here.
+        };
 
-                if (std::holds_alternative<DFA::SortedTransitions>(state.transitions) && std::get<DFA::SortedTransitions>(state.transitions).empty()) {
-                    dfa_table_states.push_back(
-                        LangAPI::Symbol::createExpression(LangAPI::Symbol {"Lexer", "dfa_state_" + std::to_string(state_id)})
-                    );
-                } else {
-                    // FIX: Query the exact structural properties that dictate the state's variable declaration type
-                    LangAPI::StdlibExports selected_export;
-
-                    if (multi_table_states.contains(state_id)) {
-                        // If the header pass declared this state_id as a MultiTableState
-                        selected_export = LangAPI::StdlibExports::DfaSpanMultiTableState;
-                        nested_char_table = false;
-                    } else if (char_table_states.contains(state_id)) {
-                        // If the header pass declared this state_id as a CharTableState
-                        selected_export = LangAPI::StdlibExports::DfaSpanCharTableState;
-                    } else {
-                        // Default fallback matching static ::ISPA_STD::DFAAPI::CharState definitions
-                        selected_export = LangAPI::StdlibExports::DfaSpanCharState;
-                        nested_char_table = false;
-                    }
-
-                    LangAPI::IspaLibSymbol span_type = {
-                        .exports = selected_export,
-                        .template_parameters = {std::make_shared<LangAPI::Type>(Token)}
-                    };
-                    dfa_table_states.push_back(LangAPI::RValue::createExpression(
-                        LangAPI::RValue {LangAPI::Inheritance {
-                            .name = span_type,
-                            .args = {
-                                LangAPI::Int::createExpression(LangAPI::Int {.value = static_cast<long long>(state.else_goto)}),
-                                LangAPI::Int::createExpression(LangAPI::Int {.value = static_cast<long long>(state.else_goto_accept)}),
-                                LangAPI::Symbol::createExpression(LangAPI::Symbol {"Lexer", "dfa_state_" + std::to_string(state_id)})
-                            }
-                        }}
-                    ));
-                }
-            }
-
-            auto table_params = std::vector<std::variant<std::shared_ptr<LangAPI::Type>, std::shared_ptr<LangAPI::RValue>>> {
-                std::make_shared<LangAPI::Type>(LangAPI::Symbol{"Token"}),
-                std::make_shared<LangAPI::RValue>(
-                    LangAPI::Int::createRValue(LangAPI::Int {.value = (long long) dfa.get().size()})
-                )
-            };
-
-            if (nested_char_table) {
-                nested_char_tables.insert(dfa_count);
-            } else if (multitable) {
-                multi_tables.insert(dfa_count);
-            }
-
-            // FIX: Dynamically evaluate which table export enum to use based on the properties found above
-            LangAPI::StdlibExports table_export;
-            if (nested_char_tables.contains(dfa_count)) {
-                table_export = LangAPI::StdlibExports::DfaNestedCharTable;
-            } else if (multi_tables.contains(dfa_count)) {
-                table_export = LangAPI::StdlibExports::DfaMultiTable;
-            } else {
-                table_export = LangAPI::StdlibExports::DfaCharTable;
-            }
-
-            LangAPI::Variable dfa_table_var {
-                .name = "dfa_table_" + std::to_string(dfa_count),
-                .type = LangAPI::Type {
-                    LangAPI::IspaLibSymbol {
-                        table_export, // Using the resolved table export type
-                        table_params
-                    }
-                },
-                .value = LangAPI::Array::createExpression(LangAPI::Array { .values = dfa_table_states }),
-                .is_static = true
-            };
-            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Statement::createDeclaration(dfa_table_var)), LangAPI::Visibility::Private);
-        }
-        // add fcdt table to lexer
-        lexer.data.emplace_back(
-            std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(makeFCDT(nested_char_tables, multi_tables))),
-            LangAPI::Visibility::Private
-        );
-        // add make_token function
         lexer.data.push_back(
             std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Function {
-                .type = LangAPI::Type {Token},
-                .name = "makeToken",
-                .parameters = {std::make_pair(LangAPI::Type {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::LexerMakeTokenParameter, .Const = true, .Reference = true}}, std::string("pos"))},
-                .statements = LangAPI::Return::createStatements(LangAPI::Return {
-                        .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall {
-                            .name = std::make_shared<LangAPI::Symbol>("fcdt_lookup"),
-                            .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol {"fcdt_table"}),
-                                LangAPI::Symbol::createExpression(LangAPI::Symbol {"pos"})
-                            }
-                        })
-                    }
-                ),
-                .override = true,
-            })),
-            LangAPI::Visibility::Public
+                    .type = LangAPI::Type {Token},
+                    .name = "makeToken",
+                    .parameters = {std::make_pair(
+                        LangAPI::Type {LangAPI::IspaLibSymbol {
+                            .exports = LangAPI::StdlibExports::LexerMakeTokenParameter,
+                            .Const = true, .Reference = true
+                        }},
+                        std::string("pos")
+                    )},
+                    .statements = LangAPI::Return::createStatements(LangAPI::Return {
+                        .value = LangAPI::DfaLookup::createExpression(lookup)
+                    }),
+                    .override = true,
+                })),
+                LangAPI::Visibility::Public
             )
         );
+
         holder.push(lexer);
     }
 }

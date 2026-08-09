@@ -48,11 +48,13 @@ export namespace Tlog {
             return oss.str();
         }
         std::string format_str(std::string str) const {
-            str.insert(0, std::string(indent_level, '\t'));
+            constexpr std::size_t max_indent_level = 128;
+            const auto effective_indent = std::min(indent_level, max_indent_level);
+            str.insert(0, std::string(effective_indent, '\t'));
             for (std::size_t i = 0; i < str.size(); ++i) {
                 if (str[i] == '\n') {
-                    str.insert(i + 1, indent_level, '\t');
-                    i += indent_level;
+                    str.insert(i + 1, effective_indent, '\t');
+                    i += effective_indent;
                 }
             }
             return str;

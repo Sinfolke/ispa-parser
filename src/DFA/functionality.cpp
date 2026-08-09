@@ -2,154 +2,71 @@ module DFA.functionality;
 
 import DFA.API;
 import DFA.Base;
-import DFA.MDFA;
-import DFA.SDFA;
-import DFA.MinDFA;
-import DFA.SortedDFA;
-import DFA.CharMachineDFA;
+import DFA;
 import corelib;
+import hash;
 import std;
 
-// Selects a representative (name, datablock) for empty/fallback states.
-// It must skip states with an empty rule_name (e.g. freshly created empty
-// states), otherwise an empty name could be propagated to other empty states.
-template<typename DfaT>
-static auto pickRepresentativeName(DfaT &dfa)
-    -> std::pair<stdu::vector<std::string>, NFA::DataBlock> {
-    for (const auto &[name, datablock] : dfa.getDfaNames(dfa)) {
-        if (!name.empty())
-            return {name, datablock};
+
+void DFA::mergeTwoNFA(NFA &first, NFA &second, std::size_t rule_idx) {
+    if (second.getStates().empty()) {
+        second.build(false);
     }
-    return {};
-}
-
-auto DFA::buildDfaIndexToEmptyStateMap(stdu::vector<MDFA> &dfas) -> DfaIndexToEmptyStateMap {
-    DfaIndexToEmptyStateMap dfa_index_to_empty_state_map;
-
-    std::size_t global_offset = 0;
-    for (std::size_t dfa_idx = 0; dfa_idx < dfas.size(); ++dfa_idx) {
-        auto &dfa = dfas[dfa_idx];
-
-        std::size_t empty_global = std::numeric_limits<std::size_t>::max();
-        for (std::size_t local = 1; local < dfa.get().size(); ++local) {
-            if (dfa.get()[local].transitions.empty()) {
-                const auto [name, datablock] = pickRepresentativeName(dfa);
-                dfa.get()[local].rule_name = name;
-                dfa.get()[local].dtb = datablock;
-
-                empty_global = global_offset + local; // <-- Fixed
-                break;
-            }
-        }
-
-        // Fallback: if none found, append one and initialize it properly
-        if (empty_global == std::numeric_limits<std::size_t>::max()) {
-            // Capture the representative name BEFORE creating the new empty
-            // state, so the new (still unnamed) state does not pollute the
-            // name set with an empty entry.
-            const auto [name, datablock] = pickRepresentativeName(dfa);
-            std::size_t local_new = dfa.get().makeNew();
-            empty_global = global_offset + local_new;
-
-            dfa.get()[local_new].rule_name = name;
-            dfa.get()[local_new].dtb = datablock;
-        }
-
-        dfa_index_to_empty_state_map[dfa_idx] = empty_global;
-        global_offset += dfa.get().size();
+    if (second.getStates().empty()) {
+        return;
     }
-    return dfa_index_to_empty_state_map;
-}
 
-auto DFA::buildDfaEmptyStateMap(stdu::vector<MDFA> &dfas, const stdu::vector<NFA> &nfas) -> DfaEmptyStateMap {
-    DfaEmptyStateMap dfa_empty_state_map;
-    std::size_t count = 0;
-    std::size_t dfa_count = 0;
-    for (auto &dfa : dfas) {
-        std::size_t empty_state = NFA::NULL_STATE;
-        stdu::vector<std::size_t> delayed;
-        for (const auto &state : dfa.get()) {
-            if (state.transitions.empty() && !state.rule_name.empty() && !state.else_goto) {
-                empty_state = count;
-                for (const auto id : delayed) {
-                    dfa_empty_state_map[id] = empty_state;
-                }
-                delayed.clear();
-            } else if (empty_state == NFA::NULL_STATE) {
-                delayed.push_back(count);
-                count++;
-                continue;
-            }
-            dfa_empty_state_map[count] = empty_state;
-            count++;
-        }
-        if (!delayed.empty()) {
-            // Capture the representative name BEFORE creating the new empty
-            // state, so the new (still unnamed) state does not pollute the
-            // name set with an empty entry.
-            const auto [name, datablock] = pickRepresentativeName(dfa);
-            empty_state = dfa.get().makeNew();
-            dfa.get()[empty_state].rule_name = name;
-            dfa.get()[empty_state].dtb = datablock;
-            for (const auto id : delayed) {
-                dfa_empty_state_map[id] = empty_state;
-            }
-        }
-        dfa_count++;
-    }
-    return dfa_empty_state_map;
-}
-void DFA::mergeTwoDFA(MDFA &first, const MDFA &second, std::size_t index)  {
-    std::size_t offset = first.get().size();
-    auto &f = first.get();
-    const auto &s = second.get();
-    for (const auto &[symbol, next] : s[0].transitions) {
-        for (const auto &n : next) {
-            f[0].transitions[symbol].emplace_back(TransitionValue {offset + n.value.next, n.value.new_cst_node, n.value.new_member, n.value.close_cst_node, n.value.new_group, n.value.group_close, n.value.accept_index, n.value.optional, n.value.last}, index);
-        }
-    }
-    // Copy and fixup second DFA states
+    const std::size_t offset = first.getStates().size();
+    auto &f = first.getStates();
+    const auto &s = second.getStates();
+
+    // Append all states from 'second' and rebase all internal links.
     for (const auto &state : s) {
         auto new_state = state;
-        for (auto &[symbol, nexts] : new_state.transitions) {
-            for (auto &next : nexts) {
-                next.value.next += offset;
+        for (auto &[symbol, target_ids] : new_state.transitions) {
+            for (auto &target_id : target_ids) {
+                target_id.next += offset;
             }
         }
-        if (new_state.else_goto)
-            new_state.else_goto += offset;
+        utype::unordered_set<NFA::TransitionValue> rebased_epsilon;
+        for (auto target_id : new_state.epsilon_transitions) {
+            target_id.next += offset;
+            rebased_epsilon.insert(target_id);
+        }
+        new_state.epsilon_transitions = std::move(rebased_epsilon);
+        if (new_state.any != NFA::NULL_STATE) {
+            new_state.any += offset;
+        }
+        f.emplace_back(std::move(new_state));
+    }
 
-        f.constructNewFrom(std::move(new_state));
-    }
+    // Union starts via epsilon edge from the shared start state to the appended NFA start.
+    f[0].epsilon_transitions.insert({offset});
 }
 
-auto DFA::mergeDFAS(stdu::vector<MDFA> &dfas) -> MDFA {
-    auto &initial_states = dfas[0];
-    for (auto it = dfas.begin() + 1; it != dfas.end(); ++it) {
-        mergeTwoDFA(initial_states, *it, it - dfas.begin());
+auto DFA::mergeNFAS(const stdu::vector<NFA> &nfas) -> NFA {
+    NFA merged = nfas[0];
+    if (merged.getStates().empty()) {
+        merged.build(false);
     }
-    return initial_states;
-}
-auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> TokenMachineDFA {
-    MDFA mdfa(nfa); mdfa.build();
-    SDFA sdfa(mdfa); sdfa.build();
-    MinDFA min_dfa(sdfa, false); min_dfa.minimize();
-    TokenMachineDFA machine_dfa(ast, min_dfa); machine_dfa.build();
-    return machine_dfa;
-}
-auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> CharMachineDFA {
-    stdu::vector<MDFA> dfas;
-    for (const auto &nfa : nfa_collection) {
-        MDFA mdfa(nfa); mdfa.build();
-        dfas.push_back(mdfa);
+
+    for (std::size_t i = 1; i < nfas.size(); ++i) {
+        NFA next = nfas[i]; // Create mutable copy
+        mergeTwoNFA(merged, next, i);
     }
+    return merged;
+}
+auto DFA::build(const AST::Tree &ast, const NFA &nfa) -> DFA {
+    DFA dfa(&nfa);
+    dfa.build();
+    dfa.minimize();
+    return dfa;
+}
+auto DFA::build(const AST::Tree &ast, const stdu::vector<NFA> &nfa_collection) -> DFA::ClassifiedDFA {
+    auto mergedNFA = mergeNFAS(nfa_collection);
     // construct tables
-    auto dfa_empty_state_map = buildDfaEmptyStateMap(dfas, nfa_collection);
-    auto dfa_index_to_empty_state_map = buildDfaIndexToEmptyStateMap(dfas);
-    auto dfa = mergeDFAS(dfas);
-    SDFA sdfa(dfa, dfa_empty_state_map, dfa_index_to_empty_state_map); sdfa.build();
-    MinDFA min_dfa(sdfa, sdfa.getEmptyStateMap(), sdfa.getIndexToEmptyStateMap(), true); min_dfa.minimize();
-    SortedDFA sorted_dfa(ast, min_dfa, min_dfa.getEmptyStateMap(), min_dfa.getIndexToEmptyStateMap()); sorted_dfa.sort();
-    CharMachineDFA machine_dfa(ast, sorted_dfa, sorted_dfa.getEmptyStateMap(), sorted_dfa.getIndexToEmptyStateMap()); machine_dfa.build();
-    return machine_dfa;
+    auto dfa = DFA(&mergedNFA);
+    dfa.build();
+    dfa.minimize();
+    return dfa.classify();
 }

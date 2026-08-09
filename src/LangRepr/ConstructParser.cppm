@@ -31,6 +31,7 @@ export namespace LangRepr {
         auto ensureTypesNs(LangAPI::Type t) -> LangAPI::Type;
 
         auto createParserClass(std::string main_node = "main") -> LangAPI::Class;
+        auto finalizeReturnStatement(const LangAPI::Statement &stmt) -> LangAPI::Statement;
 
         auto constructTokenMachineDFA(LangAPI::Class &parser_class) -> void;
 
