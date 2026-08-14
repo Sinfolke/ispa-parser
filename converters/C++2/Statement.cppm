@@ -23,7 +23,8 @@ export namespace Cpp {
         auto closeSwitch() -> void override;
         auto createExpression(const LangAPI::Expression &expression) -> void override;
         auto createVariable(const LangAPI::Variable &v) -> void override;
-
+        Converter::Writer &getWriter() override;
+        Converter::Writer &getWriter() const override;
         virtual ~Statement() = default;
     };
 }

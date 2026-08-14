@@ -792,9 +792,18 @@ void LLIR::OpBuilder::build() {
             for (const auto &t : state.transitions) {
                 if (std::holds_alternative<stdu::vector<std::string>>(t.first) && std::get<stdu::vector<std::string>>(t.first) == constants::whitespace)
                     continue;
+                auto target_state_opt = std::visit([](const auto &target) -> std::optional<std::size_t> {
+                    if constexpr (requires { target.dfa_state_id; }) {
+                        return target.dfa_state_id;
+                    }
+                    return std::nullopt;
+                }, t.second);
+                if (!target_state_opt.has_value())
+                    continue;
+                const auto target_state = target_state_opt.value();
                 if (std::holds_alternative<char>(t.first)) {
                     auto c = std::get<char>(t.first);
-                    if (std::any_of(constants::whitespace_chars.begin(), constants::whitespace_chars.end(), [&](char _c) { return _c == c; }) && t.second.next == 0) {
+                    if (std::any_of(constants::whitespace_chars.begin(), constants::whitespace_chars.end(), [&](char _c) { return _c == c; }) && target_state == 0) {
                         continue;
                     }
                 }
@@ -804,8 +813,11 @@ void LLIR::OpBuilder::build() {
                 } else {
                     ss.cases.back().first = LangAPI::Char::createRValue(LangAPI::Char {.value = std::get<char>(t.first)});
                 }
-                Assert(t.second.accept_index != NFA::NULL_STATE, "NO_ACCEPT shouldn't be here");
-                MemberBuilder builder(*this, op[t.second.accept_index]);
+                Assert(target_state < dfa.get().size(), "DFA transition target is out of range");
+                const auto &target = dfa.get()[target_state];
+                Assert(target.accept_binding.has_value(), "NO_ACCEPT shouldn't be here");
+                Assert(target.accept_binding->token_id != NFA::NULL_STATE, "NO_ACCEPT shouldn't be here");
+                MemberBuilder builder(*this, op[target.accept_binding->token_id]);
                 builder.build();
                 auto &ss_case = ss.cases.back();
                 ss_case.second = builder.getData();

@@ -69,9 +69,6 @@ namespace LangRepr {
         }
 
         LangAPI::IspaLibSymbol class_table_symbol {.exports = LangAPI::StdlibExports::DfaClassTable};
-        class_table_symbol.template_parameters.push_back(
-            std::make_shared<LangAPI::RValue>(LangAPI::Int {.value = 256})
-        );
 
         LangAPI::Variable var {
             .name = "char_class_table",
@@ -104,23 +101,19 @@ namespace LangRepr {
             row.reserve(class_count);
 
             for (std::size_t cls = 0; cls < class_count; ++cls) {
-                std::size_t encoded = DFA::NULL_STATE;
+                LangAPI::RValue encoded;
 
                 if (cls < state.transitions.size()) {
                     const auto &t = state.transitions[cls];
                     if (t.accept_index != DFA::NULL_STATE) {
-                        // This transition completes a token -- encode
-                        // directly, no placeholder state ever created.
-                        encoded = state_count + 1 + t.accept_index;
+                        encoded = LangAPI::RValue {LangAPI::Int {.value = static_cast<long long>(state_count + 1 + t.accept_index)}};
                     } else if (t.next != DFA::NULL_STATE) {
-                        encoded = t.next; // real continuing state
+                        encoded = LangAPI::RValue {LangAPI::Int {.value = static_cast<long long>(t.next)}};
+                    } else {
+                        encoded = LangAPI::RValue {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaNullState}};
                     }
-                    // else: leave as DFA::NULL_STATE -- genuinely dead
                 }
-
-                row.push_back(LangAPI::Int::createExpression(LangAPI::Int {
-                    .value = static_cast<long long>(encoded)
-                }));
+                row.push_back(LangAPI::Int::createExpression(encoded));
             }
             rows.push_back(LangAPI::Array::createExpression(LangAPI::Array {.values = row}));
         }
@@ -146,6 +139,82 @@ namespace LangRepr {
         };
     }
 
+    auto ConstructLexer::makeLRTableDecl(
+        const stdu::vector<NFA::ActionState> &states,
+        std::size_t state_count
+    ) -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility> {
+        (void)state_count;
+
+        constexpr std::size_t lr_columns = 3;
+        const auto lr_state_count = states.size();
+
+        stdu::vector<LangAPI::Expression> rows;
+        rows.reserve(lr_state_count);
+
+        for (const auto &state : states) {
+            stdu::vector<LangAPI::Expression> row;
+            row.reserve(lr_columns);
+
+            row.push_back(LangAPI::Int::createExpression(LangAPI::Int {
+                .value = static_cast<long long>(state.action)
+            }));
+            row.push_back(LangAPI::Int::createExpression(LangAPI::Int {
+                .value = static_cast<long long>(state.DFA_next_state)
+            }));
+
+            rows.push_back(
+                LangAPI::Array::createExpression(
+                    LangAPI::Array {.values = row}
+                )
+            );
+        }
+
+        LangAPI::IspaLibSymbol lr_table_symbol {
+            .exports = LangAPI::StdlibExports::DfaTable
+        };
+        lr_table_symbol.template_parameters.push_back(
+            std::make_shared<LangAPI::RValue>(
+                LangAPI::Int {.value = static_cast<long long>(lr_state_count)}
+            )
+        );
+        lr_table_symbol.template_parameters.push_back(
+            std::make_shared<LangAPI::RValue>(
+                LangAPI::Int {.value = static_cast<long long>(lr_columns)}
+            )
+        );
+
+        LangAPI::Variable var {
+            .name = "lr_table",
+            .type = LangAPI::Type {lr_table_symbol},
+            .value = LangAPI::Array::createExpression(
+                LangAPI::Array {.values = rows}
+            ),
+            .is_static = true
+        };
+
+        return {
+            std::make_shared<LangAPI::Declaration>(
+                LangAPI::Variable::createDeclaration(var)
+            ),
+            LangAPI::Visibility::Private
+        };
+    }
+    auto ConstructLexer::makeSemanticSwitchFunction(const stdu::vector<LangAPI::Statements> semantic_table) -> LangAPI::Function {
+        LangAPI::Function fun {
+            .type = LangAPI::Type {LangAPI::ValueType::Int},
+            .name = "semantic_action_exec",
+            .parameters = {std::make_pair(LangAPI::Type {LangAPI::ValueType::Int}, "state")},
+            .is_static = true
+        };
+        LangAPI::Switch switch_;
+        switch_.expression = LangAPI::Symbol::createExpression(LangAPI::Symbol {"state"});
+        long long state = 0;
+        for (const auto &statements : semantic_table) {
+            switch_.cases.emplace_back(LangAPI::Int::createRValue(LangAPI::Int {.value = state++}), ensureTypesNs(statements));
+        }
+        fun.statements = LangAPI::Switch::createStatements(switch_);
+        return fun;
+    }
     auto ConstructLexer::constructLexer() -> void {
         holder.push(LangAPI::TypeAlias::createDeclaration(createTypeToken()));
         Tlog::Branch b(logger, "LangRepr/ConstructLexer.log");
@@ -158,16 +227,17 @@ namespace LangRepr {
         const std::size_t state_count = states.size();
         const std::size_t class_count = class_table.num_classes;
 
-        logger.log("---- [0] LEXER: CHAR CLASS TABLE ----");
         lexer.data.push_back(makeCharClassTableDecl(class_table));
 
-        logger.log("---- [1] LEXER: DFA TABLE (accept sentinel-encoded) ----");
         lexer.data.push_back(makeDfaTableDecl(states, state_count, class_count));
 
+        lexer.data.push_back(makeLRTableDecl(lexer_builder.getLRTable(), state_count));
+        lexer.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(makeSemanticSwitchFunction(lexer_builder.getSemanticTable()))), LangAPI::Visibility::Private));
         if (lexer_builder.getDFA().states.size() > 0) {
             lexer.data.push_back(std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(LangAPI::Variable {
-                    .type = LangAPI::ValueType::Bool, .name = "init_done",
+                    .name = "init_done",
+                    .type = LangAPI::ValueType::Bool,
                     .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = false})
                 })),
                 LangAPI::Visibility::Private
@@ -178,29 +248,27 @@ namespace LangRepr {
                 })),
                 LangAPI::Visibility::Private
             ));
-        }
-
-        // makeToken is a single DfaLookup expression -- the runtime
-        // backing it is expected to walk dfa_table from state 0, using
-        // char_class_table for dispatch, and decode any `next >=
-        // state_count` as an accept for token `next - state_count - 1`
-        // (same formula used above to encode the table). No FCDT, no
-        // spans, no separate accept/construct tables to pass in --
-        // dfa_table's own type already carries state_count/class_count.
-        LangAPI::DfaLookup lookup {
-            .dfa_count = 1,           // ASSUMPTION: "number of DFA tables"
-                                       // is now always 1 under the unified
-                                       // design. If the DfaLookup backend
-                                       // actually expects this field to
-                                       // carry state_count (for the
-                                       // sentinel-decode threshold instead
-                                       // of reading it off dfa_table's own
-                                       // type), change this to state_count.
-            .return_type = LangAPI::Type {Token},
-            .output_name = "token"    // ASSUMPTION: bound result name;
-                                       // adjust to match whatever the
-                                       // DfaLookup lowering expects here.
-        };
+            lexer.data.push_back(std::make_pair(
+                std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Variable {
+                    .name = "values",
+                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::String } },
+                })),
+                LangAPI::Visibility::Private
+            ));
+            lexer.data.push_back(std::make_pair(
+                std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Variable {
+                    .name = "vec_values",
+                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::String}}}
+                })),
+                LangAPI::Visibility::Private
+            ));
+            lexer.data.push_back(std::make_pair(
+                std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Variable {
+                    .name = "registers",
+                    .type = LangAPI::Type { LangAPI::ValueType::FixedSizeArray, LangAPI::Type {LangAPI::ValueType::NonOwnedString}, LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<long long>(lexer_builder.getMaxRegistersCount())})}
+                })),
+                LangAPI::Visibility::Private
+            ));        }
 
         lexer.data.push_back(
             std::make_pair(
@@ -214,9 +282,24 @@ namespace LangRepr {
                         }},
                         std::string("pos")
                     )},
-                    .statements = LangAPI::Return::createStatements(LangAPI::Return {
-                        .value = LangAPI::DfaLookup::createExpression(lookup)
-                    }),
+                    .statements = LangAPI::Return::createStatements(
+                        LangAPI::Return {
+                            .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall {
+                                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol {"lookup"}),
+                                .args =
+                                {
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"dfa_table"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"char_class_table"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"lr_table"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"values"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"vec_values"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"registers"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"semantic_action_exec"}),
+                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"pos"}),
+                                }
+                            })
+                        }
+                    ),
                     .override = true,
                 })),
                 LangAPI::Visibility::Public

@@ -23,8 +23,8 @@ export namespace Converter {
         Statement(Writer &output) : output(output) {}
         virtual ~Statement() = default;
 
-        auto &getWriter()  { return output; }
-        auto &getWriter() const  { return output; }
+        virtual Writer &getWriter()  { return output; }
+        virtual Writer &getWriter() const  { return output; }
 
     };
 }

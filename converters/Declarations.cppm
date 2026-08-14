@@ -8,7 +8,7 @@ import std;
 export namespace Converter {
     class Declarations {
     protected:
-        Writer &output;
+        Writer *output;
 
     public:
         // declarations
@@ -33,10 +33,10 @@ export namespace Converter {
         virtual auto closeEnum() -> void = 0;
 
         virtual auto createVariable(const LangAPI::Variable &v) -> void = 0;
-        Declarations(Writer &output) : output(output) {}
+        Declarations(Writer &output) : output(&output) {}
         virtual ~Declarations() = default;
 
-        auto &getWriter() const  { return output; }
-        auto &getWriter() { return output; }
+        virtual Writer &getWriter() const { return *output; }
+        virtual Writer &getWriter() { return *output; }
     };
 }

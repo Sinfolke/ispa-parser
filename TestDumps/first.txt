@@ -1,1 +1,2 @@
-main: {TEMPLATED_TYPE, }
+main: {}
+integer_variable: {AUTO_0, }

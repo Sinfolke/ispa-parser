@@ -132,7 +132,7 @@ export namespace LangRepr {
                 return std::nullopt;
             }
         }
-        auto get() { return output; }
+        auto get() { return decls->getWriter(); }
     };
 
 }

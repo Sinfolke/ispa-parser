@@ -16,7 +16,22 @@ export namespace LangRepr {
 
         LangAPI::Symbol Token;
         auto makeIntRValue(int v) -> std::shared_ptr<LangAPI::RValue>;
-        auto ensureTypesNs(LangAPI::Type t) -> LangAPI::Type;
+        auto ensureTypesNs(LangAPI::Type s) -> LangAPI::Type;
+        auto ensureTypesNs(LangAPI::Symbol s) -> LangAPI::Symbol;
+        auto ensureTypesNs(LangAPI::StorageSymbol s) -> LangAPI::StorageSymbol;
+        auto ensureTypesNs(LangAPI::Inheritance s) -> LangAPI::Inheritance;
+        auto ensureTypesNs(LangAPI::RValue r) -> LangAPI::RValue;
+        auto ensureTypesNs(LangAPI::FunctionCall s) -> LangAPI::FunctionCall;
+        auto ensureTypesNs(LangAPI::Lambda l) -> LangAPI::Lambda;
+        auto ensureTypesNs(LangAPI::ExpressionValue ev) -> LangAPI::ExpressionValue;
+        auto ensureTypesNs(LangAPI::Expression expr) -> LangAPI::Expression;
+        auto ensureTypesNs(LangAPI::Variable v) -> LangAPI::Variable;
+        auto ensureTypesNs(LangAPI::If s) -> LangAPI::If;
+        auto ensureTypesNs(LangAPI::While s) -> LangAPI::While;
+        auto ensureTypesNs(LangAPI::DoWhile s) -> LangAPI::DoWhile;
+        auto ensureTypesNs(LangAPI::Switch s) -> LangAPI::Switch;
+        auto ensureTypesNs(const LangAPI::Statement &s) -> LangAPI::Statement;
+        auto ensureTypesNs(LangAPI::Statements stmts) -> LangAPI::Statements;
         auto extractRawSymbol(const LangAPI::Type &t) -> stdu::vector<LangAPI::Type>;
         auto createTypeToken() -> LangAPI::TypeAlias;
         auto createLexerClass() -> LangAPI::Class;

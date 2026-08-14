@@ -2,7 +2,6 @@ module DFA;
 
 import DFA.States;
 import DFA.closure;
-
 import hash;
 import logging;
 import corelib;
@@ -46,17 +45,13 @@ namespace DFA {
                         best_binding = current_binding;
                     }
                 }
+
+                if (nfa_state.action_index != NFA::NULL_STATE) {
+                    nfa.getActionTable()[nfa_state.action_index].DFA_next_state = current_dfa_index;
+                }
             }
 
             states[current_dfa_index].accept_binding = best_binding;
-
-            // Apply unique REDUCE hook as default fallback if applicable
-            if (best_binding.has_value() && best_binding->is_unique_representation && best_binding->target_lr_state.has_value()) {
-                states[current_dfa_index].default_fallback = LRTarget{
-                    best_binding->target_lr_state.value(),
-                    best_binding->reduce_rule_id.value_or(NFA::NULL_STATE)
-                };
-            }
 
             // 2. Group Target NFA States Sharing the Same Symbol
             utype::unordered_map<NFA::TransitionKey, Closure> input_symbols;
@@ -69,7 +64,7 @@ namespace DFA {
                     }
                     Closure closure_set = closure_cache.at(cache_key);
                     if (!closure_set.empty()) {
-                        input_symbols[symbol] = std::move(closure_set);
+                        input_symbols.try_emplace(symbol, closure_set);
                     }
                 }
             }
@@ -109,18 +104,17 @@ namespace DFA {
         // still runs. If per-transition LR actions get reinstated on
         // TransitionValue (or sourced from NFA::state::action_table instead),
         // restore the register-allocation walk and the reference-remap pass here.
-        std::vector<NFA::LRState> deduplicated_lr_table;
+        std::vector<NFA::ActionState> deduplicated_lr_table;
         std::unordered_map<std::size_t, std::size_t> lr_index_remap;
 
-        for (std::size_t i = 0; i < nfa.getLRTable().size(); ++i) {
-            const auto &entry = nfa.getLRTable()[i];
+        for (std::size_t i = 0; i < nfa.getActionTable().size(); ++i) {
+            const auto &entry = nfa.getActionTable()[i];
             std::size_t canonical_idx = NULL_STATE;
 
             for (std::size_t j = 0; j < deduplicated_lr_table.size(); ++j) {
                 if (deduplicated_lr_table[j].action == entry.action &&
                     deduplicated_lr_table[j].variable == entry.variable &&
-                    deduplicated_lr_table[j].DFA_next_state == entry.DFA_next_state &&
-                    deduplicated_lr_table[j].reduce_rule_index == entry.reduce_rule_index) {
+                    deduplicated_lr_table[j].DFA_next_state == entry.DFA_next_state) {
                     canonical_idx = j;
                     break;
                 }
@@ -135,30 +129,128 @@ namespace DFA {
 
         lr_table = std::move(deduplicated_lr_table);
     }
-    auto DFA::initialClass(const SingleState &s) -> std::size_t {
-        std::size_t h = 0;
-        if (s.accept_binding.has_value()) {
-            hash_combine(h, s.accept_binding->token_id);
-            hash_combine(h, s.accept_binding->is_unique_representation);
-        } else {
-            hash_combine(h, 0xDEADBEEF); // Sentinel for non-accepting states
+    void DFA::optimizeSemanticTable() {
+        const auto &source_semantic_table = nfa.getSemanticTable();
+        logger.log(
+            "Semantic source table size: {}",
+            source_semantic_table.size()
+        );
+        std::vector<bool> used(source_semantic_table.size(), false);
+        std::unordered_set<std::size_t> referenced;
+        for (std::size_t i = 0; i < states.size(); ++i) {
+            auto &binding = states[i].accept_binding;
+            if (!binding.has_value()) {
+                logger.log(
+                    "DFA state {}: no accept binding",
+                    i
+                );
+                continue;
+            }
+
+            if (!binding->target_semantic_state.has_value()) {
+                logger.log(
+                    "DFA state {}: token={}, NO semantic state",
+                    i,
+                    binding->token_id
+                );
+                continue;
+            }
+
+            const auto semantic =
+                *binding->target_semantic_state;
+
+            logger.log(
+                "DFA state {}: token={}, semantic={}",
+                i,
+                binding->token_id,
+                semantic
+            );
+
+            referenced.insert(semantic);
+            if (!binding.has_value() || !binding->target_semantic_state.has_value())
+                continue;
+
+            const std::size_t idx = *binding->target_semantic_state;
+            if (idx >= used.size()) {
+                binding->target_semantic_state.reset();
+                continue;
+            }
+            used[idx] = true;
+        }
+        logger.log(
+            "Referenced semantic entries: {}",
+            referenced.size()
+        );
+
+        std::unordered_map<std::size_t, std::size_t> remap;
+        stdu::vector<LangAPI::Statements> compacted;
+        for (std::size_t i = 0; i < source_semantic_table.size(); ++i) {
+            if (!used[i]) continue;
+            remap[i] = compacted.size();
+            compacted.push_back(source_semantic_table[i]);
         }
 
-        if (s.default_fallback.has_value()) {
-            std::visit([&h](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, LRTarget>) {
-                    hash_combine(h, 1);
-                    hash_combine(h, arg.lr_state_id);
-                    hash_combine(h, arg.reduce_rule_id);
-                } else if constexpr (std::is_same_v<T, ActionTarget>) {
-                    hash_combine(h, 2);
-                    hash_combine(h, arg.action_id);
-                }
-            }, s.default_fallback.value());
+        for (std::size_t i = 0; i < states.size(); ++i) {
+            auto &binding = states[i].accept_binding;
+            if (!binding.has_value() || !binding->target_semantic_state.has_value())
+                continue;
+
+            const std::size_t old_idx = *binding->target_semantic_state;
+            auto remap_it = remap.find(old_idx);
+            if (remap_it == remap.end()) {
+                binding->target_semantic_state.reset();
+                continue;
+            }
+            binding->target_semantic_state = remap_it->second;
         }
+
+        semantic_table = std::move(compacted);
+    }
+    auto DFA::sameAcceptBinding(
+        const SingleState &a,
+        const SingleState &b
+    ) -> bool {
+        if (a.accept_binding.has_value() != b.accept_binding.has_value())
+            return false;
+
+        if (!a.accept_binding)
+            return true;
+
+        const auto &lhs = *a.accept_binding;
+        const auto &rhs = *b.accept_binding;
+
+        return
+            lhs.token_id == rhs.token_id &&
+            lhs.is_unique_representation == rhs.is_unique_representation &&
+            lhs.reduce_rule_id == rhs.reduce_rule_id &&
+            lhs.target_semantic_state == rhs.target_semantic_state;
+    }
+
+    auto DFA::initialClass(const SingleState &s) -> std::size_t {
+        std::size_t h = 0;
+
+        if (s.accept_binding.has_value()) {
+            const auto &binding = *s.accept_binding;
+
+            hash_combine(h, binding.token_id);
+            hash_combine(h, binding.is_unique_representation);
+
+            if (binding.reduce_rule_id.has_value())
+                hash_combine(h, *binding.reduce_rule_id);
+            else
+                hash_combine(h, NFA::NULL_STATE);
+
+            if (binding.target_semantic_state.has_value())
+                hash_combine(h, *binding.target_semantic_state);
+            else
+                hash_combine(h, NFA::NULL_STATE);
+        } else {
+            hash_combine(h, 0xDEADBEEF);
+        }
+
         return h;
     }
+
     auto DFA::refinementKey(
         const SingleState &s,
         const std::unordered_map<std::size_t, std::size_t> &partition_of
@@ -167,14 +259,36 @@ namespace DFA {
         key.reserve(s.transitions.size());
 
         for (const auto &[sym, target] : s.transitions) {
-            std::visit([&](auto&& arg) {
+            std::visit([&](auto &&arg) {
                 using T = std::decay_t<decltype(arg)>;
+
                 if constexpr (std::is_same_v<T, DFATarget>) {
-                    key.push_back(TransitionKeyExt {sym, partition_of.at(arg.dfa_state_id), NFA::NULL_STATE, 0});
+                    key.push_back(
+                        TransitionKeyExt {
+                            sym,
+                            NFA::TableType::DFA,
+                            NFA::NULL_STATE,
+                            partition_of.at(arg.dfa_state_id)
+                        }
+                    );
                 } else if constexpr (std::is_same_v<T, LRTarget>) {
-                    key.push_back(TransitionKeyExt {sym, NFA::TableType::LR, arg.lr_state_id, 1});
+                    key.push_back(
+                        TransitionKeyExt {
+                            sym,
+                            NFA::TableType::Action,
+                            arg.lr_state_id,
+                            NFA::NULL_STATE
+                        }
+                    );
                 } else if constexpr (std::is_same_v<T, ActionTarget>) {
-                    key.push_back(TransitionKeyExt {sym, NFA::TableType::ACTION, arg.action_id, 2});
+                    key.push_back(
+                        TransitionKeyExt {
+                            sym,
+                            NFA::TableType::Semantic,
+                            arg.action_id,
+                            NFA::NULL_STATE
+                        }
+                    );
                 }
             }, target);
         }
@@ -187,7 +301,7 @@ namespace DFA {
         Tlog::Branch b(logger, "DFA/minimize.log");
         logger.increaseIndentLevel();
 
-        const auto& input = states;
+        const auto &input = states;
         const std::size_t n = input.size();
 
         if (n == 0) {
@@ -196,35 +310,172 @@ namespace DFA {
             return States<SingleState>(&nfa);
         }
 
-        // 1. Initial partition & 2. Refine until stable (Unchanged boilerplate logic...)
-        // ... (Skipping standard Hopcroft loops as they rely entirely on the updated `initialClass` and `refinementKey` above) ...
+        /*
+         * ------------------------------------------------------------
+         * 1. Initial partition
+         * ------------------------------------------------------------
+         *
+         * States with different observable acceptance/semantic behaviour
+         * must never be placed in the same initial class.
+         */
+        std::unordered_map<std::size_t, std::size_t> partition_of;
 
-        // 5. Copy transitions
+        std::unordered_map<std::size_t, std::size_t> initial_hash_to_class;
+
+        std::size_t class_count = 0;
+
+        for (std::size_t i = 0; i < n; ++i) {
+            const std::size_t hash = initialClass(input[i]);
+
+            auto [it, inserted] =
+                initial_hash_to_class.emplace(hash, class_count);
+
+            if (inserted)
+                ++class_count;
+
+            partition_of[i] = it->second;
+        }
+
+        /*
+         * ------------------------------------------------------------
+         * 2. Partition refinement
+         * ------------------------------------------------------------
+         *
+         * A state is identified by:
+         *
+         *   - its acceptance/semantic behaviour
+         *   - its transition symbols
+         *   - the kind of transition
+         *   - the action/semantic target
+         *   - the partition containing a DFA target
+         *
+         * Continue until no state changes partition.
+         */
+        bool changed = true;
+
+        while (changed) {
+            changed = false;
+
+            std::unordered_map<std::size_t, std::size_t> new_partition;
+            std::map<
+                std::pair<
+                    std::size_t,
+                    std::vector<TransitionKeyExt>
+                >,
+                std::size_t
+            > signature_to_class;
+
+            std::size_t new_class_count = 0;
+
+            for (std::size_t i = 0; i < n; ++i) {
+                const auto key = refinementKey(
+                    input[i],
+                    partition_of
+                );
+
+                const std::size_t accept_hash =
+                    initialClass(input[i]);
+
+                const auto signature =
+                    std::make_pair(accept_hash, key);
+
+                auto [it, inserted] =
+                    signature_to_class.emplace(
+                        signature,
+                        new_class_count
+                    );
+
+                if (inserted)
+                    ++new_class_count;
+
+                new_partition[i] = it->second;
+
+                if (new_partition[i] != partition_of[i])
+                    changed = true;
+            }
+
+            partition_of = std::move(new_partition);
+
+            logger.log(
+                "Partition refinement: {} classes",
+                new_class_count
+            );
+        }
+
+        /*
+         * ------------------------------------------------------------
+         * 3. Give every partition its new DFA state index
+         * ------------------------------------------------------------
+         */
+        std::unordered_map<std::size_t, std::size_t> class_to_new_index;
+
+        States<SingleState> output(&nfa);
+
         for (std::size_t i = 0; i < n; ++i) {
             const std::size_t cls = partition_of.at(i);
-            const std::size_t new_idx = class_to_new_index[cls];
 
-            if (!output[new_idx].transitions.empty())
+            if (class_to_new_index.contains(cls))
                 continue;
 
-            auto& out_state = output[new_idx];
-            out_state.accept_binding = input[i].accept_binding;
-            out_state.default_fallback = input[i].default_fallback;
+            const std::size_t new_index = output.makeNew();
+            class_to_new_index.emplace(cls, new_index);
+        }
 
-            for (const auto& [symbol, target] : input[i].transitions) {
-                std::visit([&](auto&& arg) {
+        /*
+         * ------------------------------------------------------------
+         * 4. Construct minimized states
+         * ------------------------------------------------------------
+         *
+         * Every partition is represented by one original state.
+         *
+         * Because semantic/acceptance information participates in the
+         * partition signature, states in one partition have compatible
+         * accept bindings.
+         */
+        std::unordered_set<std::size_t> constructed_classes;
+
+        for (std::size_t i = 0; i < n; ++i) {
+            const std::size_t cls = partition_of.at(i);
+            const std::size_t new_idx = class_to_new_index.at(cls);
+
+            if (!constructed_classes.insert(cls).second)
+                continue;
+
+            const auto &source = input[i];
+            auto &destination = output[new_idx];
+
+            destination.accept_binding = source.accept_binding;
+
+            for (const auto &[symbol, target] : source.transitions) {
+                std::visit([&](auto &&arg) {
                     using T = std::decay_t<decltype(arg)>;
+
                     if constexpr (std::is_same_v<T, DFATarget>) {
-                        const std::size_t target_class = partition_of.at(arg.dfa_state_id);
-                        out_state.transitions[symbol] = DFATarget{class_to_new_index[target_class]};
+                        const std::size_t target_class =
+                            partition_of.at(arg.dfa_state_id);
+
+                        const std::size_t target_state =
+                            class_to_new_index.at(target_class);
+
+                        destination.transitions[symbol] =
+                            DFATarget {target_state};
                     } else {
-                        out_state.transitions[symbol] = target; // Copy external hooks verbatim
+                        /*
+                         * LRTarget and ActionTarget refer to external
+                         * tables rather than DFA states, so their identity
+                         * is preserved directly.
+                         */
+                        destination.transitions[symbol] = arg;
                     }
                 }, target);
             }
         }
 
-        // 6. Prune unreachable / dead states from output
+        /*
+         * ------------------------------------------------------------
+         * 5. Prune unreachable states
+         * ------------------------------------------------------------
+         */
         std::vector<bool> reachable(output.size(), false);
         std::queue<std::size_t> q;
 
@@ -234,26 +485,112 @@ namespace DFA {
         }
 
         while (!q.empty()) {
-            auto curr = q.front();
+            const std::size_t current = q.front();
             q.pop();
-            for (const auto& [sym, target] : output[curr].transitions) {
-                if (std::holds_alternative<DFATarget>(target)) {
-                    std::size_t next_dfa = std::get<DFATarget>(target).dfa_state_id;
-                    if (!reachable[next_dfa]) {
-                        reachable[next_dfa] = true;
-                        q.push(next_dfa);
-                    }
-                }
+
+            for (const auto &[symbol, target] :
+                 output[current].transitions) {
+
+                if (!std::holds_alternative<DFATarget>(target))
+                    continue;
+
+                const std::size_t next =
+                    std::get<DFATarget>(target).dfa_state_id;
+
+                if (next >= reachable.size())
+                    continue;
+
+                if (reachable[next])
+                    continue;
+
+                reachable[next] = true;
+                q.push(next);
             }
         }
 
-        logger.log("Minimized {} states -> {} states", n, output.size());
+        /*
+         * ------------------------------------------------------------
+         * 6. Remove unreachable states and rebase DFA targets
+         * ------------------------------------------------------------
+         */
+        States<SingleState> reachable_output(&nfa);
+
+        std::vector<std::size_t> state_remap(
+            output.size(),
+            NFA::NULL_STATE
+        );
+
+        for (std::size_t i = 0; i < output.size(); ++i) {
+            if (!reachable[i])
+                continue;
+
+            state_remap[i] = reachable_output.makeNew();
+        }
+
+        for (std::size_t i = 0; i < output.size(); ++i) {
+            if (!reachable[i])
+                continue;
+
+            const std::size_t new_idx = state_remap[i];
+
+            auto &destination = reachable_output[new_idx];
+            const auto &source = output[i];
+
+            destination.accept_binding =
+                source.accept_binding;
+
+            for (const auto &[symbol, target] :
+                 source.transitions) {
+
+                std::visit([&](auto &&arg) {
+                    using T = std::decay_t<decltype(arg)>;
+
+                    if constexpr (std::is_same_v<T, DFATarget>) {
+                        const std::size_t old_target =
+                            arg.dfa_state_id;
+
+                        if (old_target >= state_remap.size())
+                            return;
+
+                        const std::size_t new_target =
+                            state_remap[old_target];
+
+                        if (new_target == NFA::NULL_STATE)
+                            return;
+
+                        destination.transitions[symbol] =
+                            DFATarget {new_target};
+                    } else {
+                        destination.transitions[symbol] = arg;
+                    }
+                }, target);
+            }
+        }
+
+        logger.log(
+            "Minimized {} states -> {} states",
+            n,
+            reachable_output.size()
+        );
+
+        /*
+         * ------------------------------------------------------------
+         * 7. Replace DFA states
+         * ------------------------------------------------------------
+         */
+        this->states = std::move(reachable_output);
+
+        /*
+         * ------------------------------------------------------------
+         * 8. Rebuild auxiliary tables from the surviving DFA
+         * ------------------------------------------------------------
+         */
+        optimizeRegistersAndLRTable();
+        optimizeSemanticTable();
+
         logger.decreaseIndentLevel();
 
-        this->states = output;
-        optimizeRegistersAndLRTable();
-
-        return output;
+        return states;
     }
     auto DFA::classify() -> ClassifiedDFA {
         if (!nfa.isCharNfa()) {
@@ -276,7 +613,7 @@ namespace DFA {
         // identically everywhere in this automaton and can share one class.
         // This must be built over ALL states jointly — a per-state signature
         // would only be locally correct and break the shared-table invariant.
-        using Signature = std::vector<std::pair<std::size_t, std::size_t>>; // per state: (target|NULL_STATE, accept_index)
+        using Signature = std::vector<std::pair<NFA::TableType, std::size_t>>;
 
         std::unordered_map<Signature, std::size_t, uhash> class_of_signature;
         CharClassTable table;
@@ -288,9 +625,18 @@ namespace DFA {
             for (std::size_t i = 0; i < n; ++i) {
                 auto it = states[i].transitions.find(key);
                 if (it == states[i].transitions.end()) {
-                    sig.emplace_back(NULL_STATE, NULL_STATE);
+                    sig.emplace_back(NFA::TableType::DFA, NULL_STATE);
                 } else {
-                    sig.emplace_back(it->second.next, it->second.accept_index);
+                    std::visit([&](auto &&target) {
+                        using T = std::decay_t<decltype(target)>;
+                        if constexpr (std::is_same_v<T, DFATarget>) {
+                            sig.emplace_back(NFA::TableType::DFA, target.dfa_state_id);
+                        } else if constexpr (std::is_same_v<T, LRTarget>) {
+                            sig.emplace_back(NFA::TableType::Action, target.lr_state_id);
+                        } else if constexpr (std::is_same_v<T, ActionTarget>) {
+                            sig.emplace_back(NFA::TableType::Semantic, target.action_id);
+                        }
+                    }, it->second);
                 }
             }
             auto [it, inserted] = class_of_signature.try_emplace(sig, class_of_signature.size());
@@ -306,7 +652,7 @@ namespace DFA {
         States<State<ClassTransitions>> output(&nfa);
         for (std::size_t i = 0; i < n; ++i) {
             auto new_idx = output.makeNew();
-            output[new_idx].rule_name = states[i].rule_name;
+            output[new_idx].accept_binding = states[i].accept_binding;
             // Default-constructed TransitionValue already has next == NULL_STATE
             // and accept_index == NULL_STATE via in-class member initializers
             // (see API.cppm) -- {NULL_STATE, NULL_STATE} tried to assign a
@@ -318,7 +664,16 @@ namespace DFA {
                 if (!std::holds_alternative<char>(symbol)) continue; // name-keyed transitions don't apply here
                 unsigned char c = static_cast<unsigned char>(std::get<char>(symbol));
                 std::size_t cls = table.char_to_class[c];
-                output[new_idx].transitions[cls] = value; // all chars in this class already agree
+                std::visit([&](auto &&target) {
+                    using T = std::decay_t<decltype(target)>;
+                    if constexpr (std::is_same_v<T, DFATarget>) {
+                        output[new_idx].transitions[cls] = TransitionValue{target.dfa_state_id, NFA::TableType::DFA, NULL_STATE};
+                    } else if constexpr (std::is_same_v<T, LRTarget>) {
+                        output[new_idx].transitions[cls] = TransitionValue{target.lr_state_id, NFA::TableType::Action, target.reduce_rule_id};
+                    } else if constexpr (std::is_same_v<T, ActionTarget>) {
+                        output[new_idx].transitions[cls] = TransitionValue{target.action_id, NFA::TableType::Semantic, NULL_STATE};
+                    }
+                }, value);
             }
         }
 
@@ -330,25 +685,22 @@ namespace DFA {
         states.clear();
     }
     auto DFA::getType() const -> DfaType {
-        return Base::getType(states);
+        return nfa.isCharNfa() ? DfaType::Char : DfaType::Token;
     }
 
     auto DFA::check_dfa() -> void {
         std::size_t index = 0;
         try {
             for (const auto &state : states) {
-                AssertNe(state.rule_name.empty(), "Empty rule_name in state {}", index);
                 for (const auto &[sym, transitions] : state.transitions) {
                     if (std::holds_alternative<stdu::vector<std::string>>(sym)) {
                         const auto &nested_name = std::get<stdu::vector<std::string>>(sym);
                         AssertNe(nested_name.empty(), "Empty nested_name in state {}", index);
                     }
-                    // NOTE: dropped unused capture_count/nfa_capture_count locals --
-                    // nothing populated them, they were dead. Also fixed the bound
-                    // check below: `states.size() >= transitions.next` lets
-                    // transitions.next == states.size() through, which is one past
-                    // the last valid index.
-                    Assert(states.size() > transitions.next, "Out of bound transition {} in state {}", transitions.next, index);
+                    if (std::holds_alternative<DFATarget>(transitions)) {
+                        const auto next = std::get<DFATarget>(transitions).dfa_state_id;
+                        Assert(states.size() > next, "Out of bound transition {} in state {}", next, index);
+                    }
                 }
                 ++index;
             }
@@ -364,29 +716,11 @@ namespace DFA {
     }
 
     auto operator<<(std::ostream& os, const DFA& dfa) -> std::ostream& {
-        std::size_t index = 0;
-        for (const auto &state : dfa.get()) {
-            os << "State " << index << ": \n";
-            for (const auto &[symbol, next] : state.transitions) {
-                os << "\t";
-                if (std::holds_alternative<char>(symbol)) {
-                    auto c = std::get<char>(symbol);
-                    if (std::isprint(c) && !std::isspace(c)) {
-                        os << c;
-                    } else {
-                        os << corelib::text::getEscapedFromChar(c);
-                    }
-                } else {
-                    os << corelib::text::join(std::get<stdu::vector<std::string>>(symbol), "::");
-                }
-                os << " -> " << next.next << '\n';
-            }
-            os << "[rule_name]: " << corelib::text::join(state.rule_name, "::") << '\n';
-            ++index;
-        }
+        (void)dfa;
+        os << "<DFA stream dump unavailable for current transition model>\n";
         return os;
     }
-    auto operator<<(std::ostream& os, const DFA::ClassifiedDFA& dfa) -> std::ostream& {
+    auto operator<<(std::ostream& os, const ClassifiedDFA& dfa) -> std::ostream& {
         os << dfa.table.num_classes << " equivalence classes\n";
         for (std::size_t i = 0; i < dfa.table.num_classes; ++i) {
             os << "Class " << i << ": ";
@@ -414,7 +748,6 @@ namespace DFA {
                 }
                 os << '\n';
             }
-            os << "[rule_name]: " << corelib::text::join(state.rule_name, "::") << '\n';
             ++index;
         }
         return os;

@@ -16,60 +16,73 @@ auto NFA::applyQuantifierAndActions(
     bool isLastMember,
     bool addStoreActions) -> StateRange
 {
+    Tlog::Branch b(logger, "NFA/applyQuantifierAndActions");
+    logger.log(
+        "applyQuantifierAndActions: addStoreActions={}, prefix='{}'",
+        addStoreActions,
+        member.prefix
+    );
     const bool has_store = addStoreActions && !member.prefix.empty();
+    const bool is_repeating = (member.quantifier == '+' || member.quantifier == '*');
 
     std::size_t entry_state = body.start;
     std::size_t exit_state  = body.end;
-    auto r_begin = name_;
-    auto r_end = name_;
-    r_begin.push_back("r" + std::to_string(registers_count++));
-    r_begin.push_back("begin");
-    r_end.push_back("r" + std::to_string(registers_count++));
-    r_end.push_back("end");
 
-    // Emit LR Action Table hooks (BEGIN / END) if storing AST nodes
+    // Emit Action table hooks (BEGIN / END|PUSH) if storing AST nodes. A repeating
+    // ('+'/'*') capture closes with PUSH instead of END so each pass through the loop
+    // appends its slice onto the back array of the array stack, rather than clobbering
+    // a single scalar - this is what lets a quantifier partition its input correctly.
     if (has_store) {
-        lr_table.push_back({LRAction::BEGIN, r_begin, 0});
-        std::size_t begin_lr_idx = lr_table.size() - 1;
+        auto r_begin = name_;
+        auto r_end = name_;
+        r_begin.push_back("r" + std::to_string(registers_count++));
+        r_begin.push_back("begin");
+        r_end.push_back("r" + std::to_string(registers_count++));
+        r_end.push_back(is_repeating ? "push" : "end");
 
-        lr_table.push_back({LRAction::END, r_end, 0});
-        std::size_t end_lr_idx = lr_table.size() - 1;
+        const Action close_action = is_repeating ? Action::PUSH : Action::END;
+
+        action_table.push_back(ActionState {.action = Action::BEGIN, .variable = LangAPI::Variable {.name = corelib::text::join(r_begin, "_")}});
+        std::size_t begin_action_idx = action_table.size() - 1;
+
+        action_table.push_back(ActionState {.action = close_action, .variable = LangAPI::Variable {.name = corelib::text::join(r_end, "_")}});
+        std::size_t end_action_idx = action_table.size() - 1;
 
         std::size_t begin_state = states.size();
         states.emplace_back();
-        states[begin_state].lr_action_index = begin_lr_idx;
-        states[start].epsilon_transitions.insert({begin_state, TableType::LR});
-        states[begin_state].epsilon_transitions.insert({body.start, TableType::LR});
+        states[begin_state].action_index = begin_action_idx;
+        states[start].epsilon_transitions.insert({begin_state, TableType::Action});
+        states[begin_state].epsilon_transitions.insert({body.start, TableType::Action});
         entry_state = begin_state;
 
         std::size_t end_state = states.size();
         states.emplace_back();
-        states[end_state].lr_action_index = end_lr_idx;
-        states[body.end].epsilon_transitions.insert({end_state, TableType::LR});
-        states[end_state].epsilon_transitions.insert({end, TableType::LR});
+        states[end_state].action_index = end_action_idx;
+        states[body.end].epsilon_transitions.insert({end_state, TableType::Action});
+        states[end_state].epsilon_transitions.insert({end, TableType::Action});
         exit_state = end_state;
     } else {
-        states[start].epsilon_transitions.insert({body.start, TableType::LR});
-        states[body.end].epsilon_transitions.insert({end, TableType::LR});
+        states[start].epsilon_transitions.insert({body.start, TableType::Action});
+        states[body.end].epsilon_transitions.insert({end, TableType::Action});
     }
 
     // Quantifier Routing ('?', '+', '*') using LR Table transitions
-    std::size_t loop_target = (member.quantifier == '+' || member.quantifier == '*')
+    std::size_t loop_target = is_repeating
                               ? (has_store ? entry_state : body.start)
                               : body.start;
 
     switch (member.quantifier) {
         case '?':
-            states[start].epsilon_transitions.insert({end, TableType::LR});
+            states[start].epsilon_transitions.insert({end, TableType::Action});
             states[start].optional = true;
             break;
         case '+':
-            states[exit_state].epsilon_transitions.insert({loop_target, TableType::LR});
+            states[exit_state].epsilon_transitions.insert({loop_target, TableType::Action});
             states[body.start].optional = true;
             break;
         case '*':
-            states[start].epsilon_transitions.insert({end, TableType::LR});
-            states[exit_state].epsilon_transitions.insert({loop_target, TableType::LR});
+            states[start].epsilon_transitions.insert({end, TableType::Action});
+            states[exit_state].epsilon_transitions.insert({loop_target, TableType::Action});
             states[start].optional = true;
             states[body.start].optional = true;
             break;
@@ -79,31 +92,44 @@ auto NFA::applyQuantifierAndActions(
 
     // Last Member / Accept Marking with Unique Representation Hook
     if (isLastMember && !isWhitespaceToken) {
-        // Determine if token is uniquely represented (heuristic: concrete strings/cseqs)
-        bool is_unique_rep = member.isString() || member.isCsequence();
-
-        TokenBinding binding;
-        binding.token_id = *accept_index;
-        binding.is_unique_representation = is_unique_rep;
-
-        if (is_unique_rep) {
-            // Push REDUCE to LR Table and link it
-            lr_table.push_back({LRAction::REDUCE, name_, 0, *accept_index});
-            std::size_t reduce_lr_idx = lr_table.size() - 1;
-
-            binding.reduce_rule_id = *accept_index;
-            binding.target_lr_state = reduce_lr_idx;
-
-            states[start].action_table[name_].push_back({LRAction::REDUCE, name_, 0, *accept_index});
-        } else {
-            states[start].action_table[name_].push_back({LRAction::ACCEPT, name_, 0, *accept_index});
-        }
-
-        states[start].accept_binding = binding;
-        states[start].last = true;
+        markAccept(start, member);
     }
 
     return {start, end};
+}
+void NFA::markAccept(
+    std::size_t state_id,
+    const AST::RuleMember &member
+) {
+    TokenBinding binding;
+
+    binding.token_id = *accept_index;
+    binding.is_unique_representation =
+        member.isString() || member.isCsequence();
+
+    /*
+     * Every accepting token gets a semantic REDUCE.
+     *
+     * The semantic table entry is the actual token construction
+     * associated with this grammar rule.
+     */
+    LangAPI::Inheritance instance {
+        .name = name_,
+        .args = {}
+    };
+
+    semantic_table.push_back(
+        LangAPI::Inheritance::createStatements(instance)
+    );
+
+    const std::size_t reduce_idx =
+        semantic_table.size() - 1;
+
+    binding.reduce_rule_id = *accept_index;
+    binding.target_semantic_state = reduce_idx;
+
+    states[state_id].accept_binding = binding;
+    states[state_id].last = true;
 }
 
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions) {
@@ -115,10 +141,7 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
     states.emplace_back();
     std::size_t body_end   = states.size();
     states.emplace_back();
-    states[body_start].transitions[name] = {{body_end, TableType::LR}};
-
-    // Place reserved action slot for LR Shift action
-    states[body_start].action_table[name].push_back({LRAction::SHIFT, name, body_end});
+    states[body_start].transitions[name] = {{body_end, TableType::Action}};
 
     applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
 }
@@ -135,10 +158,10 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         auto fragment = buildStateFragment(prod, false, addStoreActions);
         if (fragment.invalid())
             continue;
-        states[last].epsilon_transitions.insert({fragment.start, TableType::LR});
+        states[last].epsilon_transitions.insert({fragment.start, TableType::Action});
         last = fragment.end;
     }
-    states[last].epsilon_transitions.insert({body_end, TableType::LR});
+    states[last].epsilon_transitions.insert({body_end, TableType::Action});
 
     applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
 
@@ -175,7 +198,7 @@ void NFA::handleGroup(const AST::RuleMember &member,
         if (fragment.invalid())
             continue;
 
-        states[body_end].epsilon_transitions.insert({fragment.start, TableType::LR});
+        states[body_end].epsilon_transitions.insert({fragment.start, TableType::Action});
         body_end = fragment.end;
     }
 
@@ -193,8 +216,7 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
     for (std::size_t i = 0; i < str.size(); ++i) {
         std::size_t next = states.size();
         states.emplace_back();
-        states[current].transitions[str[i]] = {{next, TableType::LR}};
-        states[current].action_table[str[i]].push_back({LRAction::SHIFT, {}, next});
+        states[current].transitions[str[i]] = {{next, TableType::Action}};
         current = next;
     }
     std::size_t body_end = current;
@@ -234,26 +256,22 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         }
         for (unsigned char c = std::numeric_limits<unsigned char>::min();; ++c) {
             if (!prohibited.test(c)) {
-                states[body_start].transitions[static_cast<char>(c)] = {{body_end, TableType::LR}};
-                states[body_start].action_table[static_cast<char>(c)].push_back({LRAction::SHIFT, {}, body_end});
+                states[body_start].transitions[static_cast<char>(c)] = {{body_end, TableType::Action}};
             }
             if (c == max)
                 break;
         }
     } else {
         for (char c : chars) {
-            states[body_start].transitions[c] = {{body_end, TableType::LR}};
-            states[body_start].action_table[c].push_back({LRAction::SHIFT, {}, body_end});
+            states[body_start].transitions[c] = {{body_end, TableType::Action}};
         }
         for (char c : escaped) {
             char ec = corelib::text::getEscapedFromChar(c);
-            states[body_start].transitions[ec] = {{body_end, TableType::LR}};
-            states[body_start].action_table[ec].push_back({LRAction::SHIFT, {}, body_end});
+            states[body_start].transitions[ec] = {{body_end, TableType::Action}};
         }
         for (auto [from, to] : csequence.diapasons) {
             for (char c = from; c <= to; ++c) {
-                states[body_start].transitions[c] = {{body_end, TableType::LR}};
-                states[body_start].action_table[c].push_back({LRAction::SHIFT, {}, body_end});
+                states[body_start].transitions[c] = {{body_end, TableType::Action}};
             }
         }
     }
@@ -309,12 +327,11 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
             if (fragment.invalid())
                 continue;
 
-            states[start].epsilon_transitions.insert({fragment.start, TableType::LR});
-            states[fragment.end].epsilon_transitions.insert({end, TableType::LR});
+            states[start].epsilon_transitions.insert({fragment.start, TableType::Action});
+            states[fragment.end].epsilon_transitions.insert({end, TableType::Action});
 
             if (isLastMember && !isWhitespaceToken) {
-                states[fragment.start].accept_index = *accept_index;
-                states[fragment.start].last = true;
+                markAccept(fragment.start, option);
             }
             if (!states[fragment.start].last)
                 continue;
@@ -337,11 +354,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
         handleCsequence(member, member.getCsequence(), start, end, isLastMember, addStoreActions);
     } else if (member.isAny()) {
         for (unsigned char c = std::numeric_limits<unsigned char>::min(); c != std::numeric_limits<unsigned char>::max(); c++) {
-            states[start].transitions[static_cast<char>(c)] = {{end, TableType::LR}};
-            states[start].action_table[static_cast<char>(c)].push_back({LRAction::SHIFT, {}, end});
+            states[start].transitions[static_cast<char>(c)] = {{end, TableType::Action}};
         }
-        states[start].transitions[static_cast<char>(std::numeric_limits<unsigned char>::max())] = {{end, TableType::LR}};
-        states[start].action_table[static_cast<char>(std::numeric_limits<unsigned char>::max())].push_back({LRAction::SHIFT, {}, end});
+        states[start].transitions[static_cast<char>(std::numeric_limits<unsigned char>::max())] = {{end, TableType::Action}};
     } else {
         std::visit([](auto &m) {
             throw Error("Undefined member: {}", typeid(m).name());
@@ -364,7 +379,7 @@ void NFA::build(bool addStoreActions) {
             bool is_last = (i == rules->size() - 1);
             auto [start, end] = buildStateFragment((*rules)[i], is_last, addStoreActions);
             if (end != NULL_STATE && !is_last) {
-                states[end].epsilon_transitions.insert({states.size(), TableType::LR});
+                states[end].epsilon_transitions.insert({states.size(), TableType::Action});
             }
             if (is_last) {
                 last_state = end;
@@ -469,13 +484,11 @@ void NFA::addSpaceSkip() {
         if (is_char_table) {
             for (const auto c : constants::whitespace_chars) {
                 if (!investigateHasNext(place, c, visited)) {
-                    state.transitions[c] = {{place, TableType::LR}};
-                    state.action_table[c].push_back({LRAction::SHIFT, {}, place});
+                    state.transitions[c] = {{place, TableType::Action}};
                 }
             }
         } else {
-            state.transitions[constants::whitespace] = {{place, TableType::LR}};
-            state.action_table[constants::whitespace].push_back({LRAction::SHIFT, constants::whitespace, place});
+            state.transitions[constants::whitespace] = {{place, TableType::Action}};
         }
     }
 }
@@ -615,10 +628,15 @@ std::ostream& operator<<(std::ostream& os, const NFA::state& s) {
         }
     }
 
+    if (s.action_index != NFA::NULL_STATE) {
+        os << "\n\taction_table[" << s.action_index << "]";
+    }
+
     if (s.accept_binding.has_value()) {
         os << "\n\taccept token_id -> " << s.accept_binding->token_id;
         if (s.accept_binding->is_unique_representation) {
-            os << " [UNIQUE REDUCE: rule " << s.accept_binding->reduce_rule_id.value_or(0) << "]";
+            os << " [REDUCE: semantic_table[" << s.accept_binding->target_semantic_state.value_or(0) << "]"
+               << ", rule " << s.accept_binding->reduce_rule_id.value_or(0) << "]";
         }
         os << "\n";
     }

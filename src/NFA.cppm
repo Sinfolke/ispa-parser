@@ -1,6 +1,7 @@
 export module NFA;
 import AST.API;
 import AST.Tree;
+import LangAPI;
 import hash;
 import dstd;
 
@@ -12,20 +13,19 @@ public:
     enum class StoreCstNode {
         CST_NODE, CST_GROUP, CST_CONDITION
     };
-
-    // Kept for NFA internal routing, but DFA will use TransitionTarget
     enum class TableType {
-        DFA, LR, ACTION
+        DFA, Action, Semantic
+    };
+    enum class Action {
+        UNDEF, BEGIN, END, PUSH
+    };
+    enum class SemanticAction {
+        UNDEF, REDUCE
     };
 
-    enum class LRAction {
-        UNDEF, BEGIN, END, PUSH, REDUCE, SHIFT, ACCEPT
-    };
-
-    // New: Explicit binding for tokens, including REDUCE hooks for unique representations
     struct TokenBinding {
         std::size_t token_id = NULL_STATE;
-        std::optional<std::size_t> target_lr_state = std::nullopt;
+        std::optional<std::size_t> target_semantic_state = std::nullopt;
         std::optional<std::size_t> reduce_rule_id = std::nullopt;
         bool is_unique_representation = false;
 
@@ -33,7 +33,7 @@ public:
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(token_id, target_lr_state, reduce_rule_id, is_unique_representation);
+            return std::tie(token_id, target_semantic_state, reduce_rule_id, is_unique_representation);
         }
     };
 
@@ -54,7 +54,7 @@ public:
     // Internal NFA transition used during graph construction
     struct TransitionValue {
         std::size_t next = NULL_STATE;
-        TableType table_type = TableType::LR;
+        TableType table_type = TableType::Action;
         auto operator==(const TransitionValue &other) const -> bool = default;
     private:
         friend struct ::uhash;
@@ -63,25 +63,28 @@ public:
         }
     };
 
-    struct LRState {
-        LRAction action = LRAction::UNDEF;
-        stdu::vector<std::string> variable;
-        std::size_t DFA_next_state = 0;
-        std::size_t reduce_rule_index = NULL_STATE;
+    // Flat entry of the Action table (table 2). `variable` names the capture register
+    // this BEGIN/END/PUSH operates on. `DFA_next_state` is left unresolved (NULL_STATE)
+    // here - it's filled in later by the DFA layer once subset construction has assigned
+    // final state numbers.
+    struct ActionState {
+        Action action = Action::UNDEF;
+        LangAPI::Variable variable{};
+        std::size_t DFA_next_state = NULL_STATE;
+        auto operator==(const ActionState &other) const -> bool = default;
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(action, variable, DFA_next_state, reduce_rule_index);
+            return std::tie(action, variable, DFA_next_state);
         }
     };
-
     using TemplatedDataBlock = utype::unordered_map<std::string, TemplatedDataBlockValue>;
     using DataBlock = std::variant<std::monostate, TemplatedDataBlock, TemplatedDataBlockValue>;
-    using ActionTable = utype::unordered_map<TransitionKey, stdu::vector<LRState>>;
+    using ActionTable = stdu::vector<ActionState>;
+    using SemanticTable = stdu::vector<LangAPI::Statements>;
 
     struct state {
         utype::unordered_map<TransitionKey, stdu::vector<TransitionValue>> transitions;
-        ActionTable action_table;
         stdu::vector<char> skip_chars;
 
         // Replaced raw accept_index with the new detailed binding
@@ -93,12 +96,13 @@ public:
         DataBlock dtb;
         bool optional = false;
         bool last = false;
-        std::size_t lr_action_index = NULL_STATE;
+        // Set on synthetic BEGIN/END/PUSH states; indexes into NFA::getActionTable().
+        std::size_t action_index = NULL_STATE;
         auto operator==(const state &other) const -> bool = default;
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(transitions, action_table, skip_chars, accept_binding, epsilon_transitions, any, rule_name, dtb, optional, last, lr_action_index);
+            return std::tie(transitions, skip_chars, accept_binding, epsilon_transitions, any, rule_name, dtb, optional, last, action_index);
         }
     };
 
@@ -136,7 +140,8 @@ private:
     bool isWhitespaceToken = false;
     std::unordered_map<std::size_t, TokenBinding> accept_map;
     std::size_t registers_count = 0;
-    stdu::vector<LRState> lr_table;
+    ActionTable action_table;
+    SemanticTable semantic_table;
 
     // Build methods
     auto applyQuantifierAndActions(
@@ -156,8 +161,10 @@ private:
     auto investigateHasNext(std::size_t place, char c, std::unordered_set<std::size_t> &visited) -> bool;
     auto investigateHasNext(std::size_t place, const stdu::vector<std::string> &name, std::unordered_set<std::size_t> &visited) -> bool;
     void addSpaceSkip();
-    void acceptMapVisitState(std::size_t index, std::size_t accept_index, std::unordered_set<std::size_t>& visited);
-    void buildAcceptMap();
+    // Marks `state_id` as an accept state for `member`, and, if the token isn't a
+    // unique/literal representation, pushes a REDUCE entry into the Semantic table.
+    void markAccept(std::size_t state_id, const AST::RuleMember &member);
+    void acceptMapVisitState(std::size_t index, std::optional<TokenBinding> current_binding, std::unordered_set<std::size_t>& visited);
     void getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result);
     auto getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t>;
     void generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
@@ -170,12 +177,15 @@ public:
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::Rule &rule, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), rules(&rule.rule_members), dtb(&rule.data_block), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
-    void build(bool addStoreActions);
-
+    void build(bool addStoreActions = true);
+    void buildAcceptMap();
+    auto getRegistersCount() { return registers_count; }
     auto& getStates() { return states; }
     auto& getStates() const { return states; }
-    auto& getLRTable() { return lr_table; }
-    auto& getLRTable() const { return lr_table; }
+    auto& getActionTable() { return action_table; }
+    auto& getActionTable() const { return action_table; }
+    auto& getSemanticTable() { return semantic_table; }
+    auto& getSemanticTable() const { return semantic_table; }
     auto &getAcceptMap() const { return accept_map; }
     auto &isCharNfa() const { return is_char_table; }
     auto &getName() const { return name_; }

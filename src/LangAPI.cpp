@@ -99,6 +99,7 @@ namespace LangAPI {
             case ValueType::Bool: os << "Bool"; break;
             case ValueType::Float: os << "Float"; break;
             case ValueType::String: os << "String"; break;
+            case ValueType::NonOwnedString: os << "NonOwnedString"; break;
             case ValueType::Array: os << "Array"; break;
             case ValueType::FixedSizeArray: os << "FixedSizeArray"; break;
             case ValueType::Map: os << "Map"; break;
@@ -131,6 +132,7 @@ namespace LangAPI {
             case RValueType::Map: os << "Map"; break;
             case RValueType::Pos: os << "Pos"; break;
             case RValueType::Symbol: os << "Symbol"; break;
+            case RValueType::IspaLibSymbol:os << "IspaLibSymbol"; break;
             case RValueType::StorageSymbol: os << "StorageSymbol"; break;
             case RValueType::Inheritance: os << "Inheritance"; break;
             case RValueType::IspaLibDfaTransition: os << "IspaLibDfaTransition"; break;
@@ -204,6 +206,8 @@ namespace LangAPI {
             case StdlibExports::DfaTable: os << "DfaTable"; break;
             case StdlibExports::DfaClassTable: os << "DfaClassTable"; break;
             case StdlibExports::DfaAcceptTable: os << "DfaAcceptTable"; break;
+            case StdlibExports::DfaLRTable: os << "DfaLRTable"; break;
+            case StdlibExports::DfaNullState: os << "DfaNullState"; break;
             case StdlibExports::ParserFunctionParameter: os << "ParserFunctionParameter"; break;
         }
         return os;
@@ -325,7 +329,7 @@ namespace LangAPI {
     }
 
     auto operator<<(std::ostream& os, const FunctionCall &fc)  -> std::ostream& {
-        os << fc.name;
+        std::visit([&os](const auto &v) { os << v; }, fc.name);
         printExpressionArgs(os, fc.args);
         return os;
     }

@@ -280,226 +280,152 @@ struct MatchResult {
     bool status = false;
     Node<EnumT, DataStorageType> node = {};
 };
-struct TokenFragment {
-    const char* start = nullptr;
-    const char* end = nullptr;
-    std::size_t position_in_fragment_list;
-};
 template<class TOKEN_T, typename Token>
 using TokenFlow = std::vector<Token>;
 template<class RULE_T, class DataStorageType>
 using Seq = std::vector<Node<RULE_T, DataStorageType>>;
-struct error {
-    std::size_t pos;
-    std::size_t line;
-    std::size_t column;
-    std::string message;
-};
-namespace DFAAPI {
+namespace DFA::API {
     inline auto null_state = std::numeric_limits<std::size_t>::max();
     template<std::size_t Classes>
     using State = std::array<std::size_t, Classes>;
     template<std::size_t States, std::size_t Classes>
     using Table = std::array<State<Classes>, States>;
-    template<std::size_t N>
-    using CharToClass = std::array<std::size_t, N>;
+    using CharToClass = std::array<std::size_t, 256>;
     template<std::size_t States>
     using AcceptTable = std::array<std::size_t, States>;
+    template<std::size_t States>
+    using LRTable = std::array<State<3>, States>;
+    enum class Action {
+        UNDEF, BEGIN, END, PUSH
+    };
 }
 namespace DFA {
-    // ---------------------------------------------------------------------
-    // Lexer: walks the unified, classified DFA directly. No FCDT, no spans,
-    // no else_goto, no per-state type dispatch -- every cell is a plain
-    // size_t, decoded purely by comparing against STATE_COUNT.
-    //
-    //   next < STATE_COUNT              -> real continuing state
-    //   next == DFA::NULL_STATE         -> dead transition (no valid edge)
-    //   otherwise (next > STATE_COUNT)  -> accept for token (next - STATE_COUNT - 1)
-    //
-    // Acceptance is decided by PEEKING the next character's class before
-    // consuming it: if that edge is a sentinel, the peeked character belongs
-    // to whatever comes after this token, not to the token itself, so it is
-    // NOT consumed.
-    // ---------------------------------------------------------------------
-    template<std::size_t States, std::size_t Classes, typename PanicModeFunc>
+    template<
+        typename Token,
+        typename SemanticFunc,
+        std::size_t table_classes,
+        std::size_t table_states,
+        std::size_t lr_table_states,
+        std::size_t registers_count
+    >
     auto scan(
-        const DFAAPI::Table<States, Classes> &dfa_table,
-        const DFAAPI::CharToClass<256> &char_class_table,
-        const char *pos,
-        PanicModeFunc panic_mode
-    ) -> TokenFragment {
-        constexpr std::size_t STATE_COUNT = States;
-
+        const char* pos,
+        const API::Table<table_classes, table_states> &table,
+        const API::CharToClass class_table,
+        const API::LRTable<lr_table_states> lr_table,
+        std::vector<std::variant<Token, std::string>> &values,
+        std::vector<std::vector<std::variant<Token, std::string>>> &vec_values,
+        std::array<const char*, registers_count> registers,
+        SemanticFunc semantic
+    ) -> Token {
         std::size_t state = 0;
-        const char *start = pos;
-
+        std::size_t registers_allocated = 0;
         while (true) {
-            unsigned char c = static_cast<unsigned char>(*pos);
-            std::size_t cls = char_class_table[c];
-            std::size_t next = dfa_table[state][cls];
+            std::size_t cls = class_table[*pos];
+            std::size_t next = table[cls];
 
-            if (next < STATE_COUNT) {
-                // Real continuing state: this character is genuinely part of
-                // the token. Consume it and keep walking.
+            if (next <= table.size()) {
                 state = next;
-                ++pos;
                 continue;
-            }
-
-            if (next == DFAAPI::null_state) {
-                // No valid edge for this character at this state at all --
-                // nothing was ever accepted along this walk.
-                if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
-                    if (panic_mode != nullptr) {
-                        if (*pos == '\0') {
-                            return {};
-                        }
-                        panic_mode(pos);
-                        state = 0;
-                        start = pos;
-                        continue; // retry from a fresh position after recovery
-                    }
+            } else if (next <= table.size() + lr_table.size()) {
+                // LR action for this state
+                auto lr_action = lr_table[next - table.size()];
+                switch (lr_action[0]) {
+                    case API::Action::UNDEF:
+                        throw std::runtime_error("DFA: undefined action; This MUST NOT be your mistake; Report this error to github");
+                    case API::Action::BEGIN:
+                        registers[registers_allocated++] = pos;
+                        break;
+                    case API::Action::END:
+                        values.push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                        registers_allocated--;
+                        break;
+                    case API::Action::PUSH:
+                        vec_values.back().push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                    default:
+                        throw std::runtime_error("DFA: Out of bound, non-enum action; This MUST NOT be your mistake; Report this error to github");
                 }
-                return {}; // no match
-            }
-
-            // Sentinel: this edge completes a token WITHOUT consuming the
-            // character just peeked -- it belongs to whatever comes next.
-            std::size_t token = next - STATE_COUNT - 1;
-            return TokenFragment{start, pos, 0};
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // Parser lookahead (TokenMachineDFA): same encoding scheme, but no char-
-    // class layer -- the input alphabet is already the finite set of token
-    // kinds, so it indexes directly. Also no rewind: unlike the lexer, the
-    // FIRST sentinel hit is the answer -- earliest unambiguous decision
-    // wins, not longest match. If your token-machine table generator hasn't
-    // been migrated to this flat/sentinel format yet, this is written
-    // assuming parity with the lexer's scheme above, not confirmed against
-    // real generated output the way `scan` is.
-    // ---------------------------------------------------------------------
-    template<std::size_t States, std::size_t TokenKinds, typename IT, typename PanicModeFunc>
-    auto decide(
-        const DFAAPI::Table<States, TokenKinds> &table,
-        IT &pos,
-        PanicModeFunc panic_mode
-    ) -> std::size_t {
-        constexpr std::size_t STATE_COUNT = States;
-        constexpr std::size_t NO_ALTERNATIVE = std::numeric_limits<std::size_t>::max();
-
-        std::size_t state = 0;
-
-        while (true) {
-            std::size_t kind = static_cast<std::size_t>(*pos);
-            std::size_t next = table[state][kind];
-
-            if (next < STATE_COUNT) {
-                state = next;
-                ++pos;
-                continue;
-            }
-
-            if (next == DFAAPI::null_state) {
-                if constexpr (!std::is_same_v<PanicModeFunc, std::nullptr_t>) {
-                    if (panic_mode != nullptr) {
-                        panic_mode();
-                    }
+                // transition to the next state
+                state = lr_action[1];
+            } else if (next == DFA::API::null_state) {
+                break;
+            } else {
+                // directing call to Semantic action function; The error about state overflow is handled there
+                std::pair<int, Token> t = semantic(state - table.size() - lr_table.size(), values, vec_values);
+                if (!std::holds_alternative<std::monostate>(t.second)) {
+                    // handle reduce action result
+                    values.push_back(std::move(t));
                 }
-                return NO_ALTERNATIVE;
+                // transition to the next state
+                state = t.first;
             }
-
-            // Sentinel: exactly one alternative remains viable. Stop
-            // immediately -- do not keep walking for a "longer" resolution.
-            return next - STATE_COUNT - 1;
         }
+        // if no value accumulated at all, we consider token does not need value at all
+        // take the first 'values' value and return it
+        // we also ensure it is token, as otherwise it is considered inconsistent behaviour
+
+        if (values.size() == 0)
+            return {};
+        if (!std::holds_alternative<Token>(values.front()) && values.size() > 0) {
+            std::cout << "Warning [DFA]: Returned non-token result; This MUST NOT be your mistake; Report this error to github" << std::endl;
+        }
+        return std::get<Token>(values.front());
     }
-};
-using ErrorController = std::map<std::size_t, error, std::greater<std::size_t>>;
+}
 template<class TOKEN_T, typename Token>
 class Lexer_base {
 protected:
     const char* _in = nullptr;
+    std::string _owned_input;
     TokenFlow<TOKEN_T, Token> tokens;
-    std::vector<TokenFragment> fragments;
-    std::vector<error> errors;
-    ErrorController error_controller;
-    /* internal integration functionality */
-    /**
-     * @brief Get the current position in the text (compares first input point with the current)
-     * 
-     * @param txt 
-     * @return std::size_t 
-     */
-    std::size_t getCurrentPos(const char* in) {
-        return in - _in;
+    std::size_t getCurrentPos(const char* pos) const {
+        return pos - _in;
     }
-    /**
-     * @brief skip the spaces
-     * 
-     * @param in the input
-     * @return std::size_t
-     */
     std::size_t skip_spaces(const char*& in) {
         auto prev = in;
-        while(isspace(*in))
-            in++;
-        
+        while (isspace(*in)) in++;
         return in - prev;
     }
-        /**
-     * @brief Returns the number of line of the current token or rule. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
-     */
     std::size_t __line(const char* pos) const {
         std::size_t count = 1;
-        std::size_t escaptions = 0;
-        for (const char* in = _in; in < pos; in++) {
+        for (const char* in = _in; in < pos; in++)
             if (*in == '\n') count++;
-        }
         return count;
     }
-    /**
-     * @brief Returns the position in line of token. Note it assume the start pointer is still valid
-     * 
-     * @return std::size_t 
-     */
     std::size_t __column(const char* pos) const {
         std::size_t count = 1;
-        std::size_t escaptions = 0;
-        for (char* in = const_cast<char*>(_in); in < pos; in++) {
-            if (*in == '\n') 
-                count = 0;
-            else 
-                count++;
-        }
+        for (const char* in = _in; in < pos; in++)
+            count = (*in == '\n') ? 0 : count + 1;
         return count;
     }
-    void reportError(const char* pos, std::string mes) {
-        if (error_controller.count(pos - _in) == 0)
-            error_controller[pos - _in] = {getCurrentPos(pos), __line(pos), __column(pos), "Expected " + mes};
+    void panic_mode(const char*& pos) {
+        if (*pos != '\0') ++pos;
     }
-    static void panic_mode(const char* &pos) {
-        std::cout << "Panic mode reached at position " << *pos << std::endl;
-        if (*pos != '\0')
-            ++pos;
-    }
-    template<std::size_t States, std::size_t Classes>
-    auto lookup(const DFAAPI::Table<States, Classes> &dfa_table, const DFAAPI::CharToClass<256> &char_class_table, const char* pos) -> TokenFragment {
+    template<
+        typename SemanticFunc,
+        std::size_t table_classes,
+        std::size_t table_states,
+        std::size_t lr_table_states,
+        std::size_t registers_count
+    >
+    Token lookup(
+        const DFA::API::Table<table_classes, table_states> &table,
+        const DFA::API::CharToClass class_table,
+        const DFA::API::LRTable<lr_table_states> lr_table,
+        std::vector<std::variant<Token, std::string>> &values,
+        std::vector<std::vector<std::variant<Token, std::string>>> &vec_values,
+        std::array<const char*, registers_count> registers,
+        SemanticFunc semantic,
+        const char* pos
+    ) {
         if (*pos == '\0')
-            return {nullptr, nullptr, 0};
-        auto fragment = DFA::scan(dfa_table, char_class_table, pos, panic_mode);
-        fragment.position_in_fragment_list = fragments.size();
-        fragments.push_back(fragment);
-        return fragment;
+            return Token {};
+        Token result = DFA::scan(pos, table, class_table, lr_table, values, vec_values, registers, semantic);
+        return result;
     }
+
 public:
-    /**
-     * A lazy iterator (accumulates only tokens that currently are accessed).
-     * Be aware it acts independently of the lexer class and does not accumulate tokens for it
-     */
+    // Accumulates tokens lazily; does not populate `tokens` on the owning lexer.
     class lazy_iterator {
         Lexer_base* owner = nullptr;
         Token current;
@@ -507,307 +433,153 @@ public:
         std::size_t counter = 0;
 
         void advance() {
-            if (isEnd())
-                return;
+            if (isEnd()) return;
             current = owner->makeToken(pos);
-            if (!current.empty())
-                counter++;
+            if (!current.empty()) counter++;
         }
 
     public:
-        lazy_iterator(Lexer_base& owner, const char* in)
-            : owner(&owner), pos(in) {
+        lazy_iterator(Lexer_base& owner, const char* in) : owner(&owner), pos(in) {
             current = owner.makeToken(pos);
             counter = current.empty() ? 0 : 1;
         }
+        lazy_iterator(const lazy_iterator& other)
+            : owner(other.owner), current(other.current), pos(other.pos), counter(other.counter) {}
 
-        lazy_iterator(Lexer_base* owner, const char* in)
-            : owner(owner), pos(in) {
-            current = owner->makeToken(pos);
-            counter = current.empty() ? 0 : 1;
-        }
-
-        lazy_iterator(const lazy_iterator &iterator)
-            : owner(iterator.owner), pos(iterator.pos), counter(iterator.counter), current(iterator.current) {}
-
-        bool isEnd() const {
-            return current.empty();
-        }
+        bool isEnd() const { return current.empty(); }
 
         lazy_iterator& operator=(const lazy_iterator& other) {
             if (this != &other) {
                 owner = other.owner;
-                pos = other.pos;
                 current = other.current;
+                pos = other.pos;
                 counter = other.counter;
             }
             return *this;
         }
+        lazy_iterator& operator++() { advance(); return *this; }
+        lazy_iterator operator++(int) { auto tmp = *this; advance(); return tmp; }
+        void operator+=(std::size_t count) { while (count-- > 0 && !isEnd()) advance(); }
 
-        lazy_iterator& operator++() {
-            advance();
-            return *this;
+        ptrdiff_t operator-(const lazy_iterator& other) const {
+            return static_cast<ptrdiff_t>(counter) - static_cast<ptrdiff_t>(other.counter);
         }
-
-        lazy_iterator operator++(int) {
-            auto temp = *this;
-            advance();
-            return temp;
-        }
-
-        void operator+=(std::size_t count) {
-            while (count-- > 0 && !isEnd())
-                advance();
-        }
-
-        ptrdiff_t operator-(const lazy_iterator &iterator) const {
-            return static_cast<ptrdiff_t>(counter) - static_cast<ptrdiff_t>(iterator.counter);
-        }
-
-        const Token& operator*() const {
-            return current;
-        }
-
-        const Token* operator->() const {
-            return &current;
-        }
-
-        std::size_t distance() const {
-            return counter;
-        }
+        const Token& operator*() const { return current; }
+        const Token* operator->() const { return &current; }
+        std::size_t distance() const { return counter; }
     };
 
-    /**
-     * A regular iterator through tokens. Note that it won't iterate through tokens created by lazy iterator (which is done by default).
-     * If you need to iterate through tokens after parsing, first accumulate tokens, then run parsing. That implies you must first create lexer class then parser class to do so
-     */
+    // Iterates already-accumulated tokens; run makeTokens() before using this.
     class iterator {
         Lexer_base* owner = nullptr;
         typename TokenFlow<TOKEN_T, Token>::iterator pos;
-        public:
-            iterator(Lexer_base &owner) : owner(&owner), pos(owner->tokens.begin()) {}
-            iterator(Lexer_base* owner) : owner(owner), pos(owner->tokens.begin()) {}
 
-            iterator& operator=(const iterator& other) {
-                owner = other.owner;
-                pos = other.pos;
-                return *this;
-            }            
-            void operator+=(std::size_t count) {
-                pos += count;
-            }
+    public:
+        iterator(Lexer_base& owner) : owner(&owner), pos(owner.tokens.begin()) {}
 
-            iterator& operator++() {
-                this->operator+=(1);
-                return *this;
-            }
-            iterator operator++(int) {
-                auto temp = *this;
-                this->operator+=(1);
-                return temp;
-            }
-            std::size_t operator-(const iterator &iterator) const  {
-                return pos - iterator.pos;
-            }
-            iterator operator+(std::size_t count) const {
-                iterator temp = *this;
-                temp += count;
-                return temp;
-            }
-            bool isEnd() const {
-                return pos->empty();
-            }
-            Token& operator*() const {
-                return *pos;
-            } 
-            Token* operator->() const {
-                return &(*pos);
-            }
-            auto distance() const {
-                return pos - owner->tokens.begin();
-            }
+        iterator& operator=(const iterator& other) { owner = other.owner; pos = other.pos; return *this; }
+        void operator+=(std::size_t count) { pos += count; }
+        iterator& operator++() { pos += 1; return *this; }
+        iterator operator++(int) { auto tmp = *this; pos += 1; return tmp; }
+        std::size_t operator-(const iterator& other) const { return pos - other.pos; }
+        iterator operator+(std::size_t count) const { auto tmp = *this; tmp += count; return tmp; }
+
+        bool isEnd() const { return pos->empty(); }
+        Token& operator*() const { return *pos; }
+        Token* operator->() const { return &(*pos); }
+        std::size_t distance() const { return pos - owner->tokens.begin(); }
     };
-    /**
-     * Get one token
-     */
-    virtual TokenFragment makeTokenFragment(const char*& pos) = 0;
     virtual Token makeToken(const char*& pos) = 0;
     virtual void init() {}
-    // constructors
 
-    Lexer_base(const std::string& in) : _in(in.c_str()) { init(); }
-    Lexer_base(const char* in) : _in(in) { init(); }
-    Lexer_base(TokenFlow<TOKEN_T, Token> &tokens) : tokens(tokens) { init(); }
     Lexer_base() { init(); }
-    virtual ~Lexer_base() {}
-    bool hasInput() const {
-        return _in != nullptr;
-    }
-    Lexer_base& setinput(const std::string& in) {
-        _in = in.c_str();
+    explicit Lexer_base(const std::string& in) : _owned_input(in), _in(_owned_input.c_str()) { init(); }
+    explicit Lexer_base(const char* in) : _in(in) { init(); }
+    explicit Lexer_base(const TokenFlow<TOKEN_T, Token>& tokens) : tokens(tokens) { init(); }
+    virtual ~Lexer_base() = default;
+
+    bool hasInput() const { return _in != nullptr; }
+    bool hasTokens() const { return !tokens.empty(); }
+
+    Lexer_base& setInput(const std::string& in) {
+        _owned_input = in;
+        _in = _owned_input.c_str();
         return *this;
     }
-    Lexer_base& setinput(char*& in) {
+    Lexer_base& setInput(const char* in) {
+        _owned_input.clear();
         _in = in;
         return *this;
-    }
-    Lexer_base& setinput(const char*& in) {
-        _in = in;
-        return *this;
-    }
-    bool hasTokens() const {
-        return tokens.size() > 0;
-    }
-    /**
-     * Get tokens as copy
-     */
-    TokenFlow<TOKEN_T, Token> getTokens() const {
-        return tokens;
-    }
-    /**
-     * Get tokens by reference
-     */
-    TokenFlow<TOKEN_T, Token>& getTokensReference() {
-        return tokens;
-    }
-    /**
-     * Clear tokens
-     */
-    void clearTokens() const {
-        tokens.clear();
-    }
-    /**
-     * @param in the input string
-     * Get tokens from std::string
-     */
-    TokenFlow<TOKEN_T, Token>& makeTokens(const std::string& in) {
-        _in = in.c_str();
-        makeTokens();
-        return tokens;
-    }
-    /**
-     * @param in the input C string
-     * Get tokens from C string
-     */
-    TokenFlow<TOKEN_T, Token>& makeTokens(const char*& in) {
-        _in = in;
-        makeTokens();
-        return tokens;
-    }
-    /**
-     * Get tokens from file by path. Note std::runtime_error is thrown if failed to open the file
-     */
-    TokenFlow<TOKEN_T, Token>& makeTokensFromFile(const char* path) {
-        std::ifstream file(path, std::ios::in | std::ios::binary);  // Open the file in binary mode as well for safety
-        if (!file) {
-            throw std::runtime_error(std::string("Failed to open file '") + path + "'");
-        }
-    
-        std::string str;
-        file.seekg(0, std::ios::end);
-        std::size_t fileSize = file.tellg();
-        str.reserve(fileSize);  // Reserve enough space for the string
-    
-        file.seekg(0, std::ios::beg);
-        str.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-        makeTokens(str);
-        return tokens;
     }
 
-    /**
-     * Accumulate tokens (saving in this class) and return their reference
-     */
+    const TokenFlow<TOKEN_T, Token>& getTokens() const { return tokens; }
+    TokenFlow<TOKEN_T, Token>& getTokensReference() { return tokens; }
+    void clearTokens() { tokens.clear(); }
+
     TokenFlow<TOKEN_T, Token>& makeTokens() {
         if (_in == nullptr)
             throw Lexer_No_Input_exception();
-        TokenFragment result;
         const char* pos = _in;
-        while (*pos != '\0') {
-            result = makeToken(pos);
-
-            error_controller.clear();
-        }
-        push(Token {});
+        while (*pos != '\0')
+            push(makeToken(pos));
+        push(Token{});
         return tokens;
-    };
-    auto& getErrors() const {
-        return errors;
-    };
-    /**
-     * @param input_tokens the input tokens
-     * Push flow of tokens
-     */
-    void push(const TokenFlow<TOKEN_T, Token>& input_tokens) {
-        tokens.append_range(input_tokens);
     }
-    /**
-     * @param input_token the input token
-     * Push a token
-     */
-    void push(const Token& input_token) {
-        tokens.push_back(input_token);
+    TokenFlow<TOKEN_T, Token>& makeTokens(const std::string& in) {
+        setInput(in);
+        return makeTokens();
     }
-    /**
-     * @param tokenizator the tokenizator with tokens
-     * Push another lexer's tokens to the current one
-     */
-    void push(const Lexer_base& tokenizator) {
-        if (tokenizator.hasTokens())
-            tokens.push_back(tokenizator.tokens);
-        else
+    TokenFlow<TOKEN_T, Token>& makeTokens(const char* in) {
+        setInput(in);
+        return makeTokens();
+    }
+    TokenFlow<TOKEN_T, Token>& makeTokensFromFile(const char* path) {
+        std::ifstream file(path, std::ios::in | std::ios::binary);
+        if (!file)
+            throw std::runtime_error(std::string("Failed to open file '") + path + "'");
+
+        std::string str;
+        file.seekg(0, std::ios::end);
+        str.reserve(static_cast<std::size_t>(file.tellg()));
+        file.seekg(0, std::ios::beg);
+        str.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+        return makeTokens(str);
+    }
+
+    const std::vector<std::string> getErrors() const { return {""}; }
+
+    void push(const TokenFlow<TOKEN_T, Token>& input_tokens) { tokens.append_range(input_tokens); }
+    void push(const Token& input_token) { tokens.push_back(input_token); }
+    void push(const Lexer_base& other) {
+        if (!other.hasTokens())
             throw Lexer_No_Tokens_exception();
+        tokens.append_range(other.tokens);
     }
-    /**
-     * Pop the last token
-     */
-    void pop() {
-        tokens.pop_back();
-    }
-    /**
-     * @param n the number of tokens to pop
-     * Pop specific number of tokens
-     */
-    void pop(const std::size_t& n) {
+    void pop() { tokens.pop_back(); }
+    void pop(std::size_t n) {
         if (n > tokens.size())
-            throw std::length_error(ISC_STD_LIBMARK "Tokenizator_base::pop(): the number of elements to pop is higher actual size");
+            throw std::length_error(ISC_STD_LIBMARK "Lexer_base::pop(): n exceeds token count");
         tokens.erase(tokens.end() - n, tokens.end());
     }
 
-    Lexer_base& operator=(const Lexer_base& tokenizator) {
-        tokens = tokenizator.tokens;
-        _in = tokenizator._in;
+    Lexer_base& operator=(const Lexer_base& other) {
+        if (this != &other) {
+            tokens = other.tokens;
+            _owned_input = other._owned_input;
+            _in = _owned_input.empty() ? other._in : _owned_input.c_str();
+        }
         return *this;
     }
-    bool operator==(const Lexer_base& tokenizator) {
-        return tokens == tokenizator.tokens;
-    }
-    bool operator!=(const Lexer_base& tokenizator) {
-        return tokens != tokenizator.tokens;
-    }
+    bool operator==(const Lexer_base& other) const { return tokens == other.tokens; }
+    bool operator!=(const Lexer_base& other) const { return tokens != other.tokens; }
 };
 /* PARSER */
 template<class TOKEN_T, class RULE_T, typename MainNode, typename Token>
 class LLParser_base {
 protected:
-    template<class IT>
-    void parseFromPos(IT& pos) {
-        auto res = getRule(pos);
-        if (!res.status) {
-            if (!error_controller.empty())
-                errors.push_back(error_controller.begin()->second);
-            for (auto el : error_controller) {
-                printf("Parser[error controller]: %zu:%zu: %s\n", el.second.line, el.second.column, el.second.message.c_str());
-            }
-        } else {
-            tree = res.node;
-        }
-        error_controller.clear();
-    }
     Lexer_base<TOKEN_T, Token>* lexer = nullptr;
     const char* text = nullptr;
     MainNode tree;
-    std::vector<error> errors;
-    ErrorController error_controller;
     // skip spaces for tokens
     template <class IT>
     std::size_t skip_spaces(IT& pos) {
@@ -816,14 +588,6 @@ protected:
             ++pos;
         
         return pos - prev;
-    }
-    void reportError(typename Lexer_base<TOKEN_T, Token>::lazy_iterator pos, std::string msg) {
-        if (error_controller.count(pos.distance()) == 0)
-            error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
-    }
-    void reportError(typename Lexer_base<TOKEN_T, Token>::iterator pos, std::string msg) {
-        if (error_controller.count(pos.distance()) == 0)
-            error_controller[pos.distance()] = {pos->startpos(), pos->line(), pos->column(), "Expected " + msg};
     }
     static void PANIC_MODE() {}
 public:
@@ -860,9 +624,6 @@ public:
     void clearInput() {
         lexer = nullptr;
         text = nullptr;
-    }
-    auto getErrors() {
-        return errors;
     }
     /**
      * @brief Parser the tokens based on input provided before

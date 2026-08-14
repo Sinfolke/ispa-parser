@@ -33,13 +33,19 @@ void LexerBuilder::build() {
         }
         // token here
         NFA nfa(ast, name, &rule.data_block, rule.rule_members, name == constants::whitespace, true, &accept_index);
-        nfa.build(false);
+        nfa.build(true);
         nfas.push_back(nfa);
     }
     if (nfas.empty()) {
         throw Error("Your grammar does not have any DFA-based token");
     }
-    dfa = DFA::build(ast, nfas);
+    auto dfa_meta = DFA::build(ast, nfas);
+    dfa = std::get<0>(dfa_meta);
+    lr_table = std::get<1>(dfa_meta);
+    semantic_table = std::get<2>(dfa_meta);
+    max_registers_count = std::get<3>(dfa_meta);
+    // output LR table with
+
 }
 auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
     LLIR::DataBlockList list;

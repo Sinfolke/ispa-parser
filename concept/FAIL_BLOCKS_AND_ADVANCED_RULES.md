@@ -15,7 +15,7 @@ as they server primary as **Embedded Common Logic of the Language**
 ### Fail blocks design goal
 1. Meangful error messages
 2. In-grammar recovery strategies
-3. AST manipulations based on errors encountered"
+3. AST manipulations based on errors encountered
 
 # Motivation
 

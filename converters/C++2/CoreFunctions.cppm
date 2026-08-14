@@ -15,12 +15,14 @@ export namespace Core {
     bool first_template_parameter = true;
     Cpp::Statement *stmts_converter;
     Cpp::Declarations *declarations_converter;
-    Converter::Writer *writer;
+    Converter::Writer *output;
+    Converter::Writer h_file;
+    Converter::Writer cpp_file;
     std::string name;
     stdu::vector<std::string> symbol_path;
     bool forward_declared = false;
-    std::stringstream cpp_file;
     bool templated = false;
+    bool is_directed_to_source = false;
     std::stringstream init_content;
     // type
     auto convertType(const LangAPI::Type &type) -> std::string;
@@ -58,6 +60,7 @@ export namespace Core {
     // Forward declarations of overloads
     auto ensureNamespaced(const std::string &ns, const LangAPI::Symbol &sym) -> LangAPI::Symbol;
     auto ensureNamespaced(const std::string &ns, const LangAPI::StorageSymbol &ssym) -> LangAPI::StorageSymbol;
+    auto ensureNamespaced(const std::string &ns, const LangAPI::IspaLibSymbol &sym) -> const LangAPI::IspaLibSymbol&;
     auto ensureNamespaced(const std::string &ns, const LangAPI::Type &type) -> LangAPI::Type;
     auto ensureNamespaced(const std::string &ns, const LangAPI::FunctionCall &fc) -> LangAPI::FunctionCall;
     auto ensureNamespaced(const std::string &ns, const LangAPI::RValue &rval) -> LangAPI::RValue;

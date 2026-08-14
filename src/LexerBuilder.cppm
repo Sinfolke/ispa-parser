@@ -1,12 +1,14 @@
 export module LexerBuilder;
-import hash;
+import LangAPI;
 import AST.API;
 import AST.Tree;
 import LangAPI;
 import LLIR.API;
 import LLIR.IR;
 import fcdt;
+import NFA;
 import DFA;
+import hash;
 import dstd;
 import std;
 export class LexerBuilder {
@@ -28,11 +30,18 @@ private:
     std::vector<std::size_t> token_type;
     std::size_t highest_states_count = 0;
     std::size_t highest_transition_count = 0;
+    stdu::vector<NFA::ActionState> lr_table;
+    stdu::vector<LangAPI::Statements> semantic_table;
+    std::size_t max_registers_count = 0;
 public:
     LexerBuilder(AST::Tree &ast) : ast(ast) {};
     void build();
     auto& getDFA() { return dfa; }
     auto& getDFA() const { return dfa; }
+    auto& getLRTable() { return lr_table; }
+    auto& getLRTable() const { return lr_table; }
+    auto& getSemanticTable() { return semantic_table; }
+    auto& getSemanticTable() const { return semantic_table; }
     auto& getNewFCDT() { return new_fcdt; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
@@ -43,5 +52,6 @@ public:
     auto& getFunctionsIR() const  { return function_ir; }
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
+    auto& getMaxRegistersCount() const { return max_registers_count; }
     auto getDataBlocks() const -> LLIR::DataBlockList;
 };

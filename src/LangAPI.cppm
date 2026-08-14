@@ -80,10 +80,10 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Void, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const
+        Undef, Void, Char, Int, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span
     };
     enum class ExpressionValueType {
         Empty, EmptyInitializer, RValue, ExpressionElement, FunctionCall, IspaLibFunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
@@ -101,7 +101,7 @@ export namespace LangAPI {
     };
     enum class StdlibExports {
         Node, MatchResult, Lexer, Parser, LexerMakeTokenParameter,
-        DfaState, DfaTable, DfaClassTable, DfaAcceptTable,
+        DfaState, DfaTable, DfaClassTable, DfaAcceptTable, DfaLRTable, DfaNullState,
         ParserFunctionParameter,
     };
 
@@ -362,7 +362,7 @@ export namespace LangAPI {
         }
     };
     struct FunctionCall : ExpressionValueLevel {
-        std::shared_ptr<Symbol> name;
+        std::variant<std::shared_ptr<Symbol>, std::shared_ptr<IspaLibSymbol>> name;
         stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
         stdu::vector<Expression> args;
         ~FunctionCall();
@@ -698,7 +698,7 @@ export namespace LangAPI {
         }
     };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -713,9 +713,6 @@ export namespace LangAPI {
         requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         RValue(T &&value) : value(std::move(value)) {}
 
-        void clear() {
-            value = std::monostate {};
-        }
         template<typename T>
         requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         void set(T &&value)  {this->value = std::move(value); }
@@ -737,6 +734,7 @@ export namespace LangAPI {
         bool isMap()     const { return std::holds_alternative<Map>(value); }
         bool isPos()     const { return std::holds_alternative<Pos>(value); }
         bool isSymbol()  const { return std::holds_alternative<Symbol>(value); }
+        bool isIspaSymbol()  const { return std::holds_alternative<IspaLibSymbol>(value); }
         bool isStorageSymbol()  const { return std::holds_alternative<StorageSymbol>(value); }
         bool isInheritance()  const { return std::holds_alternative<Inheritance>(value); }
         bool isIspaLibDfaTransition()  const { return std::holds_alternative<IspaLibDfaTransition>(value); }
@@ -760,6 +758,7 @@ export namespace LangAPI {
         Map&            getMap()     { return std::get<Map>(value); }
         Pos&            getPos()     { return std::get<Pos>(value); }
         Symbol&         getSymbol()  { return std::get<Symbol>(value); }
+        IspaLibSymbol&  getIspaSymbol()  { return std::get<IspaLibSymbol>(value); }
         StorageSymbol&  getStorageSymbol()  { return std::get<StorageSymbol>(value); }
         Inheritance&  getInheritance()  { return std::get<Inheritance>(value); }
         IspaLibDfaTransition&  getIspaLibDfaTransition()  { return std::get<IspaLibDfaTransition>(value); }
@@ -781,6 +780,7 @@ export namespace LangAPI {
         const Map&            getMap()    const { return std::get<Map>(value); }
         const Pos&            getPos()    const { return std::get<Pos>(value); }
         const Symbol&         getSymbol() const { return std::get<Symbol>(value); }
+        const IspaLibSymbol&  getIspaSymbol() const { return std::get<IspaLibSymbol>(value); }
         const StorageSymbol&  getStorageSymbol() const { return std::get<StorageSymbol>(value); }
         const Inheritance&  getInheritance() const  { return std::get<Inheritance>(value); }
         const IspaLibDfaTransition&  getIspaLibDfaTransition() const  { return std::get<IspaLibDfaTransition>(value); }
@@ -971,6 +971,7 @@ export namespace LangAPI {
         Statements statements;
         stdu::vector<std::string> template_parameters;
         bool override = false;
+        bool is_static = false;
         friend bool operator==(const Function &a, const Function &b);
         bool operator!=(const Function& other) const {
             return !(*this == other);

@@ -31,6 +31,8 @@ export namespace Cpp {
         auto closeEnum() -> void override;
 
         auto createVariable(const LangAPI::Variable &v) -> void override;
+        Converter::Writer &getWriter() const override;
+        Converter::Writer &getWriter() override;
         Declarations(Converter::Writer &output);
         ~Declarations() = default;
     };
