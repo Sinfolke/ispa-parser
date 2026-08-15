@@ -201,9 +201,13 @@ namespace LangRepr {
     }
     auto ConstructLexer::makeSemanticSwitchFunction(const stdu::vector<LangAPI::Statements> semantic_table) -> LangAPI::Function {
         LangAPI::Function fun {
-            .type = LangAPI::Type {LangAPI::ValueType::Int},
+            .type = LangAPI::Type {LangAPI::ValueType::Tuple, LangAPI::Type {LangAPI::ValueType::Int}, LangAPI::Type {LangAPI::Symbol {"Token"}}},
             .name = "semantic_action_exec",
-            .parameters = {std::make_pair(LangAPI::Type {LangAPI::ValueType::Int}, "state")},
+            .parameters = {
+                std::make_pair(LangAPI::Type {LangAPI::ValueType::Int}, "state"),
+                std::make_pair(LangAPI::Type {LangAPI::ValueType::Reference, LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::Char, LangAPI::ValueType::String }}}, "values"),
+                std::make_pair(LangAPI::Type {LangAPI::ValueType::Reference, LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::Char, LangAPI::ValueType::String }}}}, "vec_values"),
+            },
             .is_static = true
         };
         LangAPI::Switch switch_;
@@ -244,21 +248,21 @@ namespace LangRepr {
             ));
             lexer.data.push_back(std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Function {
-                    .type = LangAPI::ValueType::Void, .name = "init", .override = true
+                    .type = LangAPI::ValueType::Void, .name = "init", .override = true, .statements = LangAPI::Return::createStatements(LangAPI::Return {})
                 })),
                 LangAPI::Visibility::Private
             ));
             lexer.data.push_back(std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Variable {
                     .name = "values",
-                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::String } },
+                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::Char, LangAPI::ValueType::String } },
                 })),
                 LangAPI::Visibility::Private
             ));
             lexer.data.push_back(std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Variable {
                     .name = "vec_values",
-                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::String}}}
+                    .type = LangAPI::Type { LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Array, LangAPI::Type {LangAPI::ValueType::Variant, LangAPI::RValue {LangAPI::Symbol {"Token"}}, LangAPI::ValueType::Char, LangAPI::ValueType::String}}}
                 })),
                 LangAPI::Visibility::Private
             ));

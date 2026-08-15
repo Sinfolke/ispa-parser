@@ -471,6 +471,18 @@ namespace LangAPI {
         os << "{}";
         return os;
     }
+    auto operator<<(std::ostream &os, const MakeTuple &obj) -> std::ostream& {
+        os << "make_tuple(";
+        for (const auto &expr : obj.args) {
+            os << expr << ", ";
+        }
+        os << ")";
+        return os;
+    }
+    auto operator<<(std::ostream &os, const GetVariant &obj) -> std::ostream& {
+        os << "get<" << obj.type << ">(" << obj.sym << ")";
+        return os;
+    }
     auto operator<<(std::ostream &os, const IspaLibDfaSpan &obj) -> std::ostream& {
         os << "Span<" << obj.type << "> {" << obj.assing_name << "}";
         return os;
@@ -540,6 +552,19 @@ namespace LangAPI {
     bool operator<(const Namespace &a, const Namespace &b) {
         if (a.name != b.name) return a.name < b.name;
         else return a.declarations < b.declarations;
+    }
+    bool operator==(const MakeTuple &a, const MakeTuple &b) {
+        return a.args == b.args;
+    }
+    bool operator<(const MakeTuple &a, const MakeTuple &b) {
+        return a.args < b.args;
+    }
+    bool operator==(const GetVariant &a, const GetVariant &b) {
+        return a.type == b.type && a.sym == b.sym;
+    }
+    bool operator<(const GetVariant &a, const GetVariant &b) {
+        if (a.type != b.type) return a.type < b.type;
+        return a.sym < b.sym;
     }
     auto operator<<(std::ostream &os, const Namespace &obj) -> std::ostream& {
         os << "namespace " << obj.name << "{\n";

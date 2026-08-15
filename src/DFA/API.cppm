@@ -26,30 +26,65 @@ export namespace DFA {
 
     struct TransitionKeyExt {
         NFA::TransitionKey symbol;
+
         NFA::TableType table_type;
-        // NOTE: was `lr_action_index` + `actions` (vector<NFA::LRAction>). TransitionValue
-        // no longer carries either -- it only has next/table_type/accept_index. accept_index
-        // is what actually needs to participate in DFA-state refinement (two transitions to
-        // the same partition with different sentinel-encoded accept_index are NOT equivalent),
-        // so this field replaces lr_action_index. `actions` had no remaining data source and
-        // was dropped. If per-transition LR actions come back to TransitionValue, extend this.
-        std::size_t accept_index;
+
+        // For ActionTarget:
+        //   actual action opcode
+        //   target_partition = partition of the next DFA state
+        //
+        // For SemanticTarget:
+        //   action_id identifies the semantic table entry
+        //
+        // For DFATarget:
+        //   target_partition identifies the next DFA state.
+        NFA::Action action;
+        std::size_t action_id;
         std::size_t target_partition;
 
         bool operator<(const TransitionKeyExt &other) const {
-            return std::tie(symbol, table_type, accept_index, target_partition) <
-                   std::tie(other.symbol, other.table_type, other.accept_index, other.target_partition);
+            return std::tie(
+                symbol,
+                table_type,
+                action,
+                action_id,
+                target_partition
+            ) < std::tie(
+                other.symbol,
+                other.table_type,
+                other.action,
+                other.action_id,
+                other.target_partition
+            );
         }
 
         bool operator==(const TransitionKeyExt &other) const {
-            return std::tie(symbol, table_type, accept_index, target_partition) ==
-                   std::tie(other.symbol, other.table_type, other.accept_index, other.target_partition);
+            return std::tie(
+                symbol,
+                table_type,
+                action,
+                action_id,
+                target_partition
+            ) == std::tie(
+                other.symbol,
+                other.table_type,
+                other.action,
+                other.action_id,
+                other.target_partition
+            );
         }
 
     private:
         friend struct ::uhash;
+
         auto members() const {
-            return std::tie(symbol, table_type, accept_index, target_partition);
+            return std::tie(
+                symbol,
+                table_type,
+                action,
+                action_id,
+                target_partition
+            );
         }
     };
     template<typename Transition>
@@ -76,21 +111,21 @@ export namespace DFA {
     };
 
     // --- New Target Architecture Types ---
-    struct LRTarget {
-        std::size_t lr_state_id;
-        std::size_t reduce_rule_id;
+    struct ActionTarget {
+        std::size_t id;
+        NFA::Action action;
     };
 
-    struct ActionTarget {
-        std::size_t action_id;
+    struct SemanticTarget {
+        std::size_t id;
     };
 
     struct DFATarget {
-        std::size_t dfa_state_id;
+        std::size_t id;
     };
 
     // Unified Transition Target for pure DFA runtime
-    using TransitionTarget = std::variant<DFATarget, LRTarget, ActionTarget>;
+    using TransitionTarget = std::variant<DFATarget, ActionTarget, SemanticTarget>;
 
     // Mapper for output code generation
     class StateOffsetMapper {
@@ -102,11 +137,11 @@ export namespace DFA {
             return std::visit([this](auto&& arg) -> std::size_t {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, DFATarget>) {
-                    return arg.dfa_state_id;
-                } else if constexpr (std::is_same_v<T, LRTarget>) {
-                    return dfa_size_ + arg.lr_state_id;
+                    return arg.id;
                 } else if constexpr (std::is_same_v<T, ActionTarget>) {
-                    return dfa_size_ + lr_size_ + arg.action_id;
+                    return dfa_size_ + arg.id;
+                } else if constexpr (std::is_same_v<T, SemanticTarget>) {
+                    return dfa_size_ + lr_size_ + arg.id;
                 }
             }, target);
         }
@@ -118,7 +153,7 @@ export namespace DFA {
     };
     using FullCharTable = std::array<TransitionValue, std::numeric_limits<unsigned char>::max() + 1>;
 
-    using Transitions = utype::unordered_map<NFA::TransitionKey, std::variant<DFATarget, LRTarget, ActionTarget>>;
+    using Transitions = utype::unordered_map<NFA::TransitionKey, std::variant<DFATarget, ActionTarget, SemanticTarget>>;
     using SortedTransitions = stdu::vector<std::pair<NFA::TransitionKey, TransitionValue>>;
     using SingleState = State<Transitions>;
     using CharMachineStateVariant = std::variant<FullCharTable, SortedTransitions>;

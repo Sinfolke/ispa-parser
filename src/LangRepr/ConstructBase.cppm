@@ -18,6 +18,7 @@ export namespace LangRepr {
         auto makeIntRValue(int v) -> std::shared_ptr<LangAPI::RValue>;
         auto ensureTypesNs(LangAPI::Type s) -> LangAPI::Type;
         auto ensureTypesNs(LangAPI::Symbol s) -> LangAPI::Symbol;
+        auto ensureTypesNs(LangAPI::MakeTuple t) -> LangAPI::MakeTuple;
         auto ensureTypesNs(LangAPI::StorageSymbol s) -> LangAPI::StorageSymbol;
         auto ensureTypesNs(LangAPI::Inheritance s) -> LangAPI::Inheritance;
         auto ensureTypesNs(LangAPI::RValue r) -> LangAPI::RValue;

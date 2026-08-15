@@ -1,10 +1,12 @@
 module LexerBuilder;
 import corelib;
 import LLIR.Builder;
+import LLIR.Builder.Base;
 import LLIR.Builder.Data;
 import LLIR.Builder.DataWrapper;
 import LLIR.Rule.MemberBuilder;
 import LLIR.RuleBuilder;
+import LLIR.CllBuilder;
 import NFA;
 import DFA.API;
 import DFA.functionality;
@@ -42,10 +44,19 @@ void LexerBuilder::build() {
     auto dfa_meta = DFA::build(ast, nfas);
     dfa = std::get<0>(dfa_meta);
     lr_table = std::get<1>(dfa_meta);
-    semantic_table = std::get<2>(dfa_meta);
+    auto semantic_table_abstract = std::get<2>(dfa_meta);
     max_registers_count = std::get<3>(dfa_meta);
-    // output LR table with
-
+    // change semantic table to raw Statements
+    for (const auto semantic_state : semantic_table_abstract) {
+        LangAPI::Statements statements = semantic_state.statements;
+        statements.push_back(
+            LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::MakeTuple::createExpression(LangAPI::MakeTuple {.args = {
+                LangAPI::Int::createExpression(LangAPI::Int {.value = static_cast<long long>(semantic_state.next_state)}),
+                LangAPI::Inheritance::createExpression(semantic_state.instance_value)
+            }}
+        )}));
+        semantic_table.push_back(std::move(statements));
+    }
 }
 auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
     LLIR::DataBlockList list;
@@ -53,8 +64,26 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
         if (corelib::text::isLower(name.back()))
             continue;
         // token here
-        LLIR::RuleBuilder builder(ast, name, rule, nullptr); builder.build();
-        list[name] = builder.getData().block;
+        LLIR::DataBlock dtb;
+        stdu::vector<const AST::RuleMember*> members;
+        for (const auto &member : rule.rule_members) {
+            if (member.prefix.empty())
+                continue;
+            members.push_back(&member);
+        }
+        if (members.size() == 1) {
+            dtb.value = std::make_pair(LangAPI::Expression {}, LLIR::BuilderBase::deduceVarTypeByRuleMember(*members[0]));
+        } else if (!rule.data_block.empty()){
+            LLIR::inclosed_map inclosed_map;
+            std::size_t member_counter = 0;
+            LLIR::BuilderData bd(ast, nullptr);
+            LLIR::BuilderDataWrapper bdw(bd);
+            for (const auto &name : rule.data_block.getTemplatedDataBlock().names) {
+                inclosed_map.emplace(name, std::make_pair(LangAPI::Expression {}, LLIR::BuilderBase::deduceVarTypeByRuleMember(rule.rule_members[member_counter++])));
+            }
+            dtb.value = inclosed_map;
+        }
+        list.emplace(name, dtb);
     }
     return list;
 }

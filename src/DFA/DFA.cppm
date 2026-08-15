@@ -30,7 +30,7 @@ export namespace DFA {
         States<SingleState> states;
         NFA &nfa;
         stdu::vector<NFA::ActionState> lr_table;
-        stdu::vector<LangAPI::Statements> semantic_table;
+        stdu::vector<NFA::SemanticState> semantic_table;
         auto sameAcceptBinding(const SingleState &a,const SingleState &b) -> bool;
         auto initialClass(const SingleState &s) -> std::size_t;
         auto refinementKey(const SingleState &s, const std::unordered_map<std::size_t, std::size_t> &partition_of) -> std::vector<TransitionKeyExt>;

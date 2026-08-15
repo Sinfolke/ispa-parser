@@ -6,6 +6,7 @@ import cpuf.printf;
 import constants;
 import AST.API;
 import LLIR.RuleBuilder;
+import LLIR.Builder.Base;
 import std;
 
 auto NFA::applyQuantifierAndActions(
@@ -14,7 +15,8 @@ auto NFA::applyQuantifierAndActions(
     std::size_t end,
     StateRange body,
     bool isLastMember,
-    bool addStoreActions) -> StateRange
+    bool addStoreActions,
+    bool nestedReduction) -> StateRange
 {
     Tlog::Branch b(logger, "NFA/applyQuantifierAndActions");
     logger.log(
@@ -51,19 +53,22 @@ auto NFA::applyQuantifierAndActions(
         std::size_t begin_state = states.size();
         states.emplace_back();
         states[begin_state].action_index = begin_action_idx;
-        states[start].epsilon_transitions.insert({begin_state, TableType::Action});
-        states[begin_state].epsilon_transitions.insert({body.start, TableType::Action});
+        states[start].epsilon_transitions.insert({begin_state, TableType::DFA});
+        states[begin_state].epsilon_transitions.insert({body.start, TableType::DFA});
         entry_state = begin_state;
 
         std::size_t end_state = states.size();
         states.emplace_back();
         states[end_state].action_index = end_action_idx;
-        states[body.end].epsilon_transitions.insert({end_state, TableType::Action});
-        states[end_state].epsilon_transitions.insert({end, TableType::Action});
+        states[body.end].epsilon_transitions.insert({end_state, TableType::DFA});
+        states[end_state].epsilon_transitions.insert({end, TableType::DFA});
         exit_state = end_state;
+
+        value_types.push_back(LLIR::BuilderBase::deduceVarTypeByRuleMember(member));
+
     } else {
-        states[start].epsilon_transitions.insert({body.start, TableType::Action});
-        states[body.end].epsilon_transitions.insert({end, TableType::Action});
+        states[start].epsilon_transitions.insert({body.start, TableType::DFA});
+        states[body.end].epsilon_transitions.insert({end, TableType::DFA});
     }
 
     // Quantifier Routing ('?', '+', '*') using LR Table transitions
@@ -73,16 +78,16 @@ auto NFA::applyQuantifierAndActions(
 
     switch (member.quantifier) {
         case '?':
-            states[start].epsilon_transitions.insert({end, TableType::Action});
+            states[start].epsilon_transitions.insert({end, TableType::DFA});
             states[start].optional = true;
             break;
         case '+':
-            states[exit_state].epsilon_transitions.insert({loop_target, TableType::Action});
+            states[exit_state].epsilon_transitions.insert({loop_target, TableType::DFA});
             states[body.start].optional = true;
             break;
         case '*':
-            states[start].epsilon_transitions.insert({end, TableType::Action});
-            states[exit_state].epsilon_transitions.insert({loop_target, TableType::Action});
+            states[start].epsilon_transitions.insert({end, TableType::DFA});
+            states[exit_state].epsilon_transitions.insert({loop_target, TableType::DFA});
             states[start].optional = true;
             states[body.start].optional = true;
             break;
@@ -91,15 +96,17 @@ auto NFA::applyQuantifierAndActions(
     }
 
     // Last Member / Accept Marking with Unique Representation Hook
-    if (isLastMember && !isWhitespaceToken) {
-        markAccept(start, member);
+    if (isLastMember) {
+        markAccept(end, end, member, nestedReduction);
     }
 
     return {start, end};
 }
 void NFA::markAccept(
     std::size_t state_id,
-    const AST::RuleMember &member
+    std::size_t next_state,
+    const AST::RuleMember &member,
+    bool nestedReduction
 ) {
     TokenBinding binding;
 
@@ -107,31 +114,71 @@ void NFA::markAccept(
     binding.is_unique_representation =
         member.isString() || member.isCsequence();
 
-    /*
-     * Every accepting token gets a semantic REDUCE.
-     *
-     * The semantic table entry is the actual token construction
-     * associated with this grammar rule.
-     */
-    LangAPI::Inheritance instance {
-        .name = name_,
-        .args = {}
-    };
+    SemanticState state;
+    if (!member.prefix.empty()) {
+        if (dtb->isRegularDataBlock()) {
+            const auto &data_block = dtb->getRegDataBlock();
+            auto type = value_types[0];
+            std::string array_name = (type.isValueType() && (type.getValueType() == LangAPI::ValueType::Array || type.getValueType() == LangAPI::ValueType::FixedSizeArray) ? "vec_values" : "values");
+            LangAPI::StorageSymbol ss;
+            ss = {LangAPI::StorageOffset {.offset = LangAPI::Int::createExpression(LangAPI::Int {.value = 0})}};
+            ss.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {array_name});
+            state.statements.push_back(LangAPI::Variable {
+                .name = "value",
+                .type = type,
+                .value = LangAPI::GetVariant::createExpression(LangAPI::GetVariant {.type = std::make_shared<LangAPI::Type>(type), .sym = LangAPI::StorageSymbol::createExpression(ss)})
+            });
+            ss.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {array_name});
+            ss.path = {LangAPI::ArrayMethodCall {.method = LangAPI::ArrayMethods::Pop}};
+            state.statements.push_back(LangAPI::StorageSymbol::createStatement(ss));
+            state.instance_value.name = LangAPI::Symbol {name_};
+            state.instance_value.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol { "value" }));
+        } else if (dtb->isTemplatedDataBlock()) {
+            const auto &data_block = dtb->getTemplatedDataBlock();
+            for (long long i = static_cast<long long>(data_block.names.size()) - 1; i >= 0; --i) {
+                const auto &key = data_block.names[static_cast<std::size_t>(i)];
+                const auto u_idx = static_cast<std::size_t>(i);
+                LangAPI::Type type = (u_idx < value_types.size()) ? value_types[u_idx] : LangAPI::Type{};
 
-    semantic_table.push_back(
-        LangAPI::Inheritance::createStatements(instance)
-    );
+                std::string array_name = (type.isValueType() &&
+                    (type.getValueType() == LangAPI::ValueType::Array ||
+                     type.getValueType() == LangAPI::ValueType::FixedSizeArray)) ? "vec_values" : "values";
 
-    const std::size_t reduce_idx =
-        semantic_table.size() - 1;
+                LangAPI::StorageSymbol ss;
+                ss = {LangAPI::StorageOffset {.offset = LangAPI::Int::createExpression(LangAPI::Int {.value = 0})}};
+                ss.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {array_name});
+                state.statements.push_back(LangAPI::Variable {
+                    .name = key,
+                    .type = type,
+                    .value = LangAPI::GetVariant::createExpression(LangAPI::GetVariant {.type = std::make_shared<LangAPI::Type>(type), .sym = LangAPI::StorageSymbol::createExpression(ss)})
+                });
+                ss.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {array_name});
+                ss.path = {LangAPI::ArrayMethodCall {.method = LangAPI::ArrayMethods::Pop}};
+                state.statements.push_back(LangAPI::StorageSymbol::createStatement(ss));
+                state.instance_value.name = LangAPI::Symbol {name_};
+                state.instance_value.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol { key }));
+            }
+        } else {
+            state.instance_value = LangAPI::Inheritance {.name = name_};
+        }
+    } else {
+        // Fallback for prefix-less tokens/rules
+        state.instance_value = LangAPI::Inheritance {.name = name_};
+    }
+
+    std::reverse(state.instance_value.args.begin(), state.instance_value.args.end());
+    state.next_state = nestedReduction ? next_state : NULL_STATE;
+
+    semantic_table.push_back(state);
+    const std::size_t reduce_idx = semantic_table.size() - 1;
 
     binding.reduce_rule_id = *accept_index;
     binding.target_semantic_state = reduce_idx;
 
+    // Assigned for ALL accepting rules
     states[state_id].accept_binding = binding;
     states[state_id].last = true;
 }
-
 void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions) {
     if (addStoreActions && !member.prefix.empty()) {
         cst_node_close_propagate.push_back(end);
@@ -141,9 +188,9 @@ void NFA::handleTerminal(const AST::RuleMember &member, const stdu::vector<std::
     states.emplace_back();
     std::size_t body_end   = states.size();
     states.emplace_back();
-    states[body_start].transitions[name] = {{body_end, TableType::Action}};
+    states[body_start].transitions[name] = {{body_end, TableType::DFA}};
 
-    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
+    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions, false);
 }
 
 void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
@@ -158,20 +205,23 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
         auto fragment = buildStateFragment(prod, false, addStoreActions);
         if (fragment.invalid())
             continue;
-        states[last].epsilon_transitions.insert({fragment.start, TableType::Action});
+        states[last].epsilon_transitions.insert({fragment.start, TableType::DFA});
         last = fragment.end;
     }
-    states[last].epsilon_transitions.insert({body_end, TableType::Action});
+    states[last].epsilon_transitions.insert({body_end, TableType::DFA});
 
-    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
+    // NFA.cpp inside NFA::handleNonTermnal
+    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions, true);
 
-    if (!states[body_start].last && !states[body_start].optional)
+    // WAS: if (!states[body_start].last && !states[body_start].optional)
+    if (!states[body_end].last && !states[body_end].optional)
         return;
 
-    auto states_to_propagate_last = getStatesToPropagate(body_start);
+    // WAS: auto states_to_propagate_last = getStatesToPropagate(body_start);
+    auto states_to_propagate_last = getStatesToPropagate(body_end);
     for (const auto s : states_to_propagate_last) {
-        states[s].last = states[body_start].last;
-        states[s].optional = states[body_start].optional;
+        states[s].last = states[body_end].last;
+        states[s].optional = states[body_end].optional;
     }
 }
 
@@ -198,11 +248,11 @@ void NFA::handleGroup(const AST::RuleMember &member,
         if (fragment.invalid())
             continue;
 
-        states[body_end].epsilon_transitions.insert({fragment.start, TableType::Action});
+        states[body_end].epsilon_transitions.insert({fragment.start, TableType::DFA});
         body_end = fragment.end;
     }
 
-    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
+    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions, false);
 }
 
 void NFA::handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions) {
@@ -216,20 +266,22 @@ void NFA::handleString(const AST::RuleMember &member, const std::string &str, co
     for (std::size_t i = 0; i < str.size(); ++i) {
         std::size_t next = states.size();
         states.emplace_back();
-        states[current].transitions[str[i]] = {{next, TableType::Action}};
+        states[current].transitions[str[i]] = {{next, TableType::DFA}};
         current = next;
     }
     std::size_t body_end = current;
 
-    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
+    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions, false);
 
-    if (!states[start].last && !states[start].optional)
+    // WAS: if (!states[start].last && !states[start].optional)
+    if (!states[end].last && !states[end].optional)
         return;
 
-    auto states_to_propagate_last = getStatesToPropagate(start);
+    // WAS: auto states_to_propagate_last = getStatesToPropagate(start);
+    auto states_to_propagate_last = getStatesToPropagate(end);
     for (const auto s : states_to_propagate_last) {
-        states[s].last = states[start].last;
-        states[s].optional = states[start].optional;
+        states[s].last = states[end].last;
+        states[s].optional = states[end].optional;
     }
 }
 
@@ -256,27 +308,27 @@ void NFA::handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCs
         }
         for (unsigned char c = std::numeric_limits<unsigned char>::min();; ++c) {
             if (!prohibited.test(c)) {
-                states[body_start].transitions[static_cast<char>(c)] = {{body_end, TableType::Action}};
+                states[body_start].transitions[static_cast<char>(c)] = {{body_end, TableType::DFA}};
             }
             if (c == max)
                 break;
         }
     } else {
         for (char c : chars) {
-            states[body_start].transitions[c] = {{body_end, TableType::Action}};
+            states[body_start].transitions[c] = {{body_end, TableType::DFA}};
         }
         for (char c : escaped) {
             char ec = corelib::text::getEscapedFromChar(c);
-            states[body_start].transitions[ec] = {{body_end, TableType::Action}};
+            states[body_start].transitions[ec] = {{body_end, TableType::DFA}};
         }
         for (auto [from, to] : csequence.diapasons) {
             for (char c = from; c <= to; ++c) {
-                states[body_start].transitions[c] = {{body_end, TableType::Action}};
+                states[body_start].transitions[c] = {{body_end, TableType::DFA}};
             }
         }
     }
 
-    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions);
+    applyQuantifierAndActions(member, start, end, {body_start, body_end}, isLastMember, addStoreActions, false);
 }
 
 auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, bool addStoreActions) -> StateRange {
@@ -327,11 +379,11 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
             if (fragment.invalid())
                 continue;
 
-            states[start].epsilon_transitions.insert({fragment.start, TableType::Action});
-            states[fragment.end].epsilon_transitions.insert({end, TableType::Action});
+            states[start].epsilon_transitions.insert({fragment.start, TableType::DFA});
+            states[fragment.end].epsilon_transitions.insert({end, TableType::DFA});
 
-            if (isLastMember && !isWhitespaceToken) {
-                markAccept(fragment.start, option);
+            if (isLastMember) {
+                markAccept(fragment.end, end, option, false);
             }
             if (!states[fragment.start].last)
                 continue;
@@ -354,9 +406,9 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
         handleCsequence(member, member.getCsequence(), start, end, isLastMember, addStoreActions);
     } else if (member.isAny()) {
         for (unsigned char c = std::numeric_limits<unsigned char>::min(); c != std::numeric_limits<unsigned char>::max(); c++) {
-            states[start].transitions[static_cast<char>(c)] = {{end, TableType::Action}};
+            states[start].transitions[static_cast<char>(c)] = {{end, TableType::DFA}};
         }
-        states[start].transitions[static_cast<char>(std::numeric_limits<unsigned char>::max())] = {{end, TableType::Action}};
+        states[start].transitions[static_cast<char>(std::numeric_limits<unsigned char>::max())] = {{end, TableType::DFA}};
     } else {
         std::visit([](auto &m) {
             throw Error("Undefined member: {}", typeid(m).name());
@@ -377,9 +429,10 @@ void NFA::build(bool addStoreActions) {
     if (rules != nullptr && !rules->empty()) {
         for (std::size_t i = 0; i < rules->size(); ++i) {
             bool is_last = (i == rules->size() - 1);
+            current_member = &((*rules)[i]);
             auto [start, end] = buildStateFragment((*rules)[i], is_last, addStoreActions);
             if (end != NULL_STATE && !is_last) {
-                states[end].epsilon_transitions.insert({states.size(), TableType::Action});
+                states[end].epsilon_transitions.insert({states.size(), TableType::DFA});
             }
             if (is_last) {
                 last_state = end;
@@ -389,6 +442,7 @@ void NFA::build(bool addStoreActions) {
             throw Error("NFA/LR table cannot be empty");
         }
     } else if (member != nullptr) {
+        current_member = member;
         last_state = buildStateFragment(*member, true, addStoreActions).end;
     } else {
         throw Error("NFA rules/member cannot be null");
@@ -484,11 +538,11 @@ void NFA::addSpaceSkip() {
         if (is_char_table) {
             for (const auto c : constants::whitespace_chars) {
                 if (!investigateHasNext(place, c, visited)) {
-                    state.transitions[c] = {{place, TableType::Action}};
+                    state.transitions[c] = {{place, TableType::DFA}};
                 }
             }
         } else {
-            state.transitions[constants::whitespace] = {{place, TableType::Action}};
+            state.transitions[constants::whitespace] = {{place, TableType::DFA}};
         }
     }
 }
@@ -505,11 +559,7 @@ void NFA::acceptMapVisitState(std::size_t index, std::optional<TokenBinding> cur
         accept_map[index] = current_binding.value();
     }
 
-    for (const auto &[symbol, targets] : states[index].transitions) {
-        for (const auto &target : targets) {
-            acceptMapVisitState(target.next, current_binding, visited);
-        }
-    }
+    // Propagate bindings strictly through epsilon transitions
     for (const auto &e : states[index].epsilon_transitions) {
         acceptMapVisitState(e.next, current_binding, visited);
     }

@@ -569,18 +569,38 @@ auto LLIR::BuilderBase::deduceUvarType(const LangAPI::Variable &var, const LangA
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
 auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type {
-    LangAPI::Type type = LangAPI::ValueType::Undef;
+    LangAPI::Type type = LangAPI::ValueType::String;
     if (mem.isGroup()) {
         const auto &val = mem.getGroup().values;
         if (val.size() == 1) {
             type = deduceVarTypeByRuleMember(val[0]);
         } else {
+            stdu::vector<LangAPI::Type> types;
+            utype::unordered_set<LangAPI::Type> meeted_types;
+            bool alL_string = true;
             for (auto i = 0; i < val.size(); i++) {
-                if (deduceVarTypeByRuleMember(val[i]) != LangAPI::ValueType::String) {
-                    return LangAPI::ValueType::Undef;
+                auto tmp_type = deduceVarTypeByRuleMember(val[i]);
+                if (tmp_type != LangAPI::ValueType::String && tmp_type != LangAPI::ValueType::Char) {
+                    types.push_back(tmp_type);
+                    meeted_types.insert(tmp_type);
+                    alL_string = false;
+                } else {
+                    types.push_back(LangAPI::ValueType::String);
+                    meeted_types.insert(tmp_type);
                 }
             }
-            type = LangAPI::ValueType::String;
+            if (alL_string) {
+                type = LangAPI::ValueType::String;
+            } else {
+                LangAPI::Type tuple = {LangAPI::ValueType::Tuple};
+                for (const auto &insert_type : types) {
+                    if (meeted_types.contains(insert_type)) {
+                        tuple.template_parameters.push_back(insert_type);
+                        meeted_types.erase(insert_type);
+                    }
+                }
+                return tuple;
+            }
         }
     } else if (mem.isOp()) {
         std::optional<LangAPI::Type> first_type;
@@ -601,7 +621,9 @@ auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) ->
     } else if (mem.isName()) {
         LangAPI::Symbol sym {mem.getName().name};
         type = { corelib::text::isUpper(mem.getName().name.back()) ? LangAPI::ValueType::Token : LangAPI::ValueType::Rule, LangAPI::Type { sym }};
-    } else type = LangAPI::ValueType::String;
+    } else if (mem.isString() && mem.getString().value.size() == 1 || mem.isAny() || (mem.isCsequence() && (mem.quantifier == '?' || mem.quantifier == '\0'))) {
+        return LangAPI::ValueType::Char;
+    }
     return type;
 }
 

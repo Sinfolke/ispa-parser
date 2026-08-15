@@ -148,7 +148,7 @@ namespace Parser {
 		struct LINEAR_COMMENT {
 		};
 		struct cll_COMPARE_OP {
-			std::string value;
+			std::variant<std::monostate, char, std::string> value;
 		};
 		struct AUTO_5 {
 			char value;
@@ -165,14 +165,14 @@ namespace Parser {
 			std::string value;
 		};
 		struct STRING {
-			std::string value;
+			std::variant<std::monostate, char, std::string> value;
 		};
 		struct DIVIDE {
 		};
 		struct DOT {
 		};
 		struct AUTO_11 {
-			char value;
+			std::string value;
 		};
 		struct QUESTION_MARK {
 		};
@@ -180,20 +180,24 @@ namespace Parser {
 		};
 		struct cll_LOGICAL_NOT {
 		};
+		struct rule_CSEQUENCE {
+			char _not;
+			char val;
+		};
 		struct NUMBER {
-			std::string sign;
+			char sign;
 			std::string main;
 			std::string dec;
 		};
 		struct AUTO_30 {
-			char value;
+			std::string value;
 		};
 		struct cll_LOGICAL_OR {
 		};
 		struct rule_OP {
 		};
 		struct AUTO_9 {
-			char value;
+			std::string value;
 		};
 		struct rule_CSEQUENCE_SYMBOL {
 			char value;
@@ -225,34 +229,34 @@ namespace Parser {
 		struct __WHITESPACE {
 		};
 		struct AUTO_12 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_17 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_14 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_10 {
-			char value;
+			std::string value;
 		};
 		struct rule_HEX {
 			std::string value;
 		};
 		struct AUTO_16 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_19 {
 			char value;
 		};
 		struct AUTO_28 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_27 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_15 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_18 {
 			char value;
@@ -272,7 +276,7 @@ namespace Parser {
 		struct PLUS {
 		};
 		struct AUTO_21 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_8 {
 			char value;
@@ -281,13 +285,13 @@ namespace Parser {
 			char value;
 		};
 		struct AUTO_13 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_23 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_24 {
-			char value;
+			std::string value;
 		};
 		struct AUTO_25 {
 			char value;
@@ -296,14 +300,14 @@ namespace Parser {
 			char value;
 		};
 		struct AUTO_29 {
-			char value;
+			std::string value;
 		};
 		struct cll_LOGICAL_OP {
 			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
 		};
 		struct rule_CSEQUENCE_DIAPASON {
-			::ISPA_STD::MatchResult<Tokens, rule_CSEQUENCE_SYMBOL> begin;
-			::ISPA_STD::MatchResult<Tokens, rule_CSEQUENCE_SYMBOL> end;
+			::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL> begin;
+			std::string end;
 		};
 		struct rule_name {
 			::ISPA_STD::Node<Tokens, AUTO_6> is_nested;
@@ -337,10 +341,6 @@ namespace Parser {
 		};
 		struct rule_quantifier {
 			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, QUESTION_MARK>> value;
-		};
-		struct rule_CSEQUENCE {
-			char _not;
-			std::vector<std::variant<std::monostate, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_DIAPASON>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE_ESCAPE>>> val;
 		};
 		struct moduleImport_from {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, moduleImport_from_import_list>, ::ISPA_STD::Node<Tokens, MULTIPLE>> what;
@@ -607,13 +607,13 @@ namespace Parser {
 	using Token = std::variant<std::monostate, Types::NAME, Types::AUTO_2, Types::cll::LOGICAL_AND, Types::AUTO_0, Types::LINEAR_COMMENT, Types::cll::COMPARE_OP, Types::AUTO_5, Types::cll::ASSIGNMENT_OP, Types::MINUS, Types::AUTO_4, Types::SPACEMODE, Types::STRING, Types::DIVIDE, Types::DOT, Types::AUTO_11, Types::QUESTION_MARK, Types::MODULO, Types::cll::LOGICAL_NOT, Types::rule::CSEQUENCE, Types::NUMBER, Types::AUTO_30, Types::cll::LOGICAL_OR, Types::rule::OP, Types::AUTO_9, Types::rule::CSEQUENCE::SYMBOL, Types::AT, Types::rule::CSEQUENCE::DIAPASON, Types::AUTO_1, Types::rule::CSEQUENCE::ESCAPE, Types::MULTIPLE, Types::AUTO_7, Types::BOOLEAN, Types::rule::NOSPACE, Types::rule::BIN, Types::AUTO_6, Types::__WHITESPACE, Types::AUTO_12, Types::AUTO_17, Types::AUTO_14, Types::AUTO_10, Types::rule::HEX, Types::AUTO_16, Types::AUTO_19, Types::AUTO_28, Types::AUTO_27, Types::AUTO_15, Types::AUTO_18, Types::rule::ESCAPED, Types::AUTO_20, Types::ID, Types::AUTO_22, Types::PLUS, Types::AUTO_21, Types::AUTO_8, Types::cll::LOGICAL_OP, Types::AUTO_3, Types::AUTO_13, Types::AUTO_23, Types::AUTO_24, Types::AUTO_25, Types::AUTO_26, Types::AUTO_29>;
 	class Lexer : public ::ISPA_STD::Lexer_base<Tokens, Token> {
 		static ::ISPA_STD::DFA::API::CharToClass char_class_table;
-		static ::ISPA_STD::DFA::API::Table<181, 57> dfa_table;
-		static ::ISPA_STD::DFA::API::Table<96, 3> lr_table;
-		static auto semantic_action_exec(int state) -> int;
+		static ::ISPA_STD::DFA::API::Table<30, 19> dfa_table;
+		static ::ISPA_STD::DFA::API::Table<21, 3> lr_table;
+		static auto semantic_action_exec(int state, std::vector<std::variant<std::monostate, Token, char, std::string>>& values, std::vector<std::vector<std::variant<std::monostate, Token, char, std::string>>>& vec_values) -> std::pair<int, Token>;
 		bool init_done;
 		auto init() -> void override;
-		std::vector<std::variant<std::monostate, Token, std::string>> values;
-		std::vector<std::vector<std::variant<std::monostate, Token, std::string>>> vec_values;
+		std::vector<std::variant<std::monostate, Token, char, std::string>> values;
+		std::vector<std::vector<std::variant<std::monostate, Token, char, std::string>>> vec_values;
 		std::array<const char*, 8> registers;
 	public: 
 		auto makeToken(const char*& pos) -> Token override;

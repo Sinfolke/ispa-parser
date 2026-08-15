@@ -12,6 +12,16 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
         switch (type.getValueType()) {
             case LangAPI::ValueType::Void:
                 return "void";
+            case LangAPI::ValueType::Const:
+                return "const " + convertTemplates(type.template_parameters);
+            case LangAPI::ValueType::Reference:
+                return convertTemplates(type.template_parameters) + "&";
+            case LangAPI::ValueType::Tuple:
+                if (type.template_parameters.size() == 2) {
+                    return std::string("std::pair<") + convertTemplates(type.template_parameters) + ">";
+                } else {
+                    return std::string("std::tuple<") + convertTemplates(type.template_parameters) + ">";
+                }
             case LangAPI::ValueType::Char:
                 return "char";
             case LangAPI::ValueType::Int:
@@ -422,6 +432,22 @@ auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) 
     out << ")";
     return out.str();
 }
+auto Core::convertMakeTuple(const LangAPI::MakeTuple &make_tuple) -> std::string {
+    std::string tuple = make_tuple.args.size() == 2 ? "std::make_pair(" : "std::make_tuple(";
+    bool first = false;
+    for (const auto &el : make_tuple.args) {
+        tuple += convertExpression(el);
+        if (!first) {
+            tuple += ", ";
+            first = true;
+        }
+    }
+    tuple += ")";
+    return tuple;
+}
+auto Core::convertGetVariant(const LangAPI::GetVariant &get_variant) -> std::string {
+    return std::string("std::get<") + convertType(*get_variant.type) + ">(" + convertExpression(get_variant.sym) + ")";
+}
 auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
     switch (rvalue.type()) {
         case LangAPI::RValueType::Undef:
@@ -521,9 +547,9 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             } else {
                 res += convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(inheritance.name));
             }
-            res += '(';
+            res += '{';
             res += convertFunctionParams(inheritance.args);
-            res += ')';
+            res += '}';
             return res;
         }
         case LangAPI::RValueType::IspaLibDfaTransition: {
@@ -604,6 +630,10 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             return "&" + convertRValue(*rvalue.getReference().value);
         case LangAPI::RValueType::Span:
             return "::ISPA_STD::Span<" + convertType(*rvalue.getSpan().type) + "> { " + convertSymbol(rvalue.getSpan().sym) + ".data(), " + convertSymbol(rvalue.getSpan().sym) + ".size() }";
+        case LangAPI::RValueType::MakeTuple:
+            return convertMakeTuple(rvalue.getMakeTuple());
+        case LangAPI::RValueType::GetVariant:
+            return convertGetVariant(rvalue.getVariantCast());
         default:
             throw Error("Unknown RValue type: {}", (int) rvalue.type());
     }

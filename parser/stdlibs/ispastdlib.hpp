@@ -309,12 +309,12 @@ namespace DFA {
         std::size_t registers_count
     >
     auto scan(
-        const char* pos,
+        const char* &pos,
         const API::Table<table_classes, table_states> &table,
         const API::CharToClass class_table,
         const API::LRTable<lr_table_states> lr_table,
-        std::vector<std::variant<Token, std::string>> &values,
-        std::vector<std::vector<std::variant<Token, std::string>>> &vec_values,
+        std::vector<std::variant<std::monostate, Token, char, std::string>> &values,
+        std::vector<std::vector<std::variant<std::monostate, Token, char, std::string>>> &vec_values,
         std::array<const char*, registers_count> registers,
         SemanticFunc semantic
     ) -> Token {
@@ -322,26 +322,34 @@ namespace DFA {
         std::size_t registers_allocated = 0;
         while (true) {
             std::size_t cls = class_table[*pos];
-            std::size_t next = table[cls];
-
+            std::size_t next = table[state][cls];
+            std::cout << "char " << *pos << " class " << cls << " state " << state << " next " << next << std::endl;
             if (next <= table.size()) {
                 state = next;
-                continue;
             } else if (next <= table.size() + lr_table.size()) {
                 // LR action for this state
                 auto lr_action = lr_table[next - table.size()];
-                switch (lr_action[0]) {
+                switch (static_cast<API::Action>(lr_action[0])) {
                     case API::Action::UNDEF:
                         throw std::runtime_error("DFA: undefined action; This MUST NOT be your mistake; Report this error to github");
                     case API::Action::BEGIN:
                         registers[registers_allocated++] = pos;
                         break;
                     case API::Action::END:
-                        values.push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                        if (registers[registers_allocated - 1] - pos == 1) {
+                            values.push_back(*registers[registers_allocated - 1]);
+                        } else {
+                            values.push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                        }
                         registers_allocated--;
                         break;
                     case API::Action::PUSH:
-                        vec_values.back().push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                        if (registers[registers_allocated - 1] - pos == 1) {
+                            vec_values.back().push_back(*registers[registers_allocated - 1]);
+                        } else {
+                            vec_values.back().push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
+                        }
+                        break;
                     default:
                         throw std::runtime_error("DFA: Out of bound, non-enum action; This MUST NOT be your mistake; Report this error to github");
                 }
@@ -354,18 +362,15 @@ namespace DFA {
                 std::pair<int, Token> t = semantic(state - table.size() - lr_table.size(), values, vec_values);
                 if (!std::holds_alternative<std::monostate>(t.second)) {
                     // handle reduce action result
-                    values.push_back(std::move(t));
+                    values.push_back(std::move(t.second));
                 }
                 // transition to the next state
                 state = t.first;
             }
+            ++pos;
         }
-        // if no value accumulated at all, we consider token does not need value at all
         // take the first 'values' value and return it
         // we also ensure it is token, as otherwise it is considered inconsistent behaviour
-
-        if (values.size() == 0)
-            return {};
         if (!std::holds_alternative<Token>(values.front()) && values.size() > 0) {
             std::cout << "Warning [DFA]: Returned non-token result; This MUST NOT be your mistake; Report this error to github" << std::endl;
         }
@@ -412,11 +417,11 @@ protected:
         const DFA::API::Table<table_classes, table_states> &table,
         const DFA::API::CharToClass class_table,
         const DFA::API::LRTable<lr_table_states> lr_table,
-        std::vector<std::variant<Token, std::string>> &values,
-        std::vector<std::vector<std::variant<Token, std::string>>> &vec_values,
+        std::vector<std::variant<std::monostate, Token, char, std::string>> &values,
+        std::vector<std::vector<std::variant<std::monostate, Token, char, std::string>>> &vec_values,
         std::array<const char*, registers_count> registers,
         SemanticFunc semantic,
-        const char* pos
+        const char* &pos
     ) {
         if (*pos == '\0')
             return Token {};

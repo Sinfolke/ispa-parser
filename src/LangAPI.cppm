@@ -80,10 +80,10 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Void, Char, Int, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const
+        Undef, Void, Char, Int, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, Rule, TokenResult, RuleResult, Span, Variant, Box, Any, Const, Reference, Tuple
     };
     enum class RValueType {
-        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span
+        Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant
     };
     enum class ExpressionValueType {
         Empty, EmptyInitializer, RValue, ExpressionElement, FunctionCall, IspaLibFunctionCall, StringCompare, Return, Break, Continue, VariableAssignment, CounterIncreament, CounterIncreamentByLength,
@@ -417,7 +417,7 @@ export namespace LangAPI {
             return std::tie(path);
         }
     };
-    struct StorageOffset {
+    struct StorageOffset : RValueLevel {
         Expression offset;
 
         friend bool operator==(const StorageOffset &a, const StorageOffset &b);
@@ -435,7 +435,6 @@ export namespace LangAPI {
         using PathPart = std::variant<FunctionCall, ArrayMethodCall, IspaLibSymbol, StorageOffset, std::string>;
         Expression what;
         stdu::vector<PathPart> path;
-
 
         template<typename... Args>
         requires (std::constructible_from<PathPart, Args> && ...)
@@ -697,8 +696,33 @@ export namespace LangAPI {
             return std::tie();
         }
     };
+    struct MakeTuple : RValueLevel {
+        stdu::vector<Expression> args;
+        bool operator==(const MakeTuple&) const { return true; }
+        bool operator!=(const MakeTuple&) const { return false; }
+        bool operator<(const MakeTuple&) const { return false; }
+        friend auto operator<<(std::ostream& os, const MakeTuple &c) -> std::ostream&;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(args);
+        }
+    };
+    struct GetVariant : RValueLevel {
+        std::shared_ptr<Type> type;
+        Expression sym;
+        bool operator==(const GetVariant&) const { return true; }
+        bool operator!=(const GetVariant&) const { return false; }
+        bool operator<(const GetVariant&) const { return false; }
+        friend auto operator<<(std::ostream& os, const GetVariant &c) -> std::ostream&;
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(type, sym);
+        }
+    };
     class RValue : public ExpressionValueLevel {
-        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span> value;
+        std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant> value;
         friend struct ::uhash;
         auto members() const {
             return std::tie(value);
@@ -708,11 +732,10 @@ export namespace LangAPI {
         RValue() {}
         template<typename T>
         requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
-        RValue(const T &value) : value(std::move(value)) {}
+        RValue(const T &value) : value(value) {}
         template<typename T>
         requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         RValue(T &&value) : value(std::move(value)) {}
-
         template<typename T>
         requires std::is_constructible_v<decltype(value), std::decay_t<T>> && (!std::is_same_v<std::decay_t<T>, std::monostate>)
         void set(T &&value)  {this->value = std::move(value); }
@@ -745,6 +768,8 @@ export namespace LangAPI {
         // bool isIspaLibDfaState()  const { return std::holds_alternative<IspaLibDfaState>(value); }
         bool isReference()  const { return std::holds_alternative<Reference>(value); }
         bool isSpan()  const { return std::holds_alternative<Span>(value); }
+        bool isMakeTuple()  const { return std::holds_alternative<MakeTuple>(value); }
+        bool isGetVariant()  const { return std::holds_alternative<GetVariant>(value); }
         bool isUndef() const { return std::holds_alternative<std::monostate>(value); }
         bool empty() const { return std::holds_alternative<std::monostate>(value); }
 
@@ -769,6 +794,8 @@ export namespace LangAPI {
         // IspaLibDfaState&  getIspaLibDfaState()  { return std::get<IspaLibDfaState>(value); }
         Reference&  getReference()  { return std::get<Reference>(value); }
         Span&  getSpan()  { return std::get<Span>(value); }
+        MakeTuple&  getMakeTuple()  { return std::get<MakeTuple>(value); }
+        GetVariant&  getVariantCast()  { return std::get<GetVariant>(value); }
 
         const Char&           getChar()   const { return std::get<Char>(value); }
         const Int&            getInt()    const { return std::get<Int>(value); }
@@ -791,6 +818,8 @@ export namespace LangAPI {
         // const IspaLibDfaState&  getIspaLibDfaState() const  { return std::get<IspaLibDfaState>(value); }
         const Reference&  getReference() const  { return std::get<Reference>(value); }
         const Span&  getSpan() const  { return std::get<Span>(value); }
+        const MakeTuple&  getMakeTuple() const { return std::get<MakeTuple>(value); }
+        const GetVariant&  getVariantCast() const { return std::get<GetVariant>(value); }
 
         auto type() const -> RValueType { return static_cast<RValueType>(value.index()); }
         auto get() const { return value; }

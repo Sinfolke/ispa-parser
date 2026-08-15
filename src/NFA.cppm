@@ -17,7 +17,7 @@ public:
         DFA, Action, Semantic
     };
     enum class Action {
-        UNDEF, BEGIN, END, PUSH
+        UNDEF, BEGIN, END, PUSH, FAIL
     };
     enum class SemanticAction {
         UNDEF, REDUCE
@@ -54,7 +54,7 @@ public:
     // Internal NFA transition used during graph construction
     struct TransitionValue {
         std::size_t next = NULL_STATE;
-        TableType table_type = TableType::Action;
+        TableType table_type = TableType::DFA;
         auto operator==(const TransitionValue &other) const -> bool = default;
     private:
         friend struct ::uhash;
@@ -78,10 +78,17 @@ public:
             return std::tie(action, variable, DFA_next_state);
         }
     };
+
+    struct SemanticState {
+        LangAPI::Inheritance instance_value;
+        LangAPI::Statements statements;
+        std::size_t next_state = NULL_STATE;
+    };
+
     using TemplatedDataBlock = utype::unordered_map<std::string, TemplatedDataBlockValue>;
     using DataBlock = std::variant<std::monostate, TemplatedDataBlock, TemplatedDataBlockValue>;
     using ActionTable = stdu::vector<ActionState>;
-    using SemanticTable = stdu::vector<LangAPI::Statements>;
+    using SemanticTable = stdu::vector<SemanticState>;
 
     struct state {
         utype::unordered_map<TransitionKey, stdu::vector<TransitionValue>> transitions;
@@ -116,11 +123,11 @@ public:
             return !valid();
         }
     };
-
 private:
     AST::Tree &tree;
     const stdu::vector<AST::RuleMember> *rules = nullptr;
     const AST::RuleMember *member = nullptr;
+    const AST::RuleMember *current_member = nullptr;
     const AST::DataBlock *dtb;
     const stdu::vector<std::string> &name_;
     DataBlock nfadtb;
@@ -139,6 +146,7 @@ private:
     bool first = true;
     bool isWhitespaceToken = false;
     std::unordered_map<std::size_t, TokenBinding> accept_map;
+    stdu::vector<LangAPI::Type> value_types;
     std::size_t registers_count = 0;
     ActionTable action_table;
     SemanticTable semantic_table;
@@ -150,8 +158,8 @@ private:
         std::size_t end,
         StateRange body,
         bool isLastMember,
-        bool addStoreActions
-    ) -> StateRange;
+        bool addStoreActions,
+        bool nestedReduction) -> StateRange;
     void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions);
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
     void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
@@ -163,7 +171,11 @@ private:
     void addSpaceSkip();
     // Marks `state_id` as an accept state for `member`, and, if the token isn't a
     // unique/literal representation, pushes a REDUCE entry into the Semantic table.
-    void markAccept(std::size_t state_id, const AST::RuleMember &member);
+    void markAccept(
+    std::size_t state_id,
+    std::size_t next_state,
+    const AST::RuleMember &member,
+    bool nestedReduction);
     void acceptMapVisitState(std::size_t index, std::optional<TokenBinding> current_binding, std::unordered_set<std::size_t>& visited);
     void getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result);
     auto getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t>;

@@ -58,7 +58,12 @@ namespace LangRepr {
         }
         return s;
     }
-
+    auto ConstructBase::ensureTypesNs(LangAPI::MakeTuple t) -> LangAPI::MakeTuple {
+        for (auto &p : t.args) {
+            p = ensureTypesNs(p);
+        }
+        return t;
+    }
     // 2. StorageSymbol Traversal
     auto ConstructBase::ensureTypesNs(LangAPI::StorageSymbol s) -> LangAPI::StorageSymbol {
         s.what = ensureTypesNs(s.what);
@@ -83,9 +88,7 @@ namespace LangRepr {
 
     // 4. RValue Traversal
     auto ConstructBase::ensureTypesNs(LangAPI::RValue r) -> LangAPI::RValue {
-        if (r.isSymbol()) {
-            r.set(ensureTypesNs(r.getSymbol()));
-        } else if (r.isStorageSymbol()) {
+        if (r.isStorageSymbol()) {
             r.set(ensureTypesNs(r.getStorageSymbol()));
         } else if (r.isInheritance()) {
             r.set(ensureTypesNs(r.getInheritance()));
@@ -109,6 +112,9 @@ namespace LangRepr {
             auto &span = r.getSpan();
             if (span.type) *span.type = ensureTypesNs(*span.type);
             span.sym = ensureTypesNs(span.sym);
+        } else if (r.isMakeTuple()) {
+            auto &mt = r.getMakeTuple();
+            mt = ensureTypesNs(mt);
         }
         return r;
     }
