@@ -67,9 +67,14 @@ jobs:
       #         ${{ github.workspace }}/prepare_boost.bat
       #     }
       - name: Configure CMake
+        shell: bash
         run: |
-          cmake -B build -G Ninja -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S "${{ github.workspace }}"
-
+          cmake -B build -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" \
+            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -S "${{ github.workspace }}"
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
 
