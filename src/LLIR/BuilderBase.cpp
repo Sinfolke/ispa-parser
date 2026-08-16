@@ -88,13 +88,13 @@ auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, co
     if (var.type == LangAPI::ValueType::Char) {
         return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
     } else if (var.type == LangAPI::ValueType::Token) {
-        return {
+        return LangAPI::Statements {
             LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}),
             LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
             LangAPI::Expression::createStatement(increasePos())
         };
     } else {
-        return {
+        return LangAPI::Statements {
             LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
             LangAPI::Expression::createStatement(increasePos())
         };

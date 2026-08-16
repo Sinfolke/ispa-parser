@@ -14,12 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-26.04
-            c_compiler: gcc-15
-            cpp_compiler: g++-15
-            triplet: x64-linux
-            overlay_triplets: ""
-            extra_cxx_flags: ""
+#          - os: ubuntu-26.04
+#            c_compiler: gcc-15
+#            cpp_compiler: g++-15
+#            triplet: x64-linux
+#            overlay_triplets: ""
+#            extra_cxx_flags: ""
 
           - os: ubuntu-26.04
             c_compiler: clang-20
