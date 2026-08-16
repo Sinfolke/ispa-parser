@@ -62,7 +62,7 @@ void custom_terminate_handler() {
         cpuf::printf("Unknown exception\n");
     }
     b.close();
-#ifdef ISPA_HAVE_CALLGRIND
+#if ISPA_HAVE_CALLGRIND
     CALLGRIND_DUMP_STATS;
 #endif
     std::abort();
