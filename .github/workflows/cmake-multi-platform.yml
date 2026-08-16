@@ -63,7 +63,17 @@ jobs:
             libc++-20-dev \
             libc++abi-20-dev \
             valgrind
-
+      - name: Fix libc++ modules.json path (Ubuntu clang)
+        if: matrix.cpp_compiler == 'clang++-20'
+        run: |
+          reported=$(clang++-20 -print-file-name=libc++.modules.json)
+          real=/usr/lib/llvm-20/lib/libc++.modules.json
+          if [[ "$reported" != "$real" && -f "$real" ]]; then
+            sudo mkdir -p "$(dirname "$reported")"
+            sudo ln -sf "$real" "$reported"
+            sudo mkdir -p "$(dirname "$reported")/../share/libc++"
+            sudo ln -sf /usr/lib/llvm-20/share/libc++/v1 "$(dirname "$reported")/../share/libc++/v1"
+          fi
       - name: Configure CMake
         shell: bash
         env:

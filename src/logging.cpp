@@ -1,5 +1,10 @@
 module;
+#if defined(__linux__) && __has_include(<valgrind/callgrind.h>)
 #include <valgrind/callgrind.h>
+#define ISPA_HAVE_CALLGRIND 1
+#else
+#define ISPA_HAVE_CALLGRIND 0
+#endif
 module logging;
 import cpuf.printf;
 import cpuf.color;
@@ -57,6 +62,8 @@ void custom_terminate_handler() {
         cpuf::printf("Unknown exception\n");
     }
     b.close();
+#ifdef ISPA_HAVE_CALLGRIND
     CALLGRIND_DUMP_STATS;
+#endif
     std::abort();
 }
