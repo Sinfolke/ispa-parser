@@ -1,5 +1,6 @@
 module;
 #include <tsl/ordered_map.h>
+#include <boost/container/flat_map.hpp>
 export module LangRepr.ConstructTypes;
 import LangRepr.Holder;
 import LLIR.IR;
@@ -7,7 +8,6 @@ import LLIR.API;
 import LexerBuilder;
 import LangAPI;
 import hash;
-import boost;
 import dstd;
 import std;
 using Name = stdu::vector<std::string>;
