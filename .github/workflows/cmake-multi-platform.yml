@@ -24,7 +24,7 @@ jobs:
             c_compiler: clang
             cpp_compiler: clang++
             triplet: x64-linux-libcxx
-            overlay_triplets: ${{ github.workspace }}/cmake/triplets
+            overlay_triplets: cmake/triplets
 
           - os: windows-latest
             c_compiler: cl
@@ -65,7 +65,7 @@ jobs:
           cmake -B build -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" \
             -DVCPKG_TARGET_TRIPLET="${{ matrix.triplet }}" \
-            -DVCPKG_OVERLAY_TRIPLETS="${{ matrix.overlay_triplets }}" \
+            -DVCPKG_OVERLAY_TRIPLETS="${{ github.workspace }}/${{ matrix.overlay_triplets }}" \
             -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
             -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
             -DCMAKE_BUILD_TYPE=Release \
