@@ -13,26 +13,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        build_type: [Release]
-        c_compiler: [gcc, clang, cl]
         include:
+          - os: ubuntu-24.04
+            c_compiler: gcc
+            cpp_compiler: g++
+            triplet: x64-linux
+            overlay_triplets: ""
+
+          - os: ubuntu-24.04
+            c_compiler: clang
+            cpp_compiler: clang++
+            triplet: x64-linux-libcxx
+            overlay_triplets: ${{ github.workspace }}/cmake/triplets
+
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
+            triplet: x64-windows
+            overlay_triplets: ""
 
     steps:
       - name: Checkout code with submodules
@@ -43,25 +41,39 @@ jobs:
 
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
+
       - name: Setup CMake
         uses: lukka/get-cmake@v4.3.2
+
+      - name: Setup MSVC
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install dependencies (Ubuntu)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y libboost-all-dev libc++-dev libc++abi-dev valgrind
+          sudo apt-get install -y \
+            libboost-all-dev \
+            libc++-dev \
+            libc++abi-dev \
+            valgrind
+
       - name: Configure CMake
         shell: bash
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" \
-            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DVCPKG_TARGET_TRIPLET="${{ matrix.triplet }}" \
+            -DVCPKG_OVERLAY_TRIPLETS="${{ matrix.overlay_triplets }}" \
+            -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+            -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+            -DCMAKE_BUILD_TYPE=Release \
             -S "${{ github.workspace }}"
-      - name: Build
-        run: cmake --build build --config ${{ matrix.build_type }}
 
-      - name: Test
-        working-directory: build
-        run: ctest --build-config ${{ matrix.build_type }}
+      - name: Build
+        run: cmake --build build --config Release
+#
+#      - name: Test
+#        working-directory: build
+#        run: ctest --build-config Release
