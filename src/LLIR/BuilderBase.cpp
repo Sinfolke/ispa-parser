@@ -89,14 +89,14 @@ auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, co
         return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
     } else if (var.type == LangAPI::ValueType::Token) {
         return LangAPI::Statements {
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}),
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
-            LangAPI::Expression::createStatement(increasePos())
+            LangAPI::Statement {LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})})},
+            LangAPI::Statement {LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })})},
+            LangAPI::Statement {LangAPI::Expression::createStatement(increasePos())}
         };
     } else {
         return LangAPI::Statements {
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })}),
-            LangAPI::Expression::createStatement(increasePos())
+            LangAPI::Statement {LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })})},
+            LangAPI::Statement {LangAPI::Expression::createStatement(increasePos())}
         };
     }
 }
