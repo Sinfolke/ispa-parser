@@ -14,13 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-24.04
-            c_compiler: gcc
-            cpp_compiler: g++
+          - os: ubuntu-26.04
+            c_compiler: gcc-15
+            cpp_compiler: g++-15
             triplet: x64-linux
             overlay_triplets: ""
 
-          - os: ubuntu-24.04
+          - os: ubuntu-26.04
             c_compiler: clang-20
             cpp_compiler: clang++-20
             triplet: x64-linux-libcxx
@@ -55,6 +55,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             clang-20 \
+            gcc-15 \
             libboost-all-dev \
             libc++-dev \
             libc++abi-dev \
