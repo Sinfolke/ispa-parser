@@ -54,7 +54,7 @@ export namespace LLIR {
         virtual auto pushBasedOnQualifier(const AST::RuleMember &rule, LangAPI::Expression &expr, LangAPI::Statements &stmt, LangAPI::Variable &uvar, const LangAPI::Variable &var, const LangAPI::Variable &svar, char quantifier, bool add_shadow_var) -> LangAPI::Variable;
         void pushConvResult(const AST::RuleMember &rule, const LangAPI::Variable &var, const LangAPI::Variable &uvar, const LangAPI::Variable &svar, const LangAPI::Variable &shadow_var, char quantifier);
         // error handling functions
-        auto getNextTerminal(stdu::vector<AST::RuleMember> symbols, std::size_t pos) ->  std::set<stdu::vector<std::string>>;
+        auto getNextTerminal(stdu::vector<std::shared_ptr<AST::RuleMember>> symbols, std::size_t pos) ->  std::set<stdu::vector<std::string>>;
         auto getErrorName(const AST::RuleMember &rule) -> std::string;
         auto getLookaheadTerminals(const AST::RuleMember& symbols, const stdu::vector<std::string> &lhs_name) -> BuilderData::SymbolFollow;
 

@@ -32,7 +32,7 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
         // raiseVarsTop(data, loop.block, true, false, false);
         // raiseVarsTop(data, loop.else_block, true, false, false);
         if (quantifier == '+') {
-            handle_plus_qualifier(rule, loop, uvar, var, shadow_var);
+            handle_plus_qualifier(rule, std::move(loop), uvar, var, shadow_var);
         } else {
             statements.push_back(LangAPI::While::createStatement(loop));
         }
@@ -167,12 +167,12 @@ auto LLIR::MemberBuilder::build() -> void {
         pos++;
         return;
     }
-    for (const auto &mem : *rules) {
+    for (const auto &mem_ptr : *rules) {
         // if (mem.isName() && *has_symbol_follow) {
         //     *symbol_follow = getLookaheadTerminals(mem, *fullname);
         //     symbol_follow->emplace_back(stdu::vector<std::string>{}, getNextTerminal(rules, pos));
         // }
-        buildMember(mem);
+        buildMember(*mem_ptr);
         if (isFirst) {
             addSpaceSkipFirst = addSpaceSkip;
         }
@@ -765,7 +765,7 @@ void LLIR::AnyBuilder::build() {
 //     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
 // }
 void LLIR::OpBuilder::build() {
-    const auto &op = rule.getOp().options;\
+    const auto &op = rule.getOp().options;
     auto var = createEmptyVariable("");
     var.type = deduceVarTypeByRuleMember(rule) ;
     undoRuleResult(var.type.getValueType());
@@ -817,7 +817,7 @@ void LLIR::OpBuilder::build() {
                 const auto &target = dfa.get()[target_state];
                 Assert(target.accept_binding.has_value(), "NO_ACCEPT shouldn't be here");
                 Assert(target.accept_binding->token_id != NFA::NULL_STATE, "NO_ACCEPT shouldn't be here");
-                MemberBuilder builder(*this, op[target.accept_binding->token_id]);
+                MemberBuilder builder(*this, *op[target.accept_binding->token_id]);
                 builder.build();
                 auto &ss_case = ss.cases.back();
                 ss_case.second = builder.getData();
@@ -835,9 +835,9 @@ void LLIR::OpBuilder::build() {
             auto dfa_call_result = createEmptyVariable("dfa_lookup_result" + generateVariableName());
             dfa_call_result.type.type = LangAPI::ValueType::Int;
             LangAPI::Type lookup = LangAPI::ValueType::Variant;
-            for (const auto &member : op) {
-                if (member.isName()) {
-                    lookup.template_parameters.push_back(LangAPI::Type {LangAPI::Symbol {member.getName().name}});
+            for (const auto &member_ptr : op) {
+                if (member_ptr->isName()) {
+                    lookup.template_parameters.push_back(LangAPI::Type {LangAPI::Symbol {member_ptr->getName().name}});
                 }
             }
             statements.push_back(LangAPI::Variable::createStatement(dfa_call_result));
@@ -847,12 +847,12 @@ void LLIR::OpBuilder::build() {
                 ss.cases.emplace_back();
                 auto &cs = ss.cases.back();
                 cs.first = LangAPI::Int::createRValue(LangAPI::Int {.value = i});
-                if (op[i].isName() && op[i].getName().isTerminal()) {
+                if (op[i]->isName() && op[i]->getName().isTerminal()) {
                     // insert variable assignment
                     //cs.block.push_back(assignSvar(svar, var_assign_values::True));
                     cs.second.emplace_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})}));
-                } else if (op[i].isName() && op[i].getName().isNonterminal()) {
-                    const auto &nonterminal = op[i].getName().name;
+                } else if (op[i]->isName() && op[i]->getName().isNonterminal()) {
+                    const auto &nonterminal = op[i]->getName().name;
                     cs.second.emplace_back(LangAPI::VariableAssignment::createStatement(
                         LangAPI::VariableAssignment {
                             .name = LangAPI::Symbol {var.name},
@@ -867,7 +867,7 @@ void LLIR::OpBuilder::build() {
                         }
                     ));
                 } else {
-                    MemberBuilder builder(*this, op[i]);
+                    MemberBuilder builder(*this, *op[i]);
                     builder.build();
                     cs.second = std::move(builder.getData());
                 }

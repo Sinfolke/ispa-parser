@@ -12,226 +12,173 @@
 namespace Parser {
 	enum class Tokens {
 		NONE,
-		NAME,
-		AUTO_2,
-		cll_LOGICAL_AND,
-		AUTO_0,
-		LINEAR_COMMENT,
-		cll_COMPARE_OP,
-		AUTO_5,
-		cll_ASSIGNMENT_OP,
-		MINUS,
-		AUTO_4,
-		SPACEMODE,
-		STRING,
-		DIVIDE,
-		DOT,
-		AUTO_11,
-		QUESTION_MARK,
-		MODULO,
-		cll_LOGICAL_NOT,
-		rule_CSEQUENCE,
-		NUMBER,
-		AUTO_30,
-		cll_LOGICAL_OR,
-		rule_OP,
-		AUTO_9,
-		rule_CSEQUENCE_SYMBOL,
-		AT,
-		rule_CSEQUENCE_DIAPASON,
-		AUTO_1,
-		rule_CSEQUENCE_ESCAPE,
-		MULTIPLE,
-		AUTO_7,
-		BOOLEAN,
-		rule_NOSPACE,
-		rule_BIN,
-		AUTO_6,
 		__WHITESPACE,
-		AUTO_12,
+		AUTO_29,
+		AUTO_27,
+		AUTO_26,
+		AUTO_25,
+		AUTO_24,
+		AUTO_23,
+		AUTO_22,
+		AUTO_20,
+		AUTO_18,
 		AUTO_17,
+		AUTO_28,
+		AUTO_19,
+		AUTO_16,
+		AUTO_15,
 		AUTO_14,
 		AUTO_10,
-		rule_HEX,
-		AUTO_16,
-		AUTO_19,
-		AUTO_28,
-		AUTO_27,
-		AUTO_15,
-		AUTO_18,
-		rule_ESCAPED,
-		AUTO_20,
-		ID,
-		AUTO_22,
-		PLUS,
-		AUTO_21,
 		AUTO_8,
-		cll_LOGICAL_OP,
-		AUTO_3,
+		AUTO_6,
+		rule_BIN,
+		rule_HEX,
+		rule_ESCAPED,
+		rule_NOSPACE,
+		BOOLEAN,
+		AUTO_1,
+		rule_CSEQUENCE_ESCAPE,
+		rule_CSEQUENCE_DIAPASON,
+		rule_CSEQUENCE_SYMBOL,
+		AUTO_12,
+		AUTO_9,
 		AUTO_13,
-		AUTO_23,
-		AUTO_24,
-		AUTO_25,
-		AUTO_26,
-		AUTO_29,
+		AUTO_30,
+		AUTO_3,
+		AUTO_7,
+		AUTO_21,
+		NUMBER,
+		ID,
+		cll_LOGICAL_NOT,
+		MODULO,
+		PLUS,
+		QUESTION_MARK,
+		rule_CSEQUENCE,
+		MULTIPLE,
+		AT,
+		AUTO_11,
+		DOT,
+		DIVIDE,
+		STRING,
+		SPACEMODE,
+		AUTO_4,
+		MINUS,
+		cll_ASSIGNMENT_OP,
+		cll_COMPARE_OP,
+		LINEAR_COMMENT,
+		rule_OP,
+		cll_LOGICAL_OR,
+		AUTO_0,
+		cll_LOGICAL_AND,
+		cll_LOGICAL_OP,
+		AUTO_2,
+		NAME,
+		AUTO_5,
 	};
 	enum class Rules {
 		NONE,
-		_use,
-		cll_function_body_call,
-		rule_data_block,
-		cll_function_call,
-		cll_expr,
-		cll_expr_term,
-		cll_expr_logical,
-		cll__var,
-		rule_value,
-		cll_stmt,
-		object,
-		cll_loop_while,
-		cll_loop_for,
-		cll__variable,
-		cll_templ,
-		rule_nested_rule,
-		rvalue,
-		rule_member,
-		array,
-		_use_unit,
-		moduleImport_from_import_list,
-		cll_expr_arithmetic,
-		rule,
-		main,
-		cll_type,
+		cll_expr_value,
+		cll_function_arguments,
+		cll_method_call,
+		moduleImport_from,
+		cll_function_parameters,
+		rule_quantifier,
+		rule_data_block_regular_datablock_key,
 		rule_data_block_templated_datablock,
+		rule_data_block_regular_datablock,
+		cll_function_body_decl,
 		rule_group,
 		rule_name,
-		cll_expr_value,
-		cll_function_body_decl,
-		rule_data_block_regular_datablock_key,
-		rule_data_block_regular_datablock,
-		moduleDeclaration,
-		cll__if,
-		rule_quantifier,
-		cll,
-		moduleImport,
-		cll_expr_group,
-		moduleImport_from,
-		cll_expr_compare,
-		cll_method_call,
-		cll_function_arguments,
 		rule_keyvalue,
-		cll_function_parameters,
+		rule_member,
+		rule,
+		_use_unit,
+		main,
+		moduleImport_from_import_list,
+		cll_type,
+		cll_expr_compare,
+		moduleDeclaration,
+		cll_expr_group,
+		array,
+		rvalue,
+		cll__variable,
+		object,
+		cll_stmt,
+		cll__var,
+		cll_expr_logical,
+		cll_expr_term,
+		cll_expr,
+		cll_function_call,
+		rule_value,
+		rule_data_block,
+		moduleImport,
+		cll,
+		rule_nested_rule,
+		cll_function_body_call,
+		cll_expr_arithmetic,
+		cll__if,
+		_use,
+		cll_templ,
+		cll_loop_for,
+		cll_loop_while,
 	};
 	namespace FlatTypes {
-		struct cll_expr;
-		struct cll_expr_term;
-		struct cll__var;
+		struct cll_expr_value;
+		struct cll_stmt;
 		struct cll_function_call;
 		struct cll_expr_compare;
-		struct cll_stmt;
+		struct cll__var;
 		struct cll_type;
-		struct rvalue;
+		struct _use_unit;
 		struct rule_member;
 		struct main;
-		struct _use_unit;
+		struct cll_expr_term;
+		struct cll_expr;
+		struct rvalue;
 		struct rule;
 		struct cll_expr_arithmetic;
-		struct cll_expr_value;
-		struct AUTO_2 {
-			char value;
-		};
-		struct cll_LOGICAL_AND {
-		};
-		struct AUTO_0 {
-			char value;
-		};
-		struct LINEAR_COMMENT {
-		};
-		struct cll_COMPARE_OP {
-			std::variant<std::monostate, char, std::string> value;
-		};
-		struct AUTO_5 {
-			char value;
-		};
-		struct cll_ASSIGNMENT_OP {
-			std::string value;
-		};
-		struct MINUS {
-		};
-		struct AUTO_4 {
-			char value;
-		};
-		struct SPACEMODE {
-			std::string value;
-		};
-		struct STRING {
-			std::variant<std::monostate, char, std::string> value;
-		};
-		struct DIVIDE {
-		};
-		struct DOT {
-		};
-		struct AUTO_11 {
-			std::string value;
-		};
-		struct QUESTION_MARK {
-		};
-		struct MODULO {
-		};
-		struct cll_LOGICAL_NOT {
-		};
-		struct rule_CSEQUENCE {
-			char _not;
-			char val;
-		};
-		struct NUMBER {
-			char sign;
-			std::string main;
-			std::string dec;
-		};
-		struct AUTO_30 {
-			std::string value;
-		};
-		struct cll_LOGICAL_OR {
-		};
-		struct rule_OP {
-		};
-		struct AUTO_9 {
-			std::string value;
-		};
-		struct rule_CSEQUENCE_SYMBOL {
-			char value;
-		};
-		struct AT {
-		};
-		struct AUTO_1 {
-			char value;
-		};
-		struct rule_CSEQUENCE_ESCAPE {
-			char value;
-		};
-		struct MULTIPLE {
-		};
-		struct AUTO_7 {
-			char value;
-		};
-		struct BOOLEAN {
-			std::string value;
-		};
-		struct rule_NOSPACE {
-		};
-		struct rule_BIN {
-			std::string value;
-		};
-		struct AUTO_6 {
-			char value;
-		};
 		struct __WHITESPACE {
 		};
-		struct AUTO_12 {
+		struct AUTO_29 {
 			std::string value;
 		};
+		struct AUTO_27 {
+			std::string value;
+		};
+		struct AUTO_26 {
+			char value;
+		};
+		struct AUTO_25 {
+			char value;
+		};
+		struct AUTO_24 {
+			std::string value;
+		};
+		struct AUTO_23 {
+			std::string value;
+		};
+		struct AUTO_22 {
+			char value;
+		};
+		struct AUTO_20 {
+			char value;
+		};
+		struct AUTO_18 {
+			char value;
+		};
 		struct AUTO_17 {
+			std::string value;
+		};
+		struct AUTO_28 {
+			std::string value;
+		};
+		struct AUTO_19 {
+			char value;
+		};
+		struct AUTO_16 {
+			std::string value;
+		};
+		struct AUTO_15 {
 			std::string value;
 		};
 		struct AUTO_14 {
@@ -240,74 +187,138 @@ namespace Parser {
 		struct AUTO_10 {
 			std::string value;
 		};
+		struct AUTO_8 {
+			char value;
+		};
+		struct AUTO_6 {
+			char value;
+		};
+		struct rule_BIN {
+			std::string value;
+		};
 		struct rule_HEX {
 			std::string value;
-		};
-		struct AUTO_16 {
-			std::string value;
-		};
-		struct AUTO_19 {
-			char value;
-		};
-		struct AUTO_28 {
-			std::string value;
-		};
-		struct AUTO_27 {
-			std::string value;
-		};
-		struct AUTO_15 {
-			std::string value;
-		};
-		struct AUTO_18 {
-			char value;
 		};
 		struct rule_ESCAPED {
 			char value;
 		};
-		struct AUTO_20 {
-			char value;
+		struct rule_NOSPACE {
 		};
-		struct ID {
+		struct BOOLEAN {
 			std::string value;
 		};
-		struct AUTO_22 {
+		struct AUTO_1 {
 			char value;
 		};
-		struct PLUS {
+		struct rule_CSEQUENCE_ESCAPE {
+			char value;
 		};
-		struct AUTO_21 {
+		struct rule_CSEQUENCE_SYMBOL {
+			char value;
+		};
+		struct AUTO_12 {
 			std::string value;
 		};
-		struct AUTO_8 {
-			char value;
-		};
-		struct AUTO_3 {
-			char value;
+		struct AUTO_9 {
+			std::string value;
 		};
 		struct AUTO_13 {
 			std::string value;
 		};
-		struct AUTO_23 {
+		struct AUTO_30 {
 			std::string value;
 		};
-		struct AUTO_24 {
-			std::string value;
-		};
-		struct AUTO_25 {
+		struct AUTO_3 {
 			char value;
 		};
-		struct AUTO_26 {
+		struct AUTO_7 {
 			char value;
 		};
-		struct AUTO_29 {
+		struct AUTO_21 {
 			std::string value;
 		};
-		struct cll_LOGICAL_OP {
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
+		struct NUMBER {
+			char sign;
+			std::string main;
+			std::string dec;
+		};
+		struct ID {
+			std::string value;
+		};
+		struct cll_LOGICAL_NOT {
+		};
+		struct MODULO {
+		};
+		struct PLUS {
+		};
+		struct QUESTION_MARK {
+		};
+		struct rule_CSEQUENCE {
+			char _not;
+			char val;
+		};
+		struct MULTIPLE {
+		};
+		struct AT {
+		};
+		struct AUTO_11 {
+			std::string value;
+		};
+		struct DOT {
+		};
+		struct DIVIDE {
+		};
+		struct STRING {
+			std::variant<std::monostate, char, std::string> value;
+		};
+		struct SPACEMODE {
+			std::string value;
+		};
+		struct AUTO_4 {
+			char value;
+		};
+		struct MINUS {
+		};
+		struct cll_ASSIGNMENT_OP {
+			std::string value;
+		};
+		struct cll_COMPARE_OP {
+			std::variant<std::monostate, char, std::string> value;
+		};
+		struct LINEAR_COMMENT {
+		};
+		struct rule_OP {
+		};
+		struct cll_LOGICAL_OR {
+		};
+		struct AUTO_0 {
+			char value;
+		};
+		struct cll_LOGICAL_AND {
+		};
+		struct AUTO_2 {
+			char value;
+		};
+		struct AUTO_5 {
+			char value;
 		};
 		struct rule_CSEQUENCE_DIAPASON {
 			::ISPA_STD::Node<Tokens, rule_CSEQUENCE_SYMBOL> begin;
 			std::string end;
+		};
+		struct rule_data_block_templated_datablock {
+			::ISPA_STD::Node<Tokens, ID> first_name;
+			std::vector<::ISPA_STD::Node<Tokens, ID>> second_name;
+		};
+		struct rule_keyvalue {
+			::ISPA_STD::Node<Tokens, ID> value;
+		};
+		struct cll_function_parameters {
+			::ISPA_STD::Node<Tokens, ID> first;
+			std::vector<::ISPA_STD::Node<Tokens, ID>> second;
+		};
+		struct NAME {
+			::ISPA_STD::Node<Tokens, ID> value;
 		};
 		struct rule_name {
 			::ISPA_STD::Node<Tokens, AUTO_6> is_nested;
@@ -317,13 +328,6 @@ namespace Parser {
 		struct rule_value {
 			::ISPA_STD::Node<Tokens, ID> value;
 		};
-		struct NAME {
-			::ISPA_STD::Node<Tokens, ID> value;
-		};
-		struct rule_data_block_templated_datablock {
-			::ISPA_STD::Node<Tokens, ID> first_name;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> second_name;
-		};
 		struct moduleImport_from_import_list {
 			::ISPA_STD::Node<Tokens, ID> first;
 			std::vector<::ISPA_STD::Node<Tokens, ID>> sequence;
@@ -332,64 +336,45 @@ namespace Parser {
 			::ISPA_STD::Node<Tokens, ID> name;
 			::ISPA_STD::Node<Tokens, ID> base;
 		};
-		struct rule_keyvalue {
-			::ISPA_STD::Node<Tokens, ID> value;
-		};
-		struct cll_function_parameters {
-			::ISPA_STD::Node<Tokens, ID> first;
-			std::vector<::ISPA_STD::Node<Tokens, ID>> second;
-		};
 		struct rule_quantifier {
 			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, QUESTION_MARK>> value;
+		};
+		struct cll_LOGICAL_OP {
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, cll_LOGICAL_AND>, ::ISPA_STD::Node<Tokens, cll_LOGICAL_OR>> value;
+		};
+		struct cll_function_body_decl {
+			::ISPA_STD::Node<Rules, cll_function_parameters> value;
 		};
 		struct moduleImport_from {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, moduleImport_from_import_list>, ::ISPA_STD::Node<Tokens, MULTIPLE>> what;
 			::ISPA_STD::Node<Tokens, ID> from;
 		};
-		struct cll_function_body_decl {
-			::ISPA_STD::Node<Rules, cll_function_parameters> value;
-		};
 		struct moduleImport {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, moduleImport_from>, ::ISPA_STD::Node<Tokens, ID>> value;
 		};
-		struct _use {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<_use_unit>> first;
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<_use_unit>>> second;
-		};
-		struct cll_method_call {
-			::ISPA_STD::Node<Tokens, ID> name;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_function_call>> body;
-		};
-		struct cll_expr_group {
-			::ISPA_STD::Node<Rules, std::unique_ptr<cll_expr>> value;
-		};
-		struct object {
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> value;
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>>> values;
-		};
-		struct cll_expr_logical {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_compare>> left;
-			std::vector<::ISPA_STD::Node<Tokens, cll_LOGICAL_OP>> op;
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_compare>>> right;
+		struct cll__if {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> expr;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_stmt>> stmt;
 		};
 		struct cll_function_arguments {
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> first;
 			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>>> second;
 		};
-		struct cll_loop_while {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> expr;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_stmt>> stmt;
+		struct cll_method_call {
+			::ISPA_STD::Node<Tokens, ID> name;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_function_call>> body;
 		};
-		struct array {
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>>> value;
+		struct _use {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<_use_unit>> first;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<_use_unit>>> second;
 		};
 		struct rule_group {
 			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<rule_member>>> value;
 		};
-		struct cll__if {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> expr;
+		struct cll_loop_for {
+			std::variant<std::monostate, ::ISPA_STD::Node<Rules, std::unique_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::unique_ptr<cll_expr>>> decl;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> cond;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> end;
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_stmt>> stmt;
 		};
 		struct rule_nested_rule {
@@ -401,19 +386,34 @@ namespace Parser {
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> brace_expression;
 			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, AUTO_30>, ::ISPA_STD::Node<Tokens, AUTO_29>> pos;
 		};
+		struct cll_expr_logical {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_compare>> left;
+			std::vector<::ISPA_STD::Node<Tokens, cll_LOGICAL_OP>> op;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_compare>>> right;
+		};
+		struct object {
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> key;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, ID>> keys;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>>> values;
+		};
 		struct rule_data_block_regular_datablock_key {
 			::ISPA_STD::Node<Tokens, ID> name;
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> dt;
 		};
-		struct cll_loop_for {
-			std::variant<std::monostate, ::ISPA_STD::Node<Rules, std::unique_ptr<cll__var>>, ::ISPA_STD::Node<Rules, std::unique_ptr<cll_expr>>> decl;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> cond;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> end;
+		struct cll_loop_while {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> expr;
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_stmt>> stmt;
 		};
 		struct cll_templ {
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_type>> first;
 			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_type>>> second;
+		};
+		struct cll_expr_group {
+			::ISPA_STD::Node<Rules, std::unique_ptr<cll_expr>> value;
+		};
+		struct array {
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>>> value;
 		};
 		struct cll_function_body_call {
 			::ISPA_STD::Node<Rules, cll_function_arguments> value;
@@ -427,49 +427,23 @@ namespace Parser {
 		struct rule_data_block {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, rule_data_block_templated_datablock>, ::ISPA_STD::Node<Rules, rule_data_block_regular_datablock>> value;
 		};
-		struct cll_function_call {
-			::ISPA_STD::Node<Tokens, ID> name;
-			::ISPA_STD::MatchResult<Rules, cll_function_body_call> body;
-		};
-		struct cll_expr {
-			::ISPA_STD::Node<Rules, cll_expr_logical> value;
-		};
-		struct cll_expr_term {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_value>> first;
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, MODULO>, ::ISPA_STD::Node<Tokens, DIVIDE>> operators;
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_value>>> sequence;
-		};
-		struct cll__var {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_type>> type;
-			::ISPA_STD::Node<Tokens, ID> id;
-			::ISPA_STD::Node<Tokens, cll_ASSIGNMENT_OP> op;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> value;
-		};
-		struct cll_stmt {
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<rule_member>>> value;
-		};
-		struct rvalue {
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, ID>, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, AT>, ::ISPA_STD::Node<Rules, array>, ::ISPA_STD::Node<Rules, object>, ::ISPA_STD::Node<Tokens, BOOLEAN>> value;
+		struct cll_expr_value {
+			std::variant<std::monostate, ::ISPA_STD::Node<Rules, std::unique_ptr<cll_function_call>>, ::ISPA_STD::Node<Rules, cll_method_call>, ::ISPA_STD::Node<Rules, cll_expr_group>, ::ISPA_STD::Node<Rules, std::unique_ptr<rvalue>>, ::ISPA_STD::Node<Rules, cll__variable>> value;
 		};
 		struct rule_member {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, rule_value>, ::ISPA_STD::Node<Rules, rule_keyvalue>> prefix;
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, rule_name>, ::ISPA_STD::Node<Tokens, rule_CSEQUENCE>, ::ISPA_STD::Node<Rules, cll>, ::ISPA_STD::Node<Tokens, DOT>, ::ISPA_STD::Node<Rules, rule_group>, ::ISPA_STD::Node<Tokens, rule_OP>, ::ISPA_STD::Node<Tokens, LINEAR_COMMENT>, ::ISPA_STD::Node<Tokens, rule_BIN>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, rule_HEX>, ::ISPA_STD::Node<Tokens, rule_ESCAPED>, ::ISPA_STD::Node<Tokens, rule_NOSPACE>> val;
 			::ISPA_STD::MatchResult<Rules, rule_quantifier> quantifier;
 		};
-		struct _use_unit {
-			::ISPA_STD::Node<Tokens, ID> name;
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<rvalue>> value;
-		};
-		struct cll_expr_arithmetic {
-			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_term>> first;
-			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, MINUS>> operators;
-			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_term>>> sequence;
-		};
 		struct rule {
 			::ISPA_STD::Node<Tokens, ID> name;
 			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<rule_member>>> rule;
 			::ISPA_STD::MatchResult<Rules, rule_data_block> data_block;
 			std::vector<::ISPA_STD::MatchResult<Rules, rule_nested_rule>> nested_rules;
+		};
+		struct _use_unit {
+			::ISPA_STD::Node<Tokens, ID> name;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<rvalue>> value;
 		};
 		struct main {
 			std::variant<std::monostate, ::ISPA_STD::Node<Rules, std::unique_ptr<rule>>, ::ISPA_STD::Node<Rules, _use>, ::ISPA_STD::Node<Tokens, NAME>, ::ISPA_STD::Node<Tokens, SPACEMODE>> value;
@@ -478,13 +452,39 @@ namespace Parser {
 			::ISPA_STD::Node<Tokens, AUTO_13> type;
 			::ISPA_STD::MatchResult<Rules, cll_templ> templ;
 		};
-		struct cll_expr_value {
-			std::variant<std::monostate, ::ISPA_STD::Node<Rules, std::unique_ptr<cll_function_call>>, ::ISPA_STD::Node<Rules, cll_method_call>, ::ISPA_STD::Node<Rules, cll_expr_group>, ::ISPA_STD::Node<Rules, std::unique_ptr<rvalue>>, ::ISPA_STD::Node<Rules, cll__variable>> value;
-		};
 		struct cll_expr_compare {
 			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_arithmetic>> first;
 			std::vector<::ISPA_STD::Node<Tokens, cll_COMPARE_OP>> operators;
 			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_arithmetic>>> sequence;
+		};
+		struct rvalue {
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, ID>, ::ISPA_STD::Node<Tokens, NUMBER>, ::ISPA_STD::Node<Tokens, STRING>, ::ISPA_STD::Node<Tokens, AT>, ::ISPA_STD::Node<Rules, array>, ::ISPA_STD::Node<Rules, object>, ::ISPA_STD::Node<Tokens, BOOLEAN>> value;
+		};
+		struct cll_stmt {
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<rule_member>>> value;
+		};
+		struct cll__var {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_type>> type;
+			::ISPA_STD::Node<Tokens, ID> id;
+			::ISPA_STD::Node<Tokens, cll_ASSIGNMENT_OP> op;
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr>> value;
+		};
+		struct cll_expr_term {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_value>> first;
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, MULTIPLE>, ::ISPA_STD::Node<Tokens, MODULO>, ::ISPA_STD::Node<Tokens, DIVIDE>> operators;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_value>>> sequence;
+		};
+		struct cll_expr {
+			::ISPA_STD::Node<Rules, cll_expr_logical> value;
+		};
+		struct cll_function_call {
+			::ISPA_STD::Node<Tokens, ID> name;
+			::ISPA_STD::MatchResult<Rules, cll_function_body_call> body;
+		};
+		struct cll_expr_arithmetic {
+			::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_term>> first;
+			std::variant<std::monostate, ::ISPA_STD::Node<Tokens, PLUS>, ::ISPA_STD::Node<Tokens, MINUS>> operators;
+			std::vector<::ISPA_STD::MatchResult<Rules, std::unique_ptr<cll_expr_term>>> sequence;
 		};
 	}
 	namespace Types {
@@ -604,7 +604,7 @@ namespace Parser {
 		};
 		using rvalue = FlatTypes::rvalue;
 	}
-	using Token = std::variant<std::monostate, Types::NAME, Types::AUTO_2, Types::cll::LOGICAL_AND, Types::AUTO_0, Types::LINEAR_COMMENT, Types::cll::COMPARE_OP, Types::AUTO_5, Types::cll::ASSIGNMENT_OP, Types::MINUS, Types::AUTO_4, Types::SPACEMODE, Types::STRING, Types::DIVIDE, Types::DOT, Types::AUTO_11, Types::QUESTION_MARK, Types::MODULO, Types::cll::LOGICAL_NOT, Types::rule::CSEQUENCE, Types::NUMBER, Types::AUTO_30, Types::cll::LOGICAL_OR, Types::rule::OP, Types::AUTO_9, Types::rule::CSEQUENCE::SYMBOL, Types::AT, Types::rule::CSEQUENCE::DIAPASON, Types::AUTO_1, Types::rule::CSEQUENCE::ESCAPE, Types::MULTIPLE, Types::AUTO_7, Types::BOOLEAN, Types::rule::NOSPACE, Types::rule::BIN, Types::AUTO_6, Types::__WHITESPACE, Types::AUTO_12, Types::AUTO_17, Types::AUTO_14, Types::AUTO_10, Types::rule::HEX, Types::AUTO_16, Types::AUTO_19, Types::AUTO_28, Types::AUTO_27, Types::AUTO_15, Types::AUTO_18, Types::rule::ESCAPED, Types::AUTO_20, Types::ID, Types::AUTO_22, Types::PLUS, Types::AUTO_21, Types::AUTO_8, Types::cll::LOGICAL_OP, Types::AUTO_3, Types::AUTO_13, Types::AUTO_23, Types::AUTO_24, Types::AUTO_25, Types::AUTO_26, Types::AUTO_29>;
+	using Token = std::variant<std::monostate, Types::__WHITESPACE, Types::AUTO_29, Types::AUTO_27, Types::AUTO_26, Types::AUTO_25, Types::AUTO_24, Types::AUTO_23, Types::AUTO_22, Types::AUTO_20, Types::AUTO_18, Types::AUTO_17, Types::AUTO_28, Types::AUTO_19, Types::AUTO_16, Types::AUTO_15, Types::AUTO_14, Types::AUTO_10, Types::AUTO_8, Types::AUTO_6, Types::rule::BIN, Types::rule::HEX, Types::rule::ESCAPED, Types::rule::NOSPACE, Types::BOOLEAN, Types::AUTO_1, Types::rule::CSEQUENCE::ESCAPE, Types::rule::CSEQUENCE::DIAPASON, Types::rule::CSEQUENCE::SYMBOL, Types::AUTO_12, Types::AUTO_9, Types::AUTO_13, Types::AUTO_30, Types::AUTO_3, Types::AUTO_7, Types::AUTO_21, Types::NUMBER, Types::ID, Types::cll::LOGICAL_NOT, Types::MODULO, Types::PLUS, Types::QUESTION_MARK, Types::rule::CSEQUENCE, Types::MULTIPLE, Types::AT, Types::AUTO_11, Types::DOT, Types::DIVIDE, Types::STRING, Types::SPACEMODE, Types::AUTO_4, Types::MINUS, Types::cll::ASSIGNMENT_OP, Types::cll::COMPARE_OP, Types::LINEAR_COMMENT, Types::rule::OP, Types::cll::LOGICAL_OR, Types::AUTO_0, Types::cll::LOGICAL_AND, Types::cll::LOGICAL_OP, Types::AUTO_2, Types::NAME, Types::AUTO_5>;
 	class Lexer : public ::ISPA_STD::Lexer_base<Tokens, Token> {
 		static ::ISPA_STD::DFA::API::CharToClass char_class_table;
 		static ::ISPA_STD::DFA::API::Table<30, 19> dfa_table;

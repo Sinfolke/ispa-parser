@@ -31,5 +31,5 @@ export namespace LLIR {
         stdu::vector<std::string> name;
         LangAPI::Statements members;
     };
-    using DataBlockList = utype::unordered_map<stdu::vector<std::string>, DataBlock>;
+    using DataBlockList = tsl::ordered_map<stdu::vector<std::string>, DataBlock, uhash>;
 }

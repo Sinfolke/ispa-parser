@@ -1,4 +1,5 @@
 export module AST.API;
+
 import logging;
 import corelib;
 import hash;
@@ -6,7 +7,7 @@ import dstd;
 import std;
 
 export namespace AST {
-    // forward declarations
+    // Forward declarations
     struct CllType;
     struct CllFunctionArguments;
     struct CllFunctionParameters;
@@ -21,18 +22,23 @@ export namespace AST {
     struct CllVariableMention;
     struct rvalue;
     struct RuleMember;
+
     using CllFunctionBodyCall = CllFunctionArguments;
     using CllFunctionBodyDecl = CllFunctionParameters;
 
     struct String {
         std::string value;
+
         static std::size_t count_strlen(const std::string &str);
         static std::string format_str(std::string str);
+
         std::size_t count_strlen() const;
         std::string format_str() const;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
@@ -41,43 +47,56 @@ export namespace AST {
         char sign = '\0';
         std::string main;
         std::string dec;
+
         std::string getFull() const;
         bool hasDec() const;
         bool hasSign() const;
         double getFullNumber() const;
         unsigned getMain() const;
         unsigned getDecimal() const;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(sign, main, dec);
         }
     };
 
     struct Boolean {
         std::string value;
+
         bool getBoolean() const;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
 
     struct Array {
-        stdu::vector<CllExpr> value;
+        // Recursive CllExpr is indirect because CllExpr itself eventually
+        // contains structures that can contain CllFunctionArguments.
+        stdu::vector<std::shared_ptr<CllExpr>> value;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
 
     struct Object {
-        std::unordered_map<std::string, CllExpr> value;
+        // Same recursive AST relationship as Array.
+        std::unordered_map<std::string, std::shared_ptr<CllExpr>> value;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
@@ -86,15 +105,18 @@ export namespace AST {
 
     struct ID {
         std::string value;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
 
     struct rvalue {
         std::variant<String, Number, Boolean, Array, Object, At, ID> value;
+
         bool isString() const;
         bool isNumber() const;
         bool isBoolean() const;
@@ -102,180 +124,227 @@ export namespace AST {
         bool isObject() const;
         bool isAt() const;
         bool isID() const;
+
         String &getString();
         Number &getNumber();
         Boolean &getBoolean();
         Array &getArray();
         Object &getObject();
         ID &getID();
-        const String& getString() const;
-        const Number& getNumber() const;
-        const Boolean& getBoolean() const;
-        const Array& getArray() const;
-        const Object& getObject() const;
-        const ID& getID() const;
+
+        const String &getString() const;
+        const Number &getNumber() const;
+        const Boolean &getBoolean() const;
+        const Array &getArray() const;
+        const Object &getObject() const;
+        const ID &getID() const;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct CllCompareOp {
         std::string op;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(op);
         }
+
         friend struct ::uhash;
     };
 
     struct CllLogicalOp {
         bool isAnd;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(isAnd);
         }
+
         friend struct ::uhash;
     };
 
     struct CllType {
         std::string type;
+
+        // Self-recursive type is fine here.
         stdu::vector<CllType> templ;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(type, templ);
         }
+
         friend struct ::uhash;
     };
 
     struct CllFunctionArguments {
-        stdu::vector<CllExpr> expr;
+        // CllExpr is incomplete here and is also mutually recursive with
+        // CllFunctionArguments, so an owning pointer breaks the cycle.
+        stdu::vector<std::shared_ptr<CllExpr>> expr;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(expr);
         }
+
         friend struct ::uhash;
     };
 
     struct CllFunctionParameters {
         stdu::vector<std::string> names;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(names);
         }
+
         friend struct ::uhash;
     };
 
     struct CllFunctionCall {
         std::string name;
         CllFunctionBodyCall body;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(name, body);
         }
+
         friend struct ::uhash;
     };
 
     struct CllFunctionDecl {
         std::string name;
         CllFunctionBodyDecl body;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(name, body);
         }
+
         friend struct ::uhash;
     };
 
     struct CllMethodCall {
         std::string name;
         CllFunctionCall body;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(name, body);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprValue {
-        std::variant<std::shared_ptr<CllExprGroup>, std::shared_ptr<CllVariableMention>, CllFunctionCall, CllMethodCall, rvalue> value;
+        std::variant<
+            std::shared_ptr<CllExprGroup>,
+            std::shared_ptr<CllVariableMention>,
+            CllFunctionCall,
+            CllMethodCall,
+            rvalue
+        > value;
+
         bool isGroup() const;
         bool isVariable() const;
         bool isFunctionCall() const;
         bool isMethodCall() const;
         bool isrvalue() const;
+
         CllExprGroup &getGroup();
         CllVariableMention &getVariable();
         CllFunctionCall &getFunctionCall();
         CllMethodCall &getMethodCall();
         rvalue &getrvalue();
+
         const CllExprGroup &getGroup() const;
         const CllVariableMention &getVariable() const;
         const CllFunctionCall &getFunctionCall() const;
         const CllMethodCall &getMethodCall() const;
         const rvalue &getrvalue() const;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprTerm {
         CllExprValue value;
         stdu::vector<std::pair<char, CllExprValue>> rights;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value, rights);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprAddition {
         CllExprTerm value;
         stdu::vector<std::pair<char, CllExprTerm>> rights;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value, rights);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprCompare {
         CllExprAddition value;
         stdu::vector<std::pair<CllCompareOp, CllExprAddition>> rights;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value, rights);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprLogical {
         CllExprCompare value;
         stdu::vector<std::pair<CllLogicalOp, CllExprCompare>> rights;
+
     private:
-        auto members() const  {
-            return std::tie(value, rights);
+        auto members() const {
+            return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExpr {
         CllExprLogical value;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct CllExprGroup {
         CllExpr expr;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(expr);
         }
+
         friend struct ::uhash;
     };
 
@@ -284,20 +353,32 @@ export namespace AST {
         std::optional<char> post_increament;
         std::string name;
         std::optional<CllExpr> braceExpression;
+
     private:
-        auto members() const  {
-            return std::tie(pre_increament, post_increament, name, braceExpression);
+        auto members() const {
+            return std::tie(
+                pre_increament,
+                post_increament,
+                name,
+                braceExpression
+            );
         }
+
         friend struct ::uhash;
     };
 
     struct CllIf {
         CllExpr expr;
-        stdu::vector<RuleMember> stmt;
+
+        // RuleMember is incomplete at this point and RuleMember itself
+        // contains Cll, creating a mutual recursion.
+        stdu::vector<std::shared_ptr<RuleMember>> stmt;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(expr, stmt);
         }
+
         friend struct ::uhash;
     };
 
@@ -306,20 +387,26 @@ export namespace AST {
         std::string name;
         char op = '\0';
         std::optional<CllExpr> value;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(type, name, op, value);
         }
+
         friend struct ::uhash;
     };
 
     struct CllLoopWhile {
         CllExpr expr;
-        stdu::vector<RuleMember> stmt;
+
+        // Same RuleMember recursion as CllIf.
+        stdu::vector<std::shared_ptr<RuleMember>> stmt;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(expr, stmt);
         }
+
         friend struct ::uhash;
     };
 
@@ -327,66 +414,85 @@ export namespace AST {
 
     struct Cll {
         std::variant<CllVar, CllIf, CllExpr> value;
+
         bool isVar() const;
         bool isIf() const;
         bool isExpr() const;
+
         CllVar &getVar();
         CllIf &getIf();
         CllExpr &getExpr();
+
         const CllVar &getVar() const;
         const CllIf &getIf() const;
         const CllExpr &getExpr() const;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct RulePrefix {
         bool is_key_value = false;
         std::string name;
+
         void clear();
         bool empty() const;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(is_key_value, name);
         }
+
         friend struct ::uhash;
     };
 
     struct RuleMemberName {
         stdu::vector<std::string> name;
         bool isAutoGenerated = false;
-        [[nodiscard]] bool isTerminal() const {
+
+        [[nodiscard]]
+        bool isTerminal() const {
             return corelib::text::isUpper(name.back());
         }
-        [[nodiscard]] bool isNonterminal() const {
+
+        [[nodiscard]]
+        bool isNonterminal() const {
             return corelib::text::isLower(name.back());
         }
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(name, isAutoGenerated);
         }
+
         friend struct ::uhash;
     };
 
     struct RuleMemberGroup {
-        stdu::vector<RuleMember> values;
+        // RuleMember is mutually recursive with Cll -> CllIf/CllLoopWhile.
+        stdu::vector<std::shared_ptr<RuleMember>> values;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(values);
         }
+
         friend struct ::uhash;
     };
 
-
     struct RuleMemberOp {
-        stdu::vector<RuleMember> options;
+        // Same recursive relationship as RuleMemberGroup.
+        stdu::vector<std::shared_ptr<RuleMember>> options;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(options);
         }
+
         friend struct ::uhash;
     };
 
@@ -395,39 +501,52 @@ export namespace AST {
         stdu::vector<char> characters;
         stdu::vector<char> escaped;
         stdu::vector<std::pair<char, char>> diapasons;
+
     private:
-        auto members() const  {
-            return std::tie(negative, characters, escaped, diapasons);
+        auto members() const {
+            return std::tie(
+                negative,
+                characters,
+                escaped,
+                diapasons
+            );
         }
+
         friend struct ::uhash;
     };
 
     struct RuleMemberAny : EmptyHashable {};
 
-    struct RuleMemberNospace : EmptyHashable { };
+    struct RuleMemberNospace : EmptyHashable {};
 
     struct RuleMemberEscaped {
         char c;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(c);
         }
+
         friend struct ::uhash;
     };
 
-    // these structures are hashable by begin and end methods
+    // These structures are hashable by begin and end methods.
     struct RuleMemberHex {
         std::string hex_chars;
+
         std::string::iterator begin();
         std::string::iterator end();
+
         std::string::const_iterator begin() const;
         std::string::const_iterator end() const;
     };
 
     struct RuleMemberBin {
         std::string bin_chars;
+
         std::string::iterator begin();
         std::string::iterator end();
+
         std::string::const_iterator begin() const;
         std::string::const_iterator end() const;
     };
@@ -437,7 +556,21 @@ export namespace AST {
         char quantifier = '\0';
         bool isAutoGenerated = false;
         bool isInline = false;
-        std::variant<std::monostate, String, RuleMemberName, RuleMemberGroup, RuleMemberOp, RuleMemberCsequence, RuleMemberAny, RuleMemberNospace, RuleMemberEscaped, RuleMemberHex, RuleMemberBin, Cll> value;
+
+        std::variant<
+            std::monostate,
+            String,
+            RuleMemberName,
+            RuleMemberGroup,
+            RuleMemberOp,
+            RuleMemberCsequence,
+            RuleMemberAny,
+            RuleMemberNospace,
+            RuleMemberEscaped,
+            RuleMemberHex,
+            RuleMemberBin,
+            Cll
+        > value;
 
         bool isString() const;
         bool isName() const;
@@ -454,42 +587,45 @@ export namespace AST {
         bool empty() const;
 
         // Non-const overloads
-        String& getString();
-        RuleMemberName& getName();
-        RuleMemberGroup& getGroup();
-        RuleMemberOp& getOp();
-        RuleMemberCsequence& getCsequence();
-        RuleMemberEscaped& getEscaped();
-        RuleMemberHex& getHex();
-        RuleMemberBin& getBin();
-        Cll& getCll();
+        String &getString();
+        RuleMemberName &getName();
+        RuleMemberGroup &getGroup();
+        RuleMemberOp &getOp();
+        RuleMemberCsequence &getCsequence();
+        RuleMemberEscaped &getEscaped();
+        RuleMemberHex &getHex();
+        RuleMemberBin &getBin();
+        Cll &getCll();
 
         // Const overloads
-        const String& getString() const;
-        const RuleMemberName& getName() const;
-        const RuleMemberGroup& getGroup() const;
-        const RuleMemberOp& getOp() const;
-        const RuleMemberCsequence& getCsequence() const;
-        const RuleMemberEscaped& getEscaped() const;
-        const RuleMemberHex& getHex() const;
-        const RuleMemberBin& getBin() const;
-        const Cll& getCll() const;
+        const String &getString() const;
+        const RuleMemberName &getName() const;
+        const RuleMemberGroup &getGroup() const;
+        const RuleMemberOp &getOp() const;
+        const RuleMemberCsequence &getCsequence() const;
+        const RuleMemberEscaped &getEscaped() const;
+        const RuleMemberHex &getHex() const;
+        const RuleMemberBin &getBin() const;
+        const Cll &getCll() const;
 
         bool fullCompare(const RuleMember &second);
 
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
     struct RuleMemberKey {
         RuleMember base;
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(base);
         }
+
         friend struct ::uhash;
     };
 
@@ -497,15 +633,20 @@ export namespace AST {
         std::unordered_map<std::string, CllExpr> value;
 
         bool empty() const;
+
         std::unordered_map<std::string, CllExpr>::iterator begin();
         std::unordered_map<std::string, CllExpr>::iterator end();
+
         std::unordered_map<std::string, CllExpr>::const_iterator begin() const;
         std::unordered_map<std::string, CllExpr>::const_iterator end() const;
+
         CllExpr &operator[](const std::string &name);
+
     private:
-        auto members() const  {
+        auto members() const {
             return std::tie(value);
         }
+
         friend struct ::uhash;
     };
 
@@ -515,14 +656,21 @@ export namespace AST {
         stdu::vector<std::string> names;
 
         bool empty() const;
+
         stdu::vector<std::string>::iterator begin();
         stdu::vector<std::string>::iterator end();
+
         stdu::vector<std::string>::const_iterator begin() const;
         stdu::vector<std::string>::const_iterator end() const;
     };
 
     struct DataBlock {
-        std::variant<std::monostate, RegularDataBlock, RegularDataBlockWKeys, TemplatedDataBlock> value;
+        std::variant<
+            std::monostate,
+            RegularDataBlock,
+            RegularDataBlockWKeys,
+            TemplatedDataBlock
+        > value;
 
         bool isRegularDataBlock() const;
         bool isWithKeys() const;
@@ -536,26 +684,30 @@ export namespace AST {
         const RegularDataBlock &getRegDataBlock() const;
         const RegularDataBlockWKeys &getRegDataBlockWKeys() const;
         const TemplatedDataBlock &getTemplatedDataBlock() const;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(value);
         }
     };
 
     struct Rule {
-        stdu::vector<AST::RuleMember> rule_members;
+        stdu::vector<std::shared_ptr<AST::RuleMember>> rule_members;
         AST::DataBlock data_block;
         stdu::vector<std::string> original_rules;
+
     private:
         friend struct ::uhash;
-        auto members() const  {
+
+        auto members() const {
             return std::tie(rule_members, data_block);
         }
     };
 
-    // helper functions
-    CllExpr make_expr_from_value(const AST::CllExprValue& val);
+    // Helper functions
+    CllExpr make_expr_from_value(const AST::CllExprValue &val);
 
     // Define operator== outside structures
     bool operator==(const String &lhs, const String &rhs);
@@ -600,21 +752,22 @@ export namespace AST {
     bool operator==(const TemplatedDataBlock &lhs, const TemplatedDataBlock &rhs);
     bool operator==(const DataBlock &lhs, const DataBlock &rhs);
     bool operator==(const Rule &lhs, const Rule &rhs);
-    std::ostream& operator<<(std::ostream& os, const RulePrefix& prefix);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberName& name);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberGroup& group);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberOp& op);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberCsequence& cs);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberAny& any);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberNospace& ns);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberEscaped& esc);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberHex& hex);
-    std::ostream& operator<<(std::ostream& os, const RuleMemberBin& bin);
-    std::ostream& operator<<(std::ostream& os, const String& str);
-    std::ostream& operator<<(std::ostream& os, const Cll& str);
-    std::ostream& operator<<(std::ostream& os, const RuleMember& member);
-    std::ostream& operator<<(std::ostream& os, const RegularDataBlockWKeys& block);
-    std::ostream& operator<<(std::ostream& os, const TemplatedDataBlock& block);
-    std::ostream& operator<<(std::ostream& os, const DataBlock& block);
-    std::ostream& operator<<(std::ostream& os, const Rule& rule);
+
+    std::ostream &operator<<(std::ostream &os, const RulePrefix &prefix);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberName &name);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberGroup &group);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberOp &op);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberCsequence &cs);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberAny &any);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberNospace &ns);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberEscaped &esc);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberHex &hex);
+    std::ostream &operator<<(std::ostream &os, const RuleMemberBin &bin);
+    std::ostream &operator<<(std::ostream &os, const String &str);
+    std::ostream &operator<<(std::ostream &os, const Cll &str);
+    std::ostream &operator<<(std::ostream &os, const RuleMember &member);
+    std::ostream &operator<<(std::ostream &os, const RegularDataBlockWKeys &block);
+    std::ostream &operator<<(std::ostream &os, const TemplatedDataBlock &block);
+    std::ostream &operator<<(std::ostream &os, const DataBlock &block);
+    std::ostream &operator<<(std::ostream &os, const Rule &rule);
 };

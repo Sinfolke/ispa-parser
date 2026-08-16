@@ -290,7 +290,7 @@ export namespace LangAPI {
 
     struct Array : RValueLevel {
         stdu::vector<Expression> values;
-        stdu::vector<std::variant<std::shared_ptr<Type>, RValue>> template_parameters;
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
         friend bool operator==(const Array &a, const Array &b); // must be declared in .cpp file to resolve incomplete type errors
         friend bool operator!=(const Array &a, const Array &b) { return !(a == b); }
         friend bool operator<(const Array &a, const Array &b);

@@ -97,7 +97,7 @@ bool LRParser::isELR() const {
 // }
 
 void LRParser::addAugmentedRule() {
-    tree->getInitialItemSet()[{"__start"}] = {AST::Rule { { AST::RuleMember {.value = AST::RuleMemberName {.name = {"main"}}}}}};
+    tree->getInitialItemSet()[{"__start"}] = {AST::Rule { { std::make_shared<AST::RuleMember>(AST::RuleMember {.value = AST::RuleMemberName {.name = {"main"}}})}}};
 }
 void LRParser::compute_cci_lookahead(const AST::Rule &rhs_group, const stdu::vector<std::string> &lhs_name, LR1Core &new_item) {
     std::size_t next_pos = new_item.dot_pos + 1;
@@ -111,7 +111,7 @@ void LRParser::compute_cci_lookahead(const AST::Rule &rhs_group, const stdu::vec
     // check whether next symbol is terminal or non-terminal
     bool epsilon_in_all = true;
     for (std::size_t i = next_pos; i < rhs_group.rule_members.size(); i++) {
-        auto &symbol = rhs_group.rule_members[i];
+        auto &symbol = *rhs_group.rule_members[i];
         if (!symbol.isName())
             throw Error("Symbol is not name");
         const auto &name = symbol.getName();
@@ -167,7 +167,7 @@ void LRParser::create_item_collection(CanonicalItem &closure, const ItemSet &ite
         }
 
         // Expand first symbol if it's non-terminal
-        const auto& sym = rhs_group.rule_members[0];
+        const auto& sym = *rhs_group.rule_members[0];
         const auto& name = sym.getName();
         if (corelib::text::isLower(name.name.back())) {
             auto rule = tree->getInitialItemSet().find(name.name);
@@ -203,7 +203,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 
         for (const auto& item : current) {
             if (item.dot_pos < item.rhs.rule_members.size()) {
-                const auto& sym = item.rhs.rule_members[item.dot_pos].getName().name;
+                const auto& sym = item.rhs.rule_members[item.dot_pos]->getName().name;
 
                 LR1Core advanced = item;
                 advanced.dot_pos++;
@@ -233,7 +233,7 @@ LRParser::CanonicalItemSet LRParser::construct_cannonical_collections_of_items()
 
             for (const auto& el : items) {
                 if (el.dot_pos < el.rhs.rule_members.size()) {
-                    const auto& sym_rhs = el.rhs.rule_members[el.dot_pos];
+                    const auto& sym_rhs = *el.rhs.rule_members[el.dot_pos];
                     const auto &sym_rhs_name = sym_rhs.getName();
                     if (corelib::text::isLower(sym_rhs_name.name.back())) {
                         auto rule = tree->getInitialItemSet().find(sym_rhs_name.name);
@@ -260,7 +260,7 @@ std::size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu:
 
     // Step 1: Shift dot over symbol where possible
     for (const auto &item : item_set) {
-        if (item.dot_pos < item.rhs.rule_members.size() && item.rhs.rule_members[item.dot_pos].getName().name == symbol) {
+        if (item.dot_pos < item.rhs.rule_members.size() && item.rhs.rule_members[item.dot_pos]->getName().name == symbol) {
             LR1Core shifted = item;
             shifted.dot_pos++;
             next_state.insert(shifted);
@@ -270,7 +270,7 @@ std::size_t LRParser::find_goto_state(const CanonicalItem &item_set, const stdu:
     // Step 2: Compute closure of this new state
     for (const auto &item : next_state) {
         if (item.dot_pos < item.rhs.rule_members.size()) {
-            const auto &next_sym = item.rhs.rule_members[item.dot_pos];
+            const auto &next_sym = *item.rhs.rule_members[item.dot_pos];
             const auto &next_sym_name = next_sym.getName();
             if (corelib::text::isLower(next_sym_name.name.back())) {
                 // Non-terminal → expand it
@@ -301,7 +301,7 @@ std::size_t LRParser::find_rules_index(const LR1Core &rule) {
         if (rhs.size() != rule.rhs.rule_members.size())
             return false;
         for (std::size_t i = 0; i < rhs.size(); i++) {
-            if (rhs[i].getName().name != rule.rhs.rule_members[i].getName().name) 
+            if ((*rhs[i]).getName().name != (*rule.rhs.rule_members[i]).getName().name) 
                 return false;
         }
         return true;
@@ -403,7 +403,7 @@ void LRParser::buildTable() {
             // }
             // cpuf::printf("\n");
 
-            if (rule.rhs.rule_members.size() == 1 && rule.lhs == rule.rhs.rule_members[0].getName().name) {
+            if (rule.rhs.rule_members.size() == 1 && rule.lhs == rule.rhs.rule_members[0]->getName().name) {
                 // cpuf::printf("skipping %$ -> %$\n", rule.lhs.fullname, rule.rhs[0].fullname);
                 continue;
             }
@@ -461,7 +461,7 @@ void LRParser::buildTable() {
                 }
                 // cpuf::printf("\n");
             } else { // Dot is before a symbol
-                const auto& next = rule.rhs.rule_members[rule.dot_pos].getName();
+                const auto& next = rule.rhs.rule_members[rule.dot_pos]->getName();
                 std::size_t next_state = find_goto_state(item_set, next.name); // goto(I, X)
                 if (corelib::text::isUpper(next.name.back())) {
                     // Terminal → SHIFT (unconditionally)
@@ -548,7 +548,7 @@ void LRParser::formatRulesTable(std::ostringstream& oss) {
         oss << '\t' << rule_index << ": " << lhs << " → ";
 
         for (const auto& token : body) {
-            oss << corelib::text::join(token.getName().name, "_") << " ";
+            oss << corelib::text::join(token->getName().name, "_") << " ";
         }
         oss << '\n';
     }
@@ -569,7 +569,7 @@ void LRParser::formatCanonicalItemSet(std::ostringstream &oss) {
                     oss << "• ";
                 }
                 if (i < item.rhs.rule_members.size()) {
-                    oss << corelib::text::join(item.rhs.rule_members[i].getName().name, "_") << ' ';
+                    oss << corelib::text::join(item.rhs.rule_members[i]->getName().name, "_") << ' ';
                 }
             }
             oss << "; lookahead: {";

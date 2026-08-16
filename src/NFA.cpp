@@ -201,8 +201,8 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
     std::size_t last = body_start;
 
     const auto &prod_rules = tree[name];
-    for (const auto &prod : prod_rules.rule_members) {
-        auto fragment = buildStateFragment(prod, false, addStoreActions);
+    for (const auto &prod_ptr : prod_rules.rule_members) {
+        auto fragment = buildStateFragment(*prod_ptr, false, addStoreActions);
         if (fragment.invalid())
             continue;
         states[last].epsilon_transitions.insert({fragment.start, TableType::DFA});
@@ -226,7 +226,7 @@ void NFA::handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std
 }
 
 void NFA::handleGroup(const AST::RuleMember &member,
-                     const std::vector<AST::RuleMember> &group,
+                     const stdu::vector<std::shared_ptr<AST::RuleMember>> &group,
                      const std::size_t &start,
                      const std::size_t &end,
                      bool isLastMember,
@@ -236,13 +236,13 @@ void NFA::handleGroup(const AST::RuleMember &member,
     states.emplace_back();
     std::size_t body_end   = body_start;
 
-    for (const auto &sub : group) {
+    for (const auto &sub_ptr : group) {
         auto cached_no_space = no_add_space_skip_next;
         if (member.quantifier == '+' || member.quantifier == '*') {
             no_add_space_skip_next = true;
         }
 
-        auto fragment = buildStateFragment(sub, false, addStoreActions);
+        auto fragment = buildStateFragment(*sub_ptr, false, addStoreActions);
         no_add_space_skip_next = cached_no_space;
 
         if (fragment.invalid())
@@ -370,12 +370,12 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
             store_entire_group = true;
         }
 
-        for (const auto &option : op.options) {
+        for (const auto &option_ptr : op.options) {
             no_add_space_skip_next = cached_no_space_skip;
             group_count = cached_group_count;
-            if (option.isGroup())
+            if (option_ptr->isGroup())
                 was_group = true;
-            auto fragment = buildStateFragment(option, false, addStoreActions);
+            auto fragment = buildStateFragment(*option_ptr, false, addStoreActions);
             if (fragment.invalid())
                 continue;
 
@@ -383,7 +383,7 @@ auto NFA::buildStateFragment(const AST::RuleMember &member, bool isLastMember, b
             states[fragment.end].epsilon_transitions.insert({end, TableType::DFA});
 
             if (isLastMember) {
-                markAccept(fragment.end, end, option, false);
+                markAccept(fragment.end, end, *option_ptr, false);
             }
             if (!states[fragment.start].last)
                 continue;
@@ -429,8 +429,8 @@ void NFA::build(bool addStoreActions) {
     if (rules != nullptr && !rules->empty()) {
         for (std::size_t i = 0; i < rules->size(); ++i) {
             bool is_last = (i == rules->size() - 1);
-            current_member = &((*rules)[i]);
-            auto [start, end] = buildStateFragment((*rules)[i], is_last, addStoreActions);
+            current_member = (*rules)[i].get();
+            auto [start, end] = buildStateFragment(*(*rules)[i], is_last, addStoreActions);
             if (end != NULL_STATE && !is_last) {
                 states[end].epsilon_transitions.insert({states.size(), TableType::DFA});
             }
@@ -602,12 +602,12 @@ void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, T
         std::size_t start_group_index = group_index;
         std::size_t max_group_index = group_index;
 
-        for (const auto &opt : mem.getOp().options) {
+        for (const auto &opt_ptr : mem.getOp().options) {
             std::size_t current_prefix_index = start_prefix_index;
             std::size_t current_index = start_index;
             std::size_t current_group_index = start_group_index;
 
-            generateTemplatedDataBlockFromSingleRule(opt, templated_data_block, current_prefix_index, current_index, current_group_index);
+            generateTemplatedDataBlockFromSingleRule(*opt_ptr, templated_data_block, current_prefix_index, current_index, current_group_index);
 
             max_prefix_index = std::max(max_prefix_index, current_prefix_index);
             max_index = std::max(max_index, current_index);
@@ -619,16 +619,17 @@ void NFA::generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, T
     }
 }
 
-void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
-    for (const auto &mem : rules) {
-        generateTemplatedDataBlockFromSingleRule(mem, templated_data_block, prefix_index, index, group_index);
+void NFA::generateTemplatedDataBlockFromRules(const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index) {
+    for (const auto &mem_ptr : rules) {
+        generateTemplatedDataBlockFromSingleRule(*mem_ptr, templated_data_block, prefix_index, index, group_index);
     }
 }
 
-void NFA::generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed) {
+void NFA::generateSingleDataBlockFromRules(const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed) {
     if (isAlreadyConstructed)
         return;
-    for (const auto &mem : rules) {
+    for (const auto &mem_ptr : rules) {
+        auto &mem = *mem_ptr;
         if (!mem.prefix.empty()) {
             single_data_block = {
                 .type = mem.isGroup() ? StoreCstNode::CST_GROUP : mem.isOp() ? StoreCstNode::CST_CONDITION : StoreCstNode::CST_NODE,

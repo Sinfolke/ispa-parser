@@ -65,7 +65,7 @@ public:
     using CanonicalItem = utype::unordered_set<LR1Core>;
     using CanonicalItemSet = stdu::vector<CanonicalItem>;
 
-    using Rules_part = std::pair<stdu::vector<std::string>, std::pair<std::size_t, stdu::vector<AST::RuleMember>>>;
+    using Rules_part = std::pair<stdu::vector<std::string>, std::pair<std::size_t, stdu::vector<std::shared_ptr<AST::RuleMember>>>>;
     using Rules = stdu::vector<Rules_part>;
     using Priority = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
     using Conflicts = stdu::vector<Conflict>;

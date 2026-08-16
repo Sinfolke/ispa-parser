@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 export module LangRepr.ConstructTypes;
 import LangRepr.Holder;
 import LLIR.IR;
@@ -11,7 +13,7 @@ import std;
 using Name = stdu::vector<std::string>;
 class Node {
 public:
-    using ChildT = std::unordered_map<std::string, std::unique_ptr<Node>>;
+    using ChildT = tsl::ordered_map<std::string, std::unique_ptr<Node>>;
 private:
     template<typename Func>
     auto visit(Func func, Name &fullname) const -> void {

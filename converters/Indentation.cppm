@@ -65,8 +65,8 @@ export namespace Converter {
         auto operator+=(const Indentation &indent) { increase(indent); return *this; }
         auto operator-=(char c) { decrease(c); return *this; }
         auto operator-=(const Indentation &indent) { decrease(indent); return *this; }
-        auto operator+(const Indentation &a, const Indentation &b) const -> Indentation {
-            Indentation indent = a;
+        auto operator+(const Indentation &b) const -> Indentation {
+            Indentation indent = *this;
             indent += b;
             return indent;
         }

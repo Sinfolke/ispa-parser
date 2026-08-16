@@ -16,8 +16,9 @@ import constants;
 import cpuf.printf;
 import std;
 
-void accumulateNestedNames(stdu::vector<AST::RuleMember> members, stdu::vector<stdu::vector<std::string>> &names) {
-    for (const auto &mem : members) {
+void accumulateNestedNames(stdu::vector<std::shared_ptr<AST::RuleMember>> members, stdu::vector<stdu::vector<std::string>> &names) {
+    for (const auto &mem_ptr : members) {
+        auto &mem = *mem_ptr;
         if (mem.isGroup())
             accumulateNestedNames(mem.getGroup().values, names);
         if (mem.isOp())
@@ -66,7 +67,8 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
         // token here
         LLIR::DataBlock dtb;
         stdu::vector<const AST::RuleMember*> members;
-        for (const auto &member : rule.rule_members) {
+        for (const auto &member_ptr : rule.rule_members) {
+            auto &member = *member_ptr;
             if (member.prefix.empty())
                 continue;
             members.push_back(&member);
@@ -79,7 +81,7 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
             LLIR::BuilderData bd(ast, nullptr);
             LLIR::BuilderDataWrapper bdw(bd);
             for (const auto &name : rule.data_block.getTemplatedDataBlock().names) {
-                inclosed_map.emplace(name, std::make_pair(LangAPI::Expression {}, LLIR::BuilderBase::deduceVarTypeByRuleMember(rule.rule_members[member_counter++])));
+                inclosed_map.emplace(name, std::make_pair(LangAPI::Expression {}, LLIR::BuilderBase::deduceVarTypeByRuleMember(*rule.rule_members[member_counter++])));
             }
             dtb.value = inclosed_map;
         }

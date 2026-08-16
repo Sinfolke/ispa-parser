@@ -9,14 +9,14 @@ import std;
 
 export namespace LLIR {
     class MemberBuilder : public BuilderBase {
-        const stdu::vector<AST::RuleMember> *rules = nullptr;
+        const stdu::vector<std::shared_ptr<AST::RuleMember>> *rules = nullptr;
         const AST::RuleMember *rule = nullptr;
         bool addSpaceSkipFirst;
         void buildMember(const AST::RuleMember &member);
     public:
         void build() override;
         MemberBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(&rule) {}
-        MemberBuilder(BuilderDataWrapper &data, const stdu::vector<AST::RuleMember> &rules) : BuilderBase(data), rules(&rules) {}
+        MemberBuilder(BuilderDataWrapper &data, const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules) : BuilderBase(data), rules(&rules) {}
         auto getAddSpaceSkipFirst() const -> bool { return addSpaceSkipFirst; }
     };
 
@@ -105,7 +105,7 @@ export namespace LLIR {
     class OpBuilder : public BuilderBase {
         const AST::RuleMember &rule;
         auto createBlock(
-            const stdu::vector<AST::RuleMember> &rules,
+            const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules,
             std::size_t index,
             LangAPI::Variable &var,
             LangAPI::Variable &svar

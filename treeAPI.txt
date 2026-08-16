@@ -1,313 +1,313 @@
-name<[rule, BIN]> : Rule {
-   String (0b)
-  @  Cseq([01])+;
+name<rule_BIN> : Rule {
+  0x57a542041058
+  0x57a5420411f8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, HEX]> : Rule {
-   String (0x)
-  @  Cseq([], Diapasons:[0-9 A-F a-f ])+;
+}name<rule_HEX> : Rule {
+  0x57a542040c08
+  0x57a542040da8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, ESCAPED]> : Rule {
-   String (\)
-   NoSpace
-  @  Any
+}name<rule_ESCAPED> : Rule {
+  0x57a542040658
+  0x57a5420407d8
+  0x57a542040958
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, NOSPACE]> : Rule {
-   String (\s0)
+}name<rule_NOSPACE> : Rule {
+  0x57a5420401e8
   Data: EmptyDataBlock
-}name<[rule, CSEQUENCE, ESCAPE]> : Rule {
-   String (\)
-   NoSpace
-  @  Any
+}name<rule_CSEQUENCE_ESCAPE> : Rule {
+  0x57a54203f198
+  0x57a54203f318
+  0x57a54203f498
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, CSEQUENCE, SYMBOL]> : Rule {
-  @  !Cseq([]])
+}name<rule_CSEQUENCE_SYMBOL> : Rule {
+  0x57a54203eec8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, quantifier]> : Rule {
-  @  Op( Name(QUESTION_MARK) |  Name(PLUS) |  Name(MULTIPLE))
+}name<rule_quantifier> : Rule {
+  0x57a54203d558
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, data_block, regular_datablock, key]> : Rule {
-  @  Name(ID)
-   String (=)
-  @  Name(cll::expr)
+}name<rule_data_block_regular_datablock_key> : Rule {
+  0x57a54203a988
+  0x57a54203ab08
+  0x57a54203ac88
   Data: TemplatedDataBlock(name, dt)
-}name<[rule, data_block, templated_datablock]> : Rule {
-   Name(AT)
-   String ({)
-   Group(@  Name(ID),  Group( String (,), @  Name(ID))*;)?;
-   String (})
+}name<rule_data_block_templated_datablock> : Rule {
+  0x57a54203afb8
+  0x57a54203b138
+  0x57a54203cca8
+  0x57a54203ce28
   Data: TemplatedDataBlock(first_name, second_name)
-}name<[rule, data_block, regular_datablock]> : Rule {
-   String ({)
-  @  Op( Name(cll::expr) |  Name(rule::data_block::regular_datablock::key)+;)
-   String (})
+}name<rule_data_block_regular_datablock> : Rule {
+  0x57a542039fe8
+  0x57a54203a468
+  0x57a54203a5e8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, group]> : Rule {
-   String (()
-  @  Name(rule::member)*;
-   String ())
+}name<rule_group> : Rule {
+  0x57a5420267d8
+  0x57a542026958
+  0x57a542026ad8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, name]> : Rule {
-  @  String (#)?;
-  @  Name(ID)
-   Group( Name(DOT), @  Name(ID))*;
+}name<rule_name> : Rule {
+  0x57a542025d08
+  0x57a542025e88
+  0x57a542026658
   Data: TemplatedDataBlock(is_nested, name, nested_name)
-}name<[rule, keyvalue]> : Rule {
-   Name(AT)
-   Group( NoSpace, @  Name(ID))?;
+}name<rule_keyvalue> : Rule {
+  0x57a542026c58
+  0x57a5420278a8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, member]> : Rule {
-  @  Group( Op( Name(rule::keyvalue) |  Name(rule::value)))?;
-  @  Op( Name(rule::name) |  Name(rule::group) |  Name(rule::CSEQUENCE) |  Name(STRING) |  Name(rule::HEX) |  Name(rule::BIN) |  Name(rule::NOSPACE) |  Name(rule::ESCAPED) |  Name(DOT) |  Name(rule::OP) |  Name(LINEAR_COMMENT) |  Name(cll))
-  @  Name(rule::quantifier)?;
+}name<rule_member> : Rule {
+  0x57a542073428
+  0x57a542025a08
+  0x57a542025b88
   Data: TemplatedDataBlock(prefix, val, quantifier)
-}name<[rule]> : Rule {
-  @  Name(ID)
-   String (:)
-  @  Name(rule::member)+;
-  @  Name(rule::data_block)?;
-  @  Name(rule::nested_rule)*;
-   String (;)
+}name<rule> : Rule {
+  0x57a5420098c8
+  0x57a542009a48
+  0x57a542009bc8
+  0x57a542009d48
+  0x57a542009ec8
+  0x57a54200a048
   Data: TemplatedDataBlock(name, rule, data_block, nested_rules)
-}name<[_use, unit]> : Rule {
-  @  Name(ID)
-  @  Name(rvalue)?;
+}name<_use_unit> : Rule {
+  0x57a541fcf5f8
+  0x57a541fcc7b8
   Data: TemplatedDataBlock(name, value)
-}name<[main]> : Rule {
-   Group(@  Op( Name(_use) |  Name(rule) |  Name(NAME) |  Name(SPACEMODE)))+;
+}name<main> : Rule {
+  0x57a541fc2478
   Data: [RegularDataBlock: CllExpr]
-}name<[ID]> : Rule {
-  @  Group( Cseq([_], Diapasons:[a-z A-Z ]),  Cseq([_], Diapasons:[a-z A-Z 0-9 ])*;)
+}name<ID> : Rule {
+  0x57a54204cf18
   Data: [RegularDataBlock: CllExpr]
-}name<[moduleImport, from, import_list]> : Rule {
-  @  Name(ID)
-   Group( String (,), @  Name(ID))*;
+}name<moduleImport_from_import_list> : Rule {
+  0x57a541ff3378
+  0x57a541fe7c68
   Data: TemplatedDataBlock(first, sequence)
-}name<[cll, LOGICAL_NOT]> : Rule {
-   Op( String (!) |  String (not))
+}name<cll_LOGICAL_NOT> : Rule {
+  0x57a5420192b8
   Data: EmptyDataBlock
-}name<[cll, function_arguments]> : Rule {
-   Group(@  Name(cll::expr),  Group( String (,), @  Name(cll::expr))*;)
+}name<cll_function_arguments> : Rule {
+  0x57a54202bcf8
   Data: TemplatedDataBlock(first, second)
-}name<[moduleImport, from]> : Rule {
-  @  Op( Name(MULTIPLE) |  Name(moduleImport::from::import_list))
-   String (from)
-  @  Name(ID)
+}name<moduleImport_from> : Rule {
+  0x57a542028098
+  0x57a541fbf558
+  0x57a54204d2e8
   Data: TemplatedDataBlock(what, from)
-}name<[cll, type]> : Rule {
-   Group(@  Op( String (var) |  String (num) |  String (bool) |  String (str) |  Group(@  String (arr), @  Name(cll::templ)) |  Group(@  String (obj), @  Name(cll::templ))))
+}name<cll_type> : Rule {
+  0x57a54202a498
   Data: TemplatedDataBlock(type, templ)
-}name<[cll, expr, compare]> : Rule {
-  @  Name(cll::expr::arithmetic)
-   Group(@  Name(cll::COMPARE_OP), @  Name(cll::expr::arithmetic))*;
+}name<cll_expr_compare> : Rule {
+  0x57a542032c18
+  0x57a54201c358
   Data: TemplatedDataBlock(first, operators, sequence)
-}name<[moduleDeclaration]> : Rule {
-   String (module)
-  @  Name(ID)
-   Group( String (->), @  Name(ID))?;
-   String (;)
+}name<moduleDeclaration> : Rule {
+  0x57a541fd4598
+  0x57a5420656d8
+  0x57a541fe8dd8
+  0x57a541fd3aa8
   Data: TemplatedDataBlock(name, base)
-}name<[PLUS]> : Rule {
-   String (+)
+}name<PLUS> : Rule {
+  0x57a54200b7a8
   Data: EmptyDataBlock
-}name<[cll, expr, group]> : Rule {
-   String (()
-  @  Name(cll::expr)
-   String ())
+}name<cll_expr_group> : Rule {
+  0x57a54202f4a8
+  0x57a54202f628
+  0x57a54202f7a8
   Data: [RegularDataBlock: CllExpr]
-}name<[QUESTION_MARK]> : Rule {
-   String (?)
+}name<QUESTION_MARK> : Rule {
+  0x57a542065108
   Data: EmptyDataBlock
-}name<[array]> : Rule {
-   String ([)
-   Group( Group(@  Name(cll::expr),  String (,))*;)?;
-   String (])
+}name<array> : Rule {
+  0x57a542033a98
+  0x57a542027f18
+  0x57a542027b78
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, CSEQUENCE]> : Rule {
-   String ([)
-  @  String (^)?;
-  @  Group( Op( Name(rule::CSEQUENCE::DIAPASON) |  Name(rule::CSEQUENCE::ESCAPE) |  Name(rule::CSEQUENCE::SYMBOL)))*;
-   String (])
+}name<rule_CSEQUENCE> : Rule {
+  0x57a54203dbf8
+  0x57a54203dd78
+  0x57a54203b458
+  0x57a54203ec18
   Data: TemplatedDataBlock(_not, val)
-}name<[rvalue]> : Rule {
-  @  Op( Name(BOOLEAN) |  Name(NUMBER) |  Name(STRING) |  Name(ID) |  Name(AT) |  Name(array) |  Name(object))
+}name<rvalue> : Rule {
+  0x57a542060238
   Data: [RegularDataBlock: CllExpr]
-}name<[NUMBER]> : Rule {
-  @  Cseq([+-])?;
-  @  Group( Cseq([], Diapasons:[0-9 ])+;)
-  @  Group( Cseq([.,]),  Cseq([], Diapasons:[0-9 ])+;)?;
+}name<NUMBER> : Rule {
+  0x57a54204bc78
+  0x57a541fc2df8
+  0x57a542021bb8
   Data: TemplatedDataBlock(sign, main, dec)
-}name<[MULTIPLE]> : Rule {
-   String (*)
+}name<MULTIPLE> : Rule {
+  0x57a541ff3ab8
   Data: EmptyDataBlock
-}name<[cll, function_parameters]> : Rule {
-   Group(@  Name(ID),  Group( String (,), @  Name(ID))*;)
+}name<cll_function_parameters> : Rule {
+  0x57a54202c5e8
   Data: TemplatedDataBlock(first, second)
-}name<[object]> : Rule {
-   String ({)
-   Group(@  Op( Name(ID) |  Name(NUMBER)),  String (:), @  Name(cll::expr),  Group( String (,), @  Op( Name(ID) |  Name(NUMBER)),  String (:), @  Name(cll::expr))*;,  String (;))?;
-   String (})
+}name<object> : Rule {
+  0x57a5420642d8
+  0x57a542001318
+  0x57a542064f88
   Data: TemplatedDataBlock(key, value, keys, values)
-}name<[MODULO]> : Rule {
-   String (%)
+}name<MODULO> : Rule {
+  0x57a542005c58
   Data: EmptyDataBlock
-}name<[cll, stmt]> : Rule {
-   String ({)
-  @  Name(rule::member)*;
-   String (})
+}name<cll_stmt> : Rule {
+  0x57a542030e48
+  0x57a542030fc8
+  0x57a542031148
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, CSEQUENCE, DIAPASON]> : Rule {
-   Group(@  Name(rule::CSEQUENCE::SYMBOL),  NoSpace,  String (-),  NoSpace, @  Name(rule::CSEQUENCE::SYMBOL))
+}name<rule_CSEQUENCE_DIAPASON> : Rule {
+  0x57a54203ff18
   Data: TemplatedDataBlock(begin, end)
-}name<[cll, _var]> : Rule {
-  @  Name(cll::type)?;
-  @  Name(ID)
-   Group(@  Name(cll::ASSIGNMENT_OP), @  Name(cll::expr))?;
+}name<cll__var> : Rule {
+  0x57a542030058
+  0x57a5420301d8
+  0x57a542030b98
   Data: TemplatedDataBlock(type, id, op, value)
-}name<[AT]> : Rule {
-   String (@)
+}name<AT> : Rule {
+  0x57a541ff7378
   Data: EmptyDataBlock
-}name<[cll, expr, logical]> : Rule {
-  @  Name(cll::expr::compare)
-   Group(@  Name(cll::LOGICAL_OP), @  Name(cll::expr::compare))*;
+}name<cll_expr_logical> : Rule {
+  0x57a54202d018
+  0x57a542032818
   Data: TemplatedDataBlock(left, op, right)
-}name<[cll, expr, term]> : Rule {
-  @  Name(cll::expr::value)
-   Group(@  Op( Name(MULTIPLE) |  Name(DIVIDE) |  Name(MODULO)), @  Name(cll::expr::value))*;
+}name<cll_expr_term> : Rule {
+  0x57a54202d448
+  0x57a54202de78
   Data: TemplatedDataBlock(first, operators, sequence)
-}name<[cll, expr]> : Rule {
-  @  Name(cll::expr::logical)
+}name<cll_expr> : Rule {
+  0x57a54202ccc8
   Data: [RegularDataBlock: CllExpr]
-}name<[DOT]> : Rule {
-   String (.)
+}name<DOT> : Rule {
+  0x57a542000258
   Data: EmptyDataBlock
-}name<[cll, function_call]> : Rule {
-  @  Name(ID)
-  @  Name(cll::function_body_call)
+}name<cll_function_call> : Rule {
+  0x57a54202c898
+  0x57a54202ca18
   Data: TemplatedDataBlock(name, body)
-}name<[rule, value]> : Rule {
-   String (&)
-  @  Name(ID)
+}name<rule_value> : Rule {
+  0x57a542039068
+  0x57a5420391e8
   Data: [RegularDataBlock: CllExpr]
-}name<[DIVIDE]> : Rule {
-   String (/)
+}name<DIVIDE> : Rule {
+  0x57a541fc88a8
   Data: EmptyDataBlock
-}name<[cll, method_call]> : Rule {
-  @  Name(ID)
-   Name(DOT)
-  @  Name(cll::function_call)
+}name<cll_method_call> : Rule {
+  0x57a54202f928
+  0x57a54202faa8
+  0x57a54202fc28
   Data: TemplatedDataBlock(name, body)
-}name<[cll, expr, value]> : Rule {
-  @  Op( Name(cll::expr::group) |  Name(cll::_variable) |  Name(cll::function_call) |  Name(cll::method_call) |  Name(rvalue))
+}name<cll_expr_value> : Rule {
+  0x57a54202f288
   Data: [RegularDataBlock: CllExpr]
-}name<[STRING]> : Rule {
-   Group( String ('), @  Group( Op( Group( String (\),  NoSpace,  Any) |  !Cseq(['])))*;,  String ('))
+}name<STRING> : Rule {
+  0x57a54204c5f8
   Data: [RegularDataBlock: CllExpr]
-}name<[SPACEMODE]> : Rule {
-   String (spacemode)
-  @  Op( String (mixed) |  String (skipped) |  String (allowed))
-   String (;)
+}name<SPACEMODE> : Rule {
+  0x57a541fd1328
+  0x57a542000c78
+  0x57a541fdbdd8
   Data: [RegularDataBlock: CllExpr]
-}name<[cll, function_body_decl]> : Rule {
-   String (()
-  @  Name(cll::function_parameters)
-   String ())
+}name<cll_function_body_decl> : Rule {
+  0x57a542037968
+  0x57a542037ae8
+  0x57a54202aeb8
   Data: [RegularDataBlock: CllExpr]
-}name<[moduleImport]> : Rule {
-   String (import)
-  @  Op( Name(ID) |  Name(moduleImport::from))
+}name<moduleImport> : Rule {
+  0x57a541fcd758
+  0x57a5420557e8
   Data: [RegularDataBlock: CllExpr]
-}name<[MINUS]> : Rule {
-   String (-)
+}name<MINUS> : Rule {
+  0x57a541fef938
   Data: EmptyDataBlock
-}name<[cll]> : Rule {
-   String ($)
-  @  Op( Name(cll::_var) |  Name(cll::_if) |  Name(cll::expr) |  Name(cll::loop_while) |  Name(cll::loop_for))
-   String (;)
+}name<cll> : Rule {
+  0x57a542028fe8
+  0x57a5420299c8
+  0x57a542029b48
   Data: [RegularDataBlock: CllExpr]
-}name<[cll, COMPARE_OP]> : Rule {
-  @  Op( String (==) |  String (!=) |  String (>) |  String (<) |  String (>=) |  String (<=))
+}name<cll_COMPARE_OP> : Rule {
+  0x57a542018628
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, data_block]> : Rule {
-  @  Op( Name(rule::data_block::templated_datablock) |  Name(rule::data_block::regular_datablock))
+}name<rule_data_block> : Rule {
+  0x57a542039d28
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, nested_rule]> : Rule {
-   String (#)
-   NoSpace
-  @  Name(rule)
+}name<rule_nested_rule> : Rule {
+  0x57a542039548
+  0x57a5420396c8
+  0x57a542039848
   Data: [RegularDataBlock: CllExpr]
-}name<[cll, function_body_call]> : Rule {
-   String (()
-  @  Name(cll::function_arguments)
-   String ())
+}name<cll_function_body_call> : Rule {
+  0x57a5420373a8
+  0x57a542037528
+  0x57a5420376a8
   Data: [RegularDataBlock: CllExpr]
-}name<[rule, OP]> : Rule {
-   String (|)
+}name<rule_OP> : Rule {
+  0x57a54203d948
   Data: EmptyDataBlock
-}name<[cll, LOGICAL_OR]> : Rule {
-   Op( String (||) |  String (or))
+}name<cll_LOGICAL_OR> : Rule {
+  0x57a542019e18
   Data: EmptyDataBlock
-}name<[cll, _if]> : Rule {
-   String (if)
-  @  Name(cll::expr)
-  @  Name(cll::stmt)
+}name<cll__if> : Rule {
+  0x57a54201a678
+  0x57a54201a7f8
+  0x57a542035a18
   Data: TemplatedDataBlock(expr, stmt)
-}name<[_use]> : Rule {
-   String (use)
-  @  Name(_use::unit)
-   Group( String (,), @  Name(_use::unit))*;
-   String (;)
+}name<_use> : Rule {
+  0x57a541fd7288
+  0x57a541fd1e58
+  0x57a541fe6f68
+  0x57a541fcf478
   Data: TemplatedDataBlock(first, second)
-}name<[LINEAR_COMMENT]> : Rule {
-   String (//)
-   !Cseq([], Escaped:[\n])*;
+}name<LINEAR_COMMENT> : Rule {
+  0x57a541fea218
+  0x57a54206a028
   Data: EmptyDataBlock
-}name<[cll, templ]> : Rule {
-   String (<)
-  @  Name(cll::type)
-   Group( String (,), @  Name(cll::type))*;
-   String (>)
+}name<cll_templ> : Rule {
+  0x57a54201b5c8
+  0x57a54201b748
+  0x57a54201a248
+  0x57a54201a3c8
   Data: TemplatedDataBlock(first, second)
-}name<[cll, expr, arithmetic]> : Rule {
-  @  Name(cll::expr::term)
-   Group(@  Op( Name(PLUS) |  Name(MINUS)), @  Name(cll::expr::term))*;
+}name<cll_expr_arithmetic> : Rule {
+  0x57a54201bcb8
+  0x57a54202d198
   Data: TemplatedDataBlock(first, operators, sequence)
-}name<[cll, LOGICAL_AND]> : Rule {
-   Op( String (&&) |  String (and))
+}name<cll_LOGICAL_AND> : Rule {
+  0x57a542019868
   Data: EmptyDataBlock
-}name<[cll, LOGICAL_OP]> : Rule {
-  @  Op( Name(cll::LOGICAL_AND) |  Name(cll::LOGICAL_OR))
+}name<cll_LOGICAL_OP> : Rule {
+  0x57a542018cf8
   Data: [RegularDataBlock: CllExpr]
-}name<[BOOLEAN]> : Rule {
-  d Group( Op( String (true) |  String (false)))
+}name<BOOLEAN> : Rule {
+  0x57a54200f638
   Data: [RegularDataBlock: CllExpr]
-}name<[cll, loop_for]> : Rule {
-   String (for)
-   String (()
-  @  Group( Op( Name(cll::expr) |  Name(cll::_var)))?;
-   String (;)
-  @  Name(cll::expr)?;
-   String (;)
-  @  Name(cll::expr)?;
-   String ())
-  @  Name(cll::stmt)
+}name<cll_loop_for> : Rule {
+  0x57a542031878
+  0x57a5420319f8
+  0x57a542038548
+  0x57a5420386c8
+  0x57a542038848
+  0x57a5420389c8
+  0x57a542038b48
+  0x57a542038cc8
+  0x57a542038e48
   Data: TemplatedDataBlock(decl, cond, end, stmt)
-}name<[NAME]> : Rule {
-   String (name)
-  @  Name(ID)
-   String (;)
+}name<NAME> : Rule {
+  0x57a54202fed8
+  0x57a541febaf8
+  0x57a542065a28
   Data: [RegularDataBlock: CllExpr]
-}name<[cll, loop_while]> : Rule {
-   String (while)
-  @  Name(cll::expr)
-  @  Name(cll::stmt)
+}name<cll_loop_while> : Rule {
+  0x57a5420312c8
+  0x57a542031448
+  0x57a5420315c8
   Data: TemplatedDataBlock(expr, stmt)
-}name<[cll, _variable]> : Rule {
-  @  Group( Op( String (++) |  String (--)))?;
-  @  Name(ID)
-   Group( String ([), @  Name(cll::expr),  String (]))?;
-  @  Group( Op( String (++) |  String (--)))?;
+}name<cll__variable> : Rule {
+  0x57a542036428
+  0x57a5420365a8
+  0x57a542036c28
+  0x57a542037228
   Data: TemplatedDataBlock(pre, name, brace_expression, pos)
-}name<[cll, ASSIGNMENT_OP]> : Rule {
-  @  Op( String (+=) |  String (-=) |  String (*=) |  String (/=) |  String (%=))
+}name<cll_ASSIGNMENT_OP> : Rule {
+  0x57a5420179c8
   Data: [RegularDataBlock: CllExpr]
 }

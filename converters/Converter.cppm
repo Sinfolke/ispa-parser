@@ -1,9 +1,12 @@
+module;
+#include <tsl/ordered_map.h>
 export module Converter;
+import hash;
 import LangAPI;
+import LLIR.API;
 import LLIR.IR;
 import LRParser;
 import AST.Tree;
-import fcdt;
 import LexerBuilder;
 import dstd;
 import std;
@@ -24,20 +27,20 @@ export class LLConverter_base {
         // data
         stdu::vector<stdu::vector<std::string>> tokens;
         stdu::vector<stdu::vector<std::string>> rules;
-        LangAPI::DataBlockList data_block_tokens;
-        LangAPI::DataBlockList data_block_rules;
-        const LangAPI::IR &ir;
+        tsl::ordered_map<stdu::vector<std::string>, LLIR::DataBlock, uhash> data_block_tokens;
+        tsl::ordered_map<stdu::vector<std::string>, LLIR::DataBlock, uhash> data_block_rules;
+        const LLIR::IR &ir;
         const AST::Tree &tree;
     public:
-        LLConverter_base(const LangAPI::IR &ir, AST::Tree &tree)
+        LLConverter_base(const LLIR::IR &ir, AST::Tree &tree)
         : tree(tree), ir(ir) {
             auto use_places = tree.getUsePlacesTable();
             tokens = tree.getTerminals();
             rules = tree.getNonTerminals();
             tokens.insert(tokens.begin(), {"NONE"});
             rules.insert(rules.begin(), {"NONE"});
-            data_block_tokens = ir.getDataBlocksTerminals();
-            data_block_rules = ir.getDataBlocksNonTerminals();
+            data_block_tokens = tsl::ordered_map<stdu::vector<std::string>, LLIR::DataBlock, uhash>(ir.getDataBlocks().begin(), ir.getDataBlocks().end());
+            data_block_rules = tsl::ordered_map<stdu::vector<std::string>, LLIR::DataBlock, uhash>(ir.getDataBlocks().begin(), ir.getDataBlocks().end());
         }
         auto getDataBlockToken() {
             return data_block_tokens;
@@ -56,8 +59,8 @@ export class LRConverter_base {
     protected:
         // data
         const LRParser* data;
-        LangAPI::Nodes lexer_code;
-        LangAPI::variable return_var;
+        LangAPI::Statements lexer_code;
+        LangAPI::Variable return_var;
         const LexerBuilder &lexer_data;
         AST::Tree &tree;
     public:

@@ -43,6 +43,7 @@ export namespace LLIR {
         auto deduceTypeFromExprLogical(const AST::CllExprLogical &logical) -> LangAPI::Type;
     public:
         CllExprBuilder(BuilderDataWrapper &bd, const AST::CllExpr &expr) : BuilderDataWrapper(bd), expr(expr) {}
+        CllExprBuilder(BuilderDataWrapper &bd, const std::shared_ptr<AST::CllExpr> &expr_ptr) : BuilderDataWrapper(bd), expr(*expr_ptr) {}
         void build();
         auto get() const -> const LangAPI::Expression& { return result; };
         auto get() -> LangAPI::Expression& { return result; };

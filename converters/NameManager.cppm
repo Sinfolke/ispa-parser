@@ -1,5 +1,6 @@
 export module Converter.NameManager;
 
+import hash;
 import dstd;
 import std;
 export namespace Converter {
@@ -33,6 +34,6 @@ export namespace Converter {
             return name_to_line[sym];
         }
     private:
-        std::unordered_map<stdu::vector<std::string>, NameData> name_to_line;
+        utype::unordered_map<stdu::vector<std::string>, NameData> name_to_line;
     };
 }

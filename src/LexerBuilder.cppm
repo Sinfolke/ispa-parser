@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 export module LexerBuilder;
 import LangAPI;
 import AST.API;
@@ -5,7 +7,7 @@ import AST.Tree;
 import LangAPI;
 import LLIR.API;
 import LLIR.IR;
-import fcdt;
+import AST.Tree;
 import NFA;
 import DFA;
 import hash;
@@ -16,14 +18,13 @@ public:
     static constexpr auto DFA_NOT_COMPATIBLE = std::numeric_limits<std::size_t>::max();
     using DfaCompatibleTable = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
     using NameToDfaMap = utype::unordered_map<stdu::vector<std::string>, std::size_t>;
-    using DispatchNamesInvolve = utype::unordered_map<stdu::vector<stdu::vector<std::string>>, NameToDfaMap>;
+    using DispatchNamesInvolve = tsl::ordered_map<stdu::vector<stdu::vector<std::string>>, NameToDfaMap, uhash>;
 
 
 private:
     AST::Tree &ast;
     DFA::ClassifiedDFA dfa;
     LLIR::IR function_ir;
-    stdu::vector<std::size_t> new_fcdt;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
     NameToDfaMap name_to_dfa;
@@ -42,7 +43,6 @@ public:
     auto& getLRTable() const { return lr_table; }
     auto& getSemanticTable() { return semantic_table; }
     auto& getSemanticTable() const { return semantic_table; }
-    auto& getNewFCDT() { return new_fcdt; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
     auto& getFunctionsIR() { return function_ir; }

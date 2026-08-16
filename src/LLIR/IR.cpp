@@ -26,10 +26,10 @@ auto LLIR::IR::empty() -> bool {
 auto LLIR::IR::clear() -> void {
     data.clear();
 }
-LLIR::DataBlockList LLIR::IR::getDataBlocks() const {
-    LLIR::DataBlockList list;
-    for (const auto &[data_block, name, members] : data) {
-        list[name] = data_block;
+auto LLIR::IR::getDataBlocks() const -> DataBlockList {
+    DataBlockList list;
+    for (const auto &production : data) {
+        list.emplace(production.name, production.block);
     }
     return list;
 }

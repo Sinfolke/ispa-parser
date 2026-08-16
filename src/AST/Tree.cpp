@@ -27,8 +27,9 @@ auto AST::Tree::getNonTerminals() const -> stdu::vector<stdu::vector<std::string
     }
     return set;
 }
-void AST::Tree::getUsePlacesTable(const stdu::vector<AST::RuleMember> &members, const stdu::vector<std::string> &name) {
-    for (const auto &member : members) {
+void AST::Tree::getUsePlacesTable(const stdu::vector<std::shared_ptr<AST::RuleMember>> &members, const stdu::vector<std::string> &name) {
+    for (const auto &member_ptr : members) {
+        auto &member = *member_ptr;
         if (member.isGroup()) {
             getUsePlacesTable(member.getGroup().values, name);
         } else if (member.isOp()) {
@@ -44,17 +45,17 @@ auto AST::Tree::createUsePlacesTable() -> UsePlaceTable& {
     }
     return use_places;
 }
-auto AST::Tree::compute_group_length(const stdu::vector<AST::RuleMember> &group) -> std::size_t {
+auto AST::Tree::compute_group_length(const stdu::vector<std::shared_ptr<AST::RuleMember>> &group) -> std::size_t {
     std::size_t count = 0;
     for (auto &rule : group) {
-        if (rule.isGroup() && rule.quantifier == '\0') {
-            count += compute_group_length(rule.getGroup().values);
+        if (rule->isGroup() && rule->quantifier == '\0') {
+            count += compute_group_length(rule->getGroup().values);
         } else count++;
     }
     return count;
 };
 void AST::Tree::transform_helper(
-    stdu::vector<AST::RuleMember> &members,
+    stdu::vector<std::shared_ptr<AST::RuleMember>> &members,
     const stdu::vector<std::string> &fullname,
     const stdu::vector<std::string> &original_fullname,
     utype::unordered_map<stdu::vector<std::string>, std::pair<char, stdu::vector<std::string>>> &replacements
@@ -62,7 +63,8 @@ void AST::Tree::transform_helper(
     logger.increaseIndentLevel();
     auto size = members.size();
     for (std::size_t i = 0; i < size; ++i) {
-        auto &member = members[i];
+        auto &member_ptr = members[i];
+        auto &member = *member_ptr;
         if (member.isGroup()) {
             logger.increaseIndentLevel();
             logger.log("IsGroup, data: ");
@@ -84,6 +86,7 @@ void AST::Tree::transform_helper(
 
                 // Move i past inserted values
                 i += data.values.size();  // Already erased 1, inserted N — so we skip N
+                i--; // Correct for loop increment
 
                 continue;
             }
@@ -94,12 +97,12 @@ void AST::Tree::transform_helper(
             logger.log("running transform_helper on group");
             transform_helper(data.values, quant_fullname, original_fullname, replacements);
 
-            stdu::vector<stdu::vector<AST::RuleMember>> new_alternatives;
+            stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alternatives;
             logger.log("quant_fullname: {}", quant_fullname);
             // Replace current member with reference to new rule
-            member = AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} };
+            member_ptr = std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} });
 
-            stdu::vector<stdu::vector<AST::RuleMember>> new_alts;
+            stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alts;
             logger.log("dealing with quantifier {}", member.quantifier);
             switch (member.quantifier) {
                 case '?':
@@ -115,14 +118,14 @@ void AST::Tree::transform_helper(
 
                     // A → data tail
                     auto base = data.values;
-                    base.push_back(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} });
+                    base.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} }));
                     new_alts.push_back(base);
 
                     // A* tail: ε | data tail
-                    stdu::vector<stdu::vector<AST::RuleMember>> tail_alts;
+                    stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> tail_alts;
                     tail_alts.push_back({});
                     auto recur = data.values;
-                    recur.push_back(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} });
+                    recur.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} }));
                     tail_alts.push_back(recur);
 
                     for (auto &alt : tail_alts)
@@ -134,7 +137,7 @@ void AST::Tree::transform_helper(
                     // * = ε | data A*
                     new_alts.push_back({});
                     auto recur = data.values;
-                    recur.push_back(AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} });
+                    recur.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} }));
                     new_alts.push_back(recur);
                     break;
                 }
@@ -160,7 +163,7 @@ void AST::Tree::transform_helper(
             logger.log("in Op: {}", member.getOp());
             auto data = member.getOp(); // should be copy !!!
             stdu::vector<std::string> push_name;
-            stdu::vector<AST::RuleMember>::iterator val_it;
+            stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator val_it;
             stdu::vector<std::pair<std::size_t, std::size_t>> group_pos = {};
             std::size_t _count = 0;
             if (members.size() == 1) {
@@ -169,11 +172,11 @@ void AST::Tree::transform_helper(
                 bool is_first_going_group = false;
 
                 for (const auto &rule : data.options) {
-                    if (rule.isGroup()) {
+                    if (rule->isGroup()) {
                         if (count == 0)
                             is_first_going_group = true;
 
-                        auto len = compute_group_length(rule.getGroup().values);
+                        auto len = compute_group_length(rule->getGroup().values);
                         group_pos.push_back({count, len});
                         count += len;
                         continue;
@@ -208,9 +211,9 @@ void AST::Tree::transform_helper(
                 } else {
                     logger.log("[branch] is_first_going_group == false");
                     logger.log("data.options[0]: {}, data.options.begin(): {}, data.options.begin() + 1: {}, _count: {}, _count + 1: {}",
-                        data.options[0], &(*data.options.begin()), &(*data.options.begin()) + 1, _count, _count + 1
+                        *data.options[0], &(*data.options.begin()), &(*data.options.begin()) + 1, _count, _count + 1
                     );
-                    logger.log("remain element {} in set", data.options[0]);
+                    logger.log("remain element {} in set", *data.options[0]);
                     members[i] = data.options[0];
                     val_it = data.options.begin() + 1;
                     _count++;
@@ -222,7 +225,7 @@ void AST::Tree::transform_helper(
                 std::string name ="__rop" + std::to_string(i);
                 auto new_fullname = fullname;
                 new_fullname.push_back(name);
-                members[i] = AST::RuleMember {.value = AST::RuleMemberName {.name = new_fullname}};
+                members[i] = std::make_shared<AST::RuleMember>(AST::RuleMember {.value = AST::RuleMemberName {.name = new_fullname}});
 
                 transform_helper(data.options, fullname, original_fullname, replacements); // process internal ops/groups
                 val_it = data.options.begin();
@@ -231,7 +234,7 @@ void AST::Tree::transform_helper(
             }
             for (; val_it != data.options.end(); val_it++, _count++) {
                 auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<std::size_t, std::size_t> &unit) {return unit.first == _count;});
-                stdu::vector<AST::RuleMember> values;
+                stdu::vector<std::shared_ptr<AST::RuleMember>> values;
                 logger.log("found group: {}", group != group_pos.end());
                 if (group != group_pos.end()) {
                     logger.log("iterating through group");
@@ -243,7 +246,7 @@ void AST::Tree::transform_helper(
                     _count--;
                     logger.log("final _count: {}, val_it: {}", _count, &(*val_it));
                 } else {
-                    logger.log("inserting raw element {}", *val_it);
+                    logger.log("inserting raw element {}", **val_it);
                     values.push_back(*val_it);
                 }
                 initial_item_set[push_name].push_back(AST::Rule {.rule_members = values, .original_rules = original_fullname});
@@ -257,10 +260,10 @@ void AST::Tree::transform_helper(
 
         auto find = replacements.find(fullname);
         if (find != replacements.end() && find->second.first == member.quantifier) {
-            members[i] = AST::RuleMember {
+            member_ptr = std::make_shared<AST::RuleMember>(AST::RuleMember {
                 .quantifier = '\0',
                 .value = AST::RuleMemberName {.name = find->second.second}
-            };
+            });
             continue;
         }
 
@@ -272,12 +275,12 @@ void AST::Tree::transform_helper(
         AST::RuleMember replaced = member;
         replaced.quantifier = '\0';
 
-        stdu::vector<stdu::vector<AST::RuleMember>> new_alts;
+        stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alts;
         logger.log("dealing with quantifier {} for rule {}", member.quantifier, member);
         switch (member.quantifier) {
             case '?':
                 new_alts.push_back({});
-                new_alts.push_back({replaced});
+                new_alts.push_back({std::make_shared<AST::RuleMember>(replaced)});
                 break;
             case '+': {
                 std::string tail_name = quant_rule_name + "_tail";
@@ -285,19 +288,19 @@ void AST::Tree::transform_helper(
                 tail_fullname.push_back(tail_name);
 
                 new_alts.push_back({
-                    replaced,
-                    AST::RuleMember {
+                    std::make_shared<AST::RuleMember>(replaced),
+                    std::make_shared<AST::RuleMember>(AST::RuleMember {
                         .value = AST::RuleMemberName {.name = tail_fullname}
-                    }
+                    })
                 });
 
-                stdu::vector<stdu::vector<AST::RuleMember>> tail_alts = {
+                stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> tail_alts = {
                     {},
                     {
-                        replaced,
-                        AST::RuleMember {
+                        std::make_shared<AST::RuleMember>(replaced),
+                        std::make_shared<AST::RuleMember>(AST::RuleMember {
                             .value = AST::RuleMemberName {.name = tail_fullname}
-                        }
+                        })
                     }
                 };
                 for (auto &alt : tail_alts) {
@@ -308,10 +311,10 @@ void AST::Tree::transform_helper(
             case '*':
                 new_alts.push_back({});
                 new_alts.push_back({
-                    replaced,
-                    AST::RuleMember {
+                    std::make_shared<AST::RuleMember>(replaced),
+                    std::make_shared<AST::RuleMember>(AST::RuleMember {
                         .value = AST::RuleMemberName {.name = quant_fullname}
-                    }
+                    })
                 });
                 break;
         }
@@ -371,7 +374,7 @@ bool AST::Tree::isMemberNullable(const AST::RuleMember& member) const {
         // A group (A | B | C) is nullable if ANY of its alternative productions are completely nullable
         for (const auto& alt_rule : member.getGroup().values) {
             bool alt_all_nullable = true;
-            if (!isMemberNullable(alt_rule)) {
+            if (!isMemberNullable(*alt_rule)) {
                 alt_all_nullable = false;
                 break;
             }
@@ -393,7 +396,7 @@ void AST::Tree::computeNullableSet() {
             for (const auto &prod : productions) {
                 bool allNullable = true;
                 for (const auto &sym : prod.rule_members) {
-                    if (!isMemberNullable(sym)) {
+                    if (!isMemberNullable(*sym)) {
                         allNullable = false;
                         break;
                     }
@@ -409,7 +412,8 @@ void AST::Tree::constructFirstSet(const stdu::vector<AST::Rule>& options, const 
     logger.increaseIndentLevel();
     for (const auto& option : options) {
         bool nullable_prefix = true;
-        for (const auto& member : option.rule_members) {
+        for (const auto& m : option.rule_members) {
+            const auto &member = *m;
             if (member.isNospace())
                 continue;
 
@@ -529,30 +533,31 @@ void AST::Tree::collectMemberFirst(const AST::RuleMember& member, std::set<stdu:
 
     if (member.isGroup()) {
         for (const auto& sub : member.getGroup().values) {
-            collectMemberFirst(sub, outFirst);
-            if (!isMemberNullable(sub)) break;
+            collectMemberFirst(*sub, outFirst);
+            if (!isMemberNullable(*sub)) break;
         }
     }
 
     if (member.isOp()) {
         for (const auto& opt : member.getOp().options) {
-            collectMemberFirst(opt, outFirst);
+            collectMemberFirst(*opt, outFirst);
         }
     }
 }
 
 void AST::Tree::processFollowForSequence(
     const stdu::vector<std::string>& lhs_name,
-    const stdu::vector<AST::RuleMember>& members,
+    const stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
     bool is_left_recursive,
     bool& hasChanges,
     stdu::vector<stdu::vector<std::string>>& prev_depend
 ) {
     for (std::size_t i = 0; i < members.size(); ++i) {
-        if (members[i].isNospace()) continue;
+        auto &member = *members[i];
+        if (member.isNospace()) continue;
 
-        if (members[i].isName()) {
-            const auto& nameInfo = members[i].getName();
+        if (member.isName()) {
+            const auto& nameInfo = member.getName();
             auto current_n = nameInfo.name;
             if (nameInfo.isTerminal()) continue;
 
@@ -577,20 +582,20 @@ void AST::Tree::processFollowForSequence(
             bool reached_end_or_nullable = true;
 
             while (next_idx < members.size()) {
-                if (members[next_idx].isNospace()) { next_idx++; continue; }
+                if (members[next_idx]->isNospace()) { next_idx++; continue; }
 
                 std::set<stdu::vector<std::string>> next_first;
-                collectMemberFirst(members[next_idx], next_first);
+                collectMemberFirst(*members[next_idx], next_first);
 
                 for (const auto& e : next_first) {
                     if (e == stdu::vector<std::string>{"ε"}) continue;
                     if (follow[current_n].insert(e).second) hasChanges = true;
                 }
 
-                if (!isMemberNullable(members[next_idx])) {
+                if (!isMemberNullable(*members[next_idx])) {
                     reached_end_or_nullable = false;
-                    if (members[next_idx].isName()) {
-                        prev_depend.push_back(members[next_idx].getName().name);
+                    if (members[next_idx]->isName()) {
+                        prev_depend.push_back(members[next_idx]->getName().name);
                     }
                     break;
                 }
@@ -604,12 +609,12 @@ void AST::Tree::processFollowForSequence(
                 }
             }
         }
-        else if (members[i].isGroup()) {
+        else if (member.isGroup()) {
             // Process the internal vector of structural members recursively
-            processFollowForSequence(lhs_name, members[i].getGroup().values, is_left_recursive, hasChanges, prev_depend);
+            processFollowForSequence(lhs_name, member.getGroup().values, is_left_recursive, hasChanges, prev_depend);
         }
-        else if (members[i].isOp()) {
-            processFollowForSequence(lhs_name, members[i].getOp().options, is_left_recursive, hasChanges, prev_depend);
+        else if (member.isOp()) {
+            processFollowForSequence(lhs_name, member.getOp().options, is_left_recursive, hasChanges, prev_depend);
         }
     }
 }
@@ -642,12 +647,12 @@ void AST::Tree::constructFollowSet() {
                 // Determine left-recursion properties exactly like original layout
                 bool is_left_recursive = false;
                 auto rules_members_it = rules.rule_members.begin();
-                while (rules_members_it != rules.rule_members.end() && rules_members_it->isNospace())
+                while (rules_members_it != rules.rule_members.end() && (*rules_members_it)->isNospace())
                     rules_members_it++;
 
                 if (rules_members_it != rules.rule_members.end() &&
-                    rules_members_it->isName() &&
-                    name == rules_members_it->getName().name) {
+                (*rules_members_it)->isName() &&
+                    name == (*rules_members_it)->getName().name) {
                     is_left_recursive = true;
                 }
 
@@ -727,4 +732,7 @@ void AST::Tree::printFollowSet(const std::string &fileName) {
     } else {
         std::cerr << "Failed to open the file for writing: " << fileName << "\n";
     }
+}
+auto AST::Tree::getCodeForLexer() -> std::pair<LangAPI::Statements, LangAPI::Variable> {
+    return {};
 }

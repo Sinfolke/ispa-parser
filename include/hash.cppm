@@ -112,12 +112,18 @@ bool operator==(std::unordered_set<T> a, std::unordered_set<T> b) {
     }
     return true;
 }
+export struct uequal {
+    template<typename T>
+    bool operator()(const T& a, const T& b) const {
+        return a == b;
+    }
+};
 // exports
 export namespace utype {
     template<typename Key, typename Value>
-    using unordered_map = std::unordered_map<Key, Value, uhash>;
+    using unordered_map = std::unordered_map<Key, Value, uhash, uequal>;
     template<typename T>
-    using unordered_set = std::unordered_set<T, uhash>;
+    using unordered_set = std::unordered_set<T, uhash, uequal>;
 }
 export struct EmptyHashable {
 protected:

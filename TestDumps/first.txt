@@ -1,2 +1,0 @@
-main: {}
-integer_variable: {AUTO_0, }

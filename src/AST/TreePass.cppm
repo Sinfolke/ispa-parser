@@ -21,14 +21,14 @@ export namespace AST {
         Tree *ast;
         std::size_t token_count = 0;
         void literalsToToken(
-            stdu::vector<AST::RuleMember> &literals,
+            stdu::vector<std::shared_ptr<AST::RuleMember>> &literals,
             std::size_t &count,
             stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
-            stdu::vector<std::pair<AST::RuleMember, AST::RuleMember>> &generated
+            stdu::vector<std::pair<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>>> &generated
         );
-        
-        static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<AST::RuleMember> &members, stdu::vector<AST::RuleMember>::iterator toInsert)
-             -> stdu::vector<AST::RuleMember>::iterator;
+
+        static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<std::shared_ptr<AST::RuleMember>> &members, stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator toInsert)
+             -> stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator;
         void constructor() {
             removeEmptyRule();
             inlineSingleGroups();
@@ -73,7 +73,7 @@ export namespace AST {
         static void sortByPriority(Tree &ast);
         static void addSpaceToken(Tree &ast);
         static void sortByPriority(Tree &ast, AST::RuleMemberOp& options);
-        static void sortByPriority(Tree &ast, stdu::vector<AST::RuleMember>& members);
+        static void sortByPriority(Tree &ast, stdu::vector<std::shared_ptr<AST::RuleMember>>& members);
         void removeEmptyRule();
         void inlineSingleGroups();
         void literalsToToken();

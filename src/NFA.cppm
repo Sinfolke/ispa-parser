@@ -125,7 +125,7 @@ public:
     };
 private:
     AST::Tree &tree;
-    const stdu::vector<AST::RuleMember> *rules = nullptr;
+    const stdu::vector<std::shared_ptr<AST::RuleMember>> *rules = nullptr;
     const AST::RuleMember *member = nullptr;
     const AST::RuleMember *current_member = nullptr;
     const AST::DataBlock *dtb;
@@ -162,7 +162,7 @@ private:
         bool nestedReduction) -> StateRange;
     void handleTerminal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool &isLastMember, bool addStoreActions);
     void handleNonTermnal(const AST::RuleMember &member, const stdu::vector<std::string> &name, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
-    void handleGroup(const AST::RuleMember &member, const stdu::vector<AST::RuleMember> &group, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
+    void handleGroup(const AST::RuleMember &member, const stdu::vector<std::shared_ptr<AST::RuleMember>> &group, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
     void handleString(const AST::RuleMember &member, const std::string &str, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
     void handleCsequence(const AST::RuleMember &member, const AST::RuleMemberCsequence &csequence, const std::size_t &start, const std::size_t &end, bool isLastMember, bool addStoreActions);
     auto buildStateFragment(const AST::RuleMember &member, bool isLastMember, bool addStoreActions) -> StateRange;
@@ -180,13 +180,13 @@ private:
     void getStatesToPropagate(std::size_t state_id, std::unordered_set<std::size_t> &result);
     auto getStatesToPropagate(std::size_t id) -> std::unordered_set<std::size_t>;
     void generateTemplatedDataBlockFromSingleRule(const AST::RuleMember &mem, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
-    void generateTemplatedDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
-    void generateSingleDataBlockFromRules(const stdu::vector<AST::RuleMember> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed);
+    void generateTemplatedDataBlockFromRules(const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules, TemplatedDataBlock &templated_data_block, std::size_t &prefix_index, std::size_t &index, std::size_t &group_index);
+    void generateSingleDataBlockFromRules(const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules, TemplatedDataBlockValue &single_data_block, bool &isAlreadyConstructed);
 
     inline void increase_accept_index() { ++(*accept_index); }
 
 public:
-    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<AST::RuleMember> &rules, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
+    NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), rules(&rules), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::DataBlock *dtb, const AST::RuleMember &member, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), member(&member), dtb(dtb), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
     NFA(AST::Tree &tree, const stdu::vector<std::string> &name, const AST::Rule &rule, bool isWhitespaceToken, bool is_char_table, std::size_t *accept_index_ptr) : tree(tree), name_(name), rules(&rule.rule_members), dtb(&rule.data_block), isWhitespaceToken(isWhitespaceToken), is_char_table(is_char_table), accept_index(accept_index_ptr) {}
     void build(bool addStoreActions = true);

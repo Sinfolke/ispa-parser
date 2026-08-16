@@ -93,18 +93,6 @@ auto Core::convertTemplates(const stdu::vector<std::variant<std::shared_ptr<Lang
     }
     return res.substr(0, res.size() - 2);
 }
-auto Core::convertTemplates(const decltype(LangAPI::Array::template_parameters) &template_parameters) -> std::string {
-    std::string res;
-    for (const auto &param : template_parameters) {
-        if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(param)) {
-            res += convertType(*std::get<std::shared_ptr<LangAPI::Type>>(param));
-        } else {
-            res += convertRValue(std::get<LangAPI::RValue>(param));
-        }
-        res += ", ";
-    }
-    return res.substr(0, res.size() - 2);
-}
 
 auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     std::string res;

@@ -7,7 +7,7 @@ import hash;
 import cpuf.printf;
 import dstd;
 import std;
-
+import LangAPI;
 export namespace AST {
     /*
      * Tree class that holds features could be done on it. Contains tree_map map
@@ -24,10 +24,10 @@ export namespace AST {
         Follow follow;
         NameToIndexMap name_to_index;
 
-        static auto compute_group_length(const stdu::vector<AST::RuleMember> &group) -> std::size_t;
-        void getUsePlacesTable(const stdu::vector<AST::RuleMember> &members, const stdu::vector<std::string> &name);
+        static auto compute_group_length(const stdu::vector<std::shared_ptr<AST::RuleMember>> &group) -> std::size_t;
+        void getUsePlacesTable(const stdu::vector<std::shared_ptr<AST::RuleMember>> &members, const stdu::vector<std::string> &name);
         void transform_helper(
-            stdu::vector<AST::RuleMember> &members,
+            stdu::vector<std::shared_ptr<AST::RuleMember>> &members,
             const stdu::vector<std::string> &fullname,
             const stdu::vector<std::string> &original_fullname,
             utype::unordered_map<stdu::vector<std::string>, std::pair<char, stdu::vector<std::string>>> &replacements
@@ -44,7 +44,7 @@ export namespace AST {
         // Tailored recursive function to handle updating FOLLOW relations inside groups/sequences cleanly
         void processFollowForSequence(
             const stdu::vector<std::string>& lhs_name,
-            const stdu::vector<AST::RuleMember>& members,
+            const stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
             bool is_left_recursive,
             bool& hasChanges,
             stdu::vector<stdu::vector<std::string>>& prev_depend
@@ -90,7 +90,7 @@ export namespace AST {
         };
         auto getRawFirstSet()-> First& { return first; };
         auto getRawFollowSet() -> Follow& { return follow; };
-        auto getCodeForLexer() -> void;
+        auto getCodeForLexer() -> std::pair<LangAPI::Statements, LangAPI::Variable>;
         auto getInitialItemSet() -> InitialItemSet&;
         auto getTerminals() const -> stdu::vector<stdu::vector<std::string>>;
         auto getNonTerminals() const -> stdu::vector<stdu::vector<std::string>>;

@@ -21,14 +21,14 @@ export namespace AST {
         void constructor(const Parser::Rule &mod);
     protected:
         // convertion functions & variables
-        stdu::vector<AST::RuleMember> newRules;
+        stdu::vector<std::shared_ptr<AST::RuleMember>> newRules;
         bool in_op = false;
         bool prev_op = false;
         bool add_prev = false;
         stdu::vector<std::string> fullname;
         stdu::vector<std::pair<std::string, stdu::vector<std::string>>> nested_rule_names;
         AST::RulePrefix ops_prefix;
-        stdu::vector<AST::RuleMember> ops;
+        stdu::vector<std::shared_ptr<AST::RuleMember>> ops;
         AST::Array createArray(const Parser::Rule &array);
         AST::Object createObject(const Parser::Rule &object);
         AST::String createString(const Parser::Token &token);

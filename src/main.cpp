@@ -21,7 +21,6 @@ import LangRepr.Construct;
 import LangRepr.Converter;
 import hash;
 import AST.Builder;
-import fcdt;
 import LexerBuilder;
 import DFA;
 import dstd;
@@ -44,7 +43,7 @@ stdu::vector<const char*> parameters_required {
 stdu::vector<const char*> parameters_with_arguments {
     "lang", "a"
 };
-std::unordered_map<const char*, int> parameters_with_fixes_arguments_amount {
+std::unordered_map<std::string_view, int> parameters_with_fixes_arguments_amount {
     { "lang", 1 },
     { "a", 1 }
 };
@@ -112,7 +111,7 @@ int main(int argc, char** argv) {
     std::ofstream treeAPIO("treeAPI.txt");
     std::ofstream initialItemSet("tree.txt");
     for (const auto &[name, value] : ast.getTreeMap()) {
-        treeAPIO << "name<" << name << "> : " << value;
+        treeAPIO << "name<" << corelib::text::join(name, "_") << "> : " << value;
     }
     treeAPIO.close();
     /*
@@ -121,7 +120,7 @@ int main(int argc, char** argv) {
     */
     AST::TreePass pass(ast);
     for (const auto &[name, value] : ast.getInitialItemSet()) {
-        initialItemSet << "name<" << name << "> : " << value;
+        initialItemSet << "name<" << corelib::text::join(name, "_") << "> : " << value;
     }
     initialItemSet.close();
     if (dumper.shouldDump("first"))

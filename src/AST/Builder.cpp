@@ -59,7 +59,7 @@ AST::Array AST::Builder::createArray(const Parser::Rule &array) {
     AST::Array arr;
     auto data = Parser::get::array(array);
     for (auto el : data) {
-        arr.value.push_back(createCllExpr(el));
+        arr.value.push_back(std::make_shared<CllExpr>(createCllExpr(el)));
     }
     return arr;
 }
@@ -312,10 +312,10 @@ AST::Cll AST::Builder::convertCll(const Parser::Rule &cll) {
 void AST::Builder::flushOpSequence() {
     if (!ops.empty()) {
         AST::RuleMemberOp op{ops};
-        newRules.push_back(AST::RuleMember{
+        newRules.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{
             .prefix = ops_prefix,
             .value = op
-        });
+        }));
         ops.clear();
         ops_prefix = {};
     }
@@ -398,10 +398,10 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
                     prev_op = true;
 
                     auto prev_member = newRules.back();
-                    if (prev_member.empty())
+                    if (!prev_member || prev_member->empty())
                         throw Error("Empty previous member");
-                    ops_prefix = prev_member.prefix;
-                    prev_member.prefix.clear();
+                    ops_prefix = prev_member->prefix;
+                    prev_member->prefix.clear();
                     ops.push_back(prev_member);
 
                     newRules.pop_back();
@@ -514,14 +514,14 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
     }
     if (in_op) {
         if (prev_op) {
-            ops.push_back(member);
+            ops.push_back(std::make_shared<AST::RuleMember>(member));
             prev_op = false;
         } else {
             flushOpSequence();
-            newRules.push_back(member);
+            newRules.push_back(std::make_shared<AST::RuleMember>(member));
         }
     } else {
-        newRules.push_back(member);
+        newRules.push_back(std::make_shared<AST::RuleMember>(member));
     }
 }
 void AST::Builder::createRuleMembers(const stdu::vector<Parser::Rule> &rules) {
