@@ -21,8 +21,8 @@ jobs:
             overlay_triplets: ""
 
           - os: ubuntu-24.04
-            c_compiler: clang
-            cpp_compiler: clang++
+            c_compiler: clang-20
+            cpp_compiler: clang++-20
             triplet: x64-linux-libcxx
             overlay_triplets: cmake/triplets
 
@@ -54,6 +54,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            llvm-20 \
             libboost-all-dev \
             libc++-dev \
             libc++abi-dev \
@@ -61,16 +62,28 @@ jobs:
 
       - name: Configure CMake
         shell: bash
+        env:
+          CC: ${{ matrix.c_compiler }}
+          CXX: ${{ matrix.cpp_compiler }}
         run: |
-          cmake -B build -G Ninja \
-            -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" \
-            -DVCPKG_TARGET_TRIPLET="${{ matrix.triplet }}" \
-            -DVCPKG_OVERLAY_TRIPLETS="${{ github.workspace }}/${{ matrix.overlay_triplets }}" \
-            -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
-            -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
-            -DCMAKE_BUILD_TYPE=Release \
+          CMAKE_ARGS=(
+            -B build
+            -G Ninja
+            "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+            "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
+            "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
+            "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
+            "-DCMAKE_BUILD_TYPE=Release"
             -S "${{ github.workspace }}"
-
+          )
+          
+          if [[ -n "${{ matrix.overlay_triplets }}" ]]; then
+            CMAKE_ARGS+=(
+              "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
+            )
+          fi
+          
+          cmake "${CMAKE_ARGS[@]}"
       - name: Build
         run: cmake --build build --config Release
 #
