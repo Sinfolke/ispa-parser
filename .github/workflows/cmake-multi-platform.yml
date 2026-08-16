@@ -19,18 +19,21 @@ jobs:
             cpp_compiler: g++-15
             triplet: x64-linux
             overlay_triplets: ""
+            extra_cxx_flags: ""
 
           - os: ubuntu-26.04
             c_compiler: clang-20
             cpp_compiler: clang++-20
             triplet: x64-linux-libcxx
             overlay_triplets: cmake/triplets
+            extra_cxx_flags: "-stdlib=libc++"
 
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
             triplet: x64-windows
             overlay_triplets: ""
+            extra_cxx_flags: ""
 
     steps:
       - name: Checkout code with submodules
@@ -57,8 +60,8 @@ jobs:
             clang-20 \
             gcc-15 \
             libboost-all-dev \
-            libc++-dev \
-            libc++abi-dev \
+            libc++-20-dev \
+            libc++abi-20-dev \
             valgrind
 
       - name: Configure CMake
@@ -68,23 +71,28 @@ jobs:
           CXX: ${{ matrix.cpp_compiler }}
         run: |
           CMAKE_ARGS=(
-            -B build
-            -G Ninja
-            "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
-            "-DCMAKE_CXX_FLAGS=-stdlib=libc++"
-            "-DCMAKE_EXE_LINKER_FLAGS=-stdlib=libc++"
-            "-DCMAKE_SHARED_LINKER_FLAGS=-stdlib=libc++"
-            "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
-            "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
-            "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
-            "-DCMAKE_BUILD_TYPE=Release"
-            -S "${{ github.workspace }}"
+          -B build
+          -G Ninja
+          "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
+          "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
+          "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
+          "-DCMAKE_BUILD_TYPE=Release"
+          -S "${{ github.workspace }}"
           )
           
+          if [[ -n "${{ matrix.extra_cxx_flags }}" ]]; then
+          CMAKE_ARGS+=(
+          "-DCMAKE_CXX_FLAGS=${{ matrix.extra_cxx_flags }}"
+          "-DCMAKE_EXE_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
+          "-DCMAKE_SHARED_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
+          )
+          fi
+          
           if [[ -n "${{ matrix.overlay_triplets }}" ]]; then
-            CMAKE_ARGS+=(
-              "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
-            )
+          CMAKE_ARGS+=(
+          "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
+          )
           fi
           
           cmake "${CMAKE_ARGS[@]}"
