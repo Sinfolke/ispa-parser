@@ -43,29 +43,13 @@ jobs:
 
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
-
-      # - name: Restore boost cache
-      #   if: ${{ matrix.os == 'windows-latest' }}
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: $HOME/boost
-      #     key: boost-${{ matrix.os }}-${{ matrix.c_compiler }}-v1
-      #     restore-keys: |
-      #       boost-${{ matrix.os }}-${{ matrix.c_compiler }}
-      #       boost-${{ matrix.os }}
+      - name: Setup CMake
+        uses: lukka/get-cmake@v4.3.2
       - name: Install dependencies (Ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y libboost-all-dev libc++-dev libc++abi-dev valgrind
-
-      # - name: Install Boost (Windows)
-      #   if: ${{ matrix.os == 'windows-latest' }}
-      #   run: |
-      #     if (-Not (Test-Path "$HOME/boost/bootstrap.bat")) {
-      #         cd $HOME
-      #         ${{ github.workspace }}/prepare_boost.bat
-      #     }
       - name: Configure CMake
         shell: bash
         run: |
