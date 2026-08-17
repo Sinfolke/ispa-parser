@@ -100,7 +100,7 @@ Base rules can be extended or overridden, allowing grammar modularity:
 
 **Note: YOU WILL NOT BE ABLE TO BUILD THIS WITH GCC YET**
 
-**Note: build with clang is not tested**
+**Note: build with clang is not tested on windows**
 
 ### Build on Ubuntu
 Generate cmake build files. **Change ISPA_SOURCE_DIR to your local path**:
