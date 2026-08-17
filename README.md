@@ -94,15 +94,42 @@ Base rules can be extended or overridden, allowing grammar modularity:
 ---
 
 ## 🛠️ Build & Requirements
+1. Clang compiler with libc++ on ubuntu, latest ubuntu version
+2. MSVC cl compiler on windows
+3. Exact version of cmake 4.3.2
 
-- **Compiler**: C++20 or C++23 compliant compiler (`GCC 15+`, `Clang 20+`)
-- **Build System**: CMake 3.20+
-- **Dependencies**: Integrated via CMake / `vcpkg`
+**Note: YOU WILL NOT BE ABLE TO BUILD THIS WITH GCC YET**
 
-**Note: Compilation is currently stable on Linux only with clang compiler. Windows support is planned for a future release.**
+**Note: build with clang is not tested**
 
-```bash
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build .
+### Build on Ubuntu
+Generate cmake build files. **Change ISPA_SOURCE_DIR to your local path**:
+```sh
+export ISPA_SOURCE_DIR=/mnt/5EE9F38E0E9F2DC9/ispa-parser
+export CC=clang-20
+export CXX=clang++-20
+export CFLAGS="-stdlib=libc++"
+export CXXFLAGS="-stdlib=libc++"
+export LDFLAGS="-stdlib=libc++"
+cmake -B cmake-build-release \ 
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake \
+-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$ISPA_SOURCE_DIR/cmake/toolchains/clang-libcpp.cmake \
+-DVCPKG_TARGET_TRIPLET=x64-linux-libcxx \
+-DVCPKG_OVERLAY_TRIPLETS=$ISPA_SOURCE_DIR/cmake/triplets
+```
+Build:
+```sh
+cmake --build cmake-build-release
+```
+---
+
+### Build on Windows
+Note:
+
+- Change CMAKE_TOOLCHAIN_FILE to your vcpkg installation path if this does not work
+- You might need to provide CMAKE_CXX_COMPILER variable pointing to cl.exe
+- You might need to configure other variables MSVC require to build
+```bat
+cmake -B cmake-build-release -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
 ```
