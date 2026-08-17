@@ -1,5 +1,5 @@
 module;
-#include <CLI11.hpp> // Now this is part of the module interface
+#include <CLI/CLI.hpp> // Now this is part of the module interface
 export module CLI;
 
 export namespace CLI {

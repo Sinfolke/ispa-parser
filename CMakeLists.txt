@@ -5,13 +5,16 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-stdlib=libc++)
     add_link_options(-stdlib=libc++)
 endif()
+
 project(ISPA LANGUAGES CXX)
+
 # =============================================
-# Compile Definitions (Restored Macros)
+# Compile Definitions
 # =============================================
 add_compile_definitions(
         __SOURCE_ROOT__="${CMAKE_CURRENT_SOURCE_DIR}"
@@ -26,9 +29,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-g)
     endif()
 endif()
+
 if(NOT DEFINED O_LEVEL OR "${O_LEVEL}" STREQUAL "")
     set(O_LEVEL 0)
 endif()
+
 # =============================================
 # Helper Functions
 # =============================================
@@ -59,6 +64,7 @@ FetchContent_MakeAvailable(RopeString)
 
 find_package(Boost REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
+find_package(CLI11 CONFIG REQUIRED)
 
 # =============================================
 # ISPA Modules Library
@@ -66,7 +72,7 @@ find_package(yaml-cpp CONFIG REQUIRED)
 add_library(ispa_modules STATIC)
 set_target_properties(ispa_modules PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-get_file_range(ISPA_MODULES
+get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cppm
@@ -76,10 +82,20 @@ get_file_range(ISPA_MODULES
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cppm
 )
 
+# Collect implementation sources and exclude main entry point
+get_file_range(ISPA_MODULE_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
+        EXCLUDE ".*/main\\.cpp$"
+)
+
 target_sources(ispa_modules
         PUBLIC
-        FILE_SET cxx_modules TYPE CXX_MODULES FILES
-        ${ISPA_MODULES}
+            FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
+        PRIVATE
+            ${ISPA_MODULE_SOURCES}
 )
 
 target_include_directories(ispa_modules PRIVATE
@@ -91,22 +107,7 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost Rope)
-
-# =============================================
-# Main Executable
-# =============================================
-add_executable(ispa)
-
-get_file_range(ISPA_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
-)
-
-target_sources(ispa PRIVATE ${ISPA_SOURCES})
-target_link_libraries(ispa PRIVATE ispa_modules)
+target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11)
 
 # =============================================
 # Converter Shared Library
@@ -118,8 +119,13 @@ get_file_range(CPP_CONVERTER_SOURCES
 add_library(ispa-converter-cpp SHARED ${CPP_CONVERTER_SOURCES})
 target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
 target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
+set_target_properties(ispa-converter-cpp PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-target_link_libraries(ispa PRIVATE ispa-converter-cpp)
+# =============================================
+# Main Executable
+# =============================================
+add_executable(ispa ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+target_link_libraries(ispa PRIVATE ispa_modules ispa-converter-cpp)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(ispa PRIVATE c++ c++abi m)
@@ -131,13 +137,10 @@ endif()
 enable_testing()
 find_package(GTest REQUIRED)
 
-set(ISPA_SOURCES_FOR_TESTS ${ISPA_SOURCES})
-list(REMOVE_ITEM ISPA_SOURCES_FOR_TESTS "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
-
 get_file_range(TEST_SOURCE_FILES EXCLUDE "tests/compile/" "tests/*.cpp")
 get_file_range(TEST_MODULE_FILES EXCLUDE "tests/compile/" "tests/*.cppm")
 
-add_executable(tests ${TEST_SOURCE_FILES} ${ISPA_SOURCES_FOR_TESTS})
+add_executable(tests ${TEST_SOURCE_FILES})
 
 target_sources(tests
         PUBLIC
@@ -151,7 +154,6 @@ target_include_directories(tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-# Test-specific macro definitions
 target_compile_definitions(tests PRIVATE
         ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
         TEST_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests"

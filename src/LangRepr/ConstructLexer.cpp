@@ -248,7 +248,7 @@ namespace LangRepr {
             ));
             lexer.data.push_back(std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Function {
-                    .type = LangAPI::ValueType::Void, .name = "init", .override = true, .statements = LangAPI::Return::createStatements(LangAPI::Return {})
+                    .type = LangAPI::ValueType::Void, .name = "init", .statements = LangAPI::Return::createStatements(LangAPI::Return {}), .override = true
                 })),
                 LangAPI::Visibility::Private
             ));

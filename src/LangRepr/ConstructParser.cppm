@@ -7,6 +7,7 @@ import LangRepr.Holder;
 import ConstructBase;
 import LexerBuilder;
 import LangAPI;
+import logging;
 import dstd;
 import std;
 export namespace LangRepr {

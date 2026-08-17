@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
             name = ast.getName();
             output_path.append(ast.getName());
         } else {
-            name = std::filesystem::path(args.output).filename();
+            name = std::filesystem::path(args.output).filename().string();
             cpuf::printf("args.output: {} using filename: {}\n", args.output, name.c_str());
         }
         LLIR::Builder builder(ast, false);

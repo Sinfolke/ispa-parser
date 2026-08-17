@@ -1,5 +1,4 @@
 module;
-#include <tsl/ordered_map.h>
 #include <boost/container/flat_map.hpp>
 export module LangRepr.ConstructTypes;
 import LangRepr.Holder;
@@ -13,7 +12,7 @@ import std;
 using Name = stdu::vector<std::string>;
 class Node {
 public:
-    using ChildT = tsl::ordered_map<std::string, std::unique_ptr<Node>>;
+    using ChildT = boost::container::flat_map<std::string, std::unique_ptr<Node>>;
 private:
     template<typename Func>
     auto visit(Func func, Name &fullname) const -> void {
@@ -75,6 +74,7 @@ public:
         }
     }
 };
+
 class SortedNode {
 public:
     using ChildT = boost::container::flat_map<std::string, std::unique_ptr<SortedNode>>;

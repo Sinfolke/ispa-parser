@@ -8,10 +8,10 @@ import std;
 export inline Tlog::Logger logger("Logs");  // <<== IMPORTANT: must be `inline` if defined in module interface
 export class Error : public std::exception {
 public:
-    std::string message;
+    std::string msg;
     template<typename ...Args>
     Error(const char* format, Args&&... args)
-        : message( cpuf::sprintf(format, args...) ) {}
+        : msg( cpuf::sprintf(format, args...) ) {}
     void print() const;
     const char* what() const noexcept override;
 };
@@ -28,15 +28,15 @@ void AssertNe(bool condition, const char* format, Args&&... args) {
     }
 };
 // base user error class
-export class UBase : std::exception {
+export class UBase : public std::exception {
 public:
-    const std::string message;
+    const std::string msg;
     template<typename ...Args>
-    UBase(const char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(const char* msg, Args&&... args) : msg( cpuf::sprintf(msg, args...) ) {}
     template<typename ...Args>
-    UBase(char* message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(char* msg, Args&&... args) : msg( cpuf::sprintf(msg, args...) ) {}
     template<typename ...Args>
-    UBase(std::string message, Args&&... args) : message( cpuf::sprintf(message, args...) ) {}
+    UBase(std::string msg, Args&&... args) : msg( cpuf::sprintf(msg, args...) ) {}
 
 
     void print() const;
@@ -45,24 +45,24 @@ public:
 export class UError : public UBase {
 public:
     template<typename... Args>
-    UError(const char* message, Args&&... args)
-        : UBase(message, std::forward<Args>(args)...) {}
+    UError(const char* msg, Args&&... args)
+        : UBase(msg, std::forward<Args>(args)...) {}
 
     template<typename... Args>
-    UError(std::string message, Args&&... args)
-        : UBase(std::move(message), std::forward<Args>(args)...) {}
+    UError(std::string msg, Args&&... args)
+        : UBase(std::move(msg), std::forward<Args>(args)...) {}
 
     void print() const;
 };
 export class UWarning : public UBase {
 public:
     template<typename... Args>
-    UWarning(const char* message, Args&&... args)
-        : UBase(message, std::forward<Args>(args)...) {}
+    UWarning(const char* msg, Args&&... args)
+        : UBase(msg, std::forward<Args>(args)...) {}
 
     template<typename... Args>
-    UWarning(std::string message, Args&&... args)
-        : UBase(std::move(message), std::forward<Args>(args)...) {}
+    UWarning(std::string msg, Args&&... args)
+        : UBase(std::move(msg), std::forward<Args>(args)...) {}
 
     void print() const;
 };

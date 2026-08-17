@@ -11,23 +11,23 @@ import cpuf.color;
 import std;
 
 const char* Error::what() const noexcept {
-    return message.c_str();
+    return msg.c_str();
 }
 void Error::print() const {
 // Capture the stack trace
 
-    std::cerr << cpuf::sprintf("ispa: {}internal error{}: {}\n", color::red, color::reset, message);
+    std::cerr << cpuf::sprintf("ispa: {}internal error{}: {}\n", color::red, color::reset, msg);
     std::abort();
 }
 const char* UBase::what() const noexcept {
-    return message.c_str();
+    return msg.c_str();
 }
 void UError::print() const {
-    std::cerr << cpuf::sprintf("ispa: {}error{}: {}\n", color::red, color::reset, message);
+    std::cerr << cpuf::sprintf("ispa: {}error{}: {}\n", color::red, color::reset, msg);
     std::abort();
 }
 void UWarning::print() const {
-    cpuf::printf("ispa: {}warning{}: {}\n", color::yellow, color::reset, message);
+    cpuf::printf("ispa: {}warning{}: {}\n", color::yellow, color::reset, msg);
 }
 
 /*
@@ -47,12 +47,12 @@ void custom_terminate_handler() {
         }
     } catch (const Error& e) {
         e.print();
-        b.log("<Error>: {}", e.message);
+        b.log("<Error>: {}", e.msg);
     } catch (const UError& e) {
         e.print();
-        b.log("<UError>: {}", e.message);
+        b.log("<UError>: {}", e.msg);
     } catch (const UWarning& e) {
-        b.log("<UWarning> {}", e.message);
+        b.log("<UWarning> {}", e.msg);
         e.print();
     } catch (const std::exception& e) {
         b.log("<std::exception>: {}", e.what());

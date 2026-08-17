@@ -15,57 +15,59 @@ export namespace LangAPI {
     struct Declarations;
     struct ConditionalElement;
 
-    auto operator<<(std::ostream& os, const Declarations &expr) -> std::ostream&;
-    auto operator<(const Declarations &a, const Declarations &b) -> bool;
-    auto operator<<(std::ostream& os, const Statements &expr) -> std::ostream&;
-    auto operator<(const Statements &a, const Statements &b) -> bool;
-    auto operator<<(std::ostream& os, const Expression &expr) -> std::ostream&;
-    auto operator<(const Expression &a, const Expression &b) -> bool;
+    auto operator<<(std::ostream& os, const Declarations& expr) -> std::ostream&;
+    auto operator<(const Declarations& a, const Declarations& b) -> bool;
+    auto operator<<(std::ostream& os, const Statements& expr) -> std::ostream&;
+    auto operator<(const Statements& a, const Statements& b) -> bool;
+    auto operator<<(std::ostream& os, const Expression& expr) -> std::ostream&;
+    auto operator<(const Expression& a, const Expression& b) -> bool;
 
-}
-// Default: no promotion
-template<typename T>
-struct promote_to {
-    using type = void;
-    static constexpr bool can_promote = false;
-};
+    // Default: no promotion
+    template<typename T>
+    struct promote_to {
+        using type = void;
+        static constexpr bool can_promote = false;
+    };
 
-// Specializations
-template<> struct promote_to<LangAPI::RValue> {
-    using type = LangAPI::ExpressionValue;
-    static constexpr bool can_promote = true;
-};
-template<> struct promote_to<LangAPI::ExpressionValue> {
-    using type = LangAPI::Expression;
-    static constexpr bool can_promote = true;
-};
-template<> struct promote_to<LangAPI::Expression> {
-    using type = LangAPI::Statement;
-    static constexpr bool can_promote = true;
-};
-template<> struct promote_to<LangAPI::Statement> {
-    using type = LangAPI::Statements;
-    static constexpr bool can_promote = true;
-};
-template<> struct promote_to<LangAPI::Statements> {
-    using type = LangAPI::Declaration;
-    static constexpr bool can_promote = true;
-};
-template<> struct promote_to<LangAPI::Declaration> {
-    using type = LangAPI::Declarations;
-    static constexpr bool can_promote = true;
-};
+    // Specializations
+    template<> struct promote_to<LangAPI::RValue> {
+        using type = LangAPI::ExpressionValue;
+        static constexpr bool can_promote = true;
+    };
+    template<> struct promote_to<LangAPI::ExpressionValue> {
+        using type = LangAPI::Expression;
+        static constexpr bool can_promote = true;
+    };
+    template<> struct promote_to<LangAPI::Expression> {
+        using type = LangAPI::Statement;
+        static constexpr bool can_promote = true;
+    };
+    template<> struct promote_to<LangAPI::Statement> {
+        using type = LangAPI::Statements;
+        static constexpr bool can_promote = true;
+    };
+    template<> struct promote_to<LangAPI::Statements> {
+        using type = LangAPI::Declaration;
+        static constexpr bool can_promote = true;
+    };
+    template<> struct promote_to<LangAPI::Declaration> {
+        using type = LangAPI::Declarations;
+        static constexpr bool can_promote = true;
+    };
 
-// Recursive promotion or construction
-template<typename whatToConstruct, typename fromWhatToConstruct>
-auto promote_or_construct(fromWhatToConstruct&& value) -> whatToConstruct {
-    if constexpr (std::is_constructible_v<whatToConstruct, fromWhatToConstruct>) {
-        return whatToConstruct{ std::forward<fromWhatToConstruct>(value) };
-    } else if constexpr (requires { typename std::decay_t<fromWhatToConstruct>::promote_to; }) {
-        using P = typename std::decay_t<fromWhatToConstruct>::promote_to;
-        return promote_or_construct<whatToConstruct>(P{std::forward<fromWhatToConstruct>(value)});
-    } else {
-        return {};
+    // Recursive promotion or construction
+    template<typename whatToConstruct, typename fromWhatToConstruct>
+    auto promote_or_construct(fromWhatToConstruct&& value) -> whatToConstruct {
+        if constexpr (std::is_constructible_v<whatToConstruct, fromWhatToConstruct>) {
+            return whatToConstruct{ std::forward<fromWhatToConstruct>(value) };
+        }
+        else if constexpr (requires { typename std::decay_t<fromWhatToConstruct>::promote_to; }) {
+            using P = typename std::decay_t<fromWhatToConstruct>::promote_to;
+            return promote_or_construct<whatToConstruct>(P{ std::forward<fromWhatToConstruct>(value) });
+        }
+        else {
+            return {};
+        }
     }
 }
 export namespace LangAPI {
@@ -187,6 +189,9 @@ export namespace LangAPI {
         Statements(stdu::vector<Statement>&&);
         Statements& operator=(const Statements&);
         Statements& operator=(Statements&&) noexcept;
+        Statements(const Statement&);
+        Statements(Statement&&);
+        Statements(std::initializer_list<Statement>);
         ~Statements();
         friend auto operator<<(std::ostream& os, const Statements &expr) -> std::ostream&;
         friend auto operator<(const Statements& a, const Statements& b) -> bool;
@@ -201,6 +206,9 @@ export namespace LangAPI {
         Expression(stdu::vector<ExpressionValue>&&);
         Expression& operator=(const Expression&);
         Expression& operator=(Expression&&) noexcept;
+        Expression(const ExpressionValue&);
+        Expression(ExpressionValue&&);
+        Expression(std::initializer_list<ExpressionValue>);
         ~Expression();
         friend auto operator<<(std::ostream& os, const Expression &expr) -> std::ostream&;
         friend auto operator<(const Expression& a, const Expression& b) -> bool;
@@ -823,14 +831,6 @@ export namespace LangAPI {
 
         auto type() const -> RValueType { return static_cast<RValueType>(value.index()); }
         auto get() const { return value; }
-
-        bool operator==(const RValue& rhs) {
-            return value == rhs.value;
-        }
-
-        bool operator!=(const RValue& rhs) {
-            return value != rhs.value;
-        }
         bool operator<(const RValue& rhs) const {
             return std::visit([&](const auto &v1, const auto &v2) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(v1)>, std::monostate>) {
@@ -1351,8 +1351,8 @@ export namespace LangAPI {
         requires std::is_constructible_v<decltype(value), T>
         ExpressionValue(const T &t) : value(t) {}
         template<typename T>
-        requires std::is_constructible_v<decltype(value), T>
-        ExpressionValue(T &&t) : value(t) {}
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>>
+        ExpressionValue(T &&t) : value(std::forward<T>(t)) {}
         bool operator==(const ExpressionValue& other) const {
             return value == other.value;
         }
@@ -1444,8 +1444,11 @@ export namespace LangAPI {
     inline Expression::Expression() = default;
     inline Expression::Expression(const Expression&) = default;
     inline Expression::Expression(Expression&&) noexcept = default;
+    inline Expression::Expression(const ExpressionValue& v) : vector{v} {}
+    inline Expression::Expression(ExpressionValue&& v) : vector{std::move(v)} {}
     inline Expression::Expression(const stdu::vector<ExpressionValue>& v) : vector(v) {}
     inline Expression::Expression(stdu::vector<ExpressionValue>&& v) : vector(std::move(v)) {}
+    inline Expression::Expression(std::initializer_list<ExpressionValue> v) : vector(v) {}
     inline Expression& Expression::operator=(const Expression&) = default;
     inline Expression& Expression::operator=(Expression&&) noexcept = default;
     inline Expression::~Expression() = default;
@@ -1517,8 +1520,8 @@ export namespace LangAPI {
         std::variant<std::monostate, Variable, If, While, DoWhile, Switch, Expression> value;
         Statement() = default;
         template<typename T>
-        requires std::is_constructible_v<decltype(value), T>
-        Statement(T value) : value(value) {}
+        requires std::is_constructible_v<decltype(value), std::decay_t<T>>
+        Statement(T &&value) : value(std::forward<T>(value)) {}
         Statement(const ConditionalElement &value) : value(While {value.expr, value.stmt}) {}
         bool operator==(const Statement& other) const { return value == other.value; }
         friend bool operator!=(const Statement &a, const Statement &b) { return !(a == b); }
@@ -1560,8 +1563,11 @@ export namespace LangAPI {
     inline Statements::Statements() = default;
     inline Statements::Statements(const Statements&) = default;
     inline Statements::Statements(Statements&&) noexcept = default;
+    inline Statements::Statements(const Statement& v) : vector{v} {}
+    inline Statements::Statements(Statement&& v) : vector{std::move(v)} {}
     inline Statements::Statements(const stdu::vector<Statement>& v) : vector(v) {}
     inline Statements::Statements(stdu::vector<Statement>&& v) : vector(std::move(v)) {}
+    inline Statements::Statements(std::initializer_list<Statement> v) : vector(v) {}
     inline Statements& Statements::operator=(const Statements&) = default;
     inline Statements& Statements::operator=(Statements&&) noexcept = default;
     inline Statements::~Statements() = default;

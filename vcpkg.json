@@ -1,11 +1,19 @@
 {
-  "name": "ispa-parser-generator",
-  "version": "0.1.0",
-  "dependencies": [
-    "boost-dynamic-bitset",
-    "boost-container",
-    "tsl-ordered-map",
-    "gtest",
-    "yaml-cpp"
-  ]
+    "name": "ispa-parser-generator",
+    "version": "0.1.0",
+    "dependencies": [
+        "boost-dynamic-bitset",
+        "boost-container",
+        "tsl-ordered-map",
+        "gtest",
+        "yaml-cpp",
+        "cli11"
+    ],
+    "overrides": [
+        {
+            "name": "tsl-ordered-map",
+            "version": "1.2.0"
+        }
+    ],
+    "builtin-baseline": "0c102a84b69c2c923c28a97f756d5ecd9a90c48a"
 }
