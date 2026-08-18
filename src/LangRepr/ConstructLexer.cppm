@@ -7,6 +7,8 @@ import LangRepr.Holder;
 import ConstructBase;
 import LexerBuilder;
 import LangAPI;
+import DFA.States;
+import DFA.API;
 import dstd;
 import std;
 export namespace LangRepr {
@@ -19,7 +21,7 @@ export namespace LangRepr {
         auto makeCharClassTableDecl(const DFA::CharClassTable &table)
             -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility>;
         auto makeDfaTableDecl(
-            const auto &states,
+            const stdu::vector<DFA::State<stdu::vector<DFA::TransitionValue>>> &states,
             std::size_t state_count,
             std::size_t class_count
         ) -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility>;

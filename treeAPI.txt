@@ -1,313 +1,313 @@
 name<rule_BIN> : Rule {
-  0x5aa24ee9d058
-  0x5aa24ee9d1f8
+  0x63839ef42ab8
+  0x63839ef42c58
   Data: [RegularDataBlock: CllExpr]
 }name<rule_HEX> : Rule {
-  0x5aa24ee9cc08
-  0x5aa24ee9cda8
+  0x63839ef42668
+  0x63839ef42808
   Data: [RegularDataBlock: CllExpr]
 }name<rule_ESCAPED> : Rule {
-  0x5aa24ee9c658
-  0x5aa24ee9c7d8
-  0x5aa24ee9c958
+  0x63839ef420b8
+  0x63839ef42238
+  0x63839ef423b8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_NOSPACE> : Rule {
-  0x5aa24ee9c1e8
+  0x63839ef41de8
   Data: EmptyDataBlock
 }name<rule_CSEQUENCE_ESCAPE> : Rule {
-  0x5aa24ee9b198
-  0x5aa24ee9b318
-  0x5aa24ee9b498
+  0x63839ef562a8
+  0x63839ef56428
+  0x63839ef565a8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_CSEQUENCE_SYMBOL> : Rule {
-  0x5aa24ee9aec8
+  0x63839ef55fd8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_quantifier> : Rule {
-  0x5aa24ee99558
+  0x63839ef545e8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_data_block_regular_datablock_key> : Rule {
-  0x5aa24ee96988
-  0x5aa24ee96b08
-  0x5aa24ee96c88
+  0x63839ef51a38
+  0x63839ef51bb8
+  0x63839ef51d38
   Data: TemplatedDataBlock(name, dt)
 }name<rule_data_block_templated_datablock> : Rule {
-  0x5aa24ee96fb8
-  0x5aa24ee97138
-  0x5aa24ee98ca8
-  0x5aa24ee98e28
+  0x63839ef52008
+  0x63839ef52188
+  0x63839ef53d38
+  0x63839ef53eb8
   Data: TemplatedDataBlock(first_name, second_name)
 }name<rule_data_block_regular_datablock> : Rule {
-  0x5aa24ee95fe8
-  0x5aa24ee96468
-  0x5aa24ee965e8
+  0x63839ef51098
+  0x63839ef51518
+  0x63839ef51698
   Data: [RegularDataBlock: CllExpr]
 }name<rule_group> : Rule {
-  0x5aa24ee827d8
-  0x5aa24ee82958
-  0x5aa24ee82ad8
+  0x63839ef36148
+  0x63839ef362c8
+  0x63839ef36448
   Data: [RegularDataBlock: CllExpr]
 }name<rule_name> : Rule {
-  0x5aa24ee81d08
-  0x5aa24ee81e88
-  0x5aa24ee82658
+  0x63839ef35678
+  0x63839ef357f8
+  0x63839ef35fc8
   Data: TemplatedDataBlock(is_nested, name, nested_name)
 }name<rule_keyvalue> : Rule {
-  0x5aa24ee82c58
-  0x5aa24ee838a8
+  0x63839ef4f7f8
+  0x63839ef4fdb8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_member> : Rule {
-  0x5aa24eecf428
-  0x5aa24ee81a08
-  0x5aa24ee81b88
+  0x63839ef792d8
+  0x63839ef35378
+  0x63839ef354f8
   Data: TemplatedDataBlock(prefix, val, quantifier)
 }name<rule> : Rule {
-  0x5aa24ee658c8
-  0x5aa24ee65a48
-  0x5aa24ee65bc8
-  0x5aa24ee65d48
-  0x5aa24ee65ec8
-  0x5aa24ee66048
+  0x63839ef89b68
+  0x63839ef6bc98
+  0x63839ef6be18
+  0x63839ef6bf98
+  0x63839ef6c118
+  0x63839ef6c298
   Data: TemplatedDataBlock(name, rule, data_block, nested_rules)
 }name<_use_unit> : Rule {
-  0x5aa24ee2b5f8
-  0x5aa24ee287b8
+  0x63839eee0d38
+  0x63839eee0ed8
   Data: TemplatedDataBlock(name, value)
 }name<main> : Rule {
-  0x5aa24ee1e478
+  0x63839ef32858
   Data: [RegularDataBlock: CllExpr]
 }name<ID> : Rule {
-  0x5aa24eea8f18
+  0x63839ef2abf8
   Data: [RegularDataBlock: CllExpr]
 }name<moduleImport_from_import_list> : Rule {
-  0x5aa24ee4f378
-  0x5aa24ee43c68
+  0x63839ef14728
+  0x63839ef37178
   Data: TemplatedDataBlock(first, sequence)
 }name<cll_LOGICAL_NOT> : Rule {
-  0x5aa24ee752b8
+  0x63839ef4c108
   Data: EmptyDataBlock
 }name<cll_function_arguments> : Rule {
-  0x5aa24ee87cf8
+  0x63839ef228f8
   Data: TemplatedDataBlock(first, second)
 }name<moduleImport_from> : Rule {
-  0x5aa24ee84098
-  0x5aa24ee1b558
-  0x5aa24eea92e8
+  0x63839ef01148
+  0x63839ef130c8
+  0x63839ef14388
   Data: TemplatedDataBlock(what, from)
 }name<cll_type> : Rule {
-  0x5aa24ee86498
+  0x63839ef49cf8
   Data: TemplatedDataBlock(type, templ)
 }name<cll_expr_compare> : Rule {
-  0x5aa24ee8ec18
-  0x5aa24ee78358
+  0x63839ef2b2a8
+  0x63839ef2b828
   Data: TemplatedDataBlock(first, operators, sequence)
 }name<moduleDeclaration> : Rule {
-  0x5aa24ee30598
-  0x5aa24eec16d8
-  0x5aa24ee44dd8
-  0x5aa24ee2faa8
+  0x63839ef777d8
+  0x63839eee34c8
+  0x63839ef1e8b8
+  0x63839eed7d78
   Data: TemplatedDataBlock(name, base)
 }name<PLUS> : Rule {
-  0x5aa24ee677a8
+  0x63839ef125b8
   Data: EmptyDataBlock
 }name<cll_expr_group> : Rule {
-  0x5aa24ee8b4a8
-  0x5aa24ee8b628
-  0x5aa24ee8b7a8
+  0x63839ef25a08
+  0x63839ef25b88
+  0x63839ef25d08
   Data: [RegularDataBlock: CllExpr]
 }name<QUESTION_MARK> : Rule {
-  0x5aa24eec1108
+  0x63839ef72008
   Data: EmptyDataBlock
 }name<array> : Rule {
-  0x5aa24ee8fa98
-  0x5aa24ee83f18
-  0x5aa24ee83b78
+  0x63839ef36ff8
+  0x63839eeebf88
+  0x63839ef145a8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_CSEQUENCE> : Rule {
-  0x5aa24ee99bf8
-  0x5aa24ee99d78
-  0x5aa24ee97458
-  0x5aa24ee9ac18
+  0x63839ef54cc8
+  0x63839ef54e48
+  0x63839ef524a8
+  0x63839ef55d08
   Data: TemplatedDataBlock(_not, val)
 }name<rvalue> : Rule {
-  0x5aa24eebc238
+  0x63839ef26be8
   Data: [RegularDataBlock: CllExpr]
 }name<NUMBER> : Rule {
-  0x5aa24eea7c78
-  0x5aa24ee1edf8
-  0x5aa24ee7dbb8
+  0x63839ef342b8
+  0x63839ef32b18
+  0x63839eeefb28
   Data: TemplatedDataBlock(sign, main, dec)
 }name<MULTIPLE> : Rule {
-  0x5aa24ee4fab8
+  0x63839eedd748
   Data: EmptyDataBlock
 }name<cll_function_parameters> : Rule {
-  0x5aa24ee885e8
+  0x63839ef23228
   Data: TemplatedDataBlock(first, second)
 }name<object> : Rule {
-  0x5aa24eec02d8
-  0x5aa24ee5d318
-  0x5aa24eec0f88
+  0x63839ef14208
+  0x63839ef765d8
+  0x63839ef01ab8
   Data: TemplatedDataBlock(key, value, keys, values)
 }name<MODULO> : Rule {
-  0x5aa24ee61c58
+  0x63839eeee888
   Data: EmptyDataBlock
 }name<cll_stmt> : Rule {
-  0x5aa24ee8ce48
-  0x5aa24ee8cfc8
-  0x5aa24ee8d148
+  0x63839ef27598
+  0x63839ef27718
+  0x63839ef27898
   Data: [RegularDataBlock: CllExpr]
 }name<rule_CSEQUENCE_DIAPASON> : Rule {
-  0x5aa24ee9bf18
+  0x63839ef41b18
   Data: TemplatedDataBlock(begin, end)
 }name<cll__var> : Rule {
-  0x5aa24ee8c058
-  0x5aa24ee8c1d8
-  0x5aa24ee8cb98
+  0x63839ef26728
+  0x63839ef268a8
+  0x63839ef272e8
   Data: TemplatedDataBlock(type, id, op, value)
 }name<AT> : Rule {
-  0x5aa24ee53378
+  0x63839ef03be8
   Data: EmptyDataBlock
 }name<cll_expr_logical> : Rule {
-  0x5aa24ee89018
-  0x5aa24ee8e818
+  0x63839ef23bb8
+  0x63839ef2b018
   Data: TemplatedDataBlock(left, op, right)
 }name<cll_expr_term> : Rule {
-  0x5aa24ee89448
-  0x5aa24ee89e78
+  0x63839ef2a828
+  0x63839ef4e318
   Data: TemplatedDataBlock(first, operators, sequence)
 }name<cll_expr> : Rule {
-  0x5aa24ee88cc8
+  0x63839ef23908
   Data: [RegularDataBlock: CllExpr]
 }name<DOT> : Rule {
-  0x5aa24ee5c258
+  0x63839ef6d868
   Data: EmptyDataBlock
 }name<cll_function_call> : Rule {
-  0x5aa24ee88898
-  0x5aa24ee88a18
+  0x63839ef234d8
+  0x63839ef23658
   Data: TemplatedDataBlock(name, body)
 }name<rule_value> : Rule {
-  0x5aa24ee95068
-  0x5aa24ee951e8
+  0x63839ef50118
+  0x63839ef50298
   Data: [RegularDataBlock: CllExpr]
 }name<DIVIDE> : Rule {
-  0x5aa24ee248a8
+  0x63839ef782b8
   Data: EmptyDataBlock
 }name<cll_method_call> : Rule {
-  0x5aa24ee8b928
-  0x5aa24ee8baa8
-  0x5aa24ee8bc28
+  0x63839ef25fb8
+  0x63839ef26138
+  0x63839ef262b8
   Data: TemplatedDataBlock(name, body)
 }name<cll_expr_value> : Rule {
-  0x5aa24ee8b288
+  0x63839ef25758
   Data: [RegularDataBlock: CllExpr]
 }name<STRING> : Rule {
-  0x5aa24eea85f8
+  0x63839ef6d208
   Data: [RegularDataBlock: CllExpr]
 }name<SPACEMODE> : Rule {
-  0x5aa24ee2d328
-  0x5aa24ee5cc78
-  0x5aa24ee37dd8
+  0x63839eed6358
+  0x63839ef63708
+  0x63839ef61a58
   Data: [RegularDataBlock: CllExpr]
 }name<cll_function_body_decl> : Rule {
-  0x5aa24ee93968
-  0x5aa24ee93ae8
-  0x5aa24ee86eb8
+  0x63839ef30338
+  0x63839ef304b8
+  0x63839ef30638
   Data: [RegularDataBlock: CllExpr]
 }name<moduleImport> : Rule {
-  0x5aa24ee29758
-  0x5aa24eeb17e8
+  0x63839eef1aa8
+  0x63839ef87118
   Data: [RegularDataBlock: CllExpr]
 }name<MINUS> : Rule {
-  0x5aa24ee4b938
+  0x63839ef20758
   Data: EmptyDataBlock
 }name<cll> : Rule {
-  0x5aa24ee84fe8
-  0x5aa24ee859c8
-  0x5aa24ee85b48
+  0x63839ef37d28
+  0x63839ef38708
+  0x63839ef38888
   Data: [RegularDataBlock: CllExpr]
 }name<cll_COMPARE_OP> : Rule {
-  0x5aa24ee74628
+  0x63839ef4b3e8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_data_block> : Rule {
-  0x5aa24ee95d28
+  0x63839ef50dd8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_nested_rule> : Rule {
-  0x5aa24ee95548
-  0x5aa24ee956c8
-  0x5aa24ee95848
+  0x63839ef4f2d8
+  0x63839ef505f8
+  0x63839ef50778
   Data: [RegularDataBlock: CllExpr]
 }name<cll_function_body_call> : Rule {
-  0x5aa24ee933a8
-  0x5aa24ee93528
-  0x5aa24ee936a8
+  0x63839ef2feb8
+  0x63839ef30038
+  0x63839ef301b8
   Data: [RegularDataBlock: CllExpr]
 }name<rule_OP> : Rule {
-  0x5aa24ee99948
+  0x63839ef549f8
   Data: EmptyDataBlock
 }name<cll_LOGICAL_OR> : Rule {
-  0x5aa24ee75e18
+  0x63839ef4cc68
   Data: EmptyDataBlock
 }name<cll__if> : Rule {
-  0x5aa24ee76678
-  0x5aa24ee767f8
-  0x5aa24ee91a18
+  0x63839ef4d6c8
+  0x63839ef2e2a8
+  0x63839ef2e428
   Data: TemplatedDataBlock(expr, stmt)
 }name<_use> : Rule {
-  0x5aa24ee33288
-  0x5aa24ee2de58
-  0x5aa24ee42f68
-  0x5aa24ee2b478
+  0x63839ef0ed28
+  0x63839ef65f48
+  0x63839ef7cae8
+  0x63839ef73fc8
   Data: TemplatedDataBlock(first, second)
 }name<LINEAR_COMMENT> : Rule {
-  0x5aa24ee46218
-  0x5aa24eec6028
+  0x63839ef80738
+  0x63839eeda888
   Data: EmptyDataBlock
 }name<cll_templ> : Rule {
-  0x5aa24ee775c8
-  0x5aa24ee77748
-  0x5aa24ee76248
-  0x5aa24ee763c8
+  0x63839ef4e638
+  0x63839ef4e7b8
+  0x63839ef4d298
+  0x63839ef4d418
   Data: TemplatedDataBlock(first, second)
 }name<cll_expr_arithmetic> : Rule {
-  0x5aa24ee77cb8
-  0x5aa24ee89198
+  0x63839ef2a518
+  0x63839ef2a0f8
   Data: TemplatedDataBlock(first, operators, sequence)
 }name<cll_LOGICAL_AND> : Rule {
-  0x5aa24ee75868
+  0x63839ef4c6b8
   Data: EmptyDataBlock
 }name<cll_LOGICAL_OP> : Rule {
-  0x5aa24ee74cf8
+  0x63839ef4ba18
   Data: [RegularDataBlock: CllExpr]
 }name<BOOLEAN> : Rule {
-  0x5aa24ee6b638
+  0x63839ef4dfb8
   Data: [RegularDataBlock: CllExpr]
 }name<cll_loop_for> : Rule {
-  0x5aa24ee8d878
-  0x5aa24ee8d9f8
-  0x5aa24ee94548
-  0x5aa24ee946c8
-  0x5aa24ee94848
-  0x5aa24ee949c8
-  0x5aa24ee94b48
-  0x5aa24ee94cc8
-  0x5aa24ee94e48
+  0x63839ef280f8
+  0x63839ef28278
+  0x63839ef28dd8
+  0x63839ef28f58
+  0x63839ef290d8
+  0x63839ef29258
+  0x63839ef293d8
+  0x63839ef29558
+  0x63839ef296d8
   Data: TemplatedDataBlock(decl, cond, end, stmt)
 }name<NAME> : Rule {
-  0x5aa24ee8bed8
-  0x5aa24ee47af8
-  0x5aa24eec1a28
+  0x63839ef26568
+  0x63839ef6fce8
+  0x63839eee8af8
   Data: [RegularDataBlock: CllExpr]
 }name<cll_loop_while> : Rule {
-  0x5aa24ee8d2c8
-  0x5aa24ee8d448
-  0x5aa24ee8d5c8
+  0x63839ef27b48
+  0x63839ef27cc8
+  0x63839ef27e48
   Data: TemplatedDataBlock(expr, stmt)
 }name<cll__variable> : Rule {
-  0x5aa24ee92428
-  0x5aa24ee925a8
-  0x5aa24ee92c28
-  0x5aa24ee93228
+  0x63839ef2ef38
+  0x63839ef2f0b8
+  0x63839ef2f738
+  0x63839ef2fd38
   Data: TemplatedDataBlock(pre, name, brace_expression, pos)
 }name<cll_ASSIGNMENT_OP> : Rule {
-  0x5aa24ee739c8
+  0x63839ef4a828
   Data: [RegularDataBlock: CllExpr]
 }

@@ -111,8 +111,10 @@ void NFA::markAccept(
     TokenBinding binding;
 
     binding.token_id = *accept_index;
-    binding.is_unique_representation =
-        member.isString() || member.isCsequence();
+
+    // FIX: Set true whenever we generate a semantic reduction,
+    // or decouple is_unique_representation from whether target_semantic_state exists.
+    binding.is_unique_representation = true;
 
     SemanticState state;
     if (!member.prefix.empty()) {
@@ -425,15 +427,24 @@ void NFA::build(bool addStoreActions) {
     if (isWhitespaceToken)
         addStoreActions = false;
 
-    std::size_t last_state;
+    std::size_t last_state = NULL_STATE;
+    std::size_t prev_end = NULL_STATE;
+
     if (rules != nullptr && !rules->empty()) {
         for (std::size_t i = 0; i < rules->size(); ++i) {
             bool is_last = (i == rules->size() - 1);
             current_member = (*rules)[i].get();
             auto [start, end] = buildStateFragment(*(*rules)[i], is_last, addStoreActions);
-            if (end != NULL_STATE && !is_last) {
-                states[end].epsilon_transitions.insert({states.size(), TableType::DFA});
+
+            if (prev_end != NULL_STATE && start != NULL_STATE) {
+                // Connect previous member's exit state directly to current member's start state
+                states[prev_end].epsilon_transitions.insert({start, TableType::DFA});
             }
+
+            if (end != NULL_STATE) {
+                prev_end = end;
+            }
+
             if (is_last) {
                 last_state = end;
             }
@@ -466,8 +477,10 @@ void NFA::build(bool addStoreActions) {
         } else {
             nfadtb = std::monostate {};
         }
-        states[last_state].rule_name = name_;
-        states[last_state].dtb = nfadtb;
+        if (last_state != NULL_STATE && last_state < states.size()) {
+            states[last_state].rule_name = name_;
+            states[last_state].dtb = nfadtb;
+        }
     }
 
     if (!isWhitespaceToken) {

@@ -41,7 +41,7 @@ namespace DFA {
         std::map<std::pair<std::size_t, std::size_t>, std::size_t> semantic_remap;
 
         states.clear();
-        lr_table = nfa.getActionTable();
+        lr_table.clear();
         semantic_table.clear();
 
         // ================================================================
@@ -84,9 +84,14 @@ namespace DFA {
                 if (!binding.has_value())
                     continue;
 
-                if (!best_binding.has_value() || binding->token_id < best_binding->token_id) {
+                bool current_has_semantic = binding->target_semantic_state.has_value();
+                bool best_has_semantic = best_binding.has_value() && best_binding->target_semantic_state.has_value();
+
+                if (!best_binding.has_value() ||
+                    (current_has_semantic && !best_has_semantic) ||
+                    (current_has_semantic == best_has_semantic && binding->token_id < best_binding->token_id)) {
                     best_binding = binding;
-                }
+                    }
             }
 
             states[current_dfa_index].accept_binding = best_binding;
@@ -129,12 +134,31 @@ namespace DFA {
                     }
                 }
             }
+            // Group transitions by symbol key
+            std::map<NFA::TransitionKey, std::vector<TransitionInfo>> grouped_transitions;
+            for (auto &&[sym, info] : transitions) {
+                grouped_transitions[sym].push_back(std::move(info));
+            }
 
-            // Construct DFA transitions
-            for (const auto &[symbol, info] : transitions) {
-                const auto &closure_set = info.closure;
+            // Construct DFA transitions per unique symbol
+            for (const auto &[symbol, info_list] : grouped_transitions) {
+                // Collect and merge target NFA states for this symbol into a single Closure
+                stdu::vector<std::size_t> merged_nfa_states;
+                for (const auto &info : info_list) {
+                    for (const std::size_t nfa_st : info.closure) {
+                        merged_nfa_states.push_back(nfa_st);
+                    }
+                }
+
+                // Deduplicate state indices
+                std::sort(merged_nfa_states.begin(), merged_nfa_states.end());
+                merged_nfa_states.erase(std::unique(merged_nfa_states.begin(), merged_nfa_states.end()), merged_nfa_states.end());
+
+                // Safely construct the target closure
+                Closure closure_set(nfa, merged_nfa_states);
                 std::size_t target_index;
 
+                // 1. Map closure to target DFA state
                 auto state_it = dfa_state_map.find(closure_set);
                 if (state_it == dfa_state_map.end()) {
                     target_index = states.makeNew();
@@ -147,30 +171,72 @@ namespace DFA {
 
                 auto &dfa_transition = states[current_dfa_index].transitions[symbol];
 
-                // 1. Resolve action_index from transition or target NFA closure states
-                std::size_t action_idx = NFA::NULL_STATE;
-                if (info.table_type == NFA::TableType::Action) {
-                    action_idx = info.table_index;
-                } else {
-                    for (const std::size_t nfa_st : closure_set) {
-                        if (nfa_st < nfa.getStates().size() &&
-                            nfa.getStates()[nfa_st].action_index != NFA::NULL_STATE) {
-                            action_idx = nfa.getStates()[nfa_st].action_index;
-                            break;
+                // 2. Resolve action or semantic index across ALL transitions for this symbol
+                std::size_t nfa_action_idx = NFA::NULL_STATE;
+                std::size_t nfa_semantic_idx = NFA::NULL_STATE;
+
+                for (const auto &info : info_list) {
+                    if (info.table_type == NFA::TableType::Action) {
+                        if (nfa_action_idx == NFA::NULL_STATE) {
+                            nfa_action_idx = info.table_index;
+                        } else {
+                            const auto &curr_act = nfa.getActionTable().at(nfa_action_idx);
+                            const auto &new_act = nfa.getActionTable().at(info.table_index);
+                            if (new_act.action == NFA::Action::BEGIN && curr_act.action != NFA::Action::BEGIN) {
+                                nfa_action_idx = info.table_index;
+                            }
+                        }
+                    } else if (info.table_type == NFA::TableType::Semantic) {
+                        if (nfa_semantic_idx == NFA::NULL_STATE) {
+                            nfa_semantic_idx = info.table_index;
                         }
                     }
                 }
 
-                // 2. Emit ActionTarget or SemanticTarget / DFATarget accordingly
-                if (action_idx != NFA::NULL_STATE && action_idx < lr_table.size()) {
-                    lr_table[action_idx].DFA_next_state = target_index;
+                // Fallback closure inspection if direct transition tables didn't yield an action
+                if (nfa_action_idx == NFA::NULL_STATE && nfa_semantic_idx == NFA::NULL_STATE) {
+                    for (const std::size_t nfa_st : closure_set) {
+                        const auto &st = nfa.getStates().at(nfa_st);
+
+                        if (st.action_index != NFA::NULL_STATE) {
+                            const auto &act = nfa.getActionTable().at(st.action_index);
+                            if (nfa_action_idx == NFA::NULL_STATE || act.action == NFA::Action::BEGIN) {
+                                nfa_action_idx = st.action_index;
+                            }
+                        }
+
+                        if (nfa_semantic_idx == NFA::NULL_STATE &&
+                            st.accept_binding.has_value() &&
+                            st.accept_binding->target_semantic_state.has_value()) {
+                            nfa_semantic_idx = *st.accept_binding->target_semantic_state;
+                            }
+                    }
+                }
+
+                // 3. Emit corresponding DFA transition target exactly ONCE per symbol
+                if (nfa_action_idx != NFA::NULL_STATE && nfa_action_idx < nfa.getActionTable().size()) {
+                    const auto key = std::make_pair(nfa_action_idx, target_index);
+                    auto [it, inserted] = action_remap.emplace(key, lr_table.size());
+                    if (inserted) {
+                        auto action_entry = nfa.getActionTable().at(nfa_action_idx);
+                        action_entry.DFA_next_state = target_index;
+                        lr_table.push_back(std::move(action_entry));
+                    }
+                    const std::size_t action_idx = it->second;
                     dfa_transition = ActionTarget {
                         .id = action_idx,
                         .action = lr_table[action_idx].action
                     };
-                } else if (info.table_type == NFA::TableType::Semantic) {
+                } else if (nfa_semantic_idx != NFA::NULL_STATE && nfa_semantic_idx < nfa.getSemanticTable().size()) {
+                    const auto key = std::make_pair(nfa_semantic_idx, target_index);
+                    auto [it, inserted] = semantic_remap.emplace(key, semantic_table.size());
+                    if (inserted) {
+                        auto semantic_entry = nfa.getSemanticTable().at(nfa_semantic_idx);
+                        semantic_entry.next_state = target_index;
+                        semantic_table.push_back(std::move(semantic_entry));
+                    }
                     dfa_transition = SemanticTarget {
-                        .id = info.table_index
+                        .id = it->second
                     };
                 } else {
                     dfa_transition = DFATarget {
@@ -179,7 +245,6 @@ namespace DFA {
                 }
             }
         }
-
         // ================================================================
         // 3. Resolve semantic REDUCE states
         // ================================================================
@@ -547,9 +612,17 @@ namespace DFA {
                 if (std::holds_alternative<DFATarget>(target)) {
                     next_st = std::get<DFATarget>(target).id;
                 } else if (std::holds_alternative<ActionTarget>(target)) {
-                    next_st = lr_table.at(std::get<ActionTarget>(target).id).DFA_next_state;
+                    const std::size_t old_st = lr_table.at(std::get<ActionTarget>(target).id).DFA_next_state;
+                    if (old_st != NFA::NULL_STATE && old_st < partition_of.size()) {
+                        const std::size_t target_cls = partition_of.at(old_st);
+                        next_st = class_to_new_index.at(target_cls);
+                    }
                 } else if (std::holds_alternative<SemanticTarget>(target)) {
-                    next_st = semantic_table.at(std::get<SemanticTarget>(target).id).next_state;
+                    const std::size_t old_st = semantic_table.at(std::get<SemanticTarget>(target).id).next_state;
+                    if (old_st != NFA::NULL_STATE && old_st < partition_of.size()) {
+                        const std::size_t target_cls = partition_of.at(old_st);
+                        next_st = class_to_new_index.at(target_cls);
+                    }
                 }
 
                 if (next_st != NFA::NULL_STATE && next_st < reachable.size() && !reachable[next_st]) {
@@ -572,9 +645,12 @@ namespace DFA {
         // Map original DFA state targets through class collapse + reachability pruning
         auto resolve_state = [&](std::size_t old_dfa_idx) -> std::size_t {
             if (old_dfa_idx == NFA::NULL_STATE) return NFA::NULL_STATE;
-            std::size_t cls = partition_of.at(old_dfa_idx);
-            std::size_t interim_idx = class_to_new_index.at(cls);
-            return state_remap[interim_idx];
+            auto p_it = partition_of.find(old_dfa_idx);
+            if (p_it == partition_of.end()) return NFA::NULL_STATE;
+            std::size_t cls = p_it->second;
+            auto c_it = class_to_new_index.find(cls);
+            if (c_it == class_to_new_index.end()) return NFA::NULL_STATE;
+            return state_remap[c_it->second];
         };
 
         for (auto &act : lr_table) {
@@ -592,6 +668,7 @@ namespace DFA {
             auto &destination = reachable_output[new_idx];
             const auto &source = output[i];
 
+            // Preserve accept binding across state minimization
             destination.accept_binding = source.accept_binding;
 
             for (const auto &[symbol, target] : source.transitions) {
@@ -599,11 +676,13 @@ namespace DFA {
                     using T = std::decay_t<decltype(arg)>;
 
                     if constexpr (std::is_same_v<T, DFATarget>) {
-                        std::size_t final_target = resolve_state(arg.id);
+                        std::size_t final_target = (arg.id < state_remap.size()) ? state_remap[arg.id] : NFA::NULL_STATE;
                         if (final_target != NFA::NULL_STATE) {
                             destination.transitions[symbol] = DFATarget{ final_target };
                         }
-                    } else {
+                    } else if constexpr (std::is_same_v<T, ActionTarget>) {
+                        destination.transitions[symbol] = arg;
+                    } else if constexpr (std::is_same_v<T, SemanticTarget>) {
                         destination.transitions[symbol] = arg;
                     }
                 }, target);
@@ -675,9 +754,9 @@ namespace DFA {
                     if constexpr (std::is_same_v<T, DFATarget>) {
                         output[new_idx].transitions[cls] = TransitionValue{target.id, NFA::TableType::DFA, NULL_STATE};
                     } else if constexpr (std::is_same_v<T, ActionTarget>) {
-                        output[new_idx].transitions[cls] = TransitionValue{target.id, NFA::TableType::Action, NULL_STATE};
+                        output[new_idx].transitions[cls] = TransitionValue{target.id, NFA::TableType::Action, target.id};
                     } else if constexpr (std::is_same_v<T, SemanticTarget>) {
-                        output[new_idx].transitions[cls] = TransitionValue{target.id, NFA::TableType::Semantic, NULL_STATE};
+                        output[new_idx].transitions[cls] = TransitionValue{target.id, NFA::TableType::Semantic, target.id};
                     }
                 }, value);
             }

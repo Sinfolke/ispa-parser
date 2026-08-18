@@ -40,24 +40,25 @@ void DFA::mergeTwoNFA(
         for (auto &[symbol, target_ids] : new_state.transitions) {
             for (auto &target : target_ids) {
                 if (target.table_type == NFA::TableType::Action) {
-                    target.next += action_offset;
+                    if (target.next != NFA::NULL_STATE) target.next += action_offset;
                 } else if (target.table_type == NFA::TableType::Semantic) {
-                    target.next += semantic_offset;
+                    if (target.next != NFA::NULL_STATE) target.next += semantic_offset;
                 } else {
-                    target.next += state_offset;
+                    if (target.next != NFA::NULL_STATE) target.next += state_offset;
                 }
             }
         }
 
         // Epsilon transitions: Rebase depending on target table type
+        // NOTE: declared fresh per-state — must not accumulate across iterations
         utype::unordered_set<NFA::TransitionValue> rebased_epsilon;
         for (auto target : new_state.epsilon_transitions) {
             if (target.table_type == NFA::TableType::Action) {
-                target.next += action_offset;
+                if (target.next != NFA::NULL_STATE) target.next += action_offset;
             } else if (target.table_type == NFA::TableType::Semantic) {
-                target.next += semantic_offset;
+                if (target.next != NFA::NULL_STATE) target.next += semantic_offset;
             } else {
-                target.next += state_offset;
+                if (target.next != NFA::NULL_STATE) target.next += state_offset;
             }
             rebased_epsilon.insert(target);
         }

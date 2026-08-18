@@ -88,7 +88,7 @@ namespace LangRepr {
     // no per-transition metadata struct, since acceptance now lives
     // entirely in the numeric value rather than needing its own field.
     auto ConstructLexer::makeDfaTableDecl(
-        const auto &states,          // iterable of DFA::State<DFA::ClassTransitions>
+        const stdu::vector<DFA::State<stdu::vector<DFA::TransitionValue>>> &states,
         std::size_t state_count,
         std::size_t class_count
     ) -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility> {
@@ -105,12 +105,18 @@ namespace LangRepr {
 
                 if (cls < state.transitions.size()) {
                     const auto &t = state.transitions[cls];
-                    if (t.accept_index != DFA::NULL_STATE) {
-                        encoded = LangAPI::RValue {LangAPI::Int {.value = static_cast<long long>(state_count + 1 + t.accept_index)}};
-                    } else if (t.next != DFA::NULL_STATE) {
-                        encoded = LangAPI::RValue {LangAPI::Int {.value = static_cast<long long>(t.next)}};
+                    if (t.table_type == NFA::TableType::DFA) {
+                        if (t.next == NFA::NULL_STATE) {
+                            encoded = LangAPI::RValue {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaNullState}};
+                        } else {
+                            encoded = LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<long long>(t.next)});
+                        }
+                    } else if (t.table_type == NFA::TableType::Action) {
+                        encoded = LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<long long>(t.next + state_count)});
+                    } else if (t.table_type == NFA::TableType::Semantic) {
+                        encoded = LangAPI::Int::createRValue(LangAPI::Int {.value = static_cast<long long>(t.next + state_count + lexer_builder.getLRTable().size())});
                     } else {
-                        encoded = LangAPI::RValue {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::DfaNullState}};
+                        throw Error("Unknown table type {}", (int) t.table_type);
                     }
                 }
                 row.push_back(LangAPI::Int::createExpression(encoded));

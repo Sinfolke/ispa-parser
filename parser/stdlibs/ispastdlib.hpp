@@ -24,6 +24,8 @@
 #include "old/ispastdlib.hpp"
 #include "old/ispastdlib.hpp"
 #include "old/ispastdlib.hpp"
+#include "old/ispastdlib.hpp"
+#include "old/ispastdlib.hpp"
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -296,7 +298,7 @@ namespace DFA::API {
     template<std::size_t States>
     using LRTable = std::array<State<3>, States>;
     enum class Action {
-        UNDEF, BEGIN, END, PUSH
+        UNDEF, BEGIN, END, PUSH, FAIL
     };
 }
 namespace DFA {
@@ -320,23 +322,47 @@ namespace DFA {
     ) -> Token {
         std::size_t state = 0;
         std::size_t registers_allocated = 0;
+        // debug table
+        for (const auto &s : table) {
+            std::cout << "state " << state++ << ": ";
+            std::size_t cls = 0;
+            for (const auto &transition : s) {
+                std::cout << "\t" << cls++ << "{";
+                if (transition < table.size()) {
+                    std::cout << "REG " << transition;
+                } else if (transition == DFA::API::null_state) {
+                    std::cout << "ACCEPTING";
+                } else if (transition < table.size() + lr_table.size()) {
+                    std::cout << "LR " << transition - table.size();
+                } else {
+                    std::cout << "SEMANTIC " << transition - table.size() - lr_table.size();
+                }
+                std::cout << "}\n";
+            }
+        }
+        state = 0;
         while (true) {
-            std::size_t cls = class_table[*pos];
+            std::size_t cls = class_table[static_cast<unsigned char>(*pos)];
             std::size_t next = table[state][cls];
             std::cout << "char " << *pos << " class " << cls << " state " << state << " next " << next << std::endl;
-            if (next <= table.size()) {
+
+            if (next < table.size()) {
+                // Regular state transition
                 state = next;
-            } else if (next <= table.size() + lr_table.size()) {
-                // LR action for this state
+            } else if (next == DFA::API::null_state) {
+                break;
+            } else if (next < table.size() + lr_table.size()) {
+                // LR action state
                 auto lr_action = lr_table[next - table.size()];
                 switch (static_cast<API::Action>(lr_action[0])) {
                     case API::Action::UNDEF:
-                        throw std::runtime_error("DFA: undefined action; This MUST NOT be your mistake; Report this error to github");
+                        throw std::runtime_error("DFA: undefined action; Report this error to github");
                     case API::Action::BEGIN:
                         registers[registers_allocated++] = pos;
                         break;
                     case API::Action::END:
-                        if (registers[registers_allocated - 1] - pos == 1) {
+                        std::cout << "Value accumulated " << std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]) << std::endl;
+                        if (pos - registers[registers_allocated - 1] == 1) {
                             values.push_back(*registers[registers_allocated - 1]);
                         } else {
                             values.push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
@@ -344,36 +370,32 @@ namespace DFA {
                         registers_allocated--;
                         break;
                     case API::Action::PUSH:
-                        if (registers[registers_allocated - 1] - pos == 1) {
+                        if (pos - registers[registers_allocated - 1] == 1) {
                             vec_values.back().push_back(*registers[registers_allocated - 1]);
                         } else {
                             vec_values.back().push_back(std::string(registers[registers_allocated - 1], pos - registers[registers_allocated - 1]));
                         }
                         break;
                     default:
-                        throw std::runtime_error("DFA: Out of bound, non-enum action; This MUST NOT be your mistake; Report this error to github");
+                        throw std::runtime_error("DFA: Out of bound, non-enum action; Report this error to github");
                 }
-                // transition to the next state
                 state = lr_action[1];
-            } else if (next == DFA::API::null_state) {
-                break;
             } else {
-                // directing call to Semantic action function; The error about state overflow is handled there
-                std::pair<int, Token> t = semantic(state - table.size() - lr_table.size(), values, vec_values);
+                std::cout << "Calling semantic action " << state - table.size() - lr_table.size() << std::endl;
+
+                std::pair<int, Token> t = semantic(next - table.size() - lr_table.size(), values, vec_values);
                 if (!std::holds_alternative<std::monostate>(t.second)) {
-                    // handle reduce action result
                     values.push_back(std::move(t.second));
                 }
-                // transition to the next state
                 state = t.first;
             }
             ++pos;
         }
-        // take the first 'values' value and return it
-        // we also ensure it is token, as otherwise it is considered inconsistent behaviour
-        if (!std::holds_alternative<Token>(values.front()) && values.size() > 0) {
-            std::cout << "Warning [DFA]: Returned non-token result; This MUST NOT be your mistake; Report this error to github" << std::endl;
+
+        if (!values.empty() && !std::holds_alternative<Token>(values.front())) {
+            std::cout << "Warning [DFA]: Returned non-token result; Report this error to github" << std::endl;
         }
+
         return std::get<Token>(values.front());
     }
 }
