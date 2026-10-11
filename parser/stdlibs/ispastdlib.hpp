@@ -477,28 +477,33 @@ namespace ISPA_STD {
         const char* _start = nullptr;
         const char* _end = nullptr;
         EnumT _name = EnumT::NONE;
-        bool _empty = false;
+        bool _empty = true;
         DataStorageType _data;
+        template<typename Other>
+        void copy_metadata(const Other& other) {
+            _startpos = other.startpos();
+            _length = other.length();
+            _line = other.line();
+            _column = other.column();
+            _start = other.start();
+            _end = other.end();
+            _name = other.name();
+            _empty = other.empty();
+        }
     public:
         Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name)
             : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name) {}
         template<class  ...Args, class = std::enable_if_t<std::is_constructible_v<DataStorageType, Args...>>>
         Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, Args&& ...args)
-            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(std::forward<Args>(args)...) {}
+            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(std::forward<Args>(args)...), _empty(false) {}
         Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, DataStorageType data)
-            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data) {}
-        Node() : _empty(true) {}
-        template<typename U, typename = std::enable_if_t<std::is_same_v<DataStorageType, std::shared_ptr<U>>>>
+            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
+        Node() {}
+        template<typename U,std::enable_if_t<std::is_same_v<DataStorageType, std::shared_ptr<U>>, int> = 0>
         Node(const Node<EnumT, U>& other) : Node() {
-            data() = std::make_shared<U>(other.data());
-            _startpos = other.startpos();
-            _start = other.start();
-            _end = other.end();
-            _length = other.length();
-            _line = other.line();
-            _column = other.column();
-            _name = other.name();
-            _empty = other.empty();
+            copy_metadata(other);
+            if (!_empty)
+                _data = std::make_shared<U>(other.data());
         }
         Node(const Node&) = default;
         Node(Node&&) noexcept = default;
@@ -515,25 +520,28 @@ namespace ISPA_STD {
         auto operator=(
             const Node<EnumT, std::shared_ptr<T>>& other
         ) -> Node& {
-            if (!other.data())
-                throw std::runtime_error("Cannot assign null Node data");
+            using Element = typename is_shared_ptr<T>::element_type;
 
-            _data = *other.data();
+            if (other.empty()) {
+                _data.reset();
+            } else {
+                _data = std::make_shared<Element>(other.data());
+            }
+
+            copy_metadata(other);
             return *this;
         }
 
-        template<typename T = DataStorageType,
-                 std::enable_if_t<is_shared_ptr<T>::value, int> = 0>
-        auto operator=(
-            const Node<
-                EnumT,
-                typename is_shared_ptr<T>::element_type
-            >& other
-        ) -> Node& {
-            _data = std::make_shared<
-                typename is_shared_ptr<T>::element_type
-            >(other.data());
+        template<typename T = DataStorageType, std::enable_if_t<is_shared_ptr<T>::value, int> = 0>
+        auto operator=(const Node<EnumT, typename is_shared_ptr<T>::element_type>& other) -> Node& {
+            using Element = typename is_shared_ptr<T>::element_type;
+            if (other.empty()) {
+                _data.reset();
+            } else {
+                _data = std::make_shared<Element>(other.data());
+            }
 
+            copy_metadata(other);
             return *this;
         }
         template<typename SourceDataType, typename IT>
@@ -581,6 +589,14 @@ namespace ISPA_STD {
         auto name() const { return _name; }
         auto &data() { return _data; }
         auto &data() const { return _data; }
+        auto set_data(DataStorageType &&t) -> void {
+            _data = std::move(t);
+            _empty = false;
+        }
+        auto set_data(const DataStorageType &t) -> void {
+            _data = t;
+            _empty = false;
+        }
         static auto create(const long long startpos, const char* start, const long long length, const long long line, EnumT enumv, DataStorageType t) {
             std::size_t column = 0;
             for (const char* count = start; start - count != startpos && *count != '\n'; --count) {
@@ -591,6 +607,10 @@ namespace ISPA_STD {
 
         // Nested nodes render into the caller's printer, retaining its depth.
         auto print(ASTPrinter<std::ostream>& printer) const -> void {
+            if (_empty) {
+                printer.node("<empty>");
+                return;
+            }
             if constexpr (
                 std::is_pointer_v<DataStorageType> ||
                 is_shared_ptr<DataStorageType>::value
@@ -603,6 +623,10 @@ namespace ISPA_STD {
             }
         }
         auto print(std::ostream &os) const {
+            if (_empty) {
+                os << "<empty>";
+                return;
+            }
             if constexpr (is_shared_ptr<DataStorageType>::value) {
                 if (_data) {
                     os << *_data;

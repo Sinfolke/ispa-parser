@@ -274,15 +274,25 @@ namespace LangRepr {
                 .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true})
             }));
             LangAPI::StorageSymbol match_data;
-            match_data.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"match_result"});
+            match_data.what = LangAPI::Symbol::createExpression(
+                LangAPI::Symbol{"match_result"}
+            );
             match_data.path.push_back("node");
-            match_data.path.push_back(LangAPI::FunctionCall {
-                .name = std::make_shared<LangAPI::Symbol>("data")
-            });
-            stmts.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                .name = match_data,
-                .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"result"})
-            }));
+            match_data.path.push_back(
+                LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("set_data"),
+                    .args = {
+                        LangAPI::Symbol::createExpression(
+                            LangAPI::Symbol{"result"}
+                        )
+                    }
+                }
+            );
+            stmts.push_back(
+                LangAPI::StorageSymbol::createStatement(
+                    std::move(match_data)
+                )
+            );
             LangAPI::StorageSymbol match_it;
             match_it.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"match_result"});
             match_it.path.push_back("it");
@@ -301,39 +311,58 @@ namespace LangRepr {
             parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Private));
         }
 
-        auto add_parse_wrapper = [&](std::string name, std::string iterator_type, stdu::vector<LangAPI::Expression> iterator_args) {
-            auto iterator = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall {
-                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol {"Lexer", std::move(iterator_type)}),
-                .args = std::move(iterator_args)
-            });
-            auto main_call = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall {
-                .name = std::make_shared<LangAPI::Symbol>("main"),
-                .args = {iterator}
-            });
+        auto add_parse_wrapper = [&](
+            std::string name,
+            std::string iterator_type,
+            stdu::vector<LangAPI::Expression> iterator_args
+        ) {
+            auto iterator = LangAPI::FunctionCall::createExpression(
+                LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>(
+                        LangAPI::Symbol{"Lexer", std::move(iterator_type)}
+                    ),
+                    .args = std::move(iterator_args)
+                }
+            );
+
+            auto main_call = LangAPI::FunctionCall::createExpression(
+                LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("main"),
+                    .args = {std::move(iterator)}
+                }
+            );
 
             LangAPI::StorageSymbol main_data;
             main_data.what = std::move(main_call);
             main_data.path.emplace_back("node");
-            main_data.path.emplace_back(LangAPI::FunctionCall {
-                .name = std::make_shared<LangAPI::Symbol>("data")
-            });
+            main_data.path.emplace_back(
+                LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("data")
+                }
+            );
 
-            LangAPI::StorageSymbol tree;
-            tree.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"tree"});
-
-            auto parse_wrapper = LangAPI::Function {
-                .type = LangAPI::Type {LangAPI::ValueType::Void},
+            auto parse_wrapper = LangAPI::Function{
+                .type = LangAPI::Type{LangAPI::ValueType::Void},
                 .name = std::move(name),
                 .statements = {
-                    LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                        .name = tree,
-                        .value = LangAPI::StorageSymbol::createExpression(main_data)
-                    })
+                    LangAPI::VariableAssignment::createStatement(
+                        LangAPI::VariableAssignment{
+                            .name = LangAPI::Symbol{"tree"},
+                            .value = LangAPI::StorageSymbol::createExpression(
+                                std::move(main_data)
+                            )
+                        }
+                    )
                 },
                 .override = true
             };
+
             parser.data.emplace_back(
-                std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(std::move(parse_wrapper))),
+                std::make_shared<LangAPI::Declaration>(
+                    LangAPI::Function::createDeclaration(
+                        std::move(parse_wrapper)
+                    )
+                ),
                 LangAPI::Visibility::Public
             );
         };

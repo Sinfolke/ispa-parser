@@ -7,8 +7,16 @@ name<AUTO_5> : Rule {
 }name<AUTO_2> : Rule {
    ")"
   Data: EmptyDataBlock
+}name<AUTO_1> : Rule {
+   "("
+  Data: EmptyDataBlock
+}name<main> : Rule {
+  @  rule
+  Data: [RegularDataBlock: CllExpr]
 }name<rule_value_alternative> : Rule {
-   ( AUTO_0  __WS?; @  rule::value)+;
+   AUTO_0
+   __WS?;
+  @  rule::value::pattern
   Data: [RegularDataBlock: CllExpr]
 }name<AUTO_3> : Rule {
    "@"
@@ -17,6 +25,9 @@ name<AUTO_5> : Rule {
    "'"
   @  [^']*;
    "'"
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_pattern> : Rule {
+  @  ( ID |  rule::value::STRING |  rule::value::SPACE |  rule::value::group)
   Data: [RegularDataBlock: CllExpr]
 }name<__WS> : Rule {
    [ \t\n\r\v\f]*;
@@ -32,31 +43,16 @@ name<AUTO_5> : Rule {
    AUTO_2
   Data: [RegularDataBlock: CllExpr]
 }name<rule_value> : Rule {
-  @  ( ID |  rule::value::STRING |  rule::value::SPACE |  rule::value::group)
+  @  rule::value::pattern
    __WS?;
-  @  rule::value::alternative?;
+  @  rule::value::alternative*;
    __WS?;
-  @  rule::QUANTIFIER?;
-  Data: TemplatedDataBlock(v, alt, quantifier)
-}name<rule_QUANTIFIER> : Rule {
-  @  ( "?" |  "+" |  "*")
-  Data: [RegularDataBlock: CllExpr]
+  @  rule::value::QUANTIFIER?;
+  Data: TemplatedDataBlock(v, alts, quantifier)
 }name<rule_capture> : Rule {
    AUTO_3
    __WS?;
    (@  ID)?;
-  Data: [RegularDataBlock: CllExpr]
-}name<AUTO_1> : Rule {
-   "("
-  Data: EmptyDataBlock
-}name<main> : Rule {
-  @  rule
-  Data: [RegularDataBlock: CllExpr]
-}name<AUTO_0> : Rule {
-   "|"
-  Data: EmptyDataBlock
-}name<ID> : Rule {
-  @  ( [a-zA-Z]  [_a-zA-Z0-9]*;)
   Data: [RegularDataBlock: CllExpr]
 }name<rule> : Rule {
   @  ID
@@ -71,4 +67,13 @@ name<AUTO_5> : Rule {
   @  [0-9]+;
    ( "." @  [0-9]+;)?;
   Data: TemplatedDataBlock(full, floating)
+}name<AUTO_0> : Rule {
+   "|"
+  Data: EmptyDataBlock
+}name<rule_value_QUANTIFIER> : Rule {
+  @  ( "?" |  "+" |  "*")
+  Data: [RegularDataBlock: CllExpr]
+}name<ID> : Rule {
+  @  ( [a-zA-Z]  [_a-zA-Z0-9]*;)
+  Data: [RegularDataBlock: CllExpr]
 }

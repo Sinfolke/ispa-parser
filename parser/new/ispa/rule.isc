@@ -6,14 +6,14 @@ rule:
         '@' (\s0 @ ID)?
         {@}
     ;
-    #QUANTIFIER:
-       @ '?' | '+' | '*'
-       {@}
-    ;
     #value:
-        @ ID | #STRING | #SPACE | group @ alternative? @ QUANTIFIER?
-        @{v, alt, quantifier}
-        
+        @ #pattern @ #alternative* @ #QUANTIFIER?
+        @{v, alts, quantifier}
+
+        #pattern:
+            @ ID | #STRING | #SPACE | group
+            {@}
+        ;
         #STRING:
             '\'' @ [^']* '\''
 
@@ -28,8 +28,12 @@ rule:
             {@}
         ;
         #alternative:
-            ('|' @ #value)+
+            '|' @ pattern
             {@}
+        ;
+        #QUANTIFIER:
+           @ '?' | '+' | '*'
+           {@}
         ;
     ;
 ;
