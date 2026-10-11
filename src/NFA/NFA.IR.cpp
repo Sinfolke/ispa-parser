@@ -287,25 +287,37 @@ namespace NFA {
 
             std::size_t site_counter = 0;
             stdu::vector<std::size_t> alt_path;
-            for (auto &reference : references) {
+            for (std::size_t ri = 0; ri < references.size(); ++ri) {
+                auto &reference = references[ri];
                 Fragment fragment = expandMember(reference.ref.member, reference.ref.original_member, reference.ref.prev, name, reference.ref.position_in_token,
                                                   site_counter, token, reference.continuation, {}, alt_path);
 
+                // Substitute in the live map, same as before.
                 for (auto &[token_id, transition_values] : token.transitions) {
-                    if (token_id == reference.ref)
-                        continue;
+                    if (token_id == reference.ref) continue;
                     stdu::vector<TransitionValue> rebuilt;
                     bool touched = false;
                     for (auto &v : transition_values) {
-                        if (v == reference.ref) {
-                            rebuilt.insert(rebuilt.end(), fragment.entries.begin(), fragment.entries.end());
-                            touched = true;
-                        } else {
-                            rebuilt.push_back(v);
-                        }
+                        if (v == reference.ref) { rebuilt.insert(rebuilt.end(), fragment.entries.begin(), fragment.entries.end()); touched = true; }
+                        else rebuilt.push_back(v);
                     }
-                    if (touched)
-                        transition_values = std::move(rebuilt);
+                    if (touched) transition_values = std::move(rebuilt);
+                }
+
+                // NEW: also patch every remaining reference's *own* cached
+                // continuation, since those are independent snapshots that the
+                // live-map loop above can never reach. Without this, a
+                // not-yet-processed reference whose original continuation
+                // pointed at `reference.ref` bakes in a dangling TokenID the
+                // moment IT is expanded, later, from stale data.
+                for (std::size_t rj = ri + 1; rj < references.size(); ++rj) {
+                    stdu::vector<TransitionValue> rebuilt;
+                    bool touched = false;
+                    for (auto &v : references[rj].continuation) {
+                        if (v == reference.ref) { rebuilt.insert(rebuilt.end(), fragment.entries.begin(), fragment.entries.end()); touched = true; }
+                        else rebuilt.push_back(v);
+                    }
+                    if (touched) references[rj].continuation = std::move(rebuilt);
                 }
 
                 token.transitions.erase(reference.ref);
@@ -366,7 +378,10 @@ namespace NFA {
                 const Token *nested_token_ptr = nullptr;
 
                 for (const auto &[token_id, transition_values] : token.transitions) {
-                    if (token_id.member.empty())
+                    // Completion markers retain the original named member, but
+                    // are zero-width boundaries, NOT nested references to expand.
+                    // Expanding one recreates itself indefinitely.
+                    if (token_id.member.empty() || token_id.nested_completion)
                         continue;
                     const auto &member = token_id.member;
                     if (!member.isName())
@@ -391,29 +406,58 @@ namespace NFA {
                 const auto &nested_token = *nested_token_ptr;
                 stdu::vector<TransitionValue> start_states;
 
-                for (const auto &[nested_token_id, nested_transition_values] : nested_token.transitions) {
-                    TokenID remapped_id = nested_token_id;
-                    remapped_id.call = site_counter;
+                // 1. Create a consistent mapping of original IDs to remapped IDs.
+                utype::unordered_map<TokenID, TokenID> remapped;
+                remapped.reserve(nested_token.transitions.size());
 
-                    stdu::vector<TransitionValue> remapped_values;
-                    for (auto remapped_value : nested_transition_values) {
-                        if (remapped_value.member.empty()) {
-                            remapped_values.insert(remapped_values.end(),
-                                                   continuation.begin(), continuation.end());
-                            continue;
+                for (const auto& [id, transitions] : nested_token.transitions) {
+                    TokenID new_id = id;
+                    new_id.call = site_counter;
+
+                    remapped.emplace(id, std::move(new_id));
+                }
+
+                // 2. Rebuild transitions using the remapped IDs.
+                for (const auto& [id, transitions] : nested_token.transitions) {
+                    const TokenID& new_id = remapped.at(id);
+
+                    stdu::vector<TransitionValue> new_transitions;
+
+                    for (const auto& next : transitions) {
+                        if (next.member.empty()) {
+                            // Keep the call boundary instead of splicing the nested
+                            // accept directly into the host continuation.
+                            TokenID completion = ref_id;
+                            completion.call = site_counter;
+                            completion.nested_completion = true;
+                            token.transitions[completion] = continuation;
+                            new_transitions.push_back(completion);
+                        } else {
+                            auto it = remapped.find(next);
+
+                            if (it != remapped.end()) {
+                                new_transitions.push_back(it->second);
+                            } else {
+                                // A target outside the copied token graph.
+                                new_transitions.push_back(next);
+                            }
                         }
-                        if (remapped_value.token_name == nested_token.name) {
-                            remapped_value.call = site_counter;
-                        }
-                        remapped_values.push_back(remapped_value);
                     }
 
-                    auto [it, inserted] = token.transitions.try_emplace(remapped_id, remapped_values);
-                    if (!inserted)
-                        it->second.insert(it->second.end(), remapped_values.begin(), remapped_values.end());
+                    auto [it, inserted] =
+                        token.transitions.try_emplace(new_id, new_transitions);
 
-                    if (nested_token_id.position_in_token == 0)
-                        start_states.push_back(remapped_id);
+                    if (!inserted) {
+                        it->second.insert(
+                            it->second.end(),
+                            new_transitions.begin(),
+                            new_transitions.end()
+                        );
+                    }
+
+                    if (id.position_in_token == 0) {
+                        start_states.push_back(new_id);
+                    }
                 }
 
                 for (auto &[token_id, transition_values] : token.transitions) {
@@ -442,8 +486,8 @@ namespace NFA {
             }
         }
 
-        for (const auto &name : unrolled_to_remove) {
-            tokens.erase(name);
-        }
+        // Keep nested token metadata available for semantic reduction. The
+        // TNFA builder will only expose top-level tokens as entry points.
+        // (No erase: nested token definitions provide their data blocks.)
     }
 }

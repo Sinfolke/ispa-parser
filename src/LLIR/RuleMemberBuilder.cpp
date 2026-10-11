@@ -12,6 +12,25 @@ import DFA;
 import constants;
 import std;
 // helper functions
+// Use the generated stdlib compatibility conversion for collected arrays.
+// This keeps the source type inferred from the grammar while allowing
+// recursive AST fields to have boxed element representations.
+namespace {
+    LangAPI::Expression shadowCompatible(LangAPI::Expression target, LangAPI::Expression source) {
+        return LangAPI::IspaLibFunctionCall::createExpression(LangAPI::IspaLibFunctionCall{
+            .symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::AssignCompatible},
+            .args = {target, source}
+        });
+    }
+}
+
+// Comments in generated code identify the original grammar member.
+static auto grammarComment(const AST::RuleMember &rule, const std::string &meaning) -> LangAPI::Statement {
+    std::ostringstream out;
+    out << rule;
+    return LangAPI::Comment::createStatement(
+        LangAPI::Comment{.value = "grammar `" + out.str() + "`: " + meaning});
+}
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
     const AST::RuleMember &rule,
@@ -38,11 +57,16 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
             statements.push_back(LangAPI::While::createStatement(loop));
         }
     } else if (quantifier == '?') {
+        // Optional group: execute its body at most once. A do/while(false)
+        // preserves the existing conversion of failed-branch returns to breaks,
+        // without repeating a successfully selected alternative indefinitely.
+        statements.push_back(grammarComment(rule, "optional group; try at most once"));
         LangAPI::While loop;
-        loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true });
+        loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = false });
         loop.stmt = builder.getData();
         builder.getData().clear();
         processExitStatements(loop.stmt);
+        loop.stmt.insert(loop.stmt.begin(), grammarComment(rule, "optional body; failed alternative leaves this group"));
         statements.push_back(LangAPI::DoWhile::createStatement(loop));
     }
 }
@@ -66,20 +90,27 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
     LangAPI::Variable shadow_variable;
     if (!uvar.name.empty()) {
         uvar.type = deduceUvarType(var, shadow_variable);
-        statements.push_back(LangAPI::Variable::createStatement(uvar));
     }
 
+    const bool repeated = quantifier == '*' || quantifier == '+';
     LangAPI::Variable extracted = uvar;
-    if ((insideLoop || quantifier == '+' || quantifier == '*') &&
-        extracted.name.empty()) {
-        extracted = createEmptyVariable("uvar" + generateVariableName());
+    if (insideLoop || repeated) {
+        // Each repetition has a scalar value, not the array result.
+        extracted = createEmptyVariable("element" + generateVariableName());
         extracted.type = deduceUvarType(var, {});
         statements.push_back(LangAPI::Variable::createStatement(extracted));
     }
     LangAPI::Statements shadow_append;
-    if (insideLoop || quantifier == '+' || quantifier == '*') {
+    if (insideLoop || repeated) {
         shadow_variable = add_shadow_variable(statements, shadow_append, extracted);
+        if (repeated && !uvar.name.empty()) {
+            // Export the collection for NAME* and NAME+, not the last NAME.
+            uvar.type = shadow_variable.type;
+        }
     }
+
+    if (!uvar.name.empty())
+        statements.push_back(LangAPI::Variable::createStatement(uvar));
 
     LangAPI::Statements successful;
     // FIX: a successful call must mark svar true. Without this, every
@@ -97,11 +128,12 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
                         stdu::vector<LangAPI::StorageSymbol::PathPart>{"it"}
                     }))
         }));
-    createAssignUvarBlock(successful, extracted, var, shadow_variable);
+    createAssignUvarBlock(successful, extracted, var, {});
     successful.insert(successful.end(), shadow_append.begin(),
                       shadow_append.end());
 
-    if (quantifier == '*' || quantifier == '+') {
+    if (repeated) {
+        statements.push_back(grammarComment(rule, "repeat named rule; collect every matched value"));
         LangAPI::Statements loop_body{call};
         LangAPI::Expression failed = expr;
         failed.insert(failed.begin(), LangAPI::ExpressionValue{
@@ -141,6 +173,9 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
             statements.insert(statements.end(), successful.begin(),
                               successful.end());
         }
+    }
+    if (repeated && !uvar.name.empty()) {
+        statements.push_back(shadowCompatible(LangAPI::Symbol::createExpression(LangAPI::Symbol{uvar.name}), LangAPI::Symbol::createExpression(LangAPI::Symbol{shadow_variable.name})));
     }
     return shadow_variable;
 }
@@ -245,10 +280,10 @@ void LLIR::GroupBuilder::build() {
         const auto& expr =
             builder.getData().back().getExpression();
 
-        if (expr.size() == 1 &&
-            expr.back().isSkipSpaces()) {
-            builder.pop();
-        }
+        // if (expr.size() == 1 &&
+        //     expr.back().isSkipSpaces()) {
+        //     builder.pop();
+        // }
     }
 
     // Deduce the actual value type before array promotion.
@@ -473,19 +508,13 @@ void LLIR::GroupBuilder::build() {
                 ? var.name
                 : shadow_var.name;
 
+        success_statements.push_back(shadowCompatible(LangAPI::Symbol::createExpression(LangAPI::Symbol{uvar.name}), LangAPI::Symbol::createExpression(LangAPI::Symbol{source_name})));
+    }
+    if (quantifier != '?') {
         success_statements.push_back(
-            LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                .name = LangAPI::Symbol{uvar.name},
-                .value = LangAPI::Symbol::createExpression(
-                    LangAPI::Symbol{source_name}
-                )
-            })
+            LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {})
         );
     }
-
-    success_statements.push_back(
-        LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {})
-    );
 
     if (group_success_condition.expr.empty()) {
         statements.insert(
@@ -499,6 +528,11 @@ void LLIR::GroupBuilder::build() {
                 group_success_condition
             )
         );
+    }
+
+    if (quantifier == '?') {
+        statements.push_back(grammarComment(rule, "optional group end; release saved position"));
+        statements.push_back(LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {}));
     }
 
     pushConvResult(
@@ -777,6 +811,9 @@ void LLIR::NameBuilder::build() {
             }
         };
 
+        const bool repeated_name = rule.quantifier == '*' || rule.quantifier == '+';
+        if (repeated_name)
+            uvar.type = shadow_var.type;
         // Variables must be declared once, outside the match condition.
         this->statements.insert(this->statements.end(),
                                 statements.begin(), statements.end());
@@ -796,12 +833,10 @@ void LLIR::NameBuilder::build() {
             shadow_var = add_shadow_variable(this->statements,
                                              append_to_shadow, var);
         }
-        body.insert(body.end(), append_to_shadow.begin(),
-                    append_to_shadow.end());
-        BuilderBase::createAssignUvarBlock(body, uvar, var, {});
-        body.insert(body.end(),
-                    append_to_shadow.begin(),
-                    append_to_shadow.end());
+        // Append once, after the current token was captured.
+        body.insert(body.end(), append_to_shadow.begin(), append_to_shadow.end());
+        if (rule.quantifier != '*' && rule.quantifier != '+')
+            BuilderBase::createAssignUvarBlock(body, uvar, var, {});
         switch (rule.quantifier) {
             case '?':
                 this->statements.push_back(LangAPI::If::createStatement(
@@ -830,6 +865,12 @@ void LLIR::NameBuilder::build() {
                                         body.begin(), body.end());
                 break;
             }
+        }
+        if (repeated_name && !uvar.name.empty()) {
+            this->statements.push_back(grammarComment(rule, "repeat token; export all matched elements"));
+            this->statements.push_back(LangAPI::Expression::createStatement(
+                shadowCompatible(LangAPI::Symbol::createExpression(LangAPI::Symbol{uvar.name}), LangAPI::Symbol::createExpression(LangAPI::Symbol{shadow_var.name}))
+            ));
         }
     } else {
         LangAPI::Expression expr;
@@ -1126,7 +1167,7 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
         ss.cases.emplace_back();
         auto& cs = ss.cases.back();
 
-        auto rv_sym = LangAPI::Symbol{symbol};
+        auto rv_sym = LangAPI::Symbol{corelib::text::join(symbol, "_")};
         rv_sym.path.insert(
             rv_sym.path.begin(), "Tokens"
         );
@@ -1328,6 +1369,10 @@ void LLIR::OpBuilder::build() {
     svar.value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = false});
     statements.push_back(LangAPI::Variable::createStatement(var));
     statements.push_back(LangAPI::Variable::createStatement(svar));
+    // Initialization must be executable, not only a Variable initializer:
+    // raiseVarsTop/optimizeIR may hoist declarations and clear initializers.
+    statements.push_back(grammarComment(rule, "choice; reset match status before selecting an alternative"));
+    statements.push_back(assignSvar(svar, false));
     if (corelib::text::isLower(fullname.back())) {
         auto resolution = resolveLLk(op, fullname, tree);
 
@@ -1335,7 +1380,7 @@ void LLIR::OpBuilder::build() {
             throw Error("LL(k) conflict in rule {}: no unique lookahead for k = {}", fullname, resolution.k);
         }
 
-        statements.push_back(LangAPI::SkipSpaces::createStatement(LangAPI::SkipSpaces{.isToken = isToken}));
+        // statements.push_back(LangAPI::SkipSpaces::createStatement(LangAPI::SkipSpaces{.isToken = isToken}));
         std::vector<std::size_t> candidates(op.size());
         std::iota(candidates.begin(), candidates.end(), 0);
 

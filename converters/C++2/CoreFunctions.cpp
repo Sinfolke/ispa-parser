@@ -216,6 +216,8 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "node";
         case LangAPI::StdlibExports::VariantIndex:
             return "index()";
+        case LangAPI::StdlibExports::AssignCompatible:
+            return "::ISPA_STD::assign_compatible";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -486,7 +488,6 @@ auto Core::convertMakeTuple(const LangAPI::MakeTuple &make_tuple) -> std::string
     return tuple;
 }
 auto Core::convertGetVariant(const LangAPI::GetVariant &get_variant) -> std::string {
-    std::cout << "ss: " << get_variant.sym << ", " << convertExpression(get_variant.sym) << std::endl;
     return std::string("std::get<") + convertType(*get_variant.type) + ">(" + convertExpression(get_variant.sym) + ")";
 }
 

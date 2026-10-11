@@ -376,7 +376,6 @@ auto DFA::build() -> const States<StateWithActions> & {
             Assert(state.accept_action->terminal_dfa_target == TNFA::NULL_STATE,
                    "DFA::build: accepting action has DFA target");
     }
-
     std::cout << "TDFA: " << states_with_actions.size() << " states, " << register_count << " registers ("
               << output_count << " outputs)" << std::endl;
     return states_with_actions;

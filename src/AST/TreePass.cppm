@@ -73,7 +73,7 @@ export namespace AST {
         void work() {
             removeEmptyRule();
             inlineSingleGroups();
-            sortByPriority();
+            // sortByPriority();
             literalsToToken();
             addSpaceToken();
         }

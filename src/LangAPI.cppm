@@ -110,7 +110,7 @@ export namespace LangAPI {
         TokenNodeConstruct, ParserNodeConstructor,
         DFADebug, TdfaLayout, DfaCaptures,
         ASTPrinter, Concat,
-        MatchResultValue, VariantIndex
+        MatchResultValue, VariantIndex, AssignCompatible
     };
 
 
@@ -1077,7 +1077,7 @@ export namespace LangAPI {
         }
     };
     struct Class : DeclarationLevel {
-        std::string name;
+        Symbol name;
         stdu::vector<std::pair<std::shared_ptr<Declaration>, Visibility>> data;
         stdu::vector<std::pair<Visibility, std::variant<Symbol, IspaLibSymbol>>> inherit_members;
         Visibility default_visibility = Visibility::Public;
@@ -1659,8 +1659,21 @@ export namespace LangAPI {
             return std::tie(throw_value);
         }
     };
+    struct Comment : StatementLevel {
+        friend bool operator==(const Comment &a, const Comment &b);
+        friend bool operator!=(const Comment &a, const Comment &b) { return !(a == b); }
+        friend bool operator<(const Comment &a, const Comment &b);
+        friend auto operator<<(std::ostream& os, const Comment &c) -> std::ostream&;
+        std::string value;
+
+    private:
+        friend struct ::uhash;
+        auto members() const {
+            return std::tie(value);
+        }
+    };
     struct Statement : StatementsLevel {
-        std::variant<std::monostate, Variable, If, While, DoWhile, Switch, Expression, Throw> value;
+        std::variant<std::monostate, Variable, If, While, DoWhile, Switch, Expression, Throw, Comment> value;
         Statement() = default;
         template<typename T>
         requires std::is_constructible_v<decltype(value), std::decay_t<T>>
@@ -1678,6 +1691,7 @@ export namespace LangAPI {
         bool isSwitch() const { return std::holds_alternative<Switch>(value); }
         bool isExpression() const { return std::holds_alternative<Expression>(value); }
         bool isThrow() const { return std::holds_alternative<Throw>(value); }
+        bool isComment() const { return std::holds_alternative<Comment>(value); }
 
         // ======= getXXX functions =======
         Variable& getVariable() { return std::get<Variable>(value); }
@@ -1688,6 +1702,7 @@ export namespace LangAPI {
         Switch& getSwitch() { return std::get<Switch>(value); }
         Expression& getExpression() { return std::get<Expression>(value); }
         Throw& getThrow() { return std::get<Throw>(value); }
+        Comment& getComment() { return std::get<Comment>(value); }
         // ======= const versions =======
         const Variable& getVariable() const { return std::get<Variable>(value); }
         const If& getIf() const { return std::get<If>(value); }
@@ -1697,6 +1712,7 @@ export namespace LangAPI {
         const Switch& getSwitch() const { return std::get<Switch>(value); }
         const Expression& getExpression() const { return std::get<Expression>(value); }
         const Throw& getThrow() const { return std::get<Throw>(value); }
+        const Comment& getComment() const { return std::get<Comment>(value); }
 
         static auto createStatements(const RValue &value) -> stdu::vector<Statement>;
 

@@ -1,5 +1,5 @@
 TEMPLATED_TYPE:
-    'template' 'type' @ '==' | '!=' @ 'int' | 'str' | 'bool'
+    'template' __WS 'type' __WS @ '==' | '!=' __WS @ 'int' | 'str' | 'bool'
     @{op, type}
 ;
 

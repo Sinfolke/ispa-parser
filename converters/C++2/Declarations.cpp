@@ -69,7 +69,9 @@ namespace Cpp {
         }
         Core::output->dwriteln(" {");
         Core::output->increaseIndentation();
-        Core::symbol_path.push_back(the_class.name);
+        for (const auto &name : the_class.name.path) {
+            Core::symbol_path.push_back(std::get<std::string>(name));
+        }
     }
     auto Declarations::closeClass() -> void {
         Core::flushInitContent();
@@ -201,7 +203,6 @@ namespace Cpp {
         Core::output->writeln("};");
     }
     auto Declarations::createVariable(const LangAPI::Variable &v) -> void {
-        std::cout << "Symbol path: " << Core::symbol_path << std::endl;
         Core::output->write("{}{} {}", v.is_static ? "static " : "", Core::convertType(v.type), v.name);
         bool nested_array_type = v.nested_array_type || Core::isNestedArrayType(v.type);
         if (v.is_static) {

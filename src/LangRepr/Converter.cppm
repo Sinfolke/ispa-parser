@@ -107,6 +107,8 @@ export namespace LangRepr {
                 stmts->createVariable(stmt.getVariable());
             } else if (stmt.isThrow()) {
                 stmts->createThrow(stmt.getThrow());
+            } else if (stmt.isComment()) {
+                stmts->createComment(stmt.getComment());
             }
         }
         auto buildStatements(const LangAPI::Statements &statements) -> void {

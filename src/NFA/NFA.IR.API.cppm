@@ -37,7 +37,9 @@ export namespace NFA::IR {
         std::size_t group = NULL_STATE;
         stdu::vector<std::size_t> alt;
         stdu::vector<TokenID*> capture;
-        TokenID *prev;
+        TokenID *prev = nullptr;
+        // Zero-width boundary after an expanded nested token.
+        bool nested_completion = false;
         bool operator==(const TokenID &other) const = default;
         bool operator<(const TokenID &other) const {
             if (member == other.member) {
@@ -49,7 +51,7 @@ export namespace NFA::IR {
     private:
         friend struct ::uhash;
         auto members() const {
-            return std::tie(member, token_name, position_in_token, call, group, capture, alt);
+            return std::tie(member, token_name, position_in_token, call, group, capture, alt, nested_completion);
         }
     };
     using TransitionValue = TokenID;

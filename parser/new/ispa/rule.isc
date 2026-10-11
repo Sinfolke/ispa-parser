@@ -1,0 +1,41 @@
+rule:
+    @ ID ':' @ #value+ ';'
+    @{name, v}
+
+    #capture:
+        '@' (\s0 @ ID)?
+        {@}
+    ;
+    #QUANTIFIER:
+       @ '?' | '+' | '*'
+       {@}
+    ;
+    #value:
+        @ ID | #STRING | #SPACE | group @ alternative? @ QUANTIFIER?
+        @{v, alt, quantifier}
+        
+        #STRING:
+            '\'' @ [^']* '\''
+
+            {@}
+        ;
+        #SPACE:
+            '\\s'
+            {@}
+        ;
+        #group:
+            '(' @ #value+ ')'
+            {@}
+        ;
+        #alternative:
+            ('|' @ #value)+
+            {@}
+        ;
+    ;
+;
+
+
+main:
+    @ rule
+    {@}
+;

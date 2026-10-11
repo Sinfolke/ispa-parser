@@ -68,12 +68,19 @@
  * 
 */
 namespace std {
-    template<typename ...Ts>
-    auto operator<<(std::ostream &os, std::variant<Ts...> v) -> std::ostream& {
-        std::visit([&os](auto&& arg) {
-            if constexpr (!std::is_same_v<std::decay_t<decltype(arg)>, std::monostate>)
+    template<typename T, typename... Ts>
+    auto operator<<(
+        std::ostream& os,
+        const std::variant<T, Ts...>& v
+    ) -> std::ostream& {
+        std::visit([&os](const auto& arg) {
+            using Arg = std::decay_t<decltype(arg)>;
+
+            if constexpr (!std::is_same_v<Arg, std::monostate>) {
                 os << arg;
+            }
         }, v);
+
         return os;
     }
 }
@@ -234,34 +241,99 @@ namespace ISPA_STD {
         os << "]";
         return os;
     }
+    template<typename EnumT, typename DataStorageType, typename IT>
+    struct MatchResult;
+    template<typename T>
+    struct is_shared_ptr {
+        static constexpr bool value = false;
+        using element_type = void;
+    };
 
+    template<typename T>
+    struct is_shared_ptr<std::shared_ptr<T>> {
+        static constexpr bool value = true;
+        using element_type = T;
+    };
+    template<typename T>
+    struct is_vector : std::false_type {};
+
+    template<typename T, typename Alloc>
+    struct is_vector<std::vector<T, Alloc>> : std::true_type {};
+
+    template<typename T>
+    struct is_variant : std::false_type {};
+
+    template<typename... Ts>
+    struct is_variant<std::variant<Ts...>> : std::true_type {};
+
+    template<typename T>
+    inline constexpr bool is_vector_v =
+        is_vector<std::decay_t<T>>::value;
+
+    template<typename T>
+    inline constexpr bool is_variant_v =
+        is_variant<std::decay_t<T>>::value;
+    template<typename T>
+    struct is_match_result : std::false_type {};
+
+    template<typename Rules, typename Data, typename IT>
+    struct is_match_result<MatchResult<Rules, Data, IT>>
+        : std::true_type {};
+
+    template<typename T>
+    inline constexpr bool is_match_result_v =
+        is_match_result<std::decay_t<T>>::value;
+    template<typename T, typename Printer, typename = void>
+    struct has_ast_print : std::false_type {};
+
+    template<typename T, typename Printer>
+    struct has_ast_print<
+        T,
+        Printer,
+        std::void_t<
+            decltype(
+                std::declval<const T&>().print(
+                    std::declval<Printer&>()
+                )
+            )
+        >
+    > : std::true_type {};
+    template<typename T, typename Printer, typename = void>
+    struct has_write_to_output : std::false_type {};
+
+    template<typename T, typename Printer>
+    struct has_write_to_output<
+        T,
+        Printer,
+        std::void_t<
+            decltype(
+                std::declval<const T&>().write_to_output(
+                    std::declval<Printer&>()
+                )
+            )
+        >
+    > : std::true_type {};
     /*
      * An AST print API that simply generator's work on every language internals
      */
     template<typename OS>
     class ASTPrinter {
     public:
-        explicit ASTPrinter(OS* out = nullptr)
-            : out(out) {}
+        explicit ASTPrinter(OS& output)
+            : out(&output) {}
 
-        explicit ASTPrinter(OS& out)
-            : out(&out) {}
-        explicit ASTPrinter(OS&& out)
-        : out(&out) {}
+        explicit ASTPrinter(OS* output = nullptr)
+            : out(output) {}
 
         void set_output(OS* output) {
             out = output;
         }
 
         void up(bool has_more_siblings = true) {
-            ++depth;
             branches.push_back(has_more_siblings);
         }
 
         void down() {
-            if (depth > 0)
-                --depth;
-
             if (!branches.empty())
                 branches.pop_back();
         }
@@ -275,51 +347,127 @@ namespace ISPA_STD {
         void node_with_value(
             const char* name,
             const T& value,
-            bool last = false)
-        {
-            print_prefix(last);
-            *out << name << ": " << value << '\n';
+            bool last = false
+        ) {
+            print_named_value(name, value, last);
+        }
+
+        // Print a structured child without creating another printer.
+        template<typename T>
+        void subtree(
+            const char* name,
+            const T& value,
+            bool last = false
+        ) {
+            node(name, last);
+            up(!last);
+            print_subtree(value);
+            down();
+        }
+
+    private:
+        template<typename T>
+        void print_named_value(
+            const char* name,
+            const T& value,
+            bool last
+        ) {
+            using Type = std::decay_t<T>;
+
+            if constexpr (is_shared_ptr<Type>::value) {
+                if (value) {
+                    // Important: do not stream *value.
+                    print_named_value(name, *value, last);
+                } else {
+                    print_prefix(last);
+                    *out << name << ": nullptr\n";
+                }
+            } else if constexpr (
+                is_vector<Type>::value ||
+                is_variant<Type>::value ||
+                has_write_to_output<Type, ASTPrinter<OS>>::value ||
+                has_ast_print<Type, ASTPrinter<OS>>::value
+            ) {
+                subtree(name, value, last);
+
+            } else {
+                print_prefix(last);
+                *out << name << ": " << value << '\n';
+            }
         }
         template<typename T>
-        void write(const T& value, bool last = false) {
-            print_prefix(last);
-            *out << value;
+        void print_value(const T& value) {
+            if constexpr (is_shared_ptr<std::decay_t<T>>::value) {
+                if (value) {
+                    print_value(*value);
+                } else {
+                    *out << "nullptr";
+                }
+            } else {
+                *out << value;
+            }
         }
-    private:
+
+        template<typename T>
+        void print_subtree(const T& value) {
+            using Type = std::decay_t<T>;
+
+            if constexpr (is_shared_ptr<Type>::value) {
+                if (value)
+                    print_subtree(*value);
+                else
+                    node("nullptr", true);
+
+            } else if constexpr (is_vector<Type>::value) {
+                for (std::size_t i = 0; i < value.size(); ++i) {
+                    const bool last = i + 1 == value.size();
+
+                    node("item", last);
+                    up(!last);
+                    print_subtree(value[i]);
+                    down();
+                }
+
+            } else if constexpr (is_variant<Type>::value) {
+                std::visit([this](const auto& alternative) {
+                    using Alt = std::decay_t<decltype(alternative)>;
+
+                    if constexpr (!std::is_same_v<Alt, std::monostate>)
+                        print_subtree(alternative);
+                }, value);
+
+            } else if constexpr (
+                has_write_to_output<Type, ASTPrinter<OS>>::value
+            ) {
+                value.write_to_output(*this);
+
+            } else if constexpr (
+                has_ast_print<Type, ASTPrinter<OS>>::value
+            ) {
+                value.print(*this);
+
+            } else {
+                node_with_value("value", value, true);
+            }
+        }
+
         void print_prefix(bool last) {
+            const std::size_t depth = branches.size();
+
             if (depth == 0)
                 return;
 
-            // Print indentation / continuation lines for parent levels.
             for (std::size_t i = 0; i + 1 < depth; ++i) {
-                if (i < branches.size() && branches[i])
-                    *out << "│   ";
-                else
-                    *out << "    ";
+                *out << (branches[i] ? "│   " : "    ");
             }
 
-            // Current node.
-            *out << (last ? "└" : "├");
+            *out << (last ? "└── " : "├── ");
         }
 
     private:
         OS* out = nullptr;
-        std::size_t depth = 0;
         std::vector<bool> branches;
     };
-    template<typename T>
-    struct shared_ptr_traits {
-        static constexpr bool value = false;
-        using element_type = void;
-    };
-
-    template<typename T>
-    struct shared_ptr_traits<std::shared_ptr<T>> {
-        static constexpr bool value = true;
-        using element_type = T;
-    };
-    template<typename EnumT, typename DataStorageType, typename IT>
-    struct MatchResult;
     template<class EnumT, class DataStorageType, class = std::enable_if_t<std::is_class_v<DataStorageType>>>
     class Node {
         std::size_t _startpos = std::string::npos;
@@ -340,7 +488,18 @@ namespace ISPA_STD {
         Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, DataStorageType data)
             : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data) {}
         Node() : _empty(true) {}
-
+        template<typename U, typename = std::enable_if_t<std::is_same_v<DataStorageType, std::shared_ptr<U>>>>
+        Node(const Node<EnumT, U>& other) : Node() {
+            data() = std::make_shared<U>(other.data());
+            _startpos = other.startpos();
+            _start = other.start();
+            _end = other.end();
+            _length = other.length();
+            _line = other.line();
+            _column = other.column();
+            _name = other.name();
+            _empty = other.empty();
+        }
         Node(const Node&) = default;
         Node(Node&&) noexcept = default;
 
@@ -352,7 +511,7 @@ namespace ISPA_STD {
         ) -> Node&;
 
         template<typename T = DataStorageType,
-                 std::enable_if_t<!shared_ptr_traits<T>::value, int> = 0>
+                 std::enable_if_t<!is_shared_ptr<T>::value, int> = 0>
         auto operator=(
             const Node<EnumT, std::shared_ptr<T>>& other
         ) -> Node& {
@@ -364,15 +523,15 @@ namespace ISPA_STD {
         }
 
         template<typename T = DataStorageType,
-                 std::enable_if_t<shared_ptr_traits<T>::value, int> = 0>
+                 std::enable_if_t<is_shared_ptr<T>::value, int> = 0>
         auto operator=(
             const Node<
                 EnumT,
-                typename shared_ptr_traits<T>::element_type
+                typename is_shared_ptr<T>::element_type
             >& other
         ) -> Node& {
             _data = std::make_shared<
-                typename shared_ptr_traits<T>::element_type
+                typename is_shared_ptr<T>::element_type
             >(other.data());
 
             return *this;
@@ -429,11 +588,12 @@ namespace ISPA_STD {
             }
             return Node {(std::size_t) startpos, start, start + length, (std::size_t) length, (std::size_t) line, column, enumv, std::move(t)};
         }
+
         // Nested nodes render into the caller's printer, retaining its depth.
         auto print(ASTPrinter<std::ostream>& printer) const -> void {
             if constexpr (
                 std::is_pointer_v<DataStorageType> ||
-                shared_ptr_traits<DataStorageType>::value
+                is_shared_ptr<DataStorageType>::value
             ) {
                 if (_data) {
                     _data->write_to_output(printer);
@@ -443,11 +603,19 @@ namespace ISPA_STD {
             }
         }
         auto print(std::ostream &os) const {
-            os << _data;
+            if constexpr (is_shared_ptr<DataStorageType>::value) {
+                if (_data) {
+                    os << *_data;
+                } else {
+                    os << "nullptr";
+                }
+            } else {
+                os << _data;
+            }
         }
         // equivalent to to_string method of AST node struct
         auto to_string() const {
-            if constexpr (std::is_pointer_v<DataStorageType> || shared_ptr_traits<DataStorageType>::value) {
+            if constexpr (std::is_pointer_v<DataStorageType> || is_shared_ptr<DataStorageType>::value) {
                 if (_data) {
                     return _data->to_string();
                 } else throw std::runtime_error("null pointer dereference");
@@ -615,6 +783,69 @@ namespace ISPA_STD {
     template <typename... Args>
     std::string concat(Args&&... args) {
         return (to_string_helper(std::forward<Args>(args)) + ...);
+    }
+    template<typename To, typename From>
+    void assign_compatible(To& target, const From& source);
+    template<typename To, typename From>
+    void assign_compatible(To& target, const From& source) {
+        if constexpr (is_match_result_v<From>) {
+            // MatchResult<Rules, T, IT> -> Node<Rules, T>
+            // Then recursively convert to the destination type.
+            assign_compatible(target, source.node);
+
+        } else if constexpr (is_vector_v<To> && is_vector_v<From>) {
+            target.clear();
+            target.reserve(source.size());
+
+            using Element = typename To::value_type;
+
+            for (const auto& item : source) {
+                Element converted{};
+                assign_compatible(converted, item);
+                target.push_back(std::move(converted));
+            }
+
+        } else if constexpr (is_variant_v<To> && is_variant_v<From>) {
+            std::visit(
+                [&](const auto& value) {
+                    if (!assign_variant_alternative(target, value)) {
+                        throw std::runtime_error(
+                            "assign_compatible: incompatible variant alternative"
+                        );
+                    }
+                },
+                source
+            );
+
+        } else if constexpr (std::is_assignable_v<To&, const From&>) {
+            target = source;
+
+        } else if constexpr (std::is_constructible_v<To, const From&>) {
+            target = To(source);
+
+        } else {
+            static_assert(
+                std::is_constructible_v<To, const From&>,
+                "assign_compatible: unsupported conversion"
+            );
+        }
+    }
+    template<typename To, typename From, std::size_t I = 0>
+    bool assign_variant_alternative(To& target, const From& source) {
+        if constexpr (I == std::variant_size_v<To>) {
+            return false;
+        } else {
+            using Alternative = std::variant_alternative_t<I, To>;
+
+            if constexpr (std::is_constructible_v<Alternative, From>) {
+                target.template emplace<I>(source);
+                return true;
+            }
+
+            return assign_variant_alternative<To, From, I + 1>(
+                target, source
+            );
+        }
     }
     namespace DFA::API {
         struct DFADebug;
@@ -1102,126 +1333,168 @@ namespace ISPA_STD {
 
 
     }
-    namespace DFA {
-        // Walks the DFA, moving positions between registers. Reaching a semantic state calls
-        //     semantic(index, captures, start_pos, start, length, line) -> (next_state, Token)
-        // and next_state == null_state ends the match with that Token; any other value resumes the
-        // walk there. Returns an empty Token when nothing matches.
-        template<
-            typename Token,
-            typename SemanticFunc,
-            std::size_t table_states,
-            std::size_t table_classes,
-            std::size_t action_table_states,
-            std::size_t debug_size,
-            std::size_t registers,
-            std::size_t outputs
-        >
-        auto run(
-            const char* &pos,
-            long long start_pos,
-            long long &scanning_line,
-            const API::Table<table_states, table_classes> &table,
-            const API::CharToClass &class_table,
-            const API::LRTable<action_table_states> &action_table,
-            SemanticFunc semantic,
-            const API::DFADebugTable<debug_size> &debug_array,
-            const API::DebugIndex &debug_index,
-            API::TdfaLayout<registers, outputs>
-        ) -> Token {
-            static_assert(registers >= outputs, "output registers are registers 0 .. outputs-1");
+#define ISPA_DEBUG_REGISTERS
+namespace DFA {
+    template<
+        typename Token,
+        typename SemanticFunc,
+        std::size_t table_states,
+        std::size_t table_classes,
+        std::size_t action_table_states,
+        std::size_t debug_size,
+        std::size_t registers,
+        std::size_t outputs
+    >
+    auto run(
+        const char* &pos,
+        long long start_pos,
+        long long &scanning_line,
+        const API::Table<table_states, table_classes> &table,
+        const API::CharToClass &class_table,
+        const API::LRTable<action_table_states> &action_table,
+        SemanticFunc semantic,
+        const API::DFADebugTable<debug_size> &debug_array,
+        const API::DebugIndex &debug_index,
+        API::TdfaLayout<registers, outputs>
+    ) -> Token {
+        static_assert(registers >= outputs, "output registers are registers 0 .. outputs-1");
 
-            const char *const start = pos;
-            const long long start_line = scanning_line;
+        const char *const start = pos;
+        const long long start_line = scanning_line;
 
-            std::array<std::ptrdiff_t, (registers > 0 ? registers : 1)> regs;
-            regs.fill(API::unset);
-            std::vector<API::HistoryNode> history;
+        std::array<std::ptrdiff_t, (registers > 0 ? registers : 1)> regs;
+        regs.fill(API::unset);
+        std::vector<API::HistoryNode> history;
 
-            std::size_t state = 0;
-            bool immediate_action = false;
-            // if (debug_size > 0) {
-            //     detail::dump_dfa_table(
-            //         table,
-            //         class_table,
-            //         action_table,
-            //         debug_array,
-            //         debug_index,
-            //         std::cout
-            //     );
-            // }
-            while (state != API::null_state) {
-                const char current_ch = *(immediate_action && *pos != '\0' ? pos + 1 : pos);
-                detail::trace_step(debug_array, debug_index, state,
-                                   class_table[static_cast<unsigned char>(current_ch)], current_ch, pos, immediate_action);
+        std::size_t state = 0;
+        bool immediate_action = false;
+        const char* last_pos = pos;
+        std::size_t steps_without_progress = 0;
+#ifdef ISPA_DEBUG_REGISTERS
+        // Watch one register across the whole run — set this to whatever
+        // register index you're chasing (12, per the TNFA.build trace for
+        // ID's capture). Prints every SET/SET_NEXT/COPY/APPEND that touches
+        // it, plus its value at every semantic dispatch, so you can see
+        // exactly when (or whether) it gets written, and what it holds when
+        // a semantic handler reads it.
+        constexpr std::size_t WATCH_REG = 12;
+        auto dump_regs = [&](const char *tag) {
+            std::cerr << "[regtrace] " << tag << " state=" << state << " pos_off=" << (pos - start) << " regs=[";
+            for (std::size_t i = 0; i < registers; ++i) {
+                std::cerr << (regs[i] == API::unset ? std::string("_") : std::to_string(regs[i]));
+                if (i + 1 < registers) std::cerr << ",";
+            }
+            std::cerr << "]\n";
+        };
+        dump_regs("start");
+#endif
 
-                if (state < table.size()) {
-                    if (immediate_action) {
-                        immediate_action = false;
-                        if (*pos == '\n')
-                            scanning_line++;
-                        if (*pos != '\0')
-                            ++pos;
-                    }
-                    const std::size_t next = table[state][class_table[static_cast<unsigned char>(*pos)]];
-                    if (next == API::null_state) {
-                        pos = start;
-                        scanning_line = start_line;
-                        break;
-                    }
-                    state = next;
+        while (state != API::null_state) {
+            const char current_ch = *(immediate_action && *pos != '\0' ? pos + 1 : pos);
+            detail::trace_step(debug_array, debug_index, state,
+                               class_table[static_cast<unsigned char>(current_ch)], current_ch, pos, immediate_action);
 
-                    // Entering a DFA state consumes the character; entering an action chain
-                    // does not, and the chain sees `pos` at that character.
-                    if (next < table.size() && *pos != '\0') {
-                        if (*pos == '\n')
-                            scanning_line++;
+            if (state < table.size()) {
+                if (immediate_action) {
+                    immediate_action = false;
+                    if (*pos == '\n')
+                        scanning_line++;
+                    if (*pos != '\0')
                         ++pos;
-                    } else {
-                        immediate_action = true;
-                    }
-                } else if (state < table.size() + action_table.size()) {
-                    const auto &row = action_table[state - table.size()];
-                    const auto action = static_cast<API::Action>(row[0]);
-                    const auto here = static_cast<std::ptrdiff_t>(pos - start);
+                }
+                const std::size_t next = table[state][class_table[static_cast<unsigned char>(*pos)]];
+                if (next == API::null_state) {
+#ifdef ISPA_DEBUG_REGISTERS
+                    std::cerr << "[regtrace] DEAD END at state=" << state
+                              << " char='" << *pos << "'\n";
+                    dump_regs("dead-end");
+#endif
+                    break;
+                }
+                state = next;
 
-                    if (row[1] >= registers || (row[2] != API::null_state && row[2] >= registers))
-                        throw std::runtime_error("DFA: register out of range");
-
-                    switch (action) {
-                        case API::Action::SET:
-                        case API::Action::SET_NEXT:
-                            regs[row[1]] = here + (action == API::Action::SET_NEXT ? 1 : 0);
-                            break;
-                        case API::Action::COPY:
-                            regs[row[1]] = regs[row[2]];
-                            break;
-                        case API::Action::APPEND:
-                        case API::Action::APPEND_NEXT:
-                            history.push_back({
-                                here + (action == API::Action::APPEND_NEXT ? 1 : 0),
-                                row[2] == API::null_state ? API::unset : regs[row[2]]
-                            });
-                            regs[row[1]] = static_cast<std::ptrdiff_t>(history.size()) - 1;
-                            break;
-                        default:
-                            throw std::runtime_error("DFA: unknown action; Report this error to github");
-                    }
-                    state = row[3];
+                if (next < table.size() && *pos != '\0') {
+                    if (*pos == '\n')
+                        scanning_line++;
+                    ++pos;
                 } else {
-                    const API::Captures captures(start, regs.data(), history.data(), start_line);
-                    auto result = semantic(
-                        state - table.size() - action_table.size(),
-                        captures, start_pos, start, static_cast<long long>(pos - start), start_line
-                    );
-                    state = static_cast<std::size_t>(std::get<0>(result));
-                    if (state == API::null_state)
-                        return std::get<1>(std::move(result));
+                    immediate_action = true;
+                }
+            } else if (state < table.size() + action_table.size()) {
+                const auto &row = action_table[state - table.size()];
+                const auto action = static_cast<API::Action>(row[0]);
+                const auto here = static_cast<std::ptrdiff_t>(pos - start);
+
+                if (row[1] >= registers || (row[2] != API::null_state && row[2] >= registers))
+                    throw std::runtime_error("DFA: register out of range");
+
+#ifdef ISPA_DEBUG_REGISTERS
+                const bool watching = (row[1] == WATCH_REG) ||
+                                      (row[2] != API::null_state && row[2] == WATCH_REG);
+                if (watching) {
+                    std::cerr << "[regtrace] ACTION action=" << static_cast<int>(action)
+                              << " dst=r" << row[1]
+                              << " src=" << (row[2] == API::null_state ? "nil" : "r" + std::to_string(row[2]))
+                              << " here=" << here << '\n';
+                }
+#endif
+
+                switch (action) {
+                    case API::Action::SET:
+                    case API::Action::SET_NEXT:
+                        regs[row[1]] = here + (action == API::Action::SET_NEXT ? 1 : 0);
+                        break;
+                    case API::Action::COPY:
+                        regs[row[1]] = regs[row[2]];
+                        break;
+                    case API::Action::APPEND:
+                    case API::Action::APPEND_NEXT:
+                        history.push_back({
+                            here + (action == API::Action::APPEND_NEXT ? 1 : 0),
+                            row[2] == API::null_state ? API::unset : regs[row[2]]
+                        });
+                        regs[row[1]] = static_cast<std::ptrdiff_t>(history.size()) - 1;
+                        break;
+                    default:
+                        throw std::runtime_error("DFA: unknown action; Report this error to github");
+                }
+#ifdef ISPA_DEBUG_REGISTERS
+                if (watching) dump_regs("after-action");
+#endif
+                state = row[3];
+            } else {
+                const API::Captures captures(start, regs.data(), history.data(), start_line);
+#ifdef ISPA_DEBUG_REGISTERS
+                std::cerr << "[regtrace] SEMANTIC dispatch idx="
+                          << (state - table.size() - action_table.size())
+                          << " pos_off=" << (pos - start);
+                dump_regs("pre-semantic");
+#endif
+                auto result = semantic(
+                    state - table.size() - action_table.size(),
+                    captures, start_pos, start, static_cast<long long>(pos - start), start_line
+                );
+                state = static_cast<std::size_t>(std::get<0>(result));
+                if (state == API::null_state)
+                    return std::get<1>(std::move(result));
+                if (pos == last_pos) {
+                    if (++steps_without_progress > 100) {
+                        throw std::runtime_error(
+                            "DFA: possible zero-width transition cycle at state " +
+                            std::to_string(state) +
+                            ", offset " +
+                            std::to_string(pos - start)
+                        );
+                    }
+                } else {
+                    last_pos = pos;
+                    steps_without_progress = 0;
                 }
             }
-            return Token {};
         }
-    } // namespace DFA
+        return Token {};
+    }
+} // namespace DFA
     template<class TOKEN_T, typename Token>
     class Lexer_base {
     protected:

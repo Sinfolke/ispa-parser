@@ -896,6 +896,16 @@ namespace LangAPI {
         os << "throw " << c.throw_value << ";";
         return os;
     }
+    bool operator==(const Comment &a, const Comment &b) {
+        return a.value == b.value;
+    }
+    bool operator<(const Comment &a, const Comment &b) {
+        return a.value < b.value;
+    }
+    auto operator<<(std::ostream& os, const Comment &c) -> std::ostream& {
+        os << "// " << c.value;
+        return os;
+    }
     auto operator<<(std::ostream &os, const Statement &obj) -> std::ostream& {
         std::visit([&os](const auto &v) {
             if constexpr (!std::is_same_v<std::decay_t<decltype(v)>, std::monostate>) {

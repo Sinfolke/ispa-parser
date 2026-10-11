@@ -1,6 +1,6 @@
 NUMBER:
-    @ [0-9]+ \s0 ('.' \s0 @ [0-9]+)?
-    @{main, floating}
+    @ [0-9]+
+    @{main}
 ;
 
 STRING:

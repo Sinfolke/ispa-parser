@@ -70,6 +70,10 @@ auto Cpp::Statement::createThrow(const LangAPI::Throw &t) -> void {
     Core::output->writeln("throw {};", Core::convertExpression(t.throw_value));
 }
 
+auto Cpp::Statement::createComment(const LangAPI::Comment &c) -> void {
+    Core::output->writeln("// {}", c.value);
+}
+
 Converter::Writer &Cpp::Statement::getWriter() {
     return Core::h_file;
 }

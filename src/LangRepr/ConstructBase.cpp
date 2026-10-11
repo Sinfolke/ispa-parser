@@ -241,6 +241,9 @@ namespace LangRepr {
         s.throw_value = ensureTypesNs(s.throw_value);
         return s;
     }
+    auto ConstructBase::ensureTypesNs(LangAPI::Comment s) -> LangAPI::Comment {
+        return s;
+    }
 
     // 11. Statement Traversal
     auto ConstructBase::ensureTypesNs(const LangAPI::Statement &s) -> LangAPI::Statement {

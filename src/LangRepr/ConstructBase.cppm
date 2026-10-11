@@ -38,6 +38,7 @@ export namespace LangRepr {
         auto ensureTypesNs(LangAPI::DoWhile s) -> LangAPI::DoWhile;
         auto ensureTypesNs(LangAPI::Switch s) -> LangAPI::Switch;
         auto ensureTypesNs(LangAPI::Throw s) -> LangAPI::Throw;
+        auto ensureTypesNs(LangAPI::Comment s) -> LangAPI::Comment;
         auto ensureTypesNs(const LangAPI::Statement &s) -> LangAPI::Statement;
         auto ensureTypesNs(LangAPI::Statements stmts) -> LangAPI::Statements;
         auto extractRawSymbol(const LangAPI::Type &t) -> stdu::vector<LangAPI::Type>;

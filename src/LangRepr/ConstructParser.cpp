@@ -10,6 +10,24 @@ import corelib;
 import std;
 
 namespace LangRepr {
+    static LangAPI::Statement assignCompatible(
+        LangAPI::Expression destination,
+        LangAPI::Expression source
+    ) {
+        return LangAPI::Expression::createStatement(
+            LangAPI::IspaLibFunctionCall::createExpression(
+                LangAPI::IspaLibFunctionCall{
+                    .symbol = LangAPI::IspaLibSymbol{
+                        .exports = LangAPI::StdlibExports::AssignCompatible
+                    },
+                    .args = {
+                        std::move(destination),
+                        std::move(source)
+                    }
+                }
+            )
+        );
+    }
     auto ConstructParser::createParserClass(std::string main_node) -> LangAPI::Class {
         LangAPI::IspaLibSymbol parser_s {.exports = LangAPI::StdlibExports::Parser};
         parser_s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Symbol {"Types", main_node}));
@@ -227,19 +245,22 @@ namespace LangRepr {
                     LangAPI::StorageSymbol s;
                     s.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"result"});
                     s.path.push_back(name);
-                    LangAPI::VariableAssignment variable_assignment;
-                    variable_assignment.name = s;
-                    variable_assignment.type = LangAPI::OperatorType::Assign;
-                    variable_assignment.value = ConstructBase::ensureTypesNs(expr.first);
-                    stmts.push_back(LangAPI::VariableAssignment::createStatement(variable_assignment));
+                    stmts.push_back(
+                        assignCompatible(
+                            LangAPI::StorageSymbol::createExpression(s),
+                            ensureTypesNs(expr.first)
+                        )
+                    );
                 }
             } else if (prod.block.is_regular_data_block()) {
                 auto v = LangAPI::StorageSymbol {"value"};
                 v.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"result"});
-                stmts.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
-                    .name = v,
-                    .value = ConstructBase::ensureTypesNs(prod.block.getRegularDataBlock().first)
-                }));
+                stmts.push_back(
+                    assignCompatible(
+                        LangAPI::StorageSymbol::createExpression(v),
+                        ConstructBase::ensureTypesNs(prod.block.getRegularDataBlock().first)
+                    )
+                );
             }
             LangAPI::Variable match_result;
             match_result.type = fun_type;

@@ -350,7 +350,7 @@ void AST::TreePass::addSpaceToken(AST::Tree &ast) {
             bool skip_space = createsExplicitWhitespace(createsExplicitWhitespace, mem) ||
                              (i > 0 && createsExplicitWhitespace(createsExplicitWhitespace, rule_members[i - 1]));
 
-            if (i > 0 && !skip_space) {
+            if (i > 0 && !skip_space && !token) {
                 auto ws_ref = std::make_shared<AST::RuleMember>(AST::RuleMember{
                     .quantifier = '?', .value = AST::RuleMemberName{.name = {constants::whitespace}}
                 });
@@ -384,7 +384,7 @@ void AST::TreePass::addSpaceToken(AST::Tree &ast) {
     // pattern, the merged DFA cannot distinguish them at tokenize time,
     // so the unused one can still win accept()'s token_id tie-break and
     // silently corrupt the token stream (exactly what was happening here).
-    if (whitespace_referenced && !ast.getTreeMap().contains(constants::whitespace)) {
+    if (!ast.getTreeMap().contains(constants::whitespace)) {
         AST::Rule spaceTokenRule;
         AST::RuleMemberCsequence csequence;
         csequence.escaped = {'t', 'n', 'r', 'v', 'f'};

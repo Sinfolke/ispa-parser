@@ -38,6 +38,7 @@ namespace NFA::TNFA {
             v << "]";
         }
         v << '{' << source.position_in_token << '}';
+        if (source.nested_completion) v << "$nested_complete";
         return v.str();
     }
 
@@ -167,6 +168,7 @@ namespace NFA::TNFA {
         Tlog::Branch b(logger, "NFA.TNFA/build");
 
         for (const auto &[name, token] : ir.get()) {
+            if (!token.top_level) continue;
             ExpansionStack expansion_stack;
             token_entry.emplace(name, states.size());
             wireToken(name, token, expansion_stack);
@@ -576,12 +578,40 @@ namespace NFA::TNFA {
             // Token instance here. A plain group capture (`@ ( ... )` around raw
             // leaves of THIS token) is terminal and must never trigger a reduce — it
             // only ever contributes BEGIN/END action cells on the real edges below.
-            if (!is_terminal && !id.capture.empty()) {
-                markAccept(end_state, id, token, end_state, capture_actions, /*nested=*/true);
-            }
+            // Nested reductions occur on explicit nested_completion edges,
+            // not merely because a leaf originated in a different token.
 
             if (const auto edges = outgoing.find(key); edges != outgoing.end()) {
                 for (const auto &alt : *edges->second) {
+                    if (alt.nested_completion) {
+                        // Explicit nested completion: generate reduction statements,
+                        // but DO NOT create a standalone lexer accept binding.
+                        markAccept(end_state, alt, token, end_state,
+                                   {}, /*nested=*/true);
+                        if (const auto continuation = outgoing.find(generateVariable(alt));
+                            continuation != outgoing.end()) {
+                            for (const auto &after : *continuation->second) {
+                                if (after.member.empty()) {
+                                    // Nested reference was the final member of host.
+                                    // Finish the host, not the nested token.
+                                    ActionChain close_host;
+                                    for (auto it = alt.capture.rbegin(); it != alt.capture.rend(); ++it) {
+                                        close_host.push_back(ActionState{
+                                            .action = Action::END,
+                                            .variable = generateVariable(**it),
+                                            .operand_a = captureId(**it),
+                                            .list_capture = captureIsList(**it),
+                                        });
+                                    }
+                                    markAccept(end_state, alt, token, end_state,
+                                               std::move(close_host));
+                                    continue;
+                                }
+                                visit(end_state, after, generateVariable(alt));
+                            }
+                        }
+                        continue;
+                    }
                     if (alt.member.empty()) {
                         // ACCEPT / sentinel: id completing here IS the token ending.
                         // Whatever captures are still open on `id` close specifically
@@ -596,8 +626,11 @@ namespace NFA::TNFA {
                                 .list_capture = captureIsList(**it),
                             });
                         }
-                        if (is_terminal || id.capture.empty()) {
-                            markAccept(end_state, id, token, end_state, accept_capture_actions);
+                        // Only the host token's own terminal marker accepts.
+                        // Acceptance is valid even if the final member has no capture.
+                        if (id.token_name == token.name) {
+                            markAccept(end_state, id, token, end_state,
+                                       accept_capture_actions);
                         }
                         continue;
                     }
@@ -691,8 +724,16 @@ namespace NFA::TNFA {
         const std::string prefix =
             nested ? "n" + std::to_string(state_id) + "_" : std::string{};
         const auto local = [&](const std::string &name) { return prefix + name; };
-        const auto type_name = tail.prev ? tail.prev->token_name : tail.token_name;
-
+        const auto type_name = (nested && tail.nested_completion && tail.member.isName())
+            ? tail.member.getName().name
+            : (nested ? tail.token_name : token.name);
+        const Token *own_token = &token;
+        if (type_name != token.name) {
+            if (const auto it = ir.get().find(type_name); it != ir.get().end())
+                own_token = &it->second;
+            // else: type_name not found as a standalone token — fall back to
+            // `token`, same as before, rather than crashing on a lookup miss.
+        }
         const auto symbol = [](const std::string &name) {
             return LangAPI::Symbol::createExpression(LangAPI::Symbol{name});
         };
@@ -720,7 +761,6 @@ namespace NFA::TNFA {
         // The expression that produces a scalar capture as `t`.
         const auto scalar_expression =
             [&](const LangAPI::Type &t, std::size_t k, const std::string &what) {
-                cpuf::printf("type: {}", t);
                 if (t.isValueType()) {
                     switch (t.getValueType()) {
                         case LangAPI::ValueType::Char:
@@ -733,7 +773,7 @@ namespace NFA::TNFA {
                             break;
                     }
                 }
-                throw Error("NFA.TNFA: cannot read the capture of '{}' as this type", what);
+                throw Error("NFA.TNFA: cannot read the capture of '{}' as this type ({})", what, t);
             };
 
         const auto capture_of = [](const TokenID &sym, bool same_member) -> const TokenID * {
@@ -868,11 +908,11 @@ namespace NFA::TNFA {
             };
 
         // Build IR based on data block type
-        if (token.data_block && token.data_block->isRegularDataBlock()) {
+        if (own_token->data_block && own_token->data_block->isRegularDataBlock()) {
             state.instance_value.name = LangAPI::Symbol{type_name};
 
             for (const auto &[sym, alternatives] : token.transitions) {
-                if (sym.token_name == tail.token_name &&
+                if (sym.token_name == type_name &&
                     !sym.member.empty() &&
                     !sym.capture.empty()) {
                     read_member(sym, capture_of(sym, false), local("value"), state.statements);
@@ -880,12 +920,12 @@ namespace NFA::TNFA {
                     break;
                 }
             }
-        } else if (token.data_block && token.data_block->isTemplatedDataBlock()) {
-            const auto &data_block = token.data_block->getTemplatedDataBlock();
+        } else if (own_token->data_block && own_token->data_block->isTemplatedDataBlock()) {
+            const auto &data_block = own_token->data_block->getTemplatedDataBlock();
 
             std::vector<const TokenID *> members_with_prefix;
             for (const auto &[sym, alternatives] : token.transitions) {
-                if (sym.token_name == tail.token_name &&
+                if (sym.token_name == type_name &&
                     !sym.member.empty() &&
                     !sym.member.prefix.empty() &&
                     std::find(members_with_prefix.begin(), members_with_prefix.end(), &sym) ==
