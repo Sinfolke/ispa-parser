@@ -228,8 +228,87 @@ auto LLIR::MemberBuilder::build() -> void {
         buildMember(*rule);
         return;
     }
-    for (const auto &mem_ptr : *rules) {
-        buildMember(*mem_ptr);
+
+    // Build one member's statements without merging them into
+    // `this->statements` yet. Mirrors buildMember's dispatch, but lets
+    // the caller decide where the result lands -- used below to splice a
+    // whitespace skip into a following loop instead of emitting it as a
+    // standalone statement.
+    auto buildStandalone = [this](const AST::RuleMember &member) -> LangAPI::Statements {
+        std::unique_ptr<BuilderBase> builder;
+        if (member.isGroup()) {
+            builder = std::make_unique<GroupBuilder>(*this, member);
+        } else if (member.isCsequence()) {
+            builder = std::make_unique<CsequenceBuilder>(*this, member);
+        } else if (member.isString()) {
+            builder = std::make_unique<StringBuilder>(*this, member);
+        } else if (member.isName()) {
+            builder = std::make_unique<NameBuilder>(*this, member);
+        } else if (member.isNospace()) {
+            builder = std::make_unique<NospaceBuilder>(*this);
+        } else if (member.isOp()) {
+            builder = std::make_unique<OpBuilder>(*this, member);
+        } else if (member.isAny()) {
+            builder = std::make_unique<AnyBuilder>(*this, member);
+        } else if (member.isCll()) {
+            builder = std::make_unique<CllBuilder>(*this, member.getCll());
+        } else if (member.empty()) {
+            throw Error("Empty rule");
+        } else throw Error("Undefined rule");
+        builder->build();
+        exports_list.insert(exports_list.end(), builder->getReturnVars().begin(), builder->getReturnVars().end());
+        isFirst = false;
+        return builder->getData();
+    };
+
+    // AST::TreePass::addSpaceToken (run before codegen reaches this file)
+    // inserts a single `{.quantifier='?', .value=RuleMemberName{.name=
+    // {constants::whitespace}}}` sibling immediately before member i,
+    // for every adjacent pair of members in a rule's flat member list.
+    // That is correct when the member it precedes matches once. But when
+    // that member is repeated (`*`/`+`), addSpaceToken has no notion of
+    // "this slot repeats" -- it only ever inserts ONE whitespace-skip
+    // sibling for the whole repeated slot, checked once before codegen's
+    // loop starts, never between iterations. So only the first repetition
+    // ever consumes its leading whitespace, and every later repetition's
+    // lookahead check sees an un-skipped `__WS` token and fails
+    // immediately, silently truncating the match. (E.g. `#alternative*`
+    // matching `| b | c`: the second `|` is preceded by an un-skipped
+    // `__WS`, so only `| b` is ever collected.)
+    const auto isWhitespaceRef = [](const AST::RuleMember &member) {
+        return member.quantifier == '?'
+            && member.isName()
+            && member.getName().name== constants::whitespace;
+    };
+    const auto isRepeated = [](const AST::RuleMember &member) {
+        return member.quantifier == '*' || member.quantifier == '+';
+    };
+
+    for (std::size_t i = 0; i < rules->size(); ++i) {
+        const AST::RuleMember &member = *(*rules)[i];
+
+        if (isWhitespaceRef(member) &&
+            i + 1 < rules->size() &&
+            isRepeated(*(*rules)[i + 1])) {
+            // Build the skip into a scratch buffer instead of emitting it
+            // here, then splice it onto the front of the following
+            // member's own loop body so it reruns every iteration.
+            auto ws_stmts = buildStandalone(member);
+            auto next_stmts = buildStandalone(*(*rules)[i + 1]);
+
+            for (auto &stmt : next_stmts) {
+                if (stmt.isWhile() || stmt.isDoWhile()) {
+                    auto &loop = stmt.getWhileOrDoWhile();
+                    loop.stmt.insert(loop.stmt.begin(), ws_stmts.begin(), ws_stmts.end());
+                }
+            }
+
+            statements.insert(statements.end(), next_stmts.begin(), next_stmts.end());
+            ++i; // the following member was already built above
+            continue;
+        }
+
+        buildMember(member);
     }
 }
 

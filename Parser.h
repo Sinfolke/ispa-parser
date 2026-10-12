@@ -402,14 +402,14 @@ namespace Parser {
 		auto rule_value_group(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::rule::value::group, IT>{
 			::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_1> AUTO_1_0;
 			bool success_1;
-			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
-			bool success_3;
 			::ISPA_STD::MatchResult<Rules, Types::rule::value, IT> rule_value_5;
 			bool success_6;
 			::ISPA_STD::Node<::Parser::Rules, Types::rule::value> element_7;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value>> shadow_8;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value>> uvar_4;
 			bool success_9;
+			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+			bool success_3;
 			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
 			bool success_11;
 			::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_2> AUTO_2_12;
@@ -421,16 +421,16 @@ namespace Parser {
 			AUTO_1_0 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_1>>((*pos));
 			success_1 = true;
 			pos++;
-			success_3 = false;
-			if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
-				__WS_2 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
-				success_3 = true;
-				pos++;
-			}
 			success_6 = false;
 			// grammar `@  rule::value+;`: repeat named rule; collect every matched value
 			success_9 = false;
 			while (true) {
+				success_3 = false;
+				if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
+					__WS_2 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
+					success_3 = true;
+					pos++;
+				}
 				rule_value_5 = rule_value(pos);
 				if (!(rule_value_5.status)) {
 					break;
@@ -470,13 +470,13 @@ namespace Parser {
 		auto rule_value(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::rule::value, IT>{
 			::ISPA_STD::MatchResult<Rules, Types::rule::value::pattern, IT> rule_value_pattern_0;
 			bool success_1;
-			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
-			bool success_3;
 			::ISPA_STD::MatchResult<Rules, Types::rule::value::alternative, IT> rule_value_alternative_5;
 			bool success_6;
 			::ISPA_STD::Node<::Parser::Rules, Types::rule::value::alternative> element_7;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value::alternative>> shadow_8;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value::alternative>> uvar_4;
+			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+			bool success_3;
 			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_9;
 			bool success_10;
 			::ISPA_STD::Node<::Parser::Tokens, Types::rule::value::QUANTIFIER> rule_value_QUANTIFIER_11;
@@ -488,15 +488,15 @@ namespace Parser {
 			}
 			success_1 = true;
 			pos = rule_value_pattern_0.it;
-			success_3 = false;
-			if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
-				__WS_2 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
-				success_3 = true;
-				pos++;
-			}
 			success_6 = false;
 			// grammar `@  rule::value::alternative*;`: repeat named rule; collect every matched value
 			while (true) {
+				success_3 = false;
+				if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
+					__WS_2 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
+					success_3 = true;
+					pos++;
+				}
 				rule_value_alternative_5 = rule_value_alternative(pos);
 				if (!(rule_value_alternative_5.status)) {
 					break;
@@ -588,14 +588,14 @@ namespace Parser {
 			bool success_3;
 			::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_4> AUTO_4_4;
 			bool success_5;
-			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
-			bool success_7;
 			::ISPA_STD::MatchResult<Rules, Types::rule::value, IT> rule_value_9;
 			bool success_10;
 			::ISPA_STD::Node<::Parser::Rules, Types::rule::value> element_11;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value>> shadow_12;
 			std::vector<::ISPA_STD::Node<::Parser::Rules, Types::rule::value>> uvar_8;
 			bool success_13;
+			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+			bool success_7;
 			::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
 			bool success_15;
 			::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_5> AUTO_5_16;
@@ -620,16 +620,16 @@ namespace Parser {
 			AUTO_4_4 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::AUTO_4>>((*pos));
 			success_5 = true;
 			pos++;
-			success_7 = false;
-			if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
-				__WS_6 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
-				success_7 = true;
-				pos++;
-			}
 			success_10 = false;
 			// grammar `@  rule::value+;`: repeat named rule; collect every matched value
 			success_13 = false;
 			while (true) {
+				success_7 = false;
+				if (std::holds_alternative<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos))) {
+					__WS_6 = std::get<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>((*pos));
+					success_7 = true;
+					pos++;
+				}
 				rule_value_9 = rule_value(pos);
 				if (!(rule_value_9.status)) {
 					break;

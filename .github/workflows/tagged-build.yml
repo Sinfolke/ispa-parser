@@ -206,7 +206,7 @@ jobs:
               ],
               'ispa-windows-x64.zip': [
                   ('ispa-windows-x64.exe', 'ispa.exe', False),
-                  ('ispa-converter-cpp-windows-x64.dll', 'ispa-converter-cpp.dll', False),
+                  ('ispa-converter-cpp-windows-x64.dll', 'libispa-converter-cpp.dll', False),
               ],
           }
           for zip_name, files in platforms.items():

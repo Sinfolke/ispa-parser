@@ -42,6 +42,15 @@ main
                         │                   │   ├── alts
                         │                   │   └── quantifier
                         │                   │       ├── <empty>
+                        │               ├── item
+                        │                   ├── rule_value
+                        │                   │   ├── v
+                        │                   │       ├── rule_value_pattern
+                        │                   │       │   └── value
+                        │                   │       │       └── rule_value_SPACE
+                        │                   │   ├── alts
+                        │                   │   └── quantifier
+                        │                   │       ├── <empty>
                         │               └── item
                         │                   ├── rule_value
                         │                       ├── v
@@ -53,30 +62,40 @@ main
                         │                       └── quantifier
                         │                           ├── <empty>
                     ├── alts
+                        ├── item
+                        │   ├── rule_value_alternative
+                        │   │   └── value
+                        │   │       ├── rule_value_pattern
+                        │   │           └── value
+                        │   │               ├── rule_value_STRING
+                        │   │                   └── value: b
+                        ├── item
+                        │   ├── rule_value_alternative
+                        │   │   └── value
+                        │   │       ├── rule_value_pattern
+                        │   │           └── value
+                        │   │               ├── rule_value_STRING
+                        │   │                   └── value: c
+                        ├── item
+                        │   ├── rule_value_alternative
+                        │   │   └── value
+                        │   │       ├── rule_value_pattern
+                        │   │           └── value
+                        │   │               ├── rule_value_STRING
+                        │   │                   └── value: d
+                        ├── item
+                        │   ├── rule_value_alternative
+                        │   │   └── value
+                        │   │       ├── rule_value_pattern
+                        │   │           └── value
+                        │   │               ├── rule_value_STRING
+                        │   │                   └── value: e
                         └── item
                         │   ├── rule_value_alternative
                         │       └── value
                         │           ├── rule_value_pattern
                         │               └── value
-                        │                   ├── rule_value_group
-                        │                       └── value
-                        │                           └── item
-                        │                               ├── rule_value
-                        │                                   ├── v
-                        │                                       ├── rule_value_pattern
-                        │                                       │   └── value
-                        │                                       │       ├── ID
-                        │                                       │           └── value: ID
-                        │                                   ├── alts
-                        │                                       └── item
-                        │                                       │   ├── rule_value_alternative
-                        │                                       │       └── value
-                        │                                       │           ├── rule_value_pattern
-                        │                                       │               └── value
-                        │                                       │                   ├── ID
-                        │                                       │                       └── value: INT
-                        │                                   └── quantifier
-                        │                                       ├── <empty>
+                        │                   └── rule_value_SPACE
                     └── quantifier
                         ├── <empty>
 
