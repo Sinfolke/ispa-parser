@@ -1,0 +1,308 @@
+expr:
+    @ disjunction @ conditional_tail?
+    @{value, conditional}
+;
+
+conditional_tail:
+    IF @ disjunction ELSE @ expr
+    @{condition, otherwise}
+;
+
+disjunction:
+    @ conjunction @ or_tail*
+    @{first, rest}
+;
+
+or_tail:
+    OR @ conjunction
+
+    {@}
+;
+
+conjunction:
+    @ inversion (AND @ inversion)*
+    @{first, rest}
+;
+inversion:
+    @ not_inversion | comparison
+    {@}
+;
+
+not_inversion:
+    NOT @ inversion
+    {@}
+;
+
+comparison:
+    @ bitwise_or @ compare_tail*
+    @{first, rest}
+;
+
+compare_tail:
+    @ compare_op @ bitwise_or
+    @{op, value}
+;
+
+compare_op:
+    @ EQ | NE | LE | LT | GE | GT | not_in | IN | is_op
+    {@}
+;
+not_in:
+    NOT IN
+;
+
+is_op:
+    IS NOT?
+;
+bitwise_or:
+    @ bitwise_xor @ bitor_tail*
+    @{first, rest}
+;
+
+bitor_tail:
+    PIPE @ bitwise_xor
+
+    {@}
+;
+
+bitwise_xor:
+    @ bitwise_and @ bitxor_tail*
+    @{first, rest}
+;
+
+bitxor_tail:
+    CARET @ bitwise_and
+
+    {@}
+;
+
+bitwise_and:
+    @ shift_expr @ bitand_tail*
+    @{first, rest}
+;
+
+bitand_tail:
+    AMP @ shift_expr
+
+    {@}
+;
+
+shift_expr:
+    @ sum @ shift_tail*
+    @{first, rest}
+;
+
+shift_tail:
+    @ LSHIFT | RSHIFT @ sum
+    @{op, value}
+;
+
+sum:
+    @ term @ sum_tail*
+    @{first, rest}
+;
+
+sum_tail:
+    @ PLUS | MINUS @ term
+    @{op, value}
+;
+
+term:
+    @ factor @ term_tail*
+    @{first, rest}
+;
+
+term_tail:
+    @ FLOOR_DIV | STAR | SLASH | PERCENT | MATMUL @ factor
+    @{op, value}
+;
+
+factor:
+    @ unary_expr | power
+    {@}
+;
+
+unary_expr:
+    @ PLUS | MINUS | TILDE @ factor
+    @{op, value}
+;
+power:
+    @ primary @ power_tail?
+    @{base, exponent}
+;
+
+power_tail:
+    POWER @ factor
+
+    {@}
+;
+primary:
+    @ atom @ postfix*
+    @{base, suffixes}
+;
+
+postfix:
+    @ attribute_suffix | call_suffix | index_suffix
+    {@}
+;
+
+attribute_suffix:
+    DOT @ ID
+
+    {@}
+;
+
+call_suffix:
+    LPAREN @ call_args? RPAREN
+
+    {@}
+;
+
+index_suffix:
+    LBRACKET @ expr RBRACKET
+
+    {@}
+;
+
+atom:
+    @ ID | NUMBER | STRING | TRUE | FALSE | NONE_V
+ | parenthesized_expr | list_expr | dict_expr
+    {@}
+;
+
+parenthesized_expr:
+    LPAREN @ parenthesized_content? RPAREN
+    {@}
+;
+
+parenthesized_content:
+    @ expr @ tuple_suffix?
+    @{first, rest}
+;
+
+tuple_suffix:
+    COMMA @ tuple_elements?
+    {@}
+;
+
+tuple_elements:
+    @ expr (COMMA @ expr)* COMMA?
+    @{first, rest}
+;
+list_expr:
+    LBRACKET @ expr_list? RBRACKET
+    {@}
+;
+
+dict_expr:
+    LBRACE @ dict_items? RBRACE
+    {@}
+;
+
+expr_list:
+    @ expr @ expr_list_tail?
+    @{first, rest}
+;
+
+expr_list_tail:
+    @ (COMMA @ expr)* COMMA?
+    {@}
+;
+
+dict_items:
+    @ dict_item @ dict_item_tail* COMMA?
+    @{first, rest}
+;
+
+dict_item_tail:
+    COMMA @ dict_item
+    {@}
+;
+
+dict_item:
+    @ expr COLON @ expr
+    @{key, value}
+;
+
+call_args:
+    @ call_arg @ call_arg_tail* COMMA?
+    @{first, rest}
+;
+
+call_arg_tail:
+    COMMA @ call_arg
+
+    {@}
+;
+
+call_arg:
+    @ keyword_arg | expr
+    {@}
+;
+
+keyword_arg:
+    @ ID ASSIGN @ expr
+    @{name, value}
+;
+
+stmt:
+    @ return_stmt | PASS | BREAK | CONTINUE | expr_stmt
+    {@}
+;
+
+assignment_tail:
+    @ ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | STAR_ASSIGN | SLASH_ASSIGN | FLOOR_DIV_ASSIGN | PERCENT_ASSIGN | POWER_ASSIGN | AMP_ASSIGN | PIPE_ASSIGN | CARET_ASSIGN | LSHIFT_ASSIGN | RSHIFT_ASSIGN @ expr
+    @{op, value}
+;
+
+assignment_target:
+    @ ID @ assignment_suffix*
+    @{name, suffixes}
+;
+
+assignment_suffix:
+    @ attribute_suffix | index_suffix
+    {@}
+;
+
+return_stmt:
+    RETURN @ expr?
+
+    {@}
+;
+
+PASS:
+    'pass'
+;
+
+BREAK:
+    'break'
+;
+
+CONTINUE:
+    'continue'
+;
+
+expr_stmt:
+    @ expr @ assignment_tail?
+    @{target, assignment}
+;
+ID:
+    @ ([a-zA-Z] [a-zA-Z0-9_]*)
+    {@}
+;
+NUMBER:
+    @ [0-9]+ ('.' @ [0-9]+)?
+
+    @{full, floating}
+;
+STRING:
+    '\'' @ [^']* '\''
+
+    {@}
+;
+
+main:
+    @ stmt*
+    {@}
+;
