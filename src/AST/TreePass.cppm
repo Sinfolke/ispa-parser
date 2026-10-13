@@ -4,6 +4,7 @@ import LLIR.IR;
 import AST.Tree;
 import AST.API;
 import cpuf.op;
+import hash;
 import dstd;
 import std;
 
@@ -23,9 +24,9 @@ export namespace AST {
         std::size_t token_count = 0;
         void literalsToToken(
             stdu::vector<std::shared_ptr<AST::RuleMember>> &literals,
-            std::size_t &count,
             stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
-            stdu::vector<std::pair<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>>> &generated
+            utype::unordered_map<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>> &generated,
+            stdu::vector<std::string> name
         );
 
         static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<std::shared_ptr<AST::RuleMember>> &members, stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator toInsert)

@@ -658,6 +658,12 @@ void AST::Tree::computeNullableSet() {
         changed = false;
         for (const auto &[nonterminal, productions] : initial_item_set) {
             for (const auto &prod : productions) {
+                if (prod.rule_members.empty()) {
+                    if (nullable.insert(nonterminal).second) {
+                        changed = true;
+                    }
+                    continue;
+                }
                 bool allNullable = true;
                 for (const auto &sym : prod.rule_members) {
                     if (!isMemberNullable(*sym)) {
@@ -700,8 +706,6 @@ bool AST::Tree::processMemberFirst(
         if (rule_name.isNonterminal()) {
             const auto& otherFirst = first[rule_name.name];
             for (const auto& el : otherFirst) {
-                if (corelib::text::isUpper(el.back()) && el != stdu::vector<std::string>{"ε"})
-                    continue;
                 if (currentFirst.insert(el).second)
                     changed = true;
             }
@@ -1030,13 +1034,22 @@ using Set = std::set<Seq>;
 // Concatenate and truncate to k tokens. Empty Seq is epsilon.
 Set llk_concat(const Set& left, const Set& right, std::size_t k) {
     Set out;
+    if (left.empty()) return out;
+
     for (const auto& a : left) {
+        // Once a prefix has k tokens, later symbols cannot change it.
+        // Keep it even when the suffix FIRST set is not populated yet
+        // during fixed-point evaluation of recursive productions.
+        if (a.size() >= k) {
+            out.insert(a);
+            continue;
+        }
+        // Shorter prefixes still require a derivation from the suffix.
         for (const auto& b : right) {
             Seq joined = a;
-            for (const auto& t : b) {
-                if (joined.size() == k) break;
-                joined.push_back(t);
-            }
+            const auto remaining = k - joined.size();
+            const auto count = std::min(remaining, b.size());
+            joined.insert(joined.end(), b.begin(), b.begin() + count);
             out.insert(std::move(joined));
         }
     }
@@ -1047,6 +1060,7 @@ Set llk_concat(const Set& left, const Set& right, std::size_t k) {
 Set llk_star(const Set& operand, std::size_t k) {
     Set result{Seq{}};
     Set frontier{Seq{}};
+    std::size_t i = 0;
     while (true) {
         Set added = llk_concat(frontier, operand, k);
         Set next;
@@ -1055,6 +1069,7 @@ Set llk_star(const Set& operand, std::size_t k) {
         }
         if (next.empty()) break;
         frontier = std::move(next);
+        ++i; // Avoid flushing stdout for every closure expansion.
     }
     return result;
 }
@@ -1079,8 +1094,12 @@ auto AST::Tree::memberBaseFirstK(const AST::RuleMember& member,
     }
     if (member.isGroup()) {
         LLkSet result{LLkSeq{}};
-        for (const auto& sub : member.getGroup().values)
+        for (const auto& sub : member.getGroup().values) {
+            if (sub->isName() && sub->getName().name == constants::whitespace) {
+                continue;
+                }
             result = llk_concat(result, memberFirstK(*sub, k, table), k);
+        }
         return result;
     }
     if (member.isOp()) {
@@ -1114,8 +1133,22 @@ auto AST::Tree::sequenceFirstK(
     const stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
     std::size_t k, const LLkTable& table) const -> LLkSet {
     LLkSet result{LLkSeq{}};
-    for (const auto& member : members)
+    for (const auto& member : members) {
+        // addSpaceToken (AST::TreePass) inserts a `__WS?` sibling between
+        // every pair of real members. It's lexer-level filler that may or
+        // may not appear at that position -- it must never factor into
+        // which alternative the grammar picks. Left in, it pollutes
+        // FIRST_k with a spurious `[..., __WS]` sequence that two
+        // otherwise-unambiguous alternatives (e.g. `ID ':'` vs `ID '{'`)
+        // end up sharing at k=2, and the same collision can reappear at
+        // deeper k too -- which is what makes resolveLLk churn through
+        // higher and higher k without cleanly resolving. Treat it as
+        // invisible to FIRST_k, exactly like epsilon.
+        if (member->isName() && member->getName().name == constants::whitespace) {
+            continue;
+        }
         result = llk_concat(result, memberFirstK(*member, k, table), k);
+    }
     return result;
 }
 
@@ -1136,6 +1169,7 @@ void AST::Tree::constructFirstSet(std::size_t k) {
             working[entry.first];
         }
         bool changed;
+        std::size_t iterations = 0;
         do {
             changed = false;
             for (const auto& entry : initial_item_set) {
@@ -1146,6 +1180,10 @@ void AST::Tree::constructFirstSet(std::size_t k) {
                     changed |= llk_merge(working[name],
                         sequenceFirstK(production.rule_members, depth, working));
             }
+            ++iterations;
+            std::size_t total = 0;
+            for (const auto& [name, sequences] : working)
+                total += sequences.size();
         } while (changed);
         first_k_cache.emplace(depth, std::move(working));
     }
@@ -1160,6 +1198,9 @@ void AST::Tree::propagateFollowSequenceK(
     LLkSet suffix = after;
     for (auto it = members.rbegin(); it != members.rend(); ++it) {
         const auto& member = **it;
+        if (member.isName() && member.getName().name == constants::whitespace) {
+            continue; // invisible to FOLLOW_k, same reasoning as FIRST_k
+        }
         const auto base = memberBaseFirstK(member, k, firstTable);
         LLkSet innerAfter = suffix;
         if (member.quantifier == '*' || member.quantifier == '+')
@@ -1223,17 +1264,130 @@ auto AST::Tree::getFollowSet(std::size_t k) -> const LLkTable& {
     return follow_k_cache.at(k);
 }
 
-// FIRST_k(alternative followed by the current rule's continuation).
-// This replaces OpBuilder::firstK + withFollow for alternatives that are
-// represented as one RuleMember each.
+// Demand-scoped FIRST/FOLLOW for a single decision. Unlike getFirstSet(k) /
+// getFollowSet(k), this does not expand every production in the grammar.
+// The selected scope includes the decision's referenced rules, its enclosing
+// FOLLOW contributors, and their transitive FIRST dependencies.
 auto AST::Tree::getAlternativeLookahead(
     const AST::RuleMember& alt,
     const stdu::vector<std::string>& ruleName, std::size_t k) -> LLkSet {
-    const auto& firstTable = getFirstSet(k);
-    const auto& followTable = getFollowSet(k);
-    const auto firstAlt = memberFirstK(alt, k, firstTable);
-    const auto it = followTable.find(ruleName);
-    if (it == followTable.end() || it->second.empty()) return firstAlt;
-    return llk_concat(firstAlt, it->second, k);
-}
+    if (k == 0) throw Error("Lookahead requires k >= 1");
+    createInitialItemSet();
 
+    using Key = stdu::vector<std::string>;
+    std::set<Key> ancestors{ruleName};
+    std::set<Key> selected{ruleName};
+
+    // Find every rule which can contribute to FOLLOW(ruleName), directly or
+    // through another enclosing rule. Traverse members inside groups/choices.
+    const auto visitNames = [&](const auto& self, const AST::RuleMember& m,
+                                const auto& emit) -> void {
+        if (m.isName()) {
+            if (m.getName().isNonterminal()) emit(m.getName().name);
+        } else if (m.isGroup()) {
+            for (const auto& child : m.getGroup().values)
+                self(self, *child, emit);
+        } else if (m.isOp()) {
+            for (const auto& child : m.getOp().options)
+                self(self, *child, emit);
+        }
+    };
+
+    // Reverse use graph: referenced rule -> owners of productions using it.
+    std::map<Key, std::set<Key>> users;
+    for (const auto& [owner, productions] : initial_item_set) {
+        if (owner.empty() || corelib::text::isUpper(owner.back())) continue;
+        for (const auto& prod : productions)
+            for (const auto& m : prod.rule_members)
+                visitNames(visitNames, *m, [&](const Key& ref) {
+                    users[ref].insert(owner);
+                });
+    }
+    std::vector<Key> queue{ruleName};
+    for (std::size_t i = 0; i < queue.size(); ++i) {
+        if (auto it = users.find(queue[i]); it != users.end()) {
+            for (const auto& owner : it->second)
+                if (ancestors.insert(owner).second) queue.push_back(owner);
+        }
+    }
+    selected.insert(ancestors.begin(), ancestors.end());
+
+    // FIRST dependencies of the alternative plus every FOLLOW contributor.
+    std::vector<Key> pending(selected.begin(), selected.end());
+    visitNames(visitNames, alt, [&](const Key& ref) {
+        if (selected.insert(ref).second) pending.push_back(ref);
+    });
+    for (std::size_t i = 0; i < pending.size(); ++i) {
+        auto it = initial_item_set.find(pending[i]);
+        if (it == initial_item_set.end()) continue;
+        for (const auto& prod : it->second)
+            for (const auto& m : prod.rule_members)
+                visitNames(visitNames, *m, [&](const Key& ref) {
+                    if (selected.insert(ref).second) pending.push_back(ref);
+                });
+    }
+
+    // Reject unresolved references before FIRST_k fixed-point evaluation.
+    // Previously `firstLocal[key]` inserted an empty set for missing rules,
+    // disguising a bootstrap/AST registration error as an LL(k) conflict.
+    for (const auto& key : selected) {
+        if (initial_item_set.find(key) != initial_item_set.end())
+            continue;
+        const bool parsed = tree_map.find(key) != tree_map.end();
+        throw Error(
+            "FIRST_k: missing nonterminal {} while analyzing {} "
+            "(in parsed tree: {}, in transformed rule set: false). "
+            "Verify bootstrap consumed all input and registered this rule, "
+            "or fix scope resolution of this reference.",
+            key, ruleName, parsed);
+    }
+
+    // A fixed point over the selected dependency closure only.
+    LLkTable firstLocal;
+    for (const auto& key : selected) firstLocal[key];
+    bool changed;
+    do {
+        changed = false;
+        for (const auto& key : selected) {
+            auto it = initial_item_set.find(key);
+            if (it == initial_item_set.end()) continue;
+            for (const auto& prod : it->second)
+                changed |= llk_merge(firstLocal[key],
+                    sequenceFirstK(prod.rule_members, k, firstLocal));
+        }
+    } while (changed);
+
+    LLkTable followLocal;
+    for (const auto& key : ancestors) followLocal[key];
+    // Seed the root of each enclosing chain with the end marker.
+    for (const auto& key : ancestors) {
+        bool has_parent = false;
+        if (auto it = users.find(key); it != users.end())
+            for (const auto& parent : it->second)
+                if (ancestors.count(parent)) { has_parent = true; break; }
+        if (!has_parent)
+            followLocal[key].insert(LLkSeq{Token{"$"}});
+    }
+    // Cycles may have no root, but need a base context to propagate from.
+    if (std::all_of(ancestors.begin(), ancestors.end(), [&](const Key& key) {
+            return followLocal[key].empty();
+        })) {
+        followLocal[ruleName].insert(LLkSeq{Token{"$"}});
+    }
+
+    do {
+        changed = false;
+        for (const auto& owner : ancestors) {
+            auto it = initial_item_set.find(owner);
+            if (it == initial_item_set.end()) continue;
+            for (const auto& prod : it->second)
+                propagateFollowSequenceK(prod.rule_members, followLocal[owner],
+                    k, firstLocal, followLocal, changed);
+        }
+    } while (changed);
+
+    const auto firstAlt = memberFirstK(alt, k, firstLocal);
+    const auto followIt = followLocal.find(ruleName);
+    if (followIt == followLocal.end() || followIt->second.empty()) return firstAlt;
+    return llk_concat(firstAlt, followIt->second, k);
+}

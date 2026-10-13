@@ -140,9 +140,10 @@ namespace LangRepr {
                 auto ret = expr.front().getReturn();
                 ret.value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer {});
                 return LangAPI::Return::createStatement(ret);
-            } else if (expr.back().isReportError()) {
-                return {};
             }
+            // else if (expr.back().isReportError()) {
+            //     return {};
+            // }
         } else if (stmt.isIf()) {
             LangAPI::If new_if;
             new_if.expr = stmt.getIf().expr;

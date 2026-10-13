@@ -314,7 +314,7 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
                 break;
             }
             case LangAPI::ExpressionValueType::ReportError:
-                out << "[Error]";
+                out << "raise_error(*pos, \"" << expr.getReportError().message << "\")";
                 break;
             case LangAPI::ExpressionValueType::Lambda:
                 out << convertLambda(expr.getLambda());

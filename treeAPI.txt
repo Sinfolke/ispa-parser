@@ -1,77 +1,309 @@
-name<AUTO_5> : Rule {
-   ";"
+name<compound_statement_AUTO_0> : Rule {
+   "^"
   Data: EmptyDataBlock
-}name<AUTO_4> : Rule {
-   ":"
+}name<name_AUTO_0> : Rule {
+   "."
   Data: EmptyDataBlock
-}name<AUTO_2> : Rule {
-   ")"
+}name<fail_block_AUTO_0> : Rule {
+   "fail"
   Data: EmptyDataBlock
-}name<AUTO_1> : Rule {
+}name<grammar_modifier_AUTO_1> : Rule {
+   "]"
+  Data: EmptyDataBlock
+}name<grammar_modifier_AUTO_0> : Rule {
+   "["
+  Data: EmptyDataBlock
+}name<forward_declaration_AUTO_0> : Rule {
+   "->"
+  Data: EmptyDataBlock
+}name<advanced_rule_dep_decl_AUTO_0> : Rule {
+   "depends"
+  Data: EmptyDataBlock
+}name<rule_value_alternative_AUTO_0> : Rule {
+   "|"
+  Data: EmptyDataBlock
+}name<rule_value_group_AUTO_0> : Rule {
    "("
   Data: EmptyDataBlock
-}name<main> : Rule {
-  @  rule
+}name<rule_ast_full> : Rule {
+   rule::value::var_capture::AUTO_0
+   __WS?;
+   advanced_rule::AUTO_0
+   __WS?;
+  @  rule::ast::full::part+;
+   __WS?;
+   advanced_rule::AUTO_1
   Data: [RegularDataBlock: CllExpr]
+}name<forward_declaration> : Rule {
+   forward_declaration::AUTO_0
+   __WS?;
+  @  ID
+   __WS?;
+   forward_declaration::AUTO_0
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_var_capture_AUTO_0> : Rule {
+   "&"
+  Data: EmptyDataBlock
+}name<rule_ast_full_part_AUTO_0> : Rule {
+   ":"
+  Data: EmptyDataBlock
+}name<expr_AUTO_1> : Rule {
+   ")"
+  Data: EmptyDataBlock
+}name<expr_AUTO_0> : Rule {
+   "("
+  Data: EmptyDataBlock
+}name<rule_nested_rule> : Rule {
+   rule::nested_rule::AUTO_0
+  @  grammar
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_counter> : Rule {
+  @  rule::value::QUANTIFIER
+   __WS?;
+  @  rule::value::counter::bounded?;
+  Data: TemplatedDataBlock(quantifier, repetitions)
+}name<rule_value_QUANTIFIER> : Rule {
+  @  ( "?" |  "+" |  "*")
+  Data: [RegularDataBlock: CllExpr]
+}name<advanced_rule_match> : Rule {
+   advanced_rule::match::AUTO_0
+   __WS?;
+  @  rule::value+;
+   __WS?;
+  @  ( advanced_rule::match::unpack |  advanced_rule::match::AUTO_0)
+  Data: TemplatedDataBlock(patterns, assign_names)
+}name<rule_ast> : Rule {
+  @  ( rule::ast::abbr |  rule::ast::full |  rule::ast::single_value)
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_ast_capture> : Rule {
+   rule::value::ast_capture::AUTO_0
+   __WS?;
+   (@  ID)?;
+  Data: [RegularDataBlock: CllExpr]
+}name<expr> : Rule {
+  @  expr::AUTO_0
+   __WS?;
+   ID
+   __WS?;
+   expr::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_counter_bounded_AUTO_0> : Rule {
+   "="
+  Data: EmptyDataBlock
+}name<rule_value_counter_bounded> : Rule {
+   rule::value::counter::bounded::AUTO_0
+   __WS?;
+  @  ( NUMBER |  ID |  explicit_expr)
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value> : Rule {
+  @  rule::value::var_capture?;
+   __WS?;
+  @  rule::value::ast_capture?;
+   __WS?;
+  @  rule::value::pattern
+   __WS?;
+  @  rule::value::alternative*;
+   __WS?;
+  @  rule::value::counter?;
+   __WS?;
+  @  rule::value::shared_counter_registration?;
+  Data: TemplatedDataBlock(v_cap, ast_cap, val, alts, quantifier, registration)
+}name<rule_value_var_capture> : Rule {
+   rule::value::var_capture::AUTO_0
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
+}name<advanced_rule> : Rule {
+   advanced_rule::AUTO_0
+   __WS?;
+  @  advanced_rule::dep_decl*;
+   __WS?;
+  @  ( ( advanced_rule::match |  stmt))*;
+   __WS?;
+   advanced_rule::AUTO_1
+  Data: TemplatedDataBlock(dep, body)
+}name<rule_value_CGROUP> : Rule {
+   "["
+  @  ( ( [^\]] |  "\\]"))+;
+   "]"
+  Data: [RegularDataBlock: CllExpr]
+}name<template_params_AUTO_0> : Rule {
+   "<"
+  Data: EmptyDataBlock
+}name<advanced_rule_dep_decl> : Rule {
+   advanced_rule::dep_decl::AUTO_0
+   __WS?;
+  @  forward_declaration
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_ast_single_value> : Rule {
+   advanced_rule::AUTO_0
+   __WS?;
+  @  expr
+   __WS?;
+   advanced_rule::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_group> : Rule {
+   rule::value::group::AUTO_0
+   __WS?;
+  @  rule::value+;
+   __WS?;
+   expr::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_ast_full_part> : Rule {
+  @  ID
+   __WS?;
+   rule::ast::full::part::AUTO_0
+   __WS?;
+  @  expr
+  Data: TemplatedDataBlock(key, e)
+}name<__WS> : Rule {
+   [ \t\n\r\v\f]*;
+  Data: EmptyDataBlock
+}name<rule_nested_rule_AUTO_0> : Rule {
+   "#"
+  Data: EmptyDataBlock
 }name<rule_value_alternative> : Rule {
-   AUTO_0
+   rule::value::alternative::AUTO_0
    __WS?;
   @  rule::value::pattern
   Data: [RegularDataBlock: CllExpr]
-}name<AUTO_3> : Rule {
-   "@"
-  Data: EmptyDataBlock
 }name<rule_value_STRING> : Rule {
    "'"
   @  [^']*;
    "'"
   Data: [RegularDataBlock: CllExpr]
-}name<rule_value_pattern> : Rule {
-  @  ( ID |  rule::value::STRING |  rule::value::SPACE |  rule::value::group)
+}name<rule> : Rule {
+   rule::ast::full::part::AUTO_0
+   __WS?;
+  @  rule::value+;
+   __WS?;
+  @  rule::ast?;
+   __WS?;
+  @  rule::nested_rule*;
+   __WS?;
+   advanced_rule::match::AUTO_0
+  Data: TemplatedDataBlock(v, data, nested)
+}name<grammar_modifier> : Rule {
+   grammar::modifier::AUTO_0
+   __WS?;
+  @  ID
+   __WS?;
+   grammar::modifier::AUTO_1
   Data: [RegularDataBlock: CllExpr]
-}name<__WS> : Rule {
-   [ \t\n\r\v\f]*;
+}name<rule_value_ast_capture_AUTO_0> : Rule {
+   "@"
   Data: EmptyDataBlock
+}name<grammar> : Rule {
+  @  name
+   __WS?;
+  @  ( rule |  advanced_rule)
+  Data: TemplatedDataBlock(name, entry)
+}name<rule_value_pattern> : Rule {
+  @  ( name |  rule::value::group |  rule::value::STRING |  rule::value::CGROUP |  rule::value::SPACE)
+  Data: [RegularDataBlock: CllExpr]
+}name<advanced_rule_AUTO_0> : Rule {
+   "{"
+  Data: EmptyDataBlock
+}name<main> : Rule {
+   (@  ( grammar |  fail_block))+;
+  Data: [RegularDataBlock: CllExpr]
+}name<fail_block> : Rule {
+   fail_block::AUTO_0
+   __WS?;
+  @  name
+   __WS?;
+  @  ( stmt |  compound_statement)
+  Data: TemplatedDataBlock(name, val)
+}name<rule_ast_abbr> : Rule {
+   rule::value::ast_capture::AUTO_0
+   __WS?;
+   advanced_rule::AUTO_0
+   __WS?;
+  @  ID+;
+   __WS?;
+   advanced_rule::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<params> : Rule {
+   rule::value::group::AUTO_0
+   __WS?;
+  @  param?;
+   __WS?;
+   expr::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<template_params_AUTO_1> : Rule {
+   ">"
+  Data: EmptyDataBlock
+}name<template_params> : Rule {
+   template_params::AUTO_0
+   __WS?;
+  @  param?;
+   __WS?;
+   template_params::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<advanced_rule_match_unpack> : Rule {
+   forward_declaration::AUTO_0
+   __WS?;
+  @  ID+;
+  Data: [RegularDataBlock: CllExpr]
 }name<rule_value_SPACE> : Rule {
    "\\s"
   Data: [RegularDataBlock: CllExpr]
-}name<rule_value_group> : Rule {
-   AUTO_1
-   __WS?;
-  @  rule::value+;
-   __WS?;
-   AUTO_2
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value> : Rule {
-  @  rule::value::pattern
-   __WS?;
-  @  rule::value::alternative*;
-   __WS?;
-  @  rule::value::QUANTIFIER?;
-  Data: TemplatedDataBlock(v, alts, quantifier)
-}name<rule_capture> : Rule {
-   AUTO_3
-   __WS?;
-   (@  ID)?;
-  Data: [RegularDataBlock: CllExpr]
-}name<rule> : Rule {
+}name<param> : Rule {
   @  ID
    __WS?;
-   AUTO_4
+   ( param::AUTO_0  __WS?; @  ID)*;
+  Data: TemplatedDataBlock(first_p, following_p)
+}name<name> : Rule {
+  @  ID
    __WS?;
-  @  rule::value+;
+   ( name::AUTO_0  __WS?; @  ID)*;
    __WS?;
-   AUTO_5
-  Data: TemplatedDataBlock(name, v)
+  @  template_params?;
+   __WS?;
+  @  params?;
+  Data: TemplatedDataBlock(primary, nested, temp_params, param)
+}name<rule_value_shared_counter_registration_AUTO_0> : Rule {
+   "=>"
+  Data: EmptyDataBlock
+}name<advanced_rule_AUTO_1> : Rule {
+   "}"
+  Data: EmptyDataBlock
+}name<stmt> : Rule {
+   advanced_rule::AUTO_0
+   __WS?;
+  @  ID
+   __WS?;
+   advanced_rule::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<advanced_rule_fail_call> : Rule {
+   fail_block::AUTO_0
+   __WS?;
+  @  name
+  Data: [RegularDataBlock: CllExpr]
+}name<param_AUTO_0> : Rule {
+   ","
+  Data: EmptyDataBlock
+}name<explicit_expr> : Rule {
+   rule::value::group::AUTO_0
+   __WS?;
+  @  expr
+   __WS?;
+   expr::AUTO_1
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_shared_counter_registration> : Rule {
+   rule::value::shared_counter_registration::AUTO_0
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
 }name<NUMBER> : Rule {
   @  [0-9]+;
    ( "." @  [0-9]+;)?;
   Data: TemplatedDataBlock(full, floating)
-}name<AUTO_0> : Rule {
-   "|"
+}name<advanced_rule_match_AUTO_0> : Rule {
+   ";"
   Data: EmptyDataBlock
-}name<rule_value_QUANTIFIER> : Rule {
-  @  ( "?" |  "+" |  "*")
+}name<compound_statement> : Rule {
+  @  compound_statement::AUTO_0
   Data: [RegularDataBlock: CllExpr]
 }name<ID> : Rule {
   @  ( [a-zA-Z]  [_a-zA-Z0-9]*;)

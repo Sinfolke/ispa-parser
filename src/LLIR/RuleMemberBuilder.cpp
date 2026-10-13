@@ -31,6 +31,44 @@ static auto grammarComment(const AST::RuleMember &rule, const std::string &meani
     return LangAPI::Comment::createStatement(
         LangAPI::Comment{.value = "grammar `" + out.str() + "`: " + meaning});
 }
+// Nested members of optional/repeated groups are speculative: a failed match
+// terminates the attempt rather than constituting a parser error. Propagate
+// this context across nested MemberBuilder/OpBuilder instances during codegen.
+namespace {
+    thread_local unsigned speculative_match_depth = 0;
+
+    struct SpeculativeMatchScope {
+        explicit SpeculativeMatchScope(bool enabled) : enabled(enabled) {
+            if (enabled) ++speculative_match_depth;
+        }
+        ~SpeculativeMatchScope() {
+            if (enabled) --speculative_match_depth;
+        }
+        SpeculativeMatchScope(const SpeculativeMatchScope&) = delete;
+        SpeculativeMatchScope& operator=(const SpeculativeMatchScope&) = delete;
+    private:
+        bool enabled;
+    };
+}
+
+// Diagnostics emitted into the generated parser (rather than the generator process).
+// These are intentionally confined to required-match failure paths: expected
+// failures ending '*' / '?' repetitions should not be reported as errors.
+static auto parserFailure(const AST::RuleMember &rule, const std::string &reason)
+    -> LangAPI::Statement {
+    std::ostringstream text;
+    text << rule;
+    if (speculative_match_depth != 0) {
+        // Keep the failure/rollback control flow; omit only the diagnostic.
+        return LangAPI::Comment::createStatement(LangAPI::Comment{
+            .value = "speculative match failed (diagnostic suppressed): " + text.str()
+        });
+    }
+    return LangAPI::ReportError::createStatement(LangAPI::ReportError{
+        .message = "ISPA match failure: " + reason + " | grammar: " + text.str()
+    });
+}
+
 void LLIR::GroupBuilder::pushBasedOnQuantifier(
     MemberBuilder &builder,
     const AST::RuleMember &rule,
@@ -48,6 +86,20 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
         loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true });
         loop.stmt = builder.getData();
         builder.getData().clear();
+        // A repeated group whose first member is an LL(k) choice performs
+        // its switch on the current token. Once the previous iteration ends,
+        // the current token can be __WS (e.g. `rule: ...;  next{...}`).
+        // Without a whitespace skip, the next iteration sees __WS in the
+        // choice switch and stops, so only the first group item is captured.
+        // Insert the skip INSIDE the loop and BEFORE the alternative's
+        // lookahead; the group's position counter remains speculative until
+        // the iteration succeeds, so the outer parser can still backtrack.
+        const auto& members = rule.getGroup().values;
+        if (!isToken && !members.empty() && members.front()->isOp()) {
+            loop.stmt.insert(loop.stmt.begin(),
+                LangAPI::SkipSpaces::createStatement(
+                    LangAPI::SkipSpaces{.isToken = false}));
+        }
         processExitStatements(loop.stmt);
         // raiseVarsTop(data, loop.block, true, false, false);
         // raiseVarsTop(data, loop.else_block, true, false, false);
@@ -57,17 +109,19 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
             statements.push_back(LangAPI::While::createStatement(loop));
         }
     } else if (quantifier == '?') {
-        // Optional group: execute its body at most once. A do/while(false)
-        // preserves the existing conversion of failed-branch returns to breaks,
-        // without repeating a successfully selected alternative indefinitely.
+        // Execute the optional body exactly once. Some LangAPI targets lower
+        // DoWhile(false) as While(false), which makes the body unreachable.
+        // A true-condition loop with an unconditional trailing break works
+        // across those backends and preserves converted failure -> break paths.
         statements.push_back(grammarComment(rule, "optional group; try at most once"));
         LangAPI::While loop;
-        loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = false });
+        loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true });
         loop.stmt = builder.getData();
         builder.getData().clear();
         processExitStatements(loop.stmt);
         loop.stmt.insert(loop.stmt.begin(), grammarComment(rule, "optional body; failed alternative leaves this group"));
-        statements.push_back(LangAPI::DoWhile::createStatement(loop));
+        loop.stmt.push_back(LangAPI::Break::createStatements(LangAPI::Break{}).front());
+        statements.push_back(LangAPI::While::createStatement(loop));
     }
 }
 
@@ -169,7 +223,10 @@ auto LLIR::NameBuilder::pushBasedOnQualifier(
                 LangAPI::If{expr, std::move(successful)}));
         } else {
             statements.push_back(LangAPI::If::createStatement(
-                LangAPI::If{std::move(failed), LangAPI::Return::createStatements(LangAPI::Return{})}));
+                LangAPI::If{std::move(failed), LangAPI::Statements{
+                    parserFailure(rule, "required named rule did not match"),
+                    LangAPI::Return::createStatements(LangAPI::Return{}).front()
+                }}));
             statements.insert(statements.end(), successful.begin(),
                               successful.end());
         }
@@ -278,7 +335,7 @@ auto LLIR::MemberBuilder::build() -> void {
     const auto isWhitespaceRef = [](const AST::RuleMember &member) {
         return member.quantifier == '?'
             && member.isName()
-            && member.getName().name== constants::whitespace;
+            && member.getName().name == constants::whitespace;
     };
     const auto isRepeated = [](const AST::RuleMember &member) {
         return member.quantifier == '*' || member.quantifier == '+';
@@ -293,13 +350,52 @@ auto LLIR::MemberBuilder::build() -> void {
             // Build the skip into a scratch buffer instead of emitting it
             // here, then splice it onto the front of the following
             // member's own loop body so it reruns every iteration.
+            const AST::RuleMember &next_member = *(*rules)[i + 1];
+            // Token repetitions generated by NameBuilder use a token predicate
+            // as the *while condition*. If we put __WS inside that loop, the
+            // predicate is evaluated before whitespace is skipped and ID+
+            // fails immediately on inputs such as `-> ID`.
+            //
+            // Keep the first whitespace skip outside the token loop. This
+            // preserves the first match; handling whitespace between further
+            // token repetitions requires a separately guarded loop body.
+            if (next_member.isName() &&
+                corelib::text::isUpper(next_member.getName().name.back())) {
+                buildMember(member);
+                buildMember(next_member);
+                ++i;
+                continue;
+            }
+
             auto ws_stmts = buildStandalone(member);
-            auto next_stmts = buildStandalone(*(*rules)[i + 1]);
+            auto next_stmts = buildStandalone(next_member);
 
             for (auto &stmt : next_stmts) {
                 if (stmt.isWhile() || stmt.isDoWhile()) {
                     auto &loop = stmt.getWhileOrDoWhile();
-                    loop.stmt.insert(loop.stmt.begin(), ws_stmts.begin(), ws_stmts.end());
+                    // Each repetition attempt must be atomic, including the
+                    // automatically inserted whitespace. PushPosCounter creates
+                    // a child cursor initially equal to the parent cursor.
+                    // A failed named-rule call breaks before PopPosCounter,
+                    // leaving the parent cursor unchanged. A successful call
+                    // reaches PopPosCounter and commits the child cursor.
+                    //
+                    // In particular, `rule.value+` must not consume the space
+                    // before `->` when its final attempt fails.
+                    const auto checkpoint_name =
+                        "repeat_ws" + generateVariableName();
+                    LangAPI::Statements transactional;
+                    transactional.push_back(
+                        LangAPI::PushPosCounter::createStatement(
+                            LangAPI::PushPosCounter{.name = checkpoint_name}));
+                    transactional.insert(transactional.end(),
+                                         ws_stmts.begin(), ws_stmts.end());
+                    transactional.insert(transactional.end(),
+                                         loop.stmt.begin(), loop.stmt.end());
+                    transactional.push_back(
+                        LangAPI::PopPosCounter::createStatement(
+                            LangAPI::PopPosCounter{}));
+                    loop.stmt = std::move(transactional);
                 }
             }
 
@@ -339,18 +435,105 @@ void LLIR::GroupBuilder::build() {
     // Build the group's members in the correct loop context.
     insideLoop = needs_shadow;
 
+    // Child builders register @ captures in the shared datablock registry.
+    // Remember where this group starts so earlier captures stay untouched.
+    const auto capture_begin = unnamed_datablock_units.size();
+    const auto keyed_capture_begin = key_vars.size();
+
     MemberBuilder builder(*this, group);
-    builder.build();
+    {
+        // '*/?' failures are normal, and '+' also makes one final unsuccessful
+        // attempt to terminate after successful iterations.
+        SpeculativeMatchScope speculative(
+            quantifier == '?' || quantifier == '*' || quantifier == '+');
+        builder.build();
+    }
 
     insideLoop = was_inside_loop;
 
     const auto& return_vars = builder.getReturnVars();
 
-    exports_list.insert(
-        exports_list.end(),
-        return_vars.begin(),
-        return_vars.end()
-    );
+    // A capture inside ( ... )+ / ( ... )* must accumulate across all
+    // successful group iterations. Merely exporting the child's scalar
+    // return variable exposes its final assignment only.
+    auto group_capture_exports = return_vars;
+    LangAPI::Statements group_capture_appends;
+    if (is_repeated && rule.prefix.empty()) {
+        for (auto& captured : group_capture_exports) {
+            if (captured.var.name.empty() ||
+                captured.var.type == LangAPI::ValueType::Undef ||
+                captured.var.name.find("__WS") != std::string::npos)
+                continue;
+
+            // Return variables for named rules can still hold MatchResult<T>,
+            // whereas a capture collection must contain Node<T>.  Do not
+            // append MatchResult<T> to vector<Node<T>>: extract .node first.
+            LangAPI::Variable element = captured.var;
+            LangAPI::Statements extract_node;
+            if (captured.var.type == LangAPI::ValueType::RuleResult ||
+                captured.var.type == LangAPI::ValueType::TokenResult) {
+                element = createEmptyVariable("group_capture" + generateVariableName());
+                element.type = deduceUvarType(captured.var, {});
+                statements.push_back(LangAPI::Variable::createStatement(element));
+                extract_node.push_back(LangAPI::VariableAssignment::createStatement(
+                    LangAPI::VariableAssignment{
+                        .name = LangAPI::Symbol{element.name},
+                        .value = LangAPI::StorageSymbol::createExpression(
+                            LangAPI::StorageSymbol{
+                                LangAPI::Symbol::createExpression(
+                                    LangAPI::Symbol{captured.var.name}),
+                                stdu::vector<LangAPI::StorageSymbol::PathPart>{
+                                    LangAPI::IspaLibSymbol{
+                                        .exports = LangAPI::StdlibExports::MatchResultValue}}
+                            })
+                    }));
+            }
+
+            LangAPI::Statements append_one;
+            auto collected = add_shadow_variable(
+                statements, append_one, element);
+            if (collected.name.empty())
+                continue;
+
+            // Extract and append only after the entire iteration succeeds.
+            group_capture_appends.insert(group_capture_appends.end(),
+                extract_node.begin(), extract_node.end());
+            group_capture_appends.insert(group_capture_appends.end(),
+                append_one.begin(), append_one.end());
+            // Downstream AST field selection uses ExportsAfterBuild::uvar
+            // (the capture-facing value), not ::var (the parser's temporary).
+            // Publish the accumulated collection through both fields.  The
+            // original scalar variables remain in the generated statements
+            // for use while matching each iteration.
+            // AST construction reads the shared capture registries, *not*
+            // ExportsAfterBuild. Replace only captures created by this group.
+            // A group member may have both var (MatchResult) and uvar (Node),
+            // so match against the original names before updating exports.
+            const auto original_var = captured.var.name;
+            const auto original_uvar = captured.uvar.name;
+            const auto original_shadow = captured.shadow_var.name;
+            const auto matches_capture = [&](const LangAPI::Variable& v) {
+                return (!original_uvar.empty() && v.name == original_uvar) ||
+                       (!original_var.empty() && v.name == original_var) ||
+                       (!original_shadow.empty() && v.name == original_shadow);
+            };
+            for (std::size_t i = capture_begin;
+                 i < unnamed_datablock_units.size(); ++i) {
+                if (matches_capture(unnamed_datablock_units[i]))
+                    unnamed_datablock_units[i] = collected;
+            }
+            for (std::size_t i = keyed_capture_begin;
+                 i < key_vars.size(); ++i) {
+                if (matches_capture(key_vars[i].second))
+                    key_vars[i].second = collected;
+            }
+
+            captured.var = collected;
+            captured.uvar = collected;
+            captured.shadow_var = collected;
+        }
+    }
+
 
     // Remove an unnecessary trailing whitespace skip.
     if (!builder.getData().empty() &&
@@ -500,6 +683,10 @@ void LLIR::GroupBuilder::build() {
         );
     }
 
+    if (is_repeated && !shadow_var.name.empty()) {
+        uvar.type = shadow_var.type;
+    }
+
     const std::string pos_counter_name =
         "begin" + generateVariableName();
 
@@ -510,7 +697,8 @@ void LLIR::GroupBuilder::build() {
     );
 
     // Repeated groups accumulate each successful iteration, not after the loop.
-    if (is_repeated && !shadow_var_assign_block.empty()) {
+    if (is_repeated && (!shadow_var_assign_block.empty() ||
+                        !group_capture_appends.empty())) {
         LangAPI::If iteration_success = group_success_condition;
         iteration_success.stmt = fetch_var_statements;
         iteration_success.stmt.insert(
@@ -518,11 +706,36 @@ void LLIR::GroupBuilder::build() {
             shadow_var_assign_block.begin(),
             shadow_var_assign_block.end()
         );
+        iteration_success.stmt.insert(
+            iteration_success.stmt.end(),
+            group_capture_appends.begin(),
+            group_capture_appends.end()
+        );
         if (iteration_success.expr.empty()) {
             builder.getData().insert(builder.getData().end(),
                 iteration_success.stmt.begin(), iteration_success.stmt.end());
         } else {
             builder.getData().push_back(LangAPI::If::createStatement(iteration_success));
+        }
+    }
+
+    // For + and *, the final attempt necessarily fails. The post-loop
+    // success condition is based on the completed repetition, not on the
+    // last attempted element. '+' is validated by handle_plus_qualifier.
+    if (is_repeated) {
+        group_success_condition.expr.clear();
+    }
+
+    // Optional groups can fail before a child sets its success flag.
+    // Declarations are hoisted during optimizeIR(), and their initializers
+    // may be stripped. Reset every child flag before any optional attempt so
+    // the post-group success condition never reads an indeterminate bool.
+    if (quantifier == '?') {
+        std::set<std::string> initialized;
+        for (const auto& ret : return_vars) {
+            if (!ret.svar.name.empty() && initialized.insert(ret.svar.name).second) {
+                statements.push_back(assignSvar(ret.svar, false));
+            }
         }
     }
 
@@ -616,12 +829,19 @@ void LLIR::GroupBuilder::build() {
 
     pushConvResult(
         rule,
-        var,
+        is_repeated ? uvar : var,
         uvar,
         svar,
         shadow_var,
         quantifier
     );
+    // A captured repetition is a single AST value (the collected array).
+    // Do not leak the child alternative's scalar export: it would compete
+    // with the group's vector in the enclosing capture/data-block selector.
+    if (!(is_repeated && rule.prefix.is_key_value)) {
+        exports_list.insert(exports_list.end(),
+            group_capture_exports.begin(), group_capture_exports.end());
+    }
 }
 
 void LLIR::CsequenceBuilder::build() {
@@ -939,7 +1159,10 @@ void LLIR::NameBuilder::build() {
                 expr.push_back(LangAPI::ExpressionValue{
                     LangAPI::ExpressionElement::GroupClose});
                 this->statements.push_back(LangAPI::If::createStatement(
-                    LangAPI::If{std::move(expr), LangAPI::Return::createStatements(LangAPI::Return{})}));
+                    LangAPI::If{std::move(expr), LangAPI::Statements{
+                         parserFailure(rule, "required token did not match"),
+                         LangAPI::Return::createStatements(LangAPI::Return{}).front()
+                     }}));
                 this->statements.insert(this->statements.end(),
                                         body.begin(), body.end());
                 break;
@@ -1193,11 +1416,19 @@ bool LLIR::OpBuilder::checkLLkConflicts(
     for (std::size_t i = 0; i < perAlt.size(); ++i) {
         for (std::size_t j = i + 1; j < perAlt.size(); ++j) {
             for (const auto& a : perAlt[i]) {
+                std::cout << "preAlt: " << std::endl;
                 for (const auto& b : perAlt[j]) {
                     if (!overlaps(a, b)) continue;
                     ok = false;
                     if (conflicts)
                         conflicts->emplace_back(i, j, a.size() <= b.size() ? a : b);
+
+                    std::cerr
+                        << "LL(k) conflict: alternative "
+                        << i << " versus " << j
+                        << ", lengths " << a.size()
+                        << " and " << b.size()
+                        << std::endl;
                 }
             }
         }
@@ -1205,7 +1436,7 @@ bool LLIR::OpBuilder::checkLLkConflicts(
     return ok;
 }
 
-LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
+LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
     const std::vector<std::set<LookaheadSeq>>& perAlt,
     const std::vector<std::shared_ptr<AST::RuleMember>>& op,
     const std::vector<std::size_t>& candidates,
@@ -1213,8 +1444,18 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
     std::size_t k,
     const LangAPI::Variable& result_var,
     const LangAPI::Variable& success_var
-)
-{
+) {
+    // `depth` selects which lookahead token this level of the decision
+    // tree disambiguates on: depth 0 is the current token, depth 1 is one
+    // token further ahead, etc. (`seq[depth]` below already buckets
+    // alternatives by the right token.) The switch's own runtime check
+    // must look at that SAME token -- `pos` offset by `depth` -- or every
+    // recursive level ends up re-testing the current token instead of
+    // advancing its lookahead, so no case at depth > 0 ever matches
+    // whatever alternative actually needed k > 1 to disambiguate (e.g.
+    // `main: rule | adv_rule`, where both start with ID and only diverge
+    // on the second token).
+
     LangAPI::Switch ss {
         .expression = LangAPI::Cast::createExpression(
             LangAPI::Cast {
@@ -1261,6 +1502,23 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
 
             cs.second = builder.getData();
 
+            // Lookahead is speculative: the selected alternative must parse
+            // from the original input position, not from the lookahead cursor.
+            // At depth 0 this is harmless; at depth > 0 it is essential.
+            // The surrounding position-counter scopes still propagate the
+            // selected parser's final iterator after the branch completes.
+            cs.second.insert(cs.second.begin(), LangAPI::VariableAssignment::createStatement(
+                LangAPI::VariableAssignment{
+                    .name = LangAPI::Symbol{
+                        "lookahead_pos_" + std::to_string(nesting)
+                    },
+                    .value = LangAPI::Symbol::createExpression(
+                        LangAPI::Symbol{"lookahead_pos_1"}
+                    )
+                }
+            ));
+
+
             const auto& returns = builder.getReturnVars();
 
             if (returns.empty()) {
@@ -1295,9 +1553,14 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
                     LangAPI::If::createStatement(
                         LangAPI::If{
                             std::move(failed),
-                            LangAPI::Return::createStatements(
-                                LangAPI::Return{}
-                            )
+                            [&]() -> LangAPI::Statements {
+                                auto failure = insideLoop
+                                    ? LangAPI::Break::createStatements(LangAPI::Break{})
+                                    : LangAPI::Return::createStatements(LangAPI::Return{});
+                                failure.insert(failure.begin(), parserFailure(
+                                    *op[index], "selected LL(k) alternative failed"));
+                                return failure;
+                            }()
                         }
                     )
                 );
@@ -1328,12 +1591,18 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
                         }
                     );
 
-            } else {
-                // Already a Node or another directly assignable value.
-                selected_value =
-                    LangAPI::Symbol::createExpression(
-                        LangAPI::Symbol{selected.var.name}
-                    );
+                } else {
+                    // Already a Node or another directly assignable value.
+                    selected_value =
+                        LangAPI::Symbol::createExpression(
+                            LangAPI::Symbol{selected.var.name}
+                        );
+                }
+
+            // Inside a quantified group, an unsuccessful branch ends the
+            // speculative switch/iteration rather than the whole parser.
+            if (insideLoop) {
+                processExitStatements(cs.second);
             }
 
             // Store the selected alternative in the outer variant.
@@ -1369,26 +1638,53 @@ LangAPI::Switch LLIR::OpBuilder::buildDecisionTree(
                 alternatives.begin(),
                 alternatives.end()
             );
-
-            cs.second.push_back(
-                LangAPI::Switch::createStatement(
-                    buildDecisionTree(
-                        perAlt,
-                        op,
-                        narrowed,
-                        depth + 1,
-                        k,
-                        result_var,
-                        success_var
-                    )
-                )
+            nesting++;
+            auto nested_lookup_statements = buildDecisionTree(
+                perAlt,
+                op,
+                narrowed,
+                depth + 1,
+                k,
+                result_var,
+                success_var
             );
+            nesting--;
+            cs.second.insert(cs.second.end(), nested_lookup_statements.begin(), nested_lookup_statements.end());
+            // The nested tree handles rollback before its PopPosCounter.
+            // Restoring here is too late: the child's cursor has already
+            // propagated to this level.
+
         }
     }
-
-    return ss;
+    if (nesting == 1) {
+        return LangAPI::Statements {LangAPI::PushPosCounter::createStatement(LangAPI::PushPosCounter {.name = "lookahead_pos_" + std::to_string(nesting)}), ss, LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {})};
+    } else {
+        // this is nested call => we need to increase pos counter
+        return LangAPI::Statements {
+            LangAPI::PushPosCounter::createStatement(LangAPI::PushPosCounter {.name = "lookahead_pos_" + std::to_string(nesting)}),
+            LangAPI::CounterIncreament::createStatement(LangAPI::CounterIncreament {}),
+            // LL(k) lookahead counts significant tokens. Skip insignificant
+            // whitespace between lookahead positions just as the parser does.
+            // This only affects the speculative lookahead cursor.
+            LangAPI::SkipSpaces::createStatement(LangAPI::SkipSpaces{.isToken = isToken}),
+            ss,
+            // A failed nested choice must not consume lookahead tokens.
+            // Restore the nested cursor BEFORE PopPosCounter propagates it.
+            LangAPI::If::createStatement(LangAPI::If{
+                LangAPI::Expression{
+                    LangAPI::ExpressionValue{LangAPI::ExpressionElement::Not},
+                    LangAPI::Symbol::createExpressionValue(LangAPI::Symbol{success_var.name})
+                },
+                LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment{
+                    .name = LangAPI::Symbol{"lookahead_pos_" + std::to_string(nesting)},
+                    .value = LangAPI::Symbol::createExpression(
+                        LangAPI::Symbol{"lookahead_pos_" + std::to_string(nesting - 1)})
+                })
+            }),
+            LangAPI::PopPosCounter::createStatement(LangAPI::PopPosCounter {})
+        };
+    }
 }
-
 auto LLIR::OpBuilder::resolveLLk(
     const std::vector<std::shared_ptr<AST::RuleMember>>& op,
     const stdu::vector<std::string>& rule_name,
@@ -1402,18 +1698,46 @@ auto LLIR::OpBuilder::resolveLLk(
         perAlt.reserve(op.size());
         bool valid = !op.empty();
 
-        for (const auto& alt : op) {
+        for (std::size_t alt_index = 0; alt_index < op.size(); ++alt_index) {
+            const auto& alt = op[alt_index];
             const auto lookahead = tree.getAlternativeLookahead(*alt, rule_name, k);
             std::set<LookaheadSeq> converted(lookahead.begin(), lookahead.end());
-            if (converted.empty()) valid = false;
-            for (const auto& seq : converted)
-                if (seq.empty()) valid = false;
+
+            // Distinguish an invalid/incomplete lookahead computation from
+            // a real overlap between two alternatives. Previously `valid &&`
+            // short-circuited checkLLkConflicts, so an empty alternative
+            // silently produced the misleading "LL(k) conflict" exception.
+            if (converted.empty()) {
+                valid = false;
+                std::cerr << "[LL(k)] k=" << k << " alt=" << alt_index
+                          << " has EMPTY lookahead set; inspect FIRST_k of "
+                          << *alt << "\n";
+            }
+            for (const auto& seq : converted) {
+                if (seq.empty()) {
+                    valid = false;
+                    std::cerr << "[LL(k)] k=" << k << " alt=" << alt_index
+                              << " has an EPSILON lookahead (FOLLOW_k not resolved)\n";
+                }
+                std::cerr << "[LL(k)] k=" << k << " alt=" << alt_index << " [";
+                for (const auto& token : seq)
+                    std::cerr << token << " ";
+                std::cerr << "]\n";
+            }
             perAlt.push_back(std::move(converted));
         }
 
         result.k = k;
         result.perAlt = std::move(perAlt);
-        if (valid && checkLLkConflicts(result.perAlt)) {
+        // Always check nonempty alternatives, even if another alternative has
+        // an invalid lookahead. This gives conflict diagnostics instead of
+        // silently skipping the entire check due to short-circuiting.
+        const bool conflict_free = checkLLkConflicts(result.perAlt);
+        if (!valid) {
+            std::cerr << "[LL(k)] k=" << k
+                      << " unresolved: missing or epsilon-only lookahead; "
+                         "this is NOT proof of overlapping alternatives\n";
+        } else if (conflict_free) {
             result.resolved = true;
             return result;
         }
@@ -1425,6 +1749,9 @@ auto LLIR::OpBuilder::resolveLLk(
 
 
 void LLIR::OpBuilder::build() {
+    // A quantified choice may fail without being a parsing error.
+    SpeculativeMatchScope speculative(
+        rule.quantifier == '?' || rule.quantifier == '*' || rule.quantifier == '+');
     const auto &op = rule.getOp().options;
     auto var = createEmptyVariable("");
     var.type = deduceVarTypeByRuleMember(rule);
@@ -1453,29 +1780,27 @@ void LLIR::OpBuilder::build() {
     statements.push_back(grammarComment(rule, "choice; reset match status before selecting an alternative"));
     statements.push_back(assignSvar(svar, false));
     if (corelib::text::isLower(fullname.back())) {
+        // This grammar is expected to resolve choices within two tokens.
+        // Report genuine ambiguity instead of expanding an unbounded k.
         auto resolution = resolveLLk(op, fullname, tree);
 
         if (!resolution.resolved) {
-            throw Error("LL(k) conflict in rule {}: no unique lookahead for k = {}", fullname, resolution.k);
+            throw Error("LL(k) conflict in rule {}: unresolved within k = {} (inspect common prefixes / left factoring)", fullname, resolution.k);
         }
 
         // statements.push_back(LangAPI::SkipSpaces::createStatement(LangAPI::SkipSpaces{.isToken = isToken}));
         std::vector<std::size_t> candidates(op.size());
         std::iota(candidates.begin(), candidates.end(), 0);
-
-        statements.push_back(
-            LangAPI::Switch::createStatement(
-                buildDecisionTree(
-                    resolution.perAlt,
-                    op,
-                    candidates,
-                    0,
-                    resolution.k,
-                    var,
-                    svar
-                )
-            )
+        auto lookup_statements = buildDecisionTree(
+            resolution.perAlt,
+            op,
+            candidates,
+            0,
+            resolution.k,
+            var,
+            svar
         );
+        statements.insert(statements.end(), lookup_statements.begin(), lookup_statements.end());
 
         // FIX: if no case in the switch matched, svar is still false — the
         // alternation failed to find any viable lookahead at runtime (e.g.
@@ -1489,7 +1814,10 @@ void LLIR::OpBuilder::build() {
         };
         statements.push_back(LangAPI::If::createStatement(LangAPI::If{
             std::move(not_matched),
-            LangAPI::Return::createStatements(LangAPI::Return{})
+            LangAPI::Statements{
+                parserFailure(rule, "no LL(k) alternative matched"),
+                LangAPI::Return::createStatements(LangAPI::Return{}).front()
+            }
         }));
     }
 

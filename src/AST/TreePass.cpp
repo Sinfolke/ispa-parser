@@ -48,10 +48,11 @@ void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
 }
 void AST::TreePass::literalsToToken(
     stdu::vector<std::shared_ptr<AST::RuleMember>> &literals,
-    std::size_t &count,
     stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> &toInsert,
-    stdu::vector<std::pair<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>>> &generated
+    utype::unordered_map<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>> &generated,
+    stdu::vector<std::string> name
     ) {
+    std::size_t count = 0;
     for (auto &member_ptr : literals) {
         auto &member = *member_ptr;
         if (member.isString() || member.isHex() || member.isBin() || member.isEscaped() || member.isCsequence()) {
@@ -62,7 +63,8 @@ void AST::TreePass::literalsToToken(
                 member.value = find_it->second->value; // Use the generated member
             } else {
                 // create new token
-                stdu::vector<std::string> new_name = {"AUTO_" + std::to_string(count++)};
+                stdu::vector<std::string> new_name = name;
+                new_name.push_back("AUTO_" + std::to_string(count++));
                 auto mem_copy_for_generated = std::make_shared<AST::RuleMember>(member);
                 auto newRuleMember = member;
                 member.value = AST::RuleMemberName {.name = new_name};
@@ -76,27 +78,26 @@ void AST::TreePass::literalsToToken(
                 newRule.rule_members = {std::make_shared<AST::RuleMember>(newRuleMember)};
 
                 // Store the generated member
-                generated.push_back({mem_copy_for_generated, member_ptr});
+                generated.emplace(mem_copy_for_generated, member_ptr);
                 toInsert.push_back(std::make_pair(new_name, newRule));
             }
         } else if (member.isGroup()) {
             auto &group = member.getGroup();
-            literalsToToken(group.values, count, toInsert, generated);
+            literalsToToken(group.values, toInsert, generated, name);
         } else if (member.isOp()) {
             auto &op = member.getOp();
-            literalsToToken(op.options, count, toInsert, generated);
+            literalsToToken(op.options, toInsert, generated, name);
         }
     }
 }
 void AST::TreePass::literalsToToken(AST::Tree &ast) {
-    std::size_t count = 0;
-    stdu::vector<std::pair<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>>> generated;
+    utype::unordered_map<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>> generated;
     stdu::vector<std::pair<stdu::vector<std::string>, AST::Rule>> toInsert;
     auto &treeMap = ast.getTreeMap();
     AST::TreePass pass(ast);
     for (auto &[name, value] : treeMap) {
         if (corelib::text::isLower(name.back())) {
-            pass.literalsToToken(value.rule_members, count, toInsert, generated);
+            pass.literalsToToken(value.rule_members, toInsert, generated, name);
         }
     }
     for (const auto &[name, newRule] : toInsert) {

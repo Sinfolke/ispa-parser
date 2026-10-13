@@ -1357,7 +1357,6 @@ namespace ISPA_STD {
 
 
     }
-#define ISPA_DEBUG_REGISTERS
 namespace DFA {
     template<
         typename Token,
@@ -1415,8 +1414,10 @@ namespace DFA {
 
         while (state != API::null_state) {
             const char current_ch = *(immediate_action && *pos != '\0' ? pos + 1 : pos);
-            detail::trace_step(debug_array, debug_index, state,
-                               class_table[static_cast<unsigned char>(current_ch)], current_ch, pos, immediate_action);
+            if (debug_size > 1) { // because generator emits one <UNDEFINED> table
+                detail::trace_step(debug_array, debug_index, state,
+                                   class_table[static_cast<unsigned char>(current_ch)], current_ch, pos, immediate_action);
+            }
 
             if (state < table.size()) {
                 if (immediate_action) {
@@ -1742,8 +1743,17 @@ namespace DFA {
         // skip spaces for tokens
         template <typename SpaceTokenType, typename IT>
         void skip_spaces(IT& pos) {
-            while (std::holds_alternative<Node<TOKEN_T, SpaceTokenType>>(*pos))
+            if (std::holds_alternative<Node<TOKEN_T, SpaceTokenType>>(*pos))
                 ++pos;
+        }
+        void raise_error(const Token& node, const std::string& message) {
+            // std::visit([&](auto&& arg) {
+            //     using T = std::decay_t<decltype(arg)>;
+            //     if constexpr (!std::is_same_v<T, std::monostate>) {
+            //         std::cerr << "Error at token " << (int) arg.name() << "(at position " << arg.startpos() << ")" << ": " << message << std::endl;
+            //         std::cerr << "Token: \n" << arg << std::endl;
+            //     }
+            // }, node);
         }
         static void PANIC_MODE() {}
     public:

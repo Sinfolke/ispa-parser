@@ -13,4 +13,7 @@ int main(int argc, const char** argv) {
     Parser::Types::main &node = parser.parse(lexer);
     std::ofstream of("tree.txt");
     of << node << "\n\n";
+    for (const auto &token : lexer.getTokens()) {
+        std::cout << token << std::endl;
+    }
 }

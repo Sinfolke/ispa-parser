@@ -728,7 +728,13 @@ void LLIR::BuilderBase::getVariablesToTable(LangAPI::Statements& data, LangAPI::
             auto &loop = data[i].getWhileOrDoWhile();
             getVariablesToTable(loop.stmt, table, var_name, retain_value, recursive);
             ++i;
-        } else ++i;
+        } else if (data[i].isSwitch() && recursive) {
+            auto &sw = data[i].getSwitch();
+            for (auto &cs : sw.cases) {
+                getVariablesToTable(cs.second, table, var_name, retain_value, recursive);
+            }
+            ++i;
+        }else ++i;
     }
 }
 

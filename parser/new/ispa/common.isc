@@ -7,3 +7,43 @@ NUMBER:
 
     @{full, floating}
 ;
+name:
+    @ ID ('.' @ ID)* @ template_params? @ params?
+
+    @{primary, nested, temp_params, param}
+;
+expr:
+    @ '(' ID ')'
+
+    {@}
+;
+explicit_expr:
+    '(' @ expr ')'
+    {@}
+;
+stmt:
+    '{' @ ID '}'
+
+    {@}
+;
+forward_declaration:
+    '->' @  ID '->'
+    {@}
+;
+params:
+    '(' @ param? ')'
+    {@}
+;
+template_params:
+    '<' @ param? '>'
+    {@}
+;
+param:
+    @ ID (',' @ ID)*
+    @{first_p, following_p}
+;
+compound_statement:
+    @ '^'
+
+    {@}
+;

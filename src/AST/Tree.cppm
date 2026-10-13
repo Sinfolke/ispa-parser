@@ -2,7 +2,6 @@ export module AST.Tree;
 import AST.types;
 import AST.API;
 import corelib;
-import Parser;
 import hash;
 import cpuf.printf;
 import dstd;

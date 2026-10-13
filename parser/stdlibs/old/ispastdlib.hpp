@@ -1382,7 +1382,7 @@ protected:
     template <class IT>
     std::size_t skip_spaces(IT& pos) {
         auto prev = pos;
-        while (pos->name() == TOKEN_T::__WHITESPACE)
+        while (pos->name() == TOKEN_T::__WHITESPACE || pos->name() == TOKEN_T::LINEAR_COMMENT)
             ++pos;
         
         return pos - prev;

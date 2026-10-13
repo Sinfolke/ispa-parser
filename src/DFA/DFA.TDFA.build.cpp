@@ -99,6 +99,57 @@ class TnfaProvider {
     // exactly as dfa_closures did in the old build()).
     std::map<std::vector<std::size_t>, Closure> closures;
 
+    // Specificity of the entry transitions for each accepted token. This is a
+    // header-free compatibility heuristic: a fixed literal usually has one
+    // possible first character, whereas an identifier character class has many.
+    // TODO: replace with an explicit priority stored in TokenBinding, derived
+    // from the source grammar at TNFA construction time.
+    std::map<std::size_t, std::size_t> accept_entry_width;
+
+    void computeEntryWidths() {
+        const auto &states = nfa.getStates();
+        for (const auto &[name, entry] : nfa.getTokenEntries()) {
+            if (entry >= states.size()) continue;
+            std::set<std::size_t> seen;
+            std::vector<std::size_t> pending{entry};
+            std::set<char> first_characters;
+            // Epsilon closure of the token's entry, stopping at consuming edges.
+            while (!pending.empty()) {
+                const auto state = pending.back();
+                pending.pop_back();
+                if (state >= states.size() || !seen.insert(state).second) continue;
+                for (const auto &[character, edges] : states[state].transitions) {
+                    if (std::ranges::any_of(edges, [](const auto &edge) {
+                            return edge.next != TNFA::NULL_STATE;
+                        })) first_characters.insert(character);
+                }
+                for (const auto &edge : states[state].epsilon_transitions) {
+                    if (edge.next != TNFA::NULL_STATE) pending.push_back(edge.next);
+                }
+            }
+            // Traverse the token's own reachable states and associate accepts.
+            // The traversal intentionally follows consuming edges as well.
+            seen.clear();
+            pending.push_back(entry);
+            while (!pending.empty()) {
+                const auto state = pending.back();
+                pending.pop_back();
+                if (state >= states.size() || !seen.insert(state).second) continue;
+                if (states[state].accept_binding) {
+                    const auto id = states[state].accept_binding->token_id;
+                    const auto width = first_characters.size();
+                    auto [it, inserted] = accept_entry_width.emplace(id, width);
+                    if (!inserted) it->second = std::min(it->second, width);
+                }
+                for (const auto &[character, edges] : states[state].transitions)
+                    for (const auto &edge : edges)
+                        if (edge.next != TNFA::NULL_STATE) pending.push_back(edge.next);
+                for (const auto &edge : states[state].epsilon_transitions)
+                    if (edge.next != TNFA::NULL_STATE) pending.push_back(edge.next);
+            }
+        }
+    }
+
     auto eventsOf(const ActionPath &path, std::size_t edge_ops, bool after_edge) const
         -> std::vector<tdfa::Event> {
         std::vector<tdfa::Event> out;
@@ -133,7 +184,9 @@ class TnfaProvider {
 public:
     using Extra = StepExtra;
 
-    TnfaProvider(TNFA::TNFABuilder &nfa, const CaptureTable &caps) : nfa(nfa), caps(caps) {}
+    TnfaProvider(TNFA::TNFABuilder &nfa, const CaptureTable &caps) : nfa(nfa), caps(caps) {
+        computeEntryWidths();
+    }
 
     auto start() -> tdfa::Closed<Extra> {
         std::vector<std::size_t> entries;
@@ -212,7 +265,18 @@ public:
             std::optional<TNFA::TokenBinding> binding = it != nfa.getAcceptMap().end()
                                                             ? std::make_optional(it->second)
                                                             : nfa.getStates().at(s).accept_binding;
-            if (binding && (!best || binding->token_id > best->token_id)) {
+            if (!binding) continue;
+            const auto widthOf = [&](std::size_t id) {
+                const auto it = accept_entry_width.find(id);
+                return it == accept_entry_width.end()
+                    ? std::numeric_limits<std::size_t>::max() : it->second;
+            };
+            // Both accepts are for the same consumed input (one TDFA state).
+            // Prefer the more specific entry; preserve the old tie-break when
+            // specificity is indistinguishable.
+            if (!best || widthOf(binding->token_id) < widthOf(best->token_id) ||
+                (widthOf(binding->token_id) == widthOf(best->token_id) &&
+                 binding->token_id > best->token_id)) {
                 best = binding;
                 best_state = s;
             }

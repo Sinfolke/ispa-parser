@@ -993,70 +993,95 @@ export namespace Parser {
 		::Parser::Rule_res cll__var(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
+
 			::Parser::Token _0;
 			::Parser::bool_t success_1 = false;
+
 			::Parser::Token _2;
 			::Parser::bool_t success_3 = false;
+
 			::Parser::bool_t success_5 = false;
 			::Parser::bool_t success_9 = false;
 			::Parser::bool_t success_7 = false;
+
 			::Parser::Token _6;
 			::Parser::Rule_res _8;
-			success_1 = false;
-			if (pos->name() == ::Parser::Tokens::cll_TYPE)
-			{
+
+			// Optional type
+			if (pos->name() == ::Parser::Tokens::cll_TYPE) {
 				_0 = *pos;
 				success_1 = true;
-				pos += 1;
+				++pos;
 			}
+
 			skip_spaces(pos);
-			success_3 = false;
-			if (!(pos->name() == ::Parser::Tokens::ID))
-			{
+
+			// Required identifier
+			if (pos->name() != ::Parser::Tokens::ID) {
 				reportError(pos, "id ");
 				return {};
 			}
+
 			_2 = *pos;
 			success_3 = true;
-			pos += 1;
+			++pos;
+
 			skip_spaces(pos);
-			success_5 = false;
+
+			// Optional assignment: (ASSIGNMENT_OP expr)?
 			auto begin_10 = pos;
-			success_9 = false;
-			success_7 = false;
-			do
-			{
-				if (!(begin_10->name() == ::Parser::Tokens::cll_ASSIGNMENT_OP))
-				{
-					reportError(pos, "cll assignment_op ");
-					break;
-				}
+
+			skip_spaces(begin_10);
+
+			// Some lexer configurations classify '=' as an operator token
+			// other than cll_ASSIGNMENT_OP. Recognize its spelling here.
+			const bool assignment =
+				begin_10->name() == ::Parser::Tokens::cll_ASSIGNMENT_OP ||
+				(begin_10->start() && begin_10->end() - begin_10->start() == 1 &&
+				 *begin_10->start() == '=');
+			if (assignment) {
 				_6 = *begin_10;
 				success_7 = true;
-				begin_10 += 1;
+				++begin_10;
+
 				skip_spaces(begin_10);
+
 				_8 = cll_expr(begin_10);
-				if (!(_8.status))
-				{
-					reportError(pos, "cll expr ");
-					break;
+
+				if (!_8.status) {
+					// An assignment was started; do not silently accept only ID.
+					return {};
 				}
 				success_9 = true;
 				begin_10 += _8.node.length();
-			}
-			while(0);
-			if (success_7 && success_9)
-			{
 				success_5 = true;
 				pos = begin_10;
 			}
+
+			// Construct AST
 			::Parser::Types::cll__var data;
-			data.value = _8.node;
-			data.op = _6;
+
 			data.id = _2;
 			data.type = _0;
 
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll__var, data)};
+			if (success_5) {
+				data.op = _6;
+				data.value = _8.node;
+			}
+
+			return {
+				true,
+				::Parser::Rule(
+					in->startpos(),
+					in->start(),
+					pos->end(),
+					pos - in,
+					pos->line(),
+					pos->column(),
+					::Parser::Rules::cll__var,
+					data
+				)
+			};
 		}
 		template <class IT>
 		::Parser::Rule_res cll_function_call(IT pos) {
@@ -1470,35 +1495,19 @@ export namespace Parser {
 			skip_spaces(begin_13);
 			success_5 = false;
 			auto begin_12 = begin_13;
-			success_10 = false;
-			success_7 = false;
-			while (1)
-			{
-				if (!(begin_12->name() == ::Parser::Tokens::AUTO_1))
-				{
-					reportError(pos, "auto_1 ");
-					break;
-				}
-				_6 = *begin_12;
-				success_7 = true;
-				begin_12 += 1;
-				shadow_8.push_back(_6);
-				skip_spaces(begin_12);
-				_9 = cll_expr(begin_12);
-				if (!(_9.status))
-				{
-					reportError(pos, "cll expr ");
-					break;
-				}
-				success_10 = true;
-				begin_12 += _9.node.length();
-				shadow_11.push_back(_9.node);
-			}
-			if (success_7 && success_10)
-			{
+			while (begin_12->name() == ::Parser::Tokens::AUTO_1) {
+				auto after_comma = begin_12;
+				++after_comma;
+				skip_spaces(after_comma);
+				auto arg = cll_expr(after_comma);
+				if (!arg.status) return {};
+				after_comma += arg.node.length();
+				skip_spaces(after_comma);
+				shadow_11.push_back(arg.node);
+				begin_12 = after_comma;
 				success_5 = true;
-				begin_13 = begin_12;
 			}
+			begin_13 = begin_12;
 			if (success_3)
 			{
 				success_1 = true;
@@ -1773,14 +1782,16 @@ export namespace Parser {
 			pos += 1;
 			skip_spaces(pos);
 			success_3 = false;
-			_2 = cll_function_arguments(pos);
-			if (!(_2.status))
-			{
-				reportError(pos, "cll function_arguments ");
-				return {};
+			// Empty argument list is valid: f().
+			if (pos->name() != ::Parser::Tokens::AUTO_6) {
+				_2 = cll_function_arguments(pos);
+				if (!_2.status) {
+					reportError(pos, "cll function_arguments ");
+					return {};
+				}
+				success_3 = true;
+				pos += _2.node.length();
 			}
-			success_3 = true;
-			pos += _2.node.length();
 			skip_spaces(pos);
 			success_5 = false;
 			if (!(pos->name() == ::Parser::Tokens::AUTO_6))
@@ -2414,79 +2425,41 @@ export namespace Parser {
 		::Parser::Rule_res cll_expr_value(IT pos) {
 			auto in = pos;
 			skip_spaces(pos);
-			::Parser::Rule _0;
-			::Parser::bool_t success_1 = false;
-			::Parser::Rule_res _2;
-			::Parser::bool_t success_3 = false;
-			::Parser::Rule_res _4;
-			::Parser::bool_t success_5 = false;
-			::Parser::Rule_res _6;
-			::Parser::bool_t success_7 = false;
-			::Parser::Rule_res _8;
-			::Parser::bool_t success_9 = false;
-			::Parser::Rule_res _10;
-			::Parser::bool_t success_11 = false;
-			success_1 = false;
-			success_3 = false;
-			_2 = cll__variable(pos);
-			if (!(_2.status))
-			{
-				success_5 = false;
-				_4 = cll_expr_group(pos);
-				if (!(_4.status))
-				{
-					success_7 = false;
-					_6 = rvalue(pos);
-					if (!(_6.status))
-					{
-						success_9 = false;
-						_8 = cll_method_call(pos);
-						if (!(_8.status))
-						{
-							success_11 = false;
-							_10 = cll_function_call(pos);
-							if (!(_10.status))
-							{
-								return {};
-							}
-							else 
-							{
-								success_11 = true;
-								pos += _10.node.length();
-								_0 = _10.node;
-							}
-						}
-						else 
-						{
-							success_9 = true;
-							pos += _8.node.length();
-							_0 = _8.node;
+			::Parser::Rule_res matched;
+
+			// Function/method calls must take precedence over bare variables.
+			// Check the token shape first to avoid speculative error reports.
+			if (pos->name() == ::Parser::Tokens::ID) {
+				auto next = pos;
+				++next;
+				skip_spaces(next);
+				if (next->name() == ::Parser::Tokens::AUTO_5) {
+					matched = cll_function_call(pos);
+					if (!matched.status) return {};
+				} else if (next->name() == ::Parser::Tokens::DOT) {
+					++next;
+					skip_spaces(next);
+					if (next->name() == ::Parser::Tokens::ID) {
+						++next;
+						skip_spaces(next);
+						if (next->name() == ::Parser::Tokens::AUTO_5) {
+							matched = cll_method_call(pos);
+							if (!matched.status) return {};
 						}
 					}
-					else 
-					{
-						success_7 = true;
-						pos += _6.node.length();
-						_0 = _6.node;
-					}
-				}
-				else 
-				{
-					success_5 = true;
-					pos += _4.node.length();
-					_0 = _4.node;
 				}
 			}
-			else 
-			{
-				success_3 = true;
-				pos += _2.node.length();
-				_0 = _2.node;
-			}
-			success_1 = true;
-			::Parser::Types::cll_expr_value data = _0;
-			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(), pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_value, data)};
+			if (!matched.status) matched = cll__variable(pos);
+			if (!matched.status) matched = cll_expr_group(pos);
+			if (!matched.status) matched = rvalue(pos);
+			if (!matched.status) return {};
+
+			pos += matched.node.length();
+			::Parser::Types::cll_expr_value data = matched.node;
+			return {true, ::Parser::Rule(in->startpos(), in->start(), pos->end(),
+				pos - in, pos->line(), pos->column(), ::Parser::Rules::cll_expr_value, data)};
 		}
+
 		template <class IT>
 		::Parser::Rule_res object(IT pos) {
 			auto in = pos;

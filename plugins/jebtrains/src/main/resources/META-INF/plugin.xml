@@ -1,0 +1,13 @@
+<idea-plugin>
+  <id>dev.ispa.grammar</id>
+  <name>ISPA Grammar</name>
+  <vendor>ISPA</vendor>
+  <description>Token and syntax highlighting for ISPA .isc grammar files.</description>
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileType name="ISPA Grammar" implementationClass="dev.ispa.grammar.IspaFileType" fieldName="INSTANCE" language="ISPA" extensions="isc"/>
+    <lang.syntaxHighlighterFactory language="ISPA" implementationClass="dev.ispa.grammar.IspaSyntaxHighlighterFactory"/>
+    <externalAnnotator language="ISPA" implementationClass="dev.ispa.grammar.IspaNativeAnnotator"/>
+  </extensions>
+</idea-plugin>

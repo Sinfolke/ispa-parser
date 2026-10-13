@@ -1,21 +1,63 @@
-rule:
-    @ ID ':' @ #value+ ';'
-    @{name, v}
+grammar:
+    @ name @ rule | advanced_rule
 
-    #capture:
-        '@' (\s0 @ ID)?
+    @{name, entry}
+
+    #modifier:
+        '[' @ ID ']'
         {@}
     ;
-    #value:
-        @ #pattern @ #alternative* @ #QUANTIFIER?
-        @{v, alts, quantifier}
+;
+rule:
+    ':' @ #value+ @ #ast? @ #nested_rule* ';'
+    @{v, data, nested}
 
+    #ast:
+        @ #abbr | #full | #single_value
+        {@}
+
+        #full:
+            '&' '{' @ #part+ '}'
+
+            {@}
+
+            #part:
+                @ ID ':' @ expr
+                @{key, e}
+            ;
+        ;
+        #abbr:
+            '@' '{' @ ID+ '}'
+            {@}
+        ;
+        #single_value:
+            '{' @ expr '}'
+            {@}
+        ;
+    ;
+    #value:
+        @ #var_capture? @ #ast_capture? @ #pattern @ #alternative* @ #counter? @ #shared_counter_registration?
+        @{v_cap, ast_cap, val, alts, quantifier, registration}
+
+        #var_capture:
+            '&' @ ID
+            {@}
+        ;
+        #ast_capture:
+            '@' (\s0 @ ID)?
+            {@}
+        ;
         #pattern:
-            @ ID | #STRING | #SPACE | group
+            @ name | group | STRING | CGROUP | SPACE
             {@}
         ;
         #STRING:
             '\'' @ [^']* '\''
+
+            {@}
+        ;
+        #CGROUP:
+            '[' @ ([^\]] | '\\]')+ ']'
 
             {@}
         ;
@@ -24,7 +66,7 @@ rule:
             {@}
         ;
         #group:
-            '(' @ #value+ ')'
+            '(' @ value+ ')'
             {@}
         ;
         #alternative:
@@ -35,11 +77,47 @@ rule:
            @ '?' | '+' | '*'
            {@}
         ;
+        #counter:
+           @ QUANTIFIER @ #bounded?
+
+           @{quantifier, repetitions}
+           #bounded:
+                 '=' @ NUMBER | ID | explicit_expr
+
+                 {@}
+           ;
+        ;
+        #shared_counter_registration:
+            '=>' @ ID
+            {@}
+        ;
+    ;
+    #nested_rule:
+        '#' \s0 @ grammar
+        {@}
     ;
 ;
+advanced_rule:
+    '{' @ #dep_decl* @ (#match | stmt)* '}'
 
+    @{dep, body}
+    #dep_decl:
+        'depends' @ forward_declaration
+        {@}
+    ;
+    #match:
+        'match' @ rule.value+ @ #unpack | ';'
+        @{patterns, assign_names}
 
-main:
-    @ rule
-    {@}
+        #unpack:
+            '->' @ ID+
+
+            {@}
+        ;
+    ;
+    #fail_call:
+        'fail' @ name
+
+        {@}
+    ;
 ;

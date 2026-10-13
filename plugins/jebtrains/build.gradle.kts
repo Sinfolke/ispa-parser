@@ -1,0 +1,53 @@
+plugins {
+    kotlin("jvm") version "2.0.21"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
+}
+
+group = "dev.ispa"
+version = "0.1.0"
+
+repositories { mavenCentral(); intellijPlatform { defaultRepositories() } }
+
+dependencies {
+    intellijPlatform { intellijIdeaCommunity("2024.3.5") }
+    testImplementation(kotlin("test"))
+}
+
+kotlin { jvmToolchain(21) }
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion { sinceBuild = "243"; untilBuild = provider { null } }
+        changeNotes = "Initial release with bootstrap parser token integration and tolerant fallback highlighting."
+    }
+}
+
+val bridgeBuild = layout.buildDirectory.dir("native-build")
+val isWindowsHost = System.getProperty("os.name").lowercase().contains("windows")
+val bridgeFileName = "ispa-grammar-bridge" + if (isWindowsHost) ".exe" else ""
+val bridgeExecutable = bridgeBuild.map { it.file(bridgeFileName) }
+val compileIspaBridge by tasks.registering(Exec::class) {
+    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../Parser.cpp", "../../Parser.h", "../../parser/stdlibs/ispastdlib.hpp")
+    listOf("CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "LD").forEach { key -> inputs.property(key, System.getenv(key) ?: "") }
+    outputs.file(bridgeBuild.map { it.file("CMakeCache.txt") })
+    doFirst {
+        bridgeBuild.get().asFile.deleteRecursively()
+        bridgeBuild.get().asFile.mkdirs()
+    }
+    commandLine("cmake", "-S", projectDir.absolutePath, "-B", bridgeBuild.get().asFile.absolutePath,
+        "-DISPA_ROOT=${projectDir.parentFile.parentFile.absolutePath}")
+}
+val buildIspaBridge by tasks.registering(Exec::class) {
+    dependsOn(compileIspaBridge)
+    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../Parser.cpp", "../../Parser.h", "../../parser/stdlibs/ispastdlib.hpp")
+    outputs.file(bridgeExecutable)
+    commandLine("cmake", "--build", bridgeBuild.get().asFile.absolutePath, "--config", "Release")
+}
+val stageIspaBridge by tasks.registering(Copy::class) {
+    dependsOn(buildIspaBridge)
+    from(bridgeExecutable)
+    into(layout.buildDirectory.dir("generated/ispa-resources/native"))
+    rename { bridgeFileName }
+}
+sourceSets.main { resources.srcDir(layout.buildDirectory.dir("generated/ispa-resources")) }
+tasks.processResources { dependsOn(stageIspaBridge) }

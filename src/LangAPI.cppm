@@ -1559,7 +1559,7 @@ export namespace LangAPI {
         const PopPosCounter& getPopPosCounter() const { return std::get<PopPosCounter>(value); }
         const SkipSpaces& getSkipSpaces() const { return std::get<SkipSpaces>(value); }
         const DfaLookup& getDfaLookup() const { return std::get<DfaLookup>(value); }
-        const ReportError& getDfaReportError() const { return std::get<ReportError>(value); }
+        const ReportError& getReportError() const { return std::get<ReportError>(value); }
         const Lambda& getLambda() const { return std::get<Lambda>(value); }
         const DFADebug& getDFADebug() const { return std::get<DFADebug>(value); }
 

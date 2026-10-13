@@ -104,6 +104,7 @@ export namespace LLIR {
 
     class OpBuilder : public BuilderBase {
         const AST::RuleMember &rule;
+        std::size_t nesting = 1;
         auto createBlock(
             const stdu::vector<std::shared_ptr<AST::RuleMember>> &rules,
             std::size_t index,
@@ -126,7 +127,7 @@ export namespace LLIR {
         bool checkLLkConflicts(const std::vector<std::set<LookaheadSeq>> &perAlt,
                                 std::vector<std::tuple<std::size_t, std::size_t, LookaheadSeq>> *conflicts = nullptr);
 
-        LangAPI::Switch buildDecisionTree(
+        LangAPI::Statements buildDecisionTree(
             const std::vector<std::set<LookaheadSeq>>& perAlt,
             const std::vector<std::shared_ptr<AST::RuleMember>>& op,
             const std::vector<std::size_t>& candidates,
