@@ -476,14 +476,12 @@ auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) 
 }
 auto Core::convertMakeTuple(const LangAPI::MakeTuple &make_tuple) -> std::string {
     std::string tuple = make_tuple.args.size() == 2 ? "std::make_pair(" : "std::make_tuple(";
-    bool first = false;
+    bool first = true;
     for (const auto &el : make_tuple.args) {
-        tuple += convertExpression(el);
-        if (!first) {
-            tuple += ", ";
-            first = true;
-        }
+        tuple += convertExpression(el) + ", ";
     }
+    tuple.pop_back();
+    tuple.pop_back();
     tuple += ")";
     return tuple;
 }

@@ -19,31 +19,46 @@ void AST::TreePass::removeEmptyRule(AST::Tree &ast) {
     }
 }
 auto AST::TreePass::inlineGroup(AST::RuleMemberGroup group, stdu::vector<std::shared_ptr<AST::RuleMember>> &members, stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator toInsert)
-    -> stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator // group must be copy else on element insertion iterators will invalidate
+    -> stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator
 {
-    // recursively inline nested groups
-    for (std::size_t i = 0; i < group.values.size(); ++i) {
-        if (group.values[i]->isGroup() && group.values[i]->quantifier == '\0') {
-            auto nested = group.values[i]->getGroup(); // copy to avoid stale ref
-            inlineGroup(nested, group.values, group.values.begin() + i);
-            i += nested.values.size(); // move past inserted
-        }
-    }
-    // inline this group
-    return members.insert(toInsert, group.values.begin(), group.values.end()) + static_cast<stdu::vector<std::shared_ptr<AST::RuleMember>>::difference_type>(group.values.size());
+    inlineGroupsInSequence(group.values);
+    return members.insert(toInsert, group.values.begin(), group.values.end())
+         + static_cast<stdu::vector<std::shared_ptr<AST::RuleMember>>::difference_type>(group.values.size());
 }
-void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
-    for (auto &[name, value] : ast.getTreeMap()) {
-        for (auto it = value.rule_members.begin(); it != value.rule_members.end(); /* no increment here */) {
-            if ((*it)->isGroup() && (*it)->quantifier == '\0' && (*it)->prefix.empty()) {
-                auto group = (*it)->getGroup(); // make a copy
-                it = value.rule_members.erase(it); // erase the group first
-                it = inlineGroup(group, value.rule_members, it); // insert unwrapped group
-                continue; // check inserted group members
-            }
-            ++it;
+
+// Flattens unprefixed, unquantified groups out of a *sequence* context:
+// a rule's top-level members, a group's own values, or a Cll `if` body.
+// Deliberately never descends into RuleMemberOp::options — each option
+// there is one whole alternative (possibly itself a group standing for a
+// multi-member alternative), not a sequence; unwrapping a group there
+// would turn `(a b) | c` into the different grammar `a | b | c`.
+void AST::TreePass::inlineGroupsInSequence(stdu::vector<std::shared_ptr<AST::RuleMember>> &members) {
+    for (auto it = members.begin(); it != members.end(); /* no auto-increment */) {
+        auto &member = *it;
+
+        if (member->isGroup() && member->quantifier == '\0' && member->prefix.empty()) {
+            auto group = member->getGroup(); // copy before erase
+            it = members.erase(it);
+            it = inlineGroup(group, members, it);
+            continue;
         }
 
+        if (member->isGroup()) {
+            // Quantified/prefixed: this group stays, but its own
+            // contents may still hold flattenable nested groups.
+            inlineGroupsInSequence(member->getGroup().values);
+        } else if (member->isCll() && member->getCll().isIf()) {
+            inlineGroupsInSequence(member->getCll().getIf().stmt);
+        }
+        // RuleMemberOp::options intentionally not visited — see above.
+
+        ++it;
+    }
+}
+
+void AST::TreePass::inlineSingleGroups(AST::Tree &ast) {
+    for (auto &[name, value] : ast.getTreeMap()) {
+        inlineGroupsInSequence(value.rule_members);
     }
 }
 void AST::TreePass::literalsToToken(

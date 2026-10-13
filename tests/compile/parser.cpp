@@ -11,5 +11,5 @@ int main(int argc, const char** argv) {
     lexer.makeTokens(argv[1]);
     Parser::Parser parser;
     Parser::Types::main &node = parser.parse(lexer);
-    std::cout << node << std::endl;
+    std::cout << node.to_string() << std::endl;
 }

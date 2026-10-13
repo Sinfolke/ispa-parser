@@ -205,6 +205,8 @@ AST::CllExprTerm AST::Builder::createCllExprTerm(const Parser::Rule &term) {
     AST::CllExprTerm result;
 
     result.value = createCllExprValue(data.first);
+    if (data.operators.size() != data.sequence.size())
+        throw Error("Malformed createCllExprTerm: operator/operand count mismatch");
     for (std::size_t i = 0; i < data.operators.size(); i++) {
         char op;
         if (data.operators[i].name() == Parser::Tokens::PLUS)
@@ -221,6 +223,8 @@ AST::CllExprAddition AST::Builder::createCllExprAddition(const Parser::Rule &add
     AST::CllExprAddition result;
 
     result.value = createCllExprTerm(data.first);
+    if (data.operators.size() != data.sequence.size())
+        throw Error("Malformed createCllExprAddition: operator/operand count mismatch");
     for (std::size_t i = 0; i < data.operators.size(); i++) {
         char op;
         if (data.operators[i].name() == Parser::Tokens::PLUS)
@@ -237,6 +241,8 @@ AST::CllExprCompare AST::Builder::createCllExprCompare(const Parser::Rule &compa
     AST::CllExprCompare result;
 
     result.value = createCllExprAddition(data.first);
+    if (data.operators.size() != data.sequence.size())
+        throw Error("Malformed createCllExprCompare: operator/operand count mismatch");
     for (std::size_t i = 0; i < data.operators.size(); i++) {
         result.rights.push_back(std::make_pair(createCllCompareOp(data.operators[i]), createCllExprAddition(data.sequence[i])));
     }
@@ -247,6 +253,8 @@ AST::CllExprLogical AST::Builder::createCllExprLogical(const Parser::Rule &logic
     auto data = Parser::get::cll_expr_logical(logical);
     AST::CllExprLogical result;
     result.value = createCllExprCompare(data.left);
+    if (data.op.size() != data.right.size())
+        throw Error("Malformed createCllExprLogical: operator/operand count mismatch");
     for (std::size_t i = 0; i < data.op.size(); i++) {
         result.rights.push_back(std::make_pair(createCllLogicalOp(data.op[i]), createCllExprCompare(data.right[i])));
     }
@@ -301,11 +309,12 @@ AST::Cll AST::Builder::convertCll(const Parser::Rule &cll) {
         break;
     case Parser::Rules::cll__if:
         member.value = createCllIf(data);
+        break;
     case Parser::Rules::cll__var:
         member.value = createCllVar(data);
+        break;
     default:
         throw Error("[AST] Undefined cll member");
-        break;
     }
     return member;
 }
@@ -392,22 +401,28 @@ void AST::Builder::createRuleMember(const Parser::Rule &rule) {
                 member.value = AST::String {str};
                 break;
             }
-            case Parser::Tokens::rule_OP:
+            case Parser::Tokens::rule_OP: {
                 if (!in_op) {
+                    if (newRules.empty())
+                        throw Error("Alternative operator has no preceding member");
+
+                    auto previous = newRules.back();
+                    if (!previous || previous->empty())
+                        throw Error("Empty previous member before alternative operator");
+
                     in_op = true;
                     prev_op = true;
-
-                    auto prev_member = newRules.back();
-                    if (!prev_member || prev_member->empty())
-                        throw Error("Empty previous member");
-                    ops_prefix = prev_member->prefix;
-                    prev_member->prefix.clear();
-                    ops.push_back(prev_member);
-
+                    ops_prefix = previous->prefix;
+                    previous->prefix.clear();
+                    ops.push_back(std::move(previous));
                     newRules.pop_back();
+                } else {
+                    if (prev_op)
+                        throw Error("Consecutive alternative operators");
+                    prev_op = true;
                 }
-                prev_op = true;
-                return; // skip adding this token to newRules
+                return; // operator is a separator, not a RuleMember
+            }
             case Parser::Tokens::rule_NOSPACE:
                 if (!member.prefix.empty()) {
                     throw Error("Prefix and NOSPACE can't be used together");
@@ -528,7 +543,9 @@ void AST::Builder::createRuleMembers(const stdu::vector<Parser::Rule> &rules) {
     for (const auto &rule : rules) {
         createRuleMember(rule);
     }
-    if (!ops.empty())
+    if (in_op && prev_op)
+        throw Error("Alternative operator without a following member");
+    if (in_op)
         flushOpSequence();
 }
 void AST::Builder::getNestedRuleNames(const Parser::Types::rule &rule) {

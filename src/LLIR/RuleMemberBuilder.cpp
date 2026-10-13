@@ -81,6 +81,7 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
         uvar.type = deduceUvarType(var, shadow_var);
         statements.push_back(LangAPI::Variable::createStatement(uvar));
     }
+
     if (quantifier == '*' || quantifier == '+') {
         LangAPI::While loop;
         loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true });
@@ -122,6 +123,10 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
         loop.stmt.insert(loop.stmt.begin(), grammarComment(rule, "optional body; failed alternative leaves this group"));
         loop.stmt.push_back(LangAPI::Break::createStatements(LangAPI::Break{}).front());
         statements.push_back(LangAPI::While::createStatement(loop));
+    } else {
+        // FIX: Insert the group's statements when there is no quantifier
+        statements.insert(statements.end(), builder.getData().begin(), builder.getData().end());
+        builder.getData().clear();
     }
 }
 
@@ -580,7 +585,55 @@ void LLIR::GroupBuilder::build() {
             }
             break;
         }
+        case LangAPI::ValueType::Tuple: {
+            // deduceVarTypeByRuleMember built one tuple slot per group member,
+            // in order; return_vars has one export per member, same order --
+            // so these line up positionally. Members with no real value (e.g.
+            // nospace) contribute no export name and are skipped, same as the
+            // String case above.
+            LangAPI::MakeTuple make_tuple;
+            for (const auto& ret : return_vars) {
+                if (ret.var.name.empty())
+                    continue;
+                LangAPI::Expression element_value =
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{ret.var.name});
 
+                // A tuple slot must hold the matched node, not the MatchResult<T>
+                // wrapper -- same reasoning as the repeated-group capture path
+                // above (search "Do not append MatchResult<T>").
+                if (ret.var.type == LangAPI::ValueType::RuleResult ||
+                    ret.var.type == LangAPI::ValueType::TokenResult) {
+                    auto extracted = createEmptyVariable("tuple_elem" + generateVariableName());
+                    extracted.type = deduceUvarType(ret.var, {});
+                    fetch_var_statements.push_back(
+                        LangAPI::Variable::createStatement(extracted));
+                    fetch_var_statements.push_back(
+                        LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment{
+                            .name = LangAPI::Symbol{extracted.name},
+                            .value = LangAPI::StorageSymbol::createExpression(
+                                LangAPI::StorageSymbol{
+                                    LangAPI::Symbol::createExpression(
+                                        LangAPI::Symbol{ret.var.name}),
+                                    stdu::vector<LangAPI::StorageSymbol::PathPart>{
+                                        LangAPI::IspaLibSymbol{
+                                            .exports = LangAPI::StdlibExports::MatchResultValue}}
+                                })
+                        }));
+                    element_value = LangAPI::Symbol::createExpression(
+                        LangAPI::Symbol{extracted.name});
+                }
+
+                make_tuple.args.push_back(std::move(element_value));
+            }
+
+            fetch_var_statements.push_back(
+                LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
+                    .name = LangAPI::Symbol{var.name},
+                    .value = LangAPI::MakeTuple::createExpression(std::move(make_tuple))
+                })
+            );
+            break;
+        }
         // case LangAPI::ValueType::Token:
         // case LangAPI::ValueType::Rule:
         // case LangAPI::ValueType::Variant:
@@ -1416,7 +1469,6 @@ bool LLIR::OpBuilder::checkLLkConflicts(
     for (std::size_t i = 0; i < perAlt.size(); ++i) {
         for (std::size_t j = i + 1; j < perAlt.size(); ++j) {
             for (const auto& a : perAlt[i]) {
-                std::cout << "preAlt: " << std::endl;
                 for (const auto& b : perAlt[j]) {
                     if (!overlaps(a, b)) continue;
                     ok = false;

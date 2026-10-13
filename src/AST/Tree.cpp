@@ -312,296 +312,217 @@ auto AST::Tree::compute_group_length(const stdu::vector<std::shared_ptr<AST::Rul
     return count;
 };
 void AST::Tree::transform_helper(
-    stdu::vector<std::shared_ptr<AST::RuleMember>> &members,
-    const stdu::vector<std::string> &fullname,
-    const stdu::vector<std::string> &original_fullname,
-    utype::unordered_map<stdu::vector<std::string>, std::pair<char, stdu::vector<std::string>>> &replacements
+    stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
+    const stdu::vector<std::string>& fullname,
+    const stdu::vector<std::string>& original_fullname,
+    utype::unordered_map<stdu::vector<std::string>,
+                         std::pair<char, stdu::vector<std::string>>>& replacements
 ) {
+    using MemberPtr = std::shared_ptr<AST::RuleMember>;
+    using Members = stdu::vector<MemberPtr>;
+    using RuleName = stdu::vector<std::string>;
+
+    // Ensure logging indentation is restored even if transformation throws.
     logger.increaseIndentLevel();
-    auto size = members.size();
-    for (std::size_t i = 0; i < size; ++i) {
-        auto &member_ptr = members[i];
-        auto &member = *member_ptr;
-        if (member.isGroup()) {
-            logger.increaseIndentLevel();
-            logger.log("IsGroup, data: ");
-            logger.increaseIndentLevel();
-            logger.log("{}", member.getGroup().values);
-            logger.decreaseIndentLevel();
-            auto data = member.getGroup(); // should be copy!!!
-            if (member.quantifier == '\0') {
-                transform_helper(data.values, fullname, original_fullname, replacements);
-                logger.log("Unrolling group with empty quantifier: {}", members);
+    const auto restore_indent = [this](void*) { logger.decreaseIndentLevel(); };
+    std::shared_ptr<void> indent_guard(nullptr, restore_indent);
 
-                // Remove the group at position i
-                auto it = members.erase(members.begin() + i);
+    const auto reference = [](const RuleName& name) -> MemberPtr {
+        return std::make_shared<AST::RuleMember>(
+            AST::RuleMember{.value = AST::RuleMemberName{.name = name}});
+    };
 
-                // Insert inlined values at position i
-                members.insert(it, data.values.begin(), data.values.end());
+    const auto append_name = [](RuleName name, const std::string& part) {
+        name.push_back(part);
+        return name;
+    };
 
-                logger.log("Unrolled to {}, inserted {} elements at {}", members, data.values.size(), i);
+    const auto push_rule = [&](const RuleName& name, const Members& values) {
+        initial_item_set[name].push_back(AST::Rule{
+            .rule_members = values,
+            .original_rules = original_fullname
+        });
+    };
 
-                // Move i past inserted values
-                i += data.values.size();  // Already erased 1, inserted N — so we skip N
-                i--; // Correct for loop increment
+    // Expand X? / X+ / X* into generated rules. Payload consists of
+    // already-transformed members with no outer quantifier.
+    const auto expand_quantified = [&](const RuleName& name,
+                                       const Members& payload,
+                                       char quantifier) {
+        switch (quantifier) {
+            case '?':
+                push_rule(name, {});
+                push_rule(name, payload);
+                return;
+            case '*': {
+                push_rule(name, {});
+                auto repeated = payload;
+                repeated.push_back(reference(name));
+                push_rule(name, repeated);
+                return;
+            }
+            case '+': {
+                const RuleName tail = append_name(name, "__tail");
+                auto first = payload;
+                first.push_back(reference(tail));
+                push_rule(name, first);
 
+                push_rule(tail, {});
+                auto repeated = payload;
+                repeated.push_back(reference(tail));
+                push_rule(tail, repeated);
+                return;
+            }
+            default:
+                throw Error("Unsupported quantifier in transform_helper");
+        }
+    };
+
+    std::size_t i = 0;
+    while (i < members.size()) {
+        // Own a copy so replacing/erasing members[i] cannot destroy the object
+        // while it is still being examined.
+        MemberPtr current = members[i];
+        if (!current)
+            throw Error("Null RuleMember in transform_helper");
+
+        const char quantifier = current->quantifier;
+
+        if (current->isGroup()) {
+            // Copy the vector, not the outer RuleMember. The copied pointers
+            // remain alive even after removing the group from `members`.
+            Members values = current->getGroup().values;
+
+            if (quantifier == '\0') {
+                transform_helper(values, fullname, original_fullname, replacements);
+                const std::size_t count = values.size();
+
+                members.erase(members.begin() + i);
+                members.insert(members.begin() + i, values.begin(), values.end());
+
+                logger.log("Expanded unquantified group at {}, {} entries", i, count);
+                // Inserts were already transformed; for an empty group, i
+                // now points to the next original member.
+                i += count;
                 continue;
             }
-            std::string quant_rule_name = "__grp" + std::to_string(i);
-            auto quant_fullname = fullname;
-            quant_fullname.push_back(quant_rule_name);
-            // Recursively process the group
-            logger.log("running transform_helper on group");
-            transform_helper(data.values, quant_fullname, original_fullname, replacements);
 
-            stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alternatives;
-            logger.log("quant_fullname: {}", quant_fullname);
-            // Replace current member with reference to new rule
-            member_ptr = std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} });
-
-            stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alts;
-            logger.log("dealing with quantifier {}", member.quantifier);
-            switch (member.quantifier) {
-                case '?':
-                    new_alts.push_back({}); // empty
-                    new_alts.push_back(data.values);
-                    break;
-
-                case '+': {
-                    // + = A A*
-                    std::string tail_name = quant_rule_name + "_tail";
-                    auto tail_fullname = quant_fullname;
-                    tail_fullname.push_back(tail_name);
-
-                    // A → data tail
-                    auto base = data.values;
-                    base.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} }));
-                    new_alts.push_back(base);
-
-                    // A* tail: ε | data tail
-                    stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> tail_alts;
-                    tail_alts.push_back({});
-                    auto recur = data.values;
-                    recur.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = tail_fullname} }));
-                    tail_alts.push_back(recur);
-
-                    for (auto &alt : tail_alts)
-                        initial_item_set[tail_fullname].push_back(AST::Rule {.rule_members = alt, .original_rules = original_fullname});
-                    break;
-                }
-
-                case '*': {
-                    // * = ε | data A*
-                    new_alts.push_back({});
-                    auto recur = data.values;
-                    recur.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember { .value = AST::RuleMemberName {.name = quant_fullname} }));
-                    new_alts.push_back(recur);
-                    break;
-                }
-                default:
-                    initial_item_set[quant_fullname].push_back(AST::Rule {
-                        .rule_members = data.values,
-                        .original_rules = original_fullname
-                    });
-            }
-
-            for (auto &alt : new_alts) {
-                logger.log("alt: ", alt);
-                logger.increaseIndentLevel();
-                logger.log("{}", alt);
-                logger.decreaseIndentLevel();
-                initial_item_set[quant_fullname].push_back(AST::Rule {.rule_members = alt, .original_rules = original_fullname});
-            }
-            logger.log("<leaving group>");
-            logger.decreaseIndentLevel();
+            const RuleName generated = append_name(fullname, "__grp" + std::to_string(i));
+            transform_helper(values, generated, original_fullname, replacements);
+            expand_quantified(generated, values, quantifier);
+            members[i] = reference(generated);
+            ++i;
             continue;
         }
-        if (member.isOp()) {
-            logger.log("in Op: {}", member.getOp());
-            auto data = member.getOp(); // should be copy !!!
-            stdu::vector<std::string> push_name;
-            stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator val_it;
-            stdu::vector<std::pair<std::size_t, std::size_t>> group_pos = {};
-            std::size_t _count = 0;
+
+        if (current->isOp()) {
+            // The old representation stores a list of alternatives and may
+            // store an unquantified group as an entire alternative.
+            // Expand each original alternative independently to avoid stale
+            // offsets, iterators and out-of-bounds group-length arithmetic.
+            Members original_options = current->getOp().options;
+            if (original_options.empty())
+                throw Error("Empty alternative group in transform_helper");
+
+            stdu::vector<Members> alternatives;
+            for (const MemberPtr& option : original_options) {
+                if (!option)
+                    throw Error("Null alternative in transform_helper");
+
+                Members sequence;
+                if (option->isGroup() && option->quantifier == '\0') {
+                    sequence = option->getGroup().values;
+                } else {
+                    sequence.push_back(option);
+                }
+                transform_helper(sequence, fullname, original_fullname, replacements);
+                alternatives.push_back(std::move(sequence));
+            }
+
+            // In a single-member rule, the first alternative can occupy the
+            // rule itself. Remaining alternatives become additional rules.
+            // In a larger rule, reference a generated choice nonterminal.
             if (members.size() == 1) {
-                logger.log("[branch] members.size() == 1");
-                std::size_t count = 0;
-                bool is_first_going_group = false;
-
-                for (const auto &rule : data.options) {
-                    if (rule->isGroup()) {
-                        if (count == 0)
-                            is_first_going_group = true;
-
-                        auto len = compute_group_length(rule->getGroup().values);
-                        group_pos.push_back({count, len});
-                        count += len;
-                        continue;
-                    }
-                    count++;
-                }
-                logger.log("group_pos: {}", group_pos);
-                logger.log("running transform_helper on op");
-                transform_helper(data.options, fullname, original_fullname, replacements); // process internal ops/groups
-                if (is_first_going_group) {
-                    logger.log("[branch] is_first_going_group == true");
-                    logger.log("group_pos[0]: {}", group_pos[0]);
-                    auto [pos, len] = group_pos[0];
-                    auto insert_pos = members.begin() + i;
-                    members.erase(insert_pos);  // erase original group placeholder
-
-                    // Reset insert_pos, because erase invalidates it
-                    insert_pos = members.begin() + i;
-
-                    std::size_t j = 0;
-                    val_it = data.options.begin();
-                    logger.increaseIndentLevel();
-                    for (; j < len; ++j, ++val_it, ++_count) {
-                        logger.log("j: {}, _count: {}, val_it: {}", j, _count, &(*val_it));
-                        insert_pos = members.insert(insert_pos, *val_it);
-                        ++insert_pos; // move insert position forward for next item
-                    }
-                    logger.decreaseIndentLevel();
-
-                    // val_it now correctly points to the remaining options, if any
-                    val_it = data.options.begin() + j;
-                } else {
-                    logger.log("[branch] is_first_going_group == false");
-                    logger.log("data.options[0]: {}, data.options.begin(): {}, data.options.begin() + 1: {}, _count: {}, _count + 1: {}",
-                        *data.options[0], &(*data.options.begin()), &(*data.options.begin()) + 1, _count, _count + 1
-                    );
-                    logger.log("remain element {} in set", *data.options[0]);
-                    members[i] = data.options[0];
-                    val_it = data.options.begin() + 1;
-                    _count++;
-                }
-
-                push_name = fullname;
+                members.erase(members.begin() + i);
+                members.insert(members.begin() + i,
+                               alternatives.front().begin(), alternatives.front().end());
+                for (std::size_t a = 1; a < alternatives.size(); ++a)
+                    push_rule(fullname, alternatives[a]);
+                i += alternatives.front().size();
             } else {
-                logger.log("[branch] members.size() == {} (!= 1)", members.size());
-                std::string name ="__rop" + std::to_string(i);
-                auto new_fullname = fullname;
-                new_fullname.push_back(name);
-                members[i] = std::make_shared<AST::RuleMember>(AST::RuleMember {.value = AST::RuleMemberName {.name = new_fullname}});
-
-                transform_helper(data.options, fullname, original_fullname, replacements); // process internal ops/groups
-                val_it = data.options.begin();
-                push_name = new_fullname;
-                logger.log("new_fullname: {}", new_fullname);
+                const RuleName generated = append_name(fullname, "__rop" + std::to_string(i));
+                for (const auto& alternative : alternatives)
+                    push_rule(generated, alternative);
+                members[i] = reference(generated);
+                ++i;
             }
-            for (; val_it != data.options.end(); val_it++, _count++) {
-                auto group = std::find_if(group_pos.begin(), group_pos.end(), [&_count](const std::pair<std::size_t, std::size_t> &unit) {return unit.first == _count;});
-                stdu::vector<std::shared_ptr<AST::RuleMember>> values;
-                logger.log("found group: {}", group != group_pos.end());
-                if (group != group_pos.end()) {
-                    logger.log("iterating through group");
-                    for (std::size_t i = 0; i < group->second && val_it != data.options.end(); i++, _count++, val_it++) {
-                        logger.log("i: {}, _count: {}, val_it: {}", i, _count, &(*val_it));
-                        values.push_back(*val_it);
-                    }
-                    val_it--;
-                    _count--;
-                    logger.log("final _count: {}, val_it: {}", _count, &(*val_it));
-                } else {
-                    logger.log("inserting raw element {}", **val_it);
-                    values.push_back(*val_it);
-                }
-                initial_item_set[push_name].push_back(AST::Rule {.rule_members = values, .original_rules = original_fullname});
-            }
-            logger.log("<Leaving Op>");
-            continue;
-        }
-        // Handle standalone quantifier case (e.g., id?, id+, id*)
-        if (member.quantifier == '\0')
-            continue;
-
-        auto find = replacements.find(fullname);
-        if (find != replacements.end() && find->second.first == member.quantifier) {
-            member_ptr = std::make_shared<AST::RuleMember>(AST::RuleMember {
-                .quantifier = '\0',
-                .value = AST::RuleMemberName {.name = find->second.second}
-            });
             continue;
         }
 
-        std::string quant_rule_name = "__q" + std::to_string(i);
-
-        auto quant_fullname = fullname;
-        quant_fullname.push_back(quant_rule_name);
-
-        AST::RuleMember replaced = member;
-        replaced.quantifier = '\0';
-
-        stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> new_alts;
-        logger.log("dealing with quantifier {} for rule {}", member.quantifier, member);
-        switch (member.quantifier) {
-            case '?':
-                new_alts.push_back({});
-                new_alts.push_back({std::make_shared<AST::RuleMember>(replaced)});
-                break;
-            case '+': {
-                std::string tail_name = quant_rule_name + "_tail";
-                auto tail_fullname = quant_fullname;
-                tail_fullname.push_back(tail_name);
-
-                new_alts.push_back({
-                    std::make_shared<AST::RuleMember>(replaced),
-                    std::make_shared<AST::RuleMember>(AST::RuleMember {
-                        .value = AST::RuleMemberName {.name = tail_fullname}
-                    })
-                });
-
-                stdu::vector<stdu::vector<std::shared_ptr<AST::RuleMember>>> tail_alts = {
-                    {},
-                    {
-                        std::make_shared<AST::RuleMember>(replaced),
-                        std::make_shared<AST::RuleMember>(AST::RuleMember {
-                            .value = AST::RuleMemberName {.name = tail_fullname}
-                        })
-                    }
-                };
-                for (auto &alt : tail_alts) {
-                    initial_item_set[tail_fullname].push_back(AST::Rule {.rule_members = alt, .original_rules = original_fullname});
-                }
-                break;
-            }
-            case '*':
-                new_alts.push_back({});
-                new_alts.push_back({
-                    std::make_shared<AST::RuleMember>(replaced),
-                    std::make_shared<AST::RuleMember>(AST::RuleMember {
-                        .value = AST::RuleMemberName {.name = quant_fullname}
-                    })
-                });
-                break;
+        if (quantifier == '\0') {
+            ++i;
+            continue;
         }
 
-        for (auto &alt : new_alts) {
-            initial_item_set[quant_fullname].push_back(AST::Rule {.rule_members = alt, .original_rules = original_fullname});
+        const auto previous = replacements.find(fullname);
+        if (previous != replacements.end() && previous->second.first == quantifier) {
+            members[i] = reference(previous->second.second);
+            ++i;
+            continue;
         }
+
+        const RuleName generated = append_name(fullname, "__q" + std::to_string(i));
+        AST::RuleMember unquantified = *current;
+        unquantified.quantifier = '\0';
+        expand_quantified(generated, {std::make_shared<AST::RuleMember>(std::move(unquantified))}, quantifier);
+        members[i] = reference(generated);
+        ++i;
     }
-    logger.decreaseIndentLevel();
 }
+
 void AST::Tree::transform() {
     stdu::vector<stdu::vector<std::string>> keys;
-    for (const auto &pair : initial_item_set) {
-        if (corelib::text::isLower(pair.first.back()))
-            keys.push_back(pair.first);
+    for (const auto& [name, rules] : initial_item_set) {
+        if (!name.empty() && corelib::text::isLower(name.back()))
+            keys.push_back(name);
     }
 
-    utype::unordered_map<stdu::vector<std::string>, std::pair<char, stdu::vector<std::string>>> replacement;
-    Tlog::Branch lb(logger, "AST/transform.log");
-    for (const auto &name : keys) {
+    utype::unordered_map<stdu::vector<std::string>,
+                         std::pair<char, stdu::vector<std::string>>> replacements;
+    Tlog::Branch log_branch(logger, "AST/transform.log");
+
+    for (const auto& name : keys) {
         auto it = initial_item_set.find(name);
         if (it == initial_item_set.end())
             throw Error("Previous key disappeared");
         if (it->second.empty())
             throw Error("Rule {} empty", name);
-        logger.log("transforming {}: {}", name, it->second[0].rule_members);
-        transform_helper(it->second[0].rule_members, name, name, replacement);
-        logger.log("new rule {}: {}", name, it->second[0].rule_members);
+
+        logger.log("Transforming rule {}, {} members", name,
+                   it->second.front().rule_members.size());
+
+        // Work on a local copy. transform_helper (via push_rule) may push
+        // additional productions onto initial_item_set[name] itself (e.g.
+        // when a rule's whole body is a bare alternation `a | b | c`),
+        // which reallocates that vector's storage. A reference bound into
+        // that storage would dangle the moment that happens; an owned
+        // local copy can't be invalidated by it.
+        auto members_copy = it->second.front().rule_members;
+        transform_helper(members_copy, name, name, replacements);
+
+        // initial_item_set may have gained new keys (generated helper
+        // rules) during the call, which can rehash the map and invalidate
+        // `it`. Re-look-up before writing back.
+        it = initial_item_set.find(name);
+        if (it == initial_item_set.end())
+            throw Error("Rule {} disappeared during transform", name);
+        it->second.front().rule_members = std::move(members_copy);
+
+        logger.log("Transformed rule {}, {} members", name,
+                   it->second.front().rule_members.size());
     }
 }
+
 void AST::Tree::createInitialItemSet() {
     if (!initial_item_set.empty())
         return;

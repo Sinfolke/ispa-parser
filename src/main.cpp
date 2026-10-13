@@ -122,10 +122,6 @@ int main(int argc, char** argv) {
     initialItemSet << "Initial item set:\n";
     initialItemSet.close();
     treeAPIO.close();
-    if (dumper.shouldDump("first"))
-        ast.printFirstSet(dumper.makeDumpPath("first"));
-    if (dumper.shouldDump("follow"))
-        ast.printFollowSet(dumper.makeDumpPath("follow"));
     dlib converter_dlib(std::string("libispa-converter-") + args.language_str);  // get dynamically library for conversion
     std::string opath;
     if (!args.output.empty()) {

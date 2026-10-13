@@ -12,7 +12,7 @@ auto CppParser::generate() -> int {
 #endif
 }
 auto CppParser::compile(std::string bootloader_name, std::string clang) -> int {
-    return utils::command("{} {} {} -I {} -I {} -ferror-limit=1 -o {} -g",
+    return utils::command("{} {} {} -I {} -I {} -ferror-limit=1 -o {} -g -Wno-switch",
         clang,
         std::filesystem::path(TEST_ROOT_DIR) / "compile" / (bootloader_name + ".cpp"),
         parserSourcePath(),

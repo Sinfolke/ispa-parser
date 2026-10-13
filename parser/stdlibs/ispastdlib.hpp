@@ -468,7 +468,17 @@ namespace ISPA_STD {
         OS* out = nullptr;
         std::vector<bool> branches;
     };
-    template<class EnumT, class DataStorageType, class = std::enable_if_t<std::is_class_v<DataStorageType>>>
+    template<class Destination, class Source>
+    struct is_node_storage_conversion_allowed : std::false_type {};
+
+    template<class T>
+    struct is_node_storage_conversion_allowed<std::shared_ptr<T>, T> : std::true_type {};
+
+    template<class T>
+    struct is_node_storage_conversion_allowed<T, std::shared_ptr<T>> : std::true_type {};
+
+    template<class EnumT, class DataStorageType,
+             class = std::enable_if_t<std::is_class_v<DataStorageType>>>
     class Node {
         std::size_t _startpos = std::string::npos;
         std::size_t _length = 0;
@@ -478,7 +488,8 @@ namespace ISPA_STD {
         const char* _end = nullptr;
         EnumT _name = EnumT::NONE;
         bool _empty = true;
-        DataStorageType _data;
+        DataStorageType _data{};
+
         template<typename Other>
         void copy_metadata(const Other& other) {
             _startpos = other.startpos();
@@ -490,85 +501,98 @@ namespace ISPA_STD {
             _name = other.name();
             _empty = other.empty();
         }
+
+        // Conversions are instantiated only when invoked, not when a recursive
+        // Node<EnumT, shared_ptr<Incomplete>> is first instantiated.
+        template<typename SourceStorage>
+        void assign_converted(const Node<EnumT, SourceStorage>& other) {
+            if constexpr (is_shared_ptr<DataStorageType>::value &&
+                          !is_shared_ptr<SourceStorage>::value) {
+                using Element = typename is_shared_ptr<DataStorageType>::element_type;
+                static_assert(std::is_same_v<Element, SourceStorage>,
+                              "Incompatible value-to-pointer Node conversion");
+                if (other.empty()) {
+                    _data.reset();
+                } else {
+                    _data = std::make_shared<Element>(other.data());
+                }
+            } else if constexpr (!is_shared_ptr<DataStorageType>::value &&
+                                 is_shared_ptr<SourceStorage>::value) {
+                using Element = typename is_shared_ptr<SourceStorage>::element_type;
+                static_assert(std::is_same_v<Element, DataStorageType>,
+                              "Incompatible pointer-to-value Node conversion");
+                if (other.empty() || !other.data()) {
+                    _data = DataStorageType{};
+                } else {
+                    _data = *other.data();
+                }
+            } else {
+                static_assert(!std::is_same_v<SourceStorage, SourceStorage>,
+                              "Unsupported cross-storage Node conversion");
+            }
+            copy_metadata(other);
+            if constexpr (is_shared_ptr<DataStorageType>::value) {
+                if (!_data) _empty = true;
+            }
+        }
+
     public:
-        Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name)
-            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name) {}
-        template<class  ...Args, class = std::enable_if_t<std::is_constructible_v<DataStorageType, Args...>>>
-        Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, Args&& ...args)
-            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(std::forward<Args>(args)...), _empty(false) {}
-        Node(const std::size_t startpos, const char* start, const char* end, std::size_t length, std::size_t line, std::size_t column, EnumT name, DataStorageType data)
-            : _startpos(startpos), _start(start), _end(end), _length(length), _line(line), _column(column), _name(name), _data(data), _empty(false) {}
-        Node() {}
-        template<typename U,std::enable_if_t<std::is_same_v<DataStorageType, std::shared_ptr<U>>, int> = 0>
-        Node(const Node<EnumT, U>& other) : Node() {
-            copy_metadata(other);
-            if (!_empty)
-                _data = std::make_shared<U>(other.data());
-        }
+        Node() = default;
+
+        Node(std::size_t startpos, const char* start, const char* end,
+             std::size_t length, std::size_t line, std::size_t column, EnumT name)
+            : _startpos(startpos), _length(length), _line(line),
+              _column(column), _start(start), _end(end), _name(name) {}
+
+        template<class... Args,
+                 std::enable_if_t<(sizeof...(Args) > 0 &&
+                                   std::is_constructible_v<DataStorageType, Args...>), int> = 0>
+        Node(std::size_t startpos, const char* start, const char* end,
+             std::size_t length, std::size_t line, std::size_t column,
+             EnumT name, Args&&... args)
+            : _startpos(startpos), _length(length), _line(line),
+              _column(column), _start(start), _end(end), _name(name),
+              _empty(false), _data(std::forward<Args>(args)...) {}
+
         Node(const Node&) = default;
-        Node(Node&&) noexcept = default;
-
+        Node(Node&&) noexcept(std::is_nothrow_move_constructible_v<DataStorageType>) = default;
         Node& operator=(const Node&) = default;
-        Node& operator=(Node&&) noexcept = default;
+        Node& operator=(Node&&) noexcept(std::is_nothrow_move_assignable_v<DataStorageType>) = default;
+
+        template<typename SourceStorage,
+                 std::enable_if_t<is_node_storage_conversion_allowed<DataStorageType, SourceStorage>::value, int> = 0>
+        Node(const Node<EnumT, SourceStorage>& other) {
+            assign_converted(other);
+        }
+
+        template<typename SourceStorage,
+                 std::enable_if_t<is_node_storage_conversion_allowed<DataStorageType, SourceStorage>::value, int> = 0>
+        Node& operator=(const Node<EnumT, SourceStorage>& other) {
+            assign_converted(other);
+            return *this;
+        }
+
         template<typename IT>
-        auto operator=(
-            const MatchResult<EnumT, DataStorageType, IT>& mr
-        ) -> Node&;
+        auto operator=(const MatchResult<EnumT, DataStorageType, IT>& mr) -> Node&;
 
-        template<typename T = DataStorageType,
-                 std::enable_if_t<!is_shared_ptr<T>::value, int> = 0>
-        auto operator=(
-            const Node<EnumT, std::shared_ptr<T>>& other
-        ) -> Node& {
-            using Element = typename is_shared_ptr<T>::element_type;
-
-            if (other.empty()) {
-                _data.reset();
-            } else {
-                _data = std::make_shared<Element>(other.data());
-            }
-
-            copy_metadata(other);
-            return *this;
-        }
-
-        template<typename T = DataStorageType, std::enable_if_t<is_shared_ptr<T>::value, int> = 0>
-        auto operator=(const Node<EnumT, typename is_shared_ptr<T>::element_type>& other) -> Node& {
-            using Element = typename is_shared_ptr<T>::element_type;
-            if (other.empty()) {
-                _data.reset();
-            } else {
-                _data = std::make_shared<Element>(other.data());
-            }
-
-            copy_metadata(other);
-            return *this;
-        }
         template<typename SourceDataType, typename IT>
-        auto operator=(
-            MatchResult<EnumT, SourceDataType, IT>&& result
-        ) -> Node& {
+        Node& operator=(MatchResult<EnumT, SourceDataType, IT>&& result) {
             *this = std::move(result.node);
             return *this;
         }
+
         template<typename SourceDataType, typename IT>
-        auto operator=(
-            MatchResult<EnumT, SourceDataType, IT>& result
-        ) -> Node& {
-            *this = std::move(result.node);
+        Node& operator=(MatchResult<EnumT, SourceDataType, IT>& result) {
+            *this = result.node;
             return *this;
         }
-        /**
-         * @brief Get the end position based on startpos and length
-         *
-         * @return long long
-         */
+
         std::size_t endpos() const {
-            if (_startpos == std::string::npos || _end == nullptr || _start == nullptr)
+            if (_startpos == std::string::npos || !_start || !_end)
                 throw node_exception("endpos");
-            return _startpos + (_end - _start);
+            return _startpos + static_cast<std::size_t>(_end - _start);
         }
-        /* clear rule */
+
         void clear() {
             _startpos = std::string::npos;
             _line = 0;
@@ -577,77 +601,80 @@ namespace ISPA_STD {
             _start = nullptr;
             _end = nullptr;
             _name = EnumT::NONE;
+            _data = DataStorageType{};
             _empty = true;
         }
-        auto empty() const { return _empty; }
+
+        bool empty() const { return _empty; }
         auto startpos() const { return _startpos; }
         auto line() const { return _line; }
-        auto column() const{ return _column; }
+        auto column() const { return _column; }
         auto length() const { return _length; }
         auto start() const { return _start; }
         auto end() const { return _end; }
         auto name() const { return _name; }
-        auto &data() { return _data; }
-        auto &data() const { return _data; }
-        auto set_data(DataStorageType &&t) -> void {
-            _data = std::move(t);
+        DataStorageType& data() { return _data; }
+        const DataStorageType& data() const { return _data; }
+
+        void set_data(DataStorageType&& value) {
+            _data = std::move(value);
             _empty = false;
         }
-        auto set_data(const DataStorageType &t) -> void {
-            _data = t;
+        void set_data(const DataStorageType& value) {
+            _data = value;
             _empty = false;
-        }
-        static auto create(const long long startpos, const char* start, const long long length, const long long line, EnumT enumv, DataStorageType t) {
-            std::size_t column = 0;
-            for (const char* count = start; start - count != startpos && *count != '\n'; --count) {
-                ++column;
-            }
-            return Node {(std::size_t) startpos, start, start + length, (std::size_t) length, (std::size_t) line, column, enumv, std::move(t)};
         }
 
-        // Nested nodes render into the caller's printer, retaining its depth.
-        auto print(ASTPrinter<std::ostream>& printer) const -> void {
+        static Node create(long long startpos, const char* start, long long length,
+                           long long line, EnumT enumv, DataStorageType value) {
+            // Column cannot be recovered safely from a pointer to the token's
+            // beginning alone; callers needing column should use the full ctor.
+            return Node{static_cast<std::size_t>(startpos), start,
+                        start ? start + length : nullptr,
+                        static_cast<std::size_t>(length),
+                        static_cast<std::size_t>(line), 0, enumv,
+                        std::move(value)};
+        }
+
+        void print(ASTPrinter<std::ostream>& printer) const {
             if (_empty) {
                 printer.node("<empty>");
                 return;
             }
-            if constexpr (
-                std::is_pointer_v<DataStorageType> ||
-                is_shared_ptr<DataStorageType>::value
-            ) {
-                if (_data) {
-                    _data->write_to_output(printer);
-                }
+            if constexpr (std::is_pointer_v<DataStorageType> ||
+                          is_shared_ptr<DataStorageType>::value) {
+                if (_data) _data->write_to_output(printer);
             } else {
                 _data.write_to_output(printer);
             }
         }
-        auto print(std::ostream &os) const {
+
+        void print(std::ostream& os) const {
             if (_empty) {
                 os << "<empty>";
                 return;
             }
-            if constexpr (is_shared_ptr<DataStorageType>::value) {
-                if (_data) {
-                    os << *_data;
-                } else {
-                    os << "nullptr";
-                }
+            if constexpr (std::is_pointer_v<DataStorageType> ||
+                          is_shared_ptr<DataStorageType>::value) {
+                if (_data) os << *_data;
+                else os << "nullptr";
             } else {
                 os << _data;
             }
         }
-        // equivalent to to_string method of AST node struct
+
         auto to_string() const {
-            if constexpr (std::is_pointer_v<DataStorageType> || is_shared_ptr<DataStorageType>::value) {
-                if (_data) {
-                    return _data->to_string();
-                } else throw std::runtime_error("null pointer dereference");
+            if (_empty) throw std::runtime_error("empty Node");
+            if constexpr (std::is_pointer_v<DataStorageType> ||
+                          is_shared_ptr<DataStorageType>::value) {
+                if (!_data) throw std::runtime_error("null pointer dereference");
+                return _data->to_string();
             } else {
                 return _data.to_string();
             }
         }
     };
+
     template<typename ENUM_T, typename NodeType>
     auto operator<<(std::ostream &os, const Node<ENUM_T, NodeType> &node) -> std::ostream& {
         node.print(os);

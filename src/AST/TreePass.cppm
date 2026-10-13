@@ -28,9 +28,8 @@ export namespace AST {
             utype::unordered_map<std::shared_ptr<AST::RuleMember>, std::shared_ptr<AST::RuleMember>> &generated,
             stdu::vector<std::string> name
         );
-
-        static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<std::shared_ptr<AST::RuleMember>> &members, stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator toInsert)
-             -> stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator;
+        static auto inlineGroup(AST::RuleMemberGroup group, stdu::vector<std::shared_ptr<AST::RuleMember>> &members, stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator toInsert) -> stdu::vector<std::shared_ptr<AST::RuleMember>>::iterator;
+        static void inlineGroupsInSequence(stdu::vector<std::shared_ptr<AST::RuleMember>> &members);
         enum class Types {
             string, Rule_escaped, Rule_csequence, Rule_bin, Rule_hex, Rule_any, cll, name, group, nospace, op, empty
         };
