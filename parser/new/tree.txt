@@ -1,4 +1,63 @@
 main
 └── value
+    └── item
+        ├── statement
+            └── value
+                ├── simple_stmts
+                    ├── first
+                        ├── simple_stmt
+                        │   └── value
+                        │       ├── expr_stmt
+                        │           ├── target
+                        │               ├── expr
+                        │               │   ├── value
+                        │               │       ├── disjunction
+                        │               │       │   ├── first
+                        │               │       │       ├── conjunction
+                        │               │       │       │   ├── first
+                        │               │       │       │       ├── inversion
+                        │               │       │       │       │   └── value
+                        │               │       │       │       │       ├── comparison
+                        │               │       │       │       │           ├── first
+                        │               │       │       │       │               ├── bitwise_or
+                        │               │       │       │       │               │   ├── first
+                        │               │       │       │       │               │       ├── bitwise_xor
+                        │               │       │       │       │               │       │   ├── first
+                        │               │       │       │       │               │       │       ├── bitwise_and
+                        │               │       │       │       │               │       │       │   ├── first
+                        │               │       │       │       │               │       │       │       ├── shift_expr
+                        │               │       │       │       │               │       │       │       │   ├── first
+                        │               │       │       │       │               │       │       │       │       ├── sum
+                        │               │       │       │       │               │       │       │       │       │   ├── first
+                        │               │       │       │       │               │       │       │       │       │       ├── term
+                        │               │       │       │       │               │       │       │       │       │       │   ├── first
+                        │               │       │       │       │               │       │       │       │       │       │       ├── factor
+                        │               │       │       │       │               │       │       │       │       │       │       │   └── value
+                        │               │       │       │       │               │       │       │       │       │       │       │       ├── power
+                        │               │       │       │       │               │       │       │       │       │       │       │           ├── base
+                        │               │       │       │       │               │       │       │       │       │       │       │               ├── primary
+                        │               │       │       │       │               │       │       │       │       │       │       │               │   ├── base
+                        │               │       │       │       │               │       │       │       │       │       │       │               │       ├── atom
+                        │               │       │       │       │               │       │       │       │       │       │       │               │       │   └── value
+                        │               │       │       │       │               │       │       │       │       │       │       │               │       │       ├── ID
+                        │               │       │       │       │               │       │       │       │       │       │       │               │       │           └── value: a
+                        │               │       │       │       │               │       │       │       │       │       │       │               │   └── suffixes
+                        │               │       │       │       │               │       │       │       │       │       │       │           └── exponent
+                        │               │       │       │       │               │       │       │       │       │       │       │               ├── <empty>
+                        │               │       │       │       │               │       │       │       │       │       │   └── rest
+                        │               │       │       │       │               │       │       │       │       │   └── rest
+                        │               │       │       │       │               │       │       │       │   └── rest
+                        │               │       │       │       │               │       │       │   └── rest
+                        │               │       │       │       │               │       │   └── rest
+                        │               │       │       │       │               │   └── rest
+                        │               │       │       │       │           └── rest
+                        │               │       │       │   └── rest
+                        │               │       │   └── rest
+                        │               │   └── conditional
+                        │               │       ├── <empty>
+                        │           └── assignment
+                        │               ├── <empty>
+                    └── rest
+                        ├── <empty>
 
 

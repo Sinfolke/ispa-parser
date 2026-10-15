@@ -1156,10 +1156,11 @@ void LLIR::NameBuilder::build() {
         LangAPI::Expression expr = {
             LangAPI::CheckVariant{
                 .type = std::make_shared<LangAPI::Type>(
-                    LangAPI::Type{LangAPI::ValueType::Token,
-                                  LangAPI::Type{LangAPI::Symbol{token_name}}}),
+                    LangAPI::Type{LangAPI::Symbol{token_name}}
+                ),
                 .sym = LangAPI::Pos::createExpression(
-                    LangAPI::Pos{.dereference = true})
+                    LangAPI::Pos{.dereference = true}),
+                .is_raw_token = constants::allow_raw_token_usage
             }
         };
 
@@ -1281,7 +1282,7 @@ void LLIR::NospaceBuilder::build() {
 //     push({LLIR::types::VARIABLE, var});
 //     push({LLIR::types::VARIABLE, svar});
 //     auto shadow_var = pushBasedOnQualifier(rule, expression, block, uvar, var, svar, rule.quantifier, true);
-//     push({LLIR::types::IF, LLIR::condition{expression, block}});
+//     push({LLIR::types::IF, LLIR::condition    .is_raw_token     = constants::token_is_raw          // NEW{expression, block}});
 //     add(block_after);
 //     //cpuf::printf("escaped_close\n");
 //     pushConvResult(rule, var, uvar, svar, shadow_var, rule.quantifier);
@@ -1517,7 +1518,7 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
                 }),
                 .what = LangAPI::StorageSymbol::createExpression(LangAPI::StorageSymbol {
                     LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true}),
-                    stdu::vector<LangAPI::StorageSymbol::PathPart> {LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::VariantIndex}}
+                    stdu::vector<LangAPI::StorageSymbol::PathPart> {LangAPI::Property{"kind"}}
                 })
             }
         )

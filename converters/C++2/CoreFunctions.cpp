@@ -61,11 +61,16 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return std::string("::ISPA_STD::Node<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Rule:
                 return std::string("::ISPA_STD::Node<" + Rules() + ", ") + convertTemplates(type.template_parameters) + ">";
+            case LangAPI::ValueType::RawToken:
+                return std::string("::ISPA_STD::RawToken<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::TokenResult:
                 return std::string("::ISPA_STD::MatchResult<<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::RuleResult:
                 return std::string("::ISPA_STD::MatchResult<Rules, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Variant:
+                return std::string("std::variant<std::monostate, ") + convertTemplates(type.template_parameters) + ">";
+            case LangAPI::ValueType::LargeVariant:
+                // large variant maps to regular variant yet
                 return std::string("std::variant<std::monostate, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Box:
                 return std::string("std::shared_ptr<") + convertTemplates(type.template_parameters) + ">";
@@ -206,8 +211,10 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "std::runtime_error";
         case LangAPI::StdlibExports::TokenNodeConstruct:
             return "::ISPA_STD::Node<" + Tokens() + ", " + convertTemplates(symbol.template_parameters) + ">::create";
+        case LangAPI::StdlibExports::RawTokenNodeConstruct:
+            return "Token::create";
         case LangAPI::StdlibExports::ParserNodeConstructor:
-            return "::ISPA_STD::Node<" + Rules() + ", " + convertTemplates(symbol.template_parameters) + ">::create";
+            return "Token::create";
         case LangAPI::StdlibExports::DFADebug:
             return "::ISPA_STD::DFA::API::DFADebug";
         case LangAPI::StdlibExports::TdfaLayout:
@@ -462,9 +469,17 @@ auto Core::convertMakeTuple(const LangAPI::MakeTuple &make_tuple) -> std::string
     return tuple;
 }
 auto Core::convertGetVariant(const LangAPI::GetVariant &get_variant) -> std::string {
+    if (get_variant.is_raw_token) {
+        return "(" + convertExpression(get_variant.sym) + ").template to_node<" + convertType(*get_variant.type) + ">()";
+    }
     return std::string("std::get<") + convertType(*get_variant.type) + ">(" + convertExpression(get_variant.sym) + ")";
 }
-
+auto Core::convertCheckVariant(const LangAPI::CheckVariant &check_variant) -> std::string {
+    if (check_variant.is_raw_token) {
+        return "(" + convertExpression(check_variant.sym) + ").template holds<" + convertType(*check_variant.type) + ">()";
+    }
+    return std::string("std::holds_alternative<") + convertType(*check_variant.type) + ">(" + convertExpression(check_variant.sym) + ")";
+}
 auto Core::convertDFADebug(const LangAPI::DFADebug& dfa_debug)
     -> std::string
 {
@@ -802,7 +817,7 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::GetVariant:
             return convertGetVariant(rvalue.getVariantCast());
         case LangAPI::RValueType::CheckVariant:
-            return "std::holds_alternative<" + convertType(*rvalue.CheckVariantCast().type) + ">(" + convertExpression(rvalue.CheckVariantCast().sym) + ")";
+            return convertCheckVariant(rvalue.CheckVariantCast());
         case LangAPI::RValueType::ToString:
             return "std::to_string(" + convertExpression(rvalue.getToString().what) + ")";
         case LangAPI::RValueType::CharToStringConstructor:

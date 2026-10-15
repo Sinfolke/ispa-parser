@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.22)
 project(ispa_parser LANGUAGES CXX)
 
@@ -32,7 +31,13 @@ endif()
 
 set(OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/output")
 set(INCREMENTAL_DIR "${OUTPUT_DIR}/incremental")
-set(STDLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../stdlibs")
+set(STDLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../stdlibs/new")
+
+# ------------------------------------------------------------
+# Include ISPA standard library target
+# ------------------------------------------------------------
+
+add_subdirectory("${STDLIB_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ispastdlib_build")
 
 # ------------------------------------------------------------
 # Discover incremental implementation files
@@ -97,8 +102,10 @@ foreach(target IN ITEMS ispa_ast ispa_parser_impl ispa_support)
     target_include_directories(${target} PRIVATE
             "${OUTPUT_DIR}"
             "${CMAKE_CURRENT_SOURCE_DIR}"
-            "${STDLIB_DIR}"
     )
+
+    # Link against the target provided by stdlibs/new
+    target_link_libraries(${target} PRIVATE ispastdlib::ispastdlib)
 
     if(MSVC)
         target_compile_options(${target} PRIVATE /MP)
@@ -106,19 +113,15 @@ foreach(target IN ITEMS ispa_ast ispa_parser_impl ispa_support)
 endforeach()
 
 # ------------------------------------------------------------
-# Precompiled headers
+# Precompiled headers for Object Targets
 # ------------------------------------------------------------
 
-# AST implementation files:
-# Avoid forcing the entire Parser class into every AST source.
 if(TARGET ispa_ast)
     target_precompile_headers(ispa_ast PRIVATE
             <ispastdlib.hpp>
     )
 endif()
 
-# Parser member-function implementations:
-# Parse the large generated Parser class only once per PCH.
 if(TARGET ispa_parser_impl)
     target_precompile_headers(ispa_parser_impl PRIVATE
             <ispastdlib.hpp>
@@ -126,7 +129,6 @@ if(TARGET ispa_parser_impl)
     )
 endif()
 
-# Lexer, DFA tables, and other generated implementations.
 if(TARGET ispa_support)
     target_precompile_headers(ispa_support PRIVATE
             <ispastdlib.hpp>
@@ -154,9 +156,9 @@ endforeach()
 target_include_directories(ispa_parser_lib PUBLIC
         "${OUTPUT_DIR}"
         "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${STDLIB_DIR}"
 )
 
+target_link_libraries(ispa_parser_lib PUBLIC ispastdlib::ispastdlib)
 target_compile_features(ispa_parser_lib PUBLIC cxx_std_20)
 
 # ------------------------------------------------------------
@@ -167,6 +169,7 @@ add_executable(run main.cpp)
 
 target_link_libraries(run PRIVATE
         ispa_parser_lib
+        ispastdlib::ispastdlib
 )
 
 # ------------------------------------------------------------
@@ -175,4 +178,4 @@ target_link_libraries(run PRIVATE
 
 message(STATUS "ISPA compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "ISPA incremental sources: ${INCREMENTAL_DIR}")
-message(STATUS "ISPA PCH enabled for generated object libraries")
+message(STATUS "ISPA stdlib directory: ${STDLIB_DIR}")

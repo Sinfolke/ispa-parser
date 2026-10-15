@@ -1,17 +1,16 @@
 #include "output/Parser.h"
-#include <ispastdlib.hpp>
 #include <iostream>
 #include <fstream>
 #include <variant>
-
 #include <vector>
 #include <queue>
-#include <variant>
+#include <stdexcept>
+
+#include "../stdlibs/new/ispastdlib/raw_token.hpp"
 
 class PyLexer : public Parser::Lexer {
 public:
     using Token = Parser::Token;
-
 private:
     std::vector<std::size_t> indent_stack{0};
     std::deque<Token> token_buffer;
@@ -26,15 +25,12 @@ private:
 
     template<typename T>
     static bool is(const Token& token) {
-        return std::holds_alternative<
-            ISPA_STD::Node<Parser::Tokens, T>
-        >(token);
+        return token.holds<T>();
     }
 
     template<typename T>
     static Token makeToken() {
-        using Node = ISPA_STD::Node<Parser::Tokens, T>;
-        return Token{std::in_place_type<Node>};
+        return Token{ISPA_STD::RawTokenMeta<Parser::Tokens> {}, T {}};
     }
 
     static Token makeIndent() {
@@ -75,45 +71,53 @@ private:
         at_line_start = false;
     }
 
-public:
-    void push(const Token& token) {
-        if (std::holds_alternative<std::monostate>(token)) {
-            finish();
-            return;
+    // Flushes all buffered tokens (INDENT, DEDENT, NEWLINE, regular tokens)
+    // into the underlying Lexer_base token flow.
+    void flush_buffer() {
+        while (!token_buffer.empty()) {
+            Token t = std::move(token_buffer.front());
+            token_buffer.pop_front();
+            Parser::Lexer::push(std::move(t));
         }
+    }
+
+public:
+    void push(Token &&token) override {
+        std::cout << "push(&&);" << std::endl;
+        push(static_cast<const Token&>(token));
+    }
+    void push(const Token& token) override {
+        std::cout << "push(&);" << std::endl;
+        auto t = std::move(token);
         if (finished) {
             throw std::logic_error(
                 "PyLexer::push() called after finish()"
             );
         }
-
+        if (is<Parser::Types::DEDENT>(t) || is<Parser::Types::INDENT>(t)) {
+            t = Parser::Token {t.meta(), Parser::Types::__WS {}};
+        }
         // Whitespace at the beginning of a physical line.
-        if (at_line_start && is<Parser::FlatTypes::__WS>(token)) {
-            pending_indent +=
-                std::get<ISPA_STD::Node<
-                    Parser::Tokens,
-                    Parser::FlatTypes::__WS
-                >>(token).length();
-
-            return;
+        if (at_line_start && is<Parser::FlatTypes::__WS>(t)) {
+            pending_indent += t.to_node<Parser::FlatTypes::__WS>().length();
         }
 
         // Bracket tracking for implicit line continuation.
-        if (is<Parser::FlatTypes::LPAREN>(token) ||
-            is<Parser::FlatTypes::LBRACKET>(token) ||
-            is<Parser::FlatTypes::LBRACE>(token)) {
+        if (is<Parser::FlatTypes::LPAREN>(t) ||
+            is<Parser::FlatTypes::LBRACKET>(t) ||
+            is<Parser::FlatTypes::LBRACE>(t)) {
             ++bracket_depth;
         }
-        else if (is<Parser::FlatTypes::RPAREN>(token) ||
-                 is<Parser::FlatTypes::RBRACKET>(token) ||
-                 is<Parser::FlatTypes::RBRACE>(token)) {
+        else if (is<Parser::FlatTypes::RPAREN>(t) ||
+                 is<Parser::FlatTypes::RBRACKET>(t) ||
+                 is<Parser::FlatTypes::RBRACE>(t)) {
             if (bracket_depth > 0) {
                 --bracket_depth;
             }
         }
 
         // Physical newline.
-        if (is<Parser::FlatTypes::NEWLINE>(token)) {
+        if (is<Parser::FlatTypes::NEWLINE>(t)) {
             pending_indent = 0;
             at_line_start = true;
 
@@ -123,21 +127,17 @@ public:
             }
 
             if (line_has_code) {
-                token_buffer.push_back(token);
+                token_buffer.push_back(std::move(t));
                 last_logical_line_terminated = true;
             }
 
             line_has_code = false;
+            flush_buffer();
             return;
         }
 
         // Comment-only lines do not change indentation.
-        if (is<Parser::FlatTypes::COMMENT>(token)) {
-            return;
-        }
-
-        // Whitespace within a line is not indentation.
-        if (is<Parser::FlatTypes::__WS>(token)) {
+        if (is<Parser::FlatTypes::COMMENT>(t)) {
             return;
         }
 
@@ -150,29 +150,13 @@ public:
             }
         }
 
-        token_buffer.push_back(token);
+        token_buffer.push_back(std::move(t));
         line_has_code = true;
         last_logical_line_terminated = false;
+        flush_buffer();
     }
 
-    bool hasToken() const {
-        return !token_buffer.empty();
-    }
-
-    Token pop() {
-        if (token_buffer.empty()) {
-            throw std::runtime_error(
-                "PyLexer token buffer is empty"
-            );
-        }
-
-        Token token = std::move(token_buffer.front());
-        token_buffer.pop_front();
-        return token;
-    }
-
-    // Call after the underlying lexer reaches EOF.
-    void finish() {
+    void push() override {
         if (finished)
             return;
 
@@ -182,22 +166,27 @@ public:
             );
         }
 
-        // Emit the missing logical NEWLINE.
+        auto& output = getTokensReference();
+
+        // Complete the last logical line.
         if (line_has_code && !last_logical_line_terminated) {
-            token_buffer.push_back(makeNewline());
+            output.push_back(makeNewline());
         }
 
-        // Emit final DEDENT tokens after NEWLINE.
+        // Complete any remaining indentation blocks.
         while (indent_stack.size() > 1) {
             indent_stack.pop_back();
-            token_buffer.push_back(makeDedent());
+            output.push_back(makeDedent());
         }
-        std::cout << "Finish called: " << std::endl;
+
         pending_indent = 0;
         at_line_start = true;
         line_has_code = false;
         last_logical_line_terminated = true;
         finished = true;
+
+        // Append EOF exactly once.
+        output.push_back(Token{});
     }
 
     void reset() {
@@ -213,30 +202,55 @@ public:
         finished = false;
     }
 };
+class PyParser : public Parser::Parser {
+public:
+    auto parseLazy(const std::string& source)
+        -> ::Parser::Types::main
+    {
+        PyLexer lexer;
+        lexer.setInput(source);
 
+        auto it = PyLexer::lazy_iterator(lexer, source.c_str());
+        auto result = main(it);
+
+        if (!result.status) {
+            throw std::runtime_error("Lazy parsing failed");
+        }
+
+        if (!result.it.isEnd()) {
+            throw std::runtime_error(
+                "Unexpected tokens after parsed input"
+            );
+        }
+
+        return result.node.data();
+    }
+};
 int main(int argc, const char** argv) {
     if (argc < 2) {
         std::cout << "Usage: " << argv[0] << " \"<input>\"\n";
         return 1;
     }
+
+    std::string i;
+    PyLexer lexer;
     if (std::string(argv[1]) == "--file") {
+        if (argc < 3) {
+            std::cout << "Usage: " << argv[0] << " --file <path>\n";
+            return 1;
+        }
         std::ifstream inputf(argv[2]);
         if (!inputf.is_open()) {
             throw std::runtime_error("Failed to open input file");
         }
         std::string s((std::istreambuf_iterator<char>(inputf)), {});
-        Parser::Lexer lexer;
-        lexer.makeTokens(s);
-        Parser::Parser parser;
-        Parser::Types::main &node = parser.parse(lexer);
-        std::ofstream of("tree.txt");
-        of << node << "\n\n";
+        i = std::move(s);
     } else {
-        Parser::Lexer lexer;
-        lexer.makeTokens(argv[1]);
-        Parser::Parser parser;
-        Parser::Types::main &node = parser.parse(lexer);
-        std::ofstream of("tree.txt");
-        of << node << "\n\n";
+        i = argv[1];
     }
+    PyParser parser;
+    Parser::Types::main node = parser.parseLazy(i);
+    std::ofstream of("tree.txt");
+    of << node << "\n\n";
+    std::cout << "Successfully parsed and saved to tree.txt\n";
 }

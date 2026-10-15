@@ -110,72 +110,7 @@ namespace ISPA_STD {
         (replace_next(args), ...);
         return res;
     }
-    inline std::string capture_stacktrace() {
-        std::ostringstream out;
-
-#ifdef _WIN32
-        constexpr USHORT max_frames = 64;
-        void* frames[max_frames]{};
-
-        const USHORT count = CaptureStackBackTrace(
-            0, max_frames, frames, nullptr
-        );
-
-        HANDLE process = GetCurrentProcess();
-
-        // Minimal implementation. For production, initialize
-        // DbgHelp once per process and synchronize its use.
-        if (!SymInitialize(process, nullptr, TRUE))
-            return "Symbol initialization failed";
-
-        SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
-
-        alignas(SYMBOL_INFO)
-            char buffer[sizeof(SYMBOL_INFO) + 1024]{};
-
-        auto* symbol = reinterpret_cast<SYMBOL_INFO*>(buffer);
-        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-        symbol->MaxNameLen = 1024;
-
-        for (USHORT i = 0; i < count; ++i) {
-            DWORD64 address =
-                reinterpret_cast<DWORD64>(frames[i]);
-
-            DWORD64 displacement = 0;
-
-            out << "  #" << i << ' ';
-
-            if (SymFromAddr(
-                    process, address, &displacement, symbol)) {
-                out << symbol->Name
-                    << " +0x" << std::hex << displacement
-                    << std::dec;
-                    } else {
-                        out << frames[i];
-                    }
-
-            out << '\n';
-        }
-
-        SymCleanup(process);
-
-#else
-        void* frames[64];
-        int count = backtrace(frames, 64);
-
-        char** symbols = backtrace_symbols(frames, count);
-
-        if (!symbols)
-            return "Stack trace unavailable";
-
-        for (int i = 0; i < count; ++i)
-            out << "  #" << i << ' ' << symbols[i] << '\n';
-
-        std::free(symbols);
-#endif
-
-        return out.str();
-    }
+    std::string capture_stacktrace();
 
     class IspaInternalExcept : public std::exception {
         std::string msg;
@@ -1434,61 +1369,62 @@ namespace DFA {
         }
 
     public:
+        // Accumulates tokens lazily; does not populate `tokens` on the owning lexer.
         class lazy_iterator {
             Lexer_base* owner = nullptr;
-            std::size_t index = 0;
+            std::unique_ptr<Token> current; // Heap allocation or heap handle
+            const char* pos = nullptr;
+            std::size_t counter = 0;
+
+            void advance() {
+                if (isEnd()) return;
+                // Move-assign or re-allocate
+                current = std::make_unique<Token>(owner->makeToken(pos));
+                if (!isEnd()) counter++;
+            }
 
         public:
             lazy_iterator() = default;
 
-            lazy_iterator(Lexer_base& lexer, std::size_t index = 0)
-                : owner(&lexer), index(index) {}
-
-            lazy_iterator(const lazy_iterator&) = default;
-            lazy_iterator& operator=(const lazy_iterator&) = default;
-
-            const Token& operator*() const {
-                return owner->tokenAt(index);
+            lazy_iterator(Lexer_base& owner, const char* in) : owner(&owner), pos(in) {
+                current = std::make_unique<Token>(owner.makeToken(pos));
+                counter = !std::holds_alternative<std::monostate>(*current);
             }
 
-            const Token* operator->() const {
-                return &owner->tokenAt(index);
-            }
+            // Deep copy only when explicitly requested
+            lazy_iterator(const lazy_iterator& other)
+                : owner(other.owner),
+                  current(other.current ? std::make_unique<Token>(*other.current) : nullptr),
+                  pos(other.pos),
+                  counter(other.counter) {}
 
-            lazy_iterator& operator++() {
-                if (!isEnd())
-                    ++index;
+            lazy_iterator& operator=(const lazy_iterator& other) {
+                if (this != &other) {
+                    owner = other.owner;
+                    pos = other.pos;
+                    counter = other.counter;
+                    if (other.current) {
+                        current = std::make_unique<Token>(*other.current);
+                    } else {
+                        current.reset();
+                    }
+                }
                 return *this;
             }
 
-            lazy_iterator operator++(int) {
-                auto copy = *this;
-                ++(*this);
-                return copy;
-            }
-
-            void operator+=(std::size_t count) {
-                while (count-- && !isEnd())
-                    ++(*this);
-            }
+            // Fast move operations avoid variant destruction/construction metaprogramming
+            lazy_iterator(lazy_iterator&&) noexcept = default;
+            lazy_iterator& operator=(lazy_iterator&&) noexcept = default;
 
             bool isEnd() const {
-                return !owner ||
-                    std::holds_alternative<std::monostate>(
-                        owner->tokenAt(index)
-                    );
+                return !current || std::holds_alternative<std::monostate>(*current);
             }
 
-            std::ptrdiff_t operator-(
-                const lazy_iterator& other
-            ) const {
-                return static_cast<std::ptrdiff_t>(index)
-                     - static_cast<std::ptrdiff_t>(other.index);
-            }
-
-            std::size_t distance() const {
-                return index;
-            }
+            const Token& operator*() const { return *current; }
+            const Token* operator->() const { return current.get(); }
+            lazy_iterator& operator++() { advance(); return *this; }
+            lazy_iterator operator++(int) { auto tmp = *this; advance(); return tmp; }
+            std::size_t distance() const { return counter; }
         };
 
         // Iterates already-accumulated tokens; run makeTokens() before using this.

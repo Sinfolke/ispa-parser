@@ -407,7 +407,7 @@ namespace LangRepr {
                 LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::MakeTuple::createExpression(LangAPI::MakeTuple {.args = {
                     LangAPI::Int::createExpression(next_state),
                     LangAPI::IspaLibFunctionCall::createExpression(LangAPI::IspaLibFunctionCall {
-                        .symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::TokenNodeConstruct, .template_parameters = {std::make_shared<LangAPI::Type>(std::get<LangAPI::Symbol>(semantic_state.instance_value.name))}},
+                        .symbol = LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::RawTokenNodeConstruct, .template_parameters = {std::make_shared<LangAPI::Type>(std::get<LangAPI::Symbol>(semantic_state.instance_value.name))}},
                         .args = {
                             LangAPI::Symbol::createExpression(LangAPI::Symbol {"start_pos"}),
                             LangAPI::Symbol::createExpression(LangAPI::Symbol {"start"}),

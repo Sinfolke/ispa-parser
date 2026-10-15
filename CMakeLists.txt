@@ -118,7 +118,7 @@ get_file_range(CPP_CONVERTER_SOURCES
 
 add_library(ispa-converter-cpp SHARED ${CPP_CONVERTER_SOURCES})
 target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
-target_include_directories(ispa-converter-cpp PRIVATE converters/C++)
+target_include_directories(ispa-converter-cpp PRIVATE converters/C++ parser/stdlibs/new)
 set_target_properties(ispa-converter-cpp PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # =============================================

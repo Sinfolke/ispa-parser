@@ -318,7 +318,8 @@ namespace LangRepr {
         auto add_parse_wrapper = [&](
             std::string name,
             std::string iterator_type,
-            stdu::vector<LangAPI::Expression> iterator_args
+            stdu::vector<LangAPI::Expression> iterator_args,
+            LangAPI::Statements pre_statements = {}
         ) {
             auto iterator = LangAPI::FunctionCall::createExpression(
                 LangAPI::FunctionCall{
@@ -335,7 +336,6 @@ namespace LangRepr {
                     .args = {std::move(iterator)}
                 }
             );
-
             LangAPI::StorageSymbol main_data;
             main_data.what = std::move(main_call);
             main_data.path.emplace_back("node");
@@ -344,19 +344,20 @@ namespace LangRepr {
                     .name = std::make_shared<LangAPI::Symbol>("data")
                 }
             );
-
-            auto parse_wrapper = LangAPI::Function{
-                .type = LangAPI::Type{LangAPI::ValueType::Void},
-                .name = std::move(name),
-                .statements = {
-                    LangAPI::VariableAssignment::createStatement(
+            pre_statements.push_back(
+                LangAPI::VariableAssignment::createStatement(
                         LangAPI::VariableAssignment{
                             .name = LangAPI::Symbol{"tree"},
                             .value = LangAPI::StorageSymbol::createExpression(
                                 std::move(main_data)
                             )
-                        }
-                    )
+                    }
+            ));
+            auto parse_wrapper = LangAPI::Function{
+                .type = LangAPI::Type{LangAPI::ValueType::Void},
+                .name = std::move(name),
+                .statements = {
+                    std::move(pre_statements),
                 },
                 .override = true,
                 .is_wrap_function = true
@@ -372,13 +373,19 @@ namespace LangRepr {
             );
         };
         LangAPI::Expression lexer_reference;
-        lexer_reference.push_back(LangAPI::ExpressionElement::Multiply);
         lexer_reference.push_back(LangAPI::Symbol::createRValue(LangAPI::Symbol {"lexer"}));
         add_parse_wrapper("parseFromTokens", "iterator", {lexer_reference});
+        LangAPI::Statements pre_statements;
+        pre_statements.push_back(
+             LangAPI::Variable {
+                 .name = "lexer",
+                 .type = LangAPI::Type {LangAPI::Symbol {"Lexer"}},
+             }
+         );
         add_parse_wrapper("lazyParse", "lazy_iterator", {
-            lexer_reference,
+            LangAPI::Symbol::createExpression(LangAPI::Symbol {"lexer"}),
             LangAPI::Symbol::createExpression(LangAPI::Symbol {"text"})
-        });
+        }, pre_statements);
         holder.push(parser);
     }
 }

@@ -1,3 +1,5 @@
+module;
+#include "tools/LibraryDeps.hpp"   // constexpr view of ispastdlib_deps.json (tools/ispa_deps.py)
 module Cpp.Init;
 import Cpp.CoreFunctions;
 import corelib;
@@ -328,7 +330,36 @@ namespace Cpp {
             return found;
         }
 
-        // `#pragma once` (headers), the lib header, forward declarations and #include <...> lines for what the file needs.
+        // ---- standard library chunks ---------------------------------------------
+        // ispastdlib.hpp is split into ispastdlib/<chunk>.hpp. Which chunk defines which name, and which chunk includes
+        // which, is NOT hand-written here: tools/ispa_deps.py scans the library and writes ispastdlib_deps.json, which
+        // LibraryDeps.hpp parses at compile time (constexpr). A generated file gets ispastdlib/core.hpp plus the chunks
+        // whose names its text uses, reduced to the minimal include set (a chunk another chunk already includes is dropped).
+        auto libraryIncludes(const std::vector<std::string_view> &texts) -> std::vector<std::string> {
+            std::vector<std::string_view> wanted{"ispastdlib/core.hpp"};
+            for (const auto text : texts) {
+                const std::string t(text);
+                for (const auto &u : scanDependencies(t, DepMode::Strong)) {
+                    if (const auto h = LibraryDeps::header_of(u.chain)) wanted.push_back(*h);
+                    // a library name the scan does not know (library newer than the JSON): take everything
+                    else if (LibraryDeps::in_library_namespace(u.chain)) wanted.push_back(LibraryDeps::umbrella);
+                }
+                // generic `os << variant` lives in its own opt-in chunk (it instantiates every alternative)
+                if (LibraryDeps::has_file("ispastdlib/variant_io.hpp") && t.find("std::variant") != std::string::npos
+                    && t.find("<<") != std::string::npos)
+                    wanted.push_back("ispastdlib/variant_io.hpp");
+            }
+            std::vector<std::string> out;
+            for (const auto h : LibraryDeps::minimal_includes(wanted)) out.emplace_back(h);
+            return out;
+        }
+        auto libraryIncludeBlock(const std::vector<std::string_view> &texts) -> std::string {
+            std::string out;
+            for (const auto &inc : libraryIncludes(texts)) out += "#include <" + inc + ">\n";
+            return out + "\n";
+        }
+
+        // `#pragma once` (headers), the library chunks, forward declarations and #include <...> lines for what the file needs.
         //  * Weak use of a class                     -> forward declaration only
         //  * Strong use of a class                   -> #include (complete type) plus a forward declaration placed
         //                                               before the includes, so that classes which refer to each other
@@ -394,7 +425,11 @@ namespace Cpp {
             std::string out;
             if (is_header) out += "#pragma once\n\n";
             const bool lib = !parts.empty();                    // enums depend on nothing, not even the lib
-            if (lib) out += "#include <ispastdlib.hpp>\n";
+            if (lib) {
+                std::vector<std::string_view> texts;
+                for (const auto &part : parts) texts.push_back(part.text);
+                for (const auto &inc : libraryIncludes(texts)) out += "#include <" + inc + ">\n";
+            }
             for (const auto &fwd : forwards) out += fwd + "\n";
             for (const auto &inc : includes) out += "#include <" + inc + ">\n";
             if (lib || !includes.empty() || !forwards.empty()) out += "\n";
@@ -1030,8 +1065,7 @@ namespace Cpp {
         }
 
         // ---- generation ----
-        emitLine(context.main_h, "#pragma once");
-        emitLine(context.main_h, "#include <ispastdlib.hpp>");
+        // the prefix (#pragma once + library chunks) can only be written once the whole header text is known
         OutputSrc o{&context.main_h, &context.main_cpp};
         convertDeclarations(*source, o);
 
@@ -1039,9 +1073,13 @@ namespace Cpp {
         context.main_h.dwrite("{}", std::string(context.main_tail.get()));
 
         writable_files.reserve(2 + context.function_files.size());
-        writable_files.emplace_back(std::string(namespace_name) + ".h", std::string(context.main_h.get()));
-        if (auto cpp = std::string(context.main_cpp.get()); !cpp.empty())
-            writable_files.emplace_back(std::string(namespace_name) + ".cpp", std::move(cpp));
+        {
+            const std::string h_body = std::string(context.main_h.get());
+            writable_files.emplace_back(std::string(namespace_name) + ".h",
+                "#pragma once\n\n" + libraryIncludeBlock({h_body}) + h_body);
+            if (auto cpp = std::string(context.main_cpp.get()); !cpp.empty())
+                writable_files.emplace_back(std::string(namespace_name) + ".cpp", libraryIncludeBlock({cpp}) + cpp);
+        }
         for (auto &file : context.function_files)
             writable_files.emplace_back(std::move(file));
     }

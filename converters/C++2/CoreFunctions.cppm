@@ -36,6 +36,7 @@ export namespace Core {
     auto convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string;
     auto convertMakeTuple(const LangAPI::MakeTuple &make_tuple) -> std::string;
     auto convertGetVariant(const LangAPI::GetVariant &make_tuple) -> std::string;
+    auto convertCheckVariant(const LangAPI::CheckVariant &check_variant) -> std::string;
     auto convertDFADebug(const LangAPI::DFADebug &dfa_debug) -> std::string;
     // rvalue
     auto convertArrayValues(

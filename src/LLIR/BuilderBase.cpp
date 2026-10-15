@@ -4,6 +4,7 @@ import corelib;
 import LLIR.IR;
 import hash;
 import cpuf.printf;
+import constants;
 import std;
 
 auto LLIR::BuilderBase::getData() -> LangAPI::Statements & {
@@ -97,7 +98,8 @@ auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, co
                 .name = LangAPI::Symbol {var.name},
                 .value = LangAPI::GetVariant::createExpression(LangAPI::GetVariant {
                     .type = std::make_shared<LangAPI::Type>(LangAPI::Type {LangAPI::ValueType::Token, LangAPI::Type {LangAPI::Symbol {name}}}),
-                    .sym = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})
+                    .sym = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true}),
+                    .is_raw_token = constants::allow_raw_token_usage
                 })
             })},
             LangAPI::Statement {LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment { .name = LangAPI::Symbol {svar.name}, .value = LangAPI::Bool::createExpression(LangAPI::Bool {.value = true })})},

@@ -3,13 +3,13 @@ import cpuf.printf;
 import LLIR.Builder.Base;
 namespace LangRepr {
     auto ConstructBase::createTypeToken() -> LangAPI::TypeAlias {
-        LangAPI::Type variant_type = LangAPI::ValueType::Variant;
+        LangAPI::Type variant_type = LangAPI::ValueType::RawToken;          // was LargeVariant
         for (const auto &[name, dtb] : lexer_builder.getDataBlocks()) {
             LangAPI::Symbol tn = name;
             tn.path.insert(tn.path.begin(), "Types");
-            variant_type.template_parameters.push_back(LangAPI::Type {LangAPI::ValueType::Token, LangAPI::Type {tn}});
+            variant_type.template_parameters.push_back(LangAPI::Type {tn});  // was Token<tn> (= Node<Tokens,tn>)
         }
-        Token = LangAPI::Symbol { "Token" };
+        Token = LangAPI::Symbol {"Token"};
         return LangAPI::TypeAlias {.name = "Token", .type = variant_type};
     }
     auto ConstructBase::createLexerClass() -> LangAPI::Class {
