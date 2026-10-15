@@ -652,7 +652,7 @@ namespace LangAPI {
             for (const auto &t : obj.template_parameters) {
                 if (!first)
                     os << ", ";
-                os << "typename " << t;
+                os << "typename " << t.first;
                 first = false;
             }
             os << ">\n";

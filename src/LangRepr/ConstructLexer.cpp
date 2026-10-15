@@ -275,7 +275,7 @@ namespace LangRepr {
         LangAPI::Variable var {
             .name = "dfa_table",
             .type = LangAPI::Type {dfa_table_symbol},
-            .value = LangAPI::Array::createExpression(LangAPI::Array {.values = rows}),
+            .value = LangAPI::FixedSizeArray::createExpression(LangAPI::FixedSizeArray {.values = rows}),
             .nested_array_type = true,
             .is_static = true,
         };
@@ -357,8 +357,8 @@ namespace LangRepr {
         LangAPI::Variable var {
             .name = "action_table",
             .type = LangAPI::Type {action_table_symbol},
-            .value = LangAPI::Array::createExpression(
-                LangAPI::Array {.values = rows}
+            .value = LangAPI::FixedSizeArray::createExpression(
+                LangAPI::FixedSizeArray {.values = rows}
             ),
             .nested_array_type = true,
             .is_static = true,
@@ -531,6 +531,7 @@ namespace LangRepr {
                         }
                     ),
                     .override = true,
+                    .is_wrap_function = true
                 })),
                 LangAPI::Visibility::Public
             )

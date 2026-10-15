@@ -39,8 +39,8 @@
     Library version is not being updated with each change for now and remains 1.0
 */
 
-#define _ISC_STD_LIB_VER 1 // version of the library
-#define _ISC_STD_LIB_SUBVER 0 // the subversion of the library
+#define _ISPA_STD_LIB_VER 1 // version of the library
+#define _ISPA_STD_LIB_SUBVER 0 // the subversion of the library
 // this defines the minimum version of an output to have a compatibility with the library version
 // for example if the update did only change the way some classes work but not their structure, it is compatible with the downer version.
 #define _ISC_STD_LIB_BACKDOWN 1

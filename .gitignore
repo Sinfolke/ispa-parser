@@ -69,3 +69,5 @@ test-dump
 Dumps
 TestDumps
 !.github
+parser/new/output
+parser/new/build

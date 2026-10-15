@@ -134,7 +134,8 @@ export namespace LLIR {
             std::size_t depth,
             std::size_t k,
             const LangAPI::Variable& result_var,
-            const LangAPI::Variable& success_var
+            const LangAPI::Variable& success_var,
+            const std::vector<stdu::vector<std::string>>& path = {}
         );
 
         LLkResolution resolveLLk(const std::vector<std::shared_ptr<AST::RuleMember>> &op,

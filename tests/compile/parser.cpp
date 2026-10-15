@@ -7,9 +7,7 @@ int main(int argc, const char** argv) {
         std::cout << "Usage: " << argv[0] << " \"<input>\"\n";
         return 1;
     }
-    Parser::Lexer lexer;
-    lexer.makeTokens(argv[1]);
     Parser::Parser parser;
-    Parser::Types::main &node = parser.parse(lexer);
+    Parser::Types::main &node = parser.parse(argv[1]);
     std::cout << node.to_string() << std::endl;
 }

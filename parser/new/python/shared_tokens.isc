@@ -1,0 +1,16 @@
+COLON: ':';
+COMMA: ',';
+SEMICOLON: ';';
+DOT: '.';
+ARROW: '->';
+LPAREN: '(';
+RPAREN: ')';
+STAR: '*';
+MATMUL: '@';
+ASSIGN: '=';
+MATMUL_ASSIGN: '@=';
+
+NEWLINE: [\n\r]+;
+INDENT: __WS+;
+DEDENT: __WS+;
+COMMENT: '#' [^\n]*;

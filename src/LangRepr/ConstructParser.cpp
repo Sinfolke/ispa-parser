@@ -307,7 +307,10 @@ namespace LangRepr {
                 .name = corelib::text::join(prod.name, "_"),
                 .parameters = {std::make_pair(LangAPI::Type {LangAPI::Symbol {"IT"}}, "pos")},
                 .statements = stmts,
-                .template_parameters = {"IT"},
+                .template_parameters = {std::make_pair("IT", stdu::vector<LangAPI::Type> {
+                    LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::LexerTokenIterator},
+                    LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::LexerLazyIterator}
+                })},
             };
             parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Private));
         }
@@ -355,7 +358,8 @@ namespace LangRepr {
                         }
                     )
                 },
-                .override = true
+                .override = true,
+                .is_wrap_function = true
             };
 
             parser.data.emplace_back(

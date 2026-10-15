@@ -1,157 +1,37 @@
 export module LangRepr.Converter;
 
 import LangRepr.Holder;
+import Converter.Construct;
 import LangAPI;
-import Converter.Declarations;
-import Converter.Statement;
-import Converter.Writer;
-import Converter.Init;
-import Rope.String;
 import cpuf.dlib;
 import std;
+
 export namespace LangRepr {
     class Converter {
-        ::Converter::Writer output;
         dlib converter_lib;
         const Holder &holder;
-        const std::string &lang;
-        const std::string &namespace_name;
-        std::unique_ptr<::Converter::Declarations, void(*)(::Converter::Declarations*)> decls;
-        std::unique_ptr<::Converter::Statement, void(*)(::Converter::Statement*)> stmts;
-        std::vector<const LangAPI::Function*> output_functions;
-        void buildDeclaration(const LangAPI::Declaration &decl) {
-            if (decl.isNamespace()) {
-                const auto &namespace_decl = decl.getNamespace();
-                decls->createNamespace(namespace_decl.name);
-                buildDeclarations(namespace_decl.declarations);
-                decls->closeNamespace();
-            } else if (decl.isClass()) {
-                const auto &cls = decl.getClass();
-                decls->createClass(cls);
-                for (const auto &[declaration, visibility] : cls.data) {
-                    decls->setVisibility(visibility);
-                    buildDeclaration(*declaration);
-                }
-                if (cls.to_str_fun) {
-                    decls->setVisibility(LangAPI::Visibility::Public);
-                    buildDeclaration(*cls.to_str_fun);
-                }
-                decls->closeClass();
-                // now output print function
-                if (cls.output_fun) {
-                    decls->createPrintFunction(*cls.output_fun);
-                    buildStatements(cls.output_fun->statements);
-                    decls->closePrintFunction();
-                }
-            } else if (decl.isForwardDeclaredClass()) {
-                decls->createForwardDeclarationClass(decl.getForwardDeclaredClass());
-            } else if (decl.isVariable()) {
-                const auto &var_decl = decl.getVariable();
-                decls->createVariable(var_decl);
-            } else if (decl.isTypeAlias()) {
-                const auto &type_alias = decl.getTypeAlias();
-                decls->createTypeAlias(type_alias.name, type_alias.type);
-            } else if (decl.isEnum()) {
-                const auto &enum_decl = decl.getEnum();
-                decls->createEnum(enum_decl.name, enum_decl.value);
-                decls->closeEnum();
-            } else if (decl.isFunction()) {
-                const auto &func_decl = decl.getFunction();
-                if (lang == "cpp") {
-                    if (!func_decl.template_parameters.empty()) {
-                        decls->openTemplateParameters();
-                        for (const auto &t : func_decl.template_parameters) decls->createTemplateParameter(t);
-                        decls->closeTemplateParameters();
-                    }
-                }
-                decls->createFunction(func_decl);
-                buildStatements(func_decl.statements);
-                decls->closeFunction();
-            }
-        }
-        void buildDeclarations(const LangAPI::Declarations &declarations) {
-            for (const auto &declaration : declarations) {
-                buildDeclaration(declaration);
-            }
-        }
-        auto buildStatement(const LangAPI::Statement &stmt) -> void {
-            if (stmt.isIf()) {
-                stmts->createIf(stmt.getIf().expr);
-                buildStatements(stmt.getIf().stmt);
-                if (!stmt.getIf().else_stmt.empty()) {
-                    stmts->openElse();
-                    buildStatements(stmt.getIf().else_stmt);
-                }
-                stmts->closeIf();
-            } else if (stmt.isWhile()) {
-                stmts->createWhile(stmt.getWhile().expr);
-                buildStatements(stmt.getWhile().stmt);
-                stmts->closeWhile();
-            } else if (stmt.isDoWhile()) {
-                const auto dowhile = stmt.getDoWhile();
-                stmts->openDoWhile();
-                buildStatements(dowhile.stmt);
-                stmts->closeDoWhile(dowhile.expr);
-            } else if (stmt.isSwitch()) {
-                const auto switch_statement = stmt.getSwitch();
-                stmts->createSwitch(switch_statement.expression);
-                for (const auto &case_statement : switch_statement.cases) {
-                    stmts->createCase(case_statement.first);
-                    buildStatements(case_statement.second);
-                    stmts->closeCase();
-                }
-                stmts->closeSwitch();
-            } else if (stmt.isExpression()) {
-                stmts->createExpression(stmt.getExpression());
-            } else if (stmt.isVariable()) {
-                stmts->createVariable(stmt.getVariable());
-            } else if (stmt.isThrow()) {
-                stmts->createThrow(stmt.getThrow());
-            } else if (stmt.isComment()) {
-                stmts->createComment(stmt.getComment());
-            }
-        }
-        auto buildStatements(const LangAPI::Statements &statements) -> void {
-            for (const auto &statement : statements) {
-                buildStatement(statement);
-            }
-        }
+        std::string namespace_name;
+        bool incremental;
+        std::vector<std::pair<std::string, std::string>> files;
+        std::string lang;
+        ::Converter::ConstructBase *builder;
     public:
-        Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name) :
-        converter_lib("libispa-converter-" + lang), holder(holder), lang(lang), decls(nullptr, nullptr), stmts(nullptr, nullptr), namespace_name(namespace_name) {
-            decls = std::unique_ptr<::Converter::Declarations, void(*)(::Converter::Declarations*)>
-                (
-                    converter_lib.loadfun<::Converter::Declarations*, ::Converter::Writer*>(std::string("create_") + lang + "_declarations")(&output),
-                    converter_lib.loadfun<void, ::Converter::Declarations*>(std::string("delete_") + lang + "_declarations")
-                );
-            stmts = std::unique_ptr<::Converter::Statement, void(*)(::Converter::Statement*)>
-                (
-                    converter_lib.loadfun<::Converter::Statement*, ::Converter::Writer*>(std::string("create_") + lang + "_statement")(&output),
-                    converter_lib.loadfun<void, ::Converter::Statement*>(std::string("delete_") + lang + "_statement")
-                );
-        }
-        ~Converter() {}
-        auto build() -> void {
-            converter_lib.loadfun<void, const char*>(std::string("init"))(namespace_name.c_str());
-            decls->openFile(namespace_name);
-            decls->initImports();
-            buildDeclarations(holder.get());
-            decls->closeFile(namespace_name);
-            converter_lib.loadfun<void>(std::string("close"))();
-        }
-        auto getSource() -> std::optional<std::string> {
-            try {
-                auto getSourceFun = converter_lib.loadfun<std::optional<std::string>*>(std::string("getSource"));
-                auto ptr = getSourceFun();
-                if (ptr == nullptr) return std::nullopt;
-                auto res = *ptr;
-                delete ptr;
-                return res;
-            } catch (...) {
-                return std::nullopt;
-            }
-        }
-        auto get() { return decls->getWriter(); }
-    };
+        Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name, bool incremental)
+            : converter_lib("libispa-converter-" + lang),
+              holder(holder), namespace_name(namespace_name), incremental(incremental), lang(lang) {}
 
+        auto init() -> void {
+            auto construct = converter_lib.loadfun<::Converter::ConstructBase*, const LangAPI::Declarations *, const char*, bool>("cpp_construct");
+            builder = construct(&holder.get(), namespace_name.c_str(), incremental);
+        }
+        auto construct() -> void {
+            builder->construct();
+        }
+        [[nodiscard]] auto get() const -> const std::vector<std::pair<std::string, std::string>>& {
+            return builder->get_files();
+        }
+        ~Converter() {
+            converter_lib.loadfun<void, ::Converter::ConstructBase*>("cpp_construct_finish")(builder);
+        }
+    };
 }

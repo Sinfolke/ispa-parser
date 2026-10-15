@@ -8,7 +8,7 @@ auto CppParser::generate() -> int {
 #ifdef _WIN32
     return utils::command("{} -a LL -o {} --lang cpp {} --ddall --dd TestDumps", std::filesystem::path(BINARY_DIR) / "ispa.exe", temp_directory / "Parser", File::getGrammarFile(name));
 #else
-    return utils::command("{} -a LL -o {} --lang cpp {} --ddall --dd TestDumps", std::filesystem::path(BINARY_DIR) / "ispa", temp_directory / "Parser", File::getGrammarFile(name));
+    return utils::command("{} -a LL --lang cpp {} --ddall --dd TestDumps --no-incremental -o {}", std::filesystem::path(BINARY_DIR) / "ispa", File::getGrammarFile(name), temp_directory / "Parser");
 #endif
 }
 auto CppParser::compile(std::string bootloader_name, std::string clang) -> int {

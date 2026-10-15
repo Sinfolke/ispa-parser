@@ -74,7 +74,8 @@ set_target_properties(ispa_modules PROPERTIES POSITION_INDEPENDENT_CODE ON)
 get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cppm
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/Parser.cppm
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/ispastdlib.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/converters/C++2/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/converters/*.cppm
@@ -83,11 +84,12 @@ get_file_range(ISPA_MODULE_INTERFACES
 
 # Collect implementation sources and exclude main entry point
 get_file_range(ISPA_MODULE_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/Parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
         EXCLUDE ".*/main\\.cpp$"
+        EXCLUDE "parser/new/.*\\.cpp$"
 )
 
 target_sources(ispa_modules
@@ -100,7 +102,6 @@ target_sources(ispa_modules
 target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/converters

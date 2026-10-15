@@ -725,7 +725,7 @@ namespace LangRepr {
         LangAPI::Declarations flatForwards;
         for (const Name& n : names) {
             flatForwards.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(
-                LangAPI::ForwardDeclaredClass{.name = flattenName(n)}));
+                LangAPI::ForwardDeclaredClass{.name = flattenName(n), .isStruct = true}));
         }
         holder.push(LangAPI::Namespace{
             .name = "FlatTypes", .declarations = std::move(flatForwards)
@@ -739,6 +739,17 @@ namespace LangRepr {
 
             LangAPI::Class c;
             c.name = LangAPI::Symbol{flattenName(fullName)};
+
+            // Keep the class's direct referenced-type dependencies in LangAPI,
+            // not only in the temporary graph used to order definitions.
+            // Include boxed/recursive references too: they are still semantic
+            // dependencies even if they do not require a complete type here.
+            // Iterate in the original name order for deterministic output.
+            for (const Name& dependency : names) {
+                if (deps[fullName].contains(dependency))
+                    c.dependecies.push_back(flatSymbol(dependency));
+            }
+
             stdu::vector<MemberInfo> members;
 
             if (old->data.is_regular_data_block()) {

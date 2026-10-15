@@ -21,6 +21,7 @@ Args parse_args(int argc, char** argv) {
     app.add_option("--ddall", args.dump_all, "Dump everything from program")->expected(0);
     app.add_option("--dd", args.dump_dir, "Directory where to dump");
     app.add_option("--dump-nfa-from-rule", args.dump_nfa_from_rule, "Dump nfa from rule")->expected(0);
+    app.add_flag("--incremental,!--no-incremental", args.incremental, "Output a file-per-production.");
     try {
         app.parse(argc, argv);
     } catch (CLI::CallForAllHelp&) {

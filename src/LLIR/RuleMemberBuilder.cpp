@@ -1495,7 +1495,8 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
     std::size_t depth,
     std::size_t k,
     const LangAPI::Variable& result_var,
-    const LangAPI::Variable& success_var
+    const LangAPI::Variable& success_var,
+    const std::vector<stdu::vector<std::string>>& path
 ) {
     // `depth` selects which lookahead token this level of the decision
     // tree disambiguates on: depth 0 is the current token, depth 1 is one
@@ -1530,7 +1531,17 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
     for (const auto index : candidates) {
         for (const auto& seq : perAlt[index]) {
             if (depth < seq.size()) {
-                buckets[seq[depth]].insert(index);
+                // FIX: Only consider sequences that match the path taken so far
+                bool matches_path = true;
+                for (std::size_t i = 0; i < depth; ++i) {
+                    if (seq[i] != path[i]) {
+                        matches_path = false;
+                        break;
+                    }
+                }
+                if (matches_path) {
+                    buckets[seq[depth]].insert(index);
+                }
             }
         }
     }
@@ -1680,32 +1691,21 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
             );
         } else {
             if (depth + 1 >= k) {
-                throw Error(
-                    "Unresolved LL(k) decision at depth {}",
-                    depth
-                );
+                throw Error("Unresolved LL(k) decision at depth {}", depth);
             }
 
-            std::vector<std::size_t> narrowed(
-                alternatives.begin(),
-                alternatives.end()
-            );
+            std::vector<std::size_t> narrowed(alternatives.begin(), alternatives.end());
             nesting++;
+
+            // FIX: Append current symbol to the path for the recursive call
+            auto next_path = path;
+            next_path.push_back(symbol);
+
             auto nested_lookup_statements = buildDecisionTree(
-                perAlt,
-                op,
-                narrowed,
-                depth + 1,
-                k,
-                result_var,
-                success_var
+                perAlt, op, narrowed, depth + 1, k, result_var, success_var, next_path
             );
             nesting--;
             cs.second.insert(cs.second.end(), nested_lookup_statements.begin(), nested_lookup_statements.end());
-            // The nested tree handles rollback before its PopPosCounter.
-            // Restoring here is too late: the child's cursor has already
-            // propagated to this level.
-
         }
     }
     if (nesting == 1) {

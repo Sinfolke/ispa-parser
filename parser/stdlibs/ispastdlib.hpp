@@ -12,7 +12,6 @@
 #include <string>
 #include <any>
 #include <stdexcept>
-#include <cctype>
 #include <fstream>
 #include <variant>
 #include <optional>
@@ -21,15 +20,17 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-#include <cctype>
 #include <set>
 #include <unordered_set>
-
-#include "old/ispastdlib.hpp"
-#include "old/ispastdlib.hpp"
-#include "old/ispastdlib.hpp"
-#include "old/ispastdlib.hpp"
-#include "old/ispastdlib.hpp"
+#include <memory>
+#ifdef _WIN32
+#include <windows.h>
+#include <dbghelp.h>
+#pragma comment(lib, "dbghelp.lib")
+#else
+#include <execinfo.h>
+#include <cstdlib>
+#endif
 #ifndef STRINGIFY
 /**
  * @brief does #x
@@ -49,20 +50,16 @@
     Library version is not being updated with each change for now and remains 1.0
 */
 
-#define _ISC_STD_LIB_VER 1 // version of the library
-#define _ISC_STD_LIB_SUBVER 0 // the subversion of the library
+#define _ISPA_STD_LIB_VER 1 // version of the library
+#define _ISPA_STD_LIB_SUBVER 0 // the subversion of the library
 // this defines the minimum version of an output to have a compatibility with the library version
 // for example if the update did only change the way some classes work but not their structure, it is compatible with the downer version.
-#define _ISC_STD_LIB_BACKDOWN 1
-#define _ISC_STD_LIB_BACKDOWN_SUBVER 0
-#define _ISC_GITHUB "https://github.com/Sinfolke/ISC-parser"
-#define ISC_STD_LIBMARK \
-    "iscstdlibc++ " TOSTRING(_ISC_STD_LIB_VER) "." TOSTRING(_ISC_STD_LIB_SUBVER) ": "
-#define _ISC_INTERNAL_ERROR_MARK \
-        "NOTE: this exception is likely an internal error of the ISPA generator and is not on the user side.\n" \
-        "Please, show the developer this issue (" _ISC_GITHUB ")\n" \
-        "If this issue persist you may try to recompile the project by another version (try newer if your's is too old and vise versa)" \
-//#define _ISC_STD_LIB_CPP
+#define _ISPA_STD_LIB_BACKDOWN 1
+#define _ISPA_STD_LIB_BACKDOWN_SUBVER 0
+#define _ISPA_GITHUB "https://github.com/Sinfolke/ispa-parser-generator"
+#define _ISPA_STD_LIBMARK \
+    "ispastdlib.hpp " TOSTRING(_ISPA_STD_LIB_VER) "." TOSTRING(_ISPA_STD_LIB_SUBVER) ": "
+#define _ISPA_STD_LIB_CPP
 /**
  * @brief standard library for the ISPA-generated parser. Do not try to use it directly but use instead auto generated API
  * 
@@ -85,69 +82,206 @@ namespace std {
     }
 }
 namespace ISPA_STD {
-    /**
-     * @brief An error thrown when you're trying to access some features required with tokens only
-     *
-     */
-    class Lexer_No_Tokens_exception : public std::exception {
+    // Sequential {} formatting, compatible with C++17.
+    template<typename T>
+    std::string fmt_to_string(const T& value) {
+        std::ostringstream out;
+        out << value;
+        return out.str();
+    }
+
+    template<typename StrT, typename... Args,
+             typename = std::enable_if_t<
+                 std::is_constructible_v<std::string, StrT>>>
+    std::string fmt(const StrT& format, Args&&... args) {
+        std::string res(format);
+        std::size_t cursor = 0;
+
+        auto replace_next = [&](const auto& arg) {
+            auto pos = res.find("{}", cursor);
+            if (pos == std::string::npos)
+                return;
+
+            auto value = fmt_to_string(arg);
+            res.replace(pos, 2, value);
+            cursor = pos + value.size();
+        };
+
+        (replace_next(args), ...);
+        return res;
+    }
+    inline std::string capture_stacktrace() {
+        std::ostringstream out;
+
+#ifdef _WIN32
+        constexpr USHORT max_frames = 64;
+        void* frames[max_frames]{};
+
+        const USHORT count = CaptureStackBackTrace(
+            0, max_frames, frames, nullptr
+        );
+
+        HANDLE process = GetCurrentProcess();
+
+        // Minimal implementation. For production, initialize
+        // DbgHelp once per process and synchronize its use.
+        if (!SymInitialize(process, nullptr, TRUE))
+            return "Symbol initialization failed";
+
+        SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
+
+        alignas(SYMBOL_INFO)
+            char buffer[sizeof(SYMBOL_INFO) + 1024]{};
+
+        auto* symbol = reinterpret_cast<SYMBOL_INFO*>(buffer);
+        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+        symbol->MaxNameLen = 1024;
+
+        for (USHORT i = 0; i < count; ++i) {
+            DWORD64 address =
+                reinterpret_cast<DWORD64>(frames[i]);
+
+            DWORD64 displacement = 0;
+
+            out << "  #" << i << ' ';
+
+            if (SymFromAddr(
+                    process, address, &displacement, symbol)) {
+                out << symbol->Name
+                    << " +0x" << std::hex << displacement
+                    << std::dec;
+                    } else {
+                        out << frames[i];
+                    }
+
+            out << '\n';
+        }
+
+        SymCleanup(process);
+
+#else
+        void* frames[64];
+        int count = backtrace(frames, 64);
+
+        char** symbols = backtrace_symbols(frames, count);
+
+        if (!symbols)
+            return "Stack trace unavailable";
+
+        for (int i = 0; i < count; ++i)
+            out << "  #" << i << ' ' << symbols[i] << '\n';
+
+        std::free(symbols);
+#endif
+
+        return out.str();
+    }
+
+    class IspaInternalExcept : public std::exception {
+        std::string msg;
+        std::string issue;
+        bool ispa_side;
+        std::string stacktrace;
+
     public:
+        template<typename... Args>
+        IspaInternalExcept(
+            const char* message,
+            const char* issue,
+            bool ispa_side,
+            Args&&... args
+        )
+            : msg(fmt(message, std::forward<Args>(args)...)),
+              issue(issue ? issue : "Unknown"),
+              ispa_side(ispa_side),
+              stacktrace(capture_stacktrace())
+        {}
+
         const char* what() const noexcept override {
-            return ISC_STD_LIBMARK "Lexer_No_Tokens_exception: the tokenizator has no tokens but some operation required them";
+            return msg.c_str();
+        }
+
+        const std::string& err() const noexcept {
+            return msg;
+        }
+
+        void show() const {
+    #ifndef DEBUG
+            std::cerr << fmt(
+                "INTERNAL UNKNOWN ERROR: the generated parser "
+                "encountered an unexpected internal error.\n"
+                "This should not occur in a correctly operating "
+                "parser generated by the open-source ISPA "
+                "parser generator.\n\n"
+                "Issue classification: {}\n"
+                "Error origin: {}\n"
+                "Error message: {}\n\n"
+                "Stack trace:\n{}"
+                "Mark: " _ISPA_STD_LIBMARK "\n"
+                "Repository for contact: " _ISPA_GITHUB "\n",
+                issue,
+                ispa_side ? "ISPA standard library"
+                          : "Generated parser",
+                msg,
+                stacktrace
+            );
+    #else
+            std::cerr << fmt(
+                "ISPA INTERNAL ERROR (DEBUG BUILD)\n\n"
+                "Issue classification: {}\n"
+                "Error origin: {}\n"
+                "Error message: {}\n\n"
+                "Stack trace:\n{}",
+                issue,
+                ispa_side ? "ISPA standard library"
+                          : "Generated parser",
+                msg,
+                stacktrace
+            );
+    #endif
+            std::cerr << '\n';
         }
     };
-    class Lexer_No_Input_exception : public std::exception {
+    class IspaAPIExcept : public std::exception {
+        std::string msg;
+#ifdef DEBUG
+        std::string stacktrace;
+#endif
     public:
+        template<typename... Args>
+        IspaAPIExcept(
+            const char* message,
+            Args&&... args
+        )
+            : msg(fmt(message, std::forward<Args>(args)...))
+#ifdef DEBUG
+              ,stacktrace(capture_stacktrace())
+#endif
+        {}
+
         const char* what() const noexcept override {
-            return ISC_STD_LIBMARK "Lexer_No_Input_exception: the tokenizator has no input provided but the operation required it";
+            return msg.c_str();
         }
-    };
-    class Parser_No_Input_exception : public std::exception {
-    public:
-        const char* what() const noexcept override {
-            return ISC_STD_LIBMARK "Parser_No_Input_exception: the parser has no input provided but the operation required it";
+
+        const std::string& err() const noexcept {
+            return msg;
         }
-    };
-    class AdvancedDFA_exception : public std::exception {
-        std::string message;
-    public:
-        AdvancedDFA_exception(const char* message) {
-            this->message = "ispastdlib Internal Error in Advanced DFA: ";
-            this->message += message;
-        }
-        [[nodiscard]] auto what() const noexcept -> const char* override {
-            return message.c_str();
-        }
-    };
-    class node_exception : public std::exception {
-    private:
-        std::string mes;
-        void fill(const std::string& method) {
-            mes =
-            ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method '";
-            mes += method;
-            mes +=
-            "' required it.\n"
-            _ISC_INTERNAL_ERROR_MARK "\n"
-            "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
-            "But their methods like ";
-            mes += method;
-            mes += " etc. require those properties."
-            "When they are called but the object is still uninitialised you get this error\n";
-        }
-        void fill() {
-            mes =
-            ISC_STD_LIBMARK "node_exception: the capture data has not been provided but called method required it.\n"
-            _ISC_INTERNAL_ERROR_MARK "\n"
-            "E.G: This issue is because you have an opportunity to have token or rule be empty without first initialisation.\n"
-            "But their methods like line etc. require those properties."
-            "When they are called but the object is still uninitialised you get this error\n"
-            ;
-        }
-    public:
-        node_exception(const char* method) {  fill(method);  }
-        node_exception() {  fill();  }
-        const char* what() const noexcept override {
-            return mes.c_str();
+
+        void show() const {
+    #ifndef DEBUG
+            std::cerr << fmt(
+                "Error: {}",
+                msg
+            );
+    #else
+            std::cerr << fmt(
+                "Error: {}\n",
+                "Stack:\n{}\n",
+                msg,
+                stacktrace
+            );
+    #endif
+            std::cerr << '\n';
         }
     };
     // prior C++20 span type
@@ -195,21 +329,6 @@ namespace ISPA_STD {
     private:
         pointer data_;
         size_type size_;
-    };
-    template<class TOKEN_T, const char* (*ToString)(TOKEN_T)>
-    class bad_get : public std::bad_cast {
-        TOKEN_T required_name;
-        TOKEN_T get_name;
-        std::string message; // cache the message for `what()`
-    public:
-        bad_get(TOKEN_T required_name, TOKEN_T get_name, std::string namespace_name = "<Parser>")
-            : required_name(required_name), get_name(get_name) {
-            message = std::string("Expected ") + namespace_name + "::get::" + ToString(required_name) + "(), but got " + namespace_name + "::get::" + ToString(get_name) + "()";
-        }
-
-        const char* what() const noexcept override {
-            return message.c_str();
-        }
     };
     template<typename T>
     std::ostream& operator<<(std::ostream& os, const Span<T>& span) {
@@ -589,7 +708,7 @@ namespace ISPA_STD {
 
         std::size_t endpos() const {
             if (_startpos == std::string::npos || !_start || !_end)
-                throw node_exception("endpos");
+                throw IspaAPIExcept("Can't retrieve end position on an empty token");
             return _startpos + static_cast<std::size_t>(_end - _start);
         }
 
@@ -664,10 +783,12 @@ namespace ISPA_STD {
         }
 
         auto to_string() const {
-            if (_empty) throw std::runtime_error("empty Node");
+            if (_empty)
+                throw IspaAPIExcept("Can't retrieve string representation of an empty node");
             if constexpr (std::is_pointer_v<DataStorageType> ||
                           is_shared_ptr<DataStorageType>::value) {
-                if (!_data) throw std::runtime_error("null pointer dereference");
+                if (!_data)
+                    throw IspaAPIExcept("Can't retrieve string representation of a null pointer (std::shared_ptr)");
                 return _data->to_string();
             } else {
                 return _data.to_string();
@@ -860,9 +981,7 @@ namespace ISPA_STD {
             std::visit(
                 [&](const auto& value) {
                     if (!assign_variant_alternative(target, value)) {
-                        throw std::runtime_error(
-                            "assign_compatible: incompatible variant alternative"
-                        );
+                        throw IspaInternalExcept("assign_compatible: incompatible variant alternative", "Parser", true);
                     }
                 },
                 source
@@ -1099,290 +1218,6 @@ namespace ISPA_STD {
                           << "'\n";
             }
         }
-
-        inline const char* action_name(API::Action action) {
-            switch (action) {
-                case API::Action::SET:         return "SET";
-                case API::Action::SET_NEXT:    return "SET_NEXT";
-                case API::Action::COPY:        return "COPY";
-                case API::Action::APPEND:      return "APPEND";
-                case API::Action::APPEND_NEXT: return "APPEND_NEXT";
-                default:                       return "UNKNOWN";
-            }
-        }
-
-        inline std::string debug_char(unsigned char c) {
-            switch (c) {
-                case '\0': return "\\0";
-                case '\n': return "\\n";
-                case '\r': return "\\r";
-                case '\t': return "\\t";
-                case '\\': return "\\\\";
-                case '\'': return "\\'";
-                default:
-                    if (c >= 32 && c <= 126)
-                        return std::string(1, static_cast<char>(c));
-
-                    std::ostringstream os;
-                    os << "\\x"
-                       << std::hex
-                       << std::setw(2)
-                       << std::setfill('0')
-                       << static_cast<unsigned>(c);
-                    return os.str();
-            }
-        }
-
-        template<typename Table, typename Actions>
-        void describe_target(
-            std::ostream& out,
-            std::size_t target,
-            const Table& table,
-            const Actions& actions
-        ) {
-            const std::size_t dfa_count = table.size();
-            const std::size_t action_end = dfa_count + actions.size();
-
-            if (target == API::null_state) {
-                out << "NULL";
-                return;
-            }
-
-            std::set<std::size_t> visited;
-
-            while (true) {
-                if (target == API::null_state) {
-                    out << "NULL";
-                    return;
-                }
-
-                if (target < dfa_count) {
-                    out << "DFA[" << target << "]";
-                    return;
-                }
-
-                if (target >= action_end) {
-                    out << "SEMANTIC["
-                        << target - action_end
-                        << "]";
-                    return;
-                }
-
-                if (!visited.insert(target).second) {
-                    out << "ACTION CYCLE at state " << target;
-                    return;
-                }
-
-                const std::size_t action_index = target - dfa_count;
-                const auto& row = actions[action_index];
-                const auto action = static_cast<API::Action>(row[0]);
-
-                out << "ACTION[" << action_index << "] "
-                    << action_name(action)
-                    << "(r" << row[1];
-
-                switch (action) {
-                    case API::Action::COPY:
-                        out << ", r" << row[2];
-                        break;
-
-                    case API::Action::APPEND:
-                    case API::Action::APPEND_NEXT:
-                        if (row[2] == API::null_state)
-                            out << ", unset";
-                        else
-                            out << ", r" << row[2];
-                        break;
-
-                    default:
-                        break;
-                }
-
-                out << ") -> ";
-
-                target = static_cast<std::size_t>(row[3]);
-            }
-        }
-
-
-        template<
-            typename Table,
-            typename Classes,
-            typename Actions,
-            std::size_t DebugSize
-        >
-        void dump_dfa_table(
-            const Table& table,
-            const Classes& class_table,
-            const Actions& actions,
-            const API::DFADebugTable<DebugSize>& debug_array,
-            const API::DebugIndex& debug_index,
-            std::ostream& out = std::cerr
-        ) {
-            out << "\n========== DECODED DFA TABLE ==========\n";
-            out << "DFA states: " << table.size() << '\n';
-            out << "Action states: " << actions.size() << '\n';
-
-            const std::size_t semantic_base =
-                table.size() + actions.size();
-
-            // Map character classes to their byte values.
-            std::map<std::size_t, std::vector<unsigned>> class_chars;
-
-            for (unsigned c = 0; c < 256; ++c) {
-                const auto cls = static_cast<std::size_t>(
-                    class_table[static_cast<unsigned char>(c)]
-                );
-
-                class_chars[cls].push_back(c);
-            }
-
-            out << "\n--- DFA TRANSITIONS ---\n";
-
-            for (std::size_t state = 0; state < table.size(); ++state) {
-                out << "\nDFA[" << state << "]\n";
-
-                for (std::size_t cls = 0;
-                     cls < table[state].size();
-                     ++cls) {
-
-                    const auto target = table[state][cls];
-
-                    if (target == API::null_state)
-                        continue;
-
-                    out << "  CLASS[" << cls << "]";
-
-                    const auto it = class_chars.find(cls);
-
-                    if (it != class_chars.end()) {
-                        out << " {";
-
-                        const auto& chars = it->second;
-                        const std::size_t limit =
-                            std::min<std::size_t>(chars.size(), 12);
-
-                        for (std::size_t i = 0; i < limit; ++i) {
-                            if (i) out << ", ";
-
-                            out << "'"
-                                << debug_char(
-                                    static_cast<unsigned char>(chars[i])
-                                )
-                                << "'";
-                        }
-
-                        if (chars.size() > limit)
-                            out << ", ... (" << chars.size() << " total)";
-
-                        out << "}";
-                    }
-
-                    out << "\n    TARGET: ";
-
-                    describe_target(
-                        out,
-                        target,
-                        table,
-                        actions
-                    );
-
-                    out << '\n';
-
-                    // Your existing debug decoder takes an actual
-                    // input character in addition to state and class.
-                    //
-                    // Use one representative character from the class.
-                    if (it != class_chars.end() && !it->second.empty()) {
-                        const char representative = static_cast<char>(
-                            it->second.front()
-                        );
-
-                        out << "    SOURCE DEBUG:\n";
-
-                        // The existing trace_step() currently owns its
-                        // output destination. This call uses a dummy
-                        // position since we are not executing the DFA.
-                        //
-                        // Only safe if trace_step() does not dereference
-                        // its position argument.
-                        //
-                        // Prefer the formatter refactoring described
-                        // below if trace_step() reads the input pointer.
-                        const char dummy_input[] = {representative, '\0'};
-
-                        detail::trace_step(
-                            debug_array,
-                            debug_index,
-                            state,
-                            cls,
-                            representative,
-                            dummy_input,
-                            false
-                        );
-                    }
-                }
-            }
-
-            out << "\n--- ACTION TABLE ---\n";
-
-            for (std::size_t i = 0; i < actions.size(); ++i) {
-                out << "ACTION[" << i << "]"
-                    << " (global=" << table.size() + i << ") -> ";
-
-                describe_target(
-                    out,
-                    table.size() + i,
-                    table,
-                    actions
-                );
-
-                out << '\n';
-            }
-
-            out << "\n--- SEMANTIC STATES ---\n";
-
-            std::set<std::size_t> semantic_indices;
-
-            auto collect_semantic = [&](std::size_t target) {
-                std::set<std::size_t> visited;
-
-                while (target != API::null_state &&
-                       target >= table.size() &&
-                       target < semantic_base) {
-
-                    if (!visited.insert(target).second)
-                        return;
-
-                    target = actions[target - table.size()][3];
-                }
-
-                if (target != API::null_state &&
-                    target >= semantic_base) {
-                    semantic_indices.insert(target - semantic_base);
-                }
-            };
-
-            for (std::size_t state = 0; state < table.size(); ++state) {
-                for (std::size_t cls = 0;
-                     cls < table[state].size();
-                     ++cls) {
-                    collect_semantic(table[state][cls]);
-                }
-            }
-
-            for (std::size_t i = 0; i < actions.size(); ++i)
-                collect_semantic(actions[i][3]);
-
-            for (const auto index : semantic_indices) {
-                out << "SEMANTIC[" << index << "]"
-                    << " (global=" << semantic_base + index << ")\n";
-            }
-
-            out << "=======================================\n";
-        }
-
-
     }
 namespace DFA {
     template<
@@ -1531,11 +1366,8 @@ namespace DFA {
                     return std::get<1>(std::move(result));
                 if (pos == last_pos) {
                     if (++steps_without_progress > 100) {
-                        throw std::runtime_error(
-                            "DFA: possible zero-width transition cycle at state " +
-                            std::to_string(state) +
-                            ", offset " +
-                            std::to_string(pos - start)
+                        throw IspaInternalExcept(
+                            "DFA: possible zero-width transition cycle at state {}, offset {}", "Lexer TDFA generation", true, state, std::to_string(pos - start)
                         );
                     }
                 } else {
@@ -1602,49 +1434,61 @@ namespace DFA {
         }
 
     public:
-        // Accumulates tokens lazily; does not populate `tokens` on the owning lexer.
         class lazy_iterator {
             Lexer_base* owner = nullptr;
-            Token current;
-            const char* pos = nullptr;
-            std::size_t counter = 0;
-
-            void advance() {
-                if (isEnd()) return;
-                current = owner->makeToken(pos);
-                if (!isEnd()) counter++;
-            }
+            std::size_t index = 0;
 
         public:
             lazy_iterator() = default;
-            lazy_iterator(Lexer_base& owner, const char* in) : owner(&owner), pos(in) {
-                current = owner.makeToken(pos);
-                counter = !std::holds_alternative<std::monostate>(current);
+
+            lazy_iterator(Lexer_base& lexer, std::size_t index = 0)
+                : owner(&lexer), index(index) {}
+
+            lazy_iterator(const lazy_iterator&) = default;
+            lazy_iterator& operator=(const lazy_iterator&) = default;
+
+            const Token& operator*() const {
+                return owner->tokenAt(index);
             }
-            lazy_iterator(const lazy_iterator& other)
-                : owner(other.owner), current(other.current), pos(other.pos), counter(other.counter) {}
 
-            bool isEnd() const { return std::holds_alternative<std::monostate>(current); }
+            const Token* operator->() const {
+                return &owner->tokenAt(index);
+            }
 
-            lazy_iterator& operator=(const lazy_iterator& other) {
-                if (this != &other) {
-                    owner = other.owner;
-                    current = other.current;
-                    pos = other.pos;
-                    counter = other.counter;
-                }
+            lazy_iterator& operator++() {
+                if (!isEnd())
+                    ++index;
                 return *this;
             }
-            lazy_iterator& operator++() { advance(); return *this; }
-            lazy_iterator operator++(int) { auto tmp = *this; advance(); return tmp; }
-            void operator+=(std::size_t count) { while (count-- > 0 && !isEnd()) advance(); }
 
-            std::ptrdiff_t operator-(const lazy_iterator& other) const {
-                return static_cast<std::ptrdiff_t>(counter) - static_cast<std::ptrdiff_t>(other.counter);
+            lazy_iterator operator++(int) {
+                auto copy = *this;
+                ++(*this);
+                return copy;
             }
-            const Token& operator*() const { return current; }
-            const Token* operator->() const { return &current; }
-            std::size_t distance() const { return counter; }
+
+            void operator+=(std::size_t count) {
+                while (count-- && !isEnd())
+                    ++(*this);
+            }
+
+            bool isEnd() const {
+                return !owner ||
+                    std::holds_alternative<std::monostate>(
+                        owner->tokenAt(index)
+                    );
+            }
+
+            std::ptrdiff_t operator-(
+                const lazy_iterator& other
+            ) const {
+                return static_cast<std::ptrdiff_t>(index)
+                     - static_cast<std::ptrdiff_t>(other.index);
+            }
+
+            std::size_t distance() const {
+                return index;
+            }
         };
 
         // Iterates already-accumulated tokens; run makeTokens() before using this.
@@ -1656,7 +1500,7 @@ namespace DFA {
             iterator() = default;
             iterator(Lexer_base& owner) : owner(&owner), pos(owner.tokens.begin()) {}
 
-            iterator& operator=(const iterator& other) { owner = other.owner; pos = other.pos; return *this; }
+            iterator& operator=(const iterator& other) = default;
             void operator+=(std::size_t count) { pos += count; }
             iterator& operator++() { pos += 1; return *this; }
             iterator operator++(int) { auto tmp = *this; pos += 1; return tmp; }
@@ -1668,6 +1512,11 @@ namespace DFA {
             Token* operator->() const { return &(*pos); }
             std::size_t distance() const { return pos - owner->tokens.begin(); }
         };
+        /*
+         * DO NOT OVERRIDE
+         * This function is used internally as bridge between generator and std lib
+         * you should override Lexer::push() instead
+         * */
         virtual Token makeToken(const char*& pos) = 0;
         virtual void init() {}
 
@@ -1694,22 +1543,23 @@ namespace DFA {
         const TokenFlow<TOKEN_T, Token>& getTokens() const { return tokens; }
         TokenFlow<TOKEN_T, Token>& getTokensReference() { return tokens; }
         void clearTokens() { tokens.clear(); }
-
-        TokenFlow<TOKEN_T, Token>& makeTokens() {
+        virtual void push(Token&& t) { tokens.push_back(std::move(t)); }
+        virtual void push(const Token &t) { tokens.push_back(t); }
+        virtual TokenFlow<TOKEN_T, Token>& makeTokens() {
             if (_in == nullptr)
-                throw Lexer_No_Input_exception();
+                throw IspaAPIExcept("can't lex because no input provided. ");
             const char* pos = _in;
             while (*pos != '\0') {
                 const char* before = pos;
                 Token t = makeToken(pos);
                 if (pos == before) {
-                    throw std::runtime_error(
-                        std::string("Lexer: no token matches input at position ") +
-                        std::to_string(getCurrentPos(pos)) + " ('" + *pos + "')");
+                    throw IspaInternalExcept(
+                        "no matches at position {}, on character {}, and no exception can handle it", "Lexer TDFA generation", true, getCurrentPos(pos), *pos
+                    );
                 }
                 push(std::move(t));
             }
-            push(Token{});
+            push(std::monostate {});
             return tokens;
         }
         TokenFlow<TOKEN_T, Token>& makeTokens(const std::string& in) {
@@ -1720,10 +1570,10 @@ namespace DFA {
             setInput(in);
             return makeTokens();
         }
-        TokenFlow<TOKEN_T, Token>& makeTokensFromFile(const char* path) {
+        virtual TokenFlow<TOKEN_T, Token>& makeTokensFromFile(const char* path) {
             std::ifstream file(path, std::ios::in | std::ios::binary);
             if (!file)
-                throw std::runtime_error(std::string("Failed to open file '") + path + "'");
+                throw IspaAPIExcept("Failed to open file '{}'", path);
 
             std::string str;
             file.seekg(0, std::ios::end);
@@ -1732,23 +1582,12 @@ namespace DFA {
             str.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
             return makeTokens(str);
         }
-
-        const std::vector<std::string> getErrors() const { return {""}; }
-
-        void push(const TokenFlow<TOKEN_T, Token>& input_tokens) { tokens.append_range(input_tokens); }
-        void push(const Token& input_token) { tokens.push_back(input_token); }
-        void push(const Lexer_base& other) {
-            if (!other.hasTokens())
-                throw Lexer_No_Tokens_exception();
-            tokens.append_range(other.tokens);
+        virtual auto getErrors() -> const std::vector<std::string>& {
+            throw IspaInternalExcept("Ispa is not yet able to generate errors and expose their API", "Not implemented", false);
         }
-        void pop() { tokens.pop_back(); }
-        void pop(std::size_t n) {
-            if (n > tokens.size())
-                throw std::length_error(ISC_STD_LIBMARK "Lexer_base::pop(): n exceeds token count");
-            tokens.erase(tokens.end() - n, tokens.end());
+        virtual void append_token(const Token& token) {
+            tokens.push_back(token);
         }
-
         Lexer_base& operator=(const Lexer_base& other) {
             if (this != &other) {
                 tokens = other.tokens;
@@ -1774,18 +1613,16 @@ namespace DFA {
                 ++pos;
         }
         void raise_error(const Token& node, const std::string& message) {
-            // std::visit([&](auto&& arg) {
-            //     using T = std::decay_t<decltype(arg)>;
-            //     if constexpr (!std::is_same_v<T, std::monostate>) {
-            //         std::cerr << "Error at token " << (int) arg.name() << "(at position " << arg.startpos() << ")" << ": " << message << std::endl;
-            //         std::cerr << "Token: \n" << arg << std::endl;
-            //     }
-            // }, node);
+            std::visit([&](auto&& arg) {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (!std::is_same_v<T, std::monostate>) {
+                    std::cerr << "Error at token " << (int) arg.name() << "(at position " << arg.startpos() << ")" << ": " << message << std::endl;
+                    std::cerr << "Token: \n" << arg << std::endl;
+                }
+            }, node);
         }
         static void PANIC_MODE() {}
     public:
-        virtual void parseFromTokens() = 0;
-        virtual void lazyParse() = 0;
         // Constructors
         LLParser_base() {}
         LLParser_base(Lexer_base<TOKEN_T, Token>& lexer) {
@@ -1813,22 +1650,41 @@ namespace DFA {
             lexer = nullptr;
             text = nullptr;
         }
+    protected:
         /**
-         * @brief Parser the tokens based on input provided before
-         *
-         * @return Tree<RULE_T>
+         * Parse NON-LAZILY input
          */
-        MainNode& parse() {
-            if (lexer != nullptr) {
-                if (!lexer->hasInput())
-                    lexer->makeTokens();
-                parseFromTokens();
-            } else if (text != nullptr) {
-                lazyParse();
-            } else throw Parser_No_Input_exception();
+        virtual MainNode& parse() {
+            if (lexer == nullptr)
+                throw IspaAPIExcept("Can't parse because no input lexer is provided");
+            if (!lexer->hasInput())
+                lexer->makeTokens();
+            parseFromTokens();
             return tree;
         }
+        /*
+         * Parse LAZILY input
+         */
+        virtual MainNode& parseLazy() {
+            if (text == nullptr)
+                throw IspaAPIExcept("Can't parse because no input text is provided");
+            lazyParse();
+            return tree;
+        }
+        /*
+         * DO NOT OVERRIDE
+         * This function is used internally as bridge between generator and std lib
+         * you should override Lexer::parse() instead
+         */
+        virtual void parseFromTokens() = 0;
+        /*
+         * DO NOT OVERRIDE
+         * This function is used internally as bridge between generator and std lib
+         * you should override Lexer::parseLazy() instead
+         */
+        virtual void lazyParse() = 0;
     };
+#ifdef ISPA_EXPERIMENTAL
     template <class TOKEN_T, class RULE_T, class MAIN_NODE, class Token, class Action, class ActionTable, class GotoTable, class RulesTable>
     class LRParser_base : public LLParser_base<TOKEN_T, RULE_T, MAIN_NODE, Token> {
     protected:
@@ -2003,8 +1859,6 @@ namespace DFA {
             dfa_token_cache.clear();
         }
     };
+#endif
 } // namespace ISPA_STD
-
-#undef _ISC_GITHUB
-#undef _ISC_INTERNAL_ERROR_MARK
 #endif // _ISPA_STD_LIB_CPP

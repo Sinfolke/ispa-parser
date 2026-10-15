@@ -1,0 +1,350 @@
+statement:
+    @ compound_stmt | simple_stmts
+    {@}
+;
+
+simple_stmts:
+    @ simple_stmt @ (SEMICOLON @ simple_stmt)* SEMICOLON? NEWLINE
+    @{first, rest}
+;
+
+simple_stmt:
+    @ return_stmt
+    | raise_stmt
+    | del_stmt
+    | pass_stmt
+    | break_stmt
+    | continue_stmt
+    | assert_stmt
+    | global_stmt
+    | nonlocal_stmt
+    | import_stmt
+    | expr_stmt
+    {@}
+;
+
+expr_stmt:
+    @ expr @ assignment_value?
+    @{target, assignment}
+;
+
+assignment_value:
+    @ assignment_tail | annotated_assignment
+    {@}
+;
+
+assignment_tail:
+    @ assignment_op @ expr
+    @{op, value}
+;
+
+assignment_op:
+    @ ASSIGN
+    | PLUS_ASSIGN
+    | MINUS_ASSIGN
+    | STAR_ASSIGN
+    | MATMUL_ASSIGN
+    | SLASH_ASSIGN
+    | FLOOR_DIV_ASSIGN
+    | PERCENT_ASSIGN
+    | POWER_ASSIGN
+    | AMP_ASSIGN
+    | PIPE_ASSIGN
+    | CARET_ASSIGN
+    | LSHIFT_ASSIGN
+    | RSHIFT_ASSIGN
+    {@}
+;
+
+annotated_assignment:
+    COLON @ expr @ (ASSIGN @ expr)?
+    @{annotation, value}
+;
+
+assignment_target:
+    @ ID @ assignment_suffix*
+    @{name, suffixes}
+;
+
+assignment_suffix:
+    @ attribute_suffix | index_suffix
+    {@}
+;
+
+return_stmt:
+    RETURN @ expr?
+    {@}
+;
+
+raise_stmt:
+    RAISE @ expr? @ raise_from?
+    @{exception, cause}
+;
+
+raise_from:
+    FROM @ expr
+    {@}
+;
+
+del_stmt:
+    DEL @ assignment_target @ (COMMA @ assignment_target)*
+    @{first, rest}
+;
+
+pass_stmt:
+    PASS
+;
+
+break_stmt:
+    BREAK
+;
+
+continue_stmt:
+    CONTINUE
+;
+
+assert_stmt:
+    ASSERT @ expr @ (COMMA @ expr)?
+    @{condition, message}
+;
+
+global_stmt:
+    GLOBAL @ ID @ (COMMA @ ID)*
+    @{first, rest}
+;
+
+nonlocal_stmt:
+    NONLOCAL @ ID @ (COMMA @ ID)*
+    @{first, rest}
+;
+
+compound_stmt:
+    @ if_stmt
+    | while_stmt
+    | for_stmt
+    | with_stmt
+    | try_stmt
+    | decorated_def
+    {@}
+;
+
+decorated_def:
+    @ decorators? @ def_header
+    @{decorators, definition}
+;
+
+def_header:
+    @ function_header | class_header
+    {@}
+;
+
+block:
+    @ indented_block | simple_stmts
+    {@}
+;
+
+indented_block:
+    NEWLINE INDENT @ statement+ DEDENT
+    {@}
+;
+
+if_stmt:
+    IF @ expr COLON @ block @ elif_clause* @ else_clause?
+    @{condition, body, elifs, otherwise}
+;
+
+elif_clause:
+    ELIF @ expr COLON @ block
+    @{condition, body}
+;
+
+else_clause:
+    ELSE COLON @ block
+    {@}
+;
+
+while_stmt:
+    WHILE @ expr COLON @ block @ else_clause?
+    @{condition, body, otherwise}
+;
+
+for_stmt:
+    @ ASYNC? FOR @ for_targets IN @ expr COLON @ block @ else_clause?
+    @{async, targets, iterable, body, otherwise}
+;
+
+for_targets:
+    @ assignment_target @ (COMMA @ assignment_target)* COMMA?
+    @{first, rest}
+;
+
+function_def:
+    @ decorators? @ function_header
+    @{decorators, definition}
+;
+
+function_header:
+    @ ASYNC? DEF @ ID LPAREN @ parameters? RPAREN
+    @ return_annotation? COLON @ block
+    @{async, name, params, returns, body}
+;
+
+return_annotation:
+    ARROW @ expr
+    {@}
+;
+
+parameters:
+    @ parameter @ (COMMA @ parameter)* COMMA?
+    @{first, rest}
+;
+
+parameter:
+    @ ID @ parameter_annotation? @ parameter_default?
+    @{name, annotation, def}
+;
+
+parameter_annotation:
+    COLON @ expr
+    {@}
+;
+
+parameter_default:
+    ASSIGN @ expr
+    {@}
+;
+
+decorators:
+    @ decorator+
+    {@}
+;
+
+decorator:
+    MATMUL @ primary NEWLINE
+    {@}
+;
+
+class_def:
+    @ decorators? @ class_header
+    @{decorators, definition}
+;
+
+class_header:
+    CLASS @ ID @ class_bases? COLON @ block
+    @{name, bases, body}
+;
+
+class_bases:
+    LPAREN @ call_args? RPAREN
+    {@}
+;
+
+with_stmt:
+    @ ASYNC? WITH @ with_items COLON @ block
+    @{async, items, body}
+;
+
+with_items:
+    @ with_item @ (COMMA @ with_item)* COMMA?
+    @{first, rest}
+;
+
+with_item:
+    @ expr @ with_as?
+    @{context, target}
+;
+
+with_as:
+    AS @ assignment_target
+    {@}
+;
+
+try_stmt:
+    TRY COLON @ block @ try_tail
+    @{body, handlers}
+;
+
+try_tail:
+    @ except_handlers | finally_clause
+    {@}
+;
+
+except_handlers:
+    @ except_clause+ @ else_clause? @ finally_clause?
+    @{handlers, otherwise, finalizer}
+;
+
+except_clause:
+    EXCEPT @ expr? @ except_alias? COLON @ block
+    @{exception, alias, body}
+;
+
+except_alias:
+    AS @ ID
+    {@}
+;
+
+finally_clause:
+    FINALLY COLON @ block
+    {@}
+;
+
+import_stmt:
+    @ import_name | import_from
+    {@}
+;
+
+import_name:
+    IMPORT @ dotted_as_names
+    {@}
+;
+
+import_from:
+    FROM @ relative_module IMPORT @ import_targets
+    @{module, names}
+;
+
+relative_module:
+    @ DOT* @ dotted_name?
+    @{relative, name}
+;
+
+dotted_name:
+    @ ID @ (DOT @ ID)*
+    @{first, rest}
+;
+
+dotted_as_names:
+    @ dotted_as_name @ (COMMA @ dotted_as_name)*
+    @{first, rest}
+;
+
+dotted_as_name:
+    @ dotted_name @ import_alias?
+    @{name, alias}
+;
+
+import_alias:
+    AS @ ID
+    {@}
+;
+
+import_targets:
+    @ STAR | parenthesized_imports | import_names
+    {@}
+;
+
+parenthesized_imports:
+    LPAREN @ import_names RPAREN
+    {@}
+;
+
+import_names:
+    @ import_name_item @ (COMMA @ import_name_item)* COMMA?
+    @{first, rest}
+;
+
+import_name_item:
+    @ ID @ import_alias?
+    @{name, alias}
+;

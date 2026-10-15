@@ -15,8 +15,9 @@ export namespace LLIR {
         Production data;
         const AST::Rule *rule;
         auto getInclosedMapFromKeyValueBinding() -> LLIR::inclosed_map;
+        bool changed = true;
     public:
-        RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule, stdu::vector<DFA::DFA> *dfas) : BuilderData(ast, dfas), rule(&rule) {
+        RuleBuilder(AST::Tree& ast, const stdu::vector<std::string> &name, const AST::Rule &rule, stdu::vector<DFA::DFA> *dfas, bool changed = true) : BuilderData(ast, dfas), rule(&rule), changed(changed) {
             fullname = name;
         }
         void build();

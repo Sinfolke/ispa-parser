@@ -110,7 +110,8 @@ export namespace LangAPI {
         TokenNodeConstruct, ParserNodeConstructor,
         DFADebug, TdfaLayout, DfaCaptures,
         ASTPrinter, Concat,
-        MatchResultValue, VariantIndex, AssignCompatible
+        MatchResultValue, VariantIndex, AssignCompatible,
+        LexerTokenIterator, LexerLazyIterator
     };
 
 
@@ -1060,10 +1061,11 @@ export namespace LangAPI {
         std::string name;
         stdu::vector<std::pair<Type, std::string>> parameters;
         Statements statements;
-        stdu::vector<std::string> template_parameters;
+        stdu::vector<std::pair<std::string, stdu::vector<Type>>> template_parameters;
         bool override = false;
         bool is_static = false;
         bool is_const = false;
+        bool is_wrap_function = false;
         friend bool operator==(const Function &a, const Function &b);
         bool operator!=(const Function& other) const {
             return !(*this == other);
@@ -1083,6 +1085,7 @@ export namespace LangAPI {
         Visibility default_visibility = Visibility::Public;
         std::optional<Function> to_str_fun;
         std::optional<Function> output_fun;
+        stdu::vector<Symbol> dependecies;
         bool operator==(const Class& other) const {
             return name == other.name && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility;
         }

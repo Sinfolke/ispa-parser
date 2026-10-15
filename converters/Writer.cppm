@@ -1,6 +1,5 @@
 export module Converter.Writer;
 
-import Rope.String;
 import cpuf.printf;
 
 import dstd;
@@ -41,6 +40,7 @@ export namespace Converter {
         auto pop_back() -> void { output.pop_back(); }
         auto increaseIndentation() -> void { ++indentation; }
         auto decreaseIndentation() -> void { indentation > 0 ? --indentation : 0; }
-        auto& get() { return output; }
+        [[nodiscard]] const std::string& get() const & { return output; }
+        [[nodiscard]] std::string get() && { return std::move(output); }
     };
 }

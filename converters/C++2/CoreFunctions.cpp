@@ -3,8 +3,6 @@ module Cpp.CoreFunctions;
 import corelib;
 import logging;
 import AST.API;
-import Cpp.Statement;
-import Cpp.Declarations;
 import constants;
 
 import dstd;
@@ -22,8 +20,10 @@ auto Core::isNestedArrayType(const LangAPI::Type &t) -> bool {
     }
     return false;
 }
-auto Tokens() { return "::" + Core::name + "::Tokens"; }
-auto Rules() { return "::" + Core::name + "::Rules"; }
+// "::Name::" - or just "::" when no name is configured (used to give "::::Tokens")
+static auto scopePrefix() -> std::string { return Core::name.empty() ? std::string("::") : "::" + Core::name + "::"; }
+auto Tokens() { return scopePrefix() + "Tokens"; }
+auto Rules() { return scopePrefix() + "Rules"; }
 auto Core::convertType(const LangAPI::Type &type) -> std::string {
     if (type.isValueType()) {
         switch (type.getValueType()) {
@@ -114,19 +114,25 @@ auto Core::convertTemplates(const stdu::vector<std::variant<std::shared_ptr<Lang
 auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     if (symbol.path.empty()) return "";
     std::string res;
+    bool first = true;
     for (const auto &part : symbol.path) {
+        std::string piece;
         if (std::holds_alternative<std::string>(part)) {
-            res += std::get<std::string>(part);
+            piece = std::get<std::string>(part);
         } else if (std::holds_alternative<LangAPI::IspaLibSymbol>(part)) {
-            res += convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(part));
+            piece = convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(part));
         } else {
             // Append function call as a symbol path segment (do not overwrite the accumulated path)
-            res += convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
+            piece = convertFunctionCall(std::get<LangAPI::FunctionCall>(part));
         }
-        res += "::";
+        // Avoid "::::": lib symbols already start with "::", and an empty segment is only
+        // meaningful as the first one (leading "::" = global scope).
+        if (!first && piece.starts_with("::")) piece.erase(0, 2);
+        if (!first && piece.empty()) continue;
+        if (!first) res += "::";
+        res += piece;
+        first = false;
     }
-    res.pop_back();
-    res.pop_back();
     return res;
 }
 auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::string {
@@ -218,6 +224,10 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "index()";
         case LangAPI::StdlibExports::AssignCompatible:
             return "::ISPA_STD::assign_compatible";
+        case LangAPI::StdlibExports::LexerTokenIterator:
+            return scopePrefix() + "Lexer::iterator";
+        case LangAPI::StdlibExports::LexerLazyIterator:
+            return scopePrefix() + "Lexer::lazy_iterator";
         default:
             throw Error("Unknown IspaLibSymbol exports: {}", (int) symbol.exports);
     }
@@ -316,9 +326,9 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
             case LangAPI::ExpressionValueType::ReportError:
                 out << "raise_error(*pos, \"" << expr.getReportError().message << "\")";
                 break;
-            case LangAPI::ExpressionValueType::Lambda:
-                out << convertLambda(expr.getLambda());
-                break;
+            // case LangAPI::ExpressionValueType::Lambda:
+            //     out << convertLambda(expr.getLambda());
+            //     break;
             case LangAPI::ExpressionValueType::IspaLibFunctionCall:
                 out << convertIspaLibFunctionCall(expr.getIspaLibFunctionCall());
                 break;
@@ -377,63 +387,29 @@ auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const
             throw Error("Unknown expression element");
     }
 }
-auto Core::buildStatement(const LangAPI::Statement &stmt) -> void {
-    if (stmt.isIf()) {
-        stmts_converter->createIf(stmt.getIf().expr);
-        buildStatements(stmt.getIf().stmt);
-        stmts_converter->closeIf();
-    } else if (stmt.isWhile()) {
-        stmts_converter->createWhile(stmt.getWhile().expr);
-        buildStatements(stmt.getWhile().stmt);
-        stmts_converter->closeWhile();
-    } else if (stmt.isDoWhile()) {
-        const auto dowhile = stmt.getDoWhile();
-        stmts_converter->openDoWhile();
-        buildStatements(dowhile.stmt);
-        stmts_converter->closeDoWhile(dowhile.expr);
-    } else if (stmt.isSwitch()) {
-        const auto switch_statement = stmt.getSwitch();
-        stmts_converter->createSwitch(switch_statement.expression);
-        for (const auto &case_statement : switch_statement.cases) {
-            stmts_converter->createCase(case_statement.first);
-            buildStatements(case_statement.second);
-            stmts_converter->closeCase();
-        }
-        stmts_converter->closeSwitch();
-    } else if (stmt.isExpression()) {
-        stmts_converter->createExpression(stmt.getExpression());
-    } else if (stmt.isVariable()) {
-        stmts_converter->createVariable(stmt.getVariable());
-    }
-}
-auto Core::buildStatements(const LangAPI::Statements &statements) -> void {
-    for (const auto &stmt : statements) {
-        buildStatement(stmt);
-    }
-}
-auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
-    // use lower level interaction to writer to output lambda in correct place with correct indentation
-    std::ostringstream out;
-    out << "[](";
-    bool first = true;
-    for (const auto &p : lambda.parameters) {
-        if (!first) {
-            out << ", ";
-        }
-        out << convertType(p.first) << ' ' << p.second;
-        first = false;
-    }
-    out << ") {\n";
-    auto prev_writer = stmts_converter->getWriter();
-    stmts_converter->getWriter().increaseIndentation();
-    buildStatements(lambda.statements);
-    Core::symbol_path.push_back("");
-    declarations_converter->closeFunction();
-    const auto text = stmts_converter->getWriter().get().erase(0, prev_writer.get().size());
-    out << text;
-    stmts_converter->getWriter() = prev_writer;
-    return out.str();
-}
+// auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
+//     // use lower level interaction to writer to output lambda in correct place with correct indentation
+//     std::ostringstream out;
+//     out << "[](";
+//     bool first = true;
+//     for (const auto &p : lambda.parameters) {
+//         if (!first) {
+//             out << ", ";
+//         }
+//         out << convertType(p.first) << ' ' << p.second;
+//         first = false;
+//     }
+//     out << ") {\n";
+//     auto prev_writer = stmts_converter->getWriter();
+//     stmts_converter->getWriter().increaseIndentation();
+//     buildStatements(lambda.statements);
+//     Core::symbol_path.push_back("");
+//     declarations_converter->closeFunction();
+//     const auto text = stmts_converter->getWriter().get().erase(0, prev_writer.get().size());
+//     out << text;
+//     stmts_converter->getWriter() = prev_writer;
+//     return out.str();
+// }
 auto Core::convertFunctionParams(const stdu::vector<LangAPI::Expression> &args) {
     std::string str;
     bool first = true;
@@ -618,7 +594,24 @@ auto Core::convertDFADebug(const LangAPI::DFADebug& dfa_debug)
 
     return ss.str();
 }
+auto Core::convertArrayValues(
+    const auto& values,
+    bool double_braces
+) -> std::string {
+    std::string res = double_braces ? "{{" : "{";
 
+    bool first = true;
+    for (const auto& el : values) {
+        if (!first)
+            res += ", ";
+
+        res += convertExpression(el);
+        first = false;
+    }
+
+    res += double_braces ? "}}" : "}";
+    return res;
+}
 auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
     switch (rvalue.type()) {
         case LangAPI::RValueType::Undef:
@@ -634,57 +627,31 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
         case LangAPI::RValueType::String:
             return std::string("\"") + rvalue.getString().value + "\"";
         case LangAPI::RValueType::Array: {
-            const auto &array = rvalue.getArray();
+            const auto& array = rvalue.getArray();
+
             std::string res;
             if (!array.template_parameters.empty()) {
-                res += "std::vector<" + convertTemplates(rvalue.getArray().template_parameters) + "> ";
+                res += "std::vector<"
+                    + convertTemplates(array.template_parameters)
+                    + ">";
             }
-            if (array.values.empty()) {
-                // For empty arrays (including std::array with N=0), emit a simple empty initializer
-                res += "{}";
-            } else {
-                if (inside_array) {
-                    res += "{";
-                }
-                res += "{";
-                for (const auto &el : rvalue.getArray().values) {
-                    res += convertExpression(el) + ", ";
-                }
-                // Remove the trailing comma+space and close braces
-                res.pop_back();
-                res.pop_back();
-                if (inside_array) {
-                    res += "}";
-                }
-                res += "}";
-            }
+
+            res += convertArrayValues(array.values, false);
             return res;
         }
         case LangAPI::RValueType::FixedSizeArray: {
             const auto &array = rvalue.getFixedSizeArray();
+
             std::string res;
+
             if (!array.template_parameters.empty()) {
-                res += std::string("std::array<") + convertTemplates(array.template_parameters) + "> ";
+                res += "std::array<"
+                    + convertTemplates(array.template_parameters)
+                    + ">";
             }
-            if (array.values.empty()) {
-                // For empty std::array initializers print just {}
-                res += "{}";
-            } else {
-                if (inside_array) {
-                    res += "{";
-                }
-                res += "{";
-                for (const auto &el : array.values) {
-                    res += convertExpression(el) + ", ";
-                }
-                // Remove the trailing comma+space and close braces
-                res.pop_back();
-                res.pop_back();
-                if (inside_array) {
-                    res += "{";
-                }
-                res += "{";
-            }
+            inside_array++;
+            res += convertArrayValues(array.values, inside_array == 1);
+            inside_array--;
             return res;
         }
         case LangAPI::RValueType::Map: {
@@ -816,10 +783,10 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
                         << "{dfa_state_" << state.state_id << ".data(), dfa_state_" << state.state_id << ".size()}}";
             return out_content.str();
         }
-        case LangAPI::RValueType::IspaLibDfaEmptyState: {
-            const auto &state = rvalue.getIspaLibDfaEmptyState();
-            return "{ Tokens::" + corelib::text::join(state.token_name, "_") + ", " + convertLambda(*state.construction_lambda) + " }";
-        }
+        // case LangAPI::RValueType::IspaLibDfaEmptyState: {
+        //     const auto &state = rvalue.getIspaLibDfaEmptyState();
+        //     return "{ Tokens::" + corelib::text::join(state.token_name, "_") + ", " + convertLambda(*state.construction_lambda) + " }";
+        // }
         case LangAPI::RValueType::IspaLibDfaSpan: {
             std::ostringstream out_content;
             const auto &span = rvalue.getIspaLibDfaSpan();
@@ -848,13 +815,6 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             throw Error("Unknown RValue type: {}", (int) rvalue.type());
     }
 }
-auto Core::flushInitContent() -> void {
-    if (init_content.str().empty()) {
-        return;
-    }
-    cpp_file.write("void {}::init() {\n{}\n}", corelib::text::join(symbol_path, "::"), init_content.str());
-    init_content.clear();
-}
 // ----------------------------------------------------------------------------
 // 1. Symbol & StorageSymbol
 // ----------------------------------------------------------------------------
@@ -866,7 +826,7 @@ auto Core::ensureNamespaced(const std::string &name, const LangAPI::Symbol &sym)
     LangAPI::Symbol result = sym;
     if (const auto *first_str = std::get_if<std::string>(&result.path.front())) {
         if (*first_str == name) {
-            result.path.insert(result.path.begin(), Core::symbol_path.begin(), Core::symbol_path.end());
+            result.path.insert(result.path.begin(), Core::symbol_path->begin(), Core::symbol_path->end());
         }
     }
     return result;

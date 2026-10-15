@@ -1,9 +1,6 @@
 export module Cpp.CoreFunctions;
 
 import LangAPI;
-import Rope.String;
-import Cpp.Statement;
-import Cpp.Declarations;
 import Converter.Writer;
 import dstd;
 import std;
@@ -11,21 +8,11 @@ import std;
 export namespace Core {
     constexpr const char* base_pointer = "pos";
     std::vector<std::string> counter = { base_pointer };
-    LangAPI::Visibility prev_visibility = LangAPI::Visibility::Private;
     bool first_template_parameter = true;
-    Cpp::Statement *stmts_converter;
-    Cpp::Declarations *declarations_converter;
-    Converter::Writer *output;
-    Converter::Writer h_file;
-    Converter::Writer cpp_file;
     std::string name;
-    stdu::vector<std::string> symbol_path;
-    bool forward_declared = false;
-    bool templated = false;
-    bool is_directed_to_source = false;
-    bool inside_array = false;
+    stdu::vector<std::string> *symbol_path = nullptr;
+    std::size_t inside_array = 0;
     std::stringstream init_content;
-    stdu::vector<LangAPI::Function*> output_operators;
     // helper
     auto isNestedArrayType(const LangAPI::Type &t) -> bool;
 
@@ -51,6 +38,10 @@ export namespace Core {
     auto convertGetVariant(const LangAPI::GetVariant &make_tuple) -> std::string;
     auto convertDFADebug(const LangAPI::DFADebug &dfa_debug) -> std::string;
     // rvalue
+    auto convertArrayValues(
+        const auto& values,
+        bool double_braces = false
+    ) -> std::string;
     auto convertRValue(const LangAPI::RValue &rvalue) -> std::string;
 
     auto optionalTemplates(const auto &template_parameters) -> std::string {
