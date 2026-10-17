@@ -146,49 +146,60 @@ namespace NFA {
                 const bool group_captures = !member.prefix.empty();
                 const bool child_captures = !child->prefix.empty();
 
-                if (group_captures && !child_captures) {
-                    // Nothing distinguishes the group from its single child — fold
-                    // the group's prefix onto it instead of adding a boundary.
+                // Folding the prefix onto the child is only valid for a leaf or
+                // a plain sequence. An op child would spread the prefix over its
+                // options as separate anchors, splitting one logical capture
+                // (e.g. `@ (('\\' .) | [^'\\])*`) into unrelated ones.
+                if (group_captures && !child_captures && !child->isOp()) {
                     child = synthesize(*child, member.prefix, std::nullopt);
-                    return expandMember(*child, original_member, prev_leaf, token_name, position_in_token, site_counter, token, next, active_captures, alt_path);
+                    return expandMember(*child, original_member, prev_leaf, token_name,
+                                        position_in_token, site_counter, token, next,
+                                        active_captures, alt_path);
                 }
 
+                // One anchor for the whole group, inherited by every leaf under
+                // the child, including every option of an op.
                 stdu::vector<TokenID *> captures = active_captures;
                 if (group_captures) {
-                    // Group and child both capture independently — the group needs
-                    // its own boundary in addition to the child's.
-                    captures.push_back(makeCaptureAnchor(member, original_member, token_name, position_in_token, site_counter++));
+                    captures.push_back(makeCaptureAnchor(member, original_member, token_name,
+                                                         position_in_token, site_counter++));
                 }
-                return expandMember(*child, original_member, prev_leaf, token_name, position_in_token, site_counter, token, next, captures, alt_path);
+                return expandMember(*child, original_member, prev_leaf, token_name,
+                                    position_in_token, site_counter, token, next,
+                                    captures, alt_path);
             }
-            if (!member.prefix.empty())
-                active_captures.push_back(makeCaptureAnchor(member, original_member, token_name, position_in_token, site_counter++));
 
+            if (!member.prefix.empty()) {
+                active_captures.push_back(makeCaptureAnchor(member, original_member, token_name,
+                                                            position_in_token, site_counter++));
+            }
+
+            // Build back to front so each element knows its continuation.
             stdu::vector<Fragment> parts(group.values.size());
             stdu::vector<TransitionValue> cursor_next = next;
             for (std::size_t i = group.values.size(); i-- > 0;) {
-                TokenID *element_prev = (i == 0) ? prev_leaf : nullptr; // filled in below for i > 0
-                parts[i] = expandMember(*group.values[i], original_member, element_prev, token_name, position_in_token, site_counter, token, cursor_next, active_captures, alt_path);
+                TokenID *element_prev = (i == 0) ? prev_leaf : nullptr;
+                parts[i] = expandMember(*group.values[i], original_member, element_prev,
+                                        token_name, position_in_token, site_counter, token,
+                                        cursor_next, active_captures, alt_path);
                 cursor_next = parts[i].entries;
             }
-            // Now that every element's fragment exists, wire prev forward: element i's
-            // entries were built with prev_leaf = nullptr (except i == 0); patch them
-            // to point at element (i-1)'s tail(s).
-            for (std::size_t i = 1; i < parts.size(); ++i) {
-                for (auto &entry : parts[i].entries) {
-                    // needs to update entry.prev and reflect that in token.transitions' key
-                }
-            }
+            // NOTE: the empty "patch prev forward" loop was removed. `prev` stays
+            // nullptr for elements i > 0. That is only safe while TokenID's
+            // operator==/hash ignore `prev`; if they use it, set it here AND
+            // re-key token.transitions.
             return Fragment{parts.front().entries, parts.back().tails};
         }
 
-        if (!member.prefix.empty())
-            active_captures.push_back(makeCaptureAnchor(member, original_member, token_name, position_in_token, site_counter));
+        if (!member.prefix.empty()) {
+            active_captures.push_back(makeCaptureAnchor(member, original_member, token_name,
+                                                        position_in_token, site_counter));
+        }
 
         TokenID leaf_id{
             .member = member,
             .original_member = original_member,
-            .token_name = token_name,
+            .token_name = token_name,          // <- comma was missing
             .position_in_token = position_in_token,
             .group = site_counter++,
             .alt = alt_path,

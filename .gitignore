@@ -72,3 +72,4 @@ TestDumps
 parser/new/ispa/output
 parser/new/python/output
 parser/new/build
+ispa/bootstrapped/.codegen-*

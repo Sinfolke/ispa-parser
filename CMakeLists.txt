@@ -65,6 +65,9 @@ find_package(Boost REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc)
+
+add_subdirectory(parser/new)
+
 # =============================================
 # ISPA Modules Library
 # =============================================
@@ -74,8 +77,6 @@ set_target_properties(ispa_modules PROPERTIES POSITION_INDEPENDENT_CODE ON)
 get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/Parser.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/ispastdlib.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/converters/C++2/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/converters/*.cppm
@@ -84,7 +85,6 @@ get_file_range(ISPA_MODULE_INTERFACES
 
 # Collect implementation sources and exclude main entry point
 get_file_range(ISPA_MODULE_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/Parser.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
@@ -102,13 +102,15 @@ target_sources(ispa_modules
 target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/new
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11 ICU::uc)
-
+target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11 ICU::uc ISPA::Parser)
+set_target_properties(ispa_modules PROPERTIES
+        DISABLE_PRECOMPILE_HEADERS ON
+)
 # =============================================
 # Converter Shared Library
 # =============================================
@@ -120,7 +122,9 @@ add_library(ispa-converter-cpp SHARED ${CPP_CONVERTER_SOURCES})
 target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
 target_include_directories(ispa-converter-cpp PRIVATE converters/C++ parser/stdlibs/new)
 set_target_properties(ispa-converter-cpp PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
+set_target_properties(ispa-converter-cpp PROPERTIES
+        DISABLE_PRECOMPILE_HEADERS ON
+)
 # =============================================
 # Main Executable
 # =============================================

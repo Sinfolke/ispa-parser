@@ -8,7 +8,7 @@ NUMBER:
     @{full, floating}
 ;
 name:
-    @ ID ('.' @ ID)* @ template_params? @ params?
+    @ ID ('->' @ ID)* @ template_params? @ params?
 
     @{primary, nested, temp_params, param}
 ;
@@ -45,9 +45,4 @@ template_params:
 param:
     @ ID (',' @ ID)*
     @{first_p, following_p}
-;
-compound_statement:
-    @ '^'
-
-    {@}
 ;

@@ -244,12 +244,3 @@ keyword_arg:
     @ ID ASSIGN @ expr
     @{name, value}
 ;
-assignment_target:
-    @ ID @ assignment_suffix*
-    @{name, suffixes}
-;
-
-assignment_suffix:
-    @ attribute_suffix | index_suffix
-    {@}
-;

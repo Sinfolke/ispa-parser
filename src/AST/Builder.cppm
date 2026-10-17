@@ -1,73 +1,52 @@
+module;
+#include <output/Parser.h>
 export module AST.Builder;
 import AST.types;
 import AST.API;
 import AST.Tree;
-import Parser;
 import dstd;
 import hash;
-import std;
-export namespace AST {
-    class Builder {
-    private:
-        TreeMap tree_map;
-        SpacemodeStates spacemode = SpacemodeStates::MIXED;
-        std::string name;
-        Use use;
-        const stdu::vector<Parser::Rule> *modules = nullptr;
-        const Parser::Rule *md = nullptr;
-        bool isModule = true;
-        bool isModuleConstructor = false;
-        void constructor(const stdu::vector<Parser::Rule> &modules);
-        void constructor(const Parser::Rule &mod);
-    protected:
-        // convertion functions & variables
-        stdu::vector<std::shared_ptr<AST::RuleMember>> newRules;
-        bool in_op = false;
-        bool prev_op = false;
-        bool add_prev = false;
-        stdu::vector<std::string> fullname;
-        stdu::vector<std::pair<std::string, stdu::vector<std::string>>> nested_rule_names;
-        AST::RulePrefix ops_prefix;
-        stdu::vector<std::shared_ptr<AST::RuleMember>> ops;
-        AST::Array createArray(const Parser::Rule &array);
-        AST::Object createObject(const Parser::Rule &object);
-        AST::String createString(const Parser::Token &token);
-        AST::Number createNumber(const Parser::Token &number);
-        AST::Boolean createBoolean(const Parser::Token boolean);
-        AST::rvalue createRvalue(const Parser::Rule &rule);
-        AST::CllFunctionArguments createCllFunctionArguments(const Parser::Rule &rule);
-        AST::CllFunctionCall createCllFunctionCall(const Parser::Rule &rule);
-        AST::CllVariableMention createCllVariable(const Parser::Rule &rule);
-        AST::CllCompareOp createCllCompareOp(const Parser::Token &token);
-        AST::CllLogicalOp createCllLogicalOp(const Parser::Token &token);
-        AST::CllExprValue createCllExprValue(const Parser::Rule &value);
-        AST::CllExprTerm createCllExprTerm(const Parser::Rule &term);
-        AST::CllExprAddition createCllExprAddition(const Parser::Rule &addition);
-        AST::CllExprCompare createCllExprCompare(const Parser::Rule &compare);
-        AST::CllExprLogical createCllExprLogical(const Parser::Rule &logical);
-        AST::CllExpr createCllExpr(const Parser::Rule &expr);
-        AST::CllIf createCllIf(const Parser::Rule &cond);
-        AST::CllType createCllType(const Parser::Token &rule);
-        AST::CllVar createCllVar(const Parser::Rule &var);
-        AST::Cll convertCll(const Parser::Rule &cll);
-        void createRuleMember(const Parser::Rule &rule);
-        void createRuleMembers(const stdu::vector<Parser::Rule> &rules);
-        AST::DataBlock createDataBlock(const Parser::Rule &rule);
 
-        // helper
-        void getNestedRuleNames(const Parser::Types::rule &rule);
-        void flushOpSequence();
-        // build Tree API from AST
-        void createRules(const Parser::Types::rule &rule);
-        void build(const Parser::Rule &mod);
-        void build(const stdu::vector<Parser::Rule> &modules);
-        Builder(const stdu::vector<Parser::Rule> &modules, const stdu::vector<std::pair<std::string, stdu::vector<std::string>>> &nested_rule_names, bool isModule) :
-            modules(&modules), nested_rule_names(nested_rule_names), isModule(isModule), isModuleConstructor(true) {}
-    public:
-        Builder(const stdu::vector<Parser::Rule> &modules) : modules(&modules) {}
-        Builder(const Parser::Rule &mod) : md(&mod) {}
-        ~Builder() = default;
-        void build();
-        auto get() -> Tree { return {std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)}; }
-    };
+export namespace AST {
+class Builder {
+    TreeMap tree_map;
+    SpacemodeStates spacemode = SpacemodeStates::MIXED;
+    std::string name;
+    Use use;
+    const Parser::Types::main* root = nullptr;
+    stdu::vector<std::string> fullname;
+    bool allowDeferredReferences = false;
+    using Members = stdu::vector<std::shared_ptr<AST::RuleMember>>;
+    using Value = Parser::FlatTypes::rule_value;
+    using Pattern = Parser::FlatTypes::rule_value_pattern;
+    using Grammar = Parser::FlatTypes::grammar;
+    using Rule = Parser::FlatTypes::rule;
+
+    AST::RuleMember convertPattern(const Pattern& pattern);
+    AST::RuleMember convertValue(const Value& value);
+    AST::DataBlock convertData(const ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::rule_ast>& data);
+    // "rule.value" / "rule::value" / {"rule","value"} -> {"rule","value"}
+    static Name normalizeReference(const Name& reference);
+
+    static std::string printable(const Name& parts);
+
+    // Lexical lookup: innermost scope -> enclosing scopes -> global.
+    std::optional<Name> tryResolve(const Name& ref) const;
+
+    Name resolveName(const Name& rawReference) const;
+
+    // First pass: recursively declare every ordinary rule before converting any
+    // pattern. This makes forward references and references to later siblings work.
+    void predeclareGrammar(const Grammar& grammar);
+    void convertGrammar(const Grammar& grammar);
+    void convertRule(const Rule& rule);
+    void convertMain(const Parser::Types::main& main);
+
+public:
+    explicit Builder(const Parser::Types::main& mod) : root(&mod) {}
+    explicit Builder(const ::ISPA_STD::Node<Parser::Rules, Parser::Types::main>& mod)
+        : root(&mod.data()) {}
+    void build();
+    auto get() -> Tree { return {std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)}; }
+};
 }

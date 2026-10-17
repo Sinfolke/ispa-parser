@@ -899,7 +899,7 @@ void LLIR::GroupBuilder::build() {
     // A captured repetition is a single AST value (the collected array).
     // Do not leak the child alternative's scalar export: it would compete
     // with the group's vector in the enclosing capture/data-block selector.
-    if (!(is_repeated && rule.prefix.is_key_value)) {
+    if (!(is_repeated && rule.prefix.present)) {
         exports_list.insert(exports_list.end(),
             group_capture_exports.begin(), group_capture_exports.end());
     }
@@ -1821,7 +1821,7 @@ void LLIR::OpBuilder::build() {
 
     bool uvar_is_named = !rule.prefix.name.empty();
     LangAPI::Variable uvar;
-    if (uvar_is_named && !rule.prefix.is_key_value) {
+    if (uvar_is_named && !rule.prefix.present) {
         var.name = rule.prefix.name;
         uvar = var;
     } else if (uvar_is_named) {
@@ -1882,7 +1882,7 @@ void LLIR::OpBuilder::build() {
         }));
     }
 
-    if (uvar_is_named && rule.prefix.is_key_value) {
+    if (uvar_is_named && rule.prefix.present) {
         statements.push_back(LangAPI::Variable::createStatement(uvar));
         statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment {
             .name = LangAPI::Symbol {uvar.name},

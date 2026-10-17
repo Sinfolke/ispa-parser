@@ -1,7 +1,9 @@
+#include <ispa/output/Parser.h>
+
+#include "parser.h"
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
-import Parser;
 import CLI;
 import init;
 import args;
@@ -145,7 +147,7 @@ namespace {
 }
 
 int main(int argc, char** argv) {
-    stdu::vector<Parser::Rule> modules;
+    Parser::Types::main modules;
     auto args = init(argc, argv);
     dumper.setArgsPointer(&args);
     dumper.setDumpDirectory(args.dump_dir);
@@ -159,7 +161,7 @@ int main(int argc, char** argv) {
     if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
     if (args.algorithm != Args::Algorithm::LL)
-        throw UError("Other algorithms besides LL (recursive descent) are not yet supported");
+        throw UError("Other algorithms but LL (recursive descent) are not yet supported");
 
     for (const auto file : args.files) {
         cpuf::printf("file: {}\n", file);
@@ -169,18 +171,20 @@ int main(int argc, char** argv) {
         } catch (std::exception &e) {
             throw UError("Failed read file: %s", e.what());
         }
-        Parser::Parser parser;
-        modules.push_back(parser.parse(fileContent.c_str()));
+        IspaParser parser;
+        auto &main = parser.parse(fileContent.c_str());
+        modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
+        // for (const auto &v : main.value) {
+        //     modules.push_back(std::get<ISPA_STD::Node<Parser::Rules, Parser::Types::grammar>>(v));
+        // }
     }
     for (const auto &dirPath : args.dir) {
         for (auto file : corelib::file::getFilesRecursively(dirPath, ".isc")) {
             cpuf::printf("file {}", file.c_str());
             std::string content = corelib::file::readFile(file);
-            Parser::Parser parser;
-            auto current_tree = parser.parse(content.c_str());
-            for (const auto &err : parser.getErrors())
-                cpuf::printf("Parser error[{}, {}]: {}", err.line, err.column, err.message.c_str());
-            modules.push_back(current_tree);
+            IspaParser parser;
+            auto &main = parser.parse(content.c_str());
+            modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
         }
     }
 

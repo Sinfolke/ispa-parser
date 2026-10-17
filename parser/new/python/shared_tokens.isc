@@ -10,6 +10,12 @@ MATMUL: '@';
 ASSIGN: '=';
 MATMUL_ASSIGN: '@=';
 
+IF: 'if';
+ELIF: 'elif';
+ELSE: 'else';
+IN: 'in';
+IS: 'is';
+
 NEWLINE: [\n\r]+;
 INDENT: '';
 DEDENT: '';

@@ -231,10 +231,11 @@ namespace AST {
     }
     void RulePrefix::clear() {
         name = "";
-        is_key_value = false;
+        present = false;
+        present = false;
     }
     bool RulePrefix::empty() const {
-        return name.empty() && !is_key_value;
+        return !present;
     }
     bool RuleMember::isString() const {
         return std::holds_alternative<String>(value);
@@ -566,7 +567,7 @@ namespace AST {
     }
 
     bool operator==(const RulePrefix &first, const RulePrefix &second) {
-        return first.is_key_value == second.is_key_value && first.name == second.name;
+        return first.present == second.present && first.name == second.name;
     }
 
     bool operator==(const Cll &first, const Cll &second) {
@@ -853,8 +854,8 @@ namespace AST {
     }
 
     bool operator<(const RulePrefix &lhs, const RulePrefix &rhs) {
-        return std::tie(lhs.is_key_value, lhs.name) <
-               std::tie(rhs.is_key_value, rhs.name);
+        return std::tie(lhs.present, lhs.name) <
+               std::tie(rhs.present, rhs.name);
     }
 
     bool operator<(const Cll &lhs, const Cll &rhs) {
@@ -955,7 +956,7 @@ namespace AST {
     std::ostream& operator<<(std::ostream& os, const RulePrefix& p) {
         if (p.empty())
             return os;
-        os << (p.is_key_value ? "@ " : "") << p.name;
+        os << (p.present ? "@ " : "") << p.name;
         return os;
     }
 

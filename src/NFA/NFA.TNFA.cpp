@@ -473,7 +473,9 @@ namespace NFA::TNFA {
             return chain;
         };
         // (from, to, pred) triples that already have their join epsilon.
-        std::set<std::tuple<std::size_t, std::size_t, std::string>> joined;
+        std::set<std::tuple<std::size_t, std::string, std::string>> joined;
+        // plain epsilons: one per (from, to)
+        std::set<std::pair<std::size_t, std::size_t>> epsilon_joined;
 
         std::function<std::size_t(std::size_t, const TokenID &, const std::string &)> visit;
         visit = [&](std::size_t current_state, const TokenID &id, const std::string &pred) -> std::size_t {
@@ -492,9 +494,7 @@ namespace NFA::TNFA {
 
             if (const auto cached = end_of.find(key); cached != end_of.end()) {
                 // `id` is already wired: join this predecessor to it.
-                if (const auto entry = entry_of.find(key);
-                    entry != entry_of.end() && entry->second != current_state &&
-                    joined.emplace(current_state, entry->second, pred).second) {
+                if (const auto entry = entry_of.find(key); entry != entry_of.end() && entry->second != current_state && joined.emplace(current_state, key, pred).second) {
                     if (is_split && is_terminal) {
                         // The predecessors disagree on which captures to
                         // open/close when `id` is entered. BEGIN/END are entry
@@ -514,17 +514,11 @@ namespace NFA::TNFA {
                                 states[current_state].transitions[c].push_back(std::move(clone));
                             }
                         }
-                    } else {
-                        // Identical events for every predecessor: they sit on
-                        // the shared consuming edge, a plain epsilon suffices.
+                    } else if (epsilon_joined.emplace(current_state, entry->second).second) {
                         states[current_state].epsilon_transitions.insert(
-                            TransitionValue{
-                                .next = entry->second,
-                                .priority = next_priority(),
-                            }
-                        );
+                            TransitionValue{ .next = entry->second, .priority = next_priority() });
                     }
-                }
+    }
                 return cached->second;
             }
 

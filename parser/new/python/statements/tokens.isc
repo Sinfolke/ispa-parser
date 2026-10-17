@@ -1,9 +1,5 @@
-IF: 'if';
-ELIF: 'elif';
-ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
-IN: 'in';
 DEF: 'def';
 CLASS: 'class';
 ASYNC: 'async';

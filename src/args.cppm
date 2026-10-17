@@ -31,6 +31,6 @@ export struct Args {
     std::string dump_dir;
     bool dump_all = false;
     bool dump_nfa_from_rule = false;
-    bool incremental = true;
+    bool incremental = false;
 };
 export Args parse_args(int argc, char** argv);

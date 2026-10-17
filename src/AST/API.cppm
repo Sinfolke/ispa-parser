@@ -612,7 +612,7 @@ export namespace AST {
     };
 
     struct RulePrefix {
-        bool is_key_value = false;
+        bool present = false;
         std::string name;
 
         void clear();
@@ -620,12 +620,12 @@ export namespace AST {
 
     private:
         auto members() const {
-            return std::tie(is_key_value, name);
+            return std::tie(present, name);
         }
 
         auto members() {
 
-            return std::tie(is_key_value, name);
+            return std::tie(present, name);
 
         }
 

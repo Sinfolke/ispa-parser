@@ -1,5 +1,5 @@
 fail_block:
-    'fail' @ name @ stmt | compound_statement
+    'fail' @ name @ stmt
 
     @{name, val}
 ;

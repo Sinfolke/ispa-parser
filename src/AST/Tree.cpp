@@ -1032,8 +1032,7 @@ auto AST::Tree::memberBaseFirstK(const AST::RuleMember& member,
     // These members do not consume a named token in the existing grammar
     // analysis. Never silently interpret them as epsilon: that would produce
     // false LL(k) decisions. Add tokenization/terminal expansion here if needed.
-    throw Error("FIRST_k: unsupported consuming RuleMember kind (index {})",
-                member.value.index());
+    throw Error("FIRST_k: unsupported consuming RuleMember kind (index {})", member.value.index());
 }
 
 auto AST::Tree::memberFirstK(const AST::RuleMember& member,

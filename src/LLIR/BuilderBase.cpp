@@ -242,7 +242,7 @@ void LLIR::BuilderBase::pushConvResult(const AST::RuleMember &rule, const LangAP
     insert_var(svar);
     insert_var(var);
     insert_var(shadow_var);
-    if (rule.prefix.is_key_value) {
+    if (rule.prefix.present) {
         if (rule.prefix.name.empty()) {
             unnamed_datablock_units.push_back(uvar.name.empty() ? (shadow_var.name.empty() ? var : shadow_var) : uvar);
         } else {
@@ -596,7 +596,7 @@ auto LLIR::BuilderBase::deduceUvarType(const LangAPI::Variable &var, const LangA
     }
     return shadow_var.name.empty() ? var.type : shadow_var.type;
 }
-auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type {
+auto LLIR::BuilderBase::deduceVarTypeByRuleMemberBase(const AST::RuleMember &mem) -> LangAPI::Type {
     LangAPI::Type type = LangAPI::ValueType::String;
     if (mem.isGroup()) {
         const auto& values = mem.getGroup().values;
@@ -627,10 +627,6 @@ auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) ->
             all_string_like &=
                 current_type == LangAPI::ValueType::Char ||
                 current_type == LangAPI::ValueType::String;
-        }
-
-        if (all_char) {
-            return LangAPI::ValueType::Char;
         }
 
         if (all_string_like) {
@@ -700,7 +696,14 @@ auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) ->
     }
     return type;
 }
-
+auto LLIR::BuilderBase::deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type {
+    LangAPI::Type t = deduceVarTypeByRuleMemberBase(mem);
+    // `(...)*` / `(...)+` over chars captures one text span, not one char.
+    if ((mem.quantifier == '*' || mem.quantifier == '+') && (mem.isGroup() || mem.isOp()) &&
+        t.isValueType() && t.getValueType() == LangAPI::ValueType::Char)
+        t = LangAPI::ValueType::String;
+    return t;
+}
 void LLIR::BuilderBase::getVariablesToTable(LangAPI::Statements& data, LangAPI::Statements& table, std::string& var_name, bool retain_value, bool recursive) {
     for (std::size_t i = 0; i < data.size(); /* manual increment */) {
         if (data[i].isVariable()) {

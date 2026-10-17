@@ -3,3 +3,19 @@ main:
 
     {@}
 ;
+grammar:
+    @ modifier* @ name @ rule | advanced_rule
+
+    @{mod, name, entry}
+
+    #modifier:
+        '#[' @ MOD ']'
+
+        {@}
+
+        #MOD:
+            @ 'inline' | 'skip' | 'extern'
+            {@}
+        ;
+    ;
+;
