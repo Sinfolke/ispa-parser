@@ -64,7 +64,7 @@ FetchContent_MakeAvailable(RopeString)
 find_package(Boost REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
-
+find_package(ICU REQUIRED COMPONENTS uc)
 # =============================================
 # ISPA Modules Library
 # =============================================
@@ -91,7 +91,7 @@ get_file_range(ISPA_MODULE_SOURCES
         EXCLUDE ".*/main\\.cpp$"
         EXCLUDE "parser/new/.*\\.cpp$"
 )
-
+list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 target_sources(ispa_modules
         PUBLIC
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
@@ -107,7 +107,7 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11)
+target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11 ICU::uc)
 
 # =============================================
 # Converter Shared Library

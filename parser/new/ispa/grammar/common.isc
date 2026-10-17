@@ -12,18 +12,22 @@ name:
 
     @{primary, nested, temp_params, param}
 ;
-expr:
-    @ '(' ID ')'
-
+PY_RAW:
+    'p{' @ 'py' '}'
     {@}
 ;
+
+expr:
+    @ PY_RAW
+    {@}
+;
+
 explicit_expr:
     '(' @ expr ')'
     {@}
 ;
 stmt:
-    '{' @ ID '}'
-
+    @ PY_RAW
     {@}
 ;
 forward_declaration:

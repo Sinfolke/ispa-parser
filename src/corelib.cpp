@@ -1,8 +1,11 @@
 module;
+#include <unicode/uchar.h>
+#include <unicode/utf8.h>
 module corelib;
 import logging;
 import cpuf.printf;
 import std;
+
 
 namespace corelib::file {
     // Function to read the content of a file into a string
@@ -233,5 +236,36 @@ namespace corelib::text {
         }
         tokens.push_back(str.substr(prev_pos));
         return tokens;
+    }
+    std::string characterName(UChar32 cp) {
+        char buffer[256]{};
+        UErrorCode error = U_ZERO_ERROR;
+
+        int32_t length = u_charName(
+            cp,
+            U_UNICODE_CHAR_NAME,
+            buffer,
+            sizeof(buffer),
+            &error
+        );
+
+        if (U_FAILURE(error) || length == 0)
+            throw std::runtime_error("Unicode character name unavailable");
+
+        std::string result;
+        for (char c : std::string_view(buffer, length)) {
+            if ((c >= 'A' && c <= 'Z') ||
+                (c >= '0' && c <= '9')) {
+                result += c;
+                } else {
+                    if (!result.empty() && result.back() != '_')
+                        result += '_';
+                }
+        }
+
+        while (!result.empty() && result.back() == '_')
+            result.pop_back();
+
+        return result;
     }
 }

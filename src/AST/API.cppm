@@ -1,5 +1,5 @@
 export module AST.API;
-
+import LLIR.LangAPIMembersAccess;
 import logging;
 import corelib;
 import hash;
@@ -37,8 +37,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -57,8 +61,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(sign, main, dec);
+        }
+        auto members() {
             return std::tie(sign, main, dec);
         }
     };
@@ -70,8 +78,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -83,8 +95,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -95,8 +111,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -108,8 +128,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -144,7 +168,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllCompareOp {
@@ -155,7 +186,14 @@ export namespace AST {
             return std::tie(op);
         }
 
+        auto members() {
+
+            return std::tie(op);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllLogicalOp {
@@ -166,7 +204,14 @@ export namespace AST {
             return std::tie(isAnd);
         }
 
+        auto members() {
+
+            return std::tie(isAnd);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllType {
@@ -180,7 +225,14 @@ export namespace AST {
             return std::tie(type, templ);
         }
 
+        auto members() {
+
+            return std::tie(type, templ);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllFunctionArguments {
@@ -193,7 +245,14 @@ export namespace AST {
             return std::tie(expr);
         }
 
+        auto members() {
+
+            return std::tie(expr);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllFunctionParameters {
@@ -204,7 +263,14 @@ export namespace AST {
             return std::tie(names);
         }
 
+        auto members() {
+
+            return std::tie(names);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllFunctionCall {
@@ -216,7 +282,14 @@ export namespace AST {
             return std::tie(name, body);
         }
 
+        auto members() {
+
+            return std::tie(name, body);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllFunctionDecl {
@@ -228,7 +301,14 @@ export namespace AST {
             return std::tie(name, body);
         }
 
+        auto members() {
+
+            return std::tie(name, body);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllMethodCall {
@@ -240,7 +320,14 @@ export namespace AST {
             return std::tie(name, body);
         }
 
+        auto members() {
+
+            return std::tie(name, body);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprValue {
@@ -275,7 +362,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprTerm {
@@ -287,7 +381,14 @@ export namespace AST {
             return std::tie(value, rights);
         }
 
+        auto members() {
+
+            return std::tie(value, rights);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprAddition {
@@ -299,7 +400,14 @@ export namespace AST {
             return std::tie(value, rights);
         }
 
+        auto members() {
+
+            return std::tie(value, rights);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprCompare {
@@ -311,7 +419,14 @@ export namespace AST {
             return std::tie(value, rights);
         }
 
+        auto members() {
+
+            return std::tie(value, rights);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprLogical {
@@ -323,7 +438,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExpr {
@@ -334,7 +456,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllExprGroup {
@@ -345,7 +474,14 @@ export namespace AST {
             return std::tie(expr);
         }
 
+        auto members() {
+
+            return std::tie(expr);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllVariableMention {
@@ -364,7 +500,19 @@ export namespace AST {
             );
         }
 
+        auto members() {
+
+            return std::tie(
+                pre_increament,
+                post_increament,
+                name,
+                braceExpression
+            );
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllIf {
@@ -379,7 +527,14 @@ export namespace AST {
             return std::tie(expr, stmt);
         }
 
+        auto members() {
+
+            return std::tie(expr, stmt);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllVar {
@@ -393,7 +548,14 @@ export namespace AST {
             return std::tie(type, name, op, value);
         }
 
+        auto members() {
+
+            return std::tie(type, name, op, value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllLoopWhile {
@@ -407,7 +569,14 @@ export namespace AST {
             return std::tie(expr, stmt);
         }
 
+        auto members() {
+
+            return std::tie(expr, stmt);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct CllLoopFor : EmptyHashable {};
@@ -432,7 +601,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RulePrefix {
@@ -447,7 +623,14 @@ export namespace AST {
             return std::tie(is_key_value, name);
         }
 
+        auto members() {
+
+            return std::tie(is_key_value, name);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberName {
@@ -469,7 +652,14 @@ export namespace AST {
             return std::tie(name, isAutoGenerated);
         }
 
+        auto members() {
+
+            return std::tie(name, isAutoGenerated);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberGroup {
@@ -481,7 +671,14 @@ export namespace AST {
             return std::tie(values);
         }
 
+        auto members() {
+
+            return std::tie(values);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberOp {
@@ -493,7 +690,14 @@ export namespace AST {
             return std::tie(options);
         }
 
+        auto members() {
+
+            return std::tie(options);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberCsequence {
@@ -512,7 +716,19 @@ export namespace AST {
             );
         }
 
+        auto members() {
+
+            return std::tie(
+                negative,
+                characters,
+                escaped,
+                diapasons
+            );
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberAny : EmptyHashable {};
@@ -527,7 +743,14 @@ export namespace AST {
             return std::tie(c);
         }
 
+        auto members() {
+
+            return std::tie(c);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     // These structures are hashable by begin and end methods.
@@ -539,6 +762,19 @@ export namespace AST {
 
         std::string::const_iterator begin() const;
         std::string::const_iterator end() const;
+    private:
+        auto members() const {
+            return std::tie(hex_chars);
+        }
+
+        auto members() {
+
+            return std::tie(hex_chars);
+
+        }
+
+        friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberBin {
@@ -549,6 +785,19 @@ export namespace AST {
 
         std::string::const_iterator begin() const;
         std::string::const_iterator end() const;
+    private:
+        auto members() const {
+            return std::tie(bin_chars);
+        }
+
+        auto members() {
+
+            return std::tie(bin_chars);
+
+        }
+
+        friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMember {
@@ -614,7 +863,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RuleMemberKey {
@@ -625,7 +881,14 @@ export namespace AST {
             return std::tie(base);
         }
 
+        auto members() {
+
+            return std::tie(base);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     struct RegularDataBlockWKeys {
@@ -646,7 +909,14 @@ export namespace AST {
             return std::tie(value);
         }
 
+        auto members() {
+
+            return std::tie(value);
+
+        }
+
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
     };
 
     using RegularDataBlock = CllExpr;
@@ -686,8 +956,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(value);
+        }
+        auto members() {
             return std::tie(value);
         }
     };
@@ -700,8 +974,12 @@ export namespace AST {
 
     private:
         friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
         auto members() const {
+            return std::tie(rule_members, data_block);
+        }
+        auto members() {
             return std::tie(rule_members, data_block);
         }
     };

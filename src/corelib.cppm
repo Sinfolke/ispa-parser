@@ -1,3 +1,5 @@
+module;
+#include <unicode/umachine.h>
 export module corelib;
 import dstd;
 import std;
@@ -24,6 +26,7 @@ export namespace corelib {
         std::string getEscapedAsStr(char in, bool string);
         char getEscapedFromChar(char in);
         char getEscapedFromStr(const std::string& in, bool isStringContext);
+        std::string characterName(UChar32 cp);
     }
     namespace range {
         template<typename InputIt, typename T>

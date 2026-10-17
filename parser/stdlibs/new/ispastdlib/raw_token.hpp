@@ -193,6 +193,67 @@ namespace ISPA_STD {
                 return RawToken(meta, std::forward<ValueType>(value));
             }
         }
+        void print(ASTPrinter<std::ostream>& printer) const {
+                if (empty()) {
+                    printer.node("<empty>");
+                    return;
+                }
+                using print_ast_fn_t = void(*)(const void*, ASTPrinter<std::ostream>&);
+                static constexpr print_ast_fn_t print_ast_table[] = {
+                    [](const void* p, ASTPrinter<std::ostream>& pr) {
+                        const auto& item = *reinterpret_cast<const Ts*>(p);
+                        if constexpr (requires { item.write_to_output(pr); }) {
+                            item.write_to_output(pr);
+                        } else {
+                            pr.node("<unprintable>");
+                        }
+                    }...
+                };
+                print_ast_table[_type_id](_storage, printer);
+            }
+
+            void print(std::ostream& os) const {
+                if (empty()) {
+                    os << "<empty>";
+                    return;
+                }
+                using print_fn_t = void(*)(const void*, std::ostream&);
+                static constexpr print_fn_t print_table[] = {
+                    [](const void* p, std::ostream& stream) {
+                        const auto& item = *reinterpret_cast<const Ts*>(p);
+                        if constexpr (requires { stream << item; }) {
+                            stream << item;
+                        } else {
+                            stream << "<unprintable>";
+                        }
+                    }...
+                };
+                print_table[_type_id](_storage, os);
+            }
+
+            auto to_string() const -> std::string {
+                if (empty()) {
+                    throw IspaAPIExcept("Can't retrieve string representation of an empty node");
+                }
+                using to_string_fn_t = std::string(*)(const void*);
+                static constexpr to_string_fn_t to_string_table[] = {
+                    [](const void* p) -> std::string {
+                        const auto& item = *reinterpret_cast<const Ts*>(p);
+                        if constexpr (requires { item.to_string(); }) {
+                            return item.to_string();
+                        } else if constexpr (requires(std::ostringstream& oss) { oss << item; }) {
+                            std::ostringstream oss;
+                            oss << item;
+                            return oss.str();
+                        } else if constexpr (std::is_same_v<std::decay_t<decltype(item)>, std::string>) {
+                            return item;
+                        } else {
+                            throw IspaAPIExcept("Alternative type does not support to_string() or operator<<");
+                        }
+                    }...
+                };
+                return to_string_table[_type_id](_storage);
+            }
     };
 
 } // namespace ISPA_STD

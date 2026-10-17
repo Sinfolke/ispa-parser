@@ -88,7 +88,7 @@ void LLIR::BuilderBase::addPostLoopCheck(const AST::RuleMember &rule, const Lang
 auto LLIR::BuilderBase::createDefaultStatements(const LangAPI::Variable &var, const LangAPI::Variable &svar, stdu::vector<std::string> name) -> LangAPI::Statements {
     if (var.type == LangAPI::ValueType::Char) {
         return LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment {.name = LangAPI::Symbol {var.name}, .value = LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true})});
-    } else if (var.type == LangAPI::ValueType::Token) {
+    } else if (var.type == LangAPI::ValueType::Token || var.type == LangAPI::ValueType::RawToken) {
         return LangAPI::Statements {
             // FIX: extract the matched token's payload out of the variant
             // before advancing pos. Without this, var stays default-

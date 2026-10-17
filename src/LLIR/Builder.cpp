@@ -2,6 +2,7 @@ module LLIR.Builder;
 import LLIR.RuleBuilder;
 import LLIR.Rule.MemberBuilder;
 import LLIR.Builder.DataWrapper;
+import LLIR.Builder.Base;
 import corelib;
 import cpuf.printf;
 import std;
@@ -47,28 +48,22 @@ LLIR::Builder::Builder(
 ) {
     for (const auto &name : sortedRuleNames(tree, true)) {
         const auto &value = tree.getTreeMap().at(name);
+        const std::string key = corelib::text::join(name, ".");
 
         if (rules_to_build.contains(name)) {
-            // Changed — build fully, members included.
+            // Changed rule -> full rebuild
             LLIR::RuleBuilder builder(tree, name, value, &dfas, true);
             builder.build();
             data.push_back(builder.getData());
-            continue;
-        }
-
-        const std::string key = corelib::text::join(name, ".");
-        if (const auto it = cache.find(key); it != cache.end()) {
-            // Unchanged and cached from last run — reuse as-is,
-            // skip MemberBuilder entirely.
+        } else if (const auto it = cache.find(key); it != cache.end()) {
+            // Unchanged rule -> reuse exact cached Production as-is!
             data.push_back(it->second);
-            continue;
+        } else {
+            // Cache miss (new rule) -> full rebuild
+            LLIR::RuleBuilder builder(tree, name, value, &dfas, true);
+            builder.build();
+            data.push_back(builder.getData());
         }
-
-        // Unchanged per the rule-hash, but nothing cached yet (first
-        // run, or cache miss) — must still build it fully once.
-        LLIR::RuleBuilder builder(tree, name, value, &dfas, true);
-        builder.build();
-        data.push_back(builder.getData());
     }
 }
 

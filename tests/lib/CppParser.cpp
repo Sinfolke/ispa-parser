@@ -17,7 +17,7 @@ auto CppParser::compile(std::string bootloader_name, std::string clang) -> int {
         std::filesystem::path(TEST_ROOT_DIR) / "compile" / (bootloader_name + ".cpp"),
         parserSourcePath(),
         temp_directory,
-        std::filesystem::path(ROOT_DIR) / "parser" / "stdlibs",
+        std::filesystem::path(ROOT_DIR) / "parser" / "stdlibs" / "new",
         binaryPath()
     );
 }

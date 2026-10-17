@@ -12,14 +12,37 @@ auto LLIR::RuleBuilder::getData() -> LLIR::Production& {
 
 void LLIR::RuleBuilder::build() {
     BuilderDataWrapper builderData(*this);
+
     if (changed) {
         MemberBuilder builder(builderData, rule->rule_members);
         builder.build();
         builder.optimizeIR();
-        data.members = builder.getData();
+
+        data.rule_members = builder.getData();
+
+        data.builder_data.unnamed_datablock_units = unnamed_datablock_units;
+        data.builder_data.key_vars = key_vars;
+        data.builder_data.exports_list = builder.getReturnVars();
+        data.builder_data.vars = vars;
+        data.builder_data.variable_count = variable_count;
+    } else {
+        // data.rule_members is already stored in the cached Production.
+        // No need to rebuild or reassign it.
+
+        unnamed_datablock_units =
+            data.builder_data.unnamed_datablock_units;
+
+        key_vars = data.builder_data.key_vars;
+        vars = data.builder_data.vars;
+        variable_count = data.builder_data.variable_count;
     }
+
+    // Regenerate the data block using the available metadata.
     data.block = createDataBlock(rule->data_block);
+
+    // Always preserve the production identity.
     data.name = fullname;
+
     reset();
 }
 

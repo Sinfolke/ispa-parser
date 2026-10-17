@@ -52,6 +52,42 @@ namespace Cpp {
             return out;
         }
 
+        // A class whose Symbol has more than one component (Types::rule::value::group::AUTO_1) is a nested
+        // structure: {prefix = rule, value, group ; leaf = AUTO_1} relative to the scope it is declared in.
+        // Everything that registers / looks up / places such a class (known-table, file path, symbol_path)
+        // must use prefix + leaf, never the joined string as a single name.
+        struct SplitName {
+            std::vector<std::string> prefix;
+            std::string leaf;
+        };
+        // Split the text Core::convertSymbol produced (`text`), because that is exactly what every use of the
+        // class (alias / base / member types, all printed by Core::convertType) is built from. symbolToVec drops
+        // non-string path parts, which made the registered path differ from the path the lookups use.
+        auto splitClassName(const LangAPI::Class &, const std::string &text) -> SplitName {
+            std::vector<std::string> parts;
+            std::string cur;
+            int angle = 0;
+            for (std::size_t i = 0; i < text.size(); ++i) {
+                const char c = text[i];
+                if (c == '<') ++angle;
+                else if (c == '>' && angle > 0) --angle;
+                if (angle == 0 && c == ':' && i + 1 < text.size() && text[i + 1] == ':') {
+                    if (!cur.empty()) parts.push_back(std::move(cur));   // a leading "::" yields no empty part
+                    cur.clear();
+                    ++i;
+                } else {
+                    cur += c;
+                }
+            }
+            if (!cur.empty()) parts.push_back(std::move(cur));
+            if (parts.empty()) return {{}, text};
+            SplitName out;
+            out.leaf = std::move(parts.back());
+            parts.pop_back();
+            out.prefix = std::move(parts);
+            return out;
+        }
+
         auto isIdentChar(char c) -> bool {
             return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
         }
@@ -82,8 +118,10 @@ namespace Cpp {
                     return "public";
                 case LangAPI::Visibility::Private:
                     return "private";
+                case LangAPI::Visibility::Protected:
+                    return "protected";
                 default:
-                    throw std::runtime_error("Cpp Converter only supports Public and Private visibility yet");
+                    throw std::runtime_error("Cpp Converter only supports Public, Protected and Private visibility yet");
             }
         }
 
@@ -327,6 +365,15 @@ namespace Cpp {
             }
             // not visible by scope (e.g. a using-directive): fall back to the name if it is unambiguous
             if (chain.size() == 1 && !global && it->second.size() == 1) found.push_back(&it->second.front());
+            // qualified name that matched no scope exactly: accept declarations whose full path ends with the chain
+            if (found.empty() && chain.size() > 1 && !global) {
+                for (const auto &info : it->second) {
+                    std::vector<std::string> path = info.ns;
+                    path.push_back(info.name);
+                    if (path.size() >= chain.size() && std::equal(chain.rbegin(), chain.rend(), path.rbegin()))
+                        found.push_back(&info);
+                }
+            }
             return found;
         }
 
@@ -393,7 +440,7 @@ namespace Cpp {
                 for (std::size_t m = 0; m + 1 < u.chain.size(); ++m) {
                     const std::vector<std::string> prefix(u.chain.begin(), u.chain.begin() + static_cast<std::ptrdiff_t>(m) + 1);
                     for (const auto *info : resolveEntity(ctx, prefix, u.global, scope))
-                        if (!info->keyword.empty()) forced.insert(info->header);
+                        forced.insert(info->header);
                 }
             }
 
@@ -494,8 +541,11 @@ namespace Cpp {
             case LangAPI::Visibility::Private:
                 return "private:";
                 break;
+            case LangAPI::Visibility::Protected:
+                return "protected:";
+                break;
             default:
-                throw std::runtime_error("Cpp Converter only supports Public and Private visibility yet");
+                throw std::runtime_error("Cpp Converter only supports Public, Protected and Private visibility yet");
         }
     }
     auto Construct::setDefaultClsVisibility(LangAPI::Visibility visibility) -> std::string {
@@ -622,6 +672,14 @@ namespace Cpp {
         if (!decl_text.empty()) context.main_h.dwrite("{}", decl_text);
         if (!def_text.empty()) context.main_tail.dwrite("{}", def_text);
 
+        if (!incremental) {
+            // single .h/.cpp mode: declarations (+ extern template lines) stay in the main header, inline template
+            // bodies go to its tail (above), every out-of-line definition / explicit instantiation goes to the main .cpp
+            if (!ext_text.empty()) context.main_h.dwrite("{}", ext_text);
+            if (!cpp_text.empty()) context.main_cpp.dwrite("{}", cpp_text);
+            return;
+        }
+
         const std::string h_text = decl_text + ext_text + def_text;
         if (!h_text.empty()) {
             const std::string file = base + ".h";
@@ -640,9 +698,13 @@ namespace Cpp {
     auto Construct::produceClass(const LangAPI::Class &cls, OutputSrc &o) -> void {
         const auto saved_visibility = context.visibility;
         const std::string name = Core::convertSymbol(cls.name);
+        const auto split = splitClassName(cls, name);
+        // A class lexically nested in another class must be declared using its
+        // unqualified leaf name. `struct Parent::Child {}` is not valid inside Parent.
+        const std::string declaration_name = o.in_class ? split.leaf : name;
 
         // struct Name : public A, private B {
-        std::string head = setDefaultClsVisibility(cls.default_visibility) + " " + name;
+        std::string head = setDefaultClsVisibility(cls.default_visibility) + " " + declaration_name;
         if (!cls.inherit_members.empty()) {
             std::vector<std::string> bases;
             for (const auto &inherit : cls.inherit_members) {
@@ -658,7 +720,12 @@ namespace Cpp {
         emitLine(*o.h, head + " {");
         o.h->increaseIndentation();
 
-        context.symbol_path.push_back(name);
+        // Preserve the lexical path for nested classes. Qualified symbol prefixes
+        // only contribute to the path for top-level LangAPI declarations.
+        const auto parent_path = context.symbol_path;
+        if (!o.in_class)
+            context.symbol_path.insert(context.symbol_path.end(), split.prefix.begin(), split.prefix.end());
+        context.symbol_path.push_back(split.leaf);
         OutputSrc member(o.h, o.cpp);
         member.in_class = true;
 
@@ -682,7 +749,18 @@ namespace Cpp {
         }
         o.h->decreaseIndentation();
         emitLine(*o.h, "};");
-        context.symbol_path.pop_back();
+        // A nested class is defined in its enclosing class's def.h. Emit a
+        // forwarding header for the nested type so incremental consumers have
+        // a stable include path without defining the C++ class a second time.
+        if (incremental && o.in_class) {
+            const std::string nested_header = fileBase(parent_path, split.leaf) + "/def.h";
+            const std::string parent_header = fileBase(
+                std::vector<std::string>(parent_path.begin(), parent_path.end() - 1),
+                parent_path.back()) + "/def.h";
+            context.function_files.emplace_back(nested_header,
+                "#pragma once\n#include <" + parent_header + ">\n");
+        }
+        context.symbol_path = parent_path;
         if (!member.src_empty) o.src_empty = false;
         context.visibility = saved_visibility;
         if (cls.output_fun.has_value()) {
@@ -764,7 +842,12 @@ namespace Cpp {
 
         // namespace-level structure / enum / alias / variable: its own .h (and .cpp for static definitions)
         std::string name;
-        if (decl.isClass()) name = Core::convertSymbol(decl.getClass().name);
+        std::vector<std::string> nested_prefix;   // Symbol components before the leaf (nested structures)
+        if (decl.isClass()) {
+            const auto split = splitClassName(decl.getClass(), Core::convertSymbol(decl.getClass().name));
+            name = split.leaf;
+            nested_prefix = split.prefix;
+        }
         else if (decl.isEnum()) name = decl.getEnum().name;
         else if (decl.isTypeAlias()) name = decl.getTypeAlias().name;
         else if (decl.isVariable()) name = decl.getVariable().name;
@@ -780,11 +863,18 @@ namespace Cpp {
         else produceVariable(decl.getVariable(), so);
         closeNamespaces(body, context.namespace_path);
 
-        const std::string base = fileBase(context.symbol_path, name) + "/def";   // incremental/<scope>/<Name>/def.h
+        auto file_scope = context.symbol_path;
+        file_scope.insert(file_scope.end(), nested_prefix.begin(), nested_prefix.end());
+        const std::string base = fileBase(file_scope, name) + "/def";   // incremental/<scope>/<nested...>/<Name>/def.h
         const std::string h_text = body.get();
         const std::string cpp_text = cpp.get();
 
         context.main_h.dwrite("{}", h_text);                 // the standalone main header holds every definition itself
+        if (!incremental) {
+            // single .h/.cpp mode: static member / namespace variable definitions go to the main .cpp, no per-symbol files
+            if (!cpp_text.empty()) context.main_cpp.dwrite("{}", cpp_text);
+            return;
+        }
 
         // enumerators are not type uses (they often share names with structs/functions): enums depend on nothing
         std::vector<DepPart> parts;
@@ -792,7 +882,7 @@ namespace Cpp {
         // an alias to a template-id (using T = ISPA_STD::X<A, B>) makes every user of T instantiate X<A, B>, which needs
         // A and B complete, so aliases depend strongly on everything they name
         else if (decl.isTypeAlias()) parts.push_back({h_text, DepMode::Strong});
-        auto scope = context.symbol_path;                      // scope the struct body lives in
+        auto scope = file_scope;                               // scope the struct body lives in
         if (decl.isClass()) scope.push_back(name);
         std::string adl_tail;
         if (const auto it = context.adl.find(base + ".h"); it != context.adl.end()) {
@@ -923,7 +1013,9 @@ namespace Cpp {
         std::vector<std::string> scope;    // namespaces + classes
         const auto reg = [&](const std::string &name, SymbolInfo info) {
             info.name = name;
-            info.ns = ns;
+            // full lookup path: namespaces AND enclosing classes. Members of a rule struct (rule::value::STRING)
+            // used to be registered with the namespaces only, so Types::rule::value::STRING never matched.
+            info.ns = scope;
             info.order = order++;
             context.header_order.emplace(info.header, info.order);
             context.known[name].push_back(std::move(info));
@@ -946,24 +1038,30 @@ namespace Cpp {
                 ns.pop_back();
             } else if (decl.isClass()) {
                 const auto &cls = decl.getClass();
-                const std::string name = Core::convertSymbol(cls.name);
+                const auto split = splitClassName(cls, Core::convertSymbol(cls.name));
+                const std::string &name = split.leaf;                  // leaf only: lookups end in the last component
+                auto file_scope = scope;                               // nested symbol -> its own directory
+                if (outer.empty())
+                    file_scope.insert(file_scope.end(), split.prefix.begin(), split.prefix.end());
 
                 const std::string header =
                     outer.empty()
-                        ? fileBase(scope, name) + "/def.h"
+                        ? fileBase(file_scope, name) + "/def.h"
                         : outer;
 
                 SymbolInfo info;
                 info.header = header;
                 info.adl_type = outer.empty();
 
-                if (outer.empty()) {
+                // a nested structure can't be forward declared (`namespace A::B { struct C; }` is wrong when B is
+                // a class), so it keeps an empty keyword and is always #included
+                if (outer.empty() && split.prefix.empty()) {
                     info.keyword =
                         getDefaultVisibility(cls.default_visibility);
                 }
 
+                scope = std::move(file_scope);                         // path = scope + prefix + leaf
                 reg(name, std::move(info));
-
                 scope.push_back(name);
 
                 // 1. Ordinary member declarations
@@ -982,7 +1080,9 @@ namespace Cpp {
                     );
                 }
 
-                scope.pop_back();
+                scope.resize(scope.size() - 1);
+                if (outer.empty() && !split.prefix.empty())
+                    scope.resize(scope.size() - split.prefix.size());
 
                 // 3. Namespace-level output operator
                 // produceClass() emits it AFTER leaving the class scope.
@@ -1077,11 +1177,17 @@ namespace Cpp {
             const std::string h_body = std::string(context.main_h.get());
             writable_files.emplace_back(std::string(namespace_name) + ".h",
                 "#pragma once\n\n" + libraryIncludeBlock({h_body}) + h_body);
-            if (auto cpp = std::string(context.main_cpp.get()); !cpp.empty())
-                writable_files.emplace_back(std::string(namespace_name) + ".cpp", libraryIncludeBlock({cpp}) + cpp);
+            if (auto cpp = std::string(context.main_cpp.get()); !cpp.empty()) {
+                // single .h/.cpp mode: the .cpp holds all definitions, so it must see the main header
+                const std::string own_header = incremental
+                    ? std::string()
+                    : "#include \"" + std::string(namespace_name) + ".h\"\n\n";
+                writable_files.emplace_back(std::string(namespace_name) + ".cpp", own_header + libraryIncludeBlock({cpp}) + cpp);
+            }
         }
-        for (auto &file : context.function_files)
-            writable_files.emplace_back(std::move(file));
+        if (incremental)   // nothing is written to incremental/ in single-file mode
+            for (auto &file : context.function_files)
+                writable_files.emplace_back(std::move(file));
     }
 }
 

@@ -3,6 +3,7 @@ module;
 module LLIR.Serialize;
 import corelib;
 import LLIR.LangAPIMembersAccess;
+import std;
 
 namespace LLIR::Serialize {
 namespace detail {
@@ -21,6 +22,8 @@ template<class T> struct is_variant : std::false_type {};
 template<class... T> struct is_variant<std::variant<T...>> : std::true_type {};
 template<class T> struct is_ordered_map : std::false_type {};
 template<class K, class V> struct is_ordered_map<tsl::ordered_map<K,V>> : std::true_type {};
+template<class T> struct is_unordered_map : std::false_type {};
+template<class K, class V, class H, class E, class A> struct is_unordered_map<std::unordered_map<K,V,H,E,A>> : std::true_type {};
 
 template<typename T>
 concept Reflected = requires(T& value, const T& const_value) {
@@ -55,38 +58,12 @@ void read_variant(std::istream& is, Variant& value, std::size_t index) {
 
 template<class T> void write(std::ostream& os, const T& value) {
     using U = std::remove_cvref_t<T>;
-    if constexpr (std::is_same_v<U, LangAPI::DFADebug>) {
-        // The original format deliberately excludes member (AST::RuleMember).
-        hit_dfadebug = true;
-        write(os, value.token_name); write(os, value.position_in_token);
-        write(os, value.call); write(os, value.group); write(os, value.rule_run);
-        write(os, value.offset); write(os, value.length); write(os, value.ch);
-    } else if constexpr (std::is_same_v<U, DataBlock>) {
-        write(os, value.value);
-    } else if constexpr (std::is_same_v<U, LangAPI::RValue>) {
-        write(os, value.get());
-    } else if constexpr (std::is_same_v<U, LangAPI::Expression>) {
-        write(os, static_cast<const stdu::vector<LangAPI::ExpressionValue>&>(value));
-    } else if constexpr (std::is_same_v<U, LangAPI::Statements>) {
-        write(os, static_cast<const stdu::vector<LangAPI::Statement>&>(value));
-    } else if constexpr (std::is_same_v<U, LangAPI::Symbol>) {
-        write(os, value.path);
-    } else if constexpr (std::is_same_v<U, LangAPI::StorageSymbol>) {
-        write(os, value.what); write(os, value.path);
-    } else if constexpr (std::is_same_v<U, LangAPI::If>) {
-        write(os, static_cast<const LangAPI::ConditionalElement&>(value));
-        write(os, value.else_stmt);
-    } else if constexpr (std::is_same_v<U, LangAPI::While> || std::is_same_v<U, LangAPI::DoWhile>) {
-        write(os, static_cast<const LangAPI::ConditionalElement&>(value));
-    } else if constexpr (std::is_same_v<U, LangAPI::Break> ||
-                         std::is_same_v<U, LangAPI::Continue> ||
-                         std::is_same_v<U, LangAPI::CounterIncreament> ||
-                         std::is_same_v<U, LangAPI::ResetPosCounter> ||
-                         std::is_same_v<U, LangAPI::PopPosCounter> ||
-                         std::is_same_v<U, LangAPI::EmptyInitializer> ||
-                         std::is_same_v<U, std::monostate>) {
-        // Empty types have no payload.
-    } else if constexpr (std::is_same_v<U, std::string>) {
+    // special-cased types: fail the build if they grow
+    static_assert(sizeof(LangAPI::Symbol) == sizeof(decltype(LangAPI::Symbol::path)),
+                  "Symbol changed: update Serialize");
+    if constexpr (std::is_same_v<U, LangAPI::DFADebug>)
+        hit_dfadebug = true;   // not fully serializable -> record gets skipped
+    if constexpr (std::is_same_v<U, std::string>) {
         const std::size_t length = value.size();
         write(os, length);
         os.write(value.data(), static_cast<std::streamsize>(length));
@@ -107,7 +84,7 @@ template<class T> void write(std::ostream& os, const T& value) {
             if constexpr (!std::is_same_v<std::remove_cvref_t<decltype(alt)>, std::monostate>)
                 write(os, alt);
         }, value);
-    } else if constexpr (is_ordered_map<U>::value) {
+    } else if constexpr (is_ordered_map<U>::value || is_unordered_map<U>::value) {
         write(os, value.size());
         for (const auto& [key, val] : value) {
             write(os, key); write(os, val);
@@ -124,45 +101,7 @@ template<class T> void write(std::ostream& os, const T& value) {
 
 template<class T> void read(std::istream& is, T& value) {
     using U = std::remove_cvref_t<T>;
-    if constexpr (std::is_same_v<U, LangAPI::DFADebug>) {
-        read(is, value.token_name); read(is, value.position_in_token);
-        read(is, value.call); read(is, value.group); read(is, value.rule_run);
-        read(is, value.offset); read(is, value.length); read(is, value.ch);
-    } else if constexpr (std::is_same_v<U, DataBlock>) {
-        read(is, value.value);
-    } else if constexpr (std::is_same_v<U, LangAPI::RValue>) {
-        read(is, value.get());
-    } else if constexpr (std::is_same_v<U, LangAPI::Expression>) {
-        stdu::vector<LangAPI::ExpressionValue> elements;
-        read(is, elements);
-        if (is) value = LangAPI::Expression(std::move(elements));
-    } else if constexpr (std::is_same_v<U, LangAPI::Statements>) {
-        stdu::vector<LangAPI::Statement> elements;
-        read(is, elements);
-        if (is) value = LangAPI::Statements(std::move(elements));
-    } else if constexpr (std::is_same_v<U, LangAPI::Symbol>) {
-        stdu::vector<LangAPI::Symbol::PathPart> path;
-        read(is, path);
-        if (is) value.path = std::move(path);
-    } else if constexpr (std::is_same_v<U, LangAPI::StorageSymbol>) {
-        read(is, value.what);
-        stdu::vector<LangAPI::StorageSymbol::PathPart> path;
-        read(is, path);
-        if (is) value.path = std::move(path);
-    } else if constexpr (std::is_same_v<U, LangAPI::If>) {
-        read(is, static_cast<LangAPI::ConditionalElement&>(value));
-        read(is, value.else_stmt);
-    } else if constexpr (std::is_same_v<U, LangAPI::While> || std::is_same_v<U, LangAPI::DoWhile>) {
-        read(is, static_cast<LangAPI::ConditionalElement&>(value));
-    } else if constexpr (std::is_same_v<U, LangAPI::Break> ||
-                         std::is_same_v<U, LangAPI::Continue> ||
-                         std::is_same_v<U, LangAPI::CounterIncreament> ||
-                         std::is_same_v<U, LangAPI::ResetPosCounter> ||
-                         std::is_same_v<U, LangAPI::PopPosCounter> ||
-                         std::is_same_v<U, LangAPI::EmptyInitializer> ||
-                         std::is_same_v<U, std::monostate>) {
-        // Empty payload.
-    } else if constexpr (std::is_same_v<U, std::string>) {
+    if constexpr (std::is_same_v<U, std::string>) {
         std::size_t length{};
         read(is, length);
         if (!is || length > value.max_size()) { is.setstate(std::ios::failbit); return; }
@@ -203,7 +142,7 @@ template<class T> void read(std::istream& is, T& value) {
         std::size_t index{};
         read(is, index);
         if (is) read_variant(is, value, index);
-    } else if constexpr (is_ordered_map<U>::value) {
+    } else if constexpr (is_ordered_map<U>::value || is_unordered_map<U>::value) {
         std::size_t n{};
         read(is, n);
         if (!is) return;
@@ -236,13 +175,10 @@ template<class T> void read(std::istream& is, T& value) {
 
 } // namespace detail
 
-// Record layout intentionally kept identical to the previous implementation.
 auto writeProductionRecord(std::ostream& os, const Production& p) -> bool {
     detail::hit_dfadebug = false;
     std::ostringstream body;
-    detail::write(body, p.block);
-    detail::write(body, static_cast<const stdu::vector<std::string>&>(p.name));
-    detail::write(body, p.members);
+    detail::write(body, p);
     if (detail::hit_dfadebug || !body) return false;
     const std::string bytes = body.str();
     detail::write(os, bytes.size());
@@ -260,16 +196,10 @@ auto readProductionRecord(std::istream& is) -> std::optional<Production> {
     try {
         std::istringstream body(bytes);
         Production p;
-        stdu::vector<std::string> name;
-        detail::read(body, p.block);
-        detail::read(body, name);
-        p.name = std::move(name);
-        detail::read(body, p.members);
+        detail::read(body, p);
         if (!body || body.peek() != std::char_traits<char>::eof()) return std::nullopt;
         return p;
-    } catch (...) {
-        return std::nullopt;
-    }
+    } catch (...) { return std::nullopt; }
 }
 
 } // namespace LLIR::Serialize

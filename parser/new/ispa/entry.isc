@@ -1,5 +1,0 @@
-main:
-    (@ grammar | fail_block)+
-
-    {@}
-;

@@ -11,13 +11,9 @@ int main(int argc, const char** argv) {
     Parser::Lexer lexer;
     auto tokens = lexer.makeTokens(argv[1]);
     for (const auto &token : tokens) {
-        std::visit([](const auto token){
-            if constexpr (std::is_same_v<std::decay_t<decltype(token)>, std::monostate>) {
-                std::cout << "<EOF>" << std::endl;
-            } else {
-                std::cout << token << std::endl;
-            }
-        }, token);
+        if (!token.empty()) {
+            std::cout << token << std::endl;
+        } else std::cout << "<EOF>" << std::endl;
     }
 }
 // int main() {

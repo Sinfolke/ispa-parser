@@ -97,7 +97,7 @@ export namespace LangAPI {
         Push, Pop, Size
     };
     enum class Visibility {
-        Private, Public
+        Private, Public, Protected
     };
     enum class ObjectMethods {};
     enum class Language {
@@ -186,6 +186,16 @@ export namespace LangAPI {
         ~Declarations();
         friend auto operator<<(std::ostream& os, const Declarations &expr) -> std::ostream&;
         friend auto operator<(const Declarations& a, const Declarations& b) -> bool;
+    private:
+        friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
+
+        auto members() const {
+            return std::tie(static_cast<const stdu::vector<Declaration>&>(*this));
+        }
+        auto members() {
+            return std::tie(static_cast<stdu::vector<Declaration>&>(*this));
+        }
     };
     struct Statements : stdu::vector<Statement>, DeclarationLevel {
         using vector::vector;
@@ -202,7 +212,16 @@ export namespace LangAPI {
         ~Statements();
         friend auto operator<<(std::ostream& os, const Statements &expr) -> std::ostream&;
         friend auto operator<(const Statements& a, const Statements& b) -> bool;
+    private:
+        friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
 
+        auto members() const {
+            return std::tie(static_cast<const stdu::vector<Statement>&>(*this));
+        }
+        auto members() {
+            return std::tie(static_cast<stdu::vector<Statement>&>(*this));
+        }
     };
     struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
         using vector::vector;
@@ -219,6 +238,16 @@ export namespace LangAPI {
         ~Expression();
         friend auto operator<<(std::ostream& os, const Expression &expr) -> std::ostream&;
         friend auto operator<(const Expression& a, const Expression& b) -> bool;
+    private:
+        friend struct ::uhash;
+        friend struct ::LLIR::Serialize::MembersAccess;
+
+        auto members() const {
+            return std::tie(static_cast<const stdu::vector<ExpressionValue>&>(*this));
+        }
+        auto members() {
+            return std::tie(static_cast<stdu::vector<ExpressionValue>&>(*this));
+        }
     };
     // forward declarations
     struct Type;
@@ -870,10 +899,10 @@ export namespace LangAPI {
         friend struct ::uhash;
         friend struct ::LLIR::Serialize::MembersAccess;
         auto members() const {
-            return std::tie(type, sym);
+            return std::tie(type, sym, is_raw_token);
         }
         auto members() {
-            return std::tie(type, sym);
+            return std::tie(type, sym, is_raw_token);
         }
     };
     struct CheckVariant : RValueLevel {
@@ -888,10 +917,10 @@ export namespace LangAPI {
         friend struct ::uhash;
         friend struct ::LLIR::Serialize::MembersAccess;
         auto members() const {
-            return std::tie(type, sym);
+            return std::tie(type, sym, is_raw_token);
         }
         auto members() {
-            return std::tie(type, sym);
+            return std::tie(type, sym, is_raw_token);
         }
     };
     struct CharToStringConstructor : RValueLevel {
@@ -1865,10 +1894,10 @@ export namespace LangAPI {
         friend struct ::uhash;
         friend struct ::LLIR::Serialize::MembersAccess;
         auto members() const {
-            return std::tie(else_stmt);
+            return std::tie(expr, stmt, else_stmt);
         }
         auto members() {
-            return std::tie(else_stmt);
+            return std::tie(expr, stmt, else_stmt);
         }
     };
     struct While : ConditionalElement, StatementLevel {

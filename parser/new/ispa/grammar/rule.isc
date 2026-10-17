@@ -1,23 +1,29 @@
 grammar:
-    @ name @ rule | advanced_rule
+    @ modifier* @ name @ rule | advanced_rule
 
-    @{name, entry}
+    @{mod, name, entry}
 
     #modifier:
-        '[' @ ID ']'
+        '#[' @ MOD ']'
+
         {@}
+
+        #MOD:
+            @ 'inline' | 'skip' | 'extern'
+            {@}
+        ;
     ;
 ;
 rule:
-    ':' @ #value+ @ #ast? @ #nested_rule* ';'
+    ':' @ value+ @ ast? @ nested_rule* ';'
     @{v, data, nested}
 
     #ast:
-        @ #abbr | #full | #single_value
+        @ abbr | full | single_value
         {@}
 
         #full:
-            '&' '{' @ #part+ '}'
+            '&' '{' @ part+ '}'
 
             {@}
 
@@ -27,16 +33,16 @@ rule:
             ;
         ;
         #abbr:
-            '@' '{' @ ID+ '}'
+            '@' '{' (@ ID ','?)+ '}'
             {@}
         ;
         #single_value:
-            '{' @ expr '}'
+            '{' @ expr | '@' '}'
             {@}
         ;
     ;
     #value:
-        @ #var_capture? @ #ast_capture? @ #pattern @ #alternative* @ #counter? @ #shared_counter_registration?
+        @ var_capture? @ ast_capture? @ pattern @ alternative* @ counter? @ shared_counter_registration?
         @{v_cap, ast_cap, val, alts, quantifier, registration}
 
         #var_capture:
@@ -44,11 +50,11 @@ rule:
             {@}
         ;
         #ast_capture:
-            '@' (\s0 @ ID)?
+            '@' \s0 @ ID?
             {@}
         ;
         #pattern:
-            @ name | group | STRING | CGROUP | SPACE
+            @ name | group | dyn | STRING | CGROUP | SPACE | NOSPACE
             {@}
         ;
         #STRING:
@@ -63,11 +69,23 @@ rule:
         ;
         #SPACE:
             '\\s'
-            {@}
+        ;
+        #NOSPACE:
+            '\\s0'
         ;
         #group:
             '(' @ value+ ')'
             {@}
+        ;
+        #dyn:
+            '$' @ dyn_expr | ID
+
+            {@}
+
+            #dyn_expr:
+                '{' @ expr '}'
+                {@}
+            ;
         ;
         #alternative:
             '|' @ pattern
@@ -78,7 +96,7 @@ rule:
            {@}
         ;
         #counter:
-           @ QUANTIFIER @ #bounded?
+           @ QUANTIFIER @ bounded?
 
            @{quantifier, repetitions}
            #bounded:
@@ -98,7 +116,7 @@ rule:
     ;
 ;
 advanced_rule:
-    '{' @ #dep_decl* @ (#match | stmt)* '}'
+    '{' @ dep_decl* @ (match | stmt)* '}'
 
     @{dep, body}
     #dep_decl:
@@ -106,7 +124,7 @@ advanced_rule:
         {@}
     ;
     #match:
-        'match' @ rule.value+ @ #unpack | ';'
+        'match' @ rule.value+ @ unpack | ';'
         @{patterns, assign_names}
 
         #unpack:

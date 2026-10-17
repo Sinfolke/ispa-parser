@@ -8,7 +8,7 @@ import dstd;
 import std;
 
 export namespace LLIR::Serialize {
-    constexpr std::uint32_t FORMAT_VERSION = 1;
+    constexpr std::uint32_t FORMAT_VERSION = 2;
 
     // Writes one Production as a length-prefixed record.
     // Returns false (and writes nothing) if the Production contains a

@@ -11,6 +11,6 @@ ASSIGN: '=';
 MATMUL_ASSIGN: '@=';
 
 NEWLINE: [\n\r]+;
-INDENT: __WS+;
-DEDENT: __WS+;
+INDENT: '';
+DEDENT: '';
 COMMENT: '#' [^\n]*;

@@ -233,7 +233,7 @@ namespace LangRepr {
             LangAPI::Type rule_type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
             LangAPI::Type fun_type = ensureTypesNs(LangAPI::Type {LangAPI::ValueType::RuleResult, rule_type, LangAPI::Type {LangAPI::Symbol {"IT"}}});
             LangAPI::Statements stmts;
-            for (const auto &stmt : prod.members) {
+            for (const auto &stmt : prod.rule_members) {
                 stmts.push_back(finalizeReturnStatement(finalizeTypes(stmt)));
             }
             LangAPI::Variable result_v;
@@ -312,7 +312,7 @@ namespace LangRepr {
                     LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::LexerLazyIterator}
                 })},
             };
-            parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Private));
+            parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Protected));
         }
 
         auto add_parse_wrapper = [&](

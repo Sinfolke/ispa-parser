@@ -69,5 +69,6 @@ test-dump
 Dumps
 TestDumps
 !.github
-parser/new/output
+parser/new/ispa/output
+parser/new/python/output
 parser/new/build

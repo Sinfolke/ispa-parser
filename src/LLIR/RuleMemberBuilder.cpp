@@ -84,30 +84,38 @@ void LLIR::GroupBuilder::pushBasedOnQuantifier(
 
     if (quantifier == '*' || quantifier == '+') {
         LangAPI::While loop;
-        loop.expr = LangAPI::Bool::createExpression(LangAPI::Bool { .value = true });
-        loop.stmt = builder.getData();
+        loop.expr = LangAPI::Bool::createExpression(
+            LangAPI::Bool{.value = true}
+        );
+
+        loop.stmt = std::move(builder.getData());
         builder.getData().clear();
-        // A repeated group whose first member is an LL(k) choice performs
-        // its switch on the current token. Once the previous iteration ends,
-        // the current token can be __WS (e.g. `rule: ...;  next{...}`).
-        // Without a whitespace skip, the next iteration sees __WS in the
-        // choice switch and stops, so only the first group item is captured.
-        // Insert the skip INSIDE the loop and BEFORE the alternative's
-        // lookahead; the group's position counter remains speculative until
-        // the iteration succeeds, so the outer parser can still backtrack.
+
         const auto& members = rule.getGroup().values;
+
         if (!isToken && !members.empty() && members.front()->isOp()) {
-            loop.stmt.insert(loop.stmt.begin(),
+            loop.stmt.insert(
+                loop.stmt.begin(),
                 LangAPI::SkipSpaces::createStatement(
-                    LangAPI::SkipSpaces{.isToken = false}));
+                    LangAPI::SkipSpaces{.isToken = false}
+                )
+            );
         }
+
         processExitStatements(loop.stmt);
-        // raiseVarsTop(data, loop.block, true, false, false);
-        // raiseVarsTop(data, loop.else_block, true, false, false);
+
         if (quantifier == '+') {
-            handle_plus_qualifier(rule, std::move(loop), uvar, var, shadow_var);
+            handle_plus_qualifier(
+                rule,
+                std::move(loop),
+                uvar,
+                var,
+                shadow_var
+            );
         } else {
-            statements.push_back(LangAPI::While::createStatement(loop));
+            statements.push_back(
+                LangAPI::While::createStatement(std::move(loop))
+            );
         }
     } else if (quantifier == '?') {
         // Execute the optional body exactly once. Some LangAPI targets lower
