@@ -1,26 +1,29 @@
 name<__WS> : Rule {
    [ \t\n\r\v\f]*;
   Data: EmptyDataBlock
-}name<AUTO> : Rule {
-   "->"
-  Data: EmptyDataBlock
-}name<AMPERSAND> : Rule {
-   "&"
-  Data: EmptyDataBlock
-}name<FAIL> : Rule {
-   "fail"
-  Data: EmptyDataBlock
 }name<advanced_rule_dep_decl_DEPENDS> : Rule {
    "depends"
   Data: EmptyDataBlock
-}name<rule_value_counter_bounded_EQUALS_SIGN> : Rule {
-   "="
+}name<AUTO> : Rule {
+   "->"
+  Data: EmptyDataBlock
+}name<FAIL> : Rule {
+   "fail"
   Data: EmptyDataBlock
 }name<SEMICOLON> : Rule {
    ";"
   Data: EmptyDataBlock
 }name<COLON> : Rule {
    ":"
+  Data: EmptyDataBlock
+}name<EQUALS_SIGN> : Rule {
+   "="
+  Data: EmptyDataBlock
+}name<AMPERSAND> : Rule {
+   "&"
+  Data: EmptyDataBlock
+}name<PERCENT_SIGN> : Rule {
+   "%"
   Data: EmptyDataBlock
 }name<rule_nested_rule_NUMBER_SIGN> : Rule {
    "#"
@@ -61,6 +64,17 @@ name<__WS> : Rule {
 }name<rule_value_NOSPACE> : Rule {
    "\\s0"
   Data: EmptyDataBlock
+}name<rule_value_mul_capture> : Rule {
+  @  ( COMMERCIAL_AT |  PERCENT_SIGN)
+   __WS?;
+   EQUALS_SIGN
+   __WS?;
+   LEFT_PARENTHESIS
+   __WS?;
+  @  rule::value::one_capture+;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: TemplatedDataBlock(type, cap)
 }name<rule_ast> : Rule {
   @  ( rule::ast::abbr |  rule::ast::full |  rule::ast::single_value)
   Data: [RegularDataBlock: CllExpr]
@@ -68,12 +82,30 @@ name<__WS> : Rule {
    COMMERCIAL_AT
   @  ID?;
   Data: [RegularDataBlock: CllExpr]
+}name<rule_value_ANY> : Rule {
+   "."
+  Data: EmptyDataBlock
+}name<rule_f_binding> : Rule {
+   PERCENT_SIGN
+   __WS?;
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  ID
+   __WS?;
+   ( COMMA  __WS?; @  ID)*;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(f, seq)
 }name<rule_value_group> : Rule {
    LEFT_PARENTHESIS
    __WS?;
   @  rule::value+;
    __WS?;
    RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_fail_capture> : Rule {
+   PERCENT_SIGN
+  @  name?;
   Data: [RegularDataBlock: CllExpr]
 }name<rule_ast_full_part> : Rule {
   @  ID
@@ -90,6 +122,24 @@ name<__WS> : Rule {
   @  ( ( ( "\\"  .) |  [^'\\\]))*;
    ['"]
   Data: [RegularDataBlock: CllExpr]
+}name<expr> : Rule {
+  @  PY_RAW
+  Data: [RegularDataBlock: CllExpr]
+}name<rule_value_one_capture> : Rule {
+  @  rule::value::var_capture?;
+   __WS?;
+  @  rule::value::ast_capture?;
+   __WS?;
+  @  rule::value::fail_capture?;
+   __WS?;
+  @  rule::value::pattern
+   __WS?;
+  @  rule::value::alternative*;
+   __WS?;
+  @  rule::value::counter?;
+   __WS?;
+  @  rule::value::shared_counter_registration?;
+  Data: TemplatedDataBlock(v_cap, ast_cap, fail_cap, val, alts, quantifier, registration)
 }name<rule> : Rule {
    COLON
    __WS?;
@@ -97,10 +147,12 @@ name<__WS> : Rule {
    __WS?;
   @  rule::ast?;
    __WS?;
+  @  rule::f_binding?;
+   __WS?;
   @  rule::nested_rule*;
    __WS?;
    SEMICOLON
-  Data: TemplatedDataBlock(v, data, nested)
+  Data: TemplatedDataBlock(v, ast_pointer, fail_pointer, nested)
 }name<grammar_modifier_AUTO> : Rule {
    "#["
   Data: EmptyDataBlock
@@ -122,20 +174,10 @@ name<__WS> : Rule {
   @  ( rule |  advanced_rule)
   Data: TemplatedDataBlock(mod, name, entry)
 }name<rule_value> : Rule {
-  @  rule::value::var_capture?;
-   __WS?;
-  @  rule::value::ast_capture?;
-   __WS?;
-  @  rule::value::pattern
-   __WS?;
-  @  rule::value::alternative*;
-   __WS?;
-  @  rule::value::counter?;
-   __WS?;
-  @  rule::value::shared_counter_registration?;
-  Data: TemplatedDataBlock(v_cap, ast_cap, val, alts, quantifier, registration)
+  @  ( rule::value::one_capture |  rule::value::mul_capture)
+  Data: [RegularDataBlock: CllExpr]
 }name<rule_value_counter_bounded> : Rule {
-   rule::value::counter::bounded::EQUALS_SIGN
+   EQUALS_SIGN
    __WS?;
   @  ( NUMBER |  ID |  expr)
   Data: [RegularDataBlock: CllExpr]
@@ -175,10 +217,12 @@ name<__WS> : Rule {
    __WS?;
    LEFT_CURLY_BRACKET
    __WS?;
-   (@  ID  __WS?;  COMMA?;)+;
+  @  ID
+   __WS?;
+   ( COMMA  __WS?; @  ID)*;
    __WS?;
    RIGHT_CURLY_BRACKET
-  Data: [RegularDataBlock: CllExpr]
+  Data: TemplatedDataBlock(f, seq)
 }name<grammar_modifier_RIGHT_SQUARE_BRACKET> : Rule {
    "]"
   Data: EmptyDataBlock
@@ -237,18 +281,6 @@ name<__WS> : Rule {
 }name<stmt> : Rule {
   @  PY_RAW
   Data: [RegularDataBlock: CllExpr]
-}name<explicit_expr> : Rule {
-   LEFT_PARENTHESIS
-   __WS?;
-  @  expr
-   __WS?;
-   RIGHT_PARENTHESIS
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_shared_counter_registration> : Rule {
-   rule::value::shared_counter_registration::AUTO
-   __WS?;
-  @  ID
-  Data: [RegularDataBlock: CllExpr]
 }name<advanced_rule_fail_call> : Rule {
    FAIL
    __WS?;
@@ -273,17 +305,23 @@ name<__WS> : Rule {
    __WS?;
   @  forward_declaration
   Data: [RegularDataBlock: CllExpr]
+}name<rule_value_shared_counter_registration> : Rule {
+   rule::value::shared_counter_registration::AUTO
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
+}name<explicit_expr> : Rule {
+   LEFT_PARENTHESIS
+   __WS?;
+  @  expr
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
 }name<rule_value_var_capture> : Rule {
    AMPERSAND
    __WS?;
   @  ID
   Data: [RegularDataBlock: CllExpr]
-}name<expr> : Rule {
-  @  PY_RAW
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_ANY> : Rule {
-   "."
-  Data: EmptyDataBlock
 }name<main> : Rule {
   @  ( ( grammar |  fail_block))*;
   Data: [RegularDataBlock: CllExpr]

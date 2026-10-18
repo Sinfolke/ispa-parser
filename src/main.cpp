@@ -1,5 +1,5 @@
 #include <ispa/bootstrapped/Parser.h>
-#include <ispa_dep_scanner/bootstrapped/DepParser.h>
+#include <ispa_dep_scanner/parser.h>
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
@@ -28,7 +28,6 @@ import AST.Builder;
 import LexerBuilder;
 import DFA;
 import dstd;
-import std;
 
 void printHelp() {
     cpuf::printf(R"(
