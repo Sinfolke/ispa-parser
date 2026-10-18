@@ -1,6 +1,5 @@
-#include <ispa/output/Parser.h>
-
-#include "parser.h"
+#include <ispa/bootstrapped/Parser.h>
+#include <ispa_dep_scanner/bootstrapped/DepParser.h>
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
@@ -171,7 +170,7 @@ int main(int argc, char** argv) {
         } catch (std::exception &e) {
             throw UError("Failed read file: %s", e.what());
         }
-        IspaParser parser;
+        Parser::Parser parser;
         auto &main = parser.parse(fileContent.c_str());
         modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
         // for (const auto &v : main.value) {
@@ -182,7 +181,8 @@ int main(int argc, char** argv) {
         for (auto file : corelib::file::getFilesRecursively(dirPath, ".isc")) {
             cpuf::printf("file {}", file.c_str());
             std::string content = corelib::file::readFile(file);
-            IspaParser parser;
+            // lexer.makeTokens(content.c_str());
+            Parser::Parser parser;
             auto &main = parser.parse(content.c_str());
             modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
         }

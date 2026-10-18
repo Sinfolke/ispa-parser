@@ -780,7 +780,37 @@ namespace NFA::TNFA {
             }
             return nullptr;
         };
+        // The capture a symbol belongs to. Prefer an anchor on the very same
+        // member (`@ '^'`), otherwise fall back to the enclosing group anchor
+        // (`@ ( ... )+`), whose leaves carry no prefix of their own.
+        const auto own_capture = [&](const TokenID &sym) -> const TokenID * {
+            if (const auto *c = capture_of(sym, true))
+                return c;
+            return capture_of(sym, false);
+        };
 
+        // One representative per captured position, in rule order. This is
+        // what maps onto data_block.names. Deterministic (position, then name)
+        // so the unordered transition map cannot change which leaf is picked.
+        const auto collect_fields = [&]() {
+            std::vector<const TokenID *> fields;
+            for (const auto &[sym, _] : token.transitions) {
+                if (sym.token_name != type_name || sym.member.empty() || !own_capture(sym))
+                    continue;
+                fields.push_back(&sym);
+            }
+            std::sort(fields.begin(), fields.end(),
+                [](const TokenID *a, const TokenID *b) {
+                    if (a->position_in_token != b->position_in_token)
+                        return a->position_in_token < b->position_in_token;
+                    return generateVariable(*a) < generateVariable(*b);
+                });
+            fields.erase(std::unique(fields.begin(), fields.end(),
+                [](const TokenID *a, const TokenID *b) {
+                    return a->position_in_token == b->position_in_token;
+                }), fields.end());
+            return fields;
+        };
         // Flat `|` options have separate capture anchors but occupy one field.
         // Collect every branch at this position, not just the representative
         // chosen from the unordered transition map.
@@ -905,47 +935,15 @@ namespace NFA::TNFA {
         if (own_token->data_block && own_token->data_block->isRegularDataBlock()) {
             state.instance_value.name = LangAPI::Symbol{type_name};
 
-            for (const auto &[sym, alternatives] : token.transitions) {
-                if (sym.token_name == type_name &&
-                    !sym.member.empty() &&
-                    !sym.capture.empty()) {
-                    read_member(sym, capture_of(sym, false), local("value"), state.statements);
-                    state.instance_value.args.push_back(symbol(local("value")));
-                    break;
-                }
+            const auto fields = collect_fields();
+            if (!fields.empty()) {
+                read_member(*fields.front(), own_capture(*fields.front()),
+                            local("value"), state.statements);
+                state.instance_value.args.push_back(symbol(local("value")));
             }
         } else if (own_token->data_block && own_token->data_block->isTemplatedDataBlock()) {
             const auto &data_block = own_token->data_block->getTemplatedDataBlock();
-
-            std::vector<const TokenID *> members_with_prefix;
-            for (const auto &[sym, alternatives] : token.transitions) {
-                if (sym.token_name == type_name &&
-                    !sym.member.empty() &&
-                    !sym.member.prefix.empty() &&
-                    std::find(members_with_prefix.begin(), members_with_prefix.end(), &sym) ==
-                        members_with_prefix.end()) {
-                    members_with_prefix.push_back(&sym);
-                }
-            }
-
-            std::sort(
-                members_with_prefix.begin(),
-                members_with_prefix.end(),
-                [](const TokenID *a, const TokenID *b) {
-                    if (a->position_in_token != b->position_in_token)
-                        return a->position_in_token < b->position_in_token;
-                    return generateVariable(*a) < generateVariable(*b);
-                }
-            );
-            // The branches of a flat option are one data-block field, not
-            // separate fields. Their captures are selected by read_member.
-            members_with_prefix.erase(
-                std::unique(members_with_prefix.begin(), members_with_prefix.end(),
-                    [](const TokenID *a, const TokenID *b) {
-                        return a->alt.empty() && b->alt.empty() &&
-                               a->position_in_token == b->position_in_token;
-                    }),
-                members_with_prefix.end());
+            const auto members_with_prefix = collect_fields();
 
             state.instance_value.name = LangAPI::Symbol{type_name};
 
@@ -953,7 +951,7 @@ namespace NFA::TNFA {
             for (std::size_t i = limit; i-- > 0;) {
                 const TokenID &sym = *members_with_prefix[i];
                 const std::string name = local(data_block.names[i]);
-                read_member(sym, capture_of(sym, true), name, state.statements);
+                read_member(sym, own_capture(sym), name, state.statements);
                 state.instance_value.args.push_back(symbol(name));
             }
         } else {

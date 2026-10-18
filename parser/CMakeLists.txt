@@ -1,104 +1,224 @@
-
 cmake_minimum_required(VERSION 3.22)
-project(Parser LANGUAGES CXX)
+project(ispa_parser LANGUAGES CXX)
 
-# ============================================================
-# Configuration
-# ============================================================
+# Do not change the global C++ standard when embedded as a subproject.
+option(ISPA_BUILD_EXECUTABLES "Build the ISPA and Python parser runners" ${PROJECT_IS_TOP_LEVEL})
+option(ISPA_BUILD_SELF_PARSER "Build the ISPA grammar parser" ON)
+option(ISPA_BUILD_DEP_PARSER "Build the dependency scanner" ON)
+option(ISPA_BUILD_PYTHON_PARSER "Build the Python grammar parser" ${PROJECT_IS_TOP_LEVEL})
+option(ISPA_ENABLE_PCH "Enable precompiled headers for parsers" ON)
 
-option(ISPA_BUILD_OLD_PARSER
-        "Build the legacy ISPA parser"
-        OFF
-)
+set(ISPA_PARSER_MODE "AUTO" CACHE STRING "Parser sources: AUTO, INCREMENTAL, or BOOTSTRAPPED")
+set_property(CACHE ISPA_PARSER_MODE PROPERTY STRINGS AUTO INCREMENTAL BOOTSTRAPPED)
+if(NOT ISPA_PARSER_MODE MATCHES "^(AUTO|INCREMENTAL|BOOTSTRAPPED)$")
+    message(FATAL_ERROR "Invalid ISPA_PARSER_MODE='${ISPA_PARSER_MODE}' (expected AUTO, INCREMENTAL or BOOTSTRAPPED)")
+endif()
 
-option(ISPA_BUILD_NEW_PARSER
-        "Build the new ISPA generated parser"
-        ON
-)
-
-option(ISPA_BUILD_OLD_TESTS
-        "Build legacy ISPA parser tests"
-        ${PROJECT_IS_TOP_LEVEL}
-)
-
-# ============================================================
-# Legacy ISPA parser (C++17)
-# ============================================================
-
-if(ISPA_BUILD_OLD_PARSER)
-
-    file(GLOB_RECURSE parser_sources
-            CONFIGURE_DEPENDS
-            "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    )
-
-    add_library(parser STATIC ${parser_sources})
-
-    target_compile_features(parser PUBLIC cxx_std_17)
-
-    target_include_directories(parser PUBLIC
-            "${CMAKE_CURRENT_SOURCE_DIR}/include"
-            "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs/old"
-    )
-
-    set_target_properties(parser PROPERTIES
-            POSITION_INDEPENDENT_CODE ON
-            CXX_EXTENSIONS OFF
-    )
-
-    add_library(parser_stdlib STATIC
-            "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs/old/ispastdlib.hpp"
-    )
-
-    target_compile_features(parser_stdlib PUBLIC cxx_std_17)
-
-    target_include_directories(parser_stdlib PUBLIC
-            "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs/old"
-    )
-
-    set_target_properties(parser_stdlib PROPERTIES
-            CXX_EXTENSIONS OFF
-    )
-
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        target_compile_definitions(parser PRIVATE __LIBC)
-        target_compile_definitions(parser_stdlib PRIVATE __LIBC)
+function(ispa_apply_compile_options target)
+    target_compile_features(${target} PRIVATE cxx_std_20)
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /W4 /MP)
+    else()
+        target_compile_options(${target} PRIVATE -Wall -Wextra)
+        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            target_compile_options(${target} PRIVATE
+                -Wno-switch
+                -Wno-self-assign-overloaded
+                -Wno-unused-but-set-variable
+                -Wno-unused-lambda-capture
+                -Wno-deprecated-copy
+            )
+        endif()
     endif()
+endfunction()
+
+set(STDLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs")
+if(NOT TARGET ispastdlib::ispastdlib)
+    add_subdirectory("${STDLIB_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ispastdlib_build")
 endif()
 
-# ============================================================
-# New ISPA parser (C++20)
-# ============================================================
+function(add_ispa_generated_parser parser_name directory executable_name)
+    set(ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${directory}")
+    set(OUTPUT_DIR "${ROOT_DIR}/incremental")
+    set(INCREMENTAL_DIR "${OUTPUT_DIR}/incremental")
+    set(BOOTSTRAPPED_DIR "${ROOT_DIR}/bootstrapped")
 
-if(ISPA_BUILD_NEW_PARSER)
-    add_subdirectory(new)
+    file(GLOB_RECURSE ALL_INCREMENTAL_SOURCES CONFIGURE_DEPENDS
+            "${INCREMENTAL_DIR}/*.cpp"
+    )
+
+    file(GLOB MATCHED_PARSER_HEADERS "${OUTPUT_DIR}/*Parser.h")
+
+    set(HAVE_INCREMENTAL FALSE)
+    if(MATCHED_PARSER_HEADERS AND ALL_INCREMENTAL_SOURCES)
+        set(HAVE_INCREMENTAL TRUE)
+    endif()
+
+    file(GLOB MATCHED_BOOTSTRAPPED_HEADERS "${BOOTSTRAPPED_DIR}/*Parser.h")
+    file(GLOB MATCHED_BOOTSTRAPPED_SOURCES "${BOOTSTRAPPED_DIR}/*Parser.cpp")
+
+    set(HAVE_BOOTSTRAPPED FALSE)
+    if(MATCHED_BOOTSTRAPPED_HEADERS AND MATCHED_BOOTSTRAPPED_SOURCES)
+        set(HAVE_BOOTSTRAPPED TRUE)
+    endif()
+
+    if(ISPA_PARSER_MODE STREQUAL "INCREMENTAL")
+        if(NOT HAVE_INCREMENTAL)
+            message(FATAL_ERROR "${parser_name}: incremental parser requested, but output/*Parser.h or incremental sources are missing")
+        endif()
+        set(PARSER_SOURCE_MODE "INCREMENTAL")
+    elseif(ISPA_PARSER_MODE STREQUAL "BOOTSTRAPPED")
+        if(NOT HAVE_BOOTSTRAPPED)
+            message(FATAL_ERROR "${parser_name}: bootstrapped parser requested, but bootstrapped/*Parser.h or *Parser.cpp is missing")
+        endif()
+        set(PARSER_SOURCE_MODE "BOOTSTRAPPED")
+    elseif(HAVE_INCREMENTAL)
+        set(PARSER_SOURCE_MODE "INCREMENTAL")
+    elseif(HAVE_BOOTSTRAPPED)
+        set(PARSER_SOURCE_MODE "BOOTSTRAPPED")
+    else()
+        message(FATAL_ERROR
+                "${parser_name}: no complete parser sources found. Expected either "
+                "${OUTPUT_DIR}/*Parser.h + incremental/*.cpp, or "
+                "${BOOTSTRAPPED_DIR}/*Parser.h + *Parser.cpp"
+        )
+    endif()
+
+    message(STATUS "${parser_name}: using ${PARSER_SOURCE_MODE} parser")
+
+    if(PARSER_SOURCE_MODE STREQUAL "INCREMENTAL")
+        set(AST_SOURCES)
+        set(PARSER_SOURCES)
+        set(OTHER_SOURCES)
+
+        foreach(src IN LISTS ALL_INCREMENTAL_SOURCES)
+            if(src MATCHES "[/\\\\]Parser[/\\\\]FlatTypes[/\\\\]")
+                list(APPEND AST_SOURCES "${src}")
+            elseif(src MATCHES "[/\\\\]Parser[/\\\\]Parser[/\\\\]")
+                list(APPEND PARSER_SOURCES "${src}")
+            else()
+                list(APPEND OTHER_SOURCES "${src}")
+            endif()
+        endforeach()
+
+        list(LENGTH AST_SOURCES AST_COUNT)
+        list(LENGTH PARSER_SOURCES PARSER_COUNT)
+        list(LENGTH OTHER_SOURCES OTHER_COUNT)
+        message(STATUS "${parser_name}: AST=${AST_COUNT}, parser=${PARSER_COUNT}, support=${OTHER_COUNT}")
+
+        set(OBJECT_TARGETS)
+        foreach(kind IN ITEMS ast parser_impl support)
+            if(kind STREQUAL "ast")
+                set(SOURCES ${AST_SOURCES})
+            elseif(kind STREQUAL "parser_impl")
+                set(SOURCES ${PARSER_SOURCES})
+            else()
+                set(SOURCES ${OTHER_SOURCES})
+            endif()
+
+            if(NOT SOURCES)
+                continue()
+            endif()
+
+            set(target "${parser_name}_${kind}")
+            add_library(${target} OBJECT ${SOURCES})
+            list(APPEND OBJECT_TARGETS "${target}")
+
+            ispa_apply_compile_options(${target})
+            target_include_directories(${target} PRIVATE
+                    "${OUTPUT_DIR}"
+                    "${ROOT_DIR}"
+                    "${CMAKE_CURRENT_SOURCE_DIR}"
+            )
+            target_link_libraries(${target} PRIVATE ispastdlib::ispastdlib)
+
+            if(ISPA_ENABLE_PCH)
+                if(kind STREQUAL "parser_impl" AND EXISTS "${INCREMENTAL_DIR}/Parser/Parser/def.h")
+                    target_precompile_headers(${target} PRIVATE
+                            <ispastdlib.hpp>
+                            "${INCREMENTAL_DIR}/Parser/Parser/def.h"
+                    )
+                else()
+                    target_precompile_headers(${target} PRIVATE <ispastdlib.hpp>)
+                endif()
+            endif()
+        endforeach()
+
+        # The object libraries own compilation of individual generated units.
+        # Rebuild the static archive from their object files.
+        add_library(${parser_name}_lib STATIC)
+        foreach(target IN LISTS OBJECT_TARGETS)
+            target_sources(${parser_name}_lib PRIVATE "$<TARGET_OBJECTS:${target}>")
+        endforeach()
+
+        target_include_directories(${parser_name}_lib PUBLIC
+                "${OUTPUT_DIR}"
+                "${ROOT_DIR}"
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+        )
+
+    else()
+        # Public headers in existing clients may use either <*Parser.h> or
+        # <output/*Parser.h>. Stage a compatibility layout in the build tree.
+        # This never writes into the source tree or into generated output/.
+        set(BOOTSTRAP_INCLUDE_ROOT "${CMAKE_CURRENT_BINARY_DIR}/${parser_name}_bootstrap_include")
+        file(MAKE_DIRECTORY "${BOOTSTRAP_INCLUDE_ROOT}/output")
+
+        # Stage all matched header files dynamically into the bootstrap include root
+        foreach(hdr IN LISTS MATCHED_BOOTSTRAPPED_HEADERS)
+            get_filename_component(hdr_name "${hdr}" NAME)
+            configure_file("${hdr}" "${BOOTSTRAP_INCLUDE_ROOT}/output/${hdr_name}" COPYONLY)
+        endforeach()
+
+        add_library(${parser_name}_lib STATIC ${MATCHED_BOOTSTRAPPED_SOURCES})
+        ispa_apply_compile_options(${parser_name}_lib)
+        target_include_directories(${parser_name}_lib PUBLIC
+                "${BOOTSTRAP_INCLUDE_ROOT}"
+                "${BOOTSTRAPPED_DIR}"
+                "${ROOT_DIR}"
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+        )
+        if(ISPA_ENABLE_PCH)
+            target_precompile_headers(${parser_name}_lib PRIVATE <ispastdlib.hpp>)
+        endif()
+    endif()
+
+    target_compile_features(${parser_name}_lib PUBLIC cxx_std_20)
+    target_link_libraries(${parser_name}_lib PUBLIC ispastdlib::ispastdlib)
+
+    if(ISPA_BUILD_EXECUTABLES)
+        if(EXISTS "${ROOT_DIR}/main.cpp")
+            add_executable(${executable_name} "${ROOT_DIR}/main.cpp")
+            ispa_apply_compile_options(${executable_name})
+            target_link_libraries(${executable_name} PRIVATE ${parser_name}_lib)
+        else()
+            message(STATUS "${parser_name}: main.cpp not found at ${ROOT_DIR}/main.cpp; CLI for this parser is not supported")
+        endif()
+    endif()
+endfunction()
+
+if(ISPA_BUILD_SELF_PARSER)
+    add_ispa_generated_parser(ispa ispa isparun)
+    add_library(ISPA::Parser ALIAS ispa_lib)
 endif()
 
-# ============================================================
-# Public aliases
-# ============================================================
-
-if(TARGET parser)
-    add_library(ISPA::LegacyParser ALIAS parser)
+if(ISPA_BUILD_PYTHON_PARSER)
+    add_ispa_generated_parser(python python pyrun)
+    add_library(ISPA::PythonParser ALIAS python_lib)
 endif()
-
-if(TARGET parser_stdlib)
-    add_library(ISPA::LegacyStdlib ALIAS parser_stdlib)
+if(ISPA_BUILD_DEP_PARSER)
+    add_ispa_generated_parser(dep_scanner ispa_dep_scanner scanrun)
+    add_library(ISPA::DepScanner ALIAS dep_scanner_lib)
 endif()
-
-# The new parser defines:
-#
-#   ISPA::Parser
-#   ISPA::PythonParser
-#
-# through new/CMakeLists.txt.
-
-# ============================================================
-# Diagnostics
-# ============================================================
-
-message(STATUS "ISPA configuration:")
-message(STATUS "  Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
-message(STATUS "  Legacy parser: ${ISPA_BUILD_OLD_PARSER}")
-message(STATUS "  New parser: ${ISPA_BUILD_NEW_PARSER}")
-message(STATUS "  Legacy tests: ${ISPA_BUILD_OLD_TESTS}")
+message(STATUS "--------------------------------------")
+message(STATUS "ISPA generated parsers")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "C++ standard: C++20")
+message(STATUS "Build executables: ${ISPA_BUILD_EXECUTABLES}")
+message(STATUS "Build ISPA parser: ${ISPA_BUILD_SELF_PARSER}")
+message(STATUS "Build Python parser: ${ISPA_BUILD_PYTHON_PARSER}")
+message(STATUS "Build Dep Scanner: ${ISPA_BUILD_DEP_PARSER}")
+message(STATUS "Parser selection: ${ISPA_PARSER_MODE}")
+message(STATUS "Precompiled headers: ${ISPA_ENABLE_PCH}")
+message(STATUS "Stdlib directory: ${STDLIB_DIR}")
+message(STATUS "--------------------------------------")

@@ -395,14 +395,9 @@ namespace LangRepr {
 
             }, semantic_state.next_state);
             const auto &instance_symbol = std::get<LangAPI::Symbol>(semantic_state.instance_value.name);
-            LangAPI::Symbol tokens_enum_value;
-            tokens_enum_value.path.push_back("Tokens");
-            std::string acc;
-            for (const auto &str : instance_symbol.path) {
-                acc += std::get<std::string>(str) + "_";
-            }
-            acc.pop_back();
-            tokens_enum_value.path.push_back(acc);
+            LangAPI::Symbol tokens_enum_value = {instance_symbol.path};
+            tokens_enum_value.path.insert(tokens_enum_value.path.begin(), "Tokens");
+            tokens_enum_value.path.insert(tokens_enum_value.path.end(), "id");
             statements.push_back(
                 LangAPI::Return::createStatement(LangAPI::Return {.value = LangAPI::MakeTuple::createExpression(LangAPI::MakeTuple {.args = {
                     LangAPI::Int::createExpression(next_state),

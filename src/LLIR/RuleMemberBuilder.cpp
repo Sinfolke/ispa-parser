@@ -1311,7 +1311,7 @@ void LLIR::AnyBuilder::build() {
     LangAPI::Expression expression = {
         LangAPI::Pos::createExpressionValue(LangAPI::Pos {.dereference = true}),
         LangAPI::ExpressionValue { LangAPI::ExpressionElement::Equal },
-        isToken ? LangAPI::Char::createExpressionValue(LangAPI::Char {.value = '0', .escaped = true}) : LangAPI::Symbol::createExpressionValue(LangAPI::Symbol {{"Tokens", "NONE"}}),
+        isToken ? LangAPI::Char::createExpressionValue(LangAPI::Char {.value = '0', .escaped = true}) : LangAPI::Symbol::createExpressionValue(LangAPI::Symbol {{"Tokens", "NONE", "id"}}),
     };
     statements.push_back(LangAPI::Variable::createStatement(var));
     statements.push_back(LangAPI::Variable::createStatement(svar));
@@ -1519,17 +1519,10 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
     // on the second token).
 
     LangAPI::Switch ss {
-        .expression = LangAPI::Cast::createExpression(
-            LangAPI::Cast {
-                .type = std::make_shared<LangAPI::Type>(LangAPI::Type {
-                    LangAPI::Symbol {"Tokens"}
-                }),
-                .what = LangAPI::StorageSymbol::createExpression(LangAPI::StorageSymbol {
+        .expression = LangAPI::StorageSymbol::createExpression(LangAPI::StorageSymbol {
                     LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = true}),
                     stdu::vector<LangAPI::StorageSymbol::PathPart> {LangAPI::Property{"kind"}}
-                })
-            }
-        )
+        })
     };
 
     std::map<
@@ -1559,12 +1552,14 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
         ss.cases.emplace_back();
         auto& cs = ss.cases.back();
 
-        auto rv_sym = LangAPI::Symbol{corelib::text::join(symbol, "_")};
+        auto rv_sym = LangAPI::Symbol{symbol};
         rv_sym.path.insert(
             rv_sym.path.begin(), "Tokens"
         );
-
-        cs.first = LangAPI::Cast::createRValue(rv_sym);
+        rv_sym.path.insert(
+            rv_sym.path.end(), "id"
+        );
+        cs.first = LangAPI::Symbol::createRValue(rv_sym);
 
         if (alternatives.size() == 1) {
             const auto index = *alternatives.begin();

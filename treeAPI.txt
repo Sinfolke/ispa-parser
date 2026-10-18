@@ -86,9 +86,9 @@ name<__WS> : Rule {
    "<"
   Data: EmptyDataBlock
 }name<rule_value_STRING> : Rule {
-   "'"
+   ['"]
   @  ( ( ( "\\"  .) |  [^'\\\]))*;
-   "'"
+   ['"]
   Data: [RegularDataBlock: CllExpr]
 }name<rule> : Rule {
    COLON
@@ -307,7 +307,7 @@ name<__WS> : Rule {
    "}"
   Data: [RegularDataBlock: CllExpr]
 }name<ID> : Rule {
-  @  ( [a-zA-Z]  [_a-zA-Z0-9]*;)
+  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
   Data: [RegularDataBlock: CllExpr]
 }name<advanced_rule_regular_match> : Rule {
    advanced_rule::regular_match::MATCH

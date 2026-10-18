@@ -84,7 +84,7 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Void, Char, Int, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Inheritance, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, Const, Reference, Tuple
+        Undef, Void, Char, Int, LargeUInt, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, Const, Reference, Tuple
     };
     enum class RValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant, CheckVariant, ToString, CharToStringConstructor, Cast, GetFromBox

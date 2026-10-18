@@ -24,7 +24,7 @@ class Builder {
 
     AST::RuleMember convertPattern(const Pattern& pattern);
     AST::RuleMember convertValue(const Value& value);
-    AST::DataBlock convertData(const ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::rule_ast>& data);
+    AST::DataBlock convertData(const ::ISPA_STD::Node<Parser::FlatTypes::rule_ast>& data);
     // "rule.value" / "rule::value" / {"rule","value"} -> {"rule","value"}
     static Name normalizeReference(const Name& reference);
 
@@ -44,7 +44,7 @@ class Builder {
 
 public:
     explicit Builder(const Parser::Types::main& mod) : root(&mod) {}
-    explicit Builder(const ::ISPA_STD::Node<Parser::Rules, Parser::Types::main>& mod)
+    explicit Builder(const ::ISPA_STD::Node<Parser::Types::main>& mod)
         : root(&mod.data()) {}
     void build();
     auto get() -> Tree { return {std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)}; }

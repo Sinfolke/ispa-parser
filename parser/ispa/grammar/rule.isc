@@ -1,0 +1,103 @@
+rule:
+    ':' @ value+ @ ast? @ nested_rule* ';'
+    @{v, data, nested}
+
+    #ast:
+        @ abbr | full | single_value
+        {@}
+
+        #full:
+            '&' '{' @ part+ '}'
+
+            {@}
+
+            #part:
+                @ ID ':' @ expr
+                @{key, e}
+            ;
+        ;
+        #abbr:
+            '@' '{' (@ ID ','?)+ '}'
+            {@}
+        ;
+        #single_value:
+            '{' @ expr | '@' '}'
+            {@}
+        ;
+    ;
+    #value:
+        @ var_capture? @ ast_capture? @ pattern @ alternative* @ counter? @ shared_counter_registration?
+        @{v_cap, ast_cap, val, alts, quantifier, registration}
+
+        #var_capture:
+            '&' @ ID
+            {@}
+        ;
+        #ast_capture:
+            '@' \s0 @ ID?
+            {@}
+        ;
+        #pattern:
+            @ name | group | dyn | STRING | CGROUP | ANY | SPACE | NOSPACE
+            {@}
+        ;
+        #STRING:
+            ['"] @ (('\\' .) | [^'\\])* ['"]
+            {@}
+        ;
+        #CGROUP:
+            '[' @ '^'? @ ([^\\\]] | ('\\' .))+ ']'
+
+            @{negative, v}
+        ;
+        #ANY:
+            '.'
+        ;
+        #SPACE:
+            '\\s'
+        ;
+        #NOSPACE:
+            '\\s0'
+        ;
+        #group:
+            '(' @ value+ ')'
+            {@}
+        ;
+        #dyn:
+            '$' @ dyn_expr | ID
+
+            {@}
+
+            #dyn_expr:
+                '{' @ expr '}'
+                {@}
+            ;
+        ;
+        #alternative:
+            '|' @ pattern
+            {@}
+        ;
+        #QUANTIFIER:
+           @ '?' | '+' | '*'
+           {@}
+        ;
+        #counter:
+           @ QUANTIFIER @ bounded?
+
+           @{quantifier, repetitions}
+           #bounded:
+                 '=' @ NUMBER | ID | expr
+
+                 {@}
+           ;
+        ;
+        #shared_counter_registration:
+            '=>' @ ID
+            {@}
+        ;
+    ;
+    #nested_rule:
+        '#' \s0 @ grammar
+        {@}
+    ;
+;

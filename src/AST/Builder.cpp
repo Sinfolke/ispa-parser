@@ -1,5 +1,5 @@
 module;
-#include <ispastdlib.hpp>
+#include <../../parser/stdlibs/ispastdlib.hpp>
 #include <ispastdlib/node.hpp>
 #include <ispastdlib/raw_token.hpp>
 #include <output/Parser.h>
@@ -26,11 +26,11 @@ namespace {
         return *value;
     }
 
-    template<typename EnumT, typename T>
-    decltype(auto) payload(const ISPA_STD::Node<EnumT, T>& node) {
+    template<typename T>
+    decltype(auto) payload(const ISPA_STD::Node<T>& node) {
         return payload(node.data());
     }
-    std::string id(const ::ISPA_STD::Node<Parser::Tokens, Parser::FlatTypes::ID>& node) {
+    std::string id(const ::ISPA_STD::Node<Parser::FlatTypes::ID>& node) {
         return payload(node).value;
     }
     stdu::vector<std::string> qualifiedName(const Parser::FlatTypes::name& n) {
@@ -100,15 +100,15 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
         using T = std::decay_t<decltype(item)>;
         if constexpr (std::is_same_v<T, std::monostate>) {
             unsupported("empty pattern");
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Tokens, Parser::FlatTypes::rule_value_STRING>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::rule_value_STRING>>) {
             output.value = AST::String{unescapeString(payload(item).value)};
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Tokens, Parser::FlatTypes::rule_value_CGROUP>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::rule_value_CGROUP>>) {
             output.value = characterGroup(payload(item).negative == '^', payload(item).v);
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Tokens, Parser::FlatTypes::rule_value_NOSPACE>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::rule_value_NOSPACE>>) {
             output.value = AST::RuleMemberNospace{};
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Tokens, Parser::FlatTypes::rule_value_SPACE>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::rule_value_SPACE>>) {
             unsupported("explicit SPACE pattern (no corresponding legacy AST node)");
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::name>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::name>>) {
             const auto& n = payload(item);
             if (!n.temp_params.empty() || !n.param.empty())
                 unsupported("parameterized name reference");
@@ -117,11 +117,11 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
             // and finally the global namespace. Qualified names work too.
             auto path = resolveName(qualifiedName(n));
             output.value = AST::RuleMemberName{path};
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, std::shared_ptr<Parser::FlatTypes::rule_value_group>>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<std::shared_ptr<Parser::FlatTypes::rule_value_group>>>) {
             auto children = convertValues(payload(item).value, [this](const Value& v) { return convertValue(v); });
             output.value = AST::RuleMemberGroup{std::move(children)};
         }
-        else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Tokens, Parser::Types::rule::value::ANY>>) {
+        else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Types::rule::value::ANY>>) {
             output.value = AST::RuleMemberAny{};
         }
         else {
@@ -173,21 +173,20 @@ AST::RuleMember AST::Builder::convertValue(const Value& value) {
 }
 
 AST::DataBlock AST::Builder::convertData(
-    const ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::rule_ast>& data) {
+    const ::ISPA_STD::Node<Parser::FlatTypes::rule_ast>& data) {
     AST::DataBlock result;
     if (data.empty()) return result;
     const auto& d = payload(data);
     std::visit([&](const auto& item) {
         using T = std::decay_t<decltype(item)>;
-        if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::rule_ast_abbr>>) {
+        if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::rule_ast_abbr>>) {
             AST::TemplatedDataBlock out;
             for (const auto& v : payload(item).value) out.names.push_back(id(v));
             result.value = std::move(out);
-        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, Parser::Types::rule::ast::single_value>>) {
+        } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Types::rule::ast::single_value>>) {
             const auto& single = payload(item);
 
             using AtNode = ISPA_STD::Node<
-                Parser::Tokens,
                 Parser::FlatTypes::COMMERCIAL_AT
             >;
 
@@ -199,7 +198,6 @@ AST::DataBlock AST::Builder::convertData(
         } else if constexpr (std::is_same_v<
             T,
             ISPA_STD::Node<
-                Parser::Rules,
                 Parser::FlatTypes::rule_ast_full
             >
         >) {
@@ -321,7 +319,7 @@ void AST::Builder::predeclareGrammar(const Grammar& grammar) {
     }
 
     using OrdinaryNode =
-        ISPA_STD::Node<Parser::Rules, std::shared_ptr<Rule>>;
+        ISPA_STD::Node<std::shared_ptr<Rule>>;
 
     if (const auto* ordinary =
         std::get_if<OrdinaryNode>(&grammar.entry)) {
@@ -329,7 +327,7 @@ void AST::Builder::predeclareGrammar(const Grammar& grammar) {
         for (const auto& nested : payload(*ordinary).nested) {
             predeclareGrammar(payload(payload(nested).value));
         }
-        }
+    }
 
     fullname.pop_back();
 }
@@ -340,7 +338,7 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
     if (path.size() != 1) unsupported("qualified grammar declaration");
     fullname.push_back(path.front());
 
-    using OrdinaryNode = ::ISPA_STD::Node<Parser::Rules, std::shared_ptr<Rule>>;
+    using OrdinaryNode = ::ISPA_STD::Node<std::shared_ptr<Rule>>;
     if (const auto* ordinary = std::get_if<OrdinaryNode>(&grammar.entry)) {
         convertRule(payload(*ordinary));
     } else {
@@ -353,9 +351,9 @@ void AST::Builder::convertMain(const Parser::Types::main& main) {
     for (const auto& entry : main.value) {
         std::visit([&](const auto& value) {
             using T = std::decay_t<decltype(value)>;
-            if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::grammar>>) {
+            if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::grammar>>) {
                 convertGrammar(payload(value));
-            } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::fail_block>>) {
+            } else if constexpr (std::is_same_v<T, ::ISPA_STD::Node<Parser::FlatTypes::fail_block>>) {
                 // Placeholder: failure handlers do not participate in the grammar tree.
             }
         }, entry);
@@ -372,7 +370,7 @@ void AST::Builder::build() {
         std::visit([this](const auto& value) {
             using T = std::decay_t<decltype(value)>;
             if constexpr (std::is_same_v<T,
-                ::ISPA_STD::Node<Parser::Rules, Parser::FlatTypes::grammar>>) {
+                ::ISPA_STD::Node<Parser::FlatTypes::grammar>>) {
                 predeclareGrammar(payload(value));
             }
         }, entry);

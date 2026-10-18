@@ -105,7 +105,6 @@ namespace LangAPI {
             case ValueType::Map: os << "Map"; break;
             case ValueType::Symbol: os << "Symbol"; break;
             case ValueType::StorageSymbol: os << "StorageSymbol"; break;
-            case ValueType::Inheritance: os << "Inheritance"; break;
             case ValueType::Token: os << "Token"; break;
             case ValueType::Rule: os << "Rule"; break;
             case ValueType::TokenResult: os << "TokenResult"; break;

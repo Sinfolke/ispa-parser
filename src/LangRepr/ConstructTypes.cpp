@@ -482,18 +482,110 @@ namespace LangRepr {
         return function;
     }
 
+
+
     auto ConstructTypes::constructTokensAndRulesEnum() -> void {
-        LangAPI::Enum tokens_enum("Tokens", {"NONE"});
-        LangAPI::Enum rules_enum("Rules", {"NONE"});
-        for (const auto &dtb : lexer_builder.getDataBlocks()) {
-            tokens_enum.value.push_back(corelib::text::join(dtb.first, "_"));
-        }
-        for (const auto &dtb : ir.getDataBlocks()) {
-            rules_enum.value.push_back(corelib::text::join(dtb.first, "_"));
-        }
-        holder.push(tokens_enum);
-        holder.push(rules_enum);
+        using IdMap = utype::unordered_map<Name, std::size_t>;
+
+        auto generate = [&](const LLIR::DataBlockList& blocks,
+                            const std::string& numeric_name,
+                            const std::string& string_name) {
+            Node root;
+            IdMap ids;
+
+            // Preserve the original data-block order for numeric IDs.
+            for (const auto& [name, data] : blocks) {
+                if (name.empty())
+                    continue;
+
+                root.find_or_emplace(name)->data = data;
+
+                if (!ids.contains(name))
+                    ids.emplace(name, ids.size());
+            }
+
+            // Ensure that all intermediate nodes have IDs too.
+            // Your grammar normally guarantees these paths already exist.
+            root.visit([&](const Name& path, const Node&) {
+                if (!ids.contains(path))
+                    ids.emplace(path, ids.size());
+                return false;
+            });
+
+            // Adapt this lambda to the initializer API of LangAPI::Variable.
+            auto makeVariable = [&](const Name& path, bool as_string)
+                -> LangAPI::Declaration
+            {
+                const auto type = LangAPI::Type {
+                    LangAPI::ValueType::Const,
+                    LangAPI::Type{
+                        as_string ? LangAPI::ValueType::NonOwnedString : LangAPI::ValueType::LargeUInt
+                    }
+                };
+
+                LangAPI::Variable var{
+                    .name = "id",
+                    .type = type,
+                    .value = as_string ? LangAPI::String::createExpression(LangAPI::String {.value = corelib::text::join(path, ".")}) : LangAPI::Int::createExpression(LangAPI::Int {.value = (long long) ids.at(path)}),
+                };
+
+                return LangAPI::Variable::createDeclaration(
+                    std::move(var)
+                );
+            };
+
+            // Recursively convert the Node hierarchy into LangAPI namespaces.
+            std::function<LangAPI::Namespace(
+                const Node&, const std::string&, Name&, bool
+            )> build;
+
+            build = [&](const Node& node,
+                        const std::string& name,
+                        Name& path,
+                        bool as_string) -> LangAPI::Namespace
+            {
+                LangAPI::Namespace result;
+                result.name = name;
+
+                if (!path.empty()) {
+                    result.declarations.push_back(
+                        makeVariable(path, as_string)
+                    );
+                }
+
+                for (const auto& [child_name, child] : node.children) {
+                    path.push_back(child_name);
+
+                    result.declarations.push_back(
+                        build(*child, child_name, path, as_string)
+                    );
+
+                    path.pop_back();
+                }
+
+                return result;
+            };
+
+            Name path;
+
+            holder.push(build(root, numeric_name, path, false));
+            holder.push(build(root, string_name, path, true));
+        };
+
+        generate(
+            lexer_builder.getDataBlocks(),
+            "Tokens",
+            "TokenNames"
+        );
+
+        generate(
+            ir.getDataBlocks(),
+            "Rules",
+            "RuleNames"
+        );
     }
+
+
     auto ConstructTypes::constructTokensAndRulesEnumToString() -> void {
         auto constructSwitchFromDataBlockList = [](const LLIR::DataBlockList &list, const char* name) {
             LangAPI::Switch ss;
@@ -556,7 +648,7 @@ namespace LangRepr {
         };
 
         auto flatSymbol = [&](const Name& n) -> LangAPI::Symbol {
-            return LangAPI::Symbol{"::Parser::FlatTypes::" + flattenName(n)};
+            return LangAPI::Symbol{"::" + namespace_name + "::FlatTypes::" + flattenName(n)};
         };
 
         // Requires your LangAPI's real alias declaration API; see note below.

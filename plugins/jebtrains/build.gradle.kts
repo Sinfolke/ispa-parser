@@ -27,7 +27,9 @@ val isWindowsHost = System.getProperty("os.name").lowercase().contains("windows"
 val bridgeFileName = "ispa-grammar-bridge" + if (isWindowsHost) ".exe" else ""
 val bridgeExecutable = bridgeBuild.map { it.file(bridgeFileName) }
 val compileIspaBridge by tasks.registering(Exec::class) {
-    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../Parser.cpp", "../../Parser.h", "../../parser/stdlibs/ispastdlib.hpp")
+    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../parser/CMakeLists.txt")
+    inputs.files(fileTree("../../parser/ispa") { include("**/*.h", "**/*.hpp", "**/*.cpp") })
+    inputs.files(fileTree("../../parser/stdlibs") { include("CMakeLists.txt", "**/*.h", "**/*.hpp", "**/*.cpp") })
     listOf("CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "LD").forEach { key -> inputs.property(key, System.getenv(key) ?: "") }
     outputs.file(bridgeBuild.map { it.file("CMakeCache.txt") })
     doFirst {
@@ -39,7 +41,9 @@ val compileIspaBridge by tasks.registering(Exec::class) {
 }
 val buildIspaBridge by tasks.registering(Exec::class) {
     dependsOn(compileIspaBridge)
-    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../Parser.cpp", "../../Parser.h", "../../parser/stdlibs/ispastdlib.hpp")
+    inputs.files("CMakeLists.txt", "parser_bridge.cpp", "../../parser/CMakeLists.txt")
+    inputs.files(fileTree("../../parser/ispa") { include("**/*.h", "**/*.hpp", "**/*.cpp") })
+    inputs.files(fileTree("../../parser/stdlibs") { include("CMakeLists.txt", "**/*.h", "**/*.hpp", "**/*.cpp") })
     outputs.file(bridgeExecutable)
     commandLine("cmake", "--build", bridgeBuild.get().asFile.absolutePath, "--config", "Release")
 }

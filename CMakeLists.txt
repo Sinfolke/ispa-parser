@@ -53,20 +53,13 @@ endfunction()
 # =============================================
 # Fetch & Find Dependencies
 # =============================================
-include(FetchContent)
-FetchContent_Declare(
-        RopeString
-        GIT_REPOSITORY https://github.com/Sinfolke/Rope-String
-        GIT_TAG main
-)
-FetchContent_MakeAvailable(RopeString)
 
 find_package(Boost REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc)
 
-add_subdirectory(parser/new)
+add_subdirectory(parser)
 
 # =============================================
 # ISPA Modules Library
@@ -107,7 +100,7 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost Rope CLI11::CLI11 ICU::uc ISPA::Parser)
+target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser)
 set_target_properties(ispa_modules PROPERTIES
         DISABLE_PRECOMPILE_HEADERS ON
 )

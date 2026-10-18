@@ -20,17 +20,32 @@ auto Core::isNestedArrayType(const LangAPI::Type &t) -> bool {
     }
     return false;
 }
+template<LangAPI::ValueType ...VT>
+auto isNestedT(const LangAPI::Type &t) -> bool {
+    for (const auto &param : t.template_parameters) {
+        if (std::holds_alternative<LangAPI::Type>(param)) {
+            const auto &type = std::get<LangAPI::Type>(param);
+            if (type.isValueType() && ((type.getValueType() == VT) || ...)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 // "::Name::" - or just "::" when no name is configured (used to give "::::Tokens")
 static auto scopePrefix() -> std::string { return Core::name.empty() ? std::string("::") : "::" + Core::name + "::"; }
-auto Tokens() { return scopePrefix() + "Tokens"; }
-auto Rules() { return scopePrefix() + "Rules"; }
 auto Core::convertType(const LangAPI::Type &type) -> std::string {
     if (type.isValueType()) {
         switch (type.getValueType()) {
             case LangAPI::ValueType::Void:
                 return "void";
-            case LangAPI::ValueType::Const:
-                return "const " + convertTemplates(type.template_parameters);
+            case LangAPI::ValueType::Const: {
+                if (isNestedT<LangAPI::ValueType::NonOwnedString>(type)) {
+                    return convertTemplates(type.template_parameters) + " const";
+                } else {
+                    return "const " + convertTemplates(type.template_parameters);
+                }
+            }
             case LangAPI::ValueType::Reference:
                 return convertTemplates(type.template_parameters) + "&";
             case LangAPI::ValueType::Tuple:
@@ -43,6 +58,8 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return "char";
             case LangAPI::ValueType::Int:
                 return "long long";
+            case LangAPI::ValueType::LargeUInt:
+                return "std::size_t";
             case LangAPI::ValueType::Float:
                 return "double";
             case LangAPI::ValueType::Bool:
@@ -58,15 +75,15 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
             case LangAPI::ValueType::Map:
                 return std::string("std::unordered_map<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Token:
-                return std::string("::ISPA_STD::Node<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
+                return std::string("::ISPA_STD::Node<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Rule:
-                return std::string("::ISPA_STD::Node<" + Rules() + ", ") + convertTemplates(type.template_parameters) + ">";
+                return std::string("::ISPA_STD::Node<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::RawToken:
-                return std::string("::ISPA_STD::RawToken<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
+                return std::string("::ISPA_STD::RawToken<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::TokenResult:
-                return std::string("::ISPA_STD::MatchResult<<" + Tokens() + ", ") + convertTemplates(type.template_parameters) + ">";
+                return std::string("::ISPA_STD::MatchResult<<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::RuleResult:
-                return std::string("::ISPA_STD::MatchResult<Rules, ") + convertTemplates(type.template_parameters) + ">";
+                return std::string("::ISPA_STD::MatchResult<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Variant:
                 return std::string("std::variant<std::monostate, ") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::LargeVariant:
@@ -78,9 +95,8 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
                 return "Undef";
-                // throw Error("Type is undefined");
             default:
-                throw Error("Unknown type");
+                throw Error("Unknown type: {}", (int) type.getValueType());
         }
     } else if (type.isSymbol()) {
         return convertSymbol(type.getSymbol());
@@ -190,9 +206,9 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::MatchResult:
             return std::string("::ISPA_STD::MatchResult<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
-            return std::string("::ISPA_STD::Lexer_base") + (symbol.template_parameters.empty() ? "" : ("<" + Tokens() + ", " + convertTemplates(symbol.template_parameters) + ">"));
+            return std::string("::ISPA_STD::Lexer_base") + (symbol.template_parameters.empty() ? "" : ("<" + convertTemplates(symbol.template_parameters) + ">"));
         case LangAPI::StdlibExports::Parser:
-            return std::string("::ISPA_STD::LLParser_base<") + Tokens() + ", " + Rules() + (symbol.template_parameters.empty() ? "" : ", " + convertTemplates(symbol.template_parameters)) + ">";
+            return std::string("::ISPA_STD::LLParser_base<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::LexerMakeTokenParameter:
             return (symbol.Const ? "const " : "") + std::string("char*") + (symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::ParserFunctionParameter:
@@ -210,7 +226,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::Error:
             return "std::runtime_error";
         case LangAPI::StdlibExports::TokenNodeConstruct:
-            return "::ISPA_STD::Node<" + Tokens() + ", " + convertTemplates(symbol.template_parameters) + ">::create";
+            return "::ISPA_STD::Node<" + convertTemplates(symbol.template_parameters) + ">::create";
         case LangAPI::StdlibExports::RawTokenNodeConstruct:
             return "Token::create";
         case LangAPI::StdlibExports::ParserNodeConstructor:

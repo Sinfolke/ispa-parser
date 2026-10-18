@@ -10,6 +10,7 @@ import com.intellij.psi.tree.IElementType
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.CompletableFuture
 
 data class BridgeToken(val start: Int, val end: Int, val type: IElementType)
 
@@ -32,36 +33,41 @@ object NativeParserBridge {
         val binary = executable ?: return null
         return try {
             val process = ProcessBuilder(binary.absolutePath).start()
+            val output = CompletableFuture.supplyAsync {
+                process.inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+            }
+            val errors = CompletableFuture.runAsync { process.errorStream.use { it.copyTo(java.io.OutputStream.nullOutputStream()) } }
             process.outputStream.use { it.write(sourceText.toByteArray(StandardCharsets.UTF_8)) }
             if (!process.waitFor(1500, TimeUnit.MILLISECONDS)) {
                 process.destroyForcibly()
                 return null
             }
-            val json = process.inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+            val json = output.get(1, TimeUnit.SECONDS)
+            errors.get(1, TimeUnit.SECONDS)
             if (process.exitValue() != 0 || !json.startsWith("{\"ok\":true")) return null
 
+            // Native metadata uses UTF-8 byte offsets; IntelliJ uses UTF-16 offsets.
+            val byteOffsets = IntArray(sourceText.toByteArray(StandardCharsets.UTF_8).size + 1) { -1 }
+            var byteOffset = 0
+            var charOffset = 0
+            while (charOffset < sourceText.length) {
+                byteOffsets[byteOffset] = charOffset
+                val count = Character.charCount(sourceText.codePointAt(charOffset))
+                byteOffset += sourceText.substring(charOffset, charOffset + count).toByteArray(StandardCharsets.UTF_8).size
+                charOffset += count
+            }
+            byteOffsets[byteOffset] = sourceText.length
             tokenPattern.findAll(json).mapNotNull { match ->
                 val kind = match.groupValues[1]
-                val start = match.groupValues[2].toIntOrNull() ?: return@mapNotNull null
-                val length = match.groupValues[3].toIntOrNull() ?: return@mapNotNull null
+                val byteStart = match.groupValues[2].toIntOrNull() ?: return@mapNotNull null
+                val byteLength = match.groupValues[3].toIntOrNull() ?: return@mapNotNull null
 
-                // Inside NativeParserBridge.parse in Annotator.kt
                 val type = when {
-                    // 1. RULE DECLARATIONS (headers ending with ':' or marked as decl/name_AUTO_0) -> BLUE
-                    kind == "name_AUTO_0" ||
-                    kind.contains("nested_rule") ||
-                    kind.contains("rule_decl") ||
-                    kind.endsWith("_decl_AUTO_0") -> IspaTokens.RULE_DECLARATION
+                    kind == "ID" -> IspaTokens.ID
+                    kind == "AUTO" || kind == "FAIL" || kind == "grammar_modifier_MOD" ||
+                        kind == "advanced_rule_dep_decl_DEPENDS" || kind == "advanced_rule_regular_match_MATCH" -> IspaTokens.KEYWORD
+                    kind == "COMMERCIAL_AT" -> IspaTokens.CAPTURE
 
-                    // 2. IDENTIFIER REFERENCES (#value, #ast, #abbr, ID, expr, v, data, key, e) -> YELLOW
-                    kind == "ID" ||
-                    kind.contains("name") ||
-                    kind.contains("param") ||
-                    kind.contains("ref") ||
-                    kind.startsWith("rule_value_") ||
-                    kind.contains("capture_var") -> IspaTokens.ID
-
-                    // 3. Other token types
                     kind == "NUMBER" || kind.contains("counter") -> IspaTokens.NUMBER
                     kind == "rule_value_STRING" -> IspaTokens.STRING
                     kind == "rule_value_CGROUP" -> IspaTokens.CHAR_CLASS
@@ -73,11 +79,13 @@ object NativeParserBridge {
                     else -> IspaTokens.OPERATOR
                 }
 
-                if (length <= 0 || start < 0 || start + length > sourceText.length) return@mapNotNull null
-
-                val tokenText = sourceText.substring(start, start + length)
-                val actualType = if (kind == "rule_value_STRING" && tokenText.startsWith("'") && tokenText.endsWith("'")) IspaTokens.CHAR_CLASS else type
-                BridgeToken(start, start + length, actualType)
+                val byteEnd = byteStart.toLong() + byteLength
+                if (byteLength <= 0 || byteStart !in byteOffsets.indices || byteEnd !in 0L until byteOffsets.size.toLong()) return@mapNotNull null
+                val start = byteOffsets[byteStart]
+                val end = byteOffsets[byteEnd.toInt()]
+                if (start < 0 || end <= start) return@mapNotNull null
+                val actualType = if (kind == "ID" && sourceText.substring(end).trimStart().startsWith(":")) IspaTokens.RULE_DECLARATION else type
+                BridgeToken(start, end, actualType)
             }.toList().sortedBy { it.start }
         } catch (_: Exception) { null }
     }

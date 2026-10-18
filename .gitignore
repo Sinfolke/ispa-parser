@@ -69,7 +69,9 @@ test-dump
 Dumps
 TestDumps
 !.github
-parser/new/ispa/output
-parser/new/python/output
-parser/new/build
-ispa/bootstrapped/.codegen-*
+parser/ispa/incremental
+parser/python/incremental
+parser/build
+parser/ispa/bootstrapped/.codegen-*
+parser/python/bootstrapped/.codegen-*
+parser/ispa_dep_scanner/bootstrapped/.codegen-*
