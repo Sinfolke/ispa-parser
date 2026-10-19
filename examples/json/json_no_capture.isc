@@ -1,0 +1,29 @@
+NUMBER:
+    [0-9]+ ('.' [0-9]+)?
+;
+
+STRING:
+    '"' [^"]* '"'
+;
+BOOLEAN:
+    'true' | 'false'
+;
+rv:
+    NUMBER | STRING | BOOLEAN
+;
+
+array:
+    '[' json (',' json)* ']'
+;
+
+map:
+    '{' STRING ':' json (',' STRING ':' json)* '}'
+;
+
+json:
+    map | array | rv
+;
+
+main:
+    json
+;

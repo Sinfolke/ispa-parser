@@ -7,9 +7,12 @@ STRING:
     '"' \s0 @ [^"]* \s0 '"'
     {@}
 ;
-
+BOOLEAN:
+    @ 'true' | 'false'
+    {@}
+;
 rv:
-    @ NUMBER | STRING
+    @ NUMBER | STRING | BOOLEAN
     {@}
 ;
 

@@ -1,363 +1,65 @@
 name<__WS> : Rule {
    [ \t\n\r\v\f]*;
   Data: EmptyDataBlock
-}name<advanced_rule_dep_decl_DEPENDS> : Rule {
-   "depends"
+}name<map_RIGHT_CURLY_BRACKET> : Rule {
+   "}"
   Data: EmptyDataBlock
-}name<AUTO> : Rule {
-   "->"
-  Data: EmptyDataBlock
-}name<FAIL> : Rule {
-   "fail"
-  Data: EmptyDataBlock
-}name<SEMICOLON> : Rule {
-   ";"
-  Data: EmptyDataBlock
-}name<COLON> : Rule {
-   ":"
-  Data: EmptyDataBlock
-}name<EQUALS_SIGN> : Rule {
-   "="
-  Data: EmptyDataBlock
-}name<AMPERSAND> : Rule {
-   "&"
-  Data: EmptyDataBlock
-}name<PERCENT_SIGN> : Rule {
-   "%"
-  Data: EmptyDataBlock
-}name<rule_nested_rule_NUMBER_SIGN> : Rule {
-   "#"
-  Data: EmptyDataBlock
-}name<LEFT_CURLY_BRACKET> : Rule {
-   "{"
-  Data: EmptyDataBlock
-}name<rule_nested_rule> : Rule {
-   rule::nested_rule::NUMBER_SIGN
-  @  grammar
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_counter> : Rule {
-  @  rule::value::QUANTIFIER
-   __WS?;
-  @  rule::value::counter::bounded?;
-  Data: TemplatedDataBlock(quantifier, repetitions)
-}name<rule_value_shared_counter_registration_AUTO> : Rule {
-   "=>"
-  Data: EmptyDataBlock
-}name<COMMERCIAL_AT> : Rule {
-   "@"
-  Data: EmptyDataBlock
-}name<rule_value_QUANTIFIER> : Rule {
-  @  ( "?" |  "+" |  "*")
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_dyn_dyn_expr> : Rule {
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  expr
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_dyn> : Rule {
-   rule::value::dyn::DOLLAR_SIGN
-   __WS?;
-  @  ( rule::value::dyn::dyn_expr |  ID)
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_NOSPACE> : Rule {
-   "\\s0"
-  Data: EmptyDataBlock
-}name<rule_value_mul_capture> : Rule {
-  @  ( COMMERCIAL_AT |  PERCENT_SIGN)
-   __WS?;
-   EQUALS_SIGN
-   __WS?;
-   LEFT_PARENTHESIS
-   __WS?;
-  @  rule::value::one_capture+;
-   __WS?;
-   RIGHT_PARENTHESIS
-  Data: TemplatedDataBlock(type, cap)
-}name<rule_ast> : Rule {
-  @  ( rule::ast::abbr |  rule::ast::full |  rule::ast::single_value)
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_ast_capture> : Rule {
-   COMMERCIAL_AT
-  @  ID?;
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_ANY> : Rule {
-   "."
-  Data: EmptyDataBlock
-}name<rule_f_binding> : Rule {
-   PERCENT_SIGN
-   __WS?;
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  ID
-   __WS?;
-   ( COMMA  __WS?; @  ID)*;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: TemplatedDataBlock(f, seq)
-}name<rule_value_group> : Rule {
-   LEFT_PARENTHESIS
-   __WS?;
-  @  rule::value+;
-   __WS?;
-   RIGHT_PARENTHESIS
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_fail_capture> : Rule {
-   PERCENT_SIGN
-  @  name?;
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_ast_full_part> : Rule {
-  @  ID
-   __WS?;
-   COLON
-   __WS?;
-  @  expr
-  Data: TemplatedDataBlock(key, e)
-}name<template_params_LESS_THAN_SIGN> : Rule {
-   "<"
-  Data: EmptyDataBlock
-}name<rule_value_STRING> : Rule {
-   ['"]
-  @  ( ( ( "\\"  .) |  [^'\\\]))*;
-   ['"]
-  Data: [RegularDataBlock: CllExpr]
-}name<expr> : Rule {
-  @  PY_RAW
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_one_capture> : Rule {
-  @  rule::value::var_capture?;
-   __WS?;
-  @  rule::value::ast_capture?;
-   __WS?;
-  @  rule::value::fail_capture?;
-   __WS?;
-  @  rule::value::pattern
-   __WS?;
-  @  rule::value::alternative*;
-   __WS?;
-  @  rule::value::counter?;
-   __WS?;
-  @  rule::value::shared_counter_registration?;
-  Data: TemplatedDataBlock(v_cap, ast_cap, fail_cap, val, alts, quantifier, registration)
-}name<rule> : Rule {
-   COLON
-   __WS?;
-  @  rule::value+;
-   __WS?;
-  @  rule::ast?;
-   __WS?;
-  @  rule::f_binding?;
-   __WS?;
-  @  rule::nested_rule*;
-   __WS?;
-   SEMICOLON
-  Data: TemplatedDataBlock(v, ast_pointer, fail_pointer, nested)
-}name<grammar_modifier_AUTO> : Rule {
-   "#["
-  Data: EmptyDataBlock
-}name<grammar_modifier_MOD> : Rule {
-  @  ( "inline" |  "skip" |  "extern")
-  Data: [RegularDataBlock: CllExpr]
-}name<grammar_modifier> : Rule {
-   grammar::modifier::AUTO
-   __WS?;
-  @  grammar::modifier::MOD
-   __WS?;
-   grammar::modifier::RIGHT_SQUARE_BRACKET
-  Data: [RegularDataBlock: CllExpr]
-}name<grammar> : Rule {
-  @  grammar::modifier*;
-   __WS?;
-  @  name
-   __WS?;
-  @  ( rule |  advanced_rule)
-  Data: TemplatedDataBlock(mod, name, entry)
-}name<rule_value> : Rule {
-  @  ( rule::value::one_capture |  rule::value::mul_capture)
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_counter_bounded> : Rule {
-   EQUALS_SIGN
-   __WS?;
-  @  ( NUMBER |  ID |  expr)
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_SPACE> : Rule {
-   "\\s"
-  Data: EmptyDataBlock
-}name<param> : Rule {
-  @  ID
-   __WS?;
-   ( COMMA  __WS?; @  ID)*;
-  Data: TemplatedDataBlock(first_p, following_p)
-}name<template_params_GREATER_THAN_SIGN> : Rule {
-   ">"
-  Data: EmptyDataBlock
-}name<rule_value_pattern> : Rule {
-  @  ( name |  rule::value::group |  rule::value::dyn |  rule::value::STRING |  rule::value::CGROUP |  rule::value::ANY |  rule::value::SPACE |  rule::value::NOSPACE)
-  Data: [RegularDataBlock: CllExpr]
-}name<template_params> : Rule {
-   template_params::LESS_THAN_SIGN
-   __WS?;
-  @  param?;
-   __WS?;
-   template_params::GREATER_THAN_SIGN
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_alternative_VERTICAL_LINE> : Rule {
-   "|"
-  Data: EmptyDataBlock
-}name<fail_block> : Rule {
-   FAIL
-   __WS?;
-  @  name
-   __WS?;
-  @  stmt
-  Data: TemplatedDataBlock(name, val)
-}name<rule_ast_abbr> : Rule {
-   COMMERCIAL_AT
-   __WS?;
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  ID
-   __WS?;
-   ( COMMA  __WS?; @  ID)*;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: TemplatedDataBlock(f, seq)
-}name<grammar_modifier_RIGHT_SQUARE_BRACKET> : Rule {
+}name<array_RIGHT_SQUARE_BRACKET> : Rule {
    "]"
   Data: EmptyDataBlock
-}name<rule_value_dyn_DOLLAR_SIGN> : Rule {
-   "$"
+}name<array_LEFT_SQUARE_BRACKET> : Rule {
+   "["
   Data: EmptyDataBlock
-}name<params> : Rule {
-   LEFT_PARENTHESIS
-   __WS?;
-  @  param?;
-   __WS?;
-   RIGHT_PARENTHESIS
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_alternative> : Rule {
-   rule::value::alternative::VERTICAL_LINE
-   __WS?;
-  @  rule::value::pattern
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_ast_full> : Rule {
-   AMPERSAND
-   __WS?;
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  rule::ast::full::part+;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: [RegularDataBlock: CllExpr]
-}name<forward_declaration> : Rule {
-   AUTO
-   __WS?;
-  @  ID
-   __WS?;
-   AUTO
-  Data: [RegularDataBlock: CllExpr]
-}name<advanced_rule_regular_match_MATCH> : Rule {
-   "match"
+}name<map_LEFT_CURLY_BRACKET> : Rule {
+   "{"
   Data: EmptyDataBlock
 }name<COMMA> : Rule {
    ","
   Data: EmptyDataBlock
-}name<RIGHT_PARENTHESIS> : Rule {
-   ")"
-  Data: EmptyDataBlock
-}name<LEFT_PARENTHESIS> : Rule {
-   "("
-  Data: EmptyDataBlock
-}name<name> : Rule {
-  @  ID
-   __WS?;
-   ( AUTO  __WS?; @  ID)*;
-   __WS?;
-  @  template_params?;
-   __WS?;
-  @  params?;
-  Data: TemplatedDataBlock(primary, nested, temp_params, param)
-}name<stmt> : Rule {
-  @  PY_RAW
-  Data: [RegularDataBlock: CllExpr]
-}name<advanced_rule_fail_call> : Rule {
-   FAIL
-   __WS?;
-  @  name
-  Data: [RegularDataBlock: CllExpr]
-}name<RIGHT_CURLY_BRACKET> : Rule {
-   "}"
+}name<COLON> : Rule {
+   ":"
   Data: EmptyDataBlock
 }name<NUMBER> : Rule {
-  @  [0-9]+;
-   ( "." @  [0-9]+;)?;
-  Data: TemplatedDataBlock(full, floating)
-}name<rule_ast_single_value> : Rule {
-   LEFT_CURLY_BRACKET
+   [0-9]+;
+   ( "."  [0-9]+;)?;
+  Data: EmptyDataBlock
+}name<json> : Rule {
+   ( map |  array |  rv)
+  Data: EmptyDataBlock
+}name<array> : Rule {
+   array::LEFT_SQUARE_BRACKET
    __WS?;
-  @  ( expr |  COMMERCIAL_AT)
+   json
    __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: [RegularDataBlock: CllExpr]
-}name<advanced_rule_dep_decl> : Rule {
-   advanced_rule::dep_decl::DEPENDS
+   ( COMMA  __WS?;  json)*;
    __WS?;
-  @  forward_declaration
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_shared_counter_registration> : Rule {
-   rule::value::shared_counter_registration::AUTO
+   array::RIGHT_SQUARE_BRACKET
+  Data: EmptyDataBlock
+}name<map> : Rule {
+   map::LEFT_CURLY_BRACKET
    __WS?;
-  @  ID
-  Data: [RegularDataBlock: CllExpr]
-}name<explicit_expr> : Rule {
-   LEFT_PARENTHESIS
+   STRING
    __WS?;
-  @  expr
+   COLON
    __WS?;
-   RIGHT_PARENTHESIS
-  Data: [RegularDataBlock: CllExpr]
-}name<rule_value_var_capture> : Rule {
-   AMPERSAND
+   json
    __WS?;
-  @  ID
-  Data: [RegularDataBlock: CllExpr]
+   ( COMMA  __WS?;  STRING  __WS?;  COLON  __WS?;  json)*;
+   __WS?;
+   map::RIGHT_CURLY_BRACKET
+  Data: EmptyDataBlock
+}name<rv> : Rule {
+   ( NUMBER |  STRING |  BOOLEAN)
+  Data: EmptyDataBlock
 }name<main> : Rule {
-  @  ( ( grammar |  fail_block))*;
-  Data: [RegularDataBlock: CllExpr]
-}name<advanced_rule> : Rule {
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  advanced_rule::dep_decl*;
-   __WS?;
-  @  ( ( advanced_rule::regular_match |  stmt))*;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: TemplatedDataBlock(dep, body)
-}name<advanced_rule_regular_match_unpack> : Rule {
-   AUTO
-   __WS?;
-  @  ID+;
-  Data: [RegularDataBlock: CllExpr]
-}name<PY_RAW> : Rule {
-   "p{"
-  @  "py"
-   "}"
-  Data: [RegularDataBlock: CllExpr]
-}name<ID> : Rule {
-  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
-  Data: [RegularDataBlock: CllExpr]
-}name<advanced_rule_regular_match> : Rule {
-   advanced_rule::regular_match::MATCH
-   __WS?;
-  @  rule::value+;
-   __WS?;
-  @  ( advanced_rule::regular_match::unpack |  SEMICOLON)
-  Data: TemplatedDataBlock(patterns, assign_names)
-}name<rule_value_CGROUP> : Rule {
-   "["
-  @  "^"?;
-  @  ( ( [^\\\\\]] |  ( "\\"  .)))+;
-   "]"
-  Data: TemplatedDataBlock(negative, v)
+   json
+  Data: EmptyDataBlock
+}name<BOOLEAN> : Rule {
+   ( "true" |  "false")
+  Data: EmptyDataBlock
+}name<STRING> : Rule {
+   "\""
+   [^"]*;
+   "\""
+  Data: EmptyDataBlock
 }

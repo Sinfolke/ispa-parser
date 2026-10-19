@@ -66,14 +66,6 @@ What this shows:
 
 Flex + bison figures are steady state over 10 iterations.
 
-| Configuration | Notes | Time per iteration | Relative |
-|---|---|---|---|
-| flex + bison, no AST | Lex + LALR(1) parse, recognizes only | 119 ms | 1.0x |
-| flex + bison, AST, arena allocator | 3.36 M nodes, bump allocation | 151 ms | 1.3x |
-| flex + bison, AST, malloc | 3.36 M nodes; parse 219 ms + tree release 40 ms | 259 ms | 2.2x |
-| **ISPA**, captures stripped | | 400 ms | 3.4x |
-| **ISPA**, full AST with allocations | | 1528 ms | 12.8x |
-| ANTLR (C++), CST construction disabled | | 18,573 ms | 156x |
 - input: 9.7 MB
 - machine processor: intel core i5 12450h laptop
 - compiler: clang18, -O3
@@ -105,12 +97,28 @@ Flex + bison figures are steady state over 10 iterations.
 
 ## Quick start
 
+Ispa json grammar example:
+![Syntax Example](assets/json.png)
+you can find it [here](tests/input/parser/basic/json.isc)
+
 Generate a parser from a grammar:
 ```sh
-ispa grammar.isc --lang cpp -o OutputDir/OutputFileName
+ispa tests/input/parser/basic/json.isc --lang cpp -o output/json
 ```
 
-<!-- TODO: minimal grammar.isc example and a C++ snippet showing how to call the generated API and traverse the AST -->
+Compile it without cmake:
+```sh
+clang++ -std=c++17 -I parser/stdlibs -I output parser/stdlibs/src/core.cpp output/Parser.cpp examples/main.cpp
+```
+
+Run it:
+```sh
+./a.out --file your_json_file.json
+```
+Note that you can generate test json with:
+```sh
+python3 examples/json/generate_json.py -o huge_100mb.json -s 100 -d 2
+```
 
 ---
 
