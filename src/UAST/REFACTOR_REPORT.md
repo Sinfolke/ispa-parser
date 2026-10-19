@@ -49,7 +49,7 @@
 - `tests/UAST.cpp`, `tests/UASTBackendGuard.cpp`,
   `tests/UASTSerialization.cpp`: conversion, positions, ownership, guards,
   bootstrap grammar, and serialization coverage.
-- `parser/python/bootstrapped/PyRawParser.h`: the supplied regenerated Python
+- `../../parser/python/bootstrapped_0`: the supplied regenerated Python
   parser header, replacing the old `Parser.h` namespace/API.
 
 ## Files changed
@@ -68,7 +68,7 @@
   structure were changed.
 - `parser/ispa/bootstrapped/Parser.cpp`: retain rule spans and initialize the
   lazy lexer input so offsets are valid.
-- `parser/python/bootstrapped/Parser.cpp` renamed/regenerated as
+- `../../parser/python/bootstrapped_0` renamed/regenerated as
   `PyRawParser.cpp`; `Parser.h` replaced by `PyRawParser.h`.
   The supplied namespace/API update avoids collisions with the ISPA parser.
   Rule spans and lazy-input initialization were added to this front-end parser.

@@ -1,65 +1,927 @@
-name<__WS> : Rule {
-   [ \t\n\r\v\f]*;
+name<GLOBAL> : Rule {
+   "global"
   Data: EmptyDataBlock
-}name<map_RIGHT_CURLY_BRACKET> : Rule {
-   "}"
+}name<ELIF> : Rule {
+   "elif"
   Data: EmptyDataBlock
-}name<array_RIGHT_SQUARE_BRACKET> : Rule {
-   "]"
+}name<ASSERT> : Rule {
+   "assert"
   Data: EmptyDataBlock
-}name<array_LEFT_SQUARE_BRACKET> : Rule {
-   "["
+}name<COMMENT> : Rule {
+   "#"
+   [^\n]*;
   Data: EmptyDataBlock
-}name<map_LEFT_CURLY_BRACKET> : Rule {
-   "{"
+}name<PASS> : Rule {
+   "pass"
+  Data: EmptyDataBlock
+}name<DEF> : Rule {
+   "def"
+  Data: EmptyDataBlock
+}name<nonlocal_stmt> : Rule {
+   NONLOCAL
+   __WS?;
+  @  ID
+   __WS?;
+  @  ( COMMA  __WS?; @  ID)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<FINALLY> : Rule {
+   "finally"
+  Data: EmptyDataBlock
+}name<import_name_item> : Rule {
+  @  ID
+   __WS?;
+  @  import_alias?;
+  Data: TemplatedDataBlock(name, alias)
+}name<import_targets> : Rule {
+  @  ( STAR |  parenthesized_imports |  import_names)
+  Data: [RegularDataBlock: CllExpr]
+}name<dotted_as_name> : Rule {
+  @  dotted_name
+   __WS?;
+  @  import_alias?;
+  Data: TemplatedDataBlock(name, alias)
+}name<term> : Rule {
+  @  factor
+   __WS?;
+  @  term_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<WHILE> : Rule {
+   "while"
+  Data: EmptyDataBlock
+}name<WITH> : Rule {
+   "with"
+  Data: EmptyDataBlock
+}name<MATMUL_ASSIGN> : Rule {
+   "@="
+  Data: EmptyDataBlock
+}name<import_stmt> : Rule {
+  @  ( import_name |  import_from)
+  Data: [RegularDataBlock: CllExpr]
+}name<ASYNC> : Rule {
+   "async"
+  Data: EmptyDataBlock
+}name<except_alias> : Rule {
+   AS
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
+}name<with_as> : Rule {
+   AS
+   __WS?;
+  @  assignment_target
+  Data: [RegularDataBlock: CllExpr]
+}name<with_stmt> : Rule {
+  @  ASYNC?;
+   __WS?;
+   WITH
+   __WS?;
+  @  with_items
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: TemplatedDataBlock(async, items, body)
+}name<CONTINUE> : Rule {
+   "continue"
+  Data: EmptyDataBlock
+}name<RAISE> : Rule {
+   "raise"
+  Data: EmptyDataBlock
+}name<class_bases> : Rule {
+   LPAREN
+   __WS?;
+  @  call_args?;
+   __WS?;
+   RPAREN
+  Data: [RegularDataBlock: CllExpr]
+}name<decorator> : Rule {
+   MATMUL
+   __WS?;
+  @  primary
+   __WS?;
+   NEWLINE
+  Data: [RegularDataBlock: CllExpr]
+}name<parameter_default> : Rule {
+   ASSIGN
+   __WS?;
+  @  expr
+  Data: [RegularDataBlock: CllExpr]
+}name<parameter> : Rule {
+  @  ID
+   __WS?;
+  @  parameter_annotation?;
+   __WS?;
+  @  parameter_default?;
+  Data: TemplatedDataBlock(name, annotation, def)
+}name<return_annotation> : Rule {
+   ARROW
+   __WS?;
+  @  expr
+  Data: [RegularDataBlock: CllExpr]
+}name<NONLOCAL> : Rule {
+   "nonlocal"
+  Data: EmptyDataBlock
+}name<TILDE> : Rule {
+   "~"
+  Data: EmptyDataBlock
+}name<LSHIFT_ASSIGN> : Rule {
+   "<<="
+  Data: EmptyDataBlock
+}name<BREAK> : Rule {
+   "break"
+  Data: EmptyDataBlock
+}name<function_def> : Rule {
+  @  decorators?;
+   __WS?;
+  @  function_header
+  Data: TemplatedDataBlock(decorators, definition)
+}name<for_targets> : Rule {
+  @  assignment_target
+   __WS?;
+  @  ( COMMA  __WS?; @  assignment_target)*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<for_stmt> : Rule {
+  @  ASYNC?;
+   __WS?;
+   FOR
+   __WS?;
+  @  for_targets
+   __WS?;
+   IN
+   __WS?;
+  @  expr
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+   __WS?;
+  @  else_clause?;
+  Data: TemplatedDataBlock(async, targets, iterable, body, otherwise)
+}name<elif_clause> : Rule {
+   ELIF
+   __WS?;
+  @  expr
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: TemplatedDataBlock(condition, body)
+}name<indented_block> : Rule {
+   NEWLINE
+   __WS?;
+   INDENT
+   __WS?;
+  @  statement+;
+   __WS?;
+   DEDENT
+  Data: [RegularDataBlock: CllExpr]
+}name<dict_expr> : Rule {
+   LBRACE
+   __WS?;
+  @  dict_items?;
+   __WS?;
+   RBRACE
+  Data: [RegularDataBlock: CllExpr]
+}name<decorated_def> : Rule {
+  @  decorators?;
+   __WS?;
+  @  def_header
+  Data: TemplatedDataBlock(decorators, definition)
+}name<assert_stmt> : Rule {
+   ASSERT
+   __WS?;
+  @  expr
+   __WS?;
+  @  ( COMMA  __WS?; @  expr)?;
+  Data: TemplatedDataBlock(condition, message)
+}name<break_stmt> : Rule {
+   BREAK
+  Data: EmptyDataBlock
+}name<PERCENT_ASSIGN> : Rule {
+   "%="
+  Data: EmptyDataBlock
+}name<dotted_as_names> : Rule {
+  @  dotted_as_name
+   __WS?;
+  @  ( COMMA  __WS?; @  dotted_as_name)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<pass_stmt> : Rule {
+   PASS
+  Data: EmptyDataBlock
+}name<del_stmt> : Rule {
+   DEL
+   __WS?;
+  @  assignment_target
+   __WS?;
+  @  ( COMMA  __WS?; @  assignment_target)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<raise_from> : Rule {
+   FROM
+   __WS?;
+  @  expr
+  Data: [RegularDataBlock: CllExpr]
+}name<PLUS_ASSIGN> : Rule {
+   "+="
+  Data: EmptyDataBlock
+}name<try_stmt> : Rule {
+   TRY
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+   __WS?;
+  @  try_tail
+  Data: TemplatedDataBlock(body, handlers)
+}name<return_stmt> : Rule {
+   RETURN
+   __WS?;
+  @  expr?;
+  Data: [RegularDataBlock: CllExpr]
+}name<assignment_suffix> : Rule {
+  @  ( attribute_suffix |  index_suffix)
+  Data: [RegularDataBlock: CllExpr]
+}name<inversion> : Rule {
+  @  ( not_inversion |  comparison)
+  Data: [RegularDataBlock: CllExpr]
+}name<import_name> : Rule {
+   IMPORT
+   __WS?;
+  @  dotted_as_names
+  Data: [RegularDataBlock: CllExpr]
+}name<assignment_target> : Rule {
+  @  ID
+   __WS?;
+  @  assignment_suffix*;
+  Data: TemplatedDataBlock(name, suffixes)
+}name<index_suffix> : Rule {
+   LBRACKET
+   __WS?;
+  @  expr
+   __WS?;
+   RBRACKET
+  Data: [RegularDataBlock: CllExpr]
+}name<annotated_assignment> : Rule {
+   COLON
+   __WS?;
+  @  expr
+   __WS?;
+  @  ( ASSIGN  __WS?; @  expr)?;
+  Data: TemplatedDataBlock(annotation, value)
+}name<assignment_value> : Rule {
+  @  ( assignment_tail |  annotated_assignment)
+  Data: [RegularDataBlock: CllExpr]
+}name<STAR_ASSIGN> : Rule {
+   "*="
+  Data: EmptyDataBlock
+}name<simple_stmt> : Rule {
+  @  ( return_stmt |  raise_stmt |  del_stmt |  pass_stmt |  break_stmt |  continue_stmt |  assert_stmt |  global_stmt |  nonlocal_stmt |  import_stmt |  expr_stmt)
+  Data: [RegularDataBlock: CllExpr]
+}name<simple_stmts> : Rule {
+  @  simple_stmt
+   __WS?;
+  @  ( SEMICOLON  __WS?; @  simple_stmt)*;
+   __WS?;
+   SEMICOLON?;
+   __WS?;
+   NEWLINE
+  Data: TemplatedDataBlock(first, rest)
+}name<INDENT> : Rule {
+   ""
+  Data: EmptyDataBlock
+}name<DEL> : Rule {
+   "del"
+  Data: EmptyDataBlock
+}name<IS> : Rule {
+   "is"
+  Data: EmptyDataBlock
+}name<shift_tail> : Rule {
+  @  ( LSHIFT |  RSHIFT)
+   __WS?;
+  @  sum
+  Data: TemplatedDataBlock(op, value)
+}name<IN> : Rule {
+   "in"
+  Data: EmptyDataBlock
+}name<ELSE> : Rule {
+   "else"
+  Data: EmptyDataBlock
+}name<class_header> : Rule {
+   CLASS
+   __WS?;
+  @  ID
+   __WS?;
+  @  class_bases?;
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: TemplatedDataBlock(name, bases, body)
+}name<IF> : Rule {
+   "if"
+  Data: EmptyDataBlock
+}name<NOT> : Rule {
+   "not"
+  Data: EmptyDataBlock
+}name<ASSIGN> : Rule {
+   "="
+  Data: EmptyDataBlock
+}name<else_clause> : Rule {
+   ELSE
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: [RegularDataBlock: CllExpr]
+}name<MATMUL> : Rule {
+   "@"
   Data: EmptyDataBlock
 }name<COMMA> : Rule {
    ","
   Data: EmptyDataBlock
-}name<COLON> : Rule {
-   ":"
+}name<RPAREN> : Rule {
+   ")"
   Data: EmptyDataBlock
-}name<NUMBER> : Rule {
-   [0-9]+;
-   ( "."  [0-9]+;)?;
+}name<NEWLINE> : Rule {
+   [\n\r]+;
   Data: EmptyDataBlock
-}name<json> : Rule {
-   ( map |  array |  rv)
+}name<RBRACE> : Rule {
+   "}"
   Data: EmptyDataBlock
-}name<array> : Rule {
-   array::LEFT_SQUARE_BRACKET
-   __WS?;
-   json
-   __WS?;
-   ( COMMA  __WS?;  json)*;
-   __WS?;
-   array::RIGHT_SQUARE_BRACKET
-  Data: EmptyDataBlock
-}name<map> : Rule {
-   map::LEFT_CURLY_BRACKET
-   __WS?;
-   STRING
+}name<finally_clause> : Rule {
+   FINALLY
    __WS?;
    COLON
    __WS?;
-   json
-   __WS?;
-   ( COMMA  __WS?;  STRING  __WS?;  COLON  __WS?;  json)*;
-   __WS?;
-   map::RIGHT_CURLY_BRACKET
+  @  block
+  Data: [RegularDataBlock: CllExpr]
+}name<STRING> : Rule {
+   "'"
+  @  [^']*;
+   "'"
+  Data: [RegularDataBlock: CllExpr]
+}name<SEMICOLON> : Rule {
+   ";"
   Data: EmptyDataBlock
-}name<rv> : Rule {
-   ( NUMBER |  STRING |  BOOLEAN)
+}name<function_header> : Rule {
+  @  ASYNC?;
+   __WS?;
+   DEF
+   __WS?;
+  @  ID
+   __WS?;
+   LPAREN
+   __WS?;
+  @  parameters?;
+   __WS?;
+   RPAREN
+   __WS?;
+  @  return_annotation?;
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: TemplatedDataBlock(async, name, params, returns, body)
+}name<IMPORT> : Rule {
+   "import"
+  Data: EmptyDataBlock
+}name<expr_list_tail> : Rule {
+  @  ( COMMA  __WS?; @  expr)*;
+   __WS?;
+   COMMA?;
+  Data: [RegularDataBlock: CllExpr]
+}name<FLOOR_DIV_ASSIGN> : Rule {
+   "//="
+  Data: EmptyDataBlock
+}name<TRUE_BOOL> : Rule {
+   "True"
+  Data: EmptyDataBlock
+}name<SLASH_ASSIGN> : Rule {
+   "/="
+  Data: EmptyDataBlock
+}name<TRY> : Rule {
+   "try"
+  Data: EmptyDataBlock
+}name<POWER_ASSIGN> : Rule {
+   "**="
+  Data: EmptyDataBlock
+}name<POWER> : Rule {
+   "**"
+  Data: EmptyDataBlock
+}name<import_from> : Rule {
+   FROM
+   __WS?;
+  @  relative_module
+   __WS?;
+   IMPORT
+   __WS?;
+  @  import_targets
+  Data: TemplatedDataBlock(module, names)
+}name<PIPE> : Rule {
+   "|"
+  Data: EmptyDataBlock
+}name<bitwise_and> : Rule {
+  @  shift_expr
+   __WS?;
+  @  bitand_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<raise_stmt> : Rule {
+   RAISE
+   __WS?;
+  @  expr?;
+   __WS?;
+  @  raise_from?;
+  Data: TemplatedDataBlock(exception, cause)
+}name<conjunction> : Rule {
+  @  inversion
+   __WS?;
+   ( AND  __WS?; @  inversion)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<__WS> : Rule {
+   [ \t\n\r\v\f]*;
+  Data: EmptyDataBlock
+}name<FOR> : Rule {
+   "for"
+  Data: EmptyDataBlock
+}name<assignment_tail> : Rule {
+  @  assignment_op
+   __WS?;
+  @  expr
+  Data: TemplatedDataBlock(op, value)
+}name<with_items> : Rule {
+  @  with_item
+   __WS?;
+  @  ( COMMA  __WS?; @  with_item)*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<COLON> : Rule {
+   ":"
+  Data: EmptyDataBlock
+}name<sum> : Rule {
+  @  term
+   __WS?;
+  @  sum_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<EXCEPT> : Rule {
+   "except"
   Data: EmptyDataBlock
 }name<main> : Rule {
-   json
+  @  statement*;
+  Data: [RegularDataBlock: CllExpr]
+}name<bitwise_xor> : Rule {
+  @  bitwise_and
+   __WS?;
+  @  bitxor_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<NONE_V> : Rule {
+   "None"
   Data: EmptyDataBlock
-}name<BOOLEAN> : Rule {
-   ( "true" |  "false")
+}name<DEDENT> : Rule {
+   ""
   Data: EmptyDataBlock
-}name<STRING> : Rule {
-   "\""
-   [^"]*;
-   "\""
+}name<NE> : Rule {
+   "!="
   Data: EmptyDataBlock
+}name<parenthesized_imports> : Rule {
+   LPAREN
+   __WS?;
+  @  import_names
+   __WS?;
+   RPAREN
+  Data: [RegularDataBlock: CllExpr]
+}name<LT> : Rule {
+   "<"
+  Data: EmptyDataBlock
+}name<global_stmt> : Rule {
+   GLOBAL
+   __WS?;
+  @  ID
+   __WS?;
+  @  ( COMMA  __WS?; @  ID)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<parenthesized_expr> : Rule {
+   LPAREN
+   __WS?;
+  @  parenthesized_content?;
+   __WS?;
+   RPAREN
+  Data: [RegularDataBlock: CllExpr]
+}name<LE> : Rule {
+   "<="
+  Data: EmptyDataBlock
+}name<STAR> : Rule {
+   "*"
+  Data: EmptyDataBlock
+}name<SLASH> : Rule {
+   "/"
+  Data: EmptyDataBlock
+}name<or_tail> : Rule {
+   OR
+   __WS?;
+  @  conjunction
+  Data: [RegularDataBlock: CllExpr]
+}name<LBRACKET> : Rule {
+   "["
+  Data: EmptyDataBlock
+}name<GT> : Rule {
+   ">"
+  Data: EmptyDataBlock
+}name<relative_module> : Rule {
+  @  DOT*;
+   __WS?;
+  @  dotted_name?;
+  Data: TemplatedDataBlock(relative, name)
+}name<PLUS> : Rule {
+   "+"
+  Data: EmptyDataBlock
+}name<LSHIFT> : Rule {
+   "<<"
+  Data: EmptyDataBlock
+}name<compare_op> : Rule {
+  @  ( EQ |  NE |  LE |  LT |  GE |  GT |  not_in |  IN |  is_op)
+  Data: [RegularDataBlock: CllExpr]
+}name<GE> : Rule {
+   ">="
+  Data: EmptyDataBlock
+}name<FALSE_BOOL> : Rule {
+   "False"
+  Data: EmptyDataBlock
+}name<continue_stmt> : Rule {
+   CONTINUE
+  Data: EmptyDataBlock
+}name<dict_item_tail> : Rule {
+   COMMA
+   __WS?;
+  @  dict_item
+  Data: [RegularDataBlock: CllExpr]
+}name<EQ> : Rule {
+   "=="
+  Data: EmptyDataBlock
+}name<CARET> : Rule {
+   "^"
+  Data: EmptyDataBlock
+}name<parameter_annotation> : Rule {
+   COLON
+   __WS?;
+  @  expr
+  Data: [RegularDataBlock: CllExpr]
+}name<AND> : Rule {
+   "and"
+  Data: EmptyDataBlock
+}name<statement> : Rule {
+  @  ( compound_stmt |  simple_stmts)
+  Data: [RegularDataBlock: CllExpr]
+}name<dict_item> : Rule {
+  @  expr
+   __WS?;
+   COLON
+   __WS?;
+  @  expr
+  Data: TemplatedDataBlock(key, value)
+}name<keyword_arg> : Rule {
+  @  ID
+   __WS?;
+   ASSIGN
+   __WS?;
+  @  expr
+  Data: TemplatedDataBlock(name, value)
+}name<call_arg_tail> : Rule {
+   COMMA
+   __WS?;
+  @  call_arg
+  Data: [RegularDataBlock: CllExpr]
+}name<parenthesized_content> : Rule {
+  @  expr
+   __WS?;
+  @  tuple_suffix?;
+  Data: TemplatedDataBlock(first, rest)
+}name<NUMBER> : Rule {
+  @  [0-9]+;
+   ( "." @  [0-9]+;)?;
+  Data: TemplatedDataBlock(full, floating)
+}name<call_args> : Rule {
+  @  call_arg
+   __WS?;
+  @  call_arg_tail*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<AS> : Rule {
+   "as"
+  Data: EmptyDataBlock
+}name<tuple_elements> : Rule {
+  @  expr
+   __WS?;
+   ( COMMA  __WS?; @  expr)*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<MINUS_ASSIGN> : Rule {
+   "-="
+  Data: EmptyDataBlock
+}name<LPAREN> : Rule {
+   "("
+  Data: EmptyDataBlock
+}name<tuple_suffix> : Rule {
+   COMMA
+   __WS?;
+  @  tuple_elements?;
+  Data: [RegularDataBlock: CllExpr]
+}name<power> : Rule {
+  @  primary
+   __WS?;
+  @  power_tail?;
+  Data: TemplatedDataBlock(base, exponent)
+}name<primary> : Rule {
+  @  atom
+   __WS?;
+  @  postfix*;
+  Data: TemplatedDataBlock(base, suffixes)
+}name<import_alias> : Rule {
+   AS
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
+}name<ID> : Rule {
+  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
+  Data: [RegularDataBlock: CllExpr]
+}name<attribute_suffix> : Rule {
+   DOT
+   __WS?;
+  @  ID
+  Data: [RegularDataBlock: CllExpr]
+}name<assignment_op> : Rule {
+  @  ( ASSIGN |  PLUS_ASSIGN |  MINUS_ASSIGN |  STAR_ASSIGN |  MATMUL_ASSIGN |  SLASH_ASSIGN |  FLOOR_DIV_ASSIGN |  PERCENT_ASSIGN |  POWER_ASSIGN |  AMP_ASSIGN |  PIPE_ASSIGN |  CARET_ASSIGN |  LSHIFT_ASSIGN |  RSHIFT_ASSIGN)
+  Data: [RegularDataBlock: CllExpr]
+}name<bitand_tail> : Rule {
+   AMP
+   __WS?;
+  @  shift_expr
+  Data: [RegularDataBlock: CllExpr]
+}name<AMP> : Rule {
+   "&"
+  Data: EmptyDataBlock
+}name<with_item> : Rule {
+  @  expr
+   __WS?;
+  @  with_as?;
+  Data: TemplatedDataBlock(context, target)
+}name<while_stmt> : Rule {
+   WHILE
+   __WS?;
+  @  expr
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+   __WS?;
+  @  else_clause?;
+  Data: TemplatedDataBlock(condition, body, otherwise)
+}name<import_names> : Rule {
+  @  import_name_item
+   __WS?;
+  @  ( COMMA  __WS?; @  import_name_item)*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<if_stmt> : Rule {
+   IF
+   __WS?;
+  @  expr
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+   __WS?;
+  @  elif_clause*;
+   __WS?;
+  @  else_clause?;
+  Data: TemplatedDataBlock(condition, body, elifs, otherwise)
+}name<bitxor_tail> : Rule {
+   CARET
+   __WS?;
+  @  bitwise_and
+  Data: [RegularDataBlock: CllExpr]
+}name<AMP_ASSIGN> : Rule {
+   "&="
+  Data: EmptyDataBlock
+}name<postfix> : Rule {
+  @  ( attribute_suffix |  call_suffix |  index_suffix)
+  Data: [RegularDataBlock: CllExpr]
+}name<list_expr> : Rule {
+   LBRACKET
+   __WS?;
+  @  expr_list?;
+   __WS?;
+   RBRACKET
+  Data: [RegularDataBlock: CllExpr]
+}name<CLASS> : Rule {
+   "class"
+  Data: EmptyDataBlock
+}name<sum_tail> : Rule {
+  @  ( PLUS |  MINUS)
+   __WS?;
+  @  term
+  Data: TemplatedDataBlock(op, value)
+}name<is_op> : Rule {
+   IS
+   __WS?;
+   NOT?;
+  Data: EmptyDataBlock
+}name<call_suffix> : Rule {
+   LPAREN
+   __WS?;
+  @  call_args?;
+   __WS?;
+   RPAREN
+  Data: [RegularDataBlock: CllExpr]
+}name<class_def> : Rule {
+  @  decorators?;
+   __WS?;
+  @  class_header
+  Data: TemplatedDataBlock(decorators, definition)
+}name<term_tail> : Rule {
+  @  ( FLOOR_DIV |  STAR |  SLASH |  PERCENT |  MATMUL)
+   __WS?;
+  @  factor
+  Data: TemplatedDataBlock(op, value)
+}name<except_clause> : Rule {
+   EXCEPT
+   __WS?;
+  @  expr?;
+   __WS?;
+  @  except_alias?;
+   __WS?;
+   COLON
+   __WS?;
+  @  block
+  Data: TemplatedDataBlock(exception, alias, body)
+}name<power_tail> : Rule {
+   POWER
+   __WS?;
+  @  factor
+  Data: [RegularDataBlock: CllExpr]
+}name<MINUS> : Rule {
+   "-"
+  Data: EmptyDataBlock
+}name<DOT> : Rule {
+   "."
+  Data: EmptyDataBlock
+}name<expr> : Rule {
+  @  disjunction
+   __WS?;
+  @  conditional_tail?;
+  Data: TemplatedDataBlock(value, conditional)
+}name<CARET_ASSIGN> : Rule {
+   "^="
+  Data: EmptyDataBlock
+}name<shift_expr> : Rule {
+  @  sum
+   __WS?;
+  @  shift_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<RSHIFT_ASSIGN> : Rule {
+   ">>="
+  Data: EmptyDataBlock
+}name<PERCENT> : Rule {
+   "%"
+  Data: EmptyDataBlock
+}name<block> : Rule {
+  @  ( indented_block |  simple_stmts)
+  Data: [RegularDataBlock: CllExpr]
+}name<bitor_tail> : Rule {
+   PIPE
+   __WS?;
+  @  bitwise_xor
+  Data: [RegularDataBlock: CllExpr]
+}name<factor> : Rule {
+  @  ( unary_expr |  power)
+  Data: [RegularDataBlock: CllExpr]
+}name<FLOOR_DIV> : Rule {
+   "//"
+  Data: EmptyDataBlock
+}name<expr_list> : Rule {
+  @  expr
+   __WS?;
+  @  expr_list_tail?;
+  Data: TemplatedDataBlock(first, rest)
+}name<dotted_name> : Rule {
+  @  ID
+   __WS?;
+  @  ( DOT  __WS?; @  ID)*;
+  Data: TemplatedDataBlock(first, rest)
+}name<ARROW> : Rule {
+   "->"
+  Data: EmptyDataBlock
+}name<OR> : Rule {
+   "or"
+  Data: EmptyDataBlock
+}name<expr_stmt> : Rule {
+  @  expr
+   __WS?;
+  @  assignment_value?;
+  Data: TemplatedDataBlock(target, assignment)
+}name<bitwise_or> : Rule {
+  @  bitwise_xor
+   __WS?;
+  @  bitor_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<compare_tail> : Rule {
+  @  compare_op
+   __WS?;
+  @  bitwise_or
+  Data: TemplatedDataBlock(op, value)
+}name<disjunction> : Rule {
+  @  conjunction
+   __WS?;
+  @  or_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<except_handlers> : Rule {
+  @  except_clause+;
+   __WS?;
+  @  else_clause?;
+   __WS?;
+  @  finally_clause?;
+  Data: TemplatedDataBlock(handlers, otherwise, finalizer)
+}name<PIPE_ASSIGN> : Rule {
+   "|="
+  Data: EmptyDataBlock
+}name<RSHIFT> : Rule {
+   ">>"
+  Data: EmptyDataBlock
+}name<comparison> : Rule {
+  @  bitwise_or
+   __WS?;
+  @  compare_tail*;
+  Data: TemplatedDataBlock(first, rest)
+}name<not_inversion> : Rule {
+   NOT
+   __WS?;
+  @  inversion
+  Data: [RegularDataBlock: CllExpr]
+}name<RETURN> : Rule {
+   "return"
+  Data: EmptyDataBlock
+}name<FROM> : Rule {
+   "from"
+  Data: EmptyDataBlock
+}name<compound_stmt> : Rule {
+  @  ( if_stmt |  while_stmt |  for_stmt |  with_stmt |  try_stmt |  decorated_def)
+  Data: [RegularDataBlock: CllExpr]
+}name<unary_expr> : Rule {
+  @  ( PLUS |  MINUS |  TILDE)
+   __WS?;
+  @  factor
+  Data: TemplatedDataBlock(op, value)
+}name<try_tail> : Rule {
+  @  ( except_handlers |  finally_clause)
+  Data: [RegularDataBlock: CllExpr]
+}name<atom> : Rule {
+  @  ( ID |  NUMBER |  STRING |  TRUE_BOOL |  FALSE_BOOL |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)
+  Data: [RegularDataBlock: CllExpr]
+}name<def_header> : Rule {
+  @  ( function_header |  class_header)
+  Data: [RegularDataBlock: CllExpr]
+}name<not_in> : Rule {
+   NOT
+   __WS?;
+   IN
+  Data: EmptyDataBlock
+}name<parameters> : Rule {
+  @  parameter
+   __WS?;
+  @  ( COMMA  __WS?; @  parameter)*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
+}name<conditional_tail> : Rule {
+   IF
+   __WS?;
+  @  disjunction
+   __WS?;
+   ELSE
+   __WS?;
+  @  expr
+  Data: TemplatedDataBlock(condition, otherwise)
+}name<LBRACE> : Rule {
+   "{"
+  Data: EmptyDataBlock
+}name<call_arg> : Rule {
+  @  ( keyword_arg |  expr)
+  Data: [RegularDataBlock: CllExpr]
+}name<decorators> : Rule {
+  @  decorator+;
+  Data: [RegularDataBlock: CllExpr]
+}name<RBRACKET> : Rule {
+   "]"
+  Data: EmptyDataBlock
+}name<dict_items> : Rule {
+  @  dict_item
+   __WS?;
+  @  dict_item_tail*;
+   __WS?;
+   COMMA?;
+  Data: TemplatedDataBlock(first, rest)
 }

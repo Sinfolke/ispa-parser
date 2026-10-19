@@ -165,7 +165,7 @@ index_suffix:
 ;
 
 atom:
-    @ ID | NUMBER | STRING | TRUE | FALSE | NONE_V
+    @ ID | NUMBER | STRING | TRUE_BOOL | FALSE_BOOL | NONE_V
  | parenthesized_expr | list_expr | dict_expr
     {@}
 ;

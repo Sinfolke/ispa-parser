@@ -43,7 +43,7 @@ UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NEWLINE&, const UAST::So
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RBRACE&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STRING&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE_BOOL&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH_ASSIGN&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRY&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::POWER_ASSIGN&, const UAST::SourcePosition&);
@@ -67,7 +67,7 @@ UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LSHIFT&, const UAST::Sou
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GE&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IMPORT&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE_BOOL&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EQ&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CARET&, const UAST::SourcePosition&);
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AND&, const UAST::SourcePosition&);
@@ -381,8 +381,8 @@ UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV& v, const UAST
     UAST::PythonNode out{"FLOOR_DIV", {}, {}, base, false, {}};
     return out;
 }
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"TRUE", {}, {}, base, false, {}};
+UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE_BOOL& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"TRUE_BOOL", {}, {}, base, false, {}};
     return out;
 }
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH_ASSIGN& v, const UAST::SourcePosition& base) {
@@ -477,8 +477,8 @@ UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN& v, con
     UAST::PythonNode out{"FLOOR_DIV_ASSIGN", {}, {}, base, false, {}};
     return out;
 }
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FALSE", {}, {}, base, false, {}};
+UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE_BOOL& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"FALSE_BOOL", {}, {}, base, false, {}};
     return out;
 }
 UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EQ& v, const UAST::SourcePosition& base) {
