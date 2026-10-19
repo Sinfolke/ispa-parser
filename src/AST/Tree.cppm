@@ -17,6 +17,7 @@ export namespace AST {
     using LLkTable = std::map<LLkToken, LLkSet>;
     class Tree {
         TreeMap tree_map;
+        stdu::vector<FailBlock> fail_blocks;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
         Use use;
         std::string name;
@@ -75,6 +76,8 @@ export namespace AST {
             bool&) const;
     public:
 
+        auto getFailBlocks() const -> const stdu::vector<FailBlock>& { return fail_blocks; }
+        auto getFailBlocks() -> stdu::vector<FailBlock>& { return fail_blocks; }
         void constructFirstSet(std::size_t k);
         void constructFollowSet(std::size_t k);
         auto getFirstSet(std::size_t k) -> const LLkTable&;
