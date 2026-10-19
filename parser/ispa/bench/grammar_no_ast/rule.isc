@@ -1,0 +1,90 @@
+rule:
+    ':' value+ ast? f_binding? nested_rule* ';'
+
+    #ast:
+        abbr | full | single_value
+
+        #full:
+            '&' '{' part+ '}'
+
+            #part:
+                ID ':' expr
+            ;
+        ;
+        #abbr:
+            '@' '{' ID (',' ID )* '}'
+        ;
+        #single_value:
+            '{' expr | '@' '}'
+        ;
+    ;
+    #f_binding:
+        '%' '{' ID (',' ID )* '}'
+    ;
+    #value:
+        one_capture | mul_capture
+
+        #var_capture:
+            '&' ID
+        ;
+        #ast_capture:
+            '@' \s0 ID?
+        ;
+        #fail_capture:
+            '%' \s0 name?
+        ;
+        #pattern:
+            name | group | dyn | STRING | CGROUP | ANY | SPACE | NOSPACE
+        ;
+        #one_capture:
+            var_capture? ast_capture? fail_capture? pattern alternative* counter? shared_counter_registration?
+        ;
+        #mul_capture:
+            '@' | '%' '=' '(' one_capture+ ')'
+        ;
+        #STRING:
+            ['"] (('\\' .) | [^'\\])* ['"]
+        ;
+        #CGROUP:
+            '[' '^'? ([^\\\]] | ('\\' .))+ ']'
+        ;
+        #ANY:
+            '.'
+        ;
+        #SPACE:
+            '\\s'
+        ;
+        #NOSPACE:
+            '\\s0'
+        ;
+        #group:
+            '(' value+ ')'
+        ;
+        #dyn:
+            '$' dyn_expr | ID
+
+            #dyn_expr:
+                '{' expr '}'
+            ;
+        ;
+        #alternative:
+            '|' pattern
+        ;
+        #QUANTIFIER:
+           '?' | '+' | '*'
+        ;
+        #counter:
+           QUANTIFIER bounded?
+
+           #bounded:
+                 '=' NUMBER | ID | expr
+           ;
+        ;
+        #shared_counter_registration:
+            '=>' ID
+        ;
+    ;
+    #nested_rule:
+        '#' \s0 grammar
+    ;
+;

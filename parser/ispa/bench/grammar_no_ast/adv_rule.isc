@@ -1,0 +1,17 @@
+advanced_rule:
+    '{' dep_decl* (regular_match | stmt)* '}'
+
+    #dep_decl:
+        'depends' forward_declaration
+    ;
+    #regular_match:
+        'match' rule->value+ unpack | ';'
+
+        #unpack:
+            '->' ID+
+        ;
+    ;
+    #fail_call:
+        'fail' name
+    ;
+;

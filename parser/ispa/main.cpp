@@ -1,19 +1,19 @@
-#include <Parser.h>
 #include <iostream>
 #include <fstream>
-#include <variant>
-#include <vector>
-#include <queue>
+#include <string>
+#include <chrono>
 #include <stdexcept>
 
+#include <Parser.h>
 
 int main(int argc, const char** argv) {
     if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " \"<input>\"\n";
+        std::cout << "Usage: " << argv[0] << " \"<input>\" OR " << argv[0] << " --file <path>\n";
         return 1;
     }
 
-    std::string i;
+    // 1. Read input file into memory BEFORE starting the timer
+    std::string input_buffer;
     if (std::string(argv[1]) == "--file") {
         if (argc < 3) {
             std::cout << "Usage: " << argv[0] << " --file <path>\n";
@@ -23,30 +23,27 @@ int main(int argc, const char** argv) {
         if (!inputf.is_open()) {
             throw std::runtime_error("Failed to open input file");
         }
-        std::string s((std::istreambuf_iterator<char>(inputf)), {});
-        i = std::move(s);
+        input_buffer.assign((std::istreambuf_iterator<char>(inputf)),
+                             std::istreambuf_iterator<char>());
     } else {
-        i = argv[1];
+        input_buffer = argv[1];
     }
+
+    auto start = std::chrono::steady_clock::now();
+
     Parser::Parser parser;
-    Parser::Types::main node = parser.parse(i.c_str());
-    std::ofstream of("tree.txt");
-    of << node << "\n\n";
-    std::cout << "Successfully parsed and saved to tree.txt\n";
-    // IspaLexer hand;           // with the overrides
-    // Parser::Lexer dfa;        // generated DFA only
-    // auto a = IspaLexer::lazy_iterator(hand, i.c_str());
-    // auto b = Parser::Lexer::lazy_iterator(dfa, i.c_str());
+    Parser::Types::main node = parser.parse(input_buffer.c_str());
+
+    auto end = std::chrono::steady_clock::now();
+
+    std::chrono::duration<double, std::milli> elapsed = end - start;
+
+    std::cout << "ISPA total: " << elapsed.count() << " ms\n";
     //
-    // for (size_t i = 0;; ++i, ++a, ++b) {
-    //     auto ta = *a;
-    //     auto tb = *b;
-    //     if (ta.index() != tb.index() || ta.meta().length() != tb.meta().length() || (!ta.empty() && !tb.empty() && ta.to_string() != tb.to_string())) {
-    //         std::cerr << "first diff at token " << i << "\n"
-    //                   << " hand: type=" << ta.index() << " len=" << ta.meta().length() << " val=[" << (ta.empty() ? "<empty>" : ta.to_string()) << "]\n"
-    //                   << " dfa : type=" << tb.index() << " len=" << tb.meta().length() << " val=[" << (tb.empty() ? "<empty>" : tb.to_string()) << "]\n";
-    //         break;
-    //     }
-    //     if (a.isEnd() || b.isEnd()) break;
-    // }
+    // // 6. AST Output / File Write AFTER timer has stopped
+    // std::ofstream of("tree.txt");
+    // of << node << "\n\n";
+    // std::cout << "Successfully parsed and saved to tree.txt\n";
+
+    return 0;
 }

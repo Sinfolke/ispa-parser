@@ -1,0 +1,14 @@
+main:
+    (grammar | fail_block)*
+;
+grammar:
+    modifier* name rule | advanced_rule
+
+    #modifier:
+        '#[' MOD ']'
+
+        #MOD:
+            'inline' | 'skip' | 'extern'
+        ;
+    ;
+;

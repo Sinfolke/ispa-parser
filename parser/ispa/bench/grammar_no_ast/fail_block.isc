@@ -1,0 +1,3 @@
+fail_block:
+    'fail' name stmt
+;

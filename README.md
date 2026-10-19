@@ -1,84 +1,167 @@
 # ISPA Parser Generator
 
-**ISPA Parser** is a high-performance, 
-infrastructure-level parser generator written from scratch 
-in modern C++ (C++20/C++23). It provide fully automatic AST generation,
-Advanced, feature-rich lexer and extensible parser
+**ISPA** is a static parser and lexer generator written from scratch in modern C++ (C++20/C++23). You describe a grammar once; ISPA compiles it ahead of time into a standalone, dependency-free parser that builds a fully typed AST for you.
+
+It is built around one idea: **easy to use, without giving up performance, extensibility, or features.** In benchmarks it is about 12x faster than ANTLR; see [Performance](#-performance).
+
+---
+
+## Why ISPA
+
+1. **Static generation.** Everything is computed at generation time. The grammar is compiled to DFA tables and plain code. Nothing is generated, interpreted, or compiled at runtime.
+2. **No dependencies.** A generated parser is self-contained. Drop the output into your project and build it; there is no runtime library to link or install.
+3. **Multi-language output.** Code generation goes through **LangAPI**, a language-agnostic IR, so the same grammar can target different languages. **C++17** is the only emitter today; Python is next.
+4. **Actions and error handling live next to the grammar, not inside it.** Semantic actions and fail blocks are separate constructs attached to rules by reference, so the grammar stays readable. *(Syntax is parsed; code generation for these is in progress, see [Status](#-current-state).)*
+5. **Scales from trivial to very large projects.** Incremental compilation regenerates only the parts that changed, and the planned module system lets you import, parametrize, and disable features of large shared grammars.
+6. **Works out of the box.** Generate, include, call. The generated API returns a typed AST with no post-parsing step or callbacks required.
 
 ---
 
 ## 🚀 Current State
-- Core backend and frontend is implemented and the executable can be compiled on both **Windows** and **Linux**
-- Output can be compiled and run
-- Lexer is under heavy tests
-- Parser (LL*) is mostly correct; Needs some changes and tests
-- Provide the way to generate output to any language with **LangAPI** IR; **C++17** is the only target right now
+
+| Area | Status |
+|---|---|
+| Compiler (frontend + backend) | Implemented; builds on **Windows** and **Linux** |
+| Bootstrap | **Done.** ISPA's own grammar is parsed by an ISPA-generated parser, which fully replaced the hand-written one |
+| Lexer (TDFA, AST-building tokens, semantic actions anywhere) | **Done** |
+| Parser (default mode) | Mostly correct; needs some changes and more tests |
+| Parser (LR-family modes) | Experimental; not yet stable |
+| Incremental generation | Implemented (regenerates changed parts only) |
+| C++17 target | Implemented; output compiles and runs |
+| Python semantic actions | Syntax parsed, **not yet lowered to output** |
+| Fail blocks (`fail name(...) { ... }`) | Syntax parsed, **not yet lowered to output** |
+| Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |
+| Grammar syntax error reporting | Needs work (currently stops, then attempts to generate) |
+
+The backend currently lowers **plain EBNF plus AST captures** to C++. The remaining grammar features above are parsed by the frontend and are being integrated into lowering.
+
+---
+
+## 🔁 Bootstrap
+
+ISPA is self-hosting for its own grammar. The `.isc` grammar that describes ISPA's input language was compiled by ISPA into the parser that ISPA now uses to read grammars, replacing the original hand-written parser. A Python-subset parser (all statements except classes) and a small module-scanner parser are generated the same way.
+
+The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
+
+<!-- TODO: optional, add the generated grammar's size (rules, tokens, lines) -->
+
+---
+
+## ⚡ Performance
+
+Lex + parse of the same input, compared against flex + bison (LALR(1)) and ANTLR (C++ target). Lower is better; the multiplier is relative to flex + bison without an AST.
+
+| Configuration | Notes | Time per iteration | Relative |
+|---|---|---|---|
+| flex + bison, no AST | Lex + LALR(1) parse, recognizes only | 119 ms | 1.0x |
+| flex + bison, AST, arena allocator | 3.36 M nodes, bump allocation | 151 ms | 1.3x |
+| flex + bison, AST, malloc | 3.36 M nodes; parse 219 ms + tree release 40 ms | 259 ms | 2.2x |
+| **ISPA**, allocations stripped | | 400 ms | 3.4x |
+| **ISPA**, full AST | | 1528 ms | 12.8x |
+| ANTLR (C++), CST construction disabled | | 18,573 ms | 156x |
+
+What this shows:
+- ISPA with a full AST is about **12x faster than ANTLR**, which was benchmarked with CST construction disabled.
+- ISPA is currently **slower than flex + bison**, roughly 6-10x when the latter builds a comparable AST. Closing that gap is ongoing work.
+
+Flex + bison figures are steady state over 10 iterations.
+
+| Configuration | Notes | Time per iteration | Relative |
+|---|---|---|---|
+| flex + bison, no AST | Lex + LALR(1) parse, recognizes only | 119 ms | 1.0x |
+| flex + bison, AST, arena allocator | 3.36 M nodes, bump allocation | 151 ms | 1.3x |
+| flex + bison, AST, malloc | 3.36 M nodes; parse 219 ms + tree release 40 ms | 259 ms | 2.2x |
+| **ISPA**, captures stripped | | 400 ms | 3.4x |
+| **ISPA**, full AST with allocations | | 1528 ms | 12.8x |
+| ANTLR (C++), CST construction disabled | | 18,573 ms | 156x |
+- input: 9.7 MB
+- machine processor: intel core i5 12450h laptop
+- compiler: clang18, -O3
+- OS: GNU Linux – Linux Mint
+- ANTLR: 4.13.2
+- flex: 2.6.4
+- bison: 3.8.2
+- single run
 ---
 
 ## Lexer Capabilities
-- Match tokens with quick DFA table
-- Build AST-like tokens natively during lexing. **You can capture only whatever you need**
-- Include semantic actions right into lexer. Context-sensitive lexing is possible [needs to throw further grammar with Advanced Rules]
-- Match tokens inside other tokens without structure loss. Capture these tokens preserving their data type
-- Match non-terminals right inside terminals (rules inside tokens) during lexing, separately from parsing. [needs implementation]
-## Parser Capabilities
-- Generate LL(\*) or LR(\*) parser [**LL(*) is the only aim to be stable right now**]
-- Build automatic, fully typed and easy to traverse AST during parsing. No post-parsing or callback functions required.
+- Matches tokens with a compact **TDFA** (tagged DFA) table, which keeps captures and actions inside a single automaton
+- Builds AST-like tokens natively during lexing. **Capture only what you need**
+- Semantic actions can be placed anywhere in a token; context-sensitive lexing is possible *(needs Advanced Rules)*
+- Matches tokens inside other tokens without losing structure, preserving each capture's data type
+- Matches non-terminals inside terminals during lexing, separately from parsing *(not yet implemented)*
 
-## Both have
-- Semantic actions with in-grammar python pseudocode with advanced rules
-- Error messages and custom context-sensitive recovery strategies in fail blocks
-- Nested rules, where one rule may encapsulate another rule
+## Parser Capabilities
+- Generates parsers from the grammar ahead of time. The default parser mode is the stability target; alternative LR-family modes are experimental
+- Builds a fully typed, easy-to-traverse AST during parsing. No post-parsing pass or callbacks required
+
+## Shared by both
+- Nested rules, where one rule can encapsulate another
+- Semantic actions written as in-grammar Python pseudocode, with advanced rules *(in progress)*
+- Custom, context-sensitive error messages and recovery through fail blocks *(in progress)*
+
 ## Syntax example
 ![Syntax Example](assets/syntax_example.png)
 
+## Quick start
+
+Generate a parser from a grammar:
+```sh
+ispa grammar.isc --lang cpp -o OutputDir/OutputFileName
+```
+
+<!-- TODO: minimal grammar.isc example and a C++ snippet showing how to call the generated API and traverse the AST -->
+
+---
+
 ## 🔮 Future Roadmap
 
-- [ ] **PLL Algorithm**: Finalize custom Predictive LL algorithm to seamlessly resolve left-recursion in LL parsers while preserving structural parity with LR parsers.
-- [ ] **Multi-Target Code Generation**:
+- [ ] **Lower Python semantic actions, fail blocks, and dynamic regex** to generated code
+- [ ] **Clean grammar syntax error reporting**
+- [ ] **PLL algorithm**: finalize the custom Predictive LL algorithm to resolve left recursion in LL parsers while keeping structural parity with LR parsers
+- [ ] **Multi-target code generation**
   - [ ] Python target emitter
-- [ ] **Full LR Parser Stabilization**: Finalize integration and production readiness for LR(1), LALR, and LR(*) modes.
-- [ ] **Grammar Standard Library (StdLib)**: Pre-packaged standard grammar definitions for common formats (JSON, XML, Math Expressions, C-like statements).
-- [ ] Add features described in **concepts/**
+- [ ] **Full LR parser stabilization**: LR(1), LALR, and related modes
+- [ ] **Modules**: feature-gated modules, `disable feature X`, parametrized modules
+- [ ] **Grammar standard library**: JSON, XML, math expressions, C-like statements
+- [ ] Features described in **concepts/**
+
 ---
 
 ## 🛠️ Build & Requirements
-1. Clang compiler with libc++ on ubuntu, latest ubuntu version
-2. MSVC cl compiler on windows
-3. Exact version of cmake 4.3.2
+1. Clang with libc++ on the latest Ubuntu
+2. MSVC `cl` on Windows
+3. CMake, exact version 4.3.2
 
-**Note: YOU WILL NOT BE ABLE TO BUILD THIS WITH GCC YET**
-
-**Note: build with clang is not tested on windows**
+**Note: you will not be able to build ISPA with GCC yet.**
+**Note: the Clang build is not tested on Windows.**
 
 ### Build on Ubuntu
-Generate cmake build files. **Change ISPA_SOURCE_DIR to your local path**:
+Configure. **Change `ISPA_SOURCE_DIR` to your local path:**
 ```sh
-export ISPA_SOURCE_DIR=/mnt/5EE9F38E0E9F2DC9/ispa-parser
+export ISPA_SOURCE_DIR=/path/to/ispa-parser
 export CC=clang-20
 export CXX=clang++-20
 export CFLAGS="-stdlib=libc++"
 export CXXFLAGS="-stdlib=libc++"
 export LDFLAGS="-stdlib=libc++"
-cmake -B cmake-build-release \ 
--DCMAKE_BUILD_TYPE=Release \
--DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake \
--DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$ISPA_SOURCE_DIR/cmake/toolchains/clang-libcpp.cmake \
--DVCPKG_TARGET_TRIPLET=x64-linux-libcxx \
--DVCPKG_OVERLAY_TRIPLETS=$ISPA_SOURCE_DIR/cmake/triplets
+cmake -B cmake-build-release \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake \
+  -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$ISPA_SOURCE_DIR/cmake/toolchains/clang-libcpp.cmake \
+  -DVCPKG_TARGET_TRIPLET=x64-linux-libcxx \
+  -DVCPKG_OVERLAY_TRIPLETS=$ISPA_SOURCE_DIR/cmake/triplets
 ```
 Build:
 ```sh
 cmake --build cmake-build-release
 ```
----
 
 ### Build on Windows
-Note:
-
-- Change CMAKE_TOOLCHAIN_FILE to your vcpkg installation path if this does not work
-- You might need to provide CMAKE_CXX_COMPILER variable pointing to cl.exe
-- You might need to configure other variables MSVC require to build
+- Change `CMAKE_TOOLCHAIN_FILE` to your vcpkg installation path if this does not work
+- You might need to set `CMAKE_CXX_COMPILER` to `cl.exe`
+- You might need to configure other variables MSVC requires
 ```bat
-cmake -B cmake-build-release -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+cmake -B cmake-build-release -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="%VCPKG_INSTALLATION_ROOT%/scripts/buildsystems/vcpkg.cmake"
+cmake --build cmake-build-release
 ```

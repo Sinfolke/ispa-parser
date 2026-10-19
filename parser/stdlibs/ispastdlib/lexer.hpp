@@ -175,21 +175,6 @@ namespace ISPA_STD {
                     const auto old = token_index;
                     ++token_index;
                     ensure_token();
-
-                    std::cerr
-                        << "LAZY ++: " << old
-                        << " -> " << token_index
-                        << " | cache size=" << owner->tokens.size();
-
-                    if (token_index < owner->tokens.size()) {
-                        const auto& t = owner->tokens[token_index];
-
-                        std::cerr
-                            << " | token type=" << t.index()
-                            << " | empty=" << t.empty();
-                    }
-
-                    std::cerr << '\n';
                 }
 
                 return *this;
