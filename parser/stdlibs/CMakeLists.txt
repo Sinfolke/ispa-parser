@@ -43,11 +43,16 @@ if(TARGET ispastdlib)
 
     target_compile_features(ispastdlib PUBLIC cxx_std_20)
 
-    target_precompile_headers(ispastdlib PUBLIC
+    # Consumers may import std; injecting this PCH mixes textual standard
+    # library declarations with the module's declarations (notably on Clang 20).
+    target_precompile_headers(ispastdlib PRIVATE
             ${ISPA_STDLIB_HEADERS}
     )
 
     if(WIN32)
+        # windows.h is included by the runtime PCH. Keep its min/max macros
+        # out of both the runtime and consumers of its public headers.
+        target_compile_definitions(ispastdlib PUBLIC NOMINMAX)
         target_link_libraries(ispastdlib PRIVATE dbghelp)
     endif()
 
