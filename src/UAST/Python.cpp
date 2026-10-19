@@ -1228,9 +1228,8 @@ UAST::PythonNode snapshot(const PyRawParser::FlatTypes::main& v, const UAST::Sou
 UAST::PythonNode UAST::parsePython(const std::string& source, const SourcePosition& position, bool expression) {
     try {
         PyLexer lexer;
-        lexer.makeTokens(source);
         ActionParser parser;
-        PyRawParser::Lexer::iterator begin(lexer);
+        PyRawParser::Lexer::lazy_iterator begin(lexer, source.c_str());
         if (expression) {
             auto result = parser.expr(begin);
             if (!result.status) throw std::runtime_error("invalid Python expression");

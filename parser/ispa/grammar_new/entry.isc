@@ -1,0 +1,22 @@
+main:
+    @ (grammar | fail_block)*
+
+    {@}
+;
+grammar:
+    @ modifier* @ name @ % rule | advanced_rule
+
+    @{mod, name, entry}
+    %{rule_missing}
+
+    #modifier:
+        '#[' @ % MOD ']'
+
+        {@}
+        %{modifier_missing}
+        #MOD:
+            @ 'inline' | 'skip' | 'extern'
+            {@}
+        ;
+    ;
+;

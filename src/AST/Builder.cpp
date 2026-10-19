@@ -133,7 +133,7 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
             const auto& n = payload(item);
             if (!n.temp_params.empty() || !n.param.empty())
                 output.features.push_back(AST::DeclarationSyntax{{}, parameters(n.param), parameters(n.temp_params), position(item.position)});
-            // Names have already been qualified by the preceding semantic stage.
+            // Resolve references after all declarations have been collected.
             auto path = qualifiedName(n);
             output.value = AST::RuleMemberName{path};
         } else if constexpr (std::is_same_v<T, UAST::Node<std::shared_ptr<UAST::rule_value_group>>>) {
@@ -353,4 +353,29 @@ void AST::Builder::build() {
     fullname.clear();
 
     convertMain(input);
+
+    // Search the containing rule and then its enclosing scopes using the
+    // entire reference path. Never fall back to a matching final segment:
+    // rule.ast must not accidentally bind to a global ast declaration.
+    for (auto& [scope, rule] : tree_map) {
+        const auto resolve = [&](const auto& self, AST::RuleMember& member) -> void {
+            if (member.isName()) {
+                auto& reference = member.getName().name;
+                for (std::size_t size = scope.size();; --size) {
+                    stdu::vector<std::string> candidate(scope.begin(), scope.begin() + size);
+                    candidate.insert(candidate.end(), reference.begin(), reference.end());
+                    if (tree_map.contains(candidate)) {
+                        reference = std::move(candidate);
+                        break;
+                    }
+                    if (size == 0) break;
+                }
+            } else if (member.isGroup()) {
+                for (auto& child : member.getGroup().values) self(self, *child);
+            } else if (member.isOp()) {
+                for (auto& child : member.getOp().options) self(self, *child);
+            }
+        };
+        for (auto& member : rule.rule_members) resolve(resolve, *member);
+    }
 }

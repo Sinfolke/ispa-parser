@@ -5,26 +5,6 @@
 #include <ispastdlib/assign.hpp>
 #include <ispastdlib/to_string.hpp>
 
-namespace {
-// Keep rule spans in the bootstrap front end, including syntax-only markers
-// whose punctuation is intentionally absent from the generated payload types.
-template<class T, class IT>
-ISPA_STD::Node<T> syntaxNode(T value, IT begin, const IT& end) {
-    ISPA_STD::RawTokenMeta first;
-    const char* finish = nullptr;
-    for (; begin.distance() < end.distance(); ++begin) {
-        const auto& meta = (*begin).meta();
-        if (!meta.start()) continue; // Python INDENT/DEDENT are synthetic.
-        if (!first.start()) first = meta;
-        finish = meta.end();
-    }
-    const auto length = first.start() && finish
-        ? static_cast<std::size_t>(finish - first.start()) : 0;
-    return {first.startpos(), first.start(), finish, length,
-            first.line(), first.column(), first.name(), std::move(value)};
-}
-}
-
 auto PyRawParser::FlatTypes::GLOBAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("GLOBAL", true);
 }
@@ -4040,7 +4020,6 @@ auto PyRawParser::Lexer::makeToken(const char*& pos) -> Token {
 std::array<::ISPA_STD::DFA::API::DFADebug, 1> PyRawParser::Lexer::debug_array = {::ISPA_STD::DFA::API::DFADebug {"<Undefined>", "", 0, -1, -1, -1, 0, 1, '\000'}};
 std::unordered_map<long long, std::unordered_map<long long, long long>> PyRawParser::Lexer::debug_index = { { 0, { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 1, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 2, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 3, { { 21, 0 } } }, { 4, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 5, { { 21, 0 } } }, { 6, { { 21, 0 } } }, { 7, { { 8, 0 } } }, { 10, { { 11, 0 }, { 21, 0 } } }, { 11, { { 21, 0 } } }, { 13, { { 21, 0 }, { 22, 0 } } }, { 15, { { 16, 0 }, { 21, 0 } } }, { 16, { { 17, 0 } } }, { 19, { { 20, 0 }, { 21, 0 } } }, { 20, { { 21, 0 } } }, { 21, { { 21, 0 }, { 22, 0 } } }, { 22, { { 21, 0 } } }, { 23, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 24, { { 31, 0 } } }, { 25, { { 44, 0 } } }, { 26, { { 46, 0 } } }, { 29, { { 21, 0 } } }, { 30, { { 43, 0 }, { 47, 0 } } }, { 31, { { 46, 0 } } }, { 32, { { 41, 0 }, { 44, 0 } } }, { 33, { { 35, 0 } } }, { 34, { { 41, 0 }, { 51, 0 } } }, { 35, { { 39, 0 }, { 44, 0 }, { 46, 0 } } }, { 36, { { 41, 0 } } }, { 37, { { 36, 0 }, { 42, 0 }, { 43, 0 }, { 47, 0 } } }, { 38, { { 44, 0 } } }, { 39, { { 46, 0 } } }, { 40, { { 31, 0 } } }, { 41, { { 31, 0 }, { 35, 0 } } }, { 42, { { 46, 0 } } }, { 43, { { 38, 0 }, { 39, 0 } } }, { 45, { { 21, 0 } } }, { 49, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 52, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 54, { { 21, 0 } } }, { 59, { { 21, 0 } } }, { 62, { { 21, 0 } } }, { 66, { { 21, 0 } } }, { 68, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 69, { { 41, 0 } } }, { 70, { { 43, 0 } } }, { 71, { { 49, 0 } } }, { 73, { { 34, 0 } } }, { 74, { { 47, 0 }, { 52, 0 } } }, { 75, { { 35, 0 } } }, { 76, { { 31, 0 } } }, { 77, { { 43, 0 } } }, { 78, { { 36, 0 }, { 41, 0 } } }, { 79, { { 39, 0 }, { 47, 0 } } }, { 80, { { 33, 0 } } }, { 81, { { 43, 0 } } }, { 82, { { 46, 0 } } }, { 83, { { 44, 0 } } }, { 84, { { 44, 0 } } }, { 86, { { 45, 0 } } }, { 89, { { 43, 0 }, { 48, 0 } } }, { 91, { { 47, 0 } } }, { 92, { { 39, 0 } } }, { 93, { { 48, 0 } } }, { 94, { { 52, 0 } } }, { 95, { { 39, 0 } } }, { 96, { { 48, 0 } } }, { 100, { { 17, 0 } } }, { 103, { { 47, 0 } } }, { 104, { { 35, 0 } } }, { 105, { { 35, 0 } } }, { 107, { { 35, 0 } } }, { 108, { { 43, 0 } } }, { 109, { { 31, 0 } } }, { 110, { { 47, 0 } } }, { 111, { { 48, 0 } } }, { 114, { { 36, 0 } } }, { 115, { { 35, 0 } } }, { 116, { { 35, 0 } } }, { 117, { { 31, 0 } } }, { 119, { { 42, 0 } } }, { 120, { { 32, 0 } } }, { 121, { { 44, 0 } } }, { 122, { { 41, 0 } } }, { 124, { { 47, 0 } } }, { 125, { { 47, 0 } } }, { 126, { { 49, 0 } } }, { 128, { { 41, 0 } } }, { 129, { { 38, 0 } } }, { 130, { { 35, 0 } } }, { 133, { { 46, 0 } } }, { 134, { { 33, 0 } } }, { 135, { { 40, 0 } } }, { 136, { { 47, 0 } } }, { 137, { { 39, 0 } } }, { 140, { { 45, 0 } } }, { 141, { { 41, 0 } } }, { 143, { { 31, 0 } } }, { 144, { { 46, 0 } } }, { 145, { { 44, 0 } } }, { 147, { { 35, 0 } } }, { 148, { { 46, 0 } } }, { 149, { { 35, 0 } } }, { 152, { { 48, 0 } } }, { 156, { { 43, 0 } } }, { 157, { { 48, 0 } } }, { 158, { { 41, 0 } } }, { 159, { { 41, 0 } } }, { 160, { { 48, 0 } } }, { 161, { { 33, 0 } } }, { 163, { { 43, 0 } } }, { 166, { { 49, 0 } } }, { 168, { { 52, 0 } } }, { 171, { { 31, 0 } } }, { 173, { { 35, 0 } } }, { 175, { { 41, 0 } } } };
 template<typename IT, class> auto PyRawParser::Parser::annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COLON> COLON_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4130,14 +4109,13 @@ template<typename IT, class> auto PyRawParser::Parser::annotated_assignment(IT p
 	::ISPA_STD::assign_compatible(result.value, expr_15);
 	::ISPA_STD::MatchResult<Types::annotated_assignment, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::annotated_assignment<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::annotated_assignment<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ASSERT> ASSERT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4227,14 +4205,13 @@ template<typename IT, class> auto PyRawParser::Parser::assert_stmt(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.message, expr_15);
 	::ISPA_STD::MatchResult<Types::assert_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assert_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assert_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assignment_op(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::RSHIFT_ASSIGN>, ::ISPA_STD::Node<Types::CARET_ASSIGN>, ::ISPA_STD::Node<Types::AMP_ASSIGN>, ::ISPA_STD::Node<Types::POWER_ASSIGN>, ::ISPA_STD::Node<Types::FLOOR_DIV_ASSIGN>, ::ISPA_STD::Node<Types::SLASH_ASSIGN>, ::ISPA_STD::Node<Types::PIPE_ASSIGN>, ::ISPA_STD::Node<Types::MATMUL_ASSIGN>, ::ISPA_STD::Node<Types::MINUS_ASSIGN>, ::ISPA_STD::Node<Types::PERCENT_ASSIGN>, ::ISPA_STD::Node<Types::ASSIGN>, ::ISPA_STD::Node<Types::LSHIFT_ASSIGN>, ::ISPA_STD::Node<Types::STAR_ASSIGN>, ::ISPA_STD::Node<Types::PLUS_ASSIGN>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::AMP_ASSIGN> AMP_ASSIGN_2;
@@ -4532,14 +4509,13 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_op(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::assignment_op, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assignment_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assignment_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::index_suffix>, ::ISPA_STD::Node<Types::attribute_suffix>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> attribute_suffix_2;
@@ -4597,14 +4573,13 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_suffix(IT pos)
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::assignment_suffix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assignment_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assignment_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::assignment_op, IT> assignment_op_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4638,14 +4613,13 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_tail(IT pos) -
 	::ISPA_STD::assign_compatible(result.value, expr_4);
 	::ISPA_STD::MatchResult<Types::assignment_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assignment_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assignment_target(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::assignment_suffix, IT> assignment_suffix_5;
@@ -4689,14 +4663,13 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_target(IT pos)
 	::ISPA_STD::assign_compatible(result.suffixes, uvar_4);
 	::ISPA_STD::MatchResult<Types::assignment_target, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assignment_target<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_target<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::assignment_value(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::annotated_assignment>, ::ISPA_STD::Node<Types::assignment_tail>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_2;
@@ -5014,14 +4987,13 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_value(IT pos) 
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::assignment_value, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_STD::MatchResult<Types::atom, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::list_expr>, ::ISPA_STD::Node<Types::NONE_V>, ::ISPA_STD::Node<Types::FALSE>, ::ISPA_STD::Node<Types::TRUE>, ::ISPA_STD::Node<Types::dict_expr>, ::ISPA_STD::Node<Types::parenthesized_expr>, ::ISPA_STD::Node<Types::NUMBER>, ::ISPA_STD::Node<Types::STRING>, ::ISPA_STD::Node<Types::ID>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::FALSE> FALSE_2;
@@ -5219,14 +5191,13 @@ template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::atom, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::atom<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::atom, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::atom<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::atom, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::attribute_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::DOT> DOT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5259,14 +5230,13 @@ template<typename IT, class> auto PyRawParser::Parser::attribute_suffix(IT pos) 
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::attribute_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::attribute_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitand_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AMP> AMP_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5299,14 +5269,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitand_tail(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, shift_expr_4.node);
 	::ISPA_STD::MatchResult<Types::bitand_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitand_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitand_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PIPE> PIPE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5339,14 +5308,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitor_tail(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, bitwise_xor_4.node);
 	::ISPA_STD::MatchResult<Types::bitor_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitor_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitor_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitwise_and(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::shift_expr, IT> shift_expr_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::bitand_tail, IT> bitand_tail_5;
@@ -5390,14 +5358,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitwise_and(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::bitwise_and, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitwise_and<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitwise_and<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitwise_or(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::bitwise_xor, IT> bitwise_xor_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::bitor_tail, IT> bitor_tail_5;
@@ -5441,14 +5408,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitwise_or(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::bitwise_or, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitwise_or<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitwise_or<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitwise_xor(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::bitwise_and, IT> bitwise_and_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::bitxor_tail, IT> bitxor_tail_5;
@@ -5492,14 +5458,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitwise_xor(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::bitwise_xor, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitwise_xor<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitwise_xor<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::bitxor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::CARET> CARET_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5532,14 +5497,13 @@ template<typename IT, class> auto PyRawParser::Parser::bitxor_tail(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, bitwise_and_4.node);
 	::ISPA_STD::MatchResult<Types::bitxor_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::bitxor_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::bitxor_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::block(IT pos) -> ::ISPA_STD::MatchResult<Types::block, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::simple_stmts>, ::ISPA_STD::Node<Types::indented_block>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_2;
@@ -6057,14 +6021,13 @@ template<typename IT, class> auto PyRawParser::Parser::block(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::block, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::block<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::block, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::block<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::block, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::break_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::BREAK> BREAK_0;
 	bool success_1;
 	success_1 = false;
@@ -6078,14 +6041,13 @@ template<typename IT, class> auto PyRawParser::Parser::break_stmt(IT pos) -> ::I
 	Types::break_stmt result;
 	::ISPA_STD::MatchResult<Types::break_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::break_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::break_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::call_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::expr>, ::ISPA_STD::Node<Types::keyword_arg>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_2;
@@ -6975,14 +6937,13 @@ template<typename IT, class> auto PyRawParser::Parser::call_arg(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::call_arg, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::call_arg<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::call_arg<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::call_arg_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7015,14 +6976,13 @@ template<typename IT, class> auto PyRawParser::Parser::call_arg_tail(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.value, call_arg_4.node);
 	::ISPA_STD::MatchResult<Types::call_arg_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::call_arg_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::call_arg_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::call_args(IT pos) -> ::ISPA_STD::MatchResult<Types::call_args, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::call_arg, IT> call_arg_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::call_arg_tail, IT> call_arg_tail_5;
@@ -7082,14 +7042,13 @@ template<typename IT, class> auto PyRawParser::Parser::call_args(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::call_args, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::call_args<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_args, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::call_args<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_args, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::call_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7138,14 +7097,13 @@ template<typename IT, class> auto PyRawParser::Parser::call_suffix(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, call_args_4.node);
 	::ISPA_STD::MatchResult<Types::call_suffix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::call_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::call_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::class_bases(IT pos) -> ::ISPA_STD::MatchResult<Types::class_bases, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7194,14 +7152,13 @@ template<typename IT, class> auto PyRawParser::Parser::class_bases(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, call_args_4.node);
 	::ISPA_STD::MatchResult<Types::class_bases, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::class_bases<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_bases, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::class_bases<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_bases, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::class_def(IT pos) -> ::ISPA_STD::MatchResult<Types::class_def, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7233,14 +7190,13 @@ template<typename IT, class> auto PyRawParser::Parser::class_def(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.definition, class_header_4);
 	::ISPA_STD::MatchResult<Types::class_def, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::class_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_def, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::class_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_def, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::class_header(IT pos) -> ::ISPA_STD::MatchResult<Types::class_header, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::CLASS> CLASS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7327,14 +7283,13 @@ template<typename IT, class> auto PyRawParser::Parser::class_header(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.body, block_16);
 	::ISPA_STD::MatchResult<Types::class_header, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::class_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_header, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::class_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_header, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::compare_op(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_op, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::is_op>, ::ISPA_STD::Node<Types::not_in>, ::ISPA_STD::Node<Types::GT>, ::ISPA_STD::Node<Types::IN>, ::ISPA_STD::Node<Types::GE>, ::ISPA_STD::Node<Types::LT>, ::ISPA_STD::Node<Types::LE>, ::ISPA_STD::Node<Types::NE>, ::ISPA_STD::Node<Types::EQ>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::EQ> EQ_2;
@@ -7532,14 +7487,13 @@ template<typename IT, class> auto PyRawParser::Parser::compare_op(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::compare_op, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::compare_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_op, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::compare_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_op, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::compare_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::compare_op, IT> compare_op_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7573,14 +7527,13 @@ template<typename IT, class> auto PyRawParser::Parser::compare_tail(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.value, bitwise_or_4);
 	::ISPA_STD::MatchResult<Types::compare_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::compare_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::compare_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::comparison(IT pos) -> ::ISPA_STD::MatchResult<Types::comparison, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::bitwise_or, IT> bitwise_or_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::compare_tail, IT> compare_tail_5;
@@ -7624,14 +7577,13 @@ template<typename IT, class> auto PyRawParser::Parser::comparison(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::comparison, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::comparison<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::comparison, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::comparison<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::comparison, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::compound_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::decorated_def>, ::ISPA_STD::Node<Types::try_stmt>, ::ISPA_STD::Node<Types::for_stmt>, ::ISPA_STD::Node<Types::while_stmt>, ::ISPA_STD::Node<Types::with_stmt>, ::ISPA_STD::Node<Types::if_stmt>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::decorated_def, IT> decorated_def_2;
@@ -7881,14 +7833,13 @@ template<typename IT, class> auto PyRawParser::Parser::compound_stmt(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::compound_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::compound_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::compound_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::conditional_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::IF> IF_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -7958,14 +7909,13 @@ template<typename IT, class> auto PyRawParser::Parser::conditional_tail(IT pos) 
 	::ISPA_STD::assign_compatible(result.otherwise, expr_12);
 	::ISPA_STD::MatchResult<Types::conditional_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::conditional_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::conditional_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::conjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::conjunction, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::inversion, IT> inversion_0;
 	bool success_1;
 	bool success_17;
@@ -8053,14 +8003,13 @@ template<typename IT, class> auto PyRawParser::Parser::conjunction(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::conjunction, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::conjunction<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::conjunction, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::conjunction<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::conjunction, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::continue_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::CONTINUE> CONTINUE_0;
 	bool success_1;
 	success_1 = false;
@@ -8074,14 +8023,13 @@ template<typename IT, class> auto PyRawParser::Parser::continue_stmt(IT pos) -> 
 	Types::continue_stmt result;
 	::ISPA_STD::MatchResult<Types::continue_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::continue_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::continue_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::decorated_def(IT pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8113,14 +8061,13 @@ template<typename IT, class> auto PyRawParser::Parser::decorated_def(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.definition, def_header_4);
 	::ISPA_STD::MatchResult<Types::decorated_def, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::decorated_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::decorated_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::decorator(IT pos) -> ::ISPA_STD::MatchResult<Types::decorator, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::MATMUL> MATMUL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8171,14 +8118,13 @@ template<typename IT, class> auto PyRawParser::Parser::decorator(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, primary_4.node);
 	::ISPA_STD::MatchResult<Types::decorator, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::decorator<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorator, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::decorator<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorator, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::decorators(IT pos) -> ::ISPA_STD::MatchResult<Types::decorators, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::decorator, IT> decorator_1;
 	bool success_2;
 	::ISPA_STD::Node<Types::decorator> element_3;
@@ -8207,14 +8153,13 @@ template<typename IT, class> auto PyRawParser::Parser::decorators(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, uvar_0);
 	::ISPA_STD::MatchResult<Types::decorators, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::decorators<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorators, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::decorators<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorators, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::def_header(IT pos) -> ::ISPA_STD::MatchResult<Types::def_header, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::class_header>, ::ISPA_STD::Node<Types::function_header>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::function_header, IT> function_header_2;
@@ -8292,14 +8237,13 @@ template<typename IT, class> auto PyRawParser::Parser::def_header(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::def_header, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::def_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::def_header, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::def_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::def_header, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::DEL> DEL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8399,14 +8343,13 @@ template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
 	::ISPA_STD::MatchResult<Types::del_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::del_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::del_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dict_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LBRACE> LBRACE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8455,14 +8398,13 @@ template<typename IT, class> auto PyRawParser::Parser::dict_expr(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, dict_items_4.node);
 	::ISPA_STD::MatchResult<Types::dict_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dict_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dict_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dict_item(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8514,14 +8456,13 @@ template<typename IT, class> auto PyRawParser::Parser::dict_item(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, expr_8);
 	::ISPA_STD::MatchResult<Types::dict_item, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dict_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dict_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dict_item_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8554,14 +8495,13 @@ template<typename IT, class> auto PyRawParser::Parser::dict_item_tail(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, dict_item_4.node);
 	::ISPA_STD::MatchResult<Types::dict_item_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dict_item_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dict_item_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dict_items(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_items, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::dict_item, IT> dict_item_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::dict_item_tail, IT> dict_item_tail_5;
@@ -8621,14 +8561,13 @@ template<typename IT, class> auto PyRawParser::Parser::dict_items(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::dict_items, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dict_items<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_items, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dict_items<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_items, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::disjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::disjunction, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::conjunction, IT> conjunction_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::or_tail, IT> or_tail_5;
@@ -8672,14 +8611,13 @@ template<typename IT, class> auto PyRawParser::Parser::disjunction(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::disjunction, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::disjunction<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::disjunction, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::disjunction<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::disjunction, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dotted_as_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::dotted_name, IT> dotted_name_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8711,14 +8649,13 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_as_name(IT pos) ->
 	::ISPA_STD::assign_compatible(result.alias, import_alias_4);
 	::ISPA_STD::MatchResult<Types::dotted_as_name, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dotted_as_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dotted_as_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::dotted_as_name, IT> dotted_as_name_0;
 	bool success_1;
 	bool success_17;
@@ -8800,14 +8737,13 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::dotted_as_names, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dotted_as_names<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dotted_as_names<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::dotted_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	bool success_17;
@@ -8886,14 +8822,13 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_name(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::dotted_name, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::dotted_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::dotted_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::elif_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ELIF> ELIF_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -8963,14 +8898,13 @@ template<typename IT, class> auto PyRawParser::Parser::elif_clause(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.body, block_12);
 	::ISPA_STD::MatchResult<Types::elif_clause, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::elif_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::elif_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::else_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::else_clause, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ELSE> ELSE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9021,14 +8955,13 @@ template<typename IT, class> auto PyRawParser::Parser::else_clause(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, block_8.node);
 	::ISPA_STD::MatchResult<Types::else_clause, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::else_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::else_clause, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::else_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::else_clause, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::except_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::except_alias, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9061,14 +8994,13 @@ template<typename IT, class> auto PyRawParser::Parser::except_alias(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::except_alias, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::except_alias<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_alias, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::except_alias<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_alias, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::except_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::except_clause, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::EXCEPT> EXCEPT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9153,14 +9085,13 @@ template<typename IT, class> auto PyRawParser::Parser::except_clause(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.body, block_16);
 	::ISPA_STD::MatchResult<Types::except_clause, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::except_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_clause, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::except_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_clause, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::except_handlers(IT pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::except_clause, IT> except_clause_1;
 	bool success_2;
 	::ISPA_STD::Node<Types::except_clause> element_3;
@@ -9223,14 +9154,13 @@ template<typename IT, class> auto PyRawParser::Parser::except_handlers(IT pos) -
 	::ISPA_STD::assign_compatible(result.finalizer, finally_clause_12);
 	::ISPA_STD::MatchResult<Types::except_handlers, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::except_handlers<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::except_handlers<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::disjunction, IT> disjunction_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9262,14 +9192,13 @@ template<typename IT, class> auto PyRawParser::Parser::expr(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.conditional, conditional_tail_4);
 	::ISPA_STD::MatchResult<Types::expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9301,14 +9230,13 @@ template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.rest, expr_list_tail_4);
 	::ISPA_STD::MatchResult<Types::expr_list, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::expr_list_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, IT> {
-	const auto syntax_begin = pos;
 	bool success_13;
 	bool success_5;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_0;
@@ -9385,14 +9313,13 @@ template<typename IT, class> auto PyRawParser::Parser::expr_list_tail(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, uvar_11);
 	::ISPA_STD::MatchResult<Types::expr_list_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9424,14 +9351,13 @@ template<typename IT, class> auto PyRawParser::Parser::expr_stmt(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.assignment, assignment_value_4);
 	::ISPA_STD::MatchResult<Types::expr_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::expr_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::expr_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::factor(IT pos) -> ::ISPA_STD::MatchResult<Types::factor, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::power>, ::ISPA_STD::Node<Types::unary_expr>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::power, IT> power_2;
@@ -9689,14 +9615,13 @@ template<typename IT, class> auto PyRawParser::Parser::factor(IT pos) -> ::ISPA_
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::factor, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::factor<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::factor, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::factor<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::factor, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::finally_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::FINALLY> FINALLY_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9747,14 +9672,13 @@ template<typename IT, class> auto PyRawParser::Parser::finally_clause(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, block_8.node);
 	::ISPA_STD::MatchResult<Types::finally_clause, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::finally_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::finally_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::for_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -9895,14 +9819,13 @@ template<typename IT, class> auto PyRawParser::Parser::for_stmt(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_28);
 	::ISPA_STD::MatchResult<Types::for_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::for_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::for_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::for_targets, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_0;
 	bool success_1;
 	bool success_17;
@@ -10000,14 +9923,13 @@ template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::for_targets, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::for_targets<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::for_targets, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::for_targets<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::for_targets, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::function_def(IT pos) -> ::ISPA_STD::MatchResult<Types::function_def, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10039,14 +9961,13 @@ template<typename IT, class> auto PyRawParser::Parser::function_def(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.definition, function_header_4);
 	::ISPA_STD::MatchResult<Types::function_def, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::function_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::function_def, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::function_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::function_def, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::function_header(IT pos) -> ::ISPA_STD::MatchResult<Types::function_header, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10203,14 +10124,13 @@ template<typename IT, class> auto PyRawParser::Parser::function_header(IT pos) -
 	::ISPA_STD::assign_compatible(result.body, block_32);
 	::ISPA_STD::MatchResult<Types::function_header, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::function_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::function_header, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::function_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::function_header, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::global_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::GLOBAL> GLOBAL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10307,14 +10227,13 @@ template<typename IT, class> auto PyRawParser::Parser::global_stmt(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
 	::ISPA_STD::MatchResult<Types::global_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::global_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::global_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::if_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::IF> IF_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10430,14 +10349,13 @@ template<typename IT, class> auto PyRawParser::Parser::if_stmt(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_24);
 	::ISPA_STD::MatchResult<Types::if_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::if_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::if_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::import_alias, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10470,14 +10388,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_alias(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::import_alias, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_alias<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_alias, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_alias<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_alias, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_from(IT pos) -> ::ISPA_STD::MatchResult<Types::import_from, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::FROM> FROM_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10547,14 +10464,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_from(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.names, import_targets_12);
 	::ISPA_STD::MatchResult<Types::import_from, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_from<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_from, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_from<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_from, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_name(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::IMPORT> IMPORT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10587,14 +10503,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_name(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, dotted_as_names_4.node);
 	::ISPA_STD::MatchResult<Types::import_name, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_name_item(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10626,14 +10541,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_name_item(IT pos) 
 	::ISPA_STD::assign_compatible(result.alias, import_alias_4);
 	::ISPA_STD::MatchResult<Types::import_name_item, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_name_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_name_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> ::ISPA_STD::MatchResult<Types::import_names, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::import_name_item, IT> import_name_item_0;
 	bool success_1;
 	bool success_17;
@@ -10731,14 +10645,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::import_names, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_names<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_names, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_names<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_names, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::import_from>, ::ISPA_STD::Node<Types::import_name>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::import_from, IT> import_from_2;
@@ -10796,14 +10709,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_stmt(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::import_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::import_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::import_targets, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::import_names>, ::ISPA_STD::Node<Types::parenthesized_imports>, ::ISPA_STD::Node<Types::STAR>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::import_names, IT> import_names_2;
@@ -10881,14 +10793,13 @@ template<typename IT, class> auto PyRawParser::Parser::import_targets(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::import_targets, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::import_targets<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_targets, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::import_targets<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_targets, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::indented_block(IT pos) -> ::ISPA_STD::MatchResult<Types::indented_block, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -10973,14 +10884,13 @@ template<typename IT, class> auto PyRawParser::Parser::indented_block(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, uvar_8);
 	::ISPA_STD::MatchResult<Types::indented_block, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::indented_block<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::indented_block, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::indented_block<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::indented_block, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::index_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LBRACKET> LBRACKET_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11031,14 +10941,13 @@ template<typename IT, class> auto PyRawParser::Parser::index_suffix(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::index_suffix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::index_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::index_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::inversion, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::comparison>, ::ISPA_STD::Node<Types::not_inversion>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_2;
@@ -11316,14 +11225,13 @@ template<typename IT, class> auto PyRawParser::Parser::inversion(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::inversion, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::inversion<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::inversion, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::inversion<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::inversion, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::is_op(IT pos) -> ::ISPA_STD::MatchResult<Types::is_op, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::IS> IS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11353,14 +11261,13 @@ template<typename IT, class> auto PyRawParser::Parser::is_op(IT pos) -> ::ISPA_S
 	Types::is_op result;
 	::ISPA_STD::MatchResult<Types::is_op, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::is_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::is_op, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::is_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::is_op, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::keyword_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11412,14 +11319,13 @@ template<typename IT, class> auto PyRawParser::Parser::keyword_arg(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, expr_8);
 	::ISPA_STD::MatchResult<Types::keyword_arg, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::keyword_arg<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::keyword_arg<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::list_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::list_expr, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LBRACKET> LBRACKET_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11468,14 +11374,13 @@ template<typename IT, class> auto PyRawParser::Parser::list_expr(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, expr_list_4.node);
 	::ISPA_STD::MatchResult<Types::list_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::list_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::list_expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::list_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::list_expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::statement, IT> statement_1;
 	bool success_2;
 	::ISPA_STD::Node<Types::statement> element_3;
@@ -11498,14 +11403,13 @@ template<typename IT, class> auto PyRawParser::Parser::main(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.value, uvar_0);
 	::ISPA_STD::MatchResult<Types::main, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::main<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::main<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::nonlocal_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::NONLOCAL> NONLOCAL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11602,14 +11506,13 @@ template<typename IT, class> auto PyRawParser::Parser::nonlocal_stmt(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
 	::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::nonlocal_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::nonlocal_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::not_in(IT pos) -> ::ISPA_STD::MatchResult<Types::not_in, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::NOT> NOT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11641,14 +11544,13 @@ template<typename IT, class> auto PyRawParser::Parser::not_in(IT pos) -> ::ISPA_
 	Types::not_in result;
 	::ISPA_STD::MatchResult<Types::not_in, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::not_in<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::not_in, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::not_in<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::not_in, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::not_inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::NOT> NOT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11681,14 +11583,13 @@ template<typename IT, class> auto PyRawParser::Parser::not_inversion(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.value, inversion_4.node);
 	::ISPA_STD::MatchResult<Types::not_inversion, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::not_inversion<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::not_inversion<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::or_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::or_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::OR> OR_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11721,14 +11622,13 @@ template<typename IT, class> auto PyRawParser::Parser::or_tail(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.value, conjunction_4.node);
 	::ISPA_STD::MatchResult<Types::or_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::or_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::or_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::or_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::or_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parameter(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11777,14 +11677,13 @@ template<typename IT, class> auto PyRawParser::Parser::parameter(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.def, parameter_default_8);
 	::ISPA_STD::MatchResult<Types::parameter, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parameter<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parameter<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parameter_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COLON> COLON_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11817,14 +11716,13 @@ template<typename IT, class> auto PyRawParser::Parser::parameter_annotation(IT p
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::parameter_annotation, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parameter_annotation<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parameter_annotation<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parameter_default(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ASSIGN> ASSIGN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -11857,14 +11755,13 @@ template<typename IT, class> auto PyRawParser::Parser::parameter_default(IT pos)
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::parameter_default, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parameter_default<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parameter_default<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::ISPA_STD::MatchResult<Types::parameters, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::parameter, IT> parameter_0;
 	bool success_1;
 	bool success_17;
@@ -11962,14 +11859,13 @@ template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::parameters, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parameters<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameters, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parameters<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameters, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parenthesized_content(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12001,14 +11897,13 @@ template<typename IT, class> auto PyRawParser::Parser::parenthesized_content(IT 
 	::ISPA_STD::assign_compatible(result.rest, tuple_suffix_4);
 	::ISPA_STD::MatchResult<Types::parenthesized_content, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parenthesized_content<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parenthesized_content<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parenthesized_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12057,14 +11952,13 @@ template<typename IT, class> auto PyRawParser::Parser::parenthesized_expr(IT pos
 	::ISPA_STD::assign_compatible(result.value, parenthesized_content_4.node);
 	::ISPA_STD::MatchResult<Types::parenthesized_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parenthesized_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parenthesized_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::parenthesized_imports(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12115,14 +12009,13 @@ template<typename IT, class> auto PyRawParser::Parser::parenthesized_imports(IT 
 	::ISPA_STD::assign_compatible(result.value, import_names_4.node);
 	::ISPA_STD::MatchResult<Types::parenthesized_imports, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::parenthesized_imports<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::parenthesized_imports<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::pass_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PASS> PASS_0;
 	bool success_1;
 	success_1 = false;
@@ -12136,14 +12029,13 @@ template<typename IT, class> auto PyRawParser::Parser::pass_stmt(IT pos) -> ::IS
 	Types::pass_stmt result;
 	::ISPA_STD::MatchResult<Types::pass_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::pass_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::pass_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::postfix(IT pos) -> ::ISPA_STD::MatchResult<Types::postfix, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::index_suffix>, ::ISPA_STD::Node<Types::call_suffix>, ::ISPA_STD::Node<Types::attribute_suffix>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> attribute_suffix_2;
@@ -12221,14 +12113,13 @@ template<typename IT, class> auto PyRawParser::Parser::postfix(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::postfix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::postfix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::postfix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::postfix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::postfix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::power(IT pos) -> ::ISPA_STD::MatchResult<Types::power, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::primary, IT> primary_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12260,14 +12151,13 @@ template<typename IT, class> auto PyRawParser::Parser::power(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(result.exponent, power_tail_4);
 	::ISPA_STD::MatchResult<Types::power, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::power<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::power, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::power<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::power, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::power_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::power_tail, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::POWER> POWER_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12300,14 +12190,13 @@ template<typename IT, class> auto PyRawParser::Parser::power_tail(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, factor_4.node);
 	::ISPA_STD::MatchResult<Types::power_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::power_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::power_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::power_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::power_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::primary(IT pos) -> ::ISPA_STD::MatchResult<Types::primary, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::atom, IT> atom_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::postfix, IT> postfix_5;
@@ -12351,14 +12240,13 @@ template<typename IT, class> auto PyRawParser::Parser::primary(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.suffixes, uvar_4);
 	::ISPA_STD::MatchResult<Types::primary, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::primary<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::primary, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::primary<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::primary, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::raise_from(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_from, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::FROM> FROM_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12391,14 +12279,13 @@ template<typename IT, class> auto PyRawParser::Parser::raise_from(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::raise_from, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::raise_from<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_from, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::raise_from<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_from, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::raise_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::RAISE> RAISE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12446,14 +12333,13 @@ template<typename IT, class> auto PyRawParser::Parser::raise_stmt(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.cause, raise_from_8);
 	::ISPA_STD::MatchResult<Types::raise_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::raise_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::raise_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::relative_module(IT pos) -> ::ISPA_STD::MatchResult<Types::relative_module, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::DOT> DOT_1;
 	bool success_2;
 	std::vector<::ISPA_STD::Node<Types::DOT>> uvar_0;
@@ -12488,14 +12374,13 @@ template<typename IT, class> auto PyRawParser::Parser::relative_module(IT pos) -
 	::ISPA_STD::assign_compatible(result.name, dotted_name_6);
 	::ISPA_STD::MatchResult<Types::relative_module, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::relative_module<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::relative_module, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::relative_module<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::relative_module, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::return_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ARROW> ARROW_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12528,14 +12413,13 @@ template<typename IT, class> auto PyRawParser::Parser::return_annotation(IT pos)
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::return_annotation, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::return_annotation<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::return_annotation<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::return_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::RETURN> RETURN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -12566,14 +12450,13 @@ template<typename IT, class> auto PyRawParser::Parser::return_stmt(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::return_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::return_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::return_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::shift_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::sum, IT> sum_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::shift_tail, IT> shift_tail_5;
@@ -12617,14 +12500,13 @@ template<typename IT, class> auto PyRawParser::Parser::shift_expr(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::shift_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::shift_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::shift_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::shift_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::RSHIFT>, ::ISPA_STD::Node<Types::LSHIFT>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::LSHIFT> LSHIFT_2;
@@ -12701,14 +12583,13 @@ template<typename IT, class> auto PyRawParser::Parser::shift_tail(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, sum_8);
 	::ISPA_STD::MatchResult<Types::shift_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::shift_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::shift_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::simple_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::expr_stmt>, ::ISPA_STD::Node<Types::import_stmt>, ::ISPA_STD::Node<Types::continue_stmt>, ::ISPA_STD::Node<Types::assert_stmt>, ::ISPA_STD::Node<Types::break_stmt>, ::ISPA_STD::Node<Types::nonlocal_stmt>, ::ISPA_STD::Node<Types::pass_stmt>, ::ISPA_STD::Node<Types::global_stmt>, ::ISPA_STD::Node<Types::return_stmt>, ::ISPA_STD::Node<Types::del_stmt>, ::ISPA_STD::Node<Types::raise_stmt>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::assert_stmt, IT> assert_stmt_2;
@@ -13206,14 +13087,13 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmt(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::simple_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::simple_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::simple_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::simple_stmt, IT> simple_stmt_0;
 	bool success_1;
 	bool success_17;
@@ -13329,14 +13209,13 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::simple_stmts, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::simple_stmts<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::simple_stmts<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::statement(IT pos) -> ::ISPA_STD::MatchResult<Types::statement, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::simple_stmts>, ::ISPA_STD::Node<Types::compound_stmt>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_2;
@@ -14014,14 +13893,13 @@ template<typename IT, class> auto PyRawParser::Parser::statement(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::statement, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::statement<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::statement, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::statement<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::statement, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::sum(IT pos) -> ::ISPA_STD::MatchResult<Types::sum, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::term, IT> term_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::sum_tail, IT> sum_tail_5;
@@ -14065,14 +13943,13 @@ template<typename IT, class> auto PyRawParser::Parser::sum(IT pos) -> ::ISPA_STD
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::sum, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::sum<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::sum, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::sum<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::sum, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::sum_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::MINUS>, ::ISPA_STD::Node<Types::PLUS>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::MINUS> MINUS_2;
@@ -14149,14 +14026,13 @@ template<typename IT, class> auto PyRawParser::Parser::sum_tail(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.value, term_8);
 	::ISPA_STD::MatchResult<Types::sum_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::sum_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::sum_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::term(IT pos) -> ::ISPA_STD::MatchResult<Types::term, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::factor, IT> factor_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::term_tail, IT> term_tail_5;
@@ -14200,14 +14076,13 @@ template<typename IT, class> auto PyRawParser::Parser::term(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
 	::ISPA_STD::MatchResult<Types::term, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::term<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::term, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::term<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::term, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::term_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::term_tail, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::PERCENT>, ::ISPA_STD::Node<Types::SLASH>, ::ISPA_STD::Node<Types::STAR>, ::ISPA_STD::Node<Types::MATMUL>, ::ISPA_STD::Node<Types::FLOOR_DIV>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::FLOOR_DIV> FLOOR_DIV_2;
@@ -14344,14 +14219,13 @@ template<typename IT, class> auto PyRawParser::Parser::term_tail(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, factor_14);
 	::ISPA_STD::MatchResult<Types::term_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::term_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::term_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::term_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::term_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::try_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::TRY> TRY_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -14421,14 +14295,13 @@ template<typename IT, class> auto PyRawParser::Parser::try_stmt(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.handlers, try_tail_12);
 	::ISPA_STD::MatchResult<Types::try_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::try_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::try_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::try_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::try_tail, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::finally_clause>, ::ISPA_STD::Node<Types::except_handlers>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::except_handlers, IT> except_handlers_2;
@@ -14486,14 +14359,13 @@ template<typename IT, class> auto PyRawParser::Parser::try_tail(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::try_tail, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::try_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::try_tail, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::try_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::try_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::tuple_elements(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	bool success_17;
@@ -14597,14 +14469,13 @@ template<typename IT, class> auto PyRawParser::Parser::tuple_elements(IT pos) ->
 	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::tuple_elements, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::tuple_elements<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::tuple_elements<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::tuple_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -14635,14 +14506,13 @@ template<typename IT, class> auto PyRawParser::Parser::tuple_suffix(IT pos) -> :
 	::ISPA_STD::assign_compatible(result.value, tuple_elements_4.node);
 	::ISPA_STD::MatchResult<Types::tuple_suffix, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::tuple_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::tuple_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::unary_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, IT> {
-	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::TILDE>, ::ISPA_STD::Node<Types::MINUS>, ::ISPA_STD::Node<Types::PLUS>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::MINUS> MINUS_2;
@@ -14739,14 +14609,13 @@ template<typename IT, class> auto PyRawParser::Parser::unary_expr(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, factor_10);
 	::ISPA_STD::MatchResult<Types::unary_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::unary_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::unary_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::while_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::WHILE> WHILE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -14833,14 +14702,13 @@ template<typename IT, class> auto PyRawParser::Parser::while_stmt(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_16);
 	::ISPA_STD::MatchResult<Types::while_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::while_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::while_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::with_as(IT pos) -> ::ISPA_STD::MatchResult<Types::with_as, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -14873,14 +14741,13 @@ template<typename IT, class> auto PyRawParser::Parser::with_as(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.value, assignment_target_4.node);
 	::ISPA_STD::MatchResult<Types::with_as, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::with_as<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_as, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::with_as<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_as, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::with_item(IT pos) -> ::ISPA_STD::MatchResult<Types::with_item, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -14912,14 +14779,13 @@ template<typename IT, class> auto PyRawParser::Parser::with_item(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.target, with_as_4);
 	::ISPA_STD::MatchResult<Types::with_item, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::with_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_item, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::with_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_item, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::ISPA_STD::MatchResult<Types::with_items, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::with_item, IT> with_item_0;
 	bool success_1;
 	bool success_17;
@@ -15017,14 +14883,13 @@ template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
 	::ISPA_STD::MatchResult<Types::with_items, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
 template auto PyRawParser::Parser::with_items<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_items, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::with_items<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_items, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::with_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::with_stmt, IT> {
-	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -15111,7 +14976,7 @@ template<typename IT, class> auto PyRawParser::Parser::with_stmt(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.body, block_16);
 	::ISPA_STD::MatchResult<Types::with_stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
+	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
@@ -15122,6 +14987,5 @@ auto PyRawParser::Parser::parseFromTokens() -> void {
 }
 auto PyRawParser::Parser::lazyParse() -> void {
 	Lexer lexer;
-	lexer.setInput(text);
 	tree = main(Lexer::lazy_iterator(lexer, text)).node.data();
 }

@@ -98,11 +98,41 @@ TEST(UAST, KeepsCombinedCapturesAndDeclarationParameters) {
     EXPECT_EQ(declaration.templateParameters.front(), "type");
 }
 
-TEST(UAST, LeavesReferenceResolutionToSemanticStage) {
+TEST(UAST, PreservesUnknownReferences) {
     auto tree = convert("T: externallyQualifiedName;");
     const auto& member = *tree.getTreeMap().at({"T"}).rule_members.front();
     ASSERT_TRUE(member.isName());
     EXPECT_EQ(member.getName().name.front(), "externallyQualifiedName");
+}
+
+TEST(UAST, ResolvesQualifiedAndScopedReferences) {
+    auto tree = convert(
+        "caller: rule->ast; ast: 'g'; "
+        "rule: (ast | other) #ast: 'n'; #other: ast;;");
+    const auto& rules = tree.getTreeMap();
+    const auto check = [](const AST::RuleMember& member, auto expected) {
+        ASSERT_TRUE(member.isName());
+        EXPECT_EQ(member.getName().name, expected);
+    };
+    const auto nested = rules.at({"caller"}).rule_members.front()->getName().name;
+    ASSERT_EQ(nested.size(), 2u);
+    EXPECT_EQ(nested[0], "rule");
+    EXPECT_EQ(nested[1], "ast");
+    const auto& group = rules.at({"rule"}).rule_members.front()->getGroup();
+    const auto& options = group.values.front()->getOp().options;
+    check(*options[0], nested);
+    check(*rules.at({"rule", "other"}).rule_members.front(), nested);
+    auto other = nested;
+    other.back() = "other";
+    check(*options[1], other);
+}
+
+TEST(UAST, DoesNotResolveQualifiedReferencesBySuffix) {
+    auto tree = convert("caller: missing->ast; ast: 'g';");
+    const auto& name = tree.getTreeMap().at({"caller"}).rule_members.front()->getName().name;
+    ASSERT_EQ(name.size(), 2u);
+    EXPECT_EQ(name[0], "missing");
+    EXPECT_EQ(name[1], "ast");
 }
 
 TEST(UAST, BoundedCountersAndSharedRegistration) {

@@ -15,8 +15,11 @@ lexer. The compact subtree retains each generated Python node kind, named
 field, sequence, variant discriminator, scalar, absent node, and source position.
 It is syntax data, not printed Python, CLL, LangAPI, or generated code.
 
-The semantic stage preceding Builder is responsible for qualifying references
-and supplying `expr::bindings` and `stmt::bindings`. Builder copies those
+Builder qualifies ordinary rule references after collecting all declarations,
+searching from the containing rule through its enclosing scopes to the global
+scope. Lookup preserves the entire reference path, including qualified names.
+The semantic stage is responsible for supplying `expr::bindings` and
+`stmt::bindings`. Builder copies those
 bindings, including optional/list flags, without resolving identifiers or
 inferring capture types. Raw parser output does not contain resolved bindings.
 
@@ -51,5 +54,5 @@ Compatibility limits:
   The additional Python step parses the payload it receives; arbitrary Python
   text is supported by `parsePython`, but extending the ISPA raw-block lexer is
   a separate grammar/parser change.
-- Builder assumes semantically valid UAST. It no longer performs the previous
-  name lookup, unique-suffix fallback, or duplicate-declaration validation.
+- Builder preserves unknown references for later validation. It does not use
+  a suffix fallback or validate duplicate declarations.

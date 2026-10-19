@@ -600,595 +600,595 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace AMP {
-			inline const const char* id = "AMP";
+			inline const char* const id = "AMP";
 		} // namespace AMP
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace AMP_ASSIGN {
-			inline const const char* id = "AMP_ASSIGN";
+			inline const char* const id = "AMP_ASSIGN";
 		} // namespace AMP_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace AND {
-			inline const const char* id = "AND";
+			inline const char* const id = "AND";
 		} // namespace AND
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ARROW {
-			inline const const char* id = "ARROW";
+			inline const char* const id = "ARROW";
 		} // namespace ARROW
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace AS {
-			inline const const char* id = "AS";
+			inline const char* const id = "AS";
 		} // namespace AS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ASSERT {
-			inline const const char* id = "ASSERT";
+			inline const char* const id = "ASSERT";
 		} // namespace ASSERT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ASSIGN {
-			inline const const char* id = "ASSIGN";
+			inline const char* const id = "ASSIGN";
 		} // namespace ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ASYNC {
-			inline const const char* id = "ASYNC";
+			inline const char* const id = "ASYNC";
 		} // namespace ASYNC
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace BREAK {
-			inline const const char* id = "BREAK";
+			inline const char* const id = "BREAK";
 		} // namespace BREAK
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace CARET {
-			inline const const char* id = "CARET";
+			inline const char* const id = "CARET";
 		} // namespace CARET
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace CARET_ASSIGN {
-			inline const const char* id = "CARET_ASSIGN";
+			inline const char* const id = "CARET_ASSIGN";
 		} // namespace CARET_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace CLASS {
-			inline const const char* id = "CLASS";
+			inline const char* const id = "CLASS";
 		} // namespace CLASS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace COLON {
-			inline const const char* id = "COLON";
+			inline const char* const id = "COLON";
 		} // namespace COLON
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace COMMA {
-			inline const const char* id = "COMMA";
+			inline const char* const id = "COMMA";
 		} // namespace COMMA
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace COMMENT {
-			inline const const char* id = "COMMENT";
+			inline const char* const id = "COMMENT";
 		} // namespace COMMENT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace CONTINUE {
-			inline const const char* id = "CONTINUE";
+			inline const char* const id = "CONTINUE";
 		} // namespace CONTINUE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace DEDENT {
-			inline const const char* id = "DEDENT";
+			inline const char* const id = "DEDENT";
 		} // namespace DEDENT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace DEF {
-			inline const const char* id = "DEF";
+			inline const char* const id = "DEF";
 		} // namespace DEF
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace DEL {
-			inline const const char* id = "DEL";
+			inline const char* const id = "DEL";
 		} // namespace DEL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace DOT {
-			inline const const char* id = "DOT";
+			inline const char* const id = "DOT";
 		} // namespace DOT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ELIF {
-			inline const const char* id = "ELIF";
+			inline const char* const id = "ELIF";
 		} // namespace ELIF
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ELSE {
-			inline const const char* id = "ELSE";
+			inline const char* const id = "ELSE";
 		} // namespace ELSE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace EQ {
-			inline const const char* id = "EQ";
+			inline const char* const id = "EQ";
 		} // namespace EQ
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace EXCEPT {
-			inline const const char* id = "EXCEPT";
+			inline const char* const id = "EXCEPT";
 		} // namespace EXCEPT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FALSE {
-			inline const const char* id = "FALSE";
+			inline const char* const id = "FALSE";
 		} // namespace FALSE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FINALLY {
-			inline const const char* id = "FINALLY";
+			inline const char* const id = "FINALLY";
 		} // namespace FINALLY
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FLOOR_DIV {
-			inline const const char* id = "FLOOR_DIV";
+			inline const char* const id = "FLOOR_DIV";
 		} // namespace FLOOR_DIV
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FLOOR_DIV_ASSIGN {
-			inline const const char* id = "FLOOR_DIV_ASSIGN";
+			inline const char* const id = "FLOOR_DIV_ASSIGN";
 		} // namespace FLOOR_DIV_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FOR {
-			inline const const char* id = "FOR";
+			inline const char* const id = "FOR";
 		} // namespace FOR
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace FROM {
-			inline const const char* id = "FROM";
+			inline const char* const id = "FROM";
 		} // namespace FROM
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace GE {
-			inline const const char* id = "GE";
+			inline const char* const id = "GE";
 		} // namespace GE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace GLOBAL {
-			inline const const char* id = "GLOBAL";
+			inline const char* const id = "GLOBAL";
 		} // namespace GLOBAL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace GT {
-			inline const const char* id = "GT";
+			inline const char* const id = "GT";
 		} // namespace GT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace ID {
-			inline const const char* id = "ID";
+			inline const char* const id = "ID";
 		} // namespace ID
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace IF {
-			inline const const char* id = "IF";
+			inline const char* const id = "IF";
 		} // namespace IF
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace IMPORT {
-			inline const const char* id = "IMPORT";
+			inline const char* const id = "IMPORT";
 		} // namespace IMPORT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace IN {
-			inline const const char* id = "IN";
+			inline const char* const id = "IN";
 		} // namespace IN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace INDENT {
-			inline const const char* id = "INDENT";
+			inline const char* const id = "INDENT";
 		} // namespace INDENT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace IS {
-			inline const const char* id = "IS";
+			inline const char* const id = "IS";
 		} // namespace IS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LBRACE {
-			inline const const char* id = "LBRACE";
+			inline const char* const id = "LBRACE";
 		} // namespace LBRACE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LBRACKET {
-			inline const const char* id = "LBRACKET";
+			inline const char* const id = "LBRACKET";
 		} // namespace LBRACKET
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LE {
-			inline const const char* id = "LE";
+			inline const char* const id = "LE";
 		} // namespace LE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LPAREN {
-			inline const const char* id = "LPAREN";
+			inline const char* const id = "LPAREN";
 		} // namespace LPAREN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LSHIFT {
-			inline const const char* id = "LSHIFT";
+			inline const char* const id = "LSHIFT";
 		} // namespace LSHIFT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LSHIFT_ASSIGN {
-			inline const const char* id = "LSHIFT_ASSIGN";
+			inline const char* const id = "LSHIFT_ASSIGN";
 		} // namespace LSHIFT_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace LT {
-			inline const const char* id = "LT";
+			inline const char* const id = "LT";
 		} // namespace LT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace MATMUL {
-			inline const const char* id = "MATMUL";
+			inline const char* const id = "MATMUL";
 		} // namespace MATMUL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace MATMUL_ASSIGN {
-			inline const const char* id = "MATMUL_ASSIGN";
+			inline const char* const id = "MATMUL_ASSIGN";
 		} // namespace MATMUL_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace MINUS {
-			inline const const char* id = "MINUS";
+			inline const char* const id = "MINUS";
 		} // namespace MINUS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace MINUS_ASSIGN {
-			inline const const char* id = "MINUS_ASSIGN";
+			inline const char* const id = "MINUS_ASSIGN";
 		} // namespace MINUS_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NE {
-			inline const const char* id = "NE";
+			inline const char* const id = "NE";
 		} // namespace NE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NEWLINE {
-			inline const const char* id = "NEWLINE";
+			inline const char* const id = "NEWLINE";
 		} // namespace NEWLINE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NONE_V {
-			inline const const char* id = "NONE_V";
+			inline const char* const id = "NONE_V";
 		} // namespace NONE_V
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NONLOCAL {
-			inline const const char* id = "NONLOCAL";
+			inline const char* const id = "NONLOCAL";
 		} // namespace NONLOCAL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NOT {
-			inline const const char* id = "NOT";
+			inline const char* const id = "NOT";
 		} // namespace NOT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace NUMBER {
-			inline const const char* id = "NUMBER";
+			inline const char* const id = "NUMBER";
 		} // namespace NUMBER
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace OR {
-			inline const const char* id = "OR";
+			inline const char* const id = "OR";
 		} // namespace OR
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PASS {
-			inline const const char* id = "PASS";
+			inline const char* const id = "PASS";
 		} // namespace PASS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PERCENT {
-			inline const const char* id = "PERCENT";
+			inline const char* const id = "PERCENT";
 		} // namespace PERCENT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PERCENT_ASSIGN {
-			inline const const char* id = "PERCENT_ASSIGN";
+			inline const char* const id = "PERCENT_ASSIGN";
 		} // namespace PERCENT_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PIPE {
-			inline const const char* id = "PIPE";
+			inline const char* const id = "PIPE";
 		} // namespace PIPE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PIPE_ASSIGN {
-			inline const const char* id = "PIPE_ASSIGN";
+			inline const char* const id = "PIPE_ASSIGN";
 		} // namespace PIPE_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PLUS {
-			inline const const char* id = "PLUS";
+			inline const char* const id = "PLUS";
 		} // namespace PLUS
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace PLUS_ASSIGN {
-			inline const const char* id = "PLUS_ASSIGN";
+			inline const char* const id = "PLUS_ASSIGN";
 		} // namespace PLUS_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace POWER {
-			inline const const char* id = "POWER";
+			inline const char* const id = "POWER";
 		} // namespace POWER
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace POWER_ASSIGN {
-			inline const const char* id = "POWER_ASSIGN";
+			inline const char* const id = "POWER_ASSIGN";
 		} // namespace POWER_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RAISE {
-			inline const const char* id = "RAISE";
+			inline const char* const id = "RAISE";
 		} // namespace RAISE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RBRACE {
-			inline const const char* id = "RBRACE";
+			inline const char* const id = "RBRACE";
 		} // namespace RBRACE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RBRACKET {
-			inline const const char* id = "RBRACKET";
+			inline const char* const id = "RBRACKET";
 		} // namespace RBRACKET
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RETURN {
-			inline const const char* id = "RETURN";
+			inline const char* const id = "RETURN";
 		} // namespace RETURN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RPAREN {
-			inline const const char* id = "RPAREN";
+			inline const char* const id = "RPAREN";
 		} // namespace RPAREN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RSHIFT {
-			inline const const char* id = "RSHIFT";
+			inline const char* const id = "RSHIFT";
 		} // namespace RSHIFT
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace RSHIFT_ASSIGN {
-			inline const const char* id = "RSHIFT_ASSIGN";
+			inline const char* const id = "RSHIFT_ASSIGN";
 		} // namespace RSHIFT_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace SEMICOLON {
-			inline const const char* id = "SEMICOLON";
+			inline const char* const id = "SEMICOLON";
 		} // namespace SEMICOLON
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace SLASH {
-			inline const const char* id = "SLASH";
+			inline const char* const id = "SLASH";
 		} // namespace SLASH
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace SLASH_ASSIGN {
-			inline const const char* id = "SLASH_ASSIGN";
+			inline const char* const id = "SLASH_ASSIGN";
 		} // namespace SLASH_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace STAR {
-			inline const const char* id = "STAR";
+			inline const char* const id = "STAR";
 		} // namespace STAR
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace STAR_ASSIGN {
-			inline const const char* id = "STAR_ASSIGN";
+			inline const char* const id = "STAR_ASSIGN";
 		} // namespace STAR_ASSIGN
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace STRING {
-			inline const const char* id = "STRING";
+			inline const char* const id = "STRING";
 		} // namespace STRING
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace TILDE {
-			inline const const char* id = "TILDE";
+			inline const char* const id = "TILDE";
 		} // namespace TILDE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace TRUE {
-			inline const const char* id = "TRUE";
+			inline const char* const id = "TRUE";
 		} // namespace TRUE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace TRY {
-			inline const const char* id = "TRY";
+			inline const char* const id = "TRY";
 		} // namespace TRY
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace WHILE {
-			inline const const char* id = "WHILE";
+			inline const char* const id = "WHILE";
 		} // namespace WHILE
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace WITH {
-			inline const const char* id = "WITH";
+			inline const char* const id = "WITH";
 		} // namespace WITH
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
 		namespace __WS {
-			inline const const char* id = "__WS";
+			inline const char* const id = "__WS";
 		} // namespace __WS
 	} // namespace TokenNames
 } // namespace PyRawParser
@@ -2000,805 +2000,805 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace annotated_assignment {
-			inline const const char* id = "annotated_assignment";
+			inline const char* const id = "annotated_assignment";
 		} // namespace annotated_assignment
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assert_stmt {
-			inline const const char* id = "assert_stmt";
+			inline const char* const id = "assert_stmt";
 		} // namespace assert_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assignment_op {
-			inline const const char* id = "assignment_op";
+			inline const char* const id = "assignment_op";
 		} // namespace assignment_op
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assignment_suffix {
-			inline const const char* id = "assignment_suffix";
+			inline const char* const id = "assignment_suffix";
 		} // namespace assignment_suffix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assignment_tail {
-			inline const const char* id = "assignment_tail";
+			inline const char* const id = "assignment_tail";
 		} // namespace assignment_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assignment_target {
-			inline const const char* id = "assignment_target";
+			inline const char* const id = "assignment_target";
 		} // namespace assignment_target
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace assignment_value {
-			inline const const char* id = "assignment_value";
+			inline const char* const id = "assignment_value";
 		} // namespace assignment_value
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace atom {
-			inline const const char* id = "atom";
+			inline const char* const id = "atom";
 		} // namespace atom
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace attribute_suffix {
-			inline const const char* id = "attribute_suffix";
+			inline const char* const id = "attribute_suffix";
 		} // namespace attribute_suffix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitand_tail {
-			inline const const char* id = "bitand_tail";
+			inline const char* const id = "bitand_tail";
 		} // namespace bitand_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitor_tail {
-			inline const const char* id = "bitor_tail";
+			inline const char* const id = "bitor_tail";
 		} // namespace bitor_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitwise_and {
-			inline const const char* id = "bitwise_and";
+			inline const char* const id = "bitwise_and";
 		} // namespace bitwise_and
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitwise_or {
-			inline const const char* id = "bitwise_or";
+			inline const char* const id = "bitwise_or";
 		} // namespace bitwise_or
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitwise_xor {
-			inline const const char* id = "bitwise_xor";
+			inline const char* const id = "bitwise_xor";
 		} // namespace bitwise_xor
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace bitxor_tail {
-			inline const const char* id = "bitxor_tail";
+			inline const char* const id = "bitxor_tail";
 		} // namespace bitxor_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace block {
-			inline const const char* id = "block";
+			inline const char* const id = "block";
 		} // namespace block
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace break_stmt {
-			inline const const char* id = "break_stmt";
+			inline const char* const id = "break_stmt";
 		} // namespace break_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace call_arg {
-			inline const const char* id = "call_arg";
+			inline const char* const id = "call_arg";
 		} // namespace call_arg
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace call_arg_tail {
-			inline const const char* id = "call_arg_tail";
+			inline const char* const id = "call_arg_tail";
 		} // namespace call_arg_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace call_args {
-			inline const const char* id = "call_args";
+			inline const char* const id = "call_args";
 		} // namespace call_args
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace call_suffix {
-			inline const const char* id = "call_suffix";
+			inline const char* const id = "call_suffix";
 		} // namespace call_suffix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace class_bases {
-			inline const const char* id = "class_bases";
+			inline const char* const id = "class_bases";
 		} // namespace class_bases
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace class_def {
-			inline const const char* id = "class_def";
+			inline const char* const id = "class_def";
 		} // namespace class_def
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace class_header {
-			inline const const char* id = "class_header";
+			inline const char* const id = "class_header";
 		} // namespace class_header
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace compare_op {
-			inline const const char* id = "compare_op";
+			inline const char* const id = "compare_op";
 		} // namespace compare_op
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace compare_tail {
-			inline const const char* id = "compare_tail";
+			inline const char* const id = "compare_tail";
 		} // namespace compare_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace comparison {
-			inline const const char* id = "comparison";
+			inline const char* const id = "comparison";
 		} // namespace comparison
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace compound_stmt {
-			inline const const char* id = "compound_stmt";
+			inline const char* const id = "compound_stmt";
 		} // namespace compound_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace conditional_tail {
-			inline const const char* id = "conditional_tail";
+			inline const char* const id = "conditional_tail";
 		} // namespace conditional_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace conjunction {
-			inline const const char* id = "conjunction";
+			inline const char* const id = "conjunction";
 		} // namespace conjunction
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace continue_stmt {
-			inline const const char* id = "continue_stmt";
+			inline const char* const id = "continue_stmt";
 		} // namespace continue_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace decorated_def {
-			inline const const char* id = "decorated_def";
+			inline const char* const id = "decorated_def";
 		} // namespace decorated_def
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace decorator {
-			inline const const char* id = "decorator";
+			inline const char* const id = "decorator";
 		} // namespace decorator
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace decorators {
-			inline const const char* id = "decorators";
+			inline const char* const id = "decorators";
 		} // namespace decorators
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace def_header {
-			inline const const char* id = "def_header";
+			inline const char* const id = "def_header";
 		} // namespace def_header
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace del_stmt {
-			inline const const char* id = "del_stmt";
+			inline const char* const id = "del_stmt";
 		} // namespace del_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dict_expr {
-			inline const const char* id = "dict_expr";
+			inline const char* const id = "dict_expr";
 		} // namespace dict_expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dict_item {
-			inline const const char* id = "dict_item";
+			inline const char* const id = "dict_item";
 		} // namespace dict_item
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dict_item_tail {
-			inline const const char* id = "dict_item_tail";
+			inline const char* const id = "dict_item_tail";
 		} // namespace dict_item_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dict_items {
-			inline const const char* id = "dict_items";
+			inline const char* const id = "dict_items";
 		} // namespace dict_items
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace disjunction {
-			inline const const char* id = "disjunction";
+			inline const char* const id = "disjunction";
 		} // namespace disjunction
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dotted_as_name {
-			inline const const char* id = "dotted_as_name";
+			inline const char* const id = "dotted_as_name";
 		} // namespace dotted_as_name
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dotted_as_names {
-			inline const const char* id = "dotted_as_names";
+			inline const char* const id = "dotted_as_names";
 		} // namespace dotted_as_names
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace dotted_name {
-			inline const const char* id = "dotted_name";
+			inline const char* const id = "dotted_name";
 		} // namespace dotted_name
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace elif_clause {
-			inline const const char* id = "elif_clause";
+			inline const char* const id = "elif_clause";
 		} // namespace elif_clause
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace else_clause {
-			inline const const char* id = "else_clause";
+			inline const char* const id = "else_clause";
 		} // namespace else_clause
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace except_alias {
-			inline const const char* id = "except_alias";
+			inline const char* const id = "except_alias";
 		} // namespace except_alias
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace except_clause {
-			inline const const char* id = "except_clause";
+			inline const char* const id = "except_clause";
 		} // namespace except_clause
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace except_handlers {
-			inline const const char* id = "except_handlers";
+			inline const char* const id = "except_handlers";
 		} // namespace except_handlers
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace expr {
-			inline const const char* id = "expr";
+			inline const char* const id = "expr";
 		} // namespace expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace expr_list {
-			inline const const char* id = "expr_list";
+			inline const char* const id = "expr_list";
 		} // namespace expr_list
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace expr_list_tail {
-			inline const const char* id = "expr_list_tail";
+			inline const char* const id = "expr_list_tail";
 		} // namespace expr_list_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace expr_stmt {
-			inline const const char* id = "expr_stmt";
+			inline const char* const id = "expr_stmt";
 		} // namespace expr_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace factor {
-			inline const const char* id = "factor";
+			inline const char* const id = "factor";
 		} // namespace factor
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace finally_clause {
-			inline const const char* id = "finally_clause";
+			inline const char* const id = "finally_clause";
 		} // namespace finally_clause
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace for_stmt {
-			inline const const char* id = "for_stmt";
+			inline const char* const id = "for_stmt";
 		} // namespace for_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace for_targets {
-			inline const const char* id = "for_targets";
+			inline const char* const id = "for_targets";
 		} // namespace for_targets
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace function_def {
-			inline const const char* id = "function_def";
+			inline const char* const id = "function_def";
 		} // namespace function_def
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace function_header {
-			inline const const char* id = "function_header";
+			inline const char* const id = "function_header";
 		} // namespace function_header
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace global_stmt {
-			inline const const char* id = "global_stmt";
+			inline const char* const id = "global_stmt";
 		} // namespace global_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace if_stmt {
-			inline const const char* id = "if_stmt";
+			inline const char* const id = "if_stmt";
 		} // namespace if_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_alias {
-			inline const const char* id = "import_alias";
+			inline const char* const id = "import_alias";
 		} // namespace import_alias
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_from {
-			inline const const char* id = "import_from";
+			inline const char* const id = "import_from";
 		} // namespace import_from
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_name {
-			inline const const char* id = "import_name";
+			inline const char* const id = "import_name";
 		} // namespace import_name
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_name_item {
-			inline const const char* id = "import_name_item";
+			inline const char* const id = "import_name_item";
 		} // namespace import_name_item
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_names {
-			inline const const char* id = "import_names";
+			inline const char* const id = "import_names";
 		} // namespace import_names
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_stmt {
-			inline const const char* id = "import_stmt";
+			inline const char* const id = "import_stmt";
 		} // namespace import_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace import_targets {
-			inline const const char* id = "import_targets";
+			inline const char* const id = "import_targets";
 		} // namespace import_targets
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace indented_block {
-			inline const const char* id = "indented_block";
+			inline const char* const id = "indented_block";
 		} // namespace indented_block
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace index_suffix {
-			inline const const char* id = "index_suffix";
+			inline const char* const id = "index_suffix";
 		} // namespace index_suffix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace inversion {
-			inline const const char* id = "inversion";
+			inline const char* const id = "inversion";
 		} // namespace inversion
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace is_op {
-			inline const const char* id = "is_op";
+			inline const char* const id = "is_op";
 		} // namespace is_op
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace keyword_arg {
-			inline const const char* id = "keyword_arg";
+			inline const char* const id = "keyword_arg";
 		} // namespace keyword_arg
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace list_expr {
-			inline const const char* id = "list_expr";
+			inline const char* const id = "list_expr";
 		} // namespace list_expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace main {
-			inline const const char* id = "main";
+			inline const char* const id = "main";
 		} // namespace main
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace nonlocal_stmt {
-			inline const const char* id = "nonlocal_stmt";
+			inline const char* const id = "nonlocal_stmt";
 		} // namespace nonlocal_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace not_in {
-			inline const const char* id = "not_in";
+			inline const char* const id = "not_in";
 		} // namespace not_in
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace not_inversion {
-			inline const const char* id = "not_inversion";
+			inline const char* const id = "not_inversion";
 		} // namespace not_inversion
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace or_tail {
-			inline const const char* id = "or_tail";
+			inline const char* const id = "or_tail";
 		} // namespace or_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parameter {
-			inline const const char* id = "parameter";
+			inline const char* const id = "parameter";
 		} // namespace parameter
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parameter_annotation {
-			inline const const char* id = "parameter_annotation";
+			inline const char* const id = "parameter_annotation";
 		} // namespace parameter_annotation
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parameter_default {
-			inline const const char* id = "parameter_default";
+			inline const char* const id = "parameter_default";
 		} // namespace parameter_default
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parameters {
-			inline const const char* id = "parameters";
+			inline const char* const id = "parameters";
 		} // namespace parameters
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parenthesized_content {
-			inline const const char* id = "parenthesized_content";
+			inline const char* const id = "parenthesized_content";
 		} // namespace parenthesized_content
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parenthesized_expr {
-			inline const const char* id = "parenthesized_expr";
+			inline const char* const id = "parenthesized_expr";
 		} // namespace parenthesized_expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace parenthesized_imports {
-			inline const const char* id = "parenthesized_imports";
+			inline const char* const id = "parenthesized_imports";
 		} // namespace parenthesized_imports
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace pass_stmt {
-			inline const const char* id = "pass_stmt";
+			inline const char* const id = "pass_stmt";
 		} // namespace pass_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace postfix {
-			inline const const char* id = "postfix";
+			inline const char* const id = "postfix";
 		} // namespace postfix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace power {
-			inline const const char* id = "power";
+			inline const char* const id = "power";
 		} // namespace power
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace power_tail {
-			inline const const char* id = "power_tail";
+			inline const char* const id = "power_tail";
 		} // namespace power_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace primary {
-			inline const const char* id = "primary";
+			inline const char* const id = "primary";
 		} // namespace primary
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace raise_from {
-			inline const const char* id = "raise_from";
+			inline const char* const id = "raise_from";
 		} // namespace raise_from
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace raise_stmt {
-			inline const const char* id = "raise_stmt";
+			inline const char* const id = "raise_stmt";
 		} // namespace raise_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace relative_module {
-			inline const const char* id = "relative_module";
+			inline const char* const id = "relative_module";
 		} // namespace relative_module
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace return_annotation {
-			inline const const char* id = "return_annotation";
+			inline const char* const id = "return_annotation";
 		} // namespace return_annotation
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace return_stmt {
-			inline const const char* id = "return_stmt";
+			inline const char* const id = "return_stmt";
 		} // namespace return_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace shift_expr {
-			inline const const char* id = "shift_expr";
+			inline const char* const id = "shift_expr";
 		} // namespace shift_expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace shift_tail {
-			inline const const char* id = "shift_tail";
+			inline const char* const id = "shift_tail";
 		} // namespace shift_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace simple_stmt {
-			inline const const char* id = "simple_stmt";
+			inline const char* const id = "simple_stmt";
 		} // namespace simple_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace simple_stmts {
-			inline const const char* id = "simple_stmts";
+			inline const char* const id = "simple_stmts";
 		} // namespace simple_stmts
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace statement {
-			inline const const char* id = "statement";
+			inline const char* const id = "statement";
 		} // namespace statement
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace sum {
-			inline const const char* id = "sum";
+			inline const char* const id = "sum";
 		} // namespace sum
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace sum_tail {
-			inline const const char* id = "sum_tail";
+			inline const char* const id = "sum_tail";
 		} // namespace sum_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace term {
-			inline const const char* id = "term";
+			inline const char* const id = "term";
 		} // namespace term
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace term_tail {
-			inline const const char* id = "term_tail";
+			inline const char* const id = "term_tail";
 		} // namespace term_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace try_stmt {
-			inline const const char* id = "try_stmt";
+			inline const char* const id = "try_stmt";
 		} // namespace try_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace try_tail {
-			inline const const char* id = "try_tail";
+			inline const char* const id = "try_tail";
 		} // namespace try_tail
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace tuple_elements {
-			inline const const char* id = "tuple_elements";
+			inline const char* const id = "tuple_elements";
 		} // namespace tuple_elements
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace tuple_suffix {
-			inline const const char* id = "tuple_suffix";
+			inline const char* const id = "tuple_suffix";
 		} // namespace tuple_suffix
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace unary_expr {
-			inline const const char* id = "unary_expr";
+			inline const char* const id = "unary_expr";
 		} // namespace unary_expr
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace while_stmt {
-			inline const const char* id = "while_stmt";
+			inline const char* const id = "while_stmt";
 		} // namespace while_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace with_as {
-			inline const const char* id = "with_as";
+			inline const char* const id = "with_as";
 		} // namespace with_as
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace with_item {
-			inline const const char* id = "with_item";
+			inline const char* const id = "with_item";
 		} // namespace with_item
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace with_items {
-			inline const const char* id = "with_items";
+			inline const char* const id = "with_items";
 		} // namespace with_items
 	} // namespace RuleNames
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace RuleNames {
 		namespace with_stmt {
-			inline const const char* id = "with_stmt";
+			inline const char* const id = "with_stmt";
 		} // namespace with_stmt
 	} // namespace RuleNames
 } // namespace PyRawParser
