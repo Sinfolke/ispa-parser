@@ -18,7 +18,6 @@ class Builder {
     std::string name;
     Use use;
     UAST::main input;
-    const UAST::main* root = &input;
     stdu::vector<std::string> fullname;
     using Members = stdu::vector<std::shared_ptr<AST::RuleMember>>;
     using Value = UAST::rule_value;

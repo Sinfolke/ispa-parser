@@ -1,12 +1,13 @@
-#include "output/Parser.h"
+#include <PyRawParser.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <queue>
 #include <stdexcept>
-class PyLexer : public Parser::Lexer {
+
+class PyLexer : public PyRawParser::Lexer {
 public:
-    using Token = Parser::Token;
+    using Token = PyRawParser::Token;
 private:
     std::vector<std::size_t> indent_stack{0};
     std::deque<Token> token_buffer;
@@ -26,19 +27,19 @@ private:
 
     template<typename T>
     static Token makeToken() {
-        return Token{ISPA_STD::RawTokenMeta<Parser::Tokens> {}, T {}};
+        return Token{ISPA_STD::RawTokenMeta {}, T {}};
     }
 
     static Token makeIndent() {
-        return makeToken<Parser::FlatTypes::INDENT>();
+        return makeToken<PyRawParser::FlatTypes::INDENT>();
     }
 
     static Token makeDedent() {
-        return makeToken<Parser::FlatTypes::DEDENT>();
+        return makeToken<PyRawParser::FlatTypes::DEDENT>();
     }
 
     static Token makeNewline() {
-        return makeToken<Parser::FlatTypes::NEWLINE>();
+        return makeToken<PyRawParser::FlatTypes::NEWLINE>();
     }
 
     void processIndentation() {
@@ -73,7 +74,7 @@ private:
         while (!token_buffer.empty()) {
             Token t = std::move(token_buffer.front());
             token_buffer.pop_front();
-            Parser::Lexer::push(std::move(t));
+            PyRawParser::Lexer::push(std::move(t));
         }
     }
 
@@ -90,30 +91,30 @@ public:
                 "PyLexer::push() called after finish()"
             );
         }
-        if (is<Parser::Types::DEDENT>(t) || is<Parser::Types::INDENT>(t)) {
-            t = Parser::Token {t.meta(), Parser::Types::__WS {}};
+        if (is<PyRawParser::Types::DEDENT>(t) || is<PyRawParser::Types::INDENT>(t)) {
+            t = PyRawParser::Token {t.meta(), PyRawParser::Types::__WS {}};
         }
         // Whitespace at the beginning of a physical line.
-        if (at_line_start && is<Parser::FlatTypes::__WS>(t)) {
-            pending_indent += t.to_node<Parser::FlatTypes::__WS>().length();
+        if (at_line_start && is<PyRawParser::FlatTypes::__WS>(t)) {
+            pending_indent += t.to_node<PyRawParser::FlatTypes::__WS>().length();
         }
 
         // Bracket tracking for implicit line continuation.
-        if (is<Parser::FlatTypes::LPAREN>(t) ||
-            is<Parser::FlatTypes::LBRACKET>(t) ||
-            is<Parser::FlatTypes::LBRACE>(t)) {
+        if (is<PyRawParser::FlatTypes::LPAREN>(t) ||
+            is<PyRawParser::FlatTypes::LBRACKET>(t) ||
+            is<PyRawParser::FlatTypes::LBRACE>(t)) {
             ++bracket_depth;
         }
-        else if (is<Parser::FlatTypes::RPAREN>(t) ||
-                 is<Parser::FlatTypes::RBRACKET>(t) ||
-                 is<Parser::FlatTypes::RBRACE>(t)) {
+        else if (is<PyRawParser::FlatTypes::RPAREN>(t) ||
+                 is<PyRawParser::FlatTypes::RBRACKET>(t) ||
+                 is<PyRawParser::FlatTypes::RBRACE>(t)) {
             if (bracket_depth > 0) {
                 --bracket_depth;
             }
         }
 
         // Physical newline.
-        if (is<Parser::FlatTypes::NEWLINE>(t)) {
+        if (is<PyRawParser::FlatTypes::NEWLINE>(t)) {
             pending_indent = 0;
             at_line_start = true;
 
@@ -133,7 +134,7 @@ public:
         }
 
         // Comment-only lines do not change indentation.
-        if (is<Parser::FlatTypes::COMMENT>(t)) {
+        if (is<PyRawParser::FlatTypes::COMMENT>(t)) {
             return;
         }
 
@@ -198,10 +199,10 @@ public:
         finished = false;
     }
 };
-class PyParser : public Parser::Parser {
+class PyParser : public ::PyRawParser::Parser {
 public:
     auto parseLazy(const std::string& source)
-        -> ::Parser::Types::main
+        -> ::PyRawParser::Types::main
     {
         PyLexer lexer;
         lexer.setInput(source);

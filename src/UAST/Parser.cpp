@@ -2,6 +2,7 @@ module;
 #include <output/Parser.h>
 module UAST.Parser;
 import std;
+import UAST.Python;
 namespace {
 UAST::__WS copy(const Parser::FlatTypes::__WS&, const std::string&);
 UAST::advanced_rule_dep_decl_DEPENDS copy(const Parser::FlatTypes::advanced_rule_dep_decl_DEPENDS&, const std::string&);
@@ -87,6 +88,13 @@ template<class T> auto copy(const ISPA_STD::Node<T>& n, const std::string& file)
     using R = decltype(copy(n.data(), file));
     UAST::Node<R> out;
     out.position = {file, n.startpos(), n.length(), n.line(), n.column()};
+    if (n.start() && n.startpos() != std::string::npos) {
+        out.position.line = out.position.column = 1;
+        for (auto p = n.start() - n.startpos(); p < n.start(); ++p) {
+            if (*p == '\n') { ++out.position.line; out.position.column = 1; }
+            else ++out.position.column;
+        }
+    }
     out.absent = n.empty();
     if (!n.empty()) out.value = copy(n.data(), file);
     return out;
@@ -279,11 +287,17 @@ UAST::grammar_modifier copy(const Parser::FlatTypes::grammar_modifier& v, const 
 UAST::expr copy(const Parser::FlatTypes::expr& v, const std::string& file) {
     UAST::expr out;
     out.value = copy(v.value, file);
+    auto body = out.value.position;
+    body.offset += 2; body.column += 2;
+    out.python = UAST::parsePython(out.value.data().value, body, true);
     return out;
 }
 UAST::stmt copy(const Parser::FlatTypes::stmt& v, const std::string& file) {
     UAST::stmt out;
     out.value = copy(v.value, file);
+    auto body = out.value.position;
+    body.offset += 2; body.column += 2;
+    out.python = UAST::parsePython(out.value.data().value, body, false);
     return out;
 }
 UAST::rule_value_shared_counter_registration copy(const Parser::FlatTypes::rule_value_shared_counter_registration& v, const std::string& file) {
@@ -467,3 +481,474 @@ UAST::rule_value_one_capture copy(const Parser::FlatTypes::rule_value_one_captur
 UAST::main UAST::fromParser(const Parser::Types::main& root, const std::string& file) {
     return copy(root, file);
 }
+
+namespace {
+UAST::PythonNode snapshot(const UAST::__WS&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_dep_decl_DEPENDS&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::AUTO&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::FAIL&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::SEMICOLON&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::COLON&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::EQUALS_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::AMPERSAND&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::PERCENT_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_nested_rule_NUMBER_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_nested_rule&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::LEFT_CURLY_BRACKET&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_shared_counter_registration_AUTO&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::COMMERCIAL_AT&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_QUANTIFIER&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_NOSPACE&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_ANY&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::template_params_LESS_THAN_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_STRING&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::grammar_modifier_AUTO&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::grammar_modifier_MOD&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_SPACE&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::template_params_GREATER_THAN_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_alternative_VERTICAL_LINE&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_alternative&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::grammar_modifier_RIGHT_SQUARE_BRACKET&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_dyn_DOLLAR_SIGN&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match_MATCH&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::COMMA&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::RIGHT_PARENTHESIS&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::LEFT_PARENTHESIS&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::RIGHT_CURLY_BRACKET&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::NUMBER&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::PY_RAW&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::ID&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_CGROUP&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_group&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_mul_capture&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::grammar_modifier&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::expr&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::stmt&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_shared_counter_registration&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match_unpack&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::forward_declaration&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::param&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_ast_abbr&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_f_binding&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_ast_capture&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_var_capture&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::explicit_expr&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_ast_full_part&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_ast_single_value&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_counter_bounded&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_dyn_dyn_expr&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_dep_decl&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::template_params&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::params&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_ast_full&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_counter&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_dyn&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::name&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_ast&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::grammar&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::advanced_rule_fail_call&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::fail_block&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_fail_capture&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_pattern&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::main&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(const UAST::rule_value_one_capture&, const UAST::SourcePosition&);
+UAST::PythonNode snapshot(std::monostate, const UAST::SourcePosition& base) { return {"absent", {}, {}, base, true, {}}; }
+UAST::PythonNode snapshot(const std::string& v, const UAST::SourcePosition& base) { return {"string", {}, v, base, false, {}}; }
+UAST::PythonNode snapshot(char v, const UAST::SourcePosition& base) { return {"char", {}, std::string(1, v), base, false, {}}; }
+UAST::PythonNode snapshot(const UAST::CaptureBinding& v, const UAST::SourcePosition& base) {
+    return {"CaptureBinding", {}, {}, base, false, {
+        {"string", "name", v.name, base, false, {}},
+        {"bool", "optional", v.optional ? "true" : "false", base, false, {}},
+        {"bool", "list", v.list ? "true" : "false", base, false, {}}
+    }};
+}
+template<class T> UAST::PythonNode snapshot(const std::shared_ptr<T>& p, const UAST::SourcePosition& base) {
+    return p ? snapshot(*p, base) : UAST::PythonNode{"pointer", {}, {}, base, true, {}};
+}
+template<class T> UAST::PythonNode snapshot(const UAST::Node<T>& n, const UAST::SourcePosition&) {
+    if (n.empty()) return {"node", {}, {}, n.position, true, {}};
+    auto out = snapshot(n.data(), n.position);
+    out.position = n.position;
+    return out;
+}
+template<class... T> UAST::PythonNode snapshot(const std::variant<T...>& v, const UAST::SourcePosition& base) {
+    return {"variant", {}, std::to_string(v.index()), base, false, {std::visit([&](const auto& n) { return snapshot(n, base); }, v)}};
+}
+template<class T> UAST::PythonNode snapshot(const std::vector<T>& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"sequence", {}, {}, base, false, {}};
+    for (const auto& n : v) out.children.push_back(snapshot(n, base));
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::__WS& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"__WS", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_dep_decl_DEPENDS& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_dep_decl_DEPENDS", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::AUTO& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"AUTO", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::FAIL& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"FAIL", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::SEMICOLON& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"SEMICOLON", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::COLON& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"COLON", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::EQUALS_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"EQUALS_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::AMPERSAND& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"AMPERSAND", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::PERCENT_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"PERCENT_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_nested_rule_NUMBER_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_nested_rule_NUMBER_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_nested_rule& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_nested_rule", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::LEFT_CURLY_BRACKET& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"LEFT_CURLY_BRACKET", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_shared_counter_registration_AUTO& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_shared_counter_registration_AUTO", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::COMMERCIAL_AT& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"COMMERCIAL_AT", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_QUANTIFIER& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_QUANTIFIER", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_NOSPACE& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_NOSPACE", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_ANY& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_ANY", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::template_params_LESS_THAN_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"template_params_LESS_THAN_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_STRING& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_STRING", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::grammar_modifier_AUTO& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"grammar_modifier_AUTO", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::grammar_modifier_MOD& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"grammar_modifier_MOD", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_SPACE& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_SPACE", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::template_params_GREATER_THAN_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"template_params_GREATER_THAN_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_alternative_VERTICAL_LINE& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_alternative_VERTICAL_LINE", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_alternative& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_alternative", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::grammar_modifier_RIGHT_SQUARE_BRACKET& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"grammar_modifier_RIGHT_SQUARE_BRACKET", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_dyn_DOLLAR_SIGN& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_dyn_DOLLAR_SIGN", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match_MATCH& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_regular_match_MATCH", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::COMMA& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"COMMA", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::RIGHT_PARENTHESIS& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"RIGHT_PARENTHESIS", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::LEFT_PARENTHESIS& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"LEFT_PARENTHESIS", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::RIGHT_CURLY_BRACKET& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"RIGHT_CURLY_BRACKET", {}, {}, base, false, {}};
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::NUMBER& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"NUMBER", {}, {}, base, false, {}};
+    { auto child = snapshot(v.full, base); child.field = "full"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.floating, base); child.field = "floating"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::PY_RAW& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"PY_RAW", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::ID& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"ID", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_CGROUP& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_CGROUP", {}, {}, base, false, {}};
+    { auto child = snapshot(v.negative, base); child.field = "negative"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.v, base); child.field = "v"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_group& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_group", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_mul_capture& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_mul_capture", {}, {}, base, false, {}};
+    { auto child = snapshot(v.type, base); child.field = "type"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.cap, base); child.field = "cap"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::grammar_modifier& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"grammar_modifier", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::expr& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"expr", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    { auto child = v.python; child.field = "python"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.bindings, base); child.field = "bindings"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::stmt& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"stmt", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    { auto child = v.python; child.field = "python"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.bindings, base); child.field = "bindings"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_shared_counter_registration& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_shared_counter_registration", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match_unpack& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_regular_match_unpack", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::forward_declaration& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"forward_declaration", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::param& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"param", {}, {}, base, false, {}};
+    { auto child = snapshot(v.first_p, base); child.field = "first_p"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.following_p, base); child.field = "following_p"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_ast_abbr& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_ast_abbr", {}, {}, base, false, {}};
+    { auto child = snapshot(v.f, base); child.field = "f"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.seq, base); child.field = "seq"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_f_binding& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_f_binding", {}, {}, base, false, {}};
+    { auto child = snapshot(v.f, base); child.field = "f"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.seq, base); child.field = "seq"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_ast_capture& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_ast_capture", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_var_capture& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_var_capture", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::explicit_expr& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"explicit_expr", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_ast_full_part& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_ast_full_part", {}, {}, base, false, {}};
+    { auto child = snapshot(v.key, base); child.field = "key"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.e, base); child.field = "e"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_ast_single_value& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_ast_single_value", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_counter_bounded& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_counter_bounded", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_dyn_dyn_expr& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_dyn_dyn_expr", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_regular_match& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_regular_match", {}, {}, base, false, {}};
+    { auto child = snapshot(v.patterns, base); child.field = "patterns"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.assign_names, base); child.field = "assign_names"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_dep_decl& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_dep_decl", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::template_params& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"template_params", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::params& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"params", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_ast_full& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_ast_full", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_counter& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_counter", {}, {}, base, false, {}};
+    { auto child = snapshot(v.quantifier, base); child.field = "quantifier"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.repetitions, base); child.field = "repetitions"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_dyn& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_dyn", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule", {}, {}, base, false, {}};
+    { auto child = snapshot(v.dep, base); child.field = "dep"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::name& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"name", {}, {}, base, false, {}};
+    { auto child = snapshot(v.primary, base); child.field = "primary"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.nested, base); child.field = "nested"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.temp_params, base); child.field = "temp_params"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.param, base); child.field = "param"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_ast& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_ast", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::grammar& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"grammar", {}, {}, base, false, {}};
+    { auto child = snapshot(v.mod, base); child.field = "mod"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.entry, base); child.field = "entry"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::advanced_rule_fail_call& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"advanced_rule_fail_call", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::fail_block& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"fail_block", {}, {}, base, false, {}};
+    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.val, base); child.field = "val"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_fail_capture& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_fail_capture", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_pattern& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_pattern", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule", {}, {}, base, false, {}};
+    { auto child = snapshot(v.v, base); child.field = "v"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.ast_pointer, base); child.field = "ast_pointer"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.fail_pointer, base); child.field = "fail_pointer"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.nested, base); child.field = "nested"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::main& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"main", {}, {}, base, false, {}};
+    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
+    return out;
+}
+UAST::PythonNode snapshot(const UAST::rule_value_one_capture& v, const UAST::SourcePosition& base) {
+    UAST::PythonNode out{"rule_value_one_capture", {}, {}, base, false, {}};
+    { auto child = snapshot(v.v_cap, base); child.field = "v_cap"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.ast_cap, base); child.field = "ast_cap"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.fail_cap, base); child.field = "fail_cap"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.val, base); child.field = "val"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.alts, base); child.field = "alts"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.quantifier, base); child.field = "quantifier"; out.children.push_back(std::move(child)); }
+    { auto child = snapshot(v.registration, base); child.field = "registration"; out.children.push_back(std::move(child)); }
+    return out;
+}
+}
+UAST::PythonNode UAST::describe(const UAST::advanced_rule& value, const UAST::SourcePosition& position) { return snapshot(value, position); }

@@ -17,6 +17,10 @@ template<class T> struct Node {
 };
 // A lossless Python syntax tree: node kinds, named fields, sequence and variant
 // structure, scalar values, absent nodes, and positions are all retained.
+struct CaptureBinding {
+    std::string name;
+    bool optional = false, list = false;
+};
 struct PythonNode {
     std::string kind, field, scalar;
     SourcePosition position;
@@ -195,10 +199,12 @@ struct grammar_modifier {
 struct expr {
     Node<PY_RAW> value{};
     PythonNode python;
+    std::vector<CaptureBinding> bindings;
 };
 struct stmt {
     Node<PY_RAW> value{};
     PythonNode python;
+    std::vector<CaptureBinding> bindings;
 };
 struct rule_value_shared_counter_registration {
     Node<ID> value{};

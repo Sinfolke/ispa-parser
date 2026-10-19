@@ -55,8 +55,10 @@ namespace {
         for (const auto& arg : args.following_p) out.push_back(id(arg));
         return out;
     }
-    AST::PythonAction action(const UAST::PythonNode& n, const UAST::SourcePosition& p) {
-        return {python(n), {}, position(p)};
+    template<class T> AST::PythonAction action(const T& n, const UAST::SourcePosition& p) {
+        AST::PythonAction out{python(n.python), {}, position(p)};
+        for (const auto& binding : n.bindings) out.bindings.push_back({binding.name, binding.optional, binding.list});
+        return out;
     }
     [[noreturn]] void unsupported(const std::string& message) {
         throw std::runtime_error("ISPA bootstrap converter: unsupported " + message);
@@ -256,7 +258,7 @@ AST::DataBlock AST::Builder::convertData(
                 result.value = makeAtDataBlock();
             } else {
                 const auto& expression = std::get<UAST::Node<UAST::expr>>(single.value);
-                rule_features.push_back(action(payload(expression).python, expression.position));
+                rule_features.push_back(action(payload(expression), expression.position));
             }
         } else if constexpr (std::is_same_v<
             T,
@@ -265,7 +267,7 @@ AST::DataBlock AST::Builder::convertData(
             >
         >) {
             for (const auto& part : payload(item).value) {
-                auto a = action(payload(payload(part).e).python, part.position);
+                auto a = action(payload(payload(part).e), part.position);
                 a.target = id(payload(part).key);
                 rule_features.push_back(std::move(a));
             }
@@ -318,7 +320,8 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
         AST::Rule out;
         out.features = std::move(rule_features);
         rule_features.clear();
-        out.features.push_back(AST::AdvancedRule{});
+        const auto& advanced = std::get<UAST::Node<UAST::advanced_rule>>(grammar.entry);
+        out.features.push_back(AST::AdvancedRule{python(UAST::describe(payload(advanced), advanced.position)), position(advanced.position)});
         tree_map[fullname] = std::move(out);
     }
     tree_map.at(fullname).position = position(grammar.name.position);
@@ -334,18 +337,17 @@ void AST::Builder::convertMain(const UAST::main& main) {
             } else if constexpr (std::is_same_v<T, UAST::Node<UAST::fail_block>>) {
                 const auto& block = payload(value);
                 const auto& n = payload(block.name);
-                fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(payload(block.val).python, block.val.position), position(value.position)});
+                fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(payload(block.val), block.val.position), position(value.position)});
             }
         }, entry);
     }
 }
 
 void AST::Builder::build() {
-    if (!root) throw std::runtime_error("ISPA bootstrap: no parse root");
     tree_map.clear();
     fail_blocks.clear();
     rule_features.clear();
     fullname.clear();
 
-    convertMain(*root);
+    convertMain(input);
 }

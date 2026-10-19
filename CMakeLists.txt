@@ -90,6 +90,7 @@ target_sources(ispa_modules
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
         PRIVATE
             ${ISPA_MODULE_SOURCES}
+            ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped/PyRawParser.cpp
 )
 
 target_include_directories(ispa_modules PRIVATE
@@ -98,6 +99,7 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/new
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/converters
+        ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped
 )
 
 target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser)

@@ -2,6 +2,7 @@
 #include <output/Parser.h>
 import UAST;
 import UAST.Parser;
+import UAST.Python;
 import AST.Builder;
 import AST.API;
 import AST.Tree;
@@ -46,6 +47,9 @@ TEST(UAST, OwnsParserDataAndPositions) {
     }
     const auto& declaration = std::get<UAST::Node<UAST::grammar>>(syntax.value.at(0));
     EXPECT_EQ(declaration.position.file, "owned.isc");
+    EXPECT_EQ(declaration.position.offset, 0u);
+    EXPECT_EQ(declaration.position.line, 1u);
+    EXPECT_EQ(declaration.position.column, 1u);
     EXPECT_FALSE(declaration.empty());
     EXPECT_EQ(declaration.data().name.data().primary.data().value, "WORD");
     AST::Builder builder(syntax);
@@ -94,3 +98,60 @@ TEST(UAST, BoundedCountersAndSharedRegistration) {
     EXPECT_EQ(feature<AST::Counter>(*members[1]).bound, "limit");
     EXPECT_EQ(feature<AST::SharedCounterRegistration>(*members[0]).name, "count");
 }
+
+TEST(UAST, PythonActionAndFailBlock) {
+    Parser::Parser parser;
+    auto syntax = UAST::fromParser(parser.parse("fail recover(value) p{py} T: 'a';"), "python.isc");
+    auto& block = std::get<UAST::Node<UAST::fail_block>>(syntax.value.front()).data();
+    block.val.data().bindings.push_back({"value", true, true});
+    AST::Builder builder(syntax);
+    builder.build();
+    auto tree = builder.get();
+    ASSERT_EQ(tree.getFailBlocks().size(), 1u);
+    const auto& fail = tree.getFailBlocks().front();
+    EXPECT_EQ(fail.name.front(), "recover");
+    EXPECT_EQ(fail.parameters.front(), "value");
+    EXPECT_EQ(fail.action.python.kind, "main");
+    ASSERT_EQ(fail.action.bindings.size(), 1u);
+    EXPECT_TRUE(fail.action.bindings.front().optional);
+    EXPECT_TRUE(fail.action.bindings.front().list);
+}
+
+TEST(UAST, PythonSubtreeRetainsStatementsAndExpressions) {
+    UAST::SourcePosition pos{"action.isc", 25, 0, 4, 2};
+    const auto statements = UAST::parsePython("x = 3\nif x:\n    return x\n", pos, false);
+    EXPECT_EQ(statements.kind, "main");
+    ASSERT_FALSE(statements.children.empty());
+    const auto expression = UAST::parsePython("x + 2", pos, true);
+    EXPECT_EQ(expression.kind, "expr");
+    EXPECT_EQ(expression.position.file, "action.isc");
+}
+
+TEST(UAST, PythonExpressionInDynamicPatternAndCounter) {
+    auto tree = convert("T: ${p{py}} 'a'+=p{py};");
+    const auto& members = tree.getTreeMap().at({"T"}).rule_members;
+    ASSERT_EQ(members.size(), 2u);
+    EXPECT_EQ(feature<AST::DynamicPattern>(*members[0]).expression.kind, "expr");
+    EXPECT_EQ(feature<AST::Counter>(*members[1]).expression.kind, "expr");
+}
+
+TEST(UAST, ConvertsBootstrapGrammar) {
+    UAST::main syntax;
+    for (const auto* name : {"entry.isc", "common.isc", "rule.isc", "adv_rule.isc", "fail_block.isc"}) {
+        const auto path = std::filesystem::path(ROOT_DIR) / "parser/ispa/grammar" / name;
+        std::ifstream input(path);
+        ASSERT_TRUE(input.is_open());
+        std::string source((std::istreambuf_iterator<char>(input)), {});
+        Parser::Parser parser;
+        auto file = UAST::fromParser(parser.parse(source.c_str()), path.string());
+        ASSERT_FALSE(file.value.empty()) << path;
+        syntax.value.insert(syntax.value.end(), file.value.begin(), file.value.end());
+    }
+    AST::Builder builder(syntax);
+    ASSERT_NO_THROW(builder.build());
+    auto tree = builder.get();
+    EXPECT_GT(tree.getTreeMap().size(), 30u);
+    EXPECT_TRUE(tree.contains({"rule", "value", "mul_capture"}));
+    EXPECT_TRUE(tree.contains({"advanced_rule"}));
+}
+
