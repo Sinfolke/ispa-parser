@@ -12,6 +12,7 @@ import Dump;
 import AST.API;
 import AST.types;
 import AST.Tree;
+import AST.BackendGuard;
 import UAST.Parser;
 import AST.Pass;
 import Semantic;
@@ -198,6 +199,7 @@ int main(int argc, char** argv) {
     AST::Builder ast_builder(modules);
     ast_builder.build();
     auto ast = ast_builder.get();
+    AST::requireCppSupport(ast);
 
     Semantic semantic(ast);
     semantic.checkTokenRecursion();

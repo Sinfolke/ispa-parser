@@ -74,12 +74,28 @@ TEST(UAST, RegionCapture) {
     ASSERT_TRUE(member.isGroup());
     EXPECT_EQ(member.getGroup().values.size(), 2u);
     EXPECT_EQ(feature<AST::RegionCapture>(member).capture, '@');
+    auto failTree = convert("T: %=('a' 'b');");
+    const auto& fail = *failTree.getTreeMap().at({"T"}).rule_members.front();
+    EXPECT_EQ(feature<AST::RegionCapture>(fail).capture, '%');
 }
 
 TEST(UAST, DynamicPattern) {
     auto tree = convert("T: $name;");
     const auto& member = *tree.getTreeMap().at({"T"}).rule_members.front();
     EXPECT_EQ(feature<AST::DynamicPattern>(member).name, "name");
+    EXPECT_FALSE(member.empty());
+}
+
+TEST(UAST, KeepsCombinedCapturesAndDeclarationParameters) {
+    auto tree = convert("#[inline] T<type>(arg): &value @node 'a';");
+    const auto& rule = tree.getTreeMap().at({"T"});
+    const auto& member = *rule.rule_members.front();
+    EXPECT_EQ(member.prefix.name, "node");
+    EXPECT_EQ(feature<AST::VariableCapture>(member).name, "value");
+    const auto& declaration = std::get<AST::DeclarationSyntax>(rule.features.front());
+    EXPECT_EQ(declaration.modifiers.front(), "inline");
+    EXPECT_EQ(declaration.parameters.front(), "arg");
+    EXPECT_EQ(declaration.templateParameters.front(), "type");
 }
 
 TEST(UAST, LeavesReferenceResolutionToSemanticStage) {
@@ -131,8 +147,8 @@ TEST(UAST, PythonExpressionInDynamicPatternAndCounter) {
     auto tree = convert("T: ${p{py}} 'a'+=p{py};");
     const auto& members = tree.getTreeMap().at({"T"}).rule_members;
     ASSERT_EQ(members.size(), 2u);
-    EXPECT_EQ(feature<AST::DynamicPattern>(*members[0]).expression.kind, "expr");
-    EXPECT_EQ(feature<AST::Counter>(*members[1]).expression.kind, "expr");
+    EXPECT_EQ(feature<AST::DynamicPattern>(*members[0]).expression.python.kind, "expr");
+    EXPECT_EQ(feature<AST::Counter>(*members[1]).expression.python.kind, "expr");
 }
 
 TEST(UAST, ConvertsBootstrapGrammar) {
@@ -153,5 +169,25 @@ TEST(UAST, ConvertsBootstrapGrammar) {
     EXPECT_GT(tree.getTreeMap().size(), 30u);
     EXPECT_TRUE(tree.contains({"rule", "value", "mul_capture"}));
     EXPECT_TRUE(tree.contains({"advanced_rule"}));
+}
+
+TEST(UAST, AdvancedRuleKeepsPythonActions) {
+    auto tree = convert("T { p{py} }");
+    const auto& features = tree.getTreeMap().at({"T"}).features;
+    ASSERT_EQ(features.size(), 2u);
+    EXPECT_EQ(std::get<AST::AdvancedRule>(features[0]).syntax.kind, "advanced_rule");
+    EXPECT_EQ(std::get<AST::PythonAction>(features[1]).python.kind, "main");
+}
+
+TEST(UAST, PythonAstBlocksKeepTargets) {
+    auto tree = convert("T: 'a' &{ result: p{py} }; S: 'b' {p{py}};");
+    const auto& keyed = tree.getTreeMap().at({"T"}).features;
+    ASSERT_EQ(keyed.size(), 1u);
+    const auto& action = std::get<AST::PythonAction>(keyed.front());
+    EXPECT_EQ(action.target, "result");
+    EXPECT_EQ(action.python.kind, "expr");
+    const auto& single = tree.getTreeMap().at({"S"}).features;
+    ASSERT_EQ(single.size(), 1u);
+    EXPECT_TRUE(std::get<AST::PythonAction>(single.front()).target.empty());
 }
 

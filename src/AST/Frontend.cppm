@@ -102,7 +102,7 @@ private:
 };
 struct DynamicPattern {
     std::string name{};
-    PythonNode expression{};
+    PythonAction expression{};
     SourcePosition position{};
 private:
     friend struct ::uhash;
@@ -114,7 +114,7 @@ private:
 struct Counter {
     std::string kind{};
     std::string bound{};
-    PythonNode expression{};
+    PythonAction expression{};
     SourcePosition position{};
 private:
     friend struct ::uhash;
@@ -165,5 +165,14 @@ private:
     auto members() const { return std::tie(syntax, position); }
     auto members() { return std::tie(syntax, position); }
 };
-using FrontendFeature = std::variant<PythonAction, FailBlock, FailBinding, FailMarker, RegionCapture, DynamicPattern, Counter, SharedCounterRegistration, VariableCapture, DeclarationSyntax, AdvancedRule>;
+struct SpacePattern {
+    SourcePosition position{};
+private:
+    friend struct ::uhash;
+    friend struct ::LLIR::Serialize::MembersAccess;
+    friend struct ::LLIR::Serialize::MemberAccess;
+    auto members() const { return std::tie(position); }
+    auto members() { return std::tie(position); }
+};
+using FrontendFeature = std::variant<PythonAction, FailBlock, FailBinding, FailMarker, RegionCapture, DynamicPattern, Counter, SharedCounterRegistration, VariableCapture, DeclarationSyntax, AdvancedRule, SpacePattern>;
 }

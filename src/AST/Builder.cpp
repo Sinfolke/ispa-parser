@@ -128,7 +128,7 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_NOSPACE>>) {
             output.value = AST::RuleMemberNospace{};
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_SPACE>>) {
-            output.value = characterGroup(false, " ");
+            output.features.push_back(AST::SpacePattern{position(item.position)});
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::name>>) {
             const auto& n = payload(item);
             if (!n.temp_params.empty() || !n.param.empty())
@@ -149,7 +149,7 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
             std::visit([&](const auto& n) {
                 using D = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<D, UAST::Node<UAST::ID>>) dynamic.name = id(n);
-                else if constexpr (!std::is_same_v<D, std::monostate>) dynamic.expression = python(payload(payload(n).value).python);
+                else if constexpr (!std::is_same_v<D, std::monostate>) dynamic.expression = action(payload(payload(n).value), payload(n).value.position);
             }, payload(item).value);
             output.features.push_back(std::move(dynamic));
         }
@@ -179,6 +179,8 @@ AST::RuleMember AST::Builder::convertValue(const Value& value) {
 AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture& value) {
     AST::RuleMember output = convertPattern(payload(value.val));
     output.position = position(value.val.position);
+    auto patternFeatures = std::move(output.features);
+    output.features.clear();
     if (!value.registration.empty())
         output.features.push_back(AST::SharedCounterRegistration{id(payload(value.registration).value), position(value.registration.position)});
     if (!value.v_cap.empty())
@@ -190,12 +192,6 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
         if (!n.empty()) { marker.name = qualifiedName(payload(n)); marker.parameters = parameters(payload(n).param); }
         output.features.push_back(std::move(marker));
     }
-    // TODO
-    // if (!value.v_cap.empty()) {
-    //     output.prefix.present = true;
-    //     output.prefix.present = true;
-    //     output.prefix.name = id(payload(value.v_cap).value);
-    // }
 
     if (!value.ast_cap.empty()) {
         output.prefix.present = true;
@@ -209,12 +205,15 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
         AST::RuleMemberOp alternatives;
         auto original = output;
         original.prefix.clear();
+        original.features = std::move(patternFeatures);
         alternatives.options.push_back(std::make_shared<AST::RuleMember>(std::move(original)));
         for (const auto& alt : value.alts) {
             auto next = convertPattern(payload(payload(alt).value));
             alternatives.options.push_back(std::make_shared<AST::RuleMember>(std::move(next)));
         }
         output.value = std::move(alternatives);
+    } else {
+        output.features.insert(output.features.begin(), patternFeatures.begin(), patternFeatures.end());
     }
 
     if (!value.quantifier.empty()) {
@@ -226,7 +225,7 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
                 using T = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<T, UAST::Node<UAST::ID>>) { counter.kind = "name"; counter.bound = id(n); }
                 else if constexpr (std::is_same_v<T, UAST::Node<UAST::NUMBER>>) { counter.kind = "number"; counter.bound = payload(n).full; if (!payload(n).floating.empty()) counter.bound += "." + payload(n).floating; }
-                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = python(payload(n).python); }
+                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = action(payload(n), n.position); }
             }, payload(q.repetitions).value);
             output.features.push_back(std::move(counter));
         }
@@ -322,6 +321,10 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
         rule_features.clear();
         const auto& advanced = std::get<UAST::Node<UAST::advanced_rule>>(grammar.entry);
         out.features.push_back(AST::AdvancedRule{python(UAST::describe(payload(advanced), advanced.position)), position(advanced.position)});
+        for (const auto& entry : payload(advanced).body) {
+            if (const auto* statement = std::get_if<UAST::Node<UAST::stmt>>(&entry))
+                out.features.push_back(action(payload(*statement), statement->position));
+        }
         tree_map[fullname] = std::move(out);
     }
     tree_map.at(fullname).position = position(grammar.name.position);

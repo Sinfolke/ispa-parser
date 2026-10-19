@@ -61,16 +61,35 @@ template<class T> void read(std::istream& in, T& value) {
     }
 }
 
-template<class T> void roundTrip(const T& original) {
+template<class T> T roundTrip(const T& original) {
     std::stringstream wire;
     write(wire, original);
     T restored{};
     read(wire, restored);
-    ASSERT_TRUE(wire.good());
+    if (!wire.good()) throw std::runtime_error("deserialization failed");
     std::ostringstream again;
     write(again, restored);
     EXPECT_EQ(wire.str(), again.str());
+    return restored;
 }
+
+template<class T, std::size_t Count> constexpr bool reflectsAllMembers =
+    std::tuple_size_v<decltype(LLIR::Serialize::MembersAccess::get(std::declval<T&>()))> == Count;
+static_assert(reflectsAllMembers<AST::SourcePosition, 5>);
+static_assert(reflectsAllMembers<AST::PythonNode, 6>);
+static_assert(reflectsAllMembers<AST::CaptureBinding, 3>);
+static_assert(reflectsAllMembers<AST::PythonAction, 4>);
+static_assert(reflectsAllMembers<AST::FailBlock, 4>);
+static_assert(reflectsAllMembers<AST::FailBinding, 2>);
+static_assert(reflectsAllMembers<AST::FailMarker, 3>);
+static_assert(reflectsAllMembers<AST::RegionCapture, 2>);
+static_assert(reflectsAllMembers<AST::DynamicPattern, 3>);
+static_assert(reflectsAllMembers<AST::Counter, 4>);
+static_assert(reflectsAllMembers<AST::SharedCounterRegistration, 2>);
+static_assert(reflectsAllMembers<AST::VariableCapture, 2>);
+static_assert(reflectsAllMembers<AST::DeclarationSyntax, 4>);
+static_assert(reflectsAllMembers<AST::AdvancedRule, 2>);
+static_assert(reflectsAllMembers<AST::SpacePattern, 1>);
 }
 
 TEST(UASTSerialization, EveryNewNode) {
@@ -83,16 +102,28 @@ TEST(UASTSerialization, EveryNewNode) {
     roundTrip(leaf);
     roundTrip(python);
     roundTrip(binding);
-    roundTrip(action);
+    const auto restored = roundTrip(action);
+    EXPECT_EQ(restored.target, "result");
+    EXPECT_EQ(restored.python.children.front().scalar, "captured");
+    EXPECT_EQ(restored.position.file, "roundtrip.isc");
+    EXPECT_EQ(restored.position.offset, 42u);
+    EXPECT_EQ(restored.position.length, 11u);
+    EXPECT_EQ(restored.position.line, 3u);
+    EXPECT_EQ(restored.position.column, 7u);
+    ASSERT_EQ(restored.bindings.size(), 1u);
+    EXPECT_EQ(restored.bindings.front().name, "captured");
+    EXPECT_TRUE(restored.bindings.front().optional);
+    EXPECT_TRUE(restored.bindings.front().list);
     roundTrip(AST::FailBlock{{"fail", "handler"}, {"captured"}, action, pos});
     roundTrip(AST::FailBinding{{"handler", "fallback"}, pos});
     roundTrip(AST::FailMarker{{"handler"}, {"captured"}, pos});
     roundTrip(AST::RegionCapture{'%', pos});
-    roundTrip(AST::DynamicPattern{"captured", python, pos});
-    roundTrip(AST::Counter{"expression", "42", python, pos});
+    roundTrip(AST::DynamicPattern{"captured", action, pos});
+    roundTrip(AST::Counter{"expression", "42", action, pos});
     roundTrip(AST::SharedCounterRegistration{"counter", pos});
     roundTrip(AST::VariableCapture{"captured", pos});
     roundTrip(AST::DeclarationSyntax{{"inline"}, {"param"}, {"templateParam"}, pos});
     roundTrip(AST::AdvancedRule{python, pos});
+    roundTrip(AST::SpacePattern{pos});
     roundTrip(AST::FrontendFeature{action});
 }
