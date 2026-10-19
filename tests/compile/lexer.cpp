@@ -12,7 +12,8 @@ int main(int argc, const char** argv) {
     auto tokens = lexer.makeTokens(argv[1]);
     for (const auto &token : tokens) {
         if (!token.empty()) {
-            std::cout << token << std::endl;
+            token.print(std::cout);
+            std::cout << std::endl;
         } else std::cout << "<EOF>" << std::endl;
     }
 }
