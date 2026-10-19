@@ -1,8 +1,3 @@
-module;
-#include <../../parser/stdlibs/ispastdlib.hpp>
-#include <ispastdlib/node.hpp>
-#include <ispastdlib/raw_token.hpp>
-#include <output/Parser.h>
 module AST.Builder;
 import AST.types;
 import AST.Tree;
