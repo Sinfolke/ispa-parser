@@ -7,7 +7,6 @@
 #ifndef _ISPA_STD_LIB_CPP
 #define _ISPA_STD_LIB_CPP
 #include <ispastdlib/core.hpp>
-#include <ispastdlib/platform.hpp>
 #include <ispastdlib/variant_io.hpp>
 #include <ispastdlib/span.hpp>
 #include <ispastdlib/traits.hpp>

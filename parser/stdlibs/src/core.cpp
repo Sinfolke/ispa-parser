@@ -2,13 +2,7 @@
 #include <ispastdlib/core.hpp>
 #include <sstream>
 
-#ifdef _WIN32
-#include <windows.h>
-#include <dbghelp.h>
-#else
-#include <execinfo.h>
-#include <cstdlib>
-#endif
+#include <ispastdlib/platform.hpp>
 
 namespace ISPA_STD {
 

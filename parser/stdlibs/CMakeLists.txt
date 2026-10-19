@@ -20,6 +20,12 @@ file(GLOB_RECURSE ISPA_STDLIB_SOURCES
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
+# OS headers define macros such as IN that collide with generated token names.
+# Only core.cpp may include them; never inject them through the runtime PCH.
+list(REMOVE_ITEM ISPA_STDLIB_HEADERS
+        "${CMAKE_CURRENT_SOURCE_DIR}/ispastdlib/platform.hpp"
+)
+
 # ------------------------------------------------------------
 # Library Target
 # ------------------------------------------------------------
@@ -50,8 +56,8 @@ if(TARGET ispastdlib)
     )
 
     if(WIN32)
-        # windows.h is included by the runtime PCH. Keep its min/max macros
-        # out of both the runtime and consumers of its public headers.
+        # Keep min/max macros out of the stack-trace implementation and consumers
+        # that include Windows headers themselves.
         target_compile_definitions(ispastdlib PUBLIC NOMINMAX)
         target_link_libraries(ispastdlib PRIVATE dbghelp)
     endif()
