@@ -5,21 +5,21 @@
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AMP {
-			inline const std::size_t id = 69;
+			inline const std::size_t id = 68;
 		} // namespace AMP
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AMP_ASSIGN {
-			inline const std::size_t id = 70;
+			inline const std::size_t id = 69;
 		} // namespace AMP_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AND {
-			inline const std::size_t id = 63;
+			inline const std::size_t id = 62;
 		} // namespace AND
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -33,7 +33,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AS {
-			inline const std::size_t id = 65;
+			inline const std::size_t id = 64;
 		} // namespace AS
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -68,28 +68,28 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CARET {
-			inline const std::size_t id = 62;
+			inline const std::size_t id = 61;
 		} // namespace CARET
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CARET_ASSIGN {
-			inline const std::size_t id = 74;
+			inline const std::size_t id = 73;
 		} // namespace CARET_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CLASS {
-			inline const std::size_t id = 71;
+			inline const std::size_t id = 70;
 		} // namespace CLASS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace COLON {
-			inline const std::size_t id = 44;
+			inline const std::size_t id = 45;
 		} // namespace COLON
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -117,7 +117,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DEDENT {
-			inline const std::size_t id = 47;
+			inline const std::size_t id = 48;
 		} // namespace DEDENT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -138,7 +138,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DOT {
-			inline const std::size_t id = 73;
+			inline const std::size_t id = 72;
 		} // namespace DOT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -159,22 +159,22 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace EQ {
-			inline const std::size_t id = 61;
+			inline const std::size_t id = 60;
 		} // namespace EQ
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace EXCEPT {
-			inline const std::size_t id = 45;
+			inline const std::size_t id = 46;
 		} // namespace EXCEPT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
-		namespace FALSE {
-			inline const std::size_t id = 60;
-		} // namespace FALSE
+		namespace FALSE_BOOL {
+			inline const std::size_t id = 59;
+		} // namespace FALSE_BOOL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -187,21 +187,21 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FLOOR_DIV {
-			inline const std::size_t id = 35;
+			inline const std::size_t id = 76;
 		} // namespace FLOOR_DIV
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FLOOR_DIV_ASSIGN {
-			inline const std::size_t id = 59;
+			inline const std::size_t id = 36;
 		} // namespace FLOOR_DIV_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FOR {
-			inline const std::size_t id = 43;
+			inline const std::size_t id = 44;
 		} // namespace FOR
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -215,7 +215,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace GE {
-			inline const std::size_t id = 57;
+			inline const std::size_t id = 58;
 		} // namespace GE
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -229,14 +229,14 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace GT {
-			inline const std::size_t id = 54;
+			inline const std::size_t id = 55;
 		} // namespace GT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ID {
-			inline const std::size_t id = 68;
+			inline const std::size_t id = 67;
 		} // namespace ID
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -250,7 +250,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace IMPORT {
-			inline const std::size_t id = 58;
+			inline const std::size_t id = 35;
 		} // namespace IMPORT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -285,28 +285,28 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LBRACKET {
-			inline const std::size_t id = 53;
+			inline const std::size_t id = 54;
 		} // namespace LBRACKET
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LE {
-			inline const std::size_t id = 50;
+			inline const std::size_t id = 51;
 		} // namespace LE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LPAREN {
-			inline const std::size_t id = 67;
+			inline const std::size_t id = 66;
 		} // namespace LPAREN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LSHIFT {
-			inline const std::size_t id = 56;
+			inline const std::size_t id = 57;
 		} // namespace LSHIFT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -320,7 +320,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LT {
-			inline const std::size_t id = 49;
+			inline const std::size_t id = 50;
 		} // namespace LT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -341,35 +341,35 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MINUS {
-			inline const std::size_t id = 72;
+			inline const std::size_t id = 71;
 		} // namespace MINUS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MINUS_ASSIGN {
-			inline const std::size_t id = 66;
+			inline const std::size_t id = 65;
 		} // namespace MINUS_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NE {
-			inline const std::size_t id = 48;
+			inline const std::size_t id = 49;
 		} // namespace NE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NEWLINE {
-			inline const std::size_t id = 32;
+			inline const std::size_t id = 31;
 		} // namespace NEWLINE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NONE_V {
-			inline const std::size_t id = 46;
+			inline const std::size_t id = 47;
 		} // namespace NONE_V
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -390,7 +390,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NUMBER {
-			inline const std::size_t id = 64;
+			inline const std::size_t id = 63;
 		} // namespace NUMBER
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -411,7 +411,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PERCENT {
-			inline const std::size_t id = 76;
+			inline const std::size_t id = 75;
 		} // namespace PERCENT
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -425,7 +425,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PIPE {
-			inline const std::size_t id = 41;
+			inline const std::size_t id = 42;
 		} // namespace PIPE
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -439,7 +439,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PLUS {
-			inline const std::size_t id = 55;
+			inline const std::size_t id = 56;
 		} // namespace PLUS
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -453,14 +453,14 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace POWER {
-			inline const std::size_t id = 40;
+			inline const std::size_t id = 41;
 		} // namespace POWER
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace POWER_ASSIGN {
-			inline const std::size_t id = 39;
+			inline const std::size_t id = 40;
 		} // namespace POWER_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -474,7 +474,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RBRACE {
-			inline const std::size_t id = 33;
+			inline const std::size_t id = 32;
 		} // namespace RBRACE
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -509,35 +509,35 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RSHIFT_ASSIGN {
-			inline const std::size_t id = 75;
+			inline const std::size_t id = 74;
 		} // namespace RSHIFT_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SEMICOLON {
-			inline const std::size_t id = 31;
+			inline const std::size_t id = 34;
 		} // namespace SEMICOLON
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SLASH {
-			inline const std::size_t id = 52;
+			inline const std::size_t id = 53;
 		} // namespace SLASH
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SLASH_ASSIGN {
-			inline const std::size_t id = 37;
+			inline const std::size_t id = 38;
 		} // namespace SLASH_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace STAR {
-			inline const std::size_t id = 51;
+			inline const std::size_t id = 52;
 		} // namespace STAR
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -551,7 +551,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace STRING {
-			inline const std::size_t id = 34;
+			inline const std::size_t id = 33;
 		} // namespace STRING
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -564,15 +564,15 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
-		namespace TRUE {
-			inline const std::size_t id = 36;
-		} // namespace TRUE
+		namespace TRUE_BOOL {
+			inline const std::size_t id = 37;
+		} // namespace TRUE_BOOL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace TRY {
-			inline const std::size_t id = 38;
+			inline const std::size_t id = 39;
 		} // namespace TRY
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -593,7 +593,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Tokens {
 		namespace __WS {
-			inline const std::size_t id = 42;
+			inline const std::size_t id = 43;
 		} // namespace __WS
 	} // namespace Tokens
 } // namespace PyRawParser
@@ -767,9 +767,9 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
-		namespace FALSE {
-			inline const char* const id = "FALSE";
-		} // namespace FALSE
+		namespace FALSE_BOOL {
+			inline const char* const id = "FALSE_BOOL";
+		} // namespace FALSE_BOOL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -1159,9 +1159,9 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace TokenNames {
-		namespace TRUE {
-			inline const char* const id = "TRUE";
-		} // namespace TRUE
+		namespace TRUE_BOOL {
+			inline const char* const id = "TRUE_BOOL";
+		} // namespace TRUE_BOOL
 	} // namespace TokenNames
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -2833,12 +2833,13 @@ namespace PyRawParser::FlatTypes { struct ASSIGN; }
 namespace PyRawParser::FlatTypes { struct MATMUL; }
 namespace PyRawParser::FlatTypes { struct COMMA; }
 namespace PyRawParser::FlatTypes { struct RPAREN; }
-namespace PyRawParser::FlatTypes { struct SEMICOLON; }
 namespace PyRawParser::FlatTypes { struct NEWLINE; }
 namespace PyRawParser::FlatTypes { struct RBRACE; }
 namespace PyRawParser::FlatTypes { struct STRING; }
-namespace PyRawParser::FlatTypes { struct FLOOR_DIV; }
-namespace PyRawParser::FlatTypes { struct TRUE; }
+namespace PyRawParser::FlatTypes { struct SEMICOLON; }
+namespace PyRawParser::FlatTypes { struct IMPORT; }
+namespace PyRawParser::FlatTypes { struct FLOOR_DIV_ASSIGN; }
+namespace PyRawParser::FlatTypes { struct TRUE_BOOL; }
 namespace PyRawParser::FlatTypes { struct SLASH_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct TRY; }
 namespace PyRawParser::FlatTypes { struct POWER_ASSIGN; }
@@ -2860,9 +2861,7 @@ namespace PyRawParser::FlatTypes { struct GT; }
 namespace PyRawParser::FlatTypes { struct PLUS; }
 namespace PyRawParser::FlatTypes { struct LSHIFT; }
 namespace PyRawParser::FlatTypes { struct GE; }
-namespace PyRawParser::FlatTypes { struct IMPORT; }
-namespace PyRawParser::FlatTypes { struct FLOOR_DIV_ASSIGN; }
-namespace PyRawParser::FlatTypes { struct FALSE; }
+namespace PyRawParser::FlatTypes { struct FALSE_BOOL; }
 namespace PyRawParser::FlatTypes { struct EQ; }
 namespace PyRawParser::FlatTypes { struct CARET; }
 namespace PyRawParser::FlatTypes { struct AND; }
@@ -2879,6 +2878,7 @@ namespace PyRawParser::FlatTypes { struct DOT; }
 namespace PyRawParser::FlatTypes { struct CARET_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct RSHIFT_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct PERCENT; }
+namespace PyRawParser::FlatTypes { struct FLOOR_DIV; }
 namespace PyRawParser::FlatTypes { struct ARROW; }
 namespace PyRawParser::FlatTypes { struct OR; }
 namespace PyRawParser::FlatTypes { struct PIPE_ASSIGN; }
@@ -3438,20 +3438,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct SEMICOLON {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, NEWLINE value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -3495,12 +3481,12 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream &;
+		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct FLOOR_DIV {
+		struct SEMICOLON {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -3509,12 +3495,40 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, TRUE value) -> std::ostream &;
+		auto operator<<(std::ostream & os, IMPORT value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct TRUE {
+		struct IMPORT {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct FLOOR_DIV_ASSIGN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, TRUE_BOOL value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct TRUE_BOOL {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -3817,40 +3831,12 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, IMPORT value) -> std::ostream &;
+		auto operator<<(std::ostream & os, FALSE_BOOL value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct IMPORT {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct FLOOR_DIV_ASSIGN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, FALSE value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct FALSE {
+		struct FALSE_BOOL {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4078,6 +4064,20 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct PERCENT {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct FLOOR_DIV {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4971,7 +4971,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct atom {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::list_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NONE_V>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FALSE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TRUE>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NUMBER>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STRING>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NONE_V>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::list_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FALSE_BOOL>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TRUE_BOOL>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NUMBER>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STRING>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6147,11 +6147,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using SEMICOLON = ::PyRawParser::FlatTypes::SEMICOLON;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
 		using NEWLINE = ::PyRawParser::FlatTypes::NEWLINE;
 	} // namespace Types
 } // namespace PyRawParser
@@ -6167,12 +6162,22 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using FLOOR_DIV = ::PyRawParser::FlatTypes::FLOOR_DIV;
+		using SEMICOLON = ::PyRawParser::FlatTypes::SEMICOLON;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using TRUE = ::PyRawParser::FlatTypes::TRUE;
+		using IMPORT = ::PyRawParser::FlatTypes::IMPORT;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using FLOOR_DIV_ASSIGN = ::PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using TRUE_BOOL = ::PyRawParser::FlatTypes::TRUE_BOOL;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -6282,17 +6287,7 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using IMPORT = ::PyRawParser::FlatTypes::IMPORT;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using FLOOR_DIV_ASSIGN = ::PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using FALSE = ::PyRawParser::FlatTypes::FALSE;
+		using FALSE_BOOL = ::PyRawParser::FlatTypes::FALSE_BOOL;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -6373,6 +6368,11 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Types {
 		using PERCENT = ::PyRawParser::FlatTypes::PERCENT;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using FLOOR_DIV = ::PyRawParser::FlatTypes::FLOOR_DIV;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -6991,7 +6991,7 @@ namespace PyRawParser {
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
-	using Token = ::ISPA_STD::RawToken<Types::GLOBAL, Types::ELIF, Types::ASSERT, Types::COMMENT, Types::PASS, Types::DEF, Types::FINALLY, Types::WHILE, Types::WITH, Types::MATMUL_ASSIGN, Types::ASYNC, Types::CONTINUE, Types::RAISE, Types::NONLOCAL, Types::TILDE, Types::LSHIFT_ASSIGN, Types::BREAK, Types::PERCENT_ASSIGN, Types::PLUS_ASSIGN, Types::STAR_ASSIGN, Types::INDENT, Types::DEL, Types::IS, Types::IN, Types::ELSE, Types::IF, Types::NOT, Types::ASSIGN, Types::MATMUL, Types::COMMA, Types::RPAREN, Types::SEMICOLON, Types::NEWLINE, Types::RBRACE, Types::STRING, Types::FLOOR_DIV, Types::TRUE, Types::SLASH_ASSIGN, Types::TRY, Types::POWER_ASSIGN, Types::POWER, Types::PIPE, Types::__WS, Types::FOR, Types::COLON, Types::EXCEPT, Types::NONE_V, Types::DEDENT, Types::NE, Types::LT, Types::LE, Types::STAR, Types::SLASH, Types::LBRACKET, Types::GT, Types::PLUS, Types::LSHIFT, Types::GE, Types::IMPORT, Types::FLOOR_DIV_ASSIGN, Types::FALSE, Types::EQ, Types::CARET, Types::AND, Types::NUMBER, Types::AS, Types::MINUS_ASSIGN, Types::LPAREN, Types::ID, Types::AMP, Types::AMP_ASSIGN, Types::CLASS, Types::MINUS, Types::DOT, Types::CARET_ASSIGN, Types::RSHIFT_ASSIGN, Types::PERCENT, Types::ARROW, Types::OR, Types::PIPE_ASSIGN, Types::RSHIFT, Types::RETURN, Types::FROM, Types::LBRACE, Types::RBRACKET>;
+	using Token = ::ISPA_STD::RawToken<Types::GLOBAL, Types::ELIF, Types::ASSERT, Types::COMMENT, Types::PASS, Types::DEF, Types::FINALLY, Types::WHILE, Types::WITH, Types::MATMUL_ASSIGN, Types::ASYNC, Types::CONTINUE, Types::RAISE, Types::NONLOCAL, Types::TILDE, Types::LSHIFT_ASSIGN, Types::BREAK, Types::PERCENT_ASSIGN, Types::PLUS_ASSIGN, Types::STAR_ASSIGN, Types::INDENT, Types::DEL, Types::IS, Types::IN, Types::ELSE, Types::IF, Types::NOT, Types::ASSIGN, Types::MATMUL, Types::COMMA, Types::RPAREN, Types::NEWLINE, Types::RBRACE, Types::STRING, Types::SEMICOLON, Types::IMPORT, Types::FLOOR_DIV_ASSIGN, Types::TRUE_BOOL, Types::SLASH_ASSIGN, Types::TRY, Types::POWER_ASSIGN, Types::POWER, Types::PIPE, Types::__WS, Types::FOR, Types::COLON, Types::EXCEPT, Types::NONE_V, Types::DEDENT, Types::NE, Types::LT, Types::LE, Types::STAR, Types::SLASH, Types::LBRACKET, Types::GT, Types::PLUS, Types::LSHIFT, Types::GE, Types::FALSE_BOOL, Types::EQ, Types::CARET, Types::AND, Types::NUMBER, Types::AS, Types::MINUS_ASSIGN, Types::LPAREN, Types::ID, Types::AMP, Types::AMP_ASSIGN, Types::CLASS, Types::MINUS, Types::DOT, Types::CARET_ASSIGN, Types::RSHIFT_ASSIGN, Types::PERCENT, Types::FLOOR_DIV, Types::ARROW, Types::OR, Types::PIPE_ASSIGN, Types::RSHIFT, Types::RETURN, Types::FROM, Types::LBRACE, Types::RBRACKET>;
 } // namespace PyRawParser
 namespace PyRawParser {
 	class Lexer : public ::ISPA_STD::Lexer_base<Token> {

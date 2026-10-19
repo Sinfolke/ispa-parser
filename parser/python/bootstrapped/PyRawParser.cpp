@@ -439,20 +439,6 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RPAREN value) -> std:
 	value.print(os);
 	return os;
 }
-auto PyRawParser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("SEMICOLON", true);
-}
-auto PyRawParser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::SEMICOLON::to_string() const -> std::string {
-	return ::ISPA_STD::concat("SEMICOLON {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
 auto PyRawParser::FlatTypes::NEWLINE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NEWLINE", true);
 }
@@ -498,31 +484,59 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, STRING value) -> std:
 	value.print(os);
 	return os;
 }
-auto PyRawParser::FlatTypes::FLOOR_DIV::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("FLOOR_DIV", true);
+auto PyRawParser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("SEMICOLON", true);
 }
-auto PyRawParser::FlatTypes::FLOOR_DIV::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto PyRawParser::FlatTypes::FLOOR_DIV::to_string() const -> std::string {
-	return ::ISPA_STD::concat("FLOOR_DIV {", "}");
+auto PyRawParser::FlatTypes::SEMICOLON::to_string() const -> std::string {
+	return ::ISPA_STD::concat("SEMICOLON {", "}");
 }
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto PyRawParser::FlatTypes::TRUE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("TRUE", true);
+auto PyRawParser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("IMPORT", true);
 }
-auto PyRawParser::FlatTypes::TRUE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto PyRawParser::FlatTypes::TRUE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("TRUE {", "}");
+auto PyRawParser::FlatTypes::IMPORT::to_string() const -> std::string {
+	return ::ISPA_STD::concat("IMPORT {", "}");
 }
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TRUE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("FLOOR_DIV_ASSIGN", true);
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("FLOOR_DIV_ASSIGN {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::TRUE_BOOL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("TRUE_BOOL", true);
+}
+auto PyRawParser::FlatTypes::TRUE_BOOL::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::TRUE_BOOL::to_string() const -> std::string {
+	return ::ISPA_STD::concat("TRUE_BOOL {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TRUE_BOOL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -820,45 +834,17 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, GE value) -> std::ost
 	value.print(os);
 	return os;
 }
-auto PyRawParser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("IMPORT", true);
+auto PyRawParser::FlatTypes::FALSE_BOOL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("FALSE_BOOL", true);
 }
-auto PyRawParser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FALSE_BOOL::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto PyRawParser::FlatTypes::IMPORT::to_string() const -> std::string {
-	return ::ISPA_STD::concat("IMPORT {", "}");
+auto PyRawParser::FlatTypes::FALSE_BOOL::to_string() const -> std::string {
+	return ::ISPA_STD::concat("FALSE_BOOL {", "}");
 }
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("FLOOR_DIV_ASSIGN", true);
-}
-auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("FLOOR_DIV_ASSIGN {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::FALSE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("FALSE", true);
-}
-auto PyRawParser::FlatTypes::FALSE::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::FALSE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("FALSE {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FALSE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FALSE_BOOL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -1090,6 +1076,20 @@ auto PyRawParser::FlatTypes::PERCENT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PERCENT {", "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PERCENT value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("FLOOR_DIV", true);
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::FLOOR_DIV::to_string() const -> std::string {
+	return ::ISPA_STD::concat("FLOOR_DIV {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -3926,7 +3926,7 @@ auto PyRawParser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD:
 			break;
 		}
 		case 67: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRUE::id, Types::TRUE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRUE_BOOL::id, Types::TRUE_BOOL{}));
 			break;
 		}
 		case 68: {
@@ -3950,7 +3950,7 @@ auto PyRawParser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD:
 			break;
 		}
 		case 73: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FALSE::id, Types::FALSE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FALSE_BOOL::id, Types::FALSE_BOOL{}));
 			break;
 		}
 		case 74: {
@@ -4994,9 +4994,9 @@ template<typename IT, class> auto PyRawParser::Parser::assignment_value(IT pos) 
 template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_STD::MatchResult<Types::atom, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::list_expr>, ::ISPA_STD::Node<Types::NONE_V>, ::ISPA_STD::Node<Types::FALSE>, ::ISPA_STD::Node<Types::TRUE>, ::ISPA_STD::Node<Types::dict_expr>, ::ISPA_STD::Node<Types::parenthesized_expr>, ::ISPA_STD::Node<Types::NUMBER>, ::ISPA_STD::Node<Types::STRING>, ::ISPA_STD::Node<Types::ID>> _0;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::NONE_V>, ::ISPA_STD::Node<Types::list_expr>, ::ISPA_STD::Node<Types::FALSE_BOOL>, ::ISPA_STD::Node<Types::TRUE_BOOL>, ::ISPA_STD::Node<Types::dict_expr>, ::ISPA_STD::Node<Types::parenthesized_expr>, ::ISPA_STD::Node<Types::NUMBER>, ::ISPA_STD::Node<Types::STRING>, ::ISPA_STD::Node<Types::ID>> _0;
 	bool success_1;
-	::ISPA_STD::Node<Types::FALSE> FALSE_2;
+	::ISPA_STD::Node<Types::FALSE_BOOL> FALSE_BOOL_2;
 	bool success_3;
 	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
@@ -5012,28 +5012,28 @@ template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_ST
 	bool success_15;
 	::ISPA_STD::Node<Types::STRING> STRING_16;
 	bool success_17;
-	::ISPA_STD::Node<Types::TRUE> TRUE_18;
+	::ISPA_STD::Node<Types::TRUE_BOOL> TRUE_BOOL_18;
 	bool success_19;
 	success_1 = false;
-	// grammar `@  ( ID |  NUMBER |  STRING |  TRUE |  FALSE |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)`: choice; reset match status before selecting an alternative
+	// grammar `@  ( ID |  NUMBER |  STRING |  TRUE_BOOL |  FALSE_BOOL |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
 	switch ((*lookahead_pos_1).kind()) {
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
-			if (!(((*lookahead_pos_1)).template holds<Types::FALSE>())) {
-				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FALSE");
+			if (!(((*lookahead_pos_1)).template holds<Types::FALSE_BOOL>())) {
+				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FALSE_BOOL");
 				return {};
 			}
-			FALSE_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::FALSE>>();
+			FALSE_BOOL_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::FALSE_BOOL>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
-				raise_error(*pos, "ISPA match failure: selected LL(k) alternative failed | grammar:  FALSE");
+				raise_error(*pos, "ISPA match failure: selected LL(k) alternative failed | grammar:  FALSE_BOOL");
 				return {};
 			}
-			_0 = FALSE_2;
+			_0 = FALSE_BOOL_2;
 			success_1 = true;
 			break;
 		}
@@ -5163,28 +5163,28 @@ template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
-			if (!(((*lookahead_pos_1)).template holds<Types::TRUE>())) {
-				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  TRUE");
+			if (!(((*lookahead_pos_1)).template holds<Types::TRUE_BOOL>())) {
+				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  TRUE_BOOL");
 				return {};
 			}
-			TRUE_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::TRUE>>();
+			TRUE_BOOL_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::TRUE_BOOL>>();
 			success_19 = true;
 			lookahead_pos_1++;
 			if (!success_19) {
-				raise_error(*pos, "ISPA match failure: selected LL(k) alternative failed | grammar:  TRUE");
+				raise_error(*pos, "ISPA match failure: selected LL(k) alternative failed | grammar:  TRUE_BOOL");
 				return {};
 			}
-			_0 = TRUE_18;
+			_0 = TRUE_BOOL_18;
 			success_1 = true;
 			break;
 		}
 	}
 	pos = lookahead_pos_1;
 	if (!success_1) {
-		raise_error(*pos, "ISPA match failure: no LL(k) alternative matched | grammar: @  ( ID |  NUMBER |  STRING |  TRUE |  FALSE |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)");
+		raise_error(*pos, "ISPA match failure: no LL(k) alternative matched | grammar: @  ( ID |  NUMBER |  STRING |  TRUE_BOOL |  FALSE_BOOL |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)");
 		return {};
 	}
 	Types::atom result;
@@ -5633,7 +5633,7 @@ template<typename IT, class> auto PyRawParser::Parser::block(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			simple_stmts_10 = simple_stmts(lookahead_pos_1);
@@ -5993,7 +5993,7 @@ template<typename IT, class> auto PyRawParser::Parser::block(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_51 = false;
 			simple_stmts_50 = simple_stmts(lookahead_pos_1);
@@ -6141,7 +6141,7 @@ template<typename IT, class> auto PyRawParser::Parser::call_arg(IT pos) -> ::ISP
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
 	switch ((*lookahead_pos_1).kind()) {
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			expr_2 = expr(lookahead_pos_1);
@@ -6909,7 +6909,7 @@ template<typename IT, class> auto PyRawParser::Parser::call_arg(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_87 = false;
 			expr_86 = expr(lookahead_pos_1);
@@ -9389,7 +9389,7 @@ template<typename IT, class> auto PyRawParser::Parser::factor(IT pos) -> ::ISPA_
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
 	switch ((*lookahead_pos_1).kind()) {
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			power_2 = power(lookahead_pos_1);
@@ -9587,7 +9587,7 @@ template<typename IT, class> auto PyRawParser::Parser::factor(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			power_24 = power(lookahead_pos_1);
@@ -10981,7 +10981,7 @@ template<typename IT, class> auto PyRawParser::Parser::inversion(IT pos) -> ::IS
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
 	switch ((*lookahead_pos_1).kind()) {
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			comparison_2 = comparison(lookahead_pos_1);
@@ -11197,7 +11197,7 @@ template<typename IT, class> auto PyRawParser::Parser::inversion(IT pos) -> ::IS
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			comparison_26 = comparison(lookahead_pos_1);
@@ -12717,7 +12717,7 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmt(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			expr_stmt_10 = expr_stmt(lookahead_pos_1);
@@ -13059,7 +13059,7 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmt(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_49 = false;
 			expr_stmt_48 = expr_stmt(lookahead_pos_1);
@@ -13415,7 +13415,7 @@ template<typename IT, class> auto PyRawParser::Parser::statement(IT pos) -> ::IS
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE::id: {
+		case Tokens::FALSE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			simple_stmts_16 = simple_stmts(lookahead_pos_1);
@@ -13811,7 +13811,7 @@ template<typename IT, class> auto PyRawParser::Parser::statement(IT pos) -> ::IS
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE::id: {
+		case Tokens::TRUE_BOOL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_61 = false;
 			simple_stmts_60 = simple_stmts(lookahead_pos_1);
