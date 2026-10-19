@@ -5,7 +5,7 @@ project(ispa_parser LANGUAGES CXX)
 option(ISPA_BUILD_EXECUTABLES "Build the ISPA and Python parser runners" ${PROJECT_IS_TOP_LEVEL})
 option(ISPA_BUILD_SELF_PARSER "Build the ISPA grammar parser" ON)
 option(ISPA_BUILD_DEP_PARSER "Build the dependency scanner" ON)
-option(ISPA_BUILD_PYTHON_PARSER "Build the Python grammar parser" OFF)
+option(ISPA_BUILD_PYTHON_PARSER "Build the Python grammar parser" ON)
 option(ISPA_ENABLE_PCH "Enable precompiled headers for parsers" ON)
 
 set(ISPA_PARSER_MODE "AUTO" CACHE STRING "Parser sources: AUTO, INCREMENTAL, or BOOTSTRAPPED")

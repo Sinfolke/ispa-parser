@@ -5,6 +5,26 @@
 #include <ispastdlib/assign.hpp>
 #include <ispastdlib/to_string.hpp>
 
+namespace {
+// Keep rule spans in the bootstrap front end, including syntax-only markers
+// whose punctuation is intentionally absent from the generated payload types.
+template<class T, class IT>
+ISPA_STD::Node<T> syntaxNode(T value, IT begin, const IT& end) {
+    ISPA_STD::RawTokenMeta first;
+    const char* finish = nullptr;
+    for (; begin.distance() < end.distance(); ++begin) {
+        const auto& meta = (*begin).meta();
+        if (!meta.start()) continue; // Python INDENT/DEDENT are synthetic.
+        if (!first.start()) first = meta;
+        finish = meta.end();
+    }
+    const auto length = first.start() && finish
+        ? static_cast<std::size_t>(finish - first.start()) : 0;
+    return {first.startpos(), first.start(), finish, length,
+            first.line(), first.column(), first.name(), std::move(value)};
+}
+}
+
 auto Parser::FlatTypes::__WS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("__WS", true);
 }
@@ -1560,6 +1580,7 @@ auto Parser::Lexer::makeToken(const char*& pos) -> Token {
 std::array<::ISPA_STD::DFA::API::DFADebug, 1> Parser::Lexer::debug_array = {::ISPA_STD::DFA::API::DFADebug {"<Undefined>", "", 0, -1, -1, -1, 0, 1, '\000'}};
 std::unordered_map<long long, std::unordered_map<long long, long long>> Parser::Lexer::debug_index = { { 0, { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 23, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 1, { { 1, 0 } } }, { 2, { { 7, 0 } } }, { 3, { { 25, 0 } } }, { 12, { { 21, 0 } } }, { 14, { { 15, 0 }, { 16, 0 } } }, { 18, { { 21, 0 } } }, { 22, { { 15, 0 }, { 16, 0 }, { 24, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 } } }, { 24, { { 42, 0 } } }, { 26, { { 32, 0 } } }, { 27, { { 44, 0 } } }, { 28, { { 29, 0 } } }, { 29, { { 39, 0 } } }, { 30, { { 29, 0 } } }, { 31, { { 46, 0 } } }, { 32, { { 36, 0 } } }, { 36, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 39, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 44, { { 15, 0 }, { 16, 0 }, { 24, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 } } }, { 45, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 46, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 48, { { 15, 0 } } }, { 49, { { 40, 0 } } }, { 50, { { 43, 0 } } }, { 51, { { 35, 0 } } }, { 52, { { 37, 0 } } }, { 53, { { 43, 0 } } }, { 55, { { 35, 0 } } }, { 56, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 57, { { 15, 0 }, { 16, 0 } } }, { 59, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 60, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 62, { { 32, 0 } } }, { 63, { { 32, 0 } } }, { 64, { { 37, 0 } } }, { 65, { { 35, 0 } } }, { 66, { { 30, 0 } } }, { 67, { { 45, 0 } } }, { 68, { { 40, 0 } } }, { 70, { { 39, 0 } } }, { 71, { { 41, 0 } } }, { 73, { { 39, 0 } } }, { 74, { { 34, 0 } } }, { 77, { { 31, 0 } } }, { 78, { { 39, 0 } } }, { 79, { { 32, 0 } } }, { 82, { { 42, 0 } } } };
 template<typename IT, class> auto Parser::Parser::advanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> LEFT_CURLY_BRACKET_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT> advanced_rule_dep_decl_5;
@@ -1709,13 +1730,14 @@ template<typename IT, class> auto Parser::Parser::advanced_rule(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.body, uvar_13);
 	::ISPA_STD::MatchResult<Types::advanced_rule, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::advanced_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::advanced_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::advanced_rule_dep_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::advanced_rule::dep_decl::DEPENDS> advanced_rule_dep_decl_DEPENDS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -1748,13 +1770,14 @@ template<typename IT, class> auto Parser::Parser::advanced_rule_dep_decl(IT pos)
 	::ISPA_STD::assign_compatible(result.value, forward_declaration_4.node);
 	::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::advanced_rule_dep_decl<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::advanced_rule_dep_decl<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::advanced_rule_fail_call(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::FAIL> FAIL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -1787,13 +1810,14 @@ template<typename IT, class> auto Parser::Parser::advanced_rule_fail_call(IT pos
 	::ISPA_STD::assign_compatible(result.value, name_4.node);
 	::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::advanced_rule_fail_call<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::advanced_rule_fail_call<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::advanced_rule_regular_match(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::advanced_rule::regular_match::MATCH> advanced_rule_regular_match_MATCH_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::rule::value, IT> rule_value_5;
@@ -1904,13 +1928,14 @@ template<typename IT, class> auto Parser::Parser::advanced_rule_regular_match(IT
 	::ISPA_STD::assign_compatible(result.assign_names, _13);
 	::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::advanced_rule_regular_match<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::advanced_rule_regular_match<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::advanced_rule_regular_match_unpack(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AUTO> AUTO_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -1952,13 +1977,14 @@ template<typename IT, class> auto Parser::Parser::advanced_rule_regular_match_un
 	::ISPA_STD::assign_compatible(result.value, uvar_4);
 	::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::advanced_rule_regular_match_unpack<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::advanced_rule_regular_match_unpack<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::explicit_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> LEFT_PARENTHESIS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -2009,13 +2035,14 @@ template<typename IT, class> auto Parser::Parser::explicit_expr(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::explicit_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::explicit_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::explicit_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PY_RAW> PY_RAW_0;
 	bool success_1;
 	success_1 = false;
@@ -2030,13 +2057,14 @@ template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(result.value, PY_RAW_0);
 	::ISPA_STD::MatchResult<Types::expr, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::fail_block(IT pos) -> ::ISPA_STD::MatchResult<Types::fail_block, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::FAIL> FAIL_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -2088,13 +2116,14 @@ template<typename IT, class> auto Parser::Parser::fail_block(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(result.val, stmt_8);
 	::ISPA_STD::MatchResult<Types::fail_block, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::fail_block<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::fail_block, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::fail_block<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::fail_block, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::forward_declaration(IT pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AUTO> AUTO_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -2145,13 +2174,14 @@ template<typename IT, class> auto Parser::Parser::forward_declaration(IT pos) ->
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::forward_declaration, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::forward_declaration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::forward_declaration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::grammar(IT pos) -> ::ISPA_STD::MatchResult<Types::grammar, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::grammar::modifier, IT> grammar_modifier_1;
 	bool success_2;
 	::ISPA_STD::Node<Types::grammar::modifier> element_3;
@@ -2255,13 +2285,14 @@ template<typename IT, class> auto Parser::Parser::grammar(IT pos) -> ::ISPA_STD:
 	::ISPA_STD::assign_compatible(result.entry, _11);
 	::ISPA_STD::MatchResult<Types::grammar, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::grammar<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::grammar<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::grammar_modifier(IT pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::grammar::modifier::AUTO> grammar_modifier_AUTO_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -2312,13 +2343,14 @@ template<typename IT, class> auto Parser::Parser::grammar_modifier(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, grammar_modifier_MOD_4);
 	::ISPA_STD::MatchResult<Types::grammar::modifier, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::grammar_modifier<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::grammar_modifier<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT> {
+	const auto syntax_begin = pos;
 	bool success_4;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::fail_block>, ::ISPA_STD::Node<Types::grammar>> group_0;
 	bool success_2;
@@ -2426,13 +2458,14 @@ template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(result.value, uvar_1);
 	::ISPA_STD::MatchResult<Types::main, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::main<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::main<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::name(IT pos) -> ::ISPA_STD::MatchResult<Types::name, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	bool success_17;
@@ -2549,13 +2582,14 @@ template<typename IT, class> auto Parser::Parser::name(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(result.param, params_30);
 	::ISPA_STD::MatchResult<Types::name, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::name<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::name, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::name<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::name, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::param(IT pos) -> ::ISPA_STD::MatchResult<Types::param, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	bool success_17;
@@ -2638,13 +2672,14 @@ template<typename IT, class> auto Parser::Parser::param(IT pos) -> ::ISPA_STD::M
 	::ISPA_STD::assign_compatible(result.following_p, shadow_20);
 	::ISPA_STD::MatchResult<Types::param, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::param<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::param, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::param<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::param, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::params(IT pos) -> ::ISPA_STD::MatchResult<Types::params, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> LEFT_PARENTHESIS_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -2693,13 +2728,14 @@ template<typename IT, class> auto Parser::Parser::params(IT pos) -> ::ISPA_STD::
 	::ISPA_STD::assign_compatible(result.value, param_4.node);
 	::ISPA_STD::MatchResult<Types::params, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::params<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::params, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::params<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::params, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule(IT pos) -> ::ISPA_STD::MatchResult<Types::rule, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COLON> COLON_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::rule::value, IT> rule_value_5;
@@ -2829,13 +2865,14 @@ template<typename IT, class> auto Parser::Parser::rule(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(result.nested, uvar_21);
 	::ISPA_STD::MatchResult<Types::rule, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_ast(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, IT> {
+	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::ast::single_value>, ::ISPA_STD::Node<Types::rule::ast::full>, ::ISPA_STD::Node<Types::rule::ast::abbr>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::rule::ast::full, IT> rule_ast_full_2;
@@ -2913,13 +2950,14 @@ template<typename IT, class> auto Parser::Parser::rule_ast(IT pos) -> ::ISPA_STD
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::rule::ast, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_ast<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_ast<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_ast_abbr(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COMMERCIAL_AT> COMMERCIAL_AT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -3056,13 +3094,14 @@ template<typename IT, class> auto Parser::Parser::rule_ast_abbr(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.seq, shadow_28);
 	::ISPA_STD::MatchResult<Types::rule::ast::abbr, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_ast_abbr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_ast_abbr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_ast_full(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AMPERSAND> AMPERSAND_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -3147,13 +3186,14 @@ template<typename IT, class> auto Parser::Parser::rule_ast_full(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.value, uvar_8);
 	::ISPA_STD::MatchResult<Types::rule::ast::full, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_ast_full<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_ast_full<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_ast_full_part(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -3205,13 +3245,14 @@ template<typename IT, class> auto Parser::Parser::rule_ast_full_part(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.e, expr_8);
 	::ISPA_STD::MatchResult<Types::rule::ast::full::part, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_ast_full_part<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_ast_full_part<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_ast_single_value(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> LEFT_CURLY_BRACKET_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -3305,13 +3346,14 @@ template<typename IT, class> auto Parser::Parser::rule_ast_single_value(IT pos) 
 	::ISPA_STD::assign_compatible(result.value, _4);
 	::ISPA_STD::MatchResult<Types::rule::ast::single_value, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_ast_single_value<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_ast_single_value<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_f_binding(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PERCENT_SIGN> PERCENT_SIGN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -3448,13 +3490,14 @@ template<typename IT, class> auto Parser::Parser::rule_f_binding(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.seq, shadow_28);
 	::ISPA_STD::MatchResult<Types::rule::f_binding, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_f_binding<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_f_binding<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_nested_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::rule::nested_rule::NUMBER_SIGN> rule_nested_rule_NUMBER_SIGN_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::grammar, IT> grammar_2;
@@ -3479,13 +3522,14 @@ template<typename IT, class> auto Parser::Parser::rule_nested_rule(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, grammar_2.node);
 	::ISPA_STD::MatchResult<Types::rule::nested_rule, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_nested_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_nested_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value, IT> {
+	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::value::mul_capture>, ::ISPA_STD::Node<Types::rule::value::one_capture>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::rule::value::one_capture, IT> rule_value_one_capture_2;
@@ -4087,13 +4131,14 @@ template<typename IT, class> auto Parser::Parser::rule_value(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::rule::value, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_alternative(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::rule::value::alternative::VERTICAL_LINE> rule_value_alternative_VERTICAL_LINE_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4126,13 +4171,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_alternative(IT pos)
 	::ISPA_STD::assign_compatible(result.value, rule_value_pattern_4.node);
 	::ISPA_STD::MatchResult<Types::rule::value::alternative, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_alternative<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_alternative<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_ast_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::COMMERCIAL_AT> COMMERCIAL_AT_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::ID> ID_2;
@@ -4155,13 +4201,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_ast_capture(IT pos)
 	::ISPA_STD::assign_compatible(result.value, ID_2);
 	::ISPA_STD::MatchResult<Types::rule::value::ast_capture, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_ast_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_ast_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_counter(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::rule::value::QUANTIFIER> rule_value_QUANTIFIER_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4193,13 +4240,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_counter(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.repetitions, rule_value_counter_bounded_4);
 	::ISPA_STD::MatchResult<Types::rule::value::counter, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_counter<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_counter<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_counter_bounded(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::EQUALS_SIGN> EQUALS_SIGN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4295,13 +4343,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_counter_bounded(IT 
 	::ISPA_STD::assign_compatible(result.value, _4);
 	::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_counter_bounded<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_counter_bounded<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_dyn(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::rule::value::dyn::DOLLAR_SIGN> rule_value_dyn_DOLLAR_SIGN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4377,13 +4426,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_dyn(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(result.value, _4);
 	::ISPA_STD::MatchResult<Types::rule::value::dyn, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_dyn<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_dyn<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_dyn_dyn_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> LEFT_CURLY_BRACKET_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4434,13 +4484,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_dyn_dyn_expr(IT pos
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
 	::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_dyn_dyn_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_dyn_dyn_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_fail_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PERCENT_SIGN> PERCENT_SIGN_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::name, IT> name_2;
@@ -4463,13 +4514,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_fail_capture(IT pos
 	::ISPA_STD::assign_compatible(result.value, name_2.node);
 	::ISPA_STD::MatchResult<Types::rule::value::fail_capture, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_fail_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_fail_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_group(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> LEFT_PARENTHESIS_0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::rule::value, IT> rule_value_5;
@@ -4536,13 +4588,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_group(IT pos) -> ::
 	::ISPA_STD::assign_compatible(result.value, uvar_4);
 	::ISPA_STD::MatchResult<Types::rule::value::group, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_group<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_group<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_mul_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, IT> {
+	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::PERCENT_SIGN>, ::ISPA_STD::Node<Types::COMMERCIAL_AT>> _0;
 	bool success_1;
 	::ISPA_STD::Node<Types::COMMERCIAL_AT> COMMERCIAL_AT_2;
@@ -4689,13 +4742,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_mul_capture(IT pos)
 	::ISPA_STD::assign_compatible(result.cap, uvar_16);
 	::ISPA_STD::MatchResult<Types::rule::value::mul_capture, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_mul_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_mul_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_one_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::MatchResult<Types::rule::value::var_capture, IT> rule_value_var_capture_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -4824,13 +4878,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_one_capture(IT pos)
 	::ISPA_STD::assign_compatible(result.registration, rule_value_shared_counter_registration_28);
 	::ISPA_STD::MatchResult<Types::rule::value::one_capture, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_one_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_one_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_pattern(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, IT> {
+	const auto syntax_begin = pos;
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::value::SPACE>, ::ISPA_STD::Node<Types::rule::value::CGROUP>, ::ISPA_STD::Node<Types::rule::value::STRING>, ::ISPA_STD::Node<Types::rule::value::dyn>, ::ISPA_STD::Node<Types::rule::value::NOSPACE>, ::ISPA_STD::Node<Types::rule::value::group>, ::ISPA_STD::Node<Types::rule::value::ANY>, ::ISPA_STD::Node<Types::name>> _0;
 	bool success_1;
 	::ISPA_STD::MatchResult<Types::name, IT> name_2;
@@ -5008,13 +5063,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_pattern(IT pos) -> 
 	::ISPA_STD::assign_compatible(result.value, _0);
 	::ISPA_STD::MatchResult<Types::rule::value::pattern, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_pattern<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_pattern<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_shared_counter_registration(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::rule::value::shared_counter_registration::AUTO> rule_value_shared_counter_registration_AUTO_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5047,13 +5103,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_shared_counter_regi
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_shared_counter_registration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_shared_counter_registration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::rule_value_var_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::AMPERSAND> AMPERSAND_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5086,13 +5143,14 @@ template<typename IT, class> auto Parser::Parser::rule_value_var_capture(IT pos)
 	::ISPA_STD::assign_compatible(result.value, ID_4);
 	::ISPA_STD::MatchResult<Types::rule::value::var_capture, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::rule_value_var_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::rule_value_var_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::stmt, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::PY_RAW> PY_RAW_0;
 	bool success_1;
 	success_1 = false;
@@ -5107,13 +5165,14 @@ template<typename IT, class> auto Parser::Parser::stmt(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(result.value, PY_RAW_0);
 	::ISPA_STD::MatchResult<Types::stmt, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
 template auto Parser::Parser::stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::stmt, ::Parser::Lexer::iterator>;
 template auto Parser::Parser::stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::stmt, ::Parser::Lexer::lazy_iterator>;
 template<typename IT, class> auto Parser::Parser::template_params(IT pos) -> ::ISPA_STD::MatchResult<Types::template_params, IT> {
+	const auto syntax_begin = pos;
 	::ISPA_STD::Node<Types::template_params::LESS_THAN_SIGN> template_params_LESS_THAN_SIGN_0;
 	bool success_1;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
@@ -5162,7 +5221,7 @@ template<typename IT, class> auto Parser::Parser::template_params(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.value, param_4.node);
 	::ISPA_STD::MatchResult<Types::template_params, IT> match_result;
 	match_result.status = true;
-	match_result.node.set_data(result);
+	match_result.node = syntaxNode(std::move(result), syntax_begin, pos);
 	match_result.it = pos;
 	return match_result;
 }
@@ -5173,5 +5232,6 @@ auto Parser::Parser::parseFromTokens() -> void {
 }
 auto Parser::Parser::lazyParse() -> void {
 	Lexer lexer;
+	lexer.setInput(text);
 	tree = main(Lexer::lazy_iterator(lexer, text)).node.data();
 }

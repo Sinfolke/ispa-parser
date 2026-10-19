@@ -1,1211 +1,1211 @@
-#include "Parser.h"
+#include "PyRawParser.h"
 
 #include <ispastdlib/variant_io.hpp>
 #include <ispastdlib/dfa_api.hpp>
 #include <ispastdlib/assign.hpp>
 #include <ispastdlib/to_string.hpp>
 
-auto Parser::FlatTypes::GLOBAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::GLOBAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("GLOBAL", true);
 }
-auto Parser::FlatTypes::GLOBAL::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::GLOBAL::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::GLOBAL::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::GLOBAL::to_string() const -> std::string {
 	return ::ISPA_STD::concat("GLOBAL {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, GLOBAL value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, GLOBAL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ELIF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ELIF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ELIF", true);
 }
-auto Parser::FlatTypes::ELIF::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ELIF::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ELIF::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ELIF::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ELIF {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ELIF value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ELIF value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ASSERT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ASSERT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ASSERT", true);
 }
-auto Parser::FlatTypes::ASSERT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ASSERT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ASSERT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ASSERT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ASSERT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ASSERT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ASSERT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::COMMENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::COMMENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("COMMENT", true);
 }
-auto Parser::FlatTypes::COMMENT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::COMMENT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::COMMENT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::COMMENT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("COMMENT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, COMMENT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, COMMENT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PASS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PASS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PASS", true);
 }
-auto Parser::FlatTypes::PASS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PASS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PASS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PASS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PASS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PASS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PASS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::DEF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::DEF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("DEF", true);
 }
-auto Parser::FlatTypes::DEF::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::DEF::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::DEF::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::DEF::to_string() const -> std::string {
 	return ::ISPA_STD::concat("DEF {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, DEF value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, DEF value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FINALLY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FINALLY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FINALLY", true);
 }
-auto Parser::FlatTypes::FINALLY::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FINALLY::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FINALLY::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FINALLY::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FINALLY {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FINALLY value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FINALLY value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::WHILE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::WHILE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("WHILE", true);
 }
-auto Parser::FlatTypes::WHILE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::WHILE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::WHILE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::WHILE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("WHILE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, WHILE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, WHILE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::WITH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::WITH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("WITH", true);
 }
-auto Parser::FlatTypes::WITH::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::WITH::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::WITH::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::WITH::to_string() const -> std::string {
 	return ::ISPA_STD::concat("WITH {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, WITH value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, WITH value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::MATMUL_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::MATMUL_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("MATMUL_ASSIGN", true);
 }
-auto Parser::FlatTypes::MATMUL_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::MATMUL_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::MATMUL_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::MATMUL_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("MATMUL_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, MATMUL_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, MATMUL_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ASYNC::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ASYNC::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ASYNC", true);
 }
-auto Parser::FlatTypes::ASYNC::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ASYNC::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ASYNC::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ASYNC::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ASYNC {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ASYNC value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ASYNC value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::CONTINUE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::CONTINUE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("CONTINUE", true);
 }
-auto Parser::FlatTypes::CONTINUE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::CONTINUE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::CONTINUE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::CONTINUE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("CONTINUE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, CONTINUE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, CONTINUE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RAISE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RAISE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RAISE", true);
 }
-auto Parser::FlatTypes::RAISE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RAISE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RAISE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RAISE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RAISE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RAISE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RAISE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NONLOCAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NONLOCAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NONLOCAL", true);
 }
-auto Parser::FlatTypes::NONLOCAL::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NONLOCAL::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NONLOCAL::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NONLOCAL::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NONLOCAL {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NONLOCAL value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NONLOCAL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::TILDE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::TILDE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("TILDE", true);
 }
-auto Parser::FlatTypes::TILDE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::TILDE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::TILDE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::TILDE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("TILDE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, TILDE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TILDE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LSHIFT_ASSIGN", true);
 }
-auto Parser::FlatTypes::LSHIFT_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LSHIFT_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LSHIFT_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LSHIFT_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LSHIFT_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::BREAK::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::BREAK::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("BREAK", true);
 }
-auto Parser::FlatTypes::BREAK::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::BREAK::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::BREAK::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::BREAK::to_string() const -> std::string {
 	return ::ISPA_STD::concat("BREAK {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, BREAK value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, BREAK value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PERCENT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PERCENT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PERCENT_ASSIGN", true);
 }
-auto Parser::FlatTypes::PERCENT_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PERCENT_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PERCENT_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PERCENT_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PERCENT_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PERCENT_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PERCENT_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PLUS_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PLUS_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PLUS_ASSIGN", true);
 }
-auto Parser::FlatTypes::PLUS_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PLUS_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PLUS_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PLUS_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PLUS_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PLUS_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PLUS_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::STAR_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::STAR_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("STAR_ASSIGN", true);
 }
-auto Parser::FlatTypes::STAR_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::STAR_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::STAR_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::STAR_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("STAR_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, STAR_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, STAR_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::INDENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::INDENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("INDENT", true);
 }
-auto Parser::FlatTypes::INDENT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::INDENT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::INDENT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::INDENT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("INDENT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, INDENT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, INDENT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::DEL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::DEL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("DEL", true);
 }
-auto Parser::FlatTypes::DEL::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::DEL::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::DEL::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::DEL::to_string() const -> std::string {
 	return ::ISPA_STD::concat("DEL {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, DEL value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, DEL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::IS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::IS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("IS", true);
 }
-auto Parser::FlatTypes::IS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::IS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::IS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::IS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("IS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, IS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::IN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::IN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("IN", true);
 }
-auto Parser::FlatTypes::IN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::IN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::IN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::IN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("IN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, IN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ELSE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ELSE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ELSE", true);
 }
-auto Parser::FlatTypes::ELSE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ELSE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ELSE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ELSE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ELSE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ELSE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ELSE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::IF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::IF::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("IF", true);
 }
-auto Parser::FlatTypes::IF::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::IF::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::IF::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::IF::to_string() const -> std::string {
 	return ::ISPA_STD::concat("IF {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, IF value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IF value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NOT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NOT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NOT", true);
 }
-auto Parser::FlatTypes::NOT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NOT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NOT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NOT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NOT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NOT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NOT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ASSIGN", true);
 }
-auto Parser::FlatTypes::ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::MATMUL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::MATMUL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("MATMUL", true);
 }
-auto Parser::FlatTypes::MATMUL::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::MATMUL::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::MATMUL::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::MATMUL::to_string() const -> std::string {
 	return ::ISPA_STD::concat("MATMUL {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, MATMUL value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, MATMUL value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::COMMA::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::COMMA::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("COMMA", true);
 }
-auto Parser::FlatTypes::COMMA::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::COMMA::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::COMMA::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::COMMA::to_string() const -> std::string {
 	return ::ISPA_STD::concat("COMMA {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, COMMA value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, COMMA value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RPAREN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RPAREN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RPAREN", true);
 }
-auto Parser::FlatTypes::RPAREN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RPAREN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RPAREN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RPAREN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RPAREN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RPAREN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RPAREN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("SEMICOLON", true);
 }
-auto Parser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::SEMICOLON::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::SEMICOLON::to_string() const -> std::string {
 	return ::ISPA_STD::concat("SEMICOLON {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NEWLINE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NEWLINE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NEWLINE", true);
 }
-auto Parser::FlatTypes::NEWLINE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NEWLINE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NEWLINE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NEWLINE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NEWLINE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NEWLINE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NEWLINE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RBRACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RBRACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RBRACE", true);
 }
-auto Parser::FlatTypes::RBRACE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RBRACE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RBRACE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RBRACE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RBRACE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RBRACE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RBRACE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::STRING::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::STRING::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("STRING", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::STRING::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::STRING::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::STRING::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::STRING::to_string() const -> std::string {
 	return ::ISPA_STD::concat("STRING {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, STRING value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, STRING value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FLOOR_DIV::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FLOOR_DIV::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FLOOR_DIV", true);
 }
-auto Parser::FlatTypes::FLOOR_DIV::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FLOOR_DIV::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FLOOR_DIV::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FLOOR_DIV::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FLOOR_DIV {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::TRUE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::TRUE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("TRUE", true);
 }
-auto Parser::FlatTypes::TRUE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::TRUE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::TRUE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::TRUE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("TRUE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, TRUE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TRUE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::SLASH_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::SLASH_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("SLASH_ASSIGN", true);
 }
-auto Parser::FlatTypes::SLASH_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::SLASH_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::SLASH_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::SLASH_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("SLASH_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, SLASH_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SLASH_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::TRY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::TRY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("TRY", true);
 }
-auto Parser::FlatTypes::TRY::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::TRY::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::TRY::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::TRY::to_string() const -> std::string {
 	return ::ISPA_STD::concat("TRY {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, TRY value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TRY value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::POWER_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::POWER_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("POWER_ASSIGN", true);
 }
-auto Parser::FlatTypes::POWER_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::POWER_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::POWER_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::POWER_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("POWER_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, POWER_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, POWER_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::POWER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::POWER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("POWER", true);
 }
-auto Parser::FlatTypes::POWER::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::POWER::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::POWER::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::POWER::to_string() const -> std::string {
 	return ::ISPA_STD::concat("POWER {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, POWER value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, POWER value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PIPE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PIPE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PIPE", true);
 }
-auto Parser::FlatTypes::PIPE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PIPE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PIPE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PIPE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PIPE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PIPE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PIPE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::__WS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::__WS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("__WS", true);
 }
-auto Parser::FlatTypes::__WS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::__WS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::__WS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::__WS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("__WS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, __WS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, __WS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FOR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FOR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FOR", true);
 }
-auto Parser::FlatTypes::FOR::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FOR::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FOR::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FOR::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FOR {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FOR value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FOR value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::COLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::COLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("COLON", true);
 }
-auto Parser::FlatTypes::COLON::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::COLON::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::COLON::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::COLON::to_string() const -> std::string {
 	return ::ISPA_STD::concat("COLON {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, COLON value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, COLON value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::EXCEPT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::EXCEPT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("EXCEPT", true);
 }
-auto Parser::FlatTypes::EXCEPT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::EXCEPT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::EXCEPT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::EXCEPT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("EXCEPT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, EXCEPT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, EXCEPT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NONE_V::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NONE_V::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NONE_V", true);
 }
-auto Parser::FlatTypes::NONE_V::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NONE_V::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NONE_V::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NONE_V::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NONE_V {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NONE_V value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NONE_V value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::DEDENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::DEDENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("DEDENT", true);
 }
-auto Parser::FlatTypes::DEDENT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::DEDENT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::DEDENT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::DEDENT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("DEDENT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, DEDENT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, DEDENT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NE", true);
 }
-auto Parser::FlatTypes::NE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LT", true);
 }
-auto Parser::FlatTypes::LT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LE", true);
 }
-auto Parser::FlatTypes::LE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::STAR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::STAR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("STAR", true);
 }
-auto Parser::FlatTypes::STAR::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::STAR::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::STAR::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::STAR::to_string() const -> std::string {
 	return ::ISPA_STD::concat("STAR {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, STAR value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, STAR value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::SLASH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::SLASH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("SLASH", true);
 }
-auto Parser::FlatTypes::SLASH::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::SLASH::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::SLASH::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::SLASH::to_string() const -> std::string {
 	return ::ISPA_STD::concat("SLASH {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, SLASH value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SLASH value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LBRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LBRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LBRACKET", true);
 }
-auto Parser::FlatTypes::LBRACKET::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LBRACKET::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LBRACKET::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LBRACKET::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LBRACKET {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LBRACKET value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LBRACKET value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::GT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::GT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("GT", true);
 }
-auto Parser::FlatTypes::GT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::GT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::GT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::GT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("GT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, GT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, GT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PLUS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PLUS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PLUS", true);
 }
-auto Parser::FlatTypes::PLUS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PLUS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PLUS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PLUS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PLUS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PLUS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PLUS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LSHIFT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LSHIFT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LSHIFT", true);
 }
-auto Parser::FlatTypes::LSHIFT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LSHIFT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LSHIFT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LSHIFT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LSHIFT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LSHIFT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LSHIFT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::GE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::GE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("GE", true);
 }
-auto Parser::FlatTypes::GE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::GE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::GE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::GE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("GE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, GE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, GE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("IMPORT", true);
 }
-auto Parser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::IMPORT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::IMPORT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("IMPORT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FLOOR_DIV_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FLOOR_DIV_ASSIGN", true);
 }
-auto Parser::FlatTypes::FLOOR_DIV_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FLOOR_DIV_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FLOOR_DIV_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FALSE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FALSE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FALSE", true);
 }
-auto Parser::FlatTypes::FALSE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FALSE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FALSE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FALSE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FALSE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FALSE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FALSE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::EQ::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::EQ::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("EQ", true);
 }
-auto Parser::FlatTypes::EQ::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::EQ::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::EQ::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::EQ::to_string() const -> std::string {
 	return ::ISPA_STD::concat("EQ {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, EQ value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, EQ value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::CARET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::CARET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("CARET", true);
 }
-auto Parser::FlatTypes::CARET::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::CARET::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::CARET::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::CARET::to_string() const -> std::string {
 	return ::ISPA_STD::concat("CARET {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, CARET value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, CARET value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::AND::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::AND::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("AND", true);
 }
-auto Parser::FlatTypes::AND::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::AND::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::AND::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::AND::to_string() const -> std::string {
 	return ::ISPA_STD::concat("AND {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, AND value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, AND value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::NUMBER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::NUMBER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("NUMBER", false);
 	printer.up(false);
 	printer.node_with_value("full", full, false);
 	printer.node_with_value("floating", floating, true);
 	printer.down();
 }
-auto Parser::FlatTypes::NUMBER::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::NUMBER::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NUMBER::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::NUMBER::to_string() const -> std::string {
 	return ::ISPA_STD::concat("NUMBER {", "full = ", full, ", ", "floating = ", floating, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NUMBER value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NUMBER value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::AS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::AS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("AS", true);
 }
-auto Parser::FlatTypes::AS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::AS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::AS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::AS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("AS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, AS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, AS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::MINUS_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::MINUS_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("MINUS_ASSIGN", true);
 }
-auto Parser::FlatTypes::MINUS_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::MINUS_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::MINUS_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::MINUS_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("MINUS_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, MINUS_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, MINUS_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LPAREN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LPAREN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LPAREN", true);
 }
-auto Parser::FlatTypes::LPAREN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LPAREN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LPAREN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LPAREN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LPAREN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LPAREN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LPAREN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ID::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ID::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ID", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::ID::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ID::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ID::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ID::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ID {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ID value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ID value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::AMP::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::AMP::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("AMP", true);
 }
-auto Parser::FlatTypes::AMP::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::AMP::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::AMP::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::AMP::to_string() const -> std::string {
 	return ::ISPA_STD::concat("AMP {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, AMP value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, AMP value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::AMP_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::AMP_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("AMP_ASSIGN", true);
 }
-auto Parser::FlatTypes::AMP_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::AMP_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::AMP_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::AMP_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("AMP_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, AMP_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, AMP_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::CLASS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::CLASS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("CLASS", true);
 }
-auto Parser::FlatTypes::CLASS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::CLASS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::CLASS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::CLASS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("CLASS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, CLASS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, CLASS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::MINUS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::MINUS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("MINUS", true);
 }
-auto Parser::FlatTypes::MINUS::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::MINUS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::MINUS::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::MINUS::to_string() const -> std::string {
 	return ::ISPA_STD::concat("MINUS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, MINUS value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, MINUS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::DOT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::DOT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("DOT", true);
 }
-auto Parser::FlatTypes::DOT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::DOT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::DOT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::DOT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("DOT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, DOT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, DOT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::CARET_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::CARET_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("CARET_ASSIGN", true);
 }
-auto Parser::FlatTypes::CARET_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::CARET_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::CARET_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::CARET_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("CARET_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, CARET_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, CARET_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RSHIFT_ASSIGN", true);
 }
-auto Parser::FlatTypes::RSHIFT_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RSHIFT_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RSHIFT_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RSHIFT_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RSHIFT_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RSHIFT_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RSHIFT_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PERCENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PERCENT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PERCENT", true);
 }
-auto Parser::FlatTypes::PERCENT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PERCENT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PERCENT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PERCENT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PERCENT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PERCENT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PERCENT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ARROW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::ARROW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("ARROW", true);
 }
-auto Parser::FlatTypes::ARROW::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::ARROW::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::ARROW::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::ARROW::to_string() const -> std::string {
 	return ::ISPA_STD::concat("ARROW {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, ARROW value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ARROW value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::OR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::OR::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("OR", true);
 }
-auto Parser::FlatTypes::OR::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::OR::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::OR::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::OR::to_string() const -> std::string {
 	return ::ISPA_STD::concat("OR {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, OR value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, OR value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::PIPE_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::PIPE_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("PIPE_ASSIGN", true);
 }
-auto Parser::FlatTypes::PIPE_ASSIGN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::PIPE_ASSIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PIPE_ASSIGN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::PIPE_ASSIGN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("PIPE_ASSIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PIPE_ASSIGN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, PIPE_ASSIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RSHIFT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RSHIFT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RSHIFT", true);
 }
-auto Parser::FlatTypes::RSHIFT::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RSHIFT::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RSHIFT::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RSHIFT::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RSHIFT {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RSHIFT value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RSHIFT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RETURN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RETURN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RETURN", true);
 }
-auto Parser::FlatTypes::RETURN::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RETURN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RETURN::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RETURN::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RETURN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RETURN value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RETURN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FROM::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::FROM::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("FROM", true);
 }
-auto Parser::FlatTypes::FROM::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::FROM::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FROM::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::FROM::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FROM {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FROM value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FROM value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::LBRACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::LBRACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("LBRACE", true);
 }
-auto Parser::FlatTypes::LBRACE::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::LBRACE::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::LBRACE::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::LBRACE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("LBRACE {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, LBRACE value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LBRACE value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RBRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::RBRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("RBRACKET", true);
 }
-auto Parser::FlatTypes::RBRACKET::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::RBRACKET::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::RBRACKET::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::RBRACKET::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RBRACKET {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, RBRACKET value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RBRACKET value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitand_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitand_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitand_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1214,18 +1214,18 @@ auto Parser::FlatTypes::bitand_tail::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::bitand_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitand_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitand_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitand_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitand_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitand_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitand_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitor_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitor_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitor_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1234,18 +1234,18 @@ auto Parser::FlatTypes::bitor_tail::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::bitor_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitor_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitor_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitor_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitor_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitor_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitor_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitwise_and::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitwise_and::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitwise_and", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1255,18 +1255,18 @@ auto Parser::FlatTypes::bitwise_and::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::bitwise_and::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitwise_and::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitwise_and::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitwise_and::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitwise_and {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitwise_and value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitwise_and value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitwise_or::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitwise_or::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitwise_or", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1276,18 +1276,18 @@ auto Parser::FlatTypes::bitwise_or::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::bitwise_or::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitwise_or::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitwise_or::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitwise_or::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitwise_or {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitwise_or value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitwise_or value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitwise_xor::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitwise_xor::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitwise_xor", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1297,18 +1297,18 @@ auto Parser::FlatTypes::bitwise_xor::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::bitwise_xor::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitwise_xor::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitwise_xor::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitwise_xor::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitwise_xor {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitwise_xor value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitwise_xor value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::bitxor_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::bitxor_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("bitxor_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1317,49 +1317,49 @@ auto Parser::FlatTypes::bitxor_tail::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::bitxor_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::bitxor_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::bitxor_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::bitxor_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("bitxor_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, bitxor_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, bitxor_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::break_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::break_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("break_stmt", true);
 }
-auto Parser::FlatTypes::break_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::break_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::break_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::break_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("break_stmt {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, break_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, break_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::call_arg::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::call_arg::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("call_arg", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::call_arg::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::call_arg::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::call_arg::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::call_arg::to_string() const -> std::string {
 	return ::ISPA_STD::concat("call_arg {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, call_arg value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, call_arg value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::call_arg_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::call_arg_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("call_arg_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1368,18 +1368,18 @@ auto Parser::FlatTypes::call_arg_tail::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::call_arg_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::call_arg_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::call_arg_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::call_arg_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("call_arg_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, call_arg_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, call_arg_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::call_args::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::call_args::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("call_args", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1389,18 +1389,18 @@ auto Parser::FlatTypes::call_args::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::call_args::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::call_args::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::call_args::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::call_args::to_string() const -> std::string {
 	return ::ISPA_STD::concat("call_args {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, call_args value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, call_args value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::call_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::call_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("call_suffix", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1409,18 +1409,18 @@ auto Parser::FlatTypes::call_suffix::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::call_suffix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::call_suffix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::call_suffix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::call_suffix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("call_suffix {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, call_suffix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, call_suffix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::comparison::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::comparison::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("comparison", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1430,35 +1430,35 @@ auto Parser::FlatTypes::comparison::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::comparison::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::comparison::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::comparison::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::comparison::to_string() const -> std::string {
 	return ::ISPA_STD::concat("comparison {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, comparison value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, comparison value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::compound_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::compound_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("compound_stmt", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::compound_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::compound_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::compound_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::compound_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("compound_stmt {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, compound_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compound_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::conditional_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::conditional_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("conditional_tail", false);
 	printer.up(false);
 	printer.node("condition", false);
@@ -1471,18 +1471,18 @@ auto Parser::FlatTypes::conditional_tail::write_to_output(::ISPA_STD::ASTPrinter
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::conditional_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::conditional_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::conditional_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::conditional_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("conditional_tail {", "condition = ", condition.to_string(), ", ", "otherwise = ", otherwise.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, conditional_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, conditional_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::conjunction::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::conjunction::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("conjunction", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1492,49 +1492,49 @@ auto Parser::FlatTypes::conjunction::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::conjunction::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::conjunction::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::conjunction::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::conjunction::to_string() const -> std::string {
 	return ::ISPA_STD::concat("conjunction {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, conjunction value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, conjunction value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::continue_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::continue_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("continue_stmt", true);
 }
-auto Parser::FlatTypes::continue_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::continue_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::continue_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::continue_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("continue_stmt {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, continue_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, continue_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::def_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::def_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("def_header", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::def_header::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::def_header::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::def_header::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::def_header::to_string() const -> std::string {
 	return ::ISPA_STD::concat("def_header {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, def_header value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, def_header value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dict_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dict_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dict_expr", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1543,18 +1543,18 @@ auto Parser::FlatTypes::dict_expr::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dict_expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dict_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dict_expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dict_expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dict_expr {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dict_expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dict_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dict_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dict_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dict_item", false);
 	printer.up(false);
 	printer.node("key", false);
@@ -1567,18 +1567,18 @@ auto Parser::FlatTypes::dict_item::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dict_item::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dict_item::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dict_item::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dict_item::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dict_item {", "key = ", key.to_string(), ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dict_item value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dict_item value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dict_item_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dict_item_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dict_item_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1587,18 +1587,18 @@ auto Parser::FlatTypes::dict_item_tail::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dict_item_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dict_item_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dict_item_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dict_item_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dict_item_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dict_item_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dict_item_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dict_items::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dict_items::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dict_items", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1608,18 +1608,18 @@ auto Parser::FlatTypes::dict_items::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::dict_items::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dict_items::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dict_items::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dict_items::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dict_items {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dict_items value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dict_items value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::disjunction::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::disjunction::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("disjunction", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1629,18 +1629,18 @@ auto Parser::FlatTypes::disjunction::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::disjunction::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::disjunction::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::disjunction::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::disjunction::to_string() const -> std::string {
 	return ::ISPA_STD::concat("disjunction {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, disjunction value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, disjunction value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::else_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::else_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("else_clause", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1649,18 +1649,18 @@ auto Parser::FlatTypes::else_clause::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::else_clause::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::else_clause::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::else_clause::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::else_clause::to_string() const -> std::string {
 	return ::ISPA_STD::concat("else_clause {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, else_clause value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, else_clause value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::except_handlers::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::except_handlers::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("except_handlers", false);
 	printer.up(false);
 	printer.subtree("handlers", handlers, false);
@@ -1674,18 +1674,18 @@ auto Parser::FlatTypes::except_handlers::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::except_handlers::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::except_handlers::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::except_handlers::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::except_handlers::to_string() const -> std::string {
 	return ::ISPA_STD::concat("except_handlers {", "handlers = ", handlers, ", ", "otherwise = ", otherwise.to_string(), ", ", "finalizer = ", finalizer.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, except_handlers value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, except_handlers value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("expr", false);
 	printer.up(false);
 	printer.node("value", false);
@@ -1698,18 +1698,18 @@ auto Parser::FlatTypes::expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostrea
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("expr {", "value = ", value.to_string(), ", ", "conditional = ", conditional.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::expr_list::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::expr_list::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("expr_list", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1722,18 +1722,18 @@ auto Parser::FlatTypes::expr_list::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::expr_list::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::expr_list::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::expr_list::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::expr_list::to_string() const -> std::string {
 	return ::ISPA_STD::concat("expr_list {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, expr_list value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr_list value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::expr_list_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::expr_list_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("expr_list_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1742,35 +1742,35 @@ auto Parser::FlatTypes::expr_list_tail::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::expr_list_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::expr_list_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::expr_list_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::expr_list_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("expr_list_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, expr_list_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr_list_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::factor::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::factor::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("factor", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::factor::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::factor::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::factor::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::factor::to_string() const -> std::string {
 	return ::ISPA_STD::concat("factor {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, factor value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, factor value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::finally_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::finally_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("finally_clause", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1779,35 +1779,35 @@ auto Parser::FlatTypes::finally_clause::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::finally_clause::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::finally_clause::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::finally_clause::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::finally_clause::to_string() const -> std::string {
 	return ::ISPA_STD::concat("finally_clause {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, finally_clause value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, finally_clause value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::indented_block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::indented_block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("indented_block", false);
 	printer.up(false);
 	printer.subtree("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::indented_block::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::indented_block::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::indented_block::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::indented_block::to_string() const -> std::string {
 	return ::ISPA_STD::concat("indented_block {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, indented_block value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, indented_block value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::index_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::index_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("index_suffix", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1816,49 +1816,49 @@ auto Parser::FlatTypes::index_suffix::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::index_suffix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::index_suffix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::index_suffix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::index_suffix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("index_suffix {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, index_suffix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, index_suffix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::inversion::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::inversion::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("inversion", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::inversion::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::inversion::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::inversion::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::inversion::to_string() const -> std::string {
 	return ::ISPA_STD::concat("inversion {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, inversion value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, inversion value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::is_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::is_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("is_op", true);
 }
-auto Parser::FlatTypes::is_op::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::is_op::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::is_op::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::is_op::to_string() const -> std::string {
 	return ::ISPA_STD::concat("is_op {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, is_op value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, is_op value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::list_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::list_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("list_expr", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1867,32 +1867,32 @@ auto Parser::FlatTypes::list_expr::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::list_expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::list_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::list_expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::list_expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("list_expr {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, list_expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, list_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::not_in::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::not_in::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("not_in", true);
 }
-auto Parser::FlatTypes::not_in::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::not_in::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::not_in::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::not_in::to_string() const -> std::string {
 	return ::ISPA_STD::concat("not_in {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, not_in value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, not_in value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::not_inversion::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::not_inversion::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("not_inversion", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1901,18 +1901,18 @@ auto Parser::FlatTypes::not_inversion::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::not_inversion::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::not_inversion::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::not_inversion::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::not_inversion::to_string() const -> std::string {
 	return ::ISPA_STD::concat("not_inversion {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, not_inversion value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, not_inversion value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::or_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::or_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("or_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1921,18 +1921,18 @@ auto Parser::FlatTypes::or_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ost
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::or_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::or_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::or_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::or_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("or_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, or_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, or_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parenthesized_content::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_content::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parenthesized_content", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -1945,18 +1945,18 @@ auto Parser::FlatTypes::parenthesized_content::write_to_output(::ISPA_STD::ASTPr
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parenthesized_content::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_content::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parenthesized_content::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parenthesized_content::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parenthesized_content {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parenthesized_content value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parenthesized_content value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parenthesized_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parenthesized_expr", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -1965,32 +1965,32 @@ auto Parser::FlatTypes::parenthesized_expr::write_to_output(::ISPA_STD::ASTPrint
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parenthesized_expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parenthesized_expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parenthesized_expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parenthesized_expr {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parenthesized_expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parenthesized_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::pass_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::pass_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("pass_stmt", true);
 }
-auto Parser::FlatTypes::pass_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::pass_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::pass_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::pass_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("pass_stmt {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, pass_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, pass_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::power::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::power::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("power", false);
 	printer.up(false);
 	printer.node("base", false);
@@ -2003,18 +2003,18 @@ auto Parser::FlatTypes::power::write_to_output(::ISPA_STD::ASTPrinter<std::ostre
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::power::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::power::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::power::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::power::to_string() const -> std::string {
 	return ::ISPA_STD::concat("power {", "base = ", base.to_string(), ", ", "exponent = ", exponent.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, power value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, power value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::power_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::power_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("power_tail", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2023,18 +2023,18 @@ auto Parser::FlatTypes::power_tail::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::power_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::power_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::power_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::power_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("power_tail {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, power_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, power_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::primary::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::primary::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("primary", false);
 	printer.up(false);
 	printer.node("base", false);
@@ -2044,18 +2044,18 @@ auto Parser::FlatTypes::primary::write_to_output(::ISPA_STD::ASTPrinter<std::ost
 	printer.subtree("suffixes", suffixes, true);
 	printer.down();
 }
-auto Parser::FlatTypes::primary::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::primary::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::primary::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::primary::to_string() const -> std::string {
 	return ::ISPA_STD::concat("primary {", "base = ", base.to_string(), ", ", "suffixes = ", suffixes, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, primary value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, primary value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::shift_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::shift_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("shift_expr", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2065,18 +2065,18 @@ auto Parser::FlatTypes::shift_expr::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::shift_expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::shift_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::shift_expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::shift_expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("shift_expr {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, shift_expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, shift_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::sum::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::sum::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("sum", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2086,18 +2086,18 @@ auto Parser::FlatTypes::sum::write_to_output(::ISPA_STD::ASTPrinter<std::ostream
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::sum::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::sum::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::sum::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::sum::to_string() const -> std::string {
 	return ::ISPA_STD::concat("sum {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, sum value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, sum value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::term::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::term::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("term", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2107,18 +2107,18 @@ auto Parser::FlatTypes::term::write_to_output(::ISPA_STD::ASTPrinter<std::ostrea
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::term::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::term::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::term::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::term::to_string() const -> std::string {
 	return ::ISPA_STD::concat("term {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, term value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, term value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::try_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::try_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("try_stmt", false);
 	printer.up(false);
 	printer.node("body", false);
@@ -2131,35 +2131,35 @@ auto Parser::FlatTypes::try_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::os
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::try_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::try_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::try_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::try_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("try_stmt {", "body = ", body.to_string(), ", ", "handlers = ", handlers.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, try_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, try_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::try_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::try_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("try_tail", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::try_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::try_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::try_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::try_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("try_tail {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, try_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, try_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::tuple_elements::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::tuple_elements::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("tuple_elements", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2169,18 +2169,18 @@ auto Parser::FlatTypes::tuple_elements::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.subtree("rest", rest, true);
 	printer.down();
 }
-auto Parser::FlatTypes::tuple_elements::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::tuple_elements::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::tuple_elements::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::tuple_elements::to_string() const -> std::string {
 	return ::ISPA_STD::concat("tuple_elements {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, tuple_elements value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, tuple_elements value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::tuple_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::tuple_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("tuple_suffix", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2189,35 +2189,35 @@ auto Parser::FlatTypes::tuple_suffix::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::tuple_suffix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::tuple_suffix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::tuple_suffix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::tuple_suffix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("tuple_suffix {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, tuple_suffix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, tuple_suffix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::atom::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::atom::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("atom", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::atom::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::atom::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::atom::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::atom::to_string() const -> std::string {
 	return ::ISPA_STD::concat("atom {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, atom value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, atom value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::attribute_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::attribute_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("attribute_suffix", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2226,18 +2226,18 @@ auto Parser::FlatTypes::attribute_suffix::write_to_output(::ISPA_STD::ASTPrinter
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::attribute_suffix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::attribute_suffix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::attribute_suffix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::attribute_suffix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("attribute_suffix {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, attribute_suffix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, attribute_suffix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dotted_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dotted_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dotted_name", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2250,18 +2250,18 @@ auto Parser::FlatTypes::dotted_name::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dotted_name::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dotted_name::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dotted_name::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dotted_name::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dotted_name {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dotted_name value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dotted_name value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::except_alias::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::except_alias::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("except_alias", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2270,18 +2270,18 @@ auto Parser::FlatTypes::except_alias::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::except_alias::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::except_alias::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::except_alias::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::except_alias::to_string() const -> std::string {
 	return ::ISPA_STD::concat("except_alias {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, except_alias value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, except_alias value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::global_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::global_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("global_stmt", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2294,18 +2294,18 @@ auto Parser::FlatTypes::global_stmt::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::global_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::global_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::global_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::global_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("global_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, global_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, global_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_alias::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_alias::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_alias", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2314,18 +2314,18 @@ auto Parser::FlatTypes::import_alias::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::import_alias::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_alias::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_alias::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_alias::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_alias {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_alias value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_alias value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::keyword_arg::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::keyword_arg::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("keyword_arg", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -2338,18 +2338,18 @@ auto Parser::FlatTypes::keyword_arg::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::keyword_arg::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::keyword_arg::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::keyword_arg::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::keyword_arg::to_string() const -> std::string {
 	return ::ISPA_STD::concat("keyword_arg {", "name = ", name.to_string(), ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, keyword_arg value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, keyword_arg value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::nonlocal_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::nonlocal_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("nonlocal_stmt", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -2362,18 +2362,18 @@ auto Parser::FlatTypes::nonlocal_stmt::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::nonlocal_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::nonlocal_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::nonlocal_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::nonlocal_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("nonlocal_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, nonlocal_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, nonlocal_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::sum_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::sum_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("sum_tail", false);
 	printer.up(false);
 	printer.node_with_value("op", op, false);
@@ -2383,18 +2383,18 @@ auto Parser::FlatTypes::sum_tail::write_to_output(::ISPA_STD::ASTPrinter<std::os
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::sum_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::sum_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::sum_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::sum_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("sum_tail {", "op = ", op, ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, sum_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, sum_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::unary_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::unary_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("unary_expr", false);
 	printer.up(false);
 	printer.node_with_value("op", op, false);
@@ -2404,18 +2404,18 @@ auto Parser::FlatTypes::unary_expr::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::unary_expr::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::unary_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::unary_expr::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::unary_expr::to_string() const -> std::string {
 	return ::ISPA_STD::concat("unary_expr {", "op = ", op, ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, unary_expr value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, unary_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::term_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::term_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("term_tail", false);
 	printer.up(false);
 	printer.node_with_value("op", op, false);
@@ -2425,35 +2425,35 @@ auto Parser::FlatTypes::term_tail::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::term_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::term_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::term_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::term_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("term_tail {", "op = ", op, ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, term_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, term_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assignment_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assignment_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assignment_op", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::assignment_op::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assignment_op::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assignment_op::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assignment_op::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assignment_op {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assignment_op value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assignment_op value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::shift_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::shift_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("shift_tail", false);
 	printer.up(false);
 	printer.node_with_value("op", op, false);
@@ -2463,18 +2463,18 @@ auto Parser::FlatTypes::shift_tail::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::shift_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::shift_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::shift_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::shift_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("shift_tail {", "op = ", op, ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, shift_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, shift_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::class_bases::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::class_bases::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("class_bases", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2483,18 +2483,18 @@ auto Parser::FlatTypes::class_bases::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::class_bases::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::class_bases::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::class_bases::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::class_bases::to_string() const -> std::string {
 	return ::ISPA_STD::concat("class_bases {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, class_bases value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, class_bases value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::annotated_assignment::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::annotated_assignment::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("annotated_assignment", false);
 	printer.up(false);
 	printer.node("annotation", false);
@@ -2507,18 +2507,18 @@ auto Parser::FlatTypes::annotated_assignment::write_to_output(::ISPA_STD::ASTPri
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::annotated_assignment::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::annotated_assignment::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::annotated_assignment::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::annotated_assignment::to_string() const -> std::string {
 	return ::ISPA_STD::concat("annotated_assignment {", "annotation = ", annotation.to_string(), ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, annotated_assignment value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, annotated_assignment value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assert_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assert_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assert_stmt", false);
 	printer.up(false);
 	printer.node("condition", false);
@@ -2531,18 +2531,18 @@ auto Parser::FlatTypes::assert_stmt::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::assert_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assert_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assert_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assert_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assert_stmt {", "condition = ", condition.to_string(), ", ", "message = ", message.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assert_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assert_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::elif_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::elif_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("elif_clause", false);
 	printer.up(false);
 	printer.node("condition", false);
@@ -2555,18 +2555,18 @@ auto Parser::FlatTypes::elif_clause::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::elif_clause::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::elif_clause::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::elif_clause::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::elif_clause::to_string() const -> std::string {
 	return ::ISPA_STD::concat("elif_clause {", "condition = ", condition.to_string(), ", ", "body = ", body.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, elif_clause value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, elif_clause value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::if_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::if_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("if_stmt", false);
 	printer.up(false);
 	printer.node("condition", false);
@@ -2584,18 +2584,18 @@ auto Parser::FlatTypes::if_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ost
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::if_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::if_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::if_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::if_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("if_stmt {", "condition = ", condition.to_string(), ", ", "body = ", body.to_string(), ", ", "elifs = ", elifs, ", ", "otherwise = ", otherwise.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, if_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, if_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parameter_annotation::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parameter_annotation::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parameter_annotation", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2604,18 +2604,18 @@ auto Parser::FlatTypes::parameter_annotation::write_to_output(::ISPA_STD::ASTPri
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parameter_annotation::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parameter_annotation::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parameter_annotation::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parameter_annotation::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parameter_annotation {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parameter_annotation value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parameter_annotation value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parameter_default::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parameter_default::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parameter_default", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2624,18 +2624,18 @@ auto Parser::FlatTypes::parameter_default::write_to_output(::ISPA_STD::ASTPrinte
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parameter_default::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parameter_default::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parameter_default::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parameter_default::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parameter_default {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parameter_default value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parameter_default value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::raise_from::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::raise_from::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("raise_from", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2644,18 +2644,18 @@ auto Parser::FlatTypes::raise_from::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::raise_from::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::raise_from::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::raise_from::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::raise_from::to_string() const -> std::string {
 	return ::ISPA_STD::concat("raise_from {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, raise_from value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, raise_from value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::return_annotation::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::return_annotation::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("return_annotation", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2664,18 +2664,18 @@ auto Parser::FlatTypes::return_annotation::write_to_output(::ISPA_STD::ASTPrinte
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::return_annotation::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::return_annotation::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::return_annotation::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::return_annotation::to_string() const -> std::string {
 	return ::ISPA_STD::concat("return_annotation {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, return_annotation value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, return_annotation value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::return_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::return_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("return_stmt", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2684,18 +2684,18 @@ auto Parser::FlatTypes::return_stmt::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::return_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::return_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::return_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::return_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("return_stmt {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, return_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, return_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::while_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::while_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("while_stmt", false);
 	printer.up(false);
 	printer.node("condition", false);
@@ -2712,35 +2712,35 @@ auto Parser::FlatTypes::while_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::while_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::while_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::while_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::while_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("while_stmt {", "condition = ", condition.to_string(), ", ", "body = ", body.to_string(), ", ", "otherwise = ", otherwise.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, while_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, while_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::compare_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::compare_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("compare_op", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::compare_op::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::compare_op::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::compare_op::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::compare_op::to_string() const -> std::string {
 	return ::ISPA_STD::concat("compare_op {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, compare_op value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compare_op value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::decorator::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::decorator::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("decorator", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -2749,52 +2749,52 @@ auto Parser::FlatTypes::decorator::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::decorator::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::decorator::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::decorator::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::decorator::to_string() const -> std::string {
 	return ::ISPA_STD::concat("decorator {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, decorator value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorator value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assignment_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assignment_suffix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assignment_suffix", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::assignment_suffix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assignment_suffix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assignment_suffix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assignment_suffix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assignment_suffix {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assignment_suffix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assignment_suffix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::postfix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::postfix::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("postfix", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::postfix::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::postfix::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::postfix::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::postfix::to_string() const -> std::string {
 	return ::ISPA_STD::concat("postfix {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, postfix value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, postfix value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::relative_module::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::relative_module::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("relative_module", false);
 	printer.up(false);
 	printer.subtree("relative", relative, false);
@@ -2804,18 +2804,18 @@ auto Parser::FlatTypes::relative_module::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::relative_module::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::relative_module::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::relative_module::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::relative_module::to_string() const -> std::string {
 	return ::ISPA_STD::concat("relative_module {", "relative = ", relative, ", ", "name = ", name.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, relative_module value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, relative_module value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::except_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::except_clause::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("except_clause", false);
 	printer.up(false);
 	printer.node("exception", false);
@@ -2832,18 +2832,18 @@ auto Parser::FlatTypes::except_clause::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::except_clause::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::except_clause::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::except_clause::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::except_clause::to_string() const -> std::string {
 	return ::ISPA_STD::concat("except_clause {", "exception = ", exception.to_string(), ", ", "alias = ", alias.to_string(), ", ", "body = ", body.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, except_clause value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, except_clause value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dotted_as_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dotted_as_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dotted_as_name", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -2856,18 +2856,18 @@ auto Parser::FlatTypes::dotted_as_name::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dotted_as_name::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dotted_as_name::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dotted_as_name::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dotted_as_name::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dotted_as_name {", "name = ", name.to_string(), ", ", "alias = ", alias.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dotted_as_name value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dotted_as_name value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_name_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_name_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_name_item", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -2880,18 +2880,18 @@ auto Parser::FlatTypes::import_name_item::write_to_output(::ISPA_STD::ASTPrinter
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::import_name_item::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_name_item::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_name_item::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_name_item::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_name_item {", "name = ", name.to_string(), ", ", "alias = ", alias.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_name_item value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_name_item value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assignment_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assignment_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assignment_tail", false);
 	printer.up(false);
 	printer.node("op", false);
@@ -2904,18 +2904,18 @@ auto Parser::FlatTypes::assignment_tail::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::assignment_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assignment_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assignment_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assignment_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assignment_tail {", "op = ", op.to_string(), ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assignment_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assignment_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::class_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::class_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("class_header", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -2932,18 +2932,18 @@ auto Parser::FlatTypes::class_header::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::class_header::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::class_header::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::class_header::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::class_header::to_string() const -> std::string {
 	return ::ISPA_STD::concat("class_header {", "name = ", name.to_string(), ", ", "bases = ", bases.to_string(), ", ", "body = ", body.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, class_header value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, class_header value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parameter::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parameter::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parameter", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -2960,18 +2960,18 @@ auto Parser::FlatTypes::parameter::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parameter::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parameter::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parameter::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parameter::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parameter {", "name = ", name.to_string(), ", ", "annotation = ", annotation.to_string(), ", ", "def = ", def.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parameter value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parameter value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::raise_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::raise_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("raise_stmt", false);
 	printer.up(false);
 	printer.node("exception", false);
@@ -2984,18 +2984,18 @@ auto Parser::FlatTypes::raise_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::raise_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::raise_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::raise_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::raise_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("raise_stmt {", "exception = ", exception.to_string(), ", ", "cause = ", cause.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, raise_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, raise_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::compare_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::compare_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("compare_tail", false);
 	printer.up(false);
 	printer.node("op", false);
@@ -3008,35 +3008,35 @@ auto Parser::FlatTypes::compare_tail::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::compare_tail::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::compare_tail::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::compare_tail::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::compare_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("compare_tail {", "op = ", op.to_string(), ", ", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, compare_tail value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compare_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::decorators::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::decorators::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("decorators", false);
 	printer.up(false);
 	printer.subtree("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::decorators::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::decorators::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::decorators::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::decorators::to_string() const -> std::string {
 	return ::ISPA_STD::concat("decorators {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, decorators value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorators value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assignment_target::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assignment_target::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assignment_target", false);
 	printer.up(false);
 	printer.node("name", false);
@@ -3046,18 +3046,18 @@ auto Parser::FlatTypes::assignment_target::write_to_output(::ISPA_STD::ASTPrinte
 	printer.subtree("suffixes", suffixes, true);
 	printer.down();
 }
-auto Parser::FlatTypes::assignment_target::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assignment_target::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assignment_target::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assignment_target::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assignment_target {", "name = ", name.to_string(), ", ", "suffixes = ", suffixes, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assignment_target value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assignment_target value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::dotted_as_names::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::dotted_as_names::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("dotted_as_names", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3070,18 +3070,18 @@ auto Parser::FlatTypes::dotted_as_names::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::dotted_as_names::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::dotted_as_names::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::dotted_as_names::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::dotted_as_names::to_string() const -> std::string {
 	return ::ISPA_STD::concat("dotted_as_names {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, dotted_as_names value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dotted_as_names value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_names::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_names::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_names", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3094,35 +3094,35 @@ auto Parser::FlatTypes::import_names::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::import_names::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_names::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_names::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_names::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_names {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_names value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_names value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::assignment_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::assignment_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("assignment_value", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::assignment_value::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::assignment_value::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::assignment_value::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::assignment_value::to_string() const -> std::string {
 	return ::ISPA_STD::concat("assignment_value {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, assignment_value value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, assignment_value value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parameters::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parameters::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parameters", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3135,18 +3135,18 @@ auto Parser::FlatTypes::parameters::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parameters::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parameters::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parameters::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parameters::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parameters {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parameters value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parameters value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::class_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::class_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("class_def", false);
 	printer.up(false);
 	printer.node("decorators", false);
@@ -3159,18 +3159,18 @@ auto Parser::FlatTypes::class_def::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::class_def::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::class_def::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::class_def::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::class_def::to_string() const -> std::string {
 	return ::ISPA_STD::concat("class_def {", "decorators = ", decorators.to_string(), ", ", "definition = ", definition.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, class_def value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, class_def value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::decorated_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::decorated_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("decorated_def", false);
 	printer.up(false);
 	printer.node("decorators", false);
@@ -3183,18 +3183,18 @@ auto Parser::FlatTypes::decorated_def::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::decorated_def::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::decorated_def::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::decorated_def::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::decorated_def::to_string() const -> std::string {
 	return ::ISPA_STD::concat("decorated_def {", "decorators = ", decorators.to_string(), ", ", "definition = ", definition.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, decorated_def value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorated_def value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::del_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::del_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("del_stmt", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3207,18 +3207,18 @@ auto Parser::FlatTypes::del_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::os
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::del_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::del_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::del_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::del_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("del_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, del_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, del_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::for_targets::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::for_targets::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("for_targets", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3231,18 +3231,18 @@ auto Parser::FlatTypes::for_targets::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::for_targets::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::for_targets::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::for_targets::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::for_targets::to_string() const -> std::string {
 	return ::ISPA_STD::concat("for_targets {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, for_targets value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, for_targets value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::with_as::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::with_as::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("with_as", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -3251,18 +3251,18 @@ auto Parser::FlatTypes::with_as::write_to_output(::ISPA_STD::ASTPrinter<std::ost
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::with_as::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::with_as::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::with_as::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::with_as::to_string() const -> std::string {
 	return ::ISPA_STD::concat("with_as {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, with_as value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, with_as value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_name", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -3271,18 +3271,18 @@ auto Parser::FlatTypes::import_name::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::import_name::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_name::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_name::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_name::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_name {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_name value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_name value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::parenthesized_imports::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_imports::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("parenthesized_imports", false);
 	printer.up(false);
 	printer.node("value", true);
@@ -3291,18 +3291,18 @@ auto Parser::FlatTypes::parenthesized_imports::write_to_output(::ISPA_STD::ASTPr
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::parenthesized_imports::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::parenthesized_imports::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::parenthesized_imports::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::parenthesized_imports::to_string() const -> std::string {
 	return ::ISPA_STD::concat("parenthesized_imports {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, parenthesized_imports value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parenthesized_imports value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::expr_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::expr_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("expr_stmt", false);
 	printer.up(false);
 	printer.node("target", false);
@@ -3315,18 +3315,18 @@ auto Parser::FlatTypes::expr_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::expr_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::expr_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::expr_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::expr_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("expr_stmt {", "target = ", target.to_string(), ", ", "assignment = ", assignment.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, expr_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::function_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::function_header::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("function_header", false);
 	printer.up(false);
 	printer.node("async", false);
@@ -3351,18 +3351,18 @@ auto Parser::FlatTypes::function_header::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::function_header::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::function_header::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::function_header::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::function_header::to_string() const -> std::string {
 	return ::ISPA_STD::concat("function_header {", "async = ", async.to_string(), ", ", "name = ", name.to_string(), ", ", "params = ", params.to_string(), ", ", "returns = ", returns.to_string(), ", ", "body = ", body.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, function_header value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, function_header value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::for_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::for_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("for_stmt", false);
 	printer.up(false);
 	printer.node("async", false);
@@ -3387,18 +3387,18 @@ auto Parser::FlatTypes::for_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::os
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::for_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::for_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::for_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::for_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("for_stmt {", "async = ", async.to_string(), ", ", "targets = ", targets.to_string(), ", ", "iterable = ", iterable.to_string(), ", ", "body = ", body.to_string(), ", ", "otherwise = ", otherwise.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, for_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, for_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::with_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::with_item::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("with_item", false);
 	printer.up(false);
 	printer.node("context", false);
@@ -3411,35 +3411,35 @@ auto Parser::FlatTypes::with_item::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::with_item::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::with_item::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::with_item::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::with_item::to_string() const -> std::string {
 	return ::ISPA_STD::concat("with_item {", "context = ", context.to_string(), ", ", "target = ", target.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, with_item value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, with_item value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_targets::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_targets::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_targets", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::import_targets::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_targets::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_targets::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_targets::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_targets {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_targets value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_targets value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::function_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::function_def::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("function_def", false);
 	printer.up(false);
 	printer.node("decorators", false);
@@ -3452,18 +3452,18 @@ auto Parser::FlatTypes::function_def::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::function_def::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::function_def::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::function_def::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::function_def::to_string() const -> std::string {
 	return ::ISPA_STD::concat("function_def {", "decorators = ", decorators.to_string(), ", ", "definition = ", definition.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, function_def value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, function_def value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::with_items::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::with_items::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("with_items", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3476,18 +3476,18 @@ auto Parser::FlatTypes::with_items::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::with_items::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::with_items::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::with_items::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::with_items::to_string() const -> std::string {
 	return ::ISPA_STD::concat("with_items {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, with_items value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, with_items value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_from::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_from::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_from", false);
 	printer.up(false);
 	printer.node("module", false);
@@ -3500,18 +3500,18 @@ auto Parser::FlatTypes::import_from::write_to_output(::ISPA_STD::ASTPrinter<std:
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::import_from::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_from::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_from::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_from::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_from {", "module = ", module.to_string(), ", ", "names = ", names.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_from value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_from value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::with_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::with_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("with_stmt", false);
 	printer.up(false);
 	printer.node("async", false);
@@ -3528,52 +3528,52 @@ auto Parser::FlatTypes::with_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::o
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::with_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::with_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::with_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::with_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("with_stmt {", "async = ", async.to_string(), ", ", "items = ", items.to_string(), ", ", "body = ", body.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, with_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, with_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::import_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::import_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("import_stmt", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::import_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::import_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::import_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::import_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("import_stmt {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, import_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::simple_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::simple_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("simple_stmt", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::simple_stmt::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::simple_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::simple_stmt::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::simple_stmt::to_string() const -> std::string {
 	return ::ISPA_STD::concat("simple_stmt {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, simple_stmt value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, simple_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::simple_stmts::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::simple_stmts::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("simple_stmts", false);
 	printer.up(false);
 	printer.node("first", false);
@@ -3586,469 +3586,469 @@ auto Parser::FlatTypes::simple_stmts::write_to_output(::ISPA_STD::ASTPrinter<std
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::simple_stmts::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::simple_stmts::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::simple_stmts::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::simple_stmts::to_string() const -> std::string {
 	return ::ISPA_STD::concat("simple_stmts {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, simple_stmts value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, simple_stmts value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("block", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::block::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::block::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::block::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::block::to_string() const -> std::string {
 	return ::ISPA_STD::concat("block {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, block value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, block value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::statement::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::statement::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("statement", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::statement::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::statement::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::statement::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::statement::to_string() const -> std::string {
 	return ::ISPA_STD::concat("statement {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, statement value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, statement value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::main::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+auto PyRawParser::FlatTypes::main::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("main", false);
 	printer.up(false);
 	printer.subtree("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::main::print(std::ostream& os) const -> void {
+auto PyRawParser::FlatTypes::main::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::main::to_string() const -> std::string {
+auto PyRawParser::FlatTypes::main::to_string() const -> std::string {
 	return ::ISPA_STD::concat("main {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, main value) -> std::ostream & {
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, main value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA::API::Captures& captures, long long start_pos, const char* start, long long length, long long line) -> std::pair<long long, Token> {
+auto PyRawParser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA::API::Captures& captures, long long start_pos, const char* start, long long length, long long line) -> std::pair<long long, Token> {
 	switch (state) {
 		case 0: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEDENT, Types::DEDENT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEDENT::id, Types::DEDENT{}));
 			break;
 		}
 		case 1: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::__WS, Types::__WS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::__WS::id, Types::__WS{}));
 			break;
 		}
 		case 2: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NEWLINE, Types::NEWLINE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NEWLINE::id, Types::NEWLINE{}));
 			break;
 		}
 		case 3: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMENT, Types::COMMENT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMENT::id, Types::COMMENT{}));
 			break;
 		}
 		case 4: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PERCENT, Types::PERCENT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PERCENT::id, Types::PERCENT{}));
 			break;
 		}
 		case 5: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AMP, Types::AMP{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AMP::id, Types::AMP{}));
 			break;
 		}
 		case 6: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LPAREN, Types::LPAREN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LPAREN::id, Types::LPAREN{}));
 			break;
 		}
 		case 7: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RPAREN, Types::RPAREN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RPAREN::id, Types::RPAREN{}));
 			break;
 		}
 		case 8: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STAR, Types::STAR{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STAR::id, Types::STAR{}));
 			break;
 		}
 		case 9: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PLUS, Types::PLUS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PLUS::id, Types::PLUS{}));
 			break;
 		}
 		case 10: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMA, Types::COMMA{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMA::id, Types::COMMA{}));
 			break;
 		}
 		case 11: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MINUS, Types::MINUS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MINUS::id, Types::MINUS{}));
 			break;
 		}
 		case 12: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DOT, Types::DOT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DOT::id, Types::DOT{}));
 			break;
 		}
 		case 13: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SLASH, Types::SLASH{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SLASH::id, Types::SLASH{}));
 			break;
 		}
 		case 14: {
 			std::string floating = captures.text(2);
 			std::string full = captures.text(1);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER, Types::NUMBER{full, floating}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER::id, Types::NUMBER{full, floating}));
 			break;
 		}
 		case 15: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COLON, Types::COLON{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COLON::id, Types::COLON{}));
 			break;
 		}
 		case 16: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SEMICOLON, Types::SEMICOLON{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SEMICOLON::id, Types::SEMICOLON{}));
 			break;
 		}
 		case 17: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LT, Types::LT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LT::id, Types::LT{}));
 			break;
 		}
 		case 18: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASSIGN, Types::ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASSIGN::id, Types::ASSIGN{}));
 			break;
 		}
 		case 19: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GT, Types::GT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GT::id, Types::GT{}));
 			break;
 		}
 		case 20: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MATMUL, Types::MATMUL{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MATMUL::id, Types::MATMUL{}));
 			break;
 		}
 		case 21: {
 			std::string value = captures.text(0);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID, Types::ID{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID::id, Types::ID{value}));
 			break;
 		}
 		case 22: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LBRACKET, Types::LBRACKET{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LBRACKET::id, Types::LBRACKET{}));
 			break;
 		}
 		case 23: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RBRACKET, Types::RBRACKET{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RBRACKET::id, Types::RBRACKET{}));
 			break;
 		}
 		case 24: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CARET, Types::CARET{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CARET::id, Types::CARET{}));
 			break;
 		}
 		case 25: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LBRACE, Types::LBRACE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LBRACE::id, Types::LBRACE{}));
 			break;
 		}
 		case 26: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PIPE, Types::PIPE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PIPE::id, Types::PIPE{}));
 			break;
 		}
 		case 27: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RBRACE, Types::RBRACE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RBRACE::id, Types::RBRACE{}));
 			break;
 		}
 		case 28: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TILDE, Types::TILDE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TILDE::id, Types::TILDE{}));
 			break;
 		}
 		case 29: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NE, Types::NE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NE::id, Types::NE{}));
 			break;
 		}
 		case 30: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMENT, Types::COMMENT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::COMMENT::id, Types::COMMENT{}));
 			break;
 		}
 		case 31: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PERCENT_ASSIGN, Types::PERCENT_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PERCENT_ASSIGN::id, Types::PERCENT_ASSIGN{}));
 			break;
 		}
 		case 32: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AMP_ASSIGN, Types::AMP_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AMP_ASSIGN::id, Types::AMP_ASSIGN{}));
 			break;
 		}
 		case 33: {
 			std::string value = captures.text(3);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STRING, Types::STRING{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STRING::id, Types::STRING{value}));
 			break;
 		}
 		case 34: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::POWER, Types::POWER{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::POWER::id, Types::POWER{}));
 			break;
 		}
 		case 35: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STAR_ASSIGN, Types::STAR_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::STAR_ASSIGN::id, Types::STAR_ASSIGN{}));
 			break;
 		}
 		case 36: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PLUS_ASSIGN, Types::PLUS_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PLUS_ASSIGN::id, Types::PLUS_ASSIGN{}));
 			break;
 		}
 		case 37: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MINUS_ASSIGN, Types::MINUS_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MINUS_ASSIGN::id, Types::MINUS_ASSIGN{}));
 			break;
 		}
 		case 38: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ARROW, Types::ARROW{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ARROW::id, Types::ARROW{}));
 			break;
 		}
 		case 39: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FLOOR_DIV, Types::FLOOR_DIV{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FLOOR_DIV::id, Types::FLOOR_DIV{}));
 			break;
 		}
 		case 40: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SLASH_ASSIGN, Types::SLASH_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::SLASH_ASSIGN::id, Types::SLASH_ASSIGN{}));
 			break;
 		}
 		case 41: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LSHIFT, Types::LSHIFT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LSHIFT::id, Types::LSHIFT{}));
 			break;
 		}
 		case 42: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LE, Types::LE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LE::id, Types::LE{}));
 			break;
 		}
 		case 43: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::EQ, Types::EQ{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::EQ::id, Types::EQ{}));
 			break;
 		}
 		case 44: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GE, Types::GE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GE::id, Types::GE{}));
 			break;
 		}
 		case 45: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RSHIFT, Types::RSHIFT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RSHIFT::id, Types::RSHIFT{}));
 			break;
 		}
 		case 46: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MATMUL_ASSIGN, Types::MATMUL_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::MATMUL_ASSIGN::id, Types::MATMUL_ASSIGN{}));
 			break;
 		}
 		case 47: {
 			std::string value = captures.text(0);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID, Types::ID{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID::id, Types::ID{value}));
 			break;
 		}
 		case 48: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CARET_ASSIGN, Types::CARET_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CARET_ASSIGN::id, Types::CARET_ASSIGN{}));
 			break;
 		}
 		case 49: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AS, Types::AS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AS::id, Types::AS{}));
 			break;
 		}
 		case 50: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IF, Types::IF{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IF::id, Types::IF{}));
 			break;
 		}
 		case 51: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IN, Types::IN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IN::id, Types::IN{}));
 			break;
 		}
 		case 52: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IS, Types::IS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IS::id, Types::IS{}));
 			break;
 		}
 		case 53: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::OR, Types::OR{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::OR::id, Types::OR{}));
 			break;
 		}
 		case 54: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PIPE_ASSIGN, Types::PIPE_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PIPE_ASSIGN::id, Types::PIPE_ASSIGN{}));
 			break;
 		}
 		case 55: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::POWER_ASSIGN, Types::POWER_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::POWER_ASSIGN::id, Types::POWER_ASSIGN{}));
 			break;
 		}
 		case 56: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FLOOR_DIV_ASSIGN, Types::FLOOR_DIV_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FLOOR_DIV_ASSIGN::id, Types::FLOOR_DIV_ASSIGN{}));
 			break;
 		}
 		case 57: {
 			std::string floating = captures.text(2);
 			std::string full = captures.text(1);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER, Types::NUMBER{full, floating}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER::id, Types::NUMBER{full, floating}));
 			break;
 		}
 		case 58: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LSHIFT_ASSIGN, Types::LSHIFT_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::LSHIFT_ASSIGN::id, Types::LSHIFT_ASSIGN{}));
 			break;
 		}
 		case 59: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RSHIFT_ASSIGN, Types::RSHIFT_ASSIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RSHIFT_ASSIGN::id, Types::RSHIFT_ASSIGN{}));
 			break;
 		}
 		case 60: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AND, Types::AND{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::AND::id, Types::AND{}));
 			break;
 		}
 		case 61: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEF, Types::DEF{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEF::id, Types::DEF{}));
 			break;
 		}
 		case 62: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEL, Types::DEL{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::DEL::id, Types::DEL{}));
 			break;
 		}
 		case 63: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FOR, Types::FOR{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FOR::id, Types::FOR{}));
 			break;
 		}
 		case 64: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NOT, Types::NOT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NOT::id, Types::NOT{}));
 			break;
 		}
 		case 65: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRY, Types::TRY{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRY::id, Types::TRY{}));
 			break;
 		}
 		case 66: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NONE_V, Types::NONE_V{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NONE_V::id, Types::NONE_V{}));
 			break;
 		}
 		case 67: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRUE, Types::TRUE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::TRUE::id, Types::TRUE{}));
 			break;
 		}
 		case 68: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ELIF, Types::ELIF{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ELIF::id, Types::ELIF{}));
 			break;
 		}
 		case 69: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ELSE, Types::ELSE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ELSE::id, Types::ELSE{}));
 			break;
 		}
 		case 70: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FROM, Types::FROM{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FROM::id, Types::FROM{}));
 			break;
 		}
 		case 71: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PASS, Types::PASS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PASS::id, Types::PASS{}));
 			break;
 		}
 		case 72: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::WITH, Types::WITH{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::WITH::id, Types::WITH{}));
 			break;
 		}
 		case 73: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FALSE, Types::FALSE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FALSE::id, Types::FALSE{}));
 			break;
 		}
 		case 74: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASYNC, Types::ASYNC{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASYNC::id, Types::ASYNC{}));
 			break;
 		}
 		case 75: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::BREAK, Types::BREAK{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::BREAK::id, Types::BREAK{}));
 			break;
 		}
 		case 76: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CLASS, Types::CLASS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CLASS::id, Types::CLASS{}));
 			break;
 		}
 		case 77: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RAISE, Types::RAISE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RAISE::id, Types::RAISE{}));
 			break;
 		}
 		case 78: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::WHILE, Types::WHILE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::WHILE::id, Types::WHILE{}));
 			break;
 		}
 		case 79: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASSERT, Types::ASSERT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ASSERT::id, Types::ASSERT{}));
 			break;
 		}
 		case 80: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::EXCEPT, Types::EXCEPT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::EXCEPT::id, Types::EXCEPT{}));
 			break;
 		}
 		case 81: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GLOBAL, Types::GLOBAL{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::GLOBAL::id, Types::GLOBAL{}));
 			break;
 		}
 		case 82: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IMPORT, Types::IMPORT{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::IMPORT::id, Types::IMPORT{}));
 			break;
 		}
 		case 83: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RETURN, Types::RETURN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::RETURN::id, Types::RETURN{}));
 			break;
 		}
 		case 84: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FINALLY, Types::FINALLY{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FINALLY::id, Types::FINALLY{}));
 			break;
 		}
 		case 85: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CONTINUE, Types::CONTINUE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::CONTINUE::id, Types::CONTINUE{}));
 			break;
 		}
 		case 86: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NONLOCAL, Types::NONLOCAL{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NONLOCAL::id, Types::NONLOCAL{}));
 			break;
 		}
 	}
 	throw std::runtime_error("Out of bound semantic action");
 }
-auto Parser::Lexer::init() -> void {
+auto PyRawParser::Lexer::init() -> void {
 	return ;
 }
-auto Parser::Lexer::makeToken(const char*& pos) -> Token {
+auto PyRawParser::Lexer::makeToken(const char*& pos) -> Token {
 	return lookup(dfa_table, char_class_table, action_table, tdfa_registers, semantic_action_exec, debug_array, debug_index, pos);
 }
-::ISPA_STD::DFA::API::CharToClass Parser::Lexer::char_class_table = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0, 5, 0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18, 19, 20, 21, 22, 0, 23, 24, 24, 24, 24, 24, 25, 24, 24, 24, 24, 24, 24, 24, 26, 24, 24, 24, 24, 24, 27, 24, 24, 24, 24, 24, 24, 28, 0, 29, 30, 24, 0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 24, 40, 41, 42, 43, 44, 45, 24, 46, 47, 48, 49, 24, 50, 51, 52, 24, 53, 54, 55, 56, 0, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57};
-::ISPA_STD::DFA::API::Table<178, 58> Parser::Lexer::dfa_table = {{{380, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 195, 17, 18, 19, 20, 21, 22, 178, 194, 180, 193, 27, 28, 29, 192, 191, 184, 183, 182, 181, 179, 178, 190, 178, 178, 178, 196, 189, 188, 187, 178, 186, 178, 185, 178, 178, 44, 45, 46, 47, 380}, {381, 1, 1, 1, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381}, {382, 1, 2, 2, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 48, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {49, 49, 383, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 383}, {384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 50, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384}, {385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 51, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385}, {197, 197, 197, 197, 197, 197, 197, 197, 53, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, ::ISPA_STD::DFA::API::null_state}, {386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386}, {387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387}, {388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 54, 388, 388, 388, 388, 388, 388, 388, 388, 388, 55, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388}, {389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 56, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389}, {390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390}, {391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 57, 58, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391}, {392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392}, {393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 59, 393, 393, 393, 393, 60, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393}, {198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 199, 198, 16, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198}, {395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395}, {396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396}, {397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 62, 63, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397}, {398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 64, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398}, {399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 65, 66, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399}, {400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 67, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400}, {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 68, 200, 200, 200, 200, 200, 200, 68, 68, 68, 68, 200, 200, 200, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 200, 200, 200, 200, 200}, {202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 203, 202, 202, 202, 202, 202, 202, 203, 203, 203, 203, 202, 202, 202, 69, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 202, 202, 202, 202, 202}, {205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 203, 205, 205, 205, 205, 205, 205, 203, 203, 203, 203, 205, 205, 205, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 70, 203, 203, 203, 203, 203, 203, 203, 203, 205, 205, 205, 205, 205}, {207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 203, 207, 207, 207, 207, 207, 207, 203, 203, 203, 203, 207, 207, 207, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 71, 203, 203, 203, 203, 203, 203, 207, 207, 207, 207, 207}, {402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402}, {403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403}, {404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 72, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404}, {209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 203, 209, 209, 209, 209, 209, 209, 203, 203, 203, 203, 209, 209, 209, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 73, 203, 203, 203, 74, 203, 203, 203, 203, 203, 209, 209, 209, 209, 209}, {211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 203, 211, 211, 211, 211, 211, 211, 203, 203, 203, 203, 211, 211, 211, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 75, 203, 203, 203, 203, 203, 203, 211, 211, 211, 211, 211}, {213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 203, 213, 213, 213, 213, 213, 213, 203, 203, 203, 203, 213, 213, 213, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 76, 203, 203, 77, 203, 203, 203, 203, 203, 203, 203, 203, 213, 213, 213, 213, 213}, {215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 203, 215, 215, 215, 215, 215, 215, 203, 203, 203, 203, 215, 215, 215, 203, 203, 203, 203, 78, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 215, 215, 215, 215, 215}, {217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 203, 217, 217, 217, 217, 217, 217, 203, 203, 203, 203, 217, 217, 217, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 79, 203, 203, 203, 203, 203, 203, 203, 203, 203, 80, 203, 217, 217, 217, 217, 217}, {219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 203, 219, 219, 219, 219, 219, 219, 203, 203, 203, 203, 219, 219, 219, 203, 203, 203, 203, 203, 203, 203, 203, 81, 203, 203, 203, 203, 82, 203, 83, 203, 203, 203, 203, 203, 203, 219, 219, 219, 219, 219}, {221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 203, 221, 221, 221, 221, 221, 221, 203, 203, 203, 203, 221, 221, 221, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 84, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 221, 221, 221, 221, 221}, {223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 203, 223, 223, 223, 223, 223, 223, 203, 203, 203, 203, 223, 223, 223, 203, 203, 203, 203, 203, 85, 203, 203, 203, 203, 203, 86, 87, 203, 203, 203, 88, 203, 203, 203, 203, 203, 223, 223, 223, 223, 223}, {225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 203, 225, 225, 225, 225, 225, 225, 203, 203, 203, 203, 225, 225, 225, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 89, 203, 203, 203, 203, 203, 203, 203, 203, 225, 225, 225, 225, 225}, {227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 203, 227, 227, 227, 227, 227, 227, 203, 203, 203, 203, 227, 227, 227, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 90, 203, 203, 203, 203, 203, 203, 227, 227, 227, 227, 227}, {229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 203, 229, 229, 229, 229, 229, 229, 203, 203, 203, 203, 229, 229, 229, 91, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 229, 229, 229, 229, 229}, {231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 203, 231, 231, 231, 231, 231, 231, 203, 203, 203, 203, 231, 231, 231, 92, 203, 203, 203, 93, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 231, 231, 231, 231, 231}, {233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 203, 233, 233, 233, 233, 233, 233, 203, 203, 203, 203, 233, 233, 233, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 94, 203, 203, 203, 203, 203, 203, 233, 233, 233, 233, 233}, {235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 203, 235, 235, 235, 235, 235, 235, 203, 203, 203, 203, 235, 235, 235, 203, 203, 203, 203, 203, 203, 203, 95, 96, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 235, 235, 235, 235, 235}, {405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405}, {406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 97, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406}, {407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407}, {408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408}, {409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409}, {49, 49, 410, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 410}, {411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411}, {412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412}, {52, 52, 52, 52, 52, 52, 52, 52, 236, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, ::ISPA_STD::DFA::API::null_state}, {413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413}, {414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 98, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414}, {415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415}, {416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416}, {417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417}, {418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418}, {419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 99, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419}, {420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 237, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 101, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421}, {422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422}, {423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423}, {424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424}, {425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 102, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425}, {426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426}, {238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 68, 238, 238, 238, 238, 238, 238, 68, 68, 68, 68, 238, 238, 238, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 238, 238, 238, 238, 238}, {240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 203, 240, 240, 240, 240, 240, 240, 203, 203, 203, 203, 240, 240, 240, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 103, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 240, 240, 240, 240, 240}, {242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 203, 242, 242, 242, 242, 242, 242, 203, 203, 203, 203, 242, 242, 242, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 104, 203, 203, 203, 203, 203, 203, 203, 203, 203, 242, 242, 242, 242, 242}, {244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 203, 244, 244, 244, 244, 244, 244, 203, 203, 203, 203, 244, 244, 244, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 105, 203, 203, 203, 244, 244, 244, 244, 244}, {428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428}, {246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 203, 246, 246, 246, 246, 246, 246, 203, 203, 203, 203, 246, 246, 246, 203, 203, 203, 106, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 246, 246, 246, 246, 246}, {429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 203, 429, 429, 429, 429, 429, 429, 203, 203, 203, 203, 429, 429, 429, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 107, 203, 203, 203, 203, 108, 429, 429, 429, 429, 429}, {248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 203, 248, 248, 248, 248, 248, 248, 203, 203, 203, 203, 248, 248, 248, 203, 203, 203, 203, 109, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 248, 248, 248, 248, 248}, {250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 203, 250, 250, 250, 250, 250, 250, 203, 203, 203, 203, 250, 250, 250, 110, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 250, 250, 250, 250, 250}, {252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 203, 252, 252, 252, 252, 252, 252, 203, 203, 203, 203, 252, 252, 252, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 111, 203, 203, 203, 203, 203, 203, 203, 203, 203, 252, 252, 252, 252, 252}, {254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 203, 254, 254, 254, 254, 254, 254, 203, 203, 203, 203, 254, 254, 254, 203, 203, 203, 203, 203, 112, 203, 203, 203, 203, 113, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 254, 254, 254, 254, 254}, {256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 203, 256, 256, 256, 256, 256, 256, 203, 203, 203, 203, 256, 256, 256, 203, 203, 203, 203, 203, 203, 203, 203, 114, 203, 203, 203, 203, 203, 203, 203, 115, 203, 203, 203, 203, 203, 256, 256, 256, 256, 256}, {258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 203, 258, 258, 258, 258, 258, 258, 203, 203, 203, 203, 258, 258, 258, 203, 203, 116, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 258, 258, 258, 258, 258}, {260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 203, 260, 260, 260, 260, 260, 260, 203, 203, 203, 203, 260, 260, 260, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 117, 203, 203, 203, 203, 203, 203, 203, 203, 203, 260, 260, 260, 260, 260}, {262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 203, 262, 262, 262, 262, 262, 262, 203, 203, 203, 203, 262, 262, 262, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 118, 203, 203, 203, 203, 203, 203, 262, 262, 262, 262, 262}, {264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 203, 264, 264, 264, 264, 264, 264, 203, 203, 203, 203, 264, 264, 264, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 119, 203, 203, 203, 203, 203, 203, 203, 203, 264, 264, 264, 264, 264}, {266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 203, 266, 266, 266, 266, 266, 266, 203, 203, 203, 203, 266, 266, 266, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 120, 203, 203, 203, 203, 203, 203, 203, 203, 266, 266, 266, 266, 266}, {430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 203, 430, 430, 430, 430, 430, 430, 203, 203, 203, 203, 430, 430, 430, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 430, 430, 430, 430, 430}, {268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 203, 268, 268, 268, 268, 268, 268, 203, 203, 203, 203, 268, 268, 268, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 121, 203, 203, 203, 203, 203, 203, 203, 268, 268, 268, 268, 268}, {431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 203, 431, 431, 431, 431, 431, 431, 203, 203, 203, 203, 431, 431, 431, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 431, 431, 431, 431, 431}, {432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 203, 432, 432, 432, 432, 432, 432, 203, 203, 203, 203, 432, 432, 432, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 432, 432, 432, 432, 432}, {270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 203, 270, 270, 270, 270, 270, 270, 203, 203, 203, 203, 270, 270, 270, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 122, 203, 203, 203, 203, 123, 203, 203, 203, 203, 270, 270, 270, 270, 270}, {433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 203, 433, 433, 433, 433, 433, 433, 203, 203, 203, 203, 433, 433, 433, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 433, 433, 433, 433, 433}, {272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 203, 272, 272, 272, 272, 272, 272, 203, 203, 203, 203, 272, 272, 272, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 124, 203, 203, 203, 203, 203, 272, 272, 272, 272, 272}, {274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 203, 274, 274, 274, 274, 274, 274, 203, 203, 203, 203, 274, 274, 274, 203, 203, 203, 203, 203, 203, 203, 203, 125, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 274, 274, 274, 274, 274}, {276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 203, 276, 276, 276, 276, 276, 276, 203, 203, 203, 203, 276, 276, 276, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 126, 203, 203, 203, 203, 276, 276, 276, 276, 276}, {278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 203, 278, 278, 278, 278, 278, 278, 203, 203, 203, 203, 278, 278, 278, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 127, 278, 278, 278, 278, 278}, {280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 203, 280, 280, 280, 280, 280, 280, 203, 203, 203, 203, 280, 280, 280, 203, 203, 203, 203, 203, 203, 203, 203, 128, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 280, 280, 280, 280, 280}, {282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 203, 282, 282, 282, 282, 282, 282, 203, 203, 203, 203, 282, 282, 282, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 129, 203, 203, 203, 203, 282, 282, 282, 282, 282}, {434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434}, {435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435}, {436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436}, {283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 100, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283}, {438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438}, {439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439}, {285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 203, 285, 285, 285, 285, 285, 285, 203, 203, 203, 203, 285, 285, 285, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 130, 203, 203, 203, 203, 203, 285, 285, 285, 285, 285}, {287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 203, 287, 287, 287, 287, 287, 287, 203, 203, 203, 203, 287, 287, 287, 203, 203, 203, 203, 131, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 287, 287, 287, 287, 287}, {289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 203, 289, 289, 289, 289, 289, 289, 203, 203, 203, 203, 289, 289, 289, 203, 203, 203, 203, 132, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 289, 289, 289, 289, 289}, {440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 203, 440, 440, 440, 440, 440, 440, 203, 203, 203, 203, 440, 440, 440, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 440, 440, 440, 440, 440}, {291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 203, 291, 291, 291, 291, 291, 291, 203, 203, 203, 203, 291, 291, 291, 203, 203, 203, 203, 133, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 291, 291, 291, 291, 291}, {293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 203, 293, 293, 293, 293, 293, 293, 203, 203, 203, 203, 293, 293, 293, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 134, 203, 203, 203, 203, 203, 203, 203, 203, 203, 293, 293, 293, 293, 293}, {295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 203, 295, 295, 295, 295, 295, 295, 203, 203, 203, 203, 295, 295, 295, 135, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 295, 295, 295, 295, 295}, {297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 203, 297, 297, 297, 297, 297, 297, 203, 203, 203, 203, 297, 297, 297, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 136, 203, 203, 203, 203, 203, 297, 297, 297, 297, 297}, {299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 203, 299, 299, 299, 299, 299, 299, 203, 203, 203, 203, 299, 299, 299, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 137, 203, 203, 203, 203, 299, 299, 299, 299, 299}, {441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 203, 441, 441, 441, 441, 441, 441, 203, 203, 203, 203, 441, 441, 441, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 441, 441, 441, 441, 441}, {442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 203, 442, 442, 442, 442, 442, 442, 203, 203, 203, 203, 442, 442, 442, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 442, 442, 442, 442, 442}, {301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 203, 301, 301, 301, 301, 301, 301, 203, 203, 203, 203, 301, 301, 301, 203, 203, 203, 203, 203, 138, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 301, 301, 301, 301, 301}, {303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 203, 303, 303, 303, 303, 303, 303, 203, 203, 203, 203, 303, 303, 303, 203, 203, 203, 203, 139, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 303, 303, 303, 303, 303}, {305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 203, 305, 305, 305, 305, 305, 305, 203, 203, 203, 203, 305, 305, 305, 203, 203, 203, 203, 140, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 305, 305, 305, 305, 305}, {307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 203, 307, 307, 307, 307, 307, 307, 203, 203, 203, 203, 307, 307, 307, 141, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 307, 307, 307, 307, 307}, {443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 203, 443, 443, 443, 443, 443, 443, 203, 203, 203, 203, 443, 443, 443, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 443, 443, 443, 443, 443}, {309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 203, 309, 309, 309, 309, 309, 309, 203, 203, 203, 203, 309, 309, 309, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 142, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 309, 309, 309, 309, 309}, {311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 203, 311, 311, 311, 311, 311, 311, 203, 203, 203, 203, 311, 311, 311, 203, 143, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 311, 311, 311, 311, 311}, {313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 203, 313, 313, 313, 313, 313, 313, 203, 203, 203, 203, 313, 313, 313, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 144, 203, 203, 203, 203, 203, 203, 203, 203, 313, 313, 313, 313, 313}, {315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 203, 315, 315, 315, 315, 315, 315, 203, 203, 203, 203, 315, 315, 315, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 145, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 315, 315, 315, 315, 315}, {444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 203, 444, 444, 444, 444, 444, 444, 203, 203, 203, 203, 444, 444, 444, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 444, 444, 444, 444, 444}, {317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 203, 317, 317, 317, 317, 317, 317, 203, 203, 203, 203, 317, 317, 317, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 146, 203, 203, 203, 203, 203, 317, 317, 317, 317, 317}, {319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 203, 319, 319, 319, 319, 319, 319, 203, 203, 203, 203, 319, 319, 319, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 147, 203, 203, 203, 203, 203, 319, 319, 319, 319, 319}, {321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 203, 321, 321, 321, 321, 321, 321, 203, 203, 203, 203, 321, 321, 321, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 148, 203, 203, 203, 321, 321, 321, 321, 321}, {445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 203, 445, 445, 445, 445, 445, 445, 203, 203, 203, 203, 445, 445, 445, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 445, 445, 445, 445, 445}, {323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 203, 323, 323, 323, 323, 323, 323, 203, 203, 203, 203, 323, 323, 323, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 149, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 323, 323, 323, 323, 323}, {325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 203, 325, 325, 325, 325, 325, 325, 203, 203, 203, 203, 325, 325, 325, 203, 203, 203, 203, 203, 203, 203, 150, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 325, 325, 325, 325, 325}, {327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 203, 327, 327, 327, 327, 327, 327, 203, 203, 203, 203, 327, 327, 327, 203, 203, 203, 203, 151, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 327, 327, 327, 327, 327}, {446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 203, 446, 446, 446, 446, 446, 446, 203, 203, 203, 203, 446, 446, 446, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 446, 446, 446, 446, 446}, {447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 203, 447, 447, 447, 447, 447, 447, 203, 203, 203, 203, 447, 447, 447, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 447, 447, 447, 447, 447}, {329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 203, 329, 329, 329, 329, 329, 329, 203, 203, 203, 203, 329, 329, 329, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 152, 203, 203, 203, 203, 203, 203, 329, 329, 329, 329, 329}, {331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 203, 331, 331, 331, 331, 331, 331, 203, 203, 203, 203, 331, 331, 331, 203, 203, 153, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 331, 331, 331, 331, 331}, {333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 203, 333, 333, 333, 333, 333, 333, 203, 203, 203, 203, 333, 333, 333, 203, 203, 203, 203, 203, 203, 203, 203, 203, 154, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 333, 333, 333, 333, 333}, {335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 203, 335, 335, 335, 335, 335, 335, 203, 203, 203, 203, 335, 335, 335, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 155, 203, 203, 203, 203, 203, 335, 335, 335, 335, 335}, {337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 203, 337, 337, 337, 337, 337, 337, 203, 203, 203, 203, 337, 337, 337, 203, 203, 203, 203, 203, 203, 203, 203, 156, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 337, 337, 337, 337, 337}, {448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 203, 448, 448, 448, 448, 448, 448, 203, 203, 203, 203, 448, 448, 448, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 448, 448, 448, 448, 448}, {449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 203, 449, 449, 449, 449, 449, 449, 203, 203, 203, 203, 449, 449, 449, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 449, 449, 449, 449, 449}, {339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 203, 339, 339, 339, 339, 339, 339, 203, 203, 203, 203, 339, 339, 339, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 157, 203, 203, 203, 203, 203, 203, 203, 339, 339, 339, 339, 339}, {341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 203, 341, 341, 341, 341, 341, 341, 203, 203, 203, 203, 341, 341, 341, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 158, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 341, 341, 341, 341, 341}, {450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 203, 450, 450, 450, 450, 450, 450, 203, 203, 203, 203, 450, 450, 450, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 450, 450, 450, 450, 450}, {343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 203, 343, 343, 343, 343, 343, 343, 203, 203, 203, 203, 343, 343, 343, 159, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 343, 343, 343, 343, 343}, {345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 203, 345, 345, 345, 345, 345, 345, 203, 203, 203, 203, 345, 345, 345, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 160, 203, 203, 203, 203, 203, 203, 345, 345, 345, 345, 345}, {347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 203, 347, 347, 347, 347, 347, 347, 203, 203, 203, 203, 347, 347, 347, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 161, 203, 203, 203, 203, 203, 203, 203, 203, 347, 347, 347, 347, 347}, {451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 203, 451, 451, 451, 451, 451, 451, 203, 203, 203, 203, 451, 451, 451, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 451, 451, 451, 451, 451}, {349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 203, 349, 349, 349, 349, 349, 349, 203, 203, 203, 203, 349, 349, 349, 203, 203, 203, 203, 162, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 349, 349, 349, 349, 349}, {351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 203, 351, 351, 351, 351, 351, 351, 203, 203, 203, 203, 351, 351, 351, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 163, 203, 203, 203, 203, 203, 203, 351, 351, 351, 351, 351}, {353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 203, 353, 353, 353, 353, 353, 353, 203, 203, 203, 203, 353, 353, 353, 203, 203, 203, 203, 164, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 353, 353, 353, 353, 353}, {452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 203, 452, 452, 452, 452, 452, 452, 203, 203, 203, 203, 452, 452, 452, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 452, 452, 452, 452, 452}, {453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 203, 453, 453, 453, 453, 453, 453, 203, 203, 203, 203, 453, 453, 453, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 453, 453, 453, 453, 453}, {355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 203, 355, 355, 355, 355, 355, 355, 203, 203, 203, 203, 355, 355, 355, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 165, 203, 203, 203, 203, 355, 355, 355, 355, 355}, {454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 203, 454, 454, 454, 454, 454, 454, 203, 203, 203, 203, 454, 454, 454, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 454, 454, 454, 454, 454}, {455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 203, 455, 455, 455, 455, 455, 455, 203, 203, 203, 203, 455, 455, 455, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 455, 455, 455, 455, 455}, {456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 203, 456, 456, 456, 456, 456, 456, 203, 203, 203, 203, 456, 456, 456, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 456, 456, 456, 456, 456}, {357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 203, 357, 357, 357, 357, 357, 357, 203, 203, 203, 203, 357, 357, 357, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 166, 203, 203, 203, 203, 203, 203, 203, 203, 203, 357, 357, 357, 357, 357}, {359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 203, 359, 359, 359, 359, 359, 359, 203, 203, 203, 203, 359, 359, 359, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 167, 203, 203, 203, 203, 359, 359, 359, 359, 359}, {361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 203, 361, 361, 361, 361, 361, 361, 203, 203, 203, 203, 361, 361, 361, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 168, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 361, 361, 361, 361, 361}, {363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 203, 363, 363, 363, 363, 363, 363, 203, 203, 203, 203, 363, 363, 363, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 169, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 363, 363, 363, 363, 363}, {365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 203, 365, 365, 365, 365, 365, 365, 203, 203, 203, 203, 365, 365, 365, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 170, 203, 203, 203, 203, 365, 365, 365, 365, 365}, {367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 203, 367, 367, 367, 367, 367, 367, 203, 203, 203, 203, 367, 367, 367, 203, 203, 171, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 367, 367, 367, 367, 367}, {457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 203, 457, 457, 457, 457, 457, 457, 203, 203, 203, 203, 457, 457, 457, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 457, 457, 457, 457, 457}, {369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 203, 369, 369, 369, 369, 369, 369, 203, 203, 203, 203, 369, 369, 369, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 172, 203, 203, 203, 203, 203, 203, 203, 203, 203, 369, 369, 369, 369, 369}, {458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 203, 458, 458, 458, 458, 458, 458, 203, 203, 203, 203, 458, 458, 458, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 458, 458, 458, 458, 458}, {459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 203, 459, 459, 459, 459, 459, 459, 203, 203, 203, 203, 459, 459, 459, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 459, 459, 459, 459, 459}, {371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 203, 371, 371, 371, 371, 371, 371, 203, 203, 203, 203, 371, 371, 371, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 173, 203, 203, 203, 371, 371, 371, 371, 371}, {460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 203, 460, 460, 460, 460, 460, 460, 203, 203, 203, 203, 460, 460, 460, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 460, 460, 460, 460, 460}, {373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 203, 373, 373, 373, 373, 373, 373, 203, 203, 203, 203, 373, 373, 373, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 174, 373, 373, 373, 373, 373}, {461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 203, 461, 461, 461, 461, 461, 461, 203, 203, 203, 203, 461, 461, 461, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 461, 461, 461, 461, 461}, {462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 203, 462, 462, 462, 462, 462, 462, 203, 203, 203, 203, 462, 462, 462, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 462, 462, 462, 462, 462}, {375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 203, 375, 375, 375, 375, 375, 375, 203, 203, 203, 203, 375, 375, 375, 175, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 375, 375, 375, 375, 375}, {463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 203, 463, 463, 463, 463, 463, 463, 203, 203, 203, 203, 463, 463, 463, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 463, 463, 463, 463, 463}, {377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 203, 377, 377, 377, 377, 377, 377, 203, 203, 203, 203, 377, 377, 377, 203, 203, 203, 203, 176, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 377, 377, 377, 377, 377}, {464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 203, 464, 464, 464, 464, 464, 464, 203, 203, 203, 203, 464, 464, 464, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 464, 464, 464, 464, 464}, {379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 203, 379, 379, 379, 379, 379, 379, 203, 203, 203, 203, 379, 379, 379, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 177, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 379, 379, 379, 379, 379}, {465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 203, 465, 465, 465, 465, 465, 465, 203, 203, 203, 203, 465, 465, 465, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 465, 465, 465, 465, 465}, {466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 203, 466, 466, 466, 466, 466, 466, 203, 203, 203, 203, 466, 466, 466, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 466, 466, 466, 466, 466}}};
-::ISPA_STD::DFA::API::Table<202, 4> Parser::Lexer::action_table = {{{1, 0, ::ISPA_STD::DFA::API::null_state, 23}, {1, 8, ::ISPA_STD::DFA::API::null_state, 36}, {1, 8, ::ISPA_STD::DFA::API::null_state, 25}, {1, 8, ::ISPA_STD::DFA::API::null_state, 35}, {1, 8, ::ISPA_STD::DFA::API::null_state, 34}, {1, 8, ::ISPA_STD::DFA::API::null_state, 33}, {1, 8, ::ISPA_STD::DFA::API::null_state, 32}, {1, 8, ::ISPA_STD::DFA::API::null_state, 43}, {1, 8, ::ISPA_STD::DFA::API::null_state, 42}, {1, 8, ::ISPA_STD::DFA::API::null_state, 41}, {1, 8, ::ISPA_STD::DFA::API::null_state, 40}, {1, 8, ::ISPA_STD::DFA::API::null_state, 39}, {1, 8, ::ISPA_STD::DFA::API::null_state, 37}, {1, 8, ::ISPA_STD::DFA::API::null_state, 31}, {1, 8, ::ISPA_STD::DFA::API::null_state, 30}, {1, 8, ::ISPA_STD::DFA::API::null_state, 26}, {1, 8, ::ISPA_STD::DFA::API::null_state, 24}, {1, 2, ::ISPA_STD::DFA::API::null_state, 16}, {1, 8, ::ISPA_STD::DFA::API::null_state, 38}, {1, 6, ::ISPA_STD::DFA::API::null_state, 52}, {1, 3, ::ISPA_STD::DFA::API::null_state, 394}, {1, 3, ::ISPA_STD::DFA::API::null_state, 61}, {1, 1, ::ISPA_STD::DFA::API::null_state, 401}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 201}, {3, 0, 8, 68}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 204}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 206}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 208}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 210}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 212}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 214}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 216}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 218}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 220}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 222}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 224}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 226}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 228}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 230}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 232}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 234}, {1, 7, ::ISPA_STD::DFA::API::null_state, 53}, {1, 4, ::ISPA_STD::DFA::API::null_state, 100}, {1, 1, ::ISPA_STD::DFA::API::null_state, 427}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 239}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 241}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 243}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 245}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 247}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 249}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 251}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 253}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 255}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 257}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 259}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 261}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 263}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 265}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 267}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 269}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 271}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 273}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 275}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 277}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 279}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 281}, {1, 5, ::ISPA_STD::DFA::API::null_state, 437}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 284}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 286}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 288}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 290}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 292}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 294}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 296}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 298}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 300}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 302}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 304}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 306}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 308}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 310}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 312}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 314}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 316}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 318}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 320}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 322}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 324}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 326}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 328}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 330}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 332}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 334}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 336}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 338}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 340}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 342}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 344}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 346}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 348}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 350}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 352}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 354}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 356}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 358}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 360}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 362}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 364}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 366}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 368}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 370}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 372}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 374}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 376}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 378}}};
-std::array<::ISPA_STD::DFA::API::DFADebug, 1> Parser::Lexer::debug_array = {::ISPA_STD::DFA::API::DFADebug {"<Undefined>", "", 0, -1, -1, -1, 0, 1, '\000'}};
-std::unordered_map<long long, std::unordered_map<long long, long long>> Parser::Lexer::debug_index = { { 0, { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 1, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 2, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 3, { { 21, 0 } } }, { 4, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 5, { { 21, 0 } } }, { 6, { { 21, 0 } } }, { 7, { { 8, 0 } } }, { 10, { { 11, 0 }, { 21, 0 } } }, { 11, { { 21, 0 } } }, { 13, { { 21, 0 }, { 22, 0 } } }, { 15, { { 16, 0 }, { 21, 0 } } }, { 16, { { 17, 0 } } }, { 19, { { 20, 0 }, { 21, 0 } } }, { 20, { { 21, 0 } } }, { 21, { { 21, 0 }, { 22, 0 } } }, { 22, { { 21, 0 } } }, { 23, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 24, { { 31, 0 } } }, { 25, { { 44, 0 } } }, { 26, { { 46, 0 } } }, { 29, { { 21, 0 } } }, { 30, { { 43, 0 }, { 47, 0 } } }, { 31, { { 46, 0 } } }, { 32, { { 41, 0 }, { 44, 0 } } }, { 33, { { 35, 0 } } }, { 34, { { 41, 0 }, { 51, 0 } } }, { 35, { { 39, 0 }, { 44, 0 }, { 46, 0 } } }, { 36, { { 41, 0 } } }, { 37, { { 36, 0 }, { 42, 0 }, { 43, 0 }, { 47, 0 } } }, { 38, { { 44, 0 } } }, { 39, { { 46, 0 } } }, { 40, { { 31, 0 } } }, { 41, { { 31, 0 }, { 35, 0 } } }, { 42, { { 46, 0 } } }, { 43, { { 38, 0 }, { 39, 0 } } }, { 45, { { 21, 0 } } }, { 49, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 52, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 54, { { 21, 0 } } }, { 59, { { 21, 0 } } }, { 62, { { 21, 0 } } }, { 66, { { 21, 0 } } }, { 68, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 69, { { 41, 0 } } }, { 70, { { 43, 0 } } }, { 71, { { 49, 0 } } }, { 73, { { 34, 0 } } }, { 74, { { 47, 0 }, { 52, 0 } } }, { 75, { { 35, 0 } } }, { 76, { { 31, 0 } } }, { 77, { { 43, 0 } } }, { 78, { { 36, 0 }, { 41, 0 } } }, { 79, { { 39, 0 }, { 47, 0 } } }, { 80, { { 33, 0 } } }, { 81, { { 43, 0 } } }, { 82, { { 46, 0 } } }, { 83, { { 44, 0 } } }, { 84, { { 44, 0 } } }, { 86, { { 45, 0 } } }, { 89, { { 43, 0 }, { 48, 0 } } }, { 91, { { 47, 0 } } }, { 92, { { 39, 0 } } }, { 93, { { 48, 0 } } }, { 94, { { 52, 0 } } }, { 95, { { 39, 0 } } }, { 96, { { 48, 0 } } }, { 100, { { 17, 0 } } }, { 103, { { 47, 0 } } }, { 104, { { 35, 0 } } }, { 105, { { 35, 0 } } }, { 107, { { 35, 0 } } }, { 108, { { 43, 0 } } }, { 109, { { 31, 0 } } }, { 110, { { 47, 0 } } }, { 111, { { 48, 0 } } }, { 114, { { 36, 0 } } }, { 115, { { 35, 0 } } }, { 116, { { 35, 0 } } }, { 117, { { 31, 0 } } }, { 119, { { 42, 0 } } }, { 120, { { 32, 0 } } }, { 121, { { 44, 0 } } }, { 122, { { 41, 0 } } }, { 124, { { 47, 0 } } }, { 125, { { 47, 0 } } }, { 126, { { 49, 0 } } }, { 128, { { 41, 0 } } }, { 129, { { 38, 0 } } }, { 130, { { 35, 0 } } }, { 133, { { 46, 0 } } }, { 134, { { 33, 0 } } }, { 135, { { 40, 0 } } }, { 136, { { 47, 0 } } }, { 137, { { 39, 0 } } }, { 140, { { 45, 0 } } }, { 141, { { 41, 0 } } }, { 143, { { 31, 0 } } }, { 144, { { 46, 0 } } }, { 145, { { 44, 0 } } }, { 147, { { 35, 0 } } }, { 148, { { 46, 0 } } }, { 149, { { 35, 0 } } }, { 152, { { 48, 0 } } }, { 156, { { 43, 0 } } }, { 157, { { 48, 0 } } }, { 158, { { 41, 0 } } }, { 159, { { 41, 0 } } }, { 160, { { 48, 0 } } }, { 161, { { 33, 0 } } }, { 163, { { 43, 0 } } }, { 166, { { 49, 0 } } }, { 168, { { 52, 0 } } }, { 171, { { 31, 0 } } }, { 173, { { 35, 0 } } }, { 175, { { 41, 0 } } } };
-template<typename IT, class> auto Parser::Parser::annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::annotated_assignment, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_0;
+::ISPA_STD::DFA::API::CharToClass PyRawParser::Lexer::char_class_table = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0, 5, 0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18, 19, 20, 21, 22, 0, 23, 24, 24, 24, 24, 24, 25, 24, 24, 24, 24, 24, 24, 24, 26, 24, 24, 24, 24, 24, 27, 24, 24, 24, 24, 24, 24, 28, 0, 29, 30, 24, 0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 24, 40, 41, 42, 43, 44, 45, 24, 46, 47, 48, 49, 24, 50, 51, 52, 24, 53, 54, 55, 56, 0, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57};
+::ISPA_STD::DFA::API::Table<178, 58> PyRawParser::Lexer::dfa_table = {{{380, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 195, 17, 18, 19, 20, 21, 22, 178, 194, 180, 193, 27, 28, 29, 192, 191, 184, 183, 182, 181, 179, 178, 190, 178, 178, 178, 196, 189, 188, 187, 178, 186, 178, 185, 178, 178, 44, 45, 46, 47, 380}, {381, 1, 1, 1, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381, 381}, {382, 1, 2, 2, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382, 382}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 48, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {49, 49, 383, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 383}, {384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 50, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384}, {385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 51, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385, 385}, {197, 197, 197, 197, 197, 197, 197, 197, 53, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, ::ISPA_STD::DFA::API::null_state}, {386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386, 386}, {387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387, 387}, {388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 54, 388, 388, 388, 388, 388, 388, 388, 388, 388, 55, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388, 388}, {389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 56, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389, 389}, {390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390, 390}, {391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 57, 58, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391, 391}, {392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392, 392}, {393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 59, 393, 393, 393, 393, 60, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393, 393}, {198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 199, 198, 16, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198, 198}, {395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395, 395}, {396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396, 396}, {397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 62, 63, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397, 397}, {398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 64, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398, 398}, {399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 65, 66, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399, 399}, {400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 67, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400}, {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 68, 200, 200, 200, 200, 200, 200, 68, 68, 68, 68, 200, 200, 200, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 200, 200, 200, 200, 200}, {202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 203, 202, 202, 202, 202, 202, 202, 203, 203, 203, 203, 202, 202, 202, 69, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 202, 202, 202, 202, 202}, {205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 203, 205, 205, 205, 205, 205, 205, 203, 203, 203, 203, 205, 205, 205, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 70, 203, 203, 203, 203, 203, 203, 203, 203, 205, 205, 205, 205, 205}, {207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 207, 203, 207, 207, 207, 207, 207, 207, 203, 203, 203, 203, 207, 207, 207, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 71, 203, 203, 203, 203, 203, 203, 207, 207, 207, 207, 207}, {402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402, 402}, {403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403}, {404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 72, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404, 404}, {209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 203, 209, 209, 209, 209, 209, 209, 203, 203, 203, 203, 209, 209, 209, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 73, 203, 203, 203, 74, 203, 203, 203, 203, 203, 209, 209, 209, 209, 209}, {211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 203, 211, 211, 211, 211, 211, 211, 203, 203, 203, 203, 211, 211, 211, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 75, 203, 203, 203, 203, 203, 203, 211, 211, 211, 211, 211}, {213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 203, 213, 213, 213, 213, 213, 213, 203, 203, 203, 203, 213, 213, 213, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 76, 203, 203, 77, 203, 203, 203, 203, 203, 203, 203, 203, 213, 213, 213, 213, 213}, {215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 203, 215, 215, 215, 215, 215, 215, 203, 203, 203, 203, 215, 215, 215, 203, 203, 203, 203, 78, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 215, 215, 215, 215, 215}, {217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 203, 217, 217, 217, 217, 217, 217, 203, 203, 203, 203, 217, 217, 217, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 79, 203, 203, 203, 203, 203, 203, 203, 203, 203, 80, 203, 217, 217, 217, 217, 217}, {219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 203, 219, 219, 219, 219, 219, 219, 203, 203, 203, 203, 219, 219, 219, 203, 203, 203, 203, 203, 203, 203, 203, 81, 203, 203, 203, 203, 82, 203, 83, 203, 203, 203, 203, 203, 203, 219, 219, 219, 219, 219}, {221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 203, 221, 221, 221, 221, 221, 221, 203, 203, 203, 203, 221, 221, 221, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 84, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 221, 221, 221, 221, 221}, {223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 203, 223, 223, 223, 223, 223, 223, 203, 203, 203, 203, 223, 223, 223, 203, 203, 203, 203, 203, 85, 203, 203, 203, 203, 203, 86, 87, 203, 203, 203, 88, 203, 203, 203, 203, 203, 223, 223, 223, 223, 223}, {225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 203, 225, 225, 225, 225, 225, 225, 203, 203, 203, 203, 225, 225, 225, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 89, 203, 203, 203, 203, 203, 203, 203, 203, 225, 225, 225, 225, 225}, {227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 227, 203, 227, 227, 227, 227, 227, 227, 203, 203, 203, 203, 227, 227, 227, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 90, 203, 203, 203, 203, 203, 203, 227, 227, 227, 227, 227}, {229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 203, 229, 229, 229, 229, 229, 229, 203, 203, 203, 203, 229, 229, 229, 91, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 229, 229, 229, 229, 229}, {231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 231, 203, 231, 231, 231, 231, 231, 231, 203, 203, 203, 203, 231, 231, 231, 92, 203, 203, 203, 93, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 231, 231, 231, 231, 231}, {233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 233, 203, 233, 233, 233, 233, 233, 233, 203, 203, 203, 203, 233, 233, 233, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 94, 203, 203, 203, 203, 203, 203, 233, 233, 233, 233, 233}, {235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 235, 203, 235, 235, 235, 235, 235, 235, 203, 203, 203, 203, 235, 235, 235, 203, 203, 203, 203, 203, 203, 203, 95, 96, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 235, 235, 235, 235, 235}, {405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405, 405}, {406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 97, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406, 406}, {407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407, 407}, {408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408, 408}, {409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409, 409}, {49, 49, 410, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 410}, {411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411, 411}, {412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412, 412}, {52, 52, 52, 52, 52, 52, 52, 52, 236, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, ::ISPA_STD::DFA::API::null_state}, {413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413, 413}, {414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 98, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414, 414}, {415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415, 415}, {416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416, 416}, {417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417, 417}, {418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418, 418}, {419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 99, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419, 419}, {420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 237, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 101, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421, 421}, {422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422, 422}, {423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423, 423}, {424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424, 424}, {425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 102, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425, 425}, {426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426, 426}, {238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 238, 68, 238, 238, 238, 238, 238, 238, 68, 68, 68, 68, 238, 238, 238, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 238, 238, 238, 238, 238}, {240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 240, 203, 240, 240, 240, 240, 240, 240, 203, 203, 203, 203, 240, 240, 240, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 103, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 240, 240, 240, 240, 240}, {242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 242, 203, 242, 242, 242, 242, 242, 242, 203, 203, 203, 203, 242, 242, 242, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 104, 203, 203, 203, 203, 203, 203, 203, 203, 203, 242, 242, 242, 242, 242}, {244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 244, 203, 244, 244, 244, 244, 244, 244, 203, 203, 203, 203, 244, 244, 244, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 105, 203, 203, 203, 244, 244, 244, 244, 244}, {428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428, 428}, {246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 246, 203, 246, 246, 246, 246, 246, 246, 203, 203, 203, 203, 246, 246, 246, 203, 203, 203, 106, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 246, 246, 246, 246, 246}, {429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 429, 203, 429, 429, 429, 429, 429, 429, 203, 203, 203, 203, 429, 429, 429, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 107, 203, 203, 203, 203, 108, 429, 429, 429, 429, 429}, {248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 248, 203, 248, 248, 248, 248, 248, 248, 203, 203, 203, 203, 248, 248, 248, 203, 203, 203, 203, 109, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 248, 248, 248, 248, 248}, {250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 203, 250, 250, 250, 250, 250, 250, 203, 203, 203, 203, 250, 250, 250, 110, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 250, 250, 250, 250, 250}, {252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 203, 252, 252, 252, 252, 252, 252, 203, 203, 203, 203, 252, 252, 252, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 111, 203, 203, 203, 203, 203, 203, 203, 203, 203, 252, 252, 252, 252, 252}, {254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 203, 254, 254, 254, 254, 254, 254, 203, 203, 203, 203, 254, 254, 254, 203, 203, 203, 203, 203, 112, 203, 203, 203, 203, 113, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 254, 254, 254, 254, 254}, {256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 203, 256, 256, 256, 256, 256, 256, 203, 203, 203, 203, 256, 256, 256, 203, 203, 203, 203, 203, 203, 203, 203, 114, 203, 203, 203, 203, 203, 203, 203, 115, 203, 203, 203, 203, 203, 256, 256, 256, 256, 256}, {258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 258, 203, 258, 258, 258, 258, 258, 258, 203, 203, 203, 203, 258, 258, 258, 203, 203, 116, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 258, 258, 258, 258, 258}, {260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 260, 203, 260, 260, 260, 260, 260, 260, 203, 203, 203, 203, 260, 260, 260, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 117, 203, 203, 203, 203, 203, 203, 203, 203, 203, 260, 260, 260, 260, 260}, {262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 262, 203, 262, 262, 262, 262, 262, 262, 203, 203, 203, 203, 262, 262, 262, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 118, 203, 203, 203, 203, 203, 203, 262, 262, 262, 262, 262}, {264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 264, 203, 264, 264, 264, 264, 264, 264, 203, 203, 203, 203, 264, 264, 264, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 119, 203, 203, 203, 203, 203, 203, 203, 203, 264, 264, 264, 264, 264}, {266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 266, 203, 266, 266, 266, 266, 266, 266, 203, 203, 203, 203, 266, 266, 266, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 120, 203, 203, 203, 203, 203, 203, 203, 203, 266, 266, 266, 266, 266}, {430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 430, 203, 430, 430, 430, 430, 430, 430, 203, 203, 203, 203, 430, 430, 430, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 430, 430, 430, 430, 430}, {268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 268, 203, 268, 268, 268, 268, 268, 268, 203, 203, 203, 203, 268, 268, 268, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 121, 203, 203, 203, 203, 203, 203, 203, 268, 268, 268, 268, 268}, {431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 431, 203, 431, 431, 431, 431, 431, 431, 203, 203, 203, 203, 431, 431, 431, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 431, 431, 431, 431, 431}, {432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 432, 203, 432, 432, 432, 432, 432, 432, 203, 203, 203, 203, 432, 432, 432, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 432, 432, 432, 432, 432}, {270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 270, 203, 270, 270, 270, 270, 270, 270, 203, 203, 203, 203, 270, 270, 270, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 122, 203, 203, 203, 203, 123, 203, 203, 203, 203, 270, 270, 270, 270, 270}, {433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 433, 203, 433, 433, 433, 433, 433, 433, 203, 203, 203, 203, 433, 433, 433, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 433, 433, 433, 433, 433}, {272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 272, 203, 272, 272, 272, 272, 272, 272, 203, 203, 203, 203, 272, 272, 272, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 124, 203, 203, 203, 203, 203, 272, 272, 272, 272, 272}, {274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 274, 203, 274, 274, 274, 274, 274, 274, 203, 203, 203, 203, 274, 274, 274, 203, 203, 203, 203, 203, 203, 203, 203, 125, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 274, 274, 274, 274, 274}, {276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 276, 203, 276, 276, 276, 276, 276, 276, 203, 203, 203, 203, 276, 276, 276, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 126, 203, 203, 203, 203, 276, 276, 276, 276, 276}, {278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 203, 278, 278, 278, 278, 278, 278, 203, 203, 203, 203, 278, 278, 278, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 127, 278, 278, 278, 278, 278}, {280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 280, 203, 280, 280, 280, 280, 280, 280, 203, 203, 203, 203, 280, 280, 280, 203, 203, 203, 203, 203, 203, 203, 203, 128, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 280, 280, 280, 280, 280}, {282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 282, 203, 282, 282, 282, 282, 282, 282, 203, 203, 203, 203, 282, 282, 282, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 129, 203, 203, 203, 203, 282, 282, 282, 282, 282}, {434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434, 434}, {435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435, 435}, {436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436, 436}, {283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 100, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283}, {438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438, 438}, {439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439, 439}, {285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 285, 203, 285, 285, 285, 285, 285, 285, 203, 203, 203, 203, 285, 285, 285, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 130, 203, 203, 203, 203, 203, 285, 285, 285, 285, 285}, {287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 287, 203, 287, 287, 287, 287, 287, 287, 203, 203, 203, 203, 287, 287, 287, 203, 203, 203, 203, 131, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 287, 287, 287, 287, 287}, {289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 289, 203, 289, 289, 289, 289, 289, 289, 203, 203, 203, 203, 289, 289, 289, 203, 203, 203, 203, 132, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 289, 289, 289, 289, 289}, {440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 440, 203, 440, 440, 440, 440, 440, 440, 203, 203, 203, 203, 440, 440, 440, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 440, 440, 440, 440, 440}, {291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 291, 203, 291, 291, 291, 291, 291, 291, 203, 203, 203, 203, 291, 291, 291, 203, 203, 203, 203, 133, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 291, 291, 291, 291, 291}, {293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 293, 203, 293, 293, 293, 293, 293, 293, 203, 203, 203, 203, 293, 293, 293, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 134, 203, 203, 203, 203, 203, 203, 203, 203, 203, 293, 293, 293, 293, 293}, {295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 295, 203, 295, 295, 295, 295, 295, 295, 203, 203, 203, 203, 295, 295, 295, 135, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 295, 295, 295, 295, 295}, {297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 297, 203, 297, 297, 297, 297, 297, 297, 203, 203, 203, 203, 297, 297, 297, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 136, 203, 203, 203, 203, 203, 297, 297, 297, 297, 297}, {299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 299, 203, 299, 299, 299, 299, 299, 299, 203, 203, 203, 203, 299, 299, 299, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 137, 203, 203, 203, 203, 299, 299, 299, 299, 299}, {441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 441, 203, 441, 441, 441, 441, 441, 441, 203, 203, 203, 203, 441, 441, 441, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 441, 441, 441, 441, 441}, {442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 442, 203, 442, 442, 442, 442, 442, 442, 203, 203, 203, 203, 442, 442, 442, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 442, 442, 442, 442, 442}, {301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 301, 203, 301, 301, 301, 301, 301, 301, 203, 203, 203, 203, 301, 301, 301, 203, 203, 203, 203, 203, 138, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 301, 301, 301, 301, 301}, {303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 303, 203, 303, 303, 303, 303, 303, 303, 203, 203, 203, 203, 303, 303, 303, 203, 203, 203, 203, 139, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 303, 303, 303, 303, 303}, {305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 305, 203, 305, 305, 305, 305, 305, 305, 203, 203, 203, 203, 305, 305, 305, 203, 203, 203, 203, 140, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 305, 305, 305, 305, 305}, {307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 307, 203, 307, 307, 307, 307, 307, 307, 203, 203, 203, 203, 307, 307, 307, 141, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 307, 307, 307, 307, 307}, {443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 443, 203, 443, 443, 443, 443, 443, 443, 203, 203, 203, 203, 443, 443, 443, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 443, 443, 443, 443, 443}, {309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 309, 203, 309, 309, 309, 309, 309, 309, 203, 203, 203, 203, 309, 309, 309, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 142, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 309, 309, 309, 309, 309}, {311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 203, 311, 311, 311, 311, 311, 311, 203, 203, 203, 203, 311, 311, 311, 203, 143, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 311, 311, 311, 311, 311}, {313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 313, 203, 313, 313, 313, 313, 313, 313, 203, 203, 203, 203, 313, 313, 313, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 144, 203, 203, 203, 203, 203, 203, 203, 203, 313, 313, 313, 313, 313}, {315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 315, 203, 315, 315, 315, 315, 315, 315, 203, 203, 203, 203, 315, 315, 315, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 145, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 315, 315, 315, 315, 315}, {444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 444, 203, 444, 444, 444, 444, 444, 444, 203, 203, 203, 203, 444, 444, 444, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 444, 444, 444, 444, 444}, {317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 317, 203, 317, 317, 317, 317, 317, 317, 203, 203, 203, 203, 317, 317, 317, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 146, 203, 203, 203, 203, 203, 317, 317, 317, 317, 317}, {319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 319, 203, 319, 319, 319, 319, 319, 319, 203, 203, 203, 203, 319, 319, 319, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 147, 203, 203, 203, 203, 203, 319, 319, 319, 319, 319}, {321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 321, 203, 321, 321, 321, 321, 321, 321, 203, 203, 203, 203, 321, 321, 321, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 148, 203, 203, 203, 321, 321, 321, 321, 321}, {445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 445, 203, 445, 445, 445, 445, 445, 445, 203, 203, 203, 203, 445, 445, 445, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 445, 445, 445, 445, 445}, {323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 323, 203, 323, 323, 323, 323, 323, 323, 203, 203, 203, 203, 323, 323, 323, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 149, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 323, 323, 323, 323, 323}, {325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 325, 203, 325, 325, 325, 325, 325, 325, 203, 203, 203, 203, 325, 325, 325, 203, 203, 203, 203, 203, 203, 203, 150, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 325, 325, 325, 325, 325}, {327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 327, 203, 327, 327, 327, 327, 327, 327, 203, 203, 203, 203, 327, 327, 327, 203, 203, 203, 203, 151, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 327, 327, 327, 327, 327}, {446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 446, 203, 446, 446, 446, 446, 446, 446, 203, 203, 203, 203, 446, 446, 446, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 446, 446, 446, 446, 446}, {447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 447, 203, 447, 447, 447, 447, 447, 447, 203, 203, 203, 203, 447, 447, 447, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 447, 447, 447, 447, 447}, {329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 329, 203, 329, 329, 329, 329, 329, 329, 203, 203, 203, 203, 329, 329, 329, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 152, 203, 203, 203, 203, 203, 203, 329, 329, 329, 329, 329}, {331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 203, 331, 331, 331, 331, 331, 331, 203, 203, 203, 203, 331, 331, 331, 203, 203, 153, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 331, 331, 331, 331, 331}, {333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 333, 203, 333, 333, 333, 333, 333, 333, 203, 203, 203, 203, 333, 333, 333, 203, 203, 203, 203, 203, 203, 203, 203, 203, 154, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 333, 333, 333, 333, 333}, {335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 335, 203, 335, 335, 335, 335, 335, 335, 203, 203, 203, 203, 335, 335, 335, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 155, 203, 203, 203, 203, 203, 335, 335, 335, 335, 335}, {337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 337, 203, 337, 337, 337, 337, 337, 337, 203, 203, 203, 203, 337, 337, 337, 203, 203, 203, 203, 203, 203, 203, 203, 156, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 337, 337, 337, 337, 337}, {448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 203, 448, 448, 448, 448, 448, 448, 203, 203, 203, 203, 448, 448, 448, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 448, 448, 448, 448, 448}, {449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 449, 203, 449, 449, 449, 449, 449, 449, 203, 203, 203, 203, 449, 449, 449, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 449, 449, 449, 449, 449}, {339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 339, 203, 339, 339, 339, 339, 339, 339, 203, 203, 203, 203, 339, 339, 339, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 157, 203, 203, 203, 203, 203, 203, 203, 339, 339, 339, 339, 339}, {341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 341, 203, 341, 341, 341, 341, 341, 341, 203, 203, 203, 203, 341, 341, 341, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 158, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 341, 341, 341, 341, 341}, {450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 450, 203, 450, 450, 450, 450, 450, 450, 203, 203, 203, 203, 450, 450, 450, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 450, 450, 450, 450, 450}, {343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 343, 203, 343, 343, 343, 343, 343, 343, 203, 203, 203, 203, 343, 343, 343, 159, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 343, 343, 343, 343, 343}, {345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 345, 203, 345, 345, 345, 345, 345, 345, 203, 203, 203, 203, 345, 345, 345, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 160, 203, 203, 203, 203, 203, 203, 345, 345, 345, 345, 345}, {347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 347, 203, 347, 347, 347, 347, 347, 347, 203, 203, 203, 203, 347, 347, 347, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 161, 203, 203, 203, 203, 203, 203, 203, 203, 347, 347, 347, 347, 347}, {451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 451, 203, 451, 451, 451, 451, 451, 451, 203, 203, 203, 203, 451, 451, 451, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 451, 451, 451, 451, 451}, {349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 203, 349, 349, 349, 349, 349, 349, 203, 203, 203, 203, 349, 349, 349, 203, 203, 203, 203, 162, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 349, 349, 349, 349, 349}, {351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 351, 203, 351, 351, 351, 351, 351, 351, 203, 203, 203, 203, 351, 351, 351, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 163, 203, 203, 203, 203, 203, 203, 351, 351, 351, 351, 351}, {353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 203, 353, 353, 353, 353, 353, 353, 203, 203, 203, 203, 353, 353, 353, 203, 203, 203, 203, 164, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 353, 353, 353, 353, 353}, {452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 452, 203, 452, 452, 452, 452, 452, 452, 203, 203, 203, 203, 452, 452, 452, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 452, 452, 452, 452, 452}, {453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 453, 203, 453, 453, 453, 453, 453, 453, 203, 203, 203, 203, 453, 453, 453, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 453, 453, 453, 453, 453}, {355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 355, 203, 355, 355, 355, 355, 355, 355, 203, 203, 203, 203, 355, 355, 355, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 165, 203, 203, 203, 203, 355, 355, 355, 355, 355}, {454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 454, 203, 454, 454, 454, 454, 454, 454, 203, 203, 203, 203, 454, 454, 454, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 454, 454, 454, 454, 454}, {455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 455, 203, 455, 455, 455, 455, 455, 455, 203, 203, 203, 203, 455, 455, 455, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 455, 455, 455, 455, 455}, {456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 456, 203, 456, 456, 456, 456, 456, 456, 203, 203, 203, 203, 456, 456, 456, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 456, 456, 456, 456, 456}, {357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 357, 203, 357, 357, 357, 357, 357, 357, 203, 203, 203, 203, 357, 357, 357, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 166, 203, 203, 203, 203, 203, 203, 203, 203, 203, 357, 357, 357, 357, 357}, {359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 359, 203, 359, 359, 359, 359, 359, 359, 203, 203, 203, 203, 359, 359, 359, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 167, 203, 203, 203, 203, 359, 359, 359, 359, 359}, {361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 361, 203, 361, 361, 361, 361, 361, 361, 203, 203, 203, 203, 361, 361, 361, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 168, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 361, 361, 361, 361, 361}, {363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 363, 203, 363, 363, 363, 363, 363, 363, 203, 203, 203, 203, 363, 363, 363, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 169, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 363, 363, 363, 363, 363}, {365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 203, 365, 365, 365, 365, 365, 365, 203, 203, 203, 203, 365, 365, 365, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 170, 203, 203, 203, 203, 365, 365, 365, 365, 365}, {367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 367, 203, 367, 367, 367, 367, 367, 367, 203, 203, 203, 203, 367, 367, 367, 203, 203, 171, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 367, 367, 367, 367, 367}, {457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 457, 203, 457, 457, 457, 457, 457, 457, 203, 203, 203, 203, 457, 457, 457, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 457, 457, 457, 457, 457}, {369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 369, 203, 369, 369, 369, 369, 369, 369, 203, 203, 203, 203, 369, 369, 369, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 172, 203, 203, 203, 203, 203, 203, 203, 203, 203, 369, 369, 369, 369, 369}, {458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 458, 203, 458, 458, 458, 458, 458, 458, 203, 203, 203, 203, 458, 458, 458, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 458, 458, 458, 458, 458}, {459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 459, 203, 459, 459, 459, 459, 459, 459, 203, 203, 203, 203, 459, 459, 459, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 459, 459, 459, 459, 459}, {371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 371, 203, 371, 371, 371, 371, 371, 371, 203, 203, 203, 203, 371, 371, 371, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 173, 203, 203, 203, 371, 371, 371, 371, 371}, {460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460, 203, 460, 460, 460, 460, 460, 460, 203, 203, 203, 203, 460, 460, 460, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 460, 460, 460, 460, 460}, {373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 373, 203, 373, 373, 373, 373, 373, 373, 203, 203, 203, 203, 373, 373, 373, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 174, 373, 373, 373, 373, 373}, {461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 461, 203, 461, 461, 461, 461, 461, 461, 203, 203, 203, 203, 461, 461, 461, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 461, 461, 461, 461, 461}, {462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 462, 203, 462, 462, 462, 462, 462, 462, 203, 203, 203, 203, 462, 462, 462, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 462, 462, 462, 462, 462}, {375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 203, 375, 375, 375, 375, 375, 375, 203, 203, 203, 203, 375, 375, 375, 175, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 375, 375, 375, 375, 375}, {463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 463, 203, 463, 463, 463, 463, 463, 463, 203, 203, 203, 203, 463, 463, 463, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 463, 463, 463, 463, 463}, {377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 377, 203, 377, 377, 377, 377, 377, 377, 203, 203, 203, 203, 377, 377, 377, 203, 203, 203, 203, 176, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 377, 377, 377, 377, 377}, {464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 464, 203, 464, 464, 464, 464, 464, 464, 203, 203, 203, 203, 464, 464, 464, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 464, 464, 464, 464, 464}, {379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 379, 203, 379, 379, 379, 379, 379, 379, 203, 203, 203, 203, 379, 379, 379, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 177, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 379, 379, 379, 379, 379}, {465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 465, 203, 465, 465, 465, 465, 465, 465, 203, 203, 203, 203, 465, 465, 465, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 465, 465, 465, 465, 465}, {466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 466, 203, 466, 466, 466, 466, 466, 466, 203, 203, 203, 203, 466, 466, 466, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 466, 466, 466, 466, 466}}};
+::ISPA_STD::DFA::API::Table<202, 4> PyRawParser::Lexer::action_table = {{{1, 0, ::ISPA_STD::DFA::API::null_state, 23}, {1, 8, ::ISPA_STD::DFA::API::null_state, 36}, {1, 8, ::ISPA_STD::DFA::API::null_state, 25}, {1, 8, ::ISPA_STD::DFA::API::null_state, 35}, {1, 8, ::ISPA_STD::DFA::API::null_state, 34}, {1, 8, ::ISPA_STD::DFA::API::null_state, 33}, {1, 8, ::ISPA_STD::DFA::API::null_state, 32}, {1, 8, ::ISPA_STD::DFA::API::null_state, 43}, {1, 8, ::ISPA_STD::DFA::API::null_state, 42}, {1, 8, ::ISPA_STD::DFA::API::null_state, 41}, {1, 8, ::ISPA_STD::DFA::API::null_state, 40}, {1, 8, ::ISPA_STD::DFA::API::null_state, 39}, {1, 8, ::ISPA_STD::DFA::API::null_state, 37}, {1, 8, ::ISPA_STD::DFA::API::null_state, 31}, {1, 8, ::ISPA_STD::DFA::API::null_state, 30}, {1, 8, ::ISPA_STD::DFA::API::null_state, 26}, {1, 8, ::ISPA_STD::DFA::API::null_state, 24}, {1, 2, ::ISPA_STD::DFA::API::null_state, 16}, {1, 8, ::ISPA_STD::DFA::API::null_state, 38}, {1, 6, ::ISPA_STD::DFA::API::null_state, 52}, {1, 3, ::ISPA_STD::DFA::API::null_state, 394}, {1, 3, ::ISPA_STD::DFA::API::null_state, 61}, {1, 1, ::ISPA_STD::DFA::API::null_state, 401}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 201}, {3, 0, 8, 68}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 204}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 206}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 208}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 210}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 212}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 214}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 216}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 218}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 220}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 222}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 224}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 226}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 228}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 230}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 232}, {3, 0, 8, 401}, {1, 1, ::ISPA_STD::DFA::API::null_state, 234}, {1, 7, ::ISPA_STD::DFA::API::null_state, 53}, {1, 4, ::ISPA_STD::DFA::API::null_state, 100}, {1, 1, ::ISPA_STD::DFA::API::null_state, 427}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 239}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 241}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 243}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 245}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 247}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 249}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 251}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 253}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 255}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 257}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 259}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 261}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 263}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 265}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 267}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 269}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 271}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 273}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 275}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 277}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 279}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 281}, {1, 5, ::ISPA_STD::DFA::API::null_state, 437}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 284}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 286}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 288}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 290}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 292}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 294}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 296}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 298}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 300}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 302}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 304}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 306}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 308}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 310}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 312}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 314}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 316}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 318}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 320}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 322}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 324}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 326}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 328}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 330}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 332}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 334}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 336}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 338}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 340}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 342}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 344}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 346}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 348}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 350}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 352}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 354}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 356}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 358}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 360}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 362}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 364}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 366}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 368}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 370}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 372}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 374}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 376}, {3, 0, 8, 427}, {1, 1, ::ISPA_STD::DFA::API::null_state, 378}}};
+std::array<::ISPA_STD::DFA::API::DFADebug, 1> PyRawParser::Lexer::debug_array = {::ISPA_STD::DFA::API::DFADebug {"<Undefined>", "", 0, -1, -1, -1, 0, 1, '\000'}};
+std::unordered_map<long long, std::unordered_map<long long, long long>> PyRawParser::Lexer::debug_index = { { 0, { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 1, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 2, { { 1, 0 }, { 2, 0 }, { 3, 0 } } }, { 3, { { 21, 0 } } }, { 4, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 5, { { 21, 0 } } }, { 6, { { 21, 0 } } }, { 7, { { 8, 0 } } }, { 10, { { 11, 0 }, { 21, 0 } } }, { 11, { { 21, 0 } } }, { 13, { { 21, 0 }, { 22, 0 } } }, { 15, { { 16, 0 }, { 21, 0 } } }, { 16, { { 17, 0 } } }, { 19, { { 20, 0 }, { 21, 0 } } }, { 20, { { 21, 0 } } }, { 21, { { 21, 0 }, { 22, 0 } } }, { 22, { { 21, 0 } } }, { 23, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 24, { { 31, 0 } } }, { 25, { { 44, 0 } } }, { 26, { { 46, 0 } } }, { 29, { { 21, 0 } } }, { 30, { { 43, 0 }, { 47, 0 } } }, { 31, { { 46, 0 } } }, { 32, { { 41, 0 }, { 44, 0 } } }, { 33, { { 35, 0 } } }, { 34, { { 41, 0 }, { 51, 0 } } }, { 35, { { 39, 0 }, { 44, 0 }, { 46, 0 } } }, { 36, { { 41, 0 } } }, { 37, { { 36, 0 }, { 42, 0 }, { 43, 0 }, { 47, 0 } } }, { 38, { { 44, 0 } } }, { 39, { { 46, 0 } } }, { 40, { { 31, 0 } } }, { 41, { { 31, 0 }, { 35, 0 } } }, { 42, { { 46, 0 } } }, { 43, { { 38, 0 }, { 39, 0 } } }, { 45, { { 21, 0 } } }, { 49, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 52, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 }, { 53, 0 }, { 54, 0 }, { 55, 0 }, { 56, 0 } } }, { 54, { { 21, 0 } } }, { 59, { { 21, 0 } } }, { 62, { { 21, 0 } } }, { 66, { { 21, 0 } } }, { 68, { { 17, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 }, { 49, 0 }, { 50, 0 }, { 51, 0 }, { 52, 0 } } }, { 69, { { 41, 0 } } }, { 70, { { 43, 0 } } }, { 71, { { 49, 0 } } }, { 73, { { 34, 0 } } }, { 74, { { 47, 0 }, { 52, 0 } } }, { 75, { { 35, 0 } } }, { 76, { { 31, 0 } } }, { 77, { { 43, 0 } } }, { 78, { { 36, 0 }, { 41, 0 } } }, { 79, { { 39, 0 }, { 47, 0 } } }, { 80, { { 33, 0 } } }, { 81, { { 43, 0 } } }, { 82, { { 46, 0 } } }, { 83, { { 44, 0 } } }, { 84, { { 44, 0 } } }, { 86, { { 45, 0 } } }, { 89, { { 43, 0 }, { 48, 0 } } }, { 91, { { 47, 0 } } }, { 92, { { 39, 0 } } }, { 93, { { 48, 0 } } }, { 94, { { 52, 0 } } }, { 95, { { 39, 0 } } }, { 96, { { 48, 0 } } }, { 100, { { 17, 0 } } }, { 103, { { 47, 0 } } }, { 104, { { 35, 0 } } }, { 105, { { 35, 0 } } }, { 107, { { 35, 0 } } }, { 108, { { 43, 0 } } }, { 109, { { 31, 0 } } }, { 110, { { 47, 0 } } }, { 111, { { 48, 0 } } }, { 114, { { 36, 0 } } }, { 115, { { 35, 0 } } }, { 116, { { 35, 0 } } }, { 117, { { 31, 0 } } }, { 119, { { 42, 0 } } }, { 120, { { 32, 0 } } }, { 121, { { 44, 0 } } }, { 122, { { 41, 0 } } }, { 124, { { 47, 0 } } }, { 125, { { 47, 0 } } }, { 126, { { 49, 0 } } }, { 128, { { 41, 0 } } }, { 129, { { 38, 0 } } }, { 130, { { 35, 0 } } }, { 133, { { 46, 0 } } }, { 134, { { 33, 0 } } }, { 135, { { 40, 0 } } }, { 136, { { 47, 0 } } }, { 137, { { 39, 0 } } }, { 140, { { 45, 0 } } }, { 141, { { 41, 0 } } }, { 143, { { 31, 0 } } }, { 144, { { 46, 0 } } }, { 145, { { 44, 0 } } }, { 147, { { 35, 0 } } }, { 148, { { 46, 0 } } }, { 149, { { 35, 0 } } }, { 152, { { 48, 0 } } }, { 156, { { 43, 0 } } }, { 157, { { 48, 0 } } }, { 158, { { 41, 0 } } }, { 159, { { 41, 0 } } }, { 160, { { 48, 0 } } }, { 161, { { 33, 0 } } }, { 163, { { 43, 0 } } }, { 166, { { 49, 0 } } }, { 168, { { 52, 0 } } }, { 171, { { 31, 0 } } }, { 173, { { 35, 0 } } }, { 175, { { 41, 0 } } } };
+template<typename IT, class> auto PyRawParser::Parser::annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, IT> {
+	::ISPA_STD::Node<Types::COLON> COLON_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
 	bool success_16;
 	bool success_12;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> group_8;
+	std::tuple<::ISPA_STD::Node<Types::ASSIGN>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_8;
 	bool success_10;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> uvar_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN> ASSIGN_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_13;
+	std::tuple<::ISPA_STD::Node<Types::ASSIGN>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> uvar_9;
+	::ISPA_STD::Node<Types::ASSIGN> ASSIGN_11;
+	::ISPA_STD::Node<Types::__WS> __WS_13;
 	bool success_14;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> tuple_elem_17;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_15;
+	::ISPA_STD::Node<Types::expr> tuple_elem_17;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::COLON>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -4062,7 +4062,7 @@ template<typename IT, class> auto Parser::Parser::annotated_assignment(IT pos) -
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -4078,12 +4078,12 @@ template<typename IT, class> auto Parser::Parser::annotated_assignment(IT pos) -
 			// speculative match failed (diagnostic suppressed):  ASSIGN
 			break;
 		}
-		ASSIGN_11 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>>();
+		ASSIGN_11 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::ASSIGN>>();
 		success_12 = true;
 		begin_18++;
 		success_14 = false;
 		if (((*begin_18)).template holds<Types::__WS>()) {
-			__WS_13 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_13 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_14 = true;
 			begin_18++;
 		}
@@ -4107,44 +4107,44 @@ template<typename IT, class> auto Parser::Parser::annotated_assignment(IT pos) -
 	Types::annotated_assignment result;
 	::ISPA_STD::assign_compatible(result.annotation, expr_4);
 	::ISPA_STD::assign_compatible(result.value, expr_15);
-	::ISPA_STD::MatchResult<Rules, Types::annotated_assignment, IT> match_result;
+	::ISPA_STD::MatchResult<Types::annotated_assignment, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::annotated_assignment<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::annotated_assignment, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::annotated_assignment<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::annotated_assignment, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assert_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASSERT> ASSERT_0;
+template auto PyRawParser::Parser::annotated_assignment<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::annotated_assignment<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, IT> {
+	::ISPA_STD::Node<Types::ASSERT> ASSERT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
 	bool success_16;
 	bool success_12;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> group_8;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_8;
 	bool success_10;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> uvar_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_13;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> uvar_9;
+	::ISPA_STD::Node<Types::COMMA> COMMA_11;
+	::ISPA_STD::Node<Types::__WS> __WS_13;
 	bool success_14;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> tuple_elem_17;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_15;
+	::ISPA_STD::Node<Types::expr> tuple_elem_17;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ASSERT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ASSERT");
 		return {};
 	}
-	ASSERT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASSERT>>();
+	ASSERT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASSERT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -4158,7 +4158,7 @@ template<typename IT, class> auto Parser::Parser::assert_stmt(IT pos) -> ::ISPA_
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -4174,12 +4174,12 @@ template<typename IT, class> auto Parser::Parser::assert_stmt(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_11 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_11 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_12 = true;
 		begin_18++;
 		success_14 = false;
 		if (((*begin_18)).template holds<Types::__WS>()) {
-			__WS_13 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_13 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_14 = true;
 			begin_18++;
 		}
@@ -4203,58 +4203,58 @@ template<typename IT, class> auto Parser::Parser::assert_stmt(IT pos) -> ::ISPA_
 	Types::assert_stmt result;
 	::ISPA_STD::assign_compatible(result.condition, expr_4);
 	::ISPA_STD::assign_compatible(result.message, expr_15);
-	::ISPA_STD::MatchResult<Rules, Types::assert_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assert_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assert_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assert_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assert_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assert_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_op, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::CARET_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::AMP_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::POWER_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::SLASH_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::PIPE_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::MINUS_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::STAR_ASSIGN>, ::ISPA_STD::Node<::Parser::Tokens, Types::PLUS_ASSIGN>> _0;
+template auto PyRawParser::Parser::assert_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assert_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assignment_op(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::RSHIFT_ASSIGN>, ::ISPA_STD::Node<Types::CARET_ASSIGN>, ::ISPA_STD::Node<Types::AMP_ASSIGN>, ::ISPA_STD::Node<Types::POWER_ASSIGN>, ::ISPA_STD::Node<Types::FLOOR_DIV_ASSIGN>, ::ISPA_STD::Node<Types::SLASH_ASSIGN>, ::ISPA_STD::Node<Types::PIPE_ASSIGN>, ::ISPA_STD::Node<Types::MATMUL_ASSIGN>, ::ISPA_STD::Node<Types::MINUS_ASSIGN>, ::ISPA_STD::Node<Types::PERCENT_ASSIGN>, ::ISPA_STD::Node<Types::ASSIGN>, ::ISPA_STD::Node<Types::LSHIFT_ASSIGN>, ::ISPA_STD::Node<Types::STAR_ASSIGN>, ::ISPA_STD::Node<Types::PLUS_ASSIGN>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::AMP_ASSIGN> AMP_ASSIGN_2;
+	::ISPA_STD::Node<Types::AMP_ASSIGN> AMP_ASSIGN_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN> ASSIGN_4;
+	::ISPA_STD::Node<Types::ASSIGN> ASSIGN_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::CARET_ASSIGN> CARET_ASSIGN_6;
+	::ISPA_STD::Node<Types::CARET_ASSIGN> CARET_ASSIGN_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV_ASSIGN> FLOOR_DIV_ASSIGN_8;
+	::ISPA_STD::Node<Types::FLOOR_DIV_ASSIGN> FLOOR_DIV_ASSIGN_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT_ASSIGN> LSHIFT_ASSIGN_10;
+	::ISPA_STD::Node<Types::LSHIFT_ASSIGN> LSHIFT_ASSIGN_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL_ASSIGN> MATMUL_ASSIGN_12;
+	::ISPA_STD::Node<Types::MATMUL_ASSIGN> MATMUL_ASSIGN_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::MINUS_ASSIGN> MINUS_ASSIGN_14;
+	::ISPA_STD::Node<Types::MINUS_ASSIGN> MINUS_ASSIGN_14;
 	bool success_15;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT_ASSIGN> PERCENT_ASSIGN_16;
+	::ISPA_STD::Node<Types::PERCENT_ASSIGN> PERCENT_ASSIGN_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PIPE_ASSIGN> PIPE_ASSIGN_18;
+	::ISPA_STD::Node<Types::PIPE_ASSIGN> PIPE_ASSIGN_18;
 	bool success_19;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PLUS_ASSIGN> PLUS_ASSIGN_20;
+	::ISPA_STD::Node<Types::PLUS_ASSIGN> PLUS_ASSIGN_20;
 	bool success_21;
-	::ISPA_STD::Node<::Parser::Tokens, Types::POWER_ASSIGN> POWER_ASSIGN_22;
+	::ISPA_STD::Node<Types::POWER_ASSIGN> POWER_ASSIGN_22;
 	bool success_23;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT_ASSIGN> RSHIFT_ASSIGN_24;
+	::ISPA_STD::Node<Types::RSHIFT_ASSIGN> RSHIFT_ASSIGN_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::SLASH_ASSIGN> SLASH_ASSIGN_26;
+	::ISPA_STD::Node<Types::SLASH_ASSIGN> SLASH_ASSIGN_26;
 	bool success_27;
-	::ISPA_STD::Node<::Parser::Tokens, Types::STAR_ASSIGN> STAR_ASSIGN_28;
+	::ISPA_STD::Node<Types::STAR_ASSIGN> STAR_ASSIGN_28;
 	bool success_29;
 	success_1 = false;
 	// grammar `@  ( ASSIGN |  PLUS_ASSIGN |  MINUS_ASSIGN |  STAR_ASSIGN |  MATMUL_ASSIGN |  SLASH_ASSIGN |  FLOOR_DIV_ASSIGN |  PERCENT_ASSIGN |  POWER_ASSIGN |  AMP_ASSIGN |  PIPE_ASSIGN |  CARET_ASSIGN |  LSHIFT_ASSIGN |  RSHIFT_ASSIGN)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::AMP_ASSIGN: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::AMP_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::AMP_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  AMP_ASSIGN");
 				return {};
 			}
-			AMP_ASSIGN_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AMP_ASSIGN>>();
+			AMP_ASSIGN_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::AMP_ASSIGN>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -4265,14 +4265,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::ASSIGN: {
+		case Tokens::ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ASSIGN");
 				return {};
 			}
-			ASSIGN_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>>();
+			ASSIGN_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::ASSIGN>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -4283,14 +4283,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::CARET_ASSIGN: {
+		case Tokens::CARET_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::CARET_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  CARET_ASSIGN");
 				return {};
 			}
-			CARET_ASSIGN_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::CARET_ASSIGN>>();
+			CARET_ASSIGN_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::CARET_ASSIGN>>();
 			success_7 = true;
 			lookahead_pos_1++;
 			if (!success_7) {
@@ -4301,14 +4301,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::FLOOR_DIV_ASSIGN: {
+		case Tokens::FLOOR_DIV_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::FLOOR_DIV_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FLOOR_DIV_ASSIGN");
 				return {};
 			}
-			FLOOR_DIV_ASSIGN_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV_ASSIGN>>();
+			FLOOR_DIV_ASSIGN_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::FLOOR_DIV_ASSIGN>>();
 			success_9 = true;
 			lookahead_pos_1++;
 			if (!success_9) {
@@ -4319,14 +4319,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::LSHIFT_ASSIGN: {
+		case Tokens::LSHIFT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::LSHIFT_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LSHIFT_ASSIGN");
 				return {};
 			}
-			LSHIFT_ASSIGN_10 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT_ASSIGN>>();
+			LSHIFT_ASSIGN_10 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::LSHIFT_ASSIGN>>();
 			success_11 = true;
 			lookahead_pos_1++;
 			if (!success_11) {
@@ -4337,14 +4337,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::MATMUL_ASSIGN: {
+		case Tokens::MATMUL_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::MATMUL_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MATMUL_ASSIGN");
 				return {};
 			}
-			MATMUL_ASSIGN_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL_ASSIGN>>();
+			MATMUL_ASSIGN_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::MATMUL_ASSIGN>>();
 			success_13 = true;
 			lookahead_pos_1++;
 			if (!success_13) {
@@ -4355,14 +4355,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS_ASSIGN: {
+		case Tokens::MINUS_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::MINUS_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MINUS_ASSIGN");
 				return {};
 			}
-			MINUS_ASSIGN_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MINUS_ASSIGN>>();
+			MINUS_ASSIGN_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::MINUS_ASSIGN>>();
 			success_15 = true;
 			lookahead_pos_1++;
 			if (!success_15) {
@@ -4373,14 +4373,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::PERCENT_ASSIGN: {
+		case Tokens::PERCENT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PERCENT_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PERCENT_ASSIGN");
 				return {};
 			}
-			PERCENT_ASSIGN_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT_ASSIGN>>();
+			PERCENT_ASSIGN_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PERCENT_ASSIGN>>();
 			success_17 = true;
 			lookahead_pos_1++;
 			if (!success_17) {
@@ -4391,14 +4391,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::PIPE_ASSIGN: {
+		case Tokens::PIPE_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PIPE_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PIPE_ASSIGN");
 				return {};
 			}
-			PIPE_ASSIGN_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PIPE_ASSIGN>>();
+			PIPE_ASSIGN_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PIPE_ASSIGN>>();
 			success_19 = true;
 			lookahead_pos_1++;
 			if (!success_19) {
@@ -4409,14 +4409,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS_ASSIGN: {
+		case Tokens::PLUS_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PLUS_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PLUS_ASSIGN");
 				return {};
 			}
-			PLUS_ASSIGN_20 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PLUS_ASSIGN>>();
+			PLUS_ASSIGN_20 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PLUS_ASSIGN>>();
 			success_21 = true;
 			lookahead_pos_1++;
 			if (!success_21) {
@@ -4427,14 +4427,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::POWER_ASSIGN: {
+		case Tokens::POWER_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::POWER_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  POWER_ASSIGN");
 				return {};
 			}
-			POWER_ASSIGN_22 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::POWER_ASSIGN>>();
+			POWER_ASSIGN_22 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::POWER_ASSIGN>>();
 			success_23 = true;
 			lookahead_pos_1++;
 			if (!success_23) {
@@ -4445,14 +4445,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::RSHIFT_ASSIGN: {
+		case Tokens::RSHIFT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::RSHIFT_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RSHIFT_ASSIGN");
 				return {};
 			}
-			RSHIFT_ASSIGN_24 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT_ASSIGN>>();
+			RSHIFT_ASSIGN_24 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::RSHIFT_ASSIGN>>();
 			success_25 = true;
 			lookahead_pos_1++;
 			if (!success_25) {
@@ -4463,14 +4463,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::SLASH_ASSIGN: {
+		case Tokens::SLASH_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::SLASH_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  SLASH_ASSIGN");
 				return {};
 			}
-			SLASH_ASSIGN_26 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::SLASH_ASSIGN>>();
+			SLASH_ASSIGN_26 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::SLASH_ASSIGN>>();
 			success_27 = true;
 			lookahead_pos_1++;
 			if (!success_27) {
@@ -4481,14 +4481,14 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::STAR_ASSIGN: {
+		case Tokens::STAR_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_29 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::STAR_ASSIGN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  STAR_ASSIGN");
 				return {};
 			}
-			STAR_ASSIGN_28 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::STAR_ASSIGN>>();
+			STAR_ASSIGN_28 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::STAR_ASSIGN>>();
 			success_29 = true;
 			lookahead_pos_1++;
 			if (!success_29) {
@@ -4507,27 +4507,27 @@ template<typename IT, class> auto Parser::Parser::assignment_op(IT pos) -> ::ISP
 	}
 	Types::assignment_op result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::assignment_op, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assignment_op, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assignment_op<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_op, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assignment_op<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_op, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assignment_suffix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_suffix, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::index_suffix>, ::ISPA_STD::Node<::Parser::Rules, Types::attribute_suffix>> _0;
+template auto PyRawParser::Parser::assignment_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assignment_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assignment_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::index_suffix>, ::ISPA_STD::Node<Types::attribute_suffix>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, IT> attribute_suffix_2;
+	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> attribute_suffix_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::index_suffix, IT> index_suffix_4;
+	::ISPA_STD::MatchResult<Types::index_suffix, IT> index_suffix_4;
 	bool success_5;
 	success_1 = false;
 	// grammar `@  ( attribute_suffix |  index_suffix)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::DOT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::DOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			attribute_suffix_2 = attribute_suffix(lookahead_pos_1);
@@ -4545,7 +4545,7 @@ template<typename IT, class> auto Parser::Parser::assignment_suffix(IT pos) -> :
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			index_suffix_4 = index_suffix(lookahead_pos_1);
@@ -4571,20 +4571,20 @@ template<typename IT, class> auto Parser::Parser::assignment_suffix(IT pos) -> :
 	}
 	Types::assignment_suffix result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::assignment_suffix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assignment_suffix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assignment_suffix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_suffix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assignment_suffix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_suffix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assignment_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::assignment_op, IT> assignment_op_0;
+template auto PyRawParser::Parser::assignment_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assignment_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assignment_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, IT> {
+	::ISPA_STD::MatchResult<Types::assignment_op, IT> assignment_op_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	assignment_op_0 = assignment_op(pos);
@@ -4596,7 +4596,7 @@ template<typename IT, class> auto Parser::Parser::assignment_tail(IT pos) -> ::I
 	pos = assignment_op_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -4611,30 +4611,30 @@ template<typename IT, class> auto Parser::Parser::assignment_tail(IT pos) -> ::I
 	Types::assignment_tail result;
 	::ISPA_STD::assign_compatible(result.op, assignment_op_0);
 	::ISPA_STD::assign_compatible(result.value, expr_4);
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assignment_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assignment_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assignment_target(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_0;
+template auto PyRawParser::Parser::assignment_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assignment_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assignment_target(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, IT> {
+	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_suffix, IT> assignment_suffix_5;
+	::ISPA_STD::MatchResult<Types::assignment_suffix, IT> assignment_suffix_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_suffix> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::assignment_suffix>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::assignment_suffix>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::assignment_suffix> element_7;
+	std::vector<::ISPA_STD::Node<Types::assignment_suffix>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::assignment_suffix>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ID>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_1 = true;
 	pos++;
 	success_6 = false;
@@ -4643,7 +4643,7 @@ template<typename IT, class> auto Parser::Parser::assignment_target(IT pos) -> :
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -4661,53 +4661,53 @@ template<typename IT, class> auto Parser::Parser::assignment_target(IT pos) -> :
 	Types::assignment_target result;
 	::ISPA_STD::assign_compatible(result.name, ID_0);
 	::ISPA_STD::assign_compatible(result.suffixes, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assignment_target<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_target, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assignment_target<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_target, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_value, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::annotated_assignment>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_tail>> _0;
+template auto PyRawParser::Parser::assignment_target<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assignment_target<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::assignment_value(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::annotated_assignment>, ::ISPA_STD::Node<Types::assignment_tail>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_2;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_4;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_6;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::annotated_assignment, IT> annotated_assignment_8;
+	::ISPA_STD::MatchResult<Types::annotated_assignment, IT> annotated_assignment_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_10;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_12;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_14;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_16;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_18;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_20;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_22;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_24;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_26;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_28;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_28;
 	bool success_29;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_tail, IT> assignment_tail_30;
+	::ISPA_STD::MatchResult<Types::assignment_tail, IT> assignment_tail_30;
 	bool success_31;
 	success_1 = false;
 	// grammar `@  ( assignment_tail |  annotated_assignment)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::AMP_ASSIGN: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::AMP_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			assignment_tail_2 = assignment_tail(lookahead_pos_1);
@@ -4725,7 +4725,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::ASSIGN: {
+		case Tokens::ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			assignment_tail_4 = assignment_tail(lookahead_pos_1);
@@ -4743,7 +4743,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::CARET_ASSIGN: {
+		case Tokens::CARET_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			assignment_tail_6 = assignment_tail(lookahead_pos_1);
@@ -4761,7 +4761,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::COLON: {
+		case Tokens::COLON::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			annotated_assignment_8 = annotated_assignment(lookahead_pos_1);
@@ -4779,7 +4779,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::FLOOR_DIV_ASSIGN: {
+		case Tokens::FLOOR_DIV_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			assignment_tail_10 = assignment_tail(lookahead_pos_1);
@@ -4797,7 +4797,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::LSHIFT_ASSIGN: {
+		case Tokens::LSHIFT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			assignment_tail_12 = assignment_tail(lookahead_pos_1);
@@ -4815,7 +4815,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::MATMUL_ASSIGN: {
+		case Tokens::MATMUL_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			assignment_tail_14 = assignment_tail(lookahead_pos_1);
@@ -4833,7 +4833,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS_ASSIGN: {
+		case Tokens::MINUS_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			assignment_tail_16 = assignment_tail(lookahead_pos_1);
@@ -4851,7 +4851,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::PERCENT_ASSIGN: {
+		case Tokens::PERCENT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			assignment_tail_18 = assignment_tail(lookahead_pos_1);
@@ -4869,7 +4869,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::PIPE_ASSIGN: {
+		case Tokens::PIPE_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			assignment_tail_20 = assignment_tail(lookahead_pos_1);
@@ -4887,7 +4887,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS_ASSIGN: {
+		case Tokens::PLUS_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			assignment_tail_22 = assignment_tail(lookahead_pos_1);
@@ -4905,7 +4905,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::POWER_ASSIGN: {
+		case Tokens::POWER_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			assignment_tail_24 = assignment_tail(lookahead_pos_1);
@@ -4923,7 +4923,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::RSHIFT_ASSIGN: {
+		case Tokens::RSHIFT_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			assignment_tail_26 = assignment_tail(lookahead_pos_1);
@@ -4941,7 +4941,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::SLASH_ASSIGN: {
+		case Tokens::SLASH_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_29 = false;
 			assignment_tail_28 = assignment_tail(lookahead_pos_1);
@@ -4959,7 +4959,7 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 			success_1 = true;
 			break;
 		}
-		case Tokens::STAR_ASSIGN: {
+		case Tokens::STAR_ASSIGN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_31 = false;
 			assignment_tail_30 = assignment_tail(lookahead_pos_1);
@@ -4985,48 +4985,48 @@ template<typename IT, class> auto Parser::Parser::assignment_value(IT pos) -> ::
 	}
 	Types::assignment_value result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::assignment_value, IT> match_result;
+	::ISPA_STD::MatchResult<Types::assignment_value, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::assignment_value<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_value, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::assignment_value<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::assignment_value, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::atom, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::list_expr>, ::ISPA_STD::Node<::Parser::Tokens, Types::NONE_V>, ::ISPA_STD::Node<::Parser::Tokens, Types::FALSE>, ::ISPA_STD::Node<::Parser::Tokens, Types::TRUE>, ::ISPA_STD::Node<::Parser::Rules, Types::dict_expr>, ::ISPA_STD::Node<::Parser::Rules, Types::parenthesized_expr>, ::ISPA_STD::Node<::Parser::Tokens, Types::NUMBER>, ::ISPA_STD::Node<::Parser::Tokens, Types::STRING>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>> _0;
+template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::assignment_value<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::atom(IT pos) -> ::ISPA_STD::MatchResult<Types::atom, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::list_expr>, ::ISPA_STD::Node<Types::NONE_V>, ::ISPA_STD::Node<Types::FALSE>, ::ISPA_STD::Node<Types::TRUE>, ::ISPA_STD::Node<Types::dict_expr>, ::ISPA_STD::Node<Types::parenthesized_expr>, ::ISPA_STD::Node<Types::NUMBER>, ::ISPA_STD::Node<Types::STRING>, ::ISPA_STD::Node<Types::ID>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::FALSE> FALSE_2;
+	::ISPA_STD::Node<Types::FALSE> FALSE_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::dict_expr, IT> dict_expr_6;
+	::ISPA_STD::MatchResult<Types::dict_expr, IT> dict_expr_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::list_expr, IT> list_expr_8;
+	::ISPA_STD::MatchResult<Types::list_expr, IT> list_expr_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_expr, IT> parenthesized_expr_10;
+	::ISPA_STD::MatchResult<Types::parenthesized_expr, IT> parenthesized_expr_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NONE_V> NONE_V_12;
+	::ISPA_STD::Node<Types::NONE_V> NONE_V_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NUMBER> NUMBER_14;
+	::ISPA_STD::Node<Types::NUMBER> NUMBER_14;
 	bool success_15;
-	::ISPA_STD::Node<::Parser::Tokens, Types::STRING> STRING_16;
+	::ISPA_STD::Node<Types::STRING> STRING_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::TRUE> TRUE_18;
+	::ISPA_STD::Node<Types::TRUE> TRUE_18;
 	bool success_19;
 	success_1 = false;
 	// grammar `@  ( ID |  NUMBER |  STRING |  TRUE |  FALSE |  NONE_V |  parenthesized_expr |  list_expr |  dict_expr)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FALSE: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::FALSE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FALSE");
 				return {};
 			}
-			FALSE_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FALSE>>();
+			FALSE_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::FALSE>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -5037,14 +5037,14 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::ID>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ID");
 				return {};
 			}
-			ID_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+			ID_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::ID>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -5055,7 +5055,7 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			dict_expr_6 = dict_expr(lookahead_pos_1);
@@ -5073,7 +5073,7 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			list_expr_8 = list_expr(lookahead_pos_1);
@@ -5091,7 +5091,7 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			parenthesized_expr_10 = parenthesized_expr(lookahead_pos_1);
@@ -5109,14 +5109,14 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::NONE_V>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NONE_V");
 				return {};
 			}
-			NONE_V_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NONE_V>>();
+			NONE_V_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::NONE_V>>();
 			success_13 = true;
 			lookahead_pos_1++;
 			if (!success_13) {
@@ -5127,14 +5127,14 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::NUMBER>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NUMBER");
 				return {};
 			}
-			NUMBER_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NUMBER>>();
+			NUMBER_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::NUMBER>>();
 			success_15 = true;
 			lookahead_pos_1++;
 			if (!success_15) {
@@ -5145,14 +5145,14 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::STRING>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  STRING");
 				return {};
 			}
-			STRING_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::STRING>>();
+			STRING_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::STRING>>();
 			success_17 = true;
 			lookahead_pos_1++;
 			if (!success_17) {
@@ -5163,14 +5163,14 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::TRUE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  TRUE");
 				return {};
 			}
-			TRUE_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::TRUE>>();
+			TRUE_18 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::TRUE>>();
 			success_19 = true;
 			lookahead_pos_1++;
 			if (!success_19) {
@@ -5189,32 +5189,32 @@ template<typename IT, class> auto Parser::Parser::atom(IT pos) -> ::ISPA_STD::Ma
 	}
 	Types::atom result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::atom, IT> match_result;
+	::ISPA_STD::MatchResult<Types::atom, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::atom<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::atom, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::atom<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::atom, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::attribute_suffix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::DOT> DOT_0;
+template auto PyRawParser::Parser::atom<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::atom, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::atom<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::atom, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::attribute_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, IT> {
+	::ISPA_STD::Node<Types::DOT> DOT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::DOT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  DOT");
 		return {};
 	}
-	DOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>>();
+	DOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::DOT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -5223,37 +5223,37 @@ template<typename IT, class> auto Parser::Parser::attribute_suffix(IT pos) -> ::
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	Types::attribute_suffix result;
 	::ISPA_STD::assign_compatible(result.value, ID_4);
-	::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::attribute_suffix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::attribute_suffix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitand_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitand_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::AMP> AMP_0;
+template auto PyRawParser::Parser::attribute_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::attribute_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitand_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, IT> {
+	::ISPA_STD::Node<Types::AMP> AMP_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::shift_expr, IT> shift_expr_4;
+	::ISPA_STD::MatchResult<Types::shift_expr, IT> shift_expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::AMP>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  AMP");
 		return {};
 	}
-	AMP_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AMP>>();
+	AMP_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::AMP>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -5267,32 +5267,32 @@ template<typename IT, class> auto Parser::Parser::bitand_tail(IT pos) -> ::ISPA_
 	pos = shift_expr_4.it;
 	Types::bitand_tail result;
 	::ISPA_STD::assign_compatible(result.value, shift_expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::bitand_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitand_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitand_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitand_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitand_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitand_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitor_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitor_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::PIPE> PIPE_0;
+template auto PyRawParser::Parser::bitand_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitand_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, IT> {
+	::ISPA_STD::Node<Types::PIPE> PIPE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, IT> bitwise_xor_4;
+	::ISPA_STD::MatchResult<Types::bitwise_xor, IT> bitwise_xor_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::PIPE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PIPE");
 		return {};
 	}
-	PIPE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PIPE>>();
+	PIPE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::PIPE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -5306,23 +5306,23 @@ template<typename IT, class> auto Parser::Parser::bitor_tail(IT pos) -> ::ISPA_S
 	pos = bitwise_xor_4.it;
 	Types::bitor_tail result;
 	::ISPA_STD::assign_compatible(result.value, bitwise_xor_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::bitor_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitor_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitor_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitor_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitor_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitor_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitwise_and(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_and, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::shift_expr, IT> shift_expr_0;
+template auto PyRawParser::Parser::bitor_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitor_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitwise_and(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, IT> {
+	::ISPA_STD::MatchResult<Types::shift_expr, IT> shift_expr_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::bitand_tail, IT> bitand_tail_5;
+	::ISPA_STD::MatchResult<Types::bitand_tail, IT> bitand_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::bitand_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitand_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitand_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::bitand_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::bitand_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::bitand_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	shift_expr_0 = shift_expr(pos);
@@ -5338,7 +5338,7 @@ template<typename IT, class> auto Parser::Parser::bitwise_and(IT pos) -> ::ISPA_
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -5356,23 +5356,23 @@ template<typename IT, class> auto Parser::Parser::bitwise_and(IT pos) -> ::ISPA_
 	Types::bitwise_and result;
 	::ISPA_STD::assign_compatible(result.first, shift_expr_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_and, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitwise_and, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitwise_and<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_and, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitwise_and<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_and, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitwise_or(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_or, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, IT> bitwise_xor_0;
+template auto PyRawParser::Parser::bitwise_and<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitwise_and<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitwise_or(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, IT> {
+	::ISPA_STD::MatchResult<Types::bitwise_xor, IT> bitwise_xor_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::bitor_tail, IT> bitor_tail_5;
+	::ISPA_STD::MatchResult<Types::bitor_tail, IT> bitor_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::bitor_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitor_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitor_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::bitor_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::bitor_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::bitor_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	bitwise_xor_0 = bitwise_xor(pos);
@@ -5388,7 +5388,7 @@ template<typename IT, class> auto Parser::Parser::bitwise_or(IT pos) -> ::ISPA_S
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -5406,23 +5406,23 @@ template<typename IT, class> auto Parser::Parser::bitwise_or(IT pos) -> ::ISPA_S
 	Types::bitwise_or result;
 	::ISPA_STD::assign_compatible(result.first, bitwise_xor_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_or, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitwise_or, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitwise_or<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_or, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitwise_or<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_or, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitwise_xor(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_and, IT> bitwise_and_0;
+template auto PyRawParser::Parser::bitwise_or<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitwise_or<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitwise_xor(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, IT> {
+	::ISPA_STD::MatchResult<Types::bitwise_and, IT> bitwise_and_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::bitxor_tail, IT> bitxor_tail_5;
+	::ISPA_STD::MatchResult<Types::bitxor_tail, IT> bitxor_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::bitxor_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitxor_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::bitxor_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::bitxor_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::bitxor_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::bitxor_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	bitwise_and_0 = bitwise_and(pos);
@@ -5438,7 +5438,7 @@ template<typename IT, class> auto Parser::Parser::bitwise_xor(IT pos) -> ::ISPA_
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -5456,32 +5456,32 @@ template<typename IT, class> auto Parser::Parser::bitwise_xor(IT pos) -> ::ISPA_
 	Types::bitwise_xor result;
 	::ISPA_STD::assign_compatible(result.first, bitwise_and_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitwise_xor, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitwise_xor<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitwise_xor<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitwise_xor, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::bitxor_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitxor_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::CARET> CARET_0;
+template auto PyRawParser::Parser::bitwise_xor<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitwise_xor<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::bitxor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, IT> {
+	::ISPA_STD::Node<Types::CARET> CARET_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_and, IT> bitwise_and_4;
+	::ISPA_STD::MatchResult<Types::bitwise_and, IT> bitwise_and_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::CARET>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  CARET");
 		return {};
 	}
-	CARET_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::CARET>>();
+	CARET_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::CARET>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -5495,73 +5495,73 @@ template<typename IT, class> auto Parser::Parser::bitxor_tail(IT pos) -> ::ISPA_
 	pos = bitwise_and_4.it;
 	Types::bitxor_tail result;
 	::ISPA_STD::assign_compatible(result.value, bitwise_and_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::bitxor_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::bitxor_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::bitxor_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitxor_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::bitxor_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::bitxor_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::block, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::simple_stmts>, ::ISPA_STD::Node<::Parser::Rules, Types::indented_block>> _0;
+template auto PyRawParser::Parser::bitxor_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::bitxor_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::block(IT pos) -> ::ISPA_STD::MatchResult<Types::block, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::simple_stmts>, ::ISPA_STD::Node<Types::indented_block>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_2;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_4;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_6;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_8;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_10;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_12;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_14;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_16;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_18;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_20;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_22;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_24;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_26;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::indented_block, IT> indented_block_28;
+	::ISPA_STD::MatchResult<Types::indented_block, IT> indented_block_28;
 	bool success_29;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_30;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_30;
 	bool success_31;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_32;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_32;
 	bool success_33;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_34;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_34;
 	bool success_35;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_36;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_36;
 	bool success_37;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_38;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_38;
 	bool success_39;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_40;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_40;
 	bool success_41;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_42;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_42;
 	bool success_43;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_44;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_44;
 	bool success_45;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_46;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_46;
 	bool success_47;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_48;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_48;
 	bool success_49;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_50;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_50;
 	bool success_51;
 	success_1 = false;
 	// grammar `@  ( indented_block |  simple_stmts)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ASSERT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ASSERT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			simple_stmts_2 = simple_stmts(lookahead_pos_1);
@@ -5579,7 +5579,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::BREAK: {
+		case Tokens::BREAK::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			simple_stmts_4 = simple_stmts(lookahead_pos_1);
@@ -5597,7 +5597,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::CONTINUE: {
+		case Tokens::CONTINUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			simple_stmts_6 = simple_stmts(lookahead_pos_1);
@@ -5615,7 +5615,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEL: {
+		case Tokens::DEL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			simple_stmts_8 = simple_stmts(lookahead_pos_1);
@@ -5633,7 +5633,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE: {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			simple_stmts_10 = simple_stmts(lookahead_pos_1);
@@ -5651,7 +5651,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::FROM: {
+		case Tokens::FROM::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			simple_stmts_12 = simple_stmts(lookahead_pos_1);
@@ -5669,7 +5669,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::GLOBAL: {
+		case Tokens::GLOBAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			simple_stmts_14 = simple_stmts(lookahead_pos_1);
@@ -5687,7 +5687,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			simple_stmts_16 = simple_stmts(lookahead_pos_1);
@@ -5705,7 +5705,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::IMPORT: {
+		case Tokens::IMPORT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			simple_stmts_18 = simple_stmts(lookahead_pos_1);
@@ -5723,7 +5723,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			simple_stmts_20 = simple_stmts(lookahead_pos_1);
@@ -5741,7 +5741,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			simple_stmts_22 = simple_stmts(lookahead_pos_1);
@@ -5759,7 +5759,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			simple_stmts_24 = simple_stmts(lookahead_pos_1);
@@ -5777,7 +5777,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			simple_stmts_26 = simple_stmts(lookahead_pos_1);
@@ -5795,7 +5795,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::NEWLINE: {
+		case Tokens::NEWLINE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_29 = false;
 			indented_block_28 = indented_block(lookahead_pos_1);
@@ -5813,7 +5813,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_31 = false;
 			simple_stmts_30 = simple_stmts(lookahead_pos_1);
@@ -5831,7 +5831,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONLOCAL: {
+		case Tokens::NONLOCAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_33 = false;
 			simple_stmts_32 = simple_stmts(lookahead_pos_1);
@@ -5849,7 +5849,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_35 = false;
 			simple_stmts_34 = simple_stmts(lookahead_pos_1);
@@ -5867,7 +5867,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_37 = false;
 			simple_stmts_36 = simple_stmts(lookahead_pos_1);
@@ -5885,7 +5885,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::PASS: {
+		case Tokens::PASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_39 = false;
 			simple_stmts_38 = simple_stmts(lookahead_pos_1);
@@ -5903,7 +5903,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_41 = false;
 			simple_stmts_40 = simple_stmts(lookahead_pos_1);
@@ -5921,7 +5921,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::RAISE: {
+		case Tokens::RAISE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_43 = false;
 			simple_stmts_42 = simple_stmts(lookahead_pos_1);
@@ -5939,7 +5939,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::RETURN: {
+		case Tokens::RETURN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_45 = false;
 			simple_stmts_44 = simple_stmts(lookahead_pos_1);
@@ -5957,7 +5957,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_47 = false;
 			simple_stmts_46 = simple_stmts(lookahead_pos_1);
@@ -5975,7 +5975,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_49 = false;
 			simple_stmts_48 = simple_stmts(lookahead_pos_1);
@@ -5993,7 +5993,7 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_51 = false;
 			simple_stmts_50 = simple_stmts(lookahead_pos_1);
@@ -6019,129 +6019,129 @@ template<typename IT, class> auto Parser::Parser::block(IT pos) -> ::ISPA_STD::M
 	}
 	Types::block result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> match_result;
+	::ISPA_STD::MatchResult<Types::block, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::block<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::block, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::block<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::block, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::break_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::break_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::BREAK> BREAK_0;
+template auto PyRawParser::Parser::block<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::block, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::block<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::block, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::break_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, IT> {
+	::ISPA_STD::Node<Types::BREAK> BREAK_0;
 	bool success_1;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::BREAK>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  BREAK");
 		return {};
 	}
-	BREAK_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::BREAK>>();
+	BREAK_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::BREAK>>();
 	success_1 = true;
 	pos++;
 	Types::break_stmt result;
-	::ISPA_STD::MatchResult<Rules, Types::break_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::break_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::break_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::break_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::break_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::break_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::expr>, ::ISPA_STD::Node<::Parser::Rules, Types::keyword_arg>> _0;
+template auto PyRawParser::Parser::break_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::break_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::call_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::expr>, ::ISPA_STD::Node<Types::keyword_arg>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_2;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_6;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::keyword_arg, IT> keyword_arg_8;
+	::ISPA_STD::MatchResult<Types::keyword_arg, IT> keyword_arg_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_10;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_12;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_14;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_16;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_18;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_20;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_22;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_24;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_26;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_28;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_28;
 	bool success_29;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_30;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_30;
 	bool success_31;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_32;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_32;
 	bool success_33;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_34;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_34;
 	bool success_35;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_36;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_36;
 	bool success_37;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_38;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_38;
 	bool success_39;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_40;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_40;
 	bool success_41;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_42;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_42;
 	bool success_43;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_44;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_44;
 	bool success_45;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_46;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_46;
 	bool success_47;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_48;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_48;
 	bool success_49;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_50;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_50;
 	bool success_51;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_52;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_52;
 	bool success_53;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_54;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_54;
 	bool success_55;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_56;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_56;
 	bool success_57;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_58;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_58;
 	bool success_59;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_60;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_60;
 	bool success_61;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_62;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_62;
 	bool success_63;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_64;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_64;
 	bool success_65;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_66;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_66;
 	bool success_67;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_68;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_68;
 	bool success_69;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_70;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_70;
 	bool success_71;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_72;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_72;
 	bool success_73;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_74;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_74;
 	bool success_75;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_76;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_76;
 	bool success_77;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_78;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_78;
 	bool success_79;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_80;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_80;
 	bool success_81;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_82;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_82;
 	bool success_83;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_84;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_84;
 	bool success_85;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_86;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_86;
 	bool success_87;
 	success_1 = false;
 	// grammar `@  ( keyword_arg |  expr)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FALSE: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			expr_2 = expr(lookahead_pos_1);
@@ -6159,12 +6159,12 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			auto lookahead_pos_2 = lookahead_pos_1;
 			++lookahead_pos_2;
 			skip_spaces<Types::__WS>(lookahead_pos_2);
-			switch (static_cast<Tokens>((*lookahead_pos_2).kind())) {
-				case Tokens::AMP: {
+			switch ((*lookahead_pos_2).kind()) {
+				case Tokens::AMP::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_5 = false;
 					expr_4 = expr(lookahead_pos_2);
@@ -6182,7 +6182,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::AND: {
+				case Tokens::AND::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_7 = false;
 					expr_6 = expr(lookahead_pos_2);
@@ -6200,7 +6200,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::ASSIGN: {
+				case Tokens::ASSIGN::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_9 = false;
 					keyword_arg_8 = keyword_arg(lookahead_pos_2);
@@ -6218,7 +6218,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::CARET: {
+				case Tokens::CARET::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_11 = false;
 					expr_10 = expr(lookahead_pos_2);
@@ -6236,7 +6236,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::COMMA: {
+				case Tokens::COMMA::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_13 = false;
 					expr_12 = expr(lookahead_pos_2);
@@ -6254,7 +6254,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::DOT: {
+				case Tokens::DOT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_15 = false;
 					expr_14 = expr(lookahead_pos_2);
@@ -6272,7 +6272,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::EQ: {
+				case Tokens::EQ::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_17 = false;
 					expr_16 = expr(lookahead_pos_2);
@@ -6290,7 +6290,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::FLOOR_DIV: {
+				case Tokens::FLOOR_DIV::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_19 = false;
 					expr_18 = expr(lookahead_pos_2);
@@ -6308,7 +6308,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::GE: {
+				case Tokens::GE::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_21 = false;
 					expr_20 = expr(lookahead_pos_2);
@@ -6326,7 +6326,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::GT: {
+				case Tokens::GT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_23 = false;
 					expr_22 = expr(lookahead_pos_2);
@@ -6344,7 +6344,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::IF: {
+				case Tokens::IF::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_25 = false;
 					expr_24 = expr(lookahead_pos_2);
@@ -6362,7 +6362,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::IN: {
+				case Tokens::IN::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_27 = false;
 					expr_26 = expr(lookahead_pos_2);
@@ -6380,7 +6380,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::IS: {
+				case Tokens::IS::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_29 = false;
 					expr_28 = expr(lookahead_pos_2);
@@ -6398,7 +6398,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::LBRACKET: {
+				case Tokens::LBRACKET::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_31 = false;
 					expr_30 = expr(lookahead_pos_2);
@@ -6416,7 +6416,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::LE: {
+				case Tokens::LE::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_33 = false;
 					expr_32 = expr(lookahead_pos_2);
@@ -6434,7 +6434,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::LPAREN: {
+				case Tokens::LPAREN::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_35 = false;
 					expr_34 = expr(lookahead_pos_2);
@@ -6452,7 +6452,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::LSHIFT: {
+				case Tokens::LSHIFT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_37 = false;
 					expr_36 = expr(lookahead_pos_2);
@@ -6470,7 +6470,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::LT: {
+				case Tokens::LT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_39 = false;
 					expr_38 = expr(lookahead_pos_2);
@@ -6488,7 +6488,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::MATMUL: {
+				case Tokens::MATMUL::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_41 = false;
 					expr_40 = expr(lookahead_pos_2);
@@ -6506,7 +6506,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::MINUS: {
+				case Tokens::MINUS::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_43 = false;
 					expr_42 = expr(lookahead_pos_2);
@@ -6524,7 +6524,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::NE: {
+				case Tokens::NE::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_45 = false;
 					expr_44 = expr(lookahead_pos_2);
@@ -6542,7 +6542,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::NOT: {
+				case Tokens::NOT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_47 = false;
 					expr_46 = expr(lookahead_pos_2);
@@ -6560,7 +6560,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::OR: {
+				case Tokens::OR::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_49 = false;
 					expr_48 = expr(lookahead_pos_2);
@@ -6578,7 +6578,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::PERCENT: {
+				case Tokens::PERCENT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_51 = false;
 					expr_50 = expr(lookahead_pos_2);
@@ -6596,7 +6596,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::PIPE: {
+				case Tokens::PIPE::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_53 = false;
 					expr_52 = expr(lookahead_pos_2);
@@ -6614,7 +6614,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::PLUS: {
+				case Tokens::PLUS::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_55 = false;
 					expr_54 = expr(lookahead_pos_2);
@@ -6632,7 +6632,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::POWER: {
+				case Tokens::POWER::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_57 = false;
 					expr_56 = expr(lookahead_pos_2);
@@ -6650,7 +6650,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::RPAREN: {
+				case Tokens::RPAREN::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_59 = false;
 					expr_58 = expr(lookahead_pos_2);
@@ -6668,7 +6668,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::RSHIFT: {
+				case Tokens::RSHIFT::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_61 = false;
 					expr_60 = expr(lookahead_pos_2);
@@ -6686,7 +6686,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::SLASH: {
+				case Tokens::SLASH::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_63 = false;
 					expr_62 = expr(lookahead_pos_2);
@@ -6704,7 +6704,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 					success_1 = true;
 					break;
 				}
-				case Tokens::STAR: {
+				case Tokens::STAR::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_65 = false;
 					expr_64 = expr(lookahead_pos_2);
@@ -6729,7 +6729,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			lookahead_pos_1 = lookahead_pos_2;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_67 = false;
 			expr_66 = expr(lookahead_pos_1);
@@ -6747,7 +6747,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_69 = false;
 			expr_68 = expr(lookahead_pos_1);
@@ -6765,7 +6765,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_71 = false;
 			expr_70 = expr(lookahead_pos_1);
@@ -6783,7 +6783,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_73 = false;
 			expr_72 = expr(lookahead_pos_1);
@@ -6801,7 +6801,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_75 = false;
 			expr_74 = expr(lookahead_pos_1);
@@ -6819,7 +6819,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_77 = false;
 			expr_76 = expr(lookahead_pos_1);
@@ -6837,7 +6837,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_79 = false;
 			expr_78 = expr(lookahead_pos_1);
@@ -6855,7 +6855,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_81 = false;
 			expr_80 = expr(lookahead_pos_1);
@@ -6873,7 +6873,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_83 = false;
 			expr_82 = expr(lookahead_pos_1);
@@ -6891,7 +6891,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_85 = false;
 			expr_84 = expr(lookahead_pos_1);
@@ -6909,7 +6909,7 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_87 = false;
 			expr_86 = expr(lookahead_pos_1);
@@ -6935,32 +6935,32 @@ template<typename IT, class> auto Parser::Parser::call_arg(IT pos) -> ::ISPA_STD
 	}
 	Types::call_arg result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::call_arg, IT> match_result;
+	::ISPA_STD::MatchResult<Types::call_arg, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::call_arg<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::call_arg<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::call_arg_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_0;
+template auto PyRawParser::Parser::call_arg<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::call_arg<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::call_arg_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, IT> {
+	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::call_arg, IT> call_arg_4;
+	::ISPA_STD::MatchResult<Types::call_arg, IT> call_arg_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::COMMA>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COMMA");
 		return {};
 	}
-	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -6974,27 +6974,27 @@ template<typename IT, class> auto Parser::Parser::call_arg_tail(IT pos) -> ::ISP
 	pos = call_arg_4.it;
 	Types::call_arg_tail result;
 	::ISPA_STD::assign_compatible(result.value, call_arg_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::call_arg_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::call_arg_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::call_arg_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::call_arg_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_arg_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::call_args(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_args, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::call_arg, IT> call_arg_0;
+template auto PyRawParser::Parser::call_arg_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::call_arg_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::call_args(IT pos) -> ::ISPA_STD::MatchResult<Types::call_args, IT> {
+	::ISPA_STD::MatchResult<Types::call_arg, IT> call_arg_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::call_arg_tail, IT> call_arg_tail_5;
+	::ISPA_STD::MatchResult<Types::call_arg_tail, IT> call_arg_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::call_arg_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::call_arg_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::call_arg_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::call_arg_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::call_arg_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::call_arg_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_12;
 	bool success_13;
 	success_1 = false;
 	call_arg_0 = call_arg(pos);
@@ -7010,7 +7010,7 @@ template<typename IT, class> auto Parser::Parser::call_args(IT pos) -> ::ISPA_ST
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -7027,49 +7027,49 @@ template<typename IT, class> auto Parser::Parser::call_args(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(uvar_4, shadow_8);
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
 	success_13 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
 		pos++;
 	}
 	Types::call_args result;
 	::ISPA_STD::assign_compatible(result.first, call_arg_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::call_args, IT> match_result;
+	::ISPA_STD::MatchResult<Types::call_args, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::call_args<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_args, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::call_args<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_args, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::call_suffix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_suffix, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN> LPAREN_0;
+template auto PyRawParser::Parser::call_args<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_args, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::call_args<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_args, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::call_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, IT> {
+	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::call_args, IT> call_args_4;
+	::ISPA_STD::MatchResult<Types::call_args, IT> call_args_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN> RPAREN_8;
+	::ISPA_STD::Node<Types::RPAREN> RPAREN_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LPAREN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LPAREN");
 		return {};
 	}
-	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN>>();
+	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LPAREN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7081,7 +7081,7 @@ template<typename IT, class> auto Parser::Parser::call_suffix(IT pos) -> ::ISPA_
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -7090,41 +7090,41 @@ template<typename IT, class> auto Parser::Parser::call_suffix(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RPAREN");
 		return {};
 	}
-	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN>>();
+	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RPAREN>>();
 	success_9 = true;
 	pos++;
 	Types::call_suffix result;
 	::ISPA_STD::assign_compatible(result.value, call_args_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::call_suffix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::call_suffix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::call_suffix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_suffix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::call_suffix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::call_suffix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::class_bases(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_bases, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN> LPAREN_0;
+template auto PyRawParser::Parser::call_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::call_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::class_bases(IT pos) -> ::ISPA_STD::MatchResult<Types::class_bases, IT> {
+	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::call_args, IT> call_args_4;
+	::ISPA_STD::MatchResult<Types::call_args, IT> call_args_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN> RPAREN_8;
+	::ISPA_STD::Node<Types::RPAREN> RPAREN_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LPAREN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LPAREN");
 		return {};
 	}
-	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN>>();
+	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LPAREN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7136,7 +7136,7 @@ template<typename IT, class> auto Parser::Parser::class_bases(IT pos) -> ::ISPA_
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -7145,25 +7145,25 @@ template<typename IT, class> auto Parser::Parser::class_bases(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RPAREN");
 		return {};
 	}
-	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN>>();
+	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RPAREN>>();
 	success_9 = true;
 	pos++;
 	Types::class_bases result;
 	::ISPA_STD::assign_compatible(result.value, call_args_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::class_bases, IT> match_result;
+	::ISPA_STD::MatchResult<Types::class_bases, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::class_bases<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_bases, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::class_bases<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_bases, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::class_def(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_def, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::decorators, IT> decorators_0;
+template auto PyRawParser::Parser::class_bases<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_bases, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::class_bases<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_bases, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::class_def(IT pos) -> ::ISPA_STD::MatchResult<Types::class_def, IT> {
+	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::class_header, IT> class_header_4;
+	::ISPA_STD::MatchResult<Types::class_header, IT> class_header_4;
 	bool success_5;
 	success_1 = false;
 	decorators_0 = decorators(pos);
@@ -7173,7 +7173,7 @@ template<typename IT, class> auto Parser::Parser::class_def(IT pos) -> ::ISPA_ST
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7188,44 +7188,44 @@ template<typename IT, class> auto Parser::Parser::class_def(IT pos) -> ::ISPA_ST
 	Types::class_def result;
 	::ISPA_STD::assign_compatible(result.decorators, decorators_0);
 	::ISPA_STD::assign_compatible(result.definition, class_header_4);
-	::ISPA_STD::MatchResult<Rules, Types::class_def, IT> match_result;
+	::ISPA_STD::MatchResult<Types::class_def, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::class_def<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_def, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::class_def<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_def, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::class_header(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_header, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::CLASS> CLASS_0;
+template auto PyRawParser::Parser::class_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_def, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::class_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_def, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::class_header(IT pos) -> ::ISPA_STD::MatchResult<Types::class_header, IT> {
+	::ISPA_STD::Node<Types::CLASS> CLASS_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::class_bases, IT> class_bases_8;
+	::ISPA_STD::MatchResult<Types::class_bases, IT> class_bases_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_12;
+	::ISPA_STD::Node<Types::COLON> COLON_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_16;
+	::ISPA_STD::MatchResult<Types::block, IT> block_16;
 	bool success_17;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::CLASS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  CLASS");
 		return {};
 	}
-	CLASS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::CLASS>>();
+	CLASS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::CLASS>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7234,12 +7234,12 @@ template<typename IT, class> auto Parser::Parser::class_header(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -7251,7 +7251,7 @@ template<typename IT, class> auto Parser::Parser::class_header(IT pos) -> ::ISPA
 	}
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -7260,12 +7260,12 @@ template<typename IT, class> auto Parser::Parser::class_header(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_13 = true;
 	pos++;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -7281,48 +7281,48 @@ template<typename IT, class> auto Parser::Parser::class_header(IT pos) -> ::ISPA
 	::ISPA_STD::assign_compatible(result.name, ID_4);
 	::ISPA_STD::assign_compatible(result.bases, class_bases_8);
 	::ISPA_STD::assign_compatible(result.body, block_16);
-	::ISPA_STD::MatchResult<Rules, Types::class_header, IT> match_result;
+	::ISPA_STD::MatchResult<Types::class_header, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::class_header<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_header, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::class_header<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::class_header, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_op, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::is_op>, ::ISPA_STD::Node<::Parser::Rules, Types::not_in>, ::ISPA_STD::Node<::Parser::Tokens, Types::GT>, ::ISPA_STD::Node<::Parser::Tokens, Types::IN>, ::ISPA_STD::Node<::Parser::Tokens, Types::GE>, ::ISPA_STD::Node<::Parser::Tokens, Types::LT>, ::ISPA_STD::Node<::Parser::Tokens, Types::LE>, ::ISPA_STD::Node<::Parser::Tokens, Types::NE>, ::ISPA_STD::Node<::Parser::Tokens, Types::EQ>> _0;
+template auto PyRawParser::Parser::class_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::class_header, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::class_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::class_header, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::compare_op(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_op, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::is_op>, ::ISPA_STD::Node<Types::not_in>, ::ISPA_STD::Node<Types::GT>, ::ISPA_STD::Node<Types::IN>, ::ISPA_STD::Node<Types::GE>, ::ISPA_STD::Node<Types::LT>, ::ISPA_STD::Node<Types::LE>, ::ISPA_STD::Node<Types::NE>, ::ISPA_STD::Node<Types::EQ>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::EQ> EQ_2;
+	::ISPA_STD::Node<Types::EQ> EQ_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::GE> GE_4;
+	::ISPA_STD::Node<Types::GE> GE_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::GT> GT_6;
+	::ISPA_STD::Node<Types::GT> GT_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::IN> IN_8;
+	::ISPA_STD::Node<Types::IN> IN_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::is_op, IT> is_op_10;
+	::ISPA_STD::MatchResult<Types::is_op, IT> is_op_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::LE> LE_12;
+	::ISPA_STD::Node<Types::LE> LE_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::LT> LT_14;
+	::ISPA_STD::Node<Types::LT> LT_14;
 	bool success_15;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NE> NE_16;
+	::ISPA_STD::Node<Types::NE> NE_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::not_in, IT> not_in_18;
+	::ISPA_STD::MatchResult<Types::not_in, IT> not_in_18;
 	bool success_19;
 	success_1 = false;
 	// grammar `@  ( EQ |  NE |  LE |  LT |  GE |  GT |  not_in |  IN |  is_op)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::EQ: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::EQ::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::EQ>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  EQ");
 				return {};
 			}
-			EQ_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::EQ>>();
+			EQ_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::EQ>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -7333,14 +7333,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::GE: {
+		case Tokens::GE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::GE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  GE");
 				return {};
 			}
-			GE_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::GE>>();
+			GE_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::GE>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -7351,14 +7351,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::GT: {
+		case Tokens::GT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::GT>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  GT");
 				return {};
 			}
-			GT_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::GT>>();
+			GT_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::GT>>();
 			success_7 = true;
 			lookahead_pos_1++;
 			if (!success_7) {
@@ -7369,14 +7369,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::IN: {
+		case Tokens::IN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::IN>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IN");
 				return {};
 			}
-			IN_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IN>>();
+			IN_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::IN>>();
 			success_9 = true;
 			lookahead_pos_1++;
 			if (!success_9) {
@@ -7387,7 +7387,7 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::IS: {
+		case Tokens::IS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			is_op_10 = is_op(lookahead_pos_1);
@@ -7405,14 +7405,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::LE: {
+		case Tokens::LE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::LE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LE");
 				return {};
 			}
-			LE_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LE>>();
+			LE_12 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::LE>>();
 			success_13 = true;
 			lookahead_pos_1++;
 			if (!success_13) {
@@ -7423,14 +7423,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::LT: {
+		case Tokens::LT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::LT>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LT");
 				return {};
 			}
-			LT_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LT>>();
+			LT_14 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::LT>>();
 			success_15 = true;
 			lookahead_pos_1++;
 			if (!success_15) {
@@ -7441,14 +7441,14 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::NE: {
+		case Tokens::NE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::NE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NE");
 				return {};
 			}
-			NE_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NE>>();
+			NE_16 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::NE>>();
 			success_17 = true;
 			lookahead_pos_1++;
 			if (!success_17) {
@@ -7459,7 +7459,7 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			not_in_18 = not_in(lookahead_pos_1);
@@ -7485,20 +7485,20 @@ template<typename IT, class> auto Parser::Parser::compare_op(IT pos) -> ::ISPA_S
 	}
 	Types::compare_op result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::compare_op, IT> match_result;
+	::ISPA_STD::MatchResult<Types::compare_op, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::compare_op<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_op, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::compare_op<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_op, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::compare_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_tail, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::compare_op, IT> compare_op_0;
+template auto PyRawParser::Parser::compare_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_op, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::compare_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_op, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::compare_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, IT> {
+	::ISPA_STD::MatchResult<Types::compare_op, IT> compare_op_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_or, IT> bitwise_or_4;
+	::ISPA_STD::MatchResult<Types::bitwise_or, IT> bitwise_or_4;
 	bool success_5;
 	success_1 = false;
 	compare_op_0 = compare_op(pos);
@@ -7510,7 +7510,7 @@ template<typename IT, class> auto Parser::Parser::compare_tail(IT pos) -> ::ISPA
 	pos = compare_op_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7525,23 +7525,23 @@ template<typename IT, class> auto Parser::Parser::compare_tail(IT pos) -> ::ISPA
 	Types::compare_tail result;
 	::ISPA_STD::assign_compatible(result.op, compare_op_0);
 	::ISPA_STD::assign_compatible(result.value, bitwise_or_4);
-	::ISPA_STD::MatchResult<Rules, Types::compare_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::compare_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::compare_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::compare_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compare_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::comparison(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::comparison, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::bitwise_or, IT> bitwise_or_0;
+template auto PyRawParser::Parser::compare_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::compare_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::comparison(IT pos) -> ::ISPA_STD::MatchResult<Types::comparison, IT> {
+	::ISPA_STD::MatchResult<Types::bitwise_or, IT> bitwise_or_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::compare_tail, IT> compare_tail_5;
+	::ISPA_STD::MatchResult<Types::compare_tail, IT> compare_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::compare_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::compare_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::compare_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::compare_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::compare_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::compare_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	bitwise_or_0 = bitwise_or(pos);
@@ -7557,7 +7557,7 @@ template<typename IT, class> auto Parser::Parser::comparison(IT pos) -> ::ISPA_S
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -7575,50 +7575,50 @@ template<typename IT, class> auto Parser::Parser::comparison(IT pos) -> ::ISPA_S
 	Types::comparison result;
 	::ISPA_STD::assign_compatible(result.first, bitwise_or_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> match_result;
+	::ISPA_STD::MatchResult<Types::comparison, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::comparison<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::comparison, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::comparison<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::comparison, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::decorated_def>, ::ISPA_STD::Node<::Parser::Rules, Types::try_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::for_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::while_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::with_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::if_stmt>> _0;
+template auto PyRawParser::Parser::comparison<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::comparison, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::comparison<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::comparison, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::compound_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::decorated_def>, ::ISPA_STD::Node<Types::try_stmt>, ::ISPA_STD::Node<Types::for_stmt>, ::ISPA_STD::Node<Types::while_stmt>, ::ISPA_STD::Node<Types::with_stmt>, ::ISPA_STD::Node<Types::if_stmt>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> decorated_def_2;
+	::ISPA_STD::MatchResult<Types::decorated_def, IT> decorated_def_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::for_stmt, IT> for_stmt_4;
+	::ISPA_STD::MatchResult<Types::for_stmt, IT> for_stmt_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::with_stmt, IT> with_stmt_6;
+	::ISPA_STD::MatchResult<Types::with_stmt, IT> with_stmt_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> decorated_def_8;
+	::ISPA_STD::MatchResult<Types::decorated_def, IT> decorated_def_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> decorated_def_10;
+	::ISPA_STD::MatchResult<Types::decorated_def, IT> decorated_def_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::for_stmt, IT> for_stmt_12;
+	::ISPA_STD::MatchResult<Types::for_stmt, IT> for_stmt_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::if_stmt, IT> if_stmt_14;
+	::ISPA_STD::MatchResult<Types::if_stmt, IT> if_stmt_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> decorated_def_16;
+	::ISPA_STD::MatchResult<Types::decorated_def, IT> decorated_def_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::try_stmt, IT> try_stmt_18;
+	::ISPA_STD::MatchResult<Types::try_stmt, IT> try_stmt_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::while_stmt, IT> while_stmt_20;
+	::ISPA_STD::MatchResult<Types::while_stmt, IT> while_stmt_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::with_stmt, IT> with_stmt_22;
+	::ISPA_STD::MatchResult<Types::with_stmt, IT> with_stmt_22;
 	bool success_23;
 	success_1 = false;
 	// grammar `@  ( if_stmt |  while_stmt |  for_stmt |  with_stmt |  try_stmt |  decorated_def)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ASYNC: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ASYNC::id: {
 			auto lookahead_pos_2 = lookahead_pos_1;
 			++lookahead_pos_2;
 			skip_spaces<Types::__WS>(lookahead_pos_2);
-			switch (static_cast<Tokens>((*lookahead_pos_2).kind())) {
-				case Tokens::DEF: {
+			switch ((*lookahead_pos_2).kind()) {
+				case Tokens::DEF::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_3 = false;
 					decorated_def_2 = decorated_def(lookahead_pos_2);
@@ -7636,7 +7636,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 					success_1 = true;
 					break;
 				}
-				case Tokens::FOR: {
+				case Tokens::FOR::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_5 = false;
 					for_stmt_4 = for_stmt(lookahead_pos_2);
@@ -7654,7 +7654,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 					success_1 = true;
 					break;
 				}
-				case Tokens::WITH: {
+				case Tokens::WITH::id: {
 					lookahead_pos_2 = lookahead_pos_1;
 					success_7 = false;
 					with_stmt_6 = with_stmt(lookahead_pos_2);
@@ -7679,7 +7679,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			lookahead_pos_1 = lookahead_pos_2;
 			break;
 		}
-		case Tokens::CLASS: {
+		case Tokens::CLASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			decorated_def_8 = decorated_def(lookahead_pos_1);
@@ -7697,7 +7697,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEF: {
+		case Tokens::DEF::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			decorated_def_10 = decorated_def(lookahead_pos_1);
@@ -7715,7 +7715,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::FOR: {
+		case Tokens::FOR::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			for_stmt_12 = for_stmt(lookahead_pos_1);
@@ -7733,7 +7733,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::IF: {
+		case Tokens::IF::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			if_stmt_14 = if_stmt(lookahead_pos_1);
@@ -7751,7 +7751,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::MATMUL: {
+		case Tokens::MATMUL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			decorated_def_16 = decorated_def(lookahead_pos_1);
@@ -7769,7 +7769,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRY: {
+		case Tokens::TRY::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			try_stmt_18 = try_stmt(lookahead_pos_1);
@@ -7787,7 +7787,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::WHILE: {
+		case Tokens::WHILE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			while_stmt_20 = while_stmt(lookahead_pos_1);
@@ -7805,7 +7805,7 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 			success_1 = true;
 			break;
 		}
-		case Tokens::WITH: {
+		case Tokens::WITH::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			with_stmt_22 = with_stmt(lookahead_pos_1);
@@ -7831,40 +7831,40 @@ template<typename IT, class> auto Parser::Parser::compound_stmt(IT pos) -> ::ISP
 	}
 	Types::compound_stmt result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::compound_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compound_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::compound_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::compound_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::conditional_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::conditional_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::IF> IF_0;
+template auto PyRawParser::Parser::compound_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::compound_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::conditional_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, IT> {
+	::ISPA_STD::Node<Types::IF> IF_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::disjunction, IT> disjunction_4;
+	::ISPA_STD::MatchResult<Types::disjunction, IT> disjunction_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ELSE> ELSE_8;
+	::ISPA_STD::Node<Types::ELSE> ELSE_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_12;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_12;
 	bool success_13;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::IF>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IF");
 		return {};
 	}
-	IF_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IF>>();
+	IF_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IF>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -7878,7 +7878,7 @@ template<typename IT, class> auto Parser::Parser::conditional_tail(IT pos) -> ::
 	pos = disjunction_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -7887,12 +7887,12 @@ template<typename IT, class> auto Parser::Parser::conditional_tail(IT pos) -> ::
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ELSE");
 		return {};
 	}
-	ELSE_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ELSE>>();
+	ELSE_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ELSE>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -7907,40 +7907,40 @@ template<typename IT, class> auto Parser::Parser::conditional_tail(IT pos) -> ::
 	Types::conditional_tail result;
 	::ISPA_STD::assign_compatible(result.condition, disjunction_4);
 	::ISPA_STD::assign_compatible(result.otherwise, expr_12);
-	::ISPA_STD::MatchResult<Rules, Types::conditional_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::conditional_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::conditional_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::conditional_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::conditional_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::conditional_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::conjunction(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::conjunction, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::inversion, IT> inversion_0;
+template auto PyRawParser::Parser::conditional_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::conditional_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::conjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::conjunction, IT> {
+	::ISPA_STD::MatchResult<Types::inversion, IT> inversion_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::AND>> shadow_20;
-	::ISPA_STD::Node<::Parser::Rules, Types::inversion> group_capture_21;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::inversion>> shadow_22;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::AND>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::inversion>> group_4;
+	std::vector<::ISPA_STD::Node<Types::AND>> shadow_20;
+	::ISPA_STD::Node<Types::inversion> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::inversion>> shadow_22;
+	std::tuple<::ISPA_STD::Node<Types::AND>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::inversion>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::AND>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::inversion>>> shadow_24;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::AND>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::inversion>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::AND>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::inversion>>> shadow_24;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::AND>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::inversion>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::AND> AND_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::AND> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::AND>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::AND> AND_8;
+	::ISPA_STD::Node<Types::AND> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::AND>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::inversion, IT> inversion_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::inversion> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::inversion>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::inversion> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::inversion> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::inversion, IT> inversion_16;
+	::ISPA_STD::Node<Types::inversion> element_18;
+	std::vector<::ISPA_STD::Node<Types::inversion>> shadow_19;
+	::ISPA_STD::Node<Types::inversion> uvar_15;
+	::ISPA_STD::Node<Types::inversion> tuple_elem_23;
 	success_1 = false;
 	inversion_0 = inversion(pos);
 	if (!(inversion_0.status)) {
@@ -7955,7 +7955,7 @@ template<typename IT, class> auto Parser::Parser::conjunction(IT pos) -> ::ISPA_
 		auto repeat_ws_26 = begin_25;
 		success_3 = false;
 		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_26++;
 		}
@@ -7963,14 +7963,14 @@ template<typename IT, class> auto Parser::Parser::conjunction(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed):  AND
 			break;
 		}
-		AND_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AND>>();
+		AND_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::AND>>();
 		success_9 = true;
 		repeat_ws_26++;
 		shadow_10.push_back(AND_8);
 		uvar_7 = AND_8;
 		success_13 = false;
 		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
@@ -8001,40 +8001,40 @@ template<typename IT, class> auto Parser::Parser::conjunction(IT pos) -> ::ISPA_
 	Types::conjunction result;
 	::ISPA_STD::assign_compatible(result.first, inversion_0);
 	::ISPA_STD::assign_compatible(result.rest, shadow_22);
-	::ISPA_STD::MatchResult<Rules, Types::conjunction, IT> match_result;
+	::ISPA_STD::MatchResult<Types::conjunction, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::conjunction<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::conjunction, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::conjunction<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::conjunction, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::continue_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::continue_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::CONTINUE> CONTINUE_0;
+template auto PyRawParser::Parser::conjunction<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::conjunction, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::conjunction<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::conjunction, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::continue_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, IT> {
+	::ISPA_STD::Node<Types::CONTINUE> CONTINUE_0;
 	bool success_1;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::CONTINUE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  CONTINUE");
 		return {};
 	}
-	CONTINUE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::CONTINUE>>();
+	CONTINUE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::CONTINUE>>();
 	success_1 = true;
 	pos++;
 	Types::continue_stmt result;
-	::ISPA_STD::MatchResult<Rules, Types::continue_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::continue_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::continue_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::continue_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::continue_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::continue_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::decorated_def(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::decorators, IT> decorators_0;
+template auto PyRawParser::Parser::continue_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::continue_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::decorated_def(IT pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, IT> {
+	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::def_header, IT> def_header_4;
+	::ISPA_STD::MatchResult<Types::def_header, IT> def_header_4;
 	bool success_5;
 	success_1 = false;
 	decorators_0 = decorators(pos);
@@ -8044,7 +8044,7 @@ template<typename IT, class> auto Parser::Parser::decorated_def(IT pos) -> ::ISP
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8059,36 +8059,36 @@ template<typename IT, class> auto Parser::Parser::decorated_def(IT pos) -> ::ISP
 	Types::decorated_def result;
 	::ISPA_STD::assign_compatible(result.decorators, decorators_0);
 	::ISPA_STD::assign_compatible(result.definition, def_header_4);
-	::ISPA_STD::MatchResult<Rules, Types::decorated_def, IT> match_result;
+	::ISPA_STD::MatchResult<Types::decorated_def, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::decorated_def<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorated_def, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::decorated_def<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorated_def, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::decorator(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorator, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL> MATMUL_0;
+template auto PyRawParser::Parser::decorated_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::decorated_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::decorator(IT pos) -> ::ISPA_STD::MatchResult<Types::decorator, IT> {
+	::ISPA_STD::Node<Types::MATMUL> MATMUL_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::primary, IT> primary_4;
+	::ISPA_STD::MatchResult<Types::primary, IT> primary_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE> NEWLINE_8;
+	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::MATMUL>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MATMUL");
 		return {};
 	}
-	MATMUL_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL>>();
+	MATMUL_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::MATMUL>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8102,7 +8102,7 @@ template<typename IT, class> auto Parser::Parser::decorator(IT pos) -> ::ISPA_ST
 	pos = primary_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -8111,25 +8111,25 @@ template<typename IT, class> auto Parser::Parser::decorator(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NEWLINE");
 		return {};
 	}
-	NEWLINE_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE>>();
+	NEWLINE_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NEWLINE>>();
 	success_9 = true;
 	pos++;
 	Types::decorator result;
 	::ISPA_STD::assign_compatible(result.value, primary_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::decorator, IT> match_result;
+	::ISPA_STD::MatchResult<Types::decorator, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::decorator<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorator, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::decorator<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorator, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::decorators(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorators, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::decorator, IT> decorator_1;
+template auto PyRawParser::Parser::decorator<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorator, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::decorator<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorator, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::decorators(IT pos) -> ::ISPA_STD::MatchResult<Types::decorators, IT> {
+	::ISPA_STD::MatchResult<Types::decorator, IT> decorator_1;
 	bool success_2;
-	::ISPA_STD::Node<::Parser::Rules, Types::decorator> element_3;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::decorator>> shadow_4;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::decorator>> uvar_0;
+	::ISPA_STD::Node<Types::decorator> element_3;
+	std::vector<::ISPA_STD::Node<Types::decorator>> shadow_4;
+	std::vector<::ISPA_STD::Node<Types::decorator>> uvar_0;
 	bool success_5;
 	success_2 = false;
 	// grammar `@  decorator+;`: repeat named rule; collect every matched value
@@ -8151,29 +8151,29 @@ template<typename IT, class> auto Parser::Parser::decorators(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(uvar_0, shadow_4);
 	Types::decorators result;
 	::ISPA_STD::assign_compatible(result.value, uvar_0);
-	::ISPA_STD::MatchResult<Rules, Types::decorators, IT> match_result;
+	::ISPA_STD::MatchResult<Types::decorators, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::decorators<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorators, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::decorators<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::decorators, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::def_header(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::def_header, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::class_header>, ::ISPA_STD::Node<::Parser::Rules, Types::function_header>> _0;
+template auto PyRawParser::Parser::decorators<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::decorators, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::decorators<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::decorators, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::def_header(IT pos) -> ::ISPA_STD::MatchResult<Types::def_header, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::class_header>, ::ISPA_STD::Node<Types::function_header>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::function_header, IT> function_header_2;
+	::ISPA_STD::MatchResult<Types::function_header, IT> function_header_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::class_header, IT> class_header_4;
+	::ISPA_STD::MatchResult<Types::class_header, IT> class_header_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::function_header, IT> function_header_6;
+	::ISPA_STD::MatchResult<Types::function_header, IT> function_header_6;
 	bool success_7;
 	success_1 = false;
 	// grammar `@  ( function_header |  class_header)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ASYNC: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ASYNC::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			function_header_2 = function_header(lookahead_pos_1);
@@ -8191,7 +8191,7 @@ template<typename IT, class> auto Parser::Parser::def_header(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::CLASS: {
+		case Tokens::CLASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			class_header_4 = class_header(lookahead_pos_1);
@@ -8209,7 +8209,7 @@ template<typename IT, class> auto Parser::Parser::def_header(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEF: {
+		case Tokens::DEF::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			function_header_6 = function_header(lookahead_pos_1);
@@ -8235,52 +8235,52 @@ template<typename IT, class> auto Parser::Parser::def_header(IT pos) -> ::ISPA_S
 	}
 	Types::def_header result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::def_header, IT> match_result;
+	::ISPA_STD::MatchResult<Types::def_header, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::def_header<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::def_header, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::def_header<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::def_header, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::del_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::del_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::DEL> DEL_0;
+template auto PyRawParser::Parser::def_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::def_header, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::def_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::def_header, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, IT> {
+	::ISPA_STD::Node<Types::DEL> DEL_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> assignment_target_4;
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_4;
 	bool success_5;
 	bool success_21;
 	bool success_13;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>> group_8;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>>> shadow_25;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>>> uvar_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_25;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> uvar_9;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_12;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_14;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_16;
+	::ISPA_STD::Node<Types::COMMA> COMMA_12;
+	::ISPA_STD::Node<Types::COMMA> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_14;
+	::ISPA_STD::Node<Types::__WS> __WS_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_15;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_18;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> assignment_target_20;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> element_22;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>> shadow_23;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> uvar_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> tuple_elem_24;
+	::ISPA_STD::Node<Types::__WS> uvar_15;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_18;
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_20;
+	::ISPA_STD::Node<Types::assignment_target> element_22;
+	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_23;
+	::ISPA_STD::Node<Types::assignment_target> uvar_19;
+	::ISPA_STD::Node<Types::assignment_target> tuple_elem_24;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::DEL>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  DEL");
 		return {};
 	}
-	DEL_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DEL>>();
+	DEL_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::DEL>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8298,7 +8298,7 @@ template<typename IT, class> auto Parser::Parser::del_stmt(IT pos) -> ::ISPA_STD
 		auto repeat_ws_27 = begin_26;
 		success_7 = false;
 		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_6 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
 			repeat_ws_27++;
 		}
@@ -8306,14 +8306,14 @@ template<typename IT, class> auto Parser::Parser::del_stmt(IT pos) -> ::ISPA_STD
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
 		repeat_ws_27++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
 		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_16 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
 			repeat_ws_27++;
 			shadow_18.push_back(__WS_16);
@@ -8341,36 +8341,36 @@ template<typename IT, class> auto Parser::Parser::del_stmt(IT pos) -> ::ISPA_STD
 	Types::del_stmt result;
 	::ISPA_STD::assign_compatible(result.first, assignment_target_4);
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
-	::ISPA_STD::MatchResult<Rules, Types::del_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::del_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::del_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::del_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::del_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::del_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dict_expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_expr, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LBRACE> LBRACE_0;
+template auto PyRawParser::Parser::del_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::del_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dict_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, IT> {
+	::ISPA_STD::Node<Types::LBRACE> LBRACE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::dict_items, IT> dict_items_4;
+	::ISPA_STD::MatchResult<Types::dict_items, IT> dict_items_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RBRACE> RBRACE_8;
+	::ISPA_STD::Node<Types::RBRACE> RBRACE_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LBRACE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LBRACE");
 		return {};
 	}
-	LBRACE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LBRACE>>();
+	LBRACE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LBRACE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8382,7 +8382,7 @@ template<typename IT, class> auto Parser::Parser::dict_expr(IT pos) -> ::ISPA_ST
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -8391,29 +8391,29 @@ template<typename IT, class> auto Parser::Parser::dict_expr(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RBRACE");
 		return {};
 	}
-	RBRACE_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RBRACE>>();
+	RBRACE_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RBRACE>>();
 	success_9 = true;
 	pos++;
 	Types::dict_expr result;
 	::ISPA_STD::assign_compatible(result.value, dict_items_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::dict_expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dict_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dict_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dict_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dict_item(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::dict_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dict_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dict_item(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_4;
+	::ISPA_STD::Node<Types::COLON> COLON_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_8;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_8;
 	bool success_9;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -8425,7 +8425,7 @@ template<typename IT, class> auto Parser::Parser::dict_item(IT pos) -> ::ISPA_ST
 	pos = expr_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8434,12 +8434,12 @@ template<typename IT, class> auto Parser::Parser::dict_item(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -8454,32 +8454,32 @@ template<typename IT, class> auto Parser::Parser::dict_item(IT pos) -> ::ISPA_ST
 	Types::dict_item result;
 	::ISPA_STD::assign_compatible(result.key, expr_0);
 	::ISPA_STD::assign_compatible(result.value, expr_8);
-	::ISPA_STD::MatchResult<Rules, Types::dict_item, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dict_item, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dict_item<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dict_item<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dict_item_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_0;
+template auto PyRawParser::Parser::dict_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dict_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dict_item_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, IT> {
+	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::dict_item, IT> dict_item_4;
+	::ISPA_STD::MatchResult<Types::dict_item, IT> dict_item_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::COMMA>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COMMA");
 		return {};
 	}
-	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8493,27 +8493,27 @@ template<typename IT, class> auto Parser::Parser::dict_item_tail(IT pos) -> ::IS
 	pos = dict_item_4.it;
 	Types::dict_item_tail result;
 	::ISPA_STD::assign_compatible(result.value, dict_item_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::dict_item_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dict_item_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dict_item_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dict_item_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_item_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dict_items(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_items, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::dict_item, IT> dict_item_0;
+template auto PyRawParser::Parser::dict_item_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dict_item_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dict_items(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_items, IT> {
+	::ISPA_STD::MatchResult<Types::dict_item, IT> dict_item_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::dict_item_tail, IT> dict_item_tail_5;
+	::ISPA_STD::MatchResult<Types::dict_item_tail, IT> dict_item_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::dict_item_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::dict_item_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::dict_item_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::dict_item_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::dict_item_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::dict_item_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_12;
 	bool success_13;
 	success_1 = false;
 	dict_item_0 = dict_item(pos);
@@ -8529,7 +8529,7 @@ template<typename IT, class> auto Parser::Parser::dict_items(IT pos) -> ::ISPA_S
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -8546,36 +8546,36 @@ template<typename IT, class> auto Parser::Parser::dict_items(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(uvar_4, shadow_8);
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
 	success_13 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
 		pos++;
 	}
 	Types::dict_items result;
 	::ISPA_STD::assign_compatible(result.first, dict_item_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::dict_items, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dict_items, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dict_items<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_items, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dict_items<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dict_items, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::disjunction(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::disjunction, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::conjunction, IT> conjunction_0;
+template auto PyRawParser::Parser::dict_items<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_items, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dict_items<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dict_items, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::disjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::disjunction, IT> {
+	::ISPA_STD::MatchResult<Types::conjunction, IT> conjunction_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::or_tail, IT> or_tail_5;
+	::ISPA_STD::MatchResult<Types::or_tail, IT> or_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::or_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::or_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::or_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::or_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::or_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::or_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	conjunction_0 = conjunction(pos);
@@ -8591,7 +8591,7 @@ template<typename IT, class> auto Parser::Parser::disjunction(IT pos) -> ::ISPA_
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -8609,20 +8609,20 @@ template<typename IT, class> auto Parser::Parser::disjunction(IT pos) -> ::ISPA_
 	Types::disjunction result;
 	::ISPA_STD::assign_compatible(result.first, conjunction_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::disjunction, IT> match_result;
+	::ISPA_STD::MatchResult<Types::disjunction, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::disjunction<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::disjunction, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::disjunction<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::disjunction, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dotted_as_name(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::dotted_name, IT> dotted_name_0;
+template auto PyRawParser::Parser::disjunction<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::disjunction, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::disjunction<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::disjunction, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dotted_as_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, IT> {
+	::ISPA_STD::MatchResult<Types::dotted_name, IT> dotted_name_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::import_alias, IT> import_alias_4;
+	::ISPA_STD::MatchResult<Types::import_alias, IT> import_alias_4;
 	bool success_5;
 	success_1 = false;
 	dotted_name_0 = dotted_name(pos);
@@ -8634,7 +8634,7 @@ template<typename IT, class> auto Parser::Parser::dotted_as_name(IT pos) -> ::IS
 	pos = dotted_name_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8647,37 +8647,37 @@ template<typename IT, class> auto Parser::Parser::dotted_as_name(IT pos) -> ::IS
 	Types::dotted_as_name result;
 	::ISPA_STD::assign_compatible(result.name, dotted_name_0);
 	::ISPA_STD::assign_compatible(result.alias, import_alias_4);
-	::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dotted_as_name, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dotted_as_name<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dotted_as_name<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dotted_as_names(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_names, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, IT> dotted_as_name_0;
+template auto PyRawParser::Parser::dotted_as_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dotted_as_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, IT> {
+	::ISPA_STD::MatchResult<Types::dotted_as_name, IT> dotted_as_name_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::dotted_as_name, IT> dotted_as_name_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::dotted_as_name> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::dotted_as_name, IT> dotted_as_name_16;
+	::ISPA_STD::Node<Types::dotted_as_name> element_18;
+	std::vector<::ISPA_STD::Node<Types::dotted_as_name>> shadow_19;
+	::ISPA_STD::Node<Types::dotted_as_name> uvar_15;
+	::ISPA_STD::Node<Types::dotted_as_name> tuple_elem_20;
 	success_1 = false;
 	dotted_as_name_0 = dotted_as_name(pos);
 	if (!(dotted_as_name_0.status)) {
@@ -8692,7 +8692,7 @@ template<typename IT, class> auto Parser::Parser::dotted_as_names(IT pos) -> ::I
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -8700,14 +8700,14 @@ template<typename IT, class> auto Parser::Parser::dotted_as_names(IT pos) -> ::I
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -8735,41 +8735,41 @@ template<typename IT, class> auto Parser::Parser::dotted_as_names(IT pos) -> ::I
 	Types::dotted_as_names result;
 	::ISPA_STD::assign_compatible(result.first, dotted_as_name_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::dotted_as_names, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dotted_as_names, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dotted_as_names<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_names, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dotted_as_names<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_as_names, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::dotted_name(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_name, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_0;
+template auto PyRawParser::Parser::dotted_as_names<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dotted_as_names<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::dotted_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, IT> {
+	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> shadow_19;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_19;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::DOT> DOT_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::DOT> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::DOT> DOT_8;
+	::ISPA_STD::Node<Types::DOT> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::DOT>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_16;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> uvar_15;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::ID>> shadow_18;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::Node<Types::ID> ID_16;
+	::ISPA_STD::Node<Types::ID> uvar_15;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_18;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ID>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_1 = true;
 	pos++;
 	success_6 = false;
@@ -8778,7 +8778,7 @@ template<typename IT, class> auto Parser::Parser::dotted_name(IT pos) -> ::ISPA_
 		auto repeat_ws_21 = begin_20;
 		success_3 = false;
 		if (((*repeat_ws_21)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_21++;
 		}
@@ -8786,14 +8786,14 @@ template<typename IT, class> auto Parser::Parser::dotted_name(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed):  DOT
 			break;
 		}
-		DOT_8 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>>();
+		DOT_8 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::DOT>>();
 		success_9 = true;
 		repeat_ws_21++;
 		shadow_10.push_back(DOT_8);
 		uvar_7 = DOT_8;
 		success_13 = false;
 		if (((*repeat_ws_21)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_21++;
 			shadow_14.push_back(__WS_12);
@@ -8803,7 +8803,7 @@ template<typename IT, class> auto Parser::Parser::dotted_name(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_16 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+		ID_16 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_17 = true;
 		repeat_ws_21++;
 		shadow_18.push_back(ID_16);
@@ -8820,40 +8820,40 @@ template<typename IT, class> auto Parser::Parser::dotted_name(IT pos) -> ::ISPA_
 	Types::dotted_name result;
 	::ISPA_STD::assign_compatible(result.first, ID_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::dotted_name, IT> match_result;
+	::ISPA_STD::MatchResult<Types::dotted_name, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::dotted_name<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_name, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::dotted_name<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::dotted_name, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::elif_clause(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::elif_clause, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ELIF> ELIF_0;
+template auto PyRawParser::Parser::dotted_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::dotted_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::elif_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, IT> {
+	::ISPA_STD::Node<Types::ELIF> ELIF_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_8;
+	::ISPA_STD::Node<Types::COLON> COLON_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_12;
+	::ISPA_STD::MatchResult<Types::block, IT> block_12;
 	bool success_13;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ELIF>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ELIF");
 		return {};
 	}
-	ELIF_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ELIF>>();
+	ELIF_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ELIF>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8867,7 +8867,7 @@ template<typename IT, class> auto Parser::Parser::elif_clause(IT pos) -> ::ISPA_
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -8876,12 +8876,12 @@ template<typename IT, class> auto Parser::Parser::elif_clause(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -8896,36 +8896,36 @@ template<typename IT, class> auto Parser::Parser::elif_clause(IT pos) -> ::ISPA_
 	Types::elif_clause result;
 	::ISPA_STD::assign_compatible(result.condition, expr_4);
 	::ISPA_STD::assign_compatible(result.body, block_12);
-	::ISPA_STD::MatchResult<Rules, Types::elif_clause, IT> match_result;
+	::ISPA_STD::MatchResult<Types::elif_clause, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::elif_clause<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::elif_clause, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::elif_clause<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::elif_clause, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::else_clause(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ELSE> ELSE_0;
+template auto PyRawParser::Parser::elif_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::elif_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::else_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::else_clause, IT> {
+	::ISPA_STD::Node<Types::ELSE> ELSE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_4;
+	::ISPA_STD::Node<Types::COLON> COLON_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_8;
+	::ISPA_STD::MatchResult<Types::block, IT> block_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ELSE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ELSE");
 		return {};
 	}
-	ELSE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ELSE>>();
+	ELSE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ELSE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8934,12 +8934,12 @@ template<typename IT, class> auto Parser::Parser::else_clause(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -8953,32 +8953,32 @@ template<typename IT, class> auto Parser::Parser::else_clause(IT pos) -> ::ISPA_
 	pos = block_8.it;
 	Types::else_clause result;
 	::ISPA_STD::assign_compatible(result.value, block_8.node);
-	::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> match_result;
+	::ISPA_STD::MatchResult<Types::else_clause, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::else_clause<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::else_clause, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::else_clause<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::else_clause, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::except_alias(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_alias, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::AS> AS_0;
+template auto PyRawParser::Parser::else_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::else_clause, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::else_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::else_clause, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::except_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::except_alias, IT> {
+	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::AS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  AS");
 		return {};
 	}
-	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AS>>();
+	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::AS>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -8987,49 +8987,49 @@ template<typename IT, class> auto Parser::Parser::except_alias(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	Types::except_alias result;
 	::ISPA_STD::assign_compatible(result.value, ID_4);
-	::ISPA_STD::MatchResult<Rules, Types::except_alias, IT> match_result;
+	::ISPA_STD::MatchResult<Types::except_alias, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::except_alias<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_alias, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::except_alias<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_alias, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::except_clause(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_clause, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::EXCEPT> EXCEPT_0;
+template auto PyRawParser::Parser::except_alias<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_alias, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::except_alias<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_alias, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::except_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::except_clause, IT> {
+	::ISPA_STD::Node<Types::EXCEPT> EXCEPT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::except_alias, IT> except_alias_8;
+	::ISPA_STD::MatchResult<Types::except_alias, IT> except_alias_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_12;
+	::ISPA_STD::Node<Types::COLON> COLON_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_16;
+	::ISPA_STD::MatchResult<Types::block, IT> block_16;
 	bool success_17;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::EXCEPT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  EXCEPT");
 		return {};
 	}
-	EXCEPT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::EXCEPT>>();
+	EXCEPT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::EXCEPT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9041,7 +9041,7 @@ template<typename IT, class> auto Parser::Parser::except_clause(IT pos) -> ::ISP
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -9053,7 +9053,7 @@ template<typename IT, class> auto Parser::Parser::except_clause(IT pos) -> ::ISP
 	}
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -9062,12 +9062,12 @@ template<typename IT, class> auto Parser::Parser::except_clause(IT pos) -> ::ISP
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_13 = true;
 	pos++;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -9083,28 +9083,28 @@ template<typename IT, class> auto Parser::Parser::except_clause(IT pos) -> ::ISP
 	::ISPA_STD::assign_compatible(result.exception, expr_4);
 	::ISPA_STD::assign_compatible(result.alias, except_alias_8);
 	::ISPA_STD::assign_compatible(result.body, block_16);
-	::ISPA_STD::MatchResult<Rules, Types::except_clause, IT> match_result;
+	::ISPA_STD::MatchResult<Types::except_clause, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::except_clause<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_clause, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::except_clause<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_clause, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::except_handlers(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_handlers, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::except_clause, IT> except_clause_1;
+template auto PyRawParser::Parser::except_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_clause, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::except_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_clause, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::except_handlers(IT pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, IT> {
+	::ISPA_STD::MatchResult<Types::except_clause, IT> except_clause_1;
 	bool success_2;
-	::ISPA_STD::Node<::Parser::Rules, Types::except_clause> element_3;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::except_clause>> shadow_4;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::except_clause>> uvar_0;
+	::ISPA_STD::Node<Types::except_clause> element_3;
+	std::vector<::ISPA_STD::Node<Types::except_clause>> shadow_4;
+	std::vector<::ISPA_STD::Node<Types::except_clause>> uvar_0;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> else_clause_8;
+	::ISPA_STD::MatchResult<Types::else_clause, IT> else_clause_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::finally_clause, IT> finally_clause_12;
+	::ISPA_STD::MatchResult<Types::finally_clause, IT> finally_clause_12;
 	bool success_13;
 	success_2 = false;
 	// grammar `@  except_clause+;`: repeat named rule; collect every matched value
@@ -9126,7 +9126,7 @@ template<typename IT, class> auto Parser::Parser::except_handlers(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(uvar_0, shadow_4);
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -9138,7 +9138,7 @@ template<typename IT, class> auto Parser::Parser::except_handlers(IT pos) -> ::I
 	}
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -9152,20 +9152,20 @@ template<typename IT, class> auto Parser::Parser::except_handlers(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.handlers, uvar_0);
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_8);
 	::ISPA_STD::assign_compatible(result.finalizer, finally_clause_12);
-	::ISPA_STD::MatchResult<Rules, Types::except_handlers, IT> match_result;
+	::ISPA_STD::MatchResult<Types::except_handlers, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::except_handlers<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_handlers, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::except_handlers<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::except_handlers, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::disjunction, IT> disjunction_0;
+template auto PyRawParser::Parser::except_handlers<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::except_handlers<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT> {
+	::ISPA_STD::MatchResult<Types::disjunction, IT> disjunction_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::conditional_tail, IT> conditional_tail_4;
+	::ISPA_STD::MatchResult<Types::conditional_tail, IT> conditional_tail_4;
 	bool success_5;
 	success_1 = false;
 	disjunction_0 = disjunction(pos);
@@ -9177,7 +9177,7 @@ template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::Ma
 	pos = disjunction_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9190,20 +9190,20 @@ template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::Ma
 	Types::expr result;
 	::ISPA_STD::assign_compatible(result.value, disjunction_0);
 	::ISPA_STD::assign_compatible(result.conditional, conditional_tail_4);
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::expr_list(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr_list_tail, IT> expr_list_tail_4;
+	::ISPA_STD::MatchResult<Types::expr_list_tail, IT> expr_list_tail_4;
 	bool success_5;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -9215,7 +9215,7 @@ template<typename IT, class> auto Parser::Parser::expr_list(IT pos) -> ::ISPA_ST
 	pos = expr_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9228,36 +9228,36 @@ template<typename IT, class> auto Parser::Parser::expr_list(IT pos) -> ::ISPA_ST
 	Types::expr_list result;
 	::ISPA_STD::assign_compatible(result.first, expr_0);
 	::ISPA_STD::assign_compatible(result.rest, expr_list_tail_4);
-	::ISPA_STD::MatchResult<Rules, Types::expr_list, IT> match_result;
+	::ISPA_STD::MatchResult<Types::expr_list, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::expr_list<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::expr_list<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::expr_list_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list_tail, IT> {
+template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::expr_list_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, IT> {
 	bool success_13;
 	bool success_5;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> group_0;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_0;
 	bool success_2;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>>> shadow_17;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>>> uvar_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_3;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_6;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_8;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> shadow_17;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> uvar_1;
+	::ISPA_STD::Node<Types::COMMA> COMMA_4;
+	::ISPA_STD::Node<Types::COMMA> uvar_3;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_6;
+	::ISPA_STD::Node<Types::__WS> __WS_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_10;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_12;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> element_14;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::expr>> shadow_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> uvar_11;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> tuple_elem_16;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_19;
+	::ISPA_STD::Node<Types::__WS> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_10;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_12;
+	::ISPA_STD::Node<Types::expr> element_14;
+	std::vector<::ISPA_STD::Node<Types::expr>> shadow_15;
+	::ISPA_STD::Node<Types::expr> uvar_11;
+	::ISPA_STD::Node<Types::expr> tuple_elem_16;
+	::ISPA_STD::Node<Types::__WS> __WS_19;
 	bool success_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_21;
+	::ISPA_STD::Node<Types::COMMA> COMMA_21;
 	bool success_22;
 	success_2 = false;
 	auto begin_18 = pos;
@@ -9266,14 +9266,14 @@ template<typename IT, class> auto Parser::Parser::expr_list_tail(IT pos) -> ::IS
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_4 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_4 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_5 = true;
 		begin_18++;
 		shadow_6.push_back(COMMA_4);
 		uvar_3 = COMMA_4;
 		success_9 = false;
 		if (((*begin_18)).template holds<Types::__WS>()) {
-			__WS_8 = ((*begin_18)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_8 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_9 = true;
 			begin_18++;
 			shadow_10.push_back(__WS_8);
@@ -9299,32 +9299,32 @@ template<typename IT, class> auto Parser::Parser::expr_list_tail(IT pos) -> ::IS
 	pos = begin_18;
 	success_20 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_19 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_19 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_20 = true;
 		pos++;
 	}
 	success_22 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_21 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_21 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_22 = true;
 		pos++;
 	}
 	Types::expr_list_tail result;
 	::ISPA_STD::assign_compatible(result.value, uvar_11);
-	::ISPA_STD::MatchResult<Rules, Types::expr_list_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::expr_list_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::expr_list_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::expr_list_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_list_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_value, IT> assignment_value_4;
+	::ISPA_STD::MatchResult<Types::assignment_value, IT> assignment_value_4;
 	bool success_5;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -9336,7 +9336,7 @@ template<typename IT, class> auto Parser::Parser::expr_stmt(IT pos) -> ::ISPA_ST
 	pos = expr_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9349,47 +9349,47 @@ template<typename IT, class> auto Parser::Parser::expr_stmt(IT pos) -> ::ISPA_ST
 	Types::expr_stmt result;
 	::ISPA_STD::assign_compatible(result.target, expr_0);
 	::ISPA_STD::assign_compatible(result.assignment, assignment_value_4);
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::expr_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::expr_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::expr_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::factor, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::power>, ::ISPA_STD::Node<::Parser::Rules, Types::unary_expr>> _0;
+template auto PyRawParser::Parser::expr_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::expr_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::factor(IT pos) -> ::ISPA_STD::MatchResult<Types::factor, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::power>, ::ISPA_STD::Node<Types::unary_expr>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_2;
+	::ISPA_STD::MatchResult<Types::power, IT> power_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_4;
+	::ISPA_STD::MatchResult<Types::power, IT> power_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_6;
+	::ISPA_STD::MatchResult<Types::power, IT> power_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_8;
+	::ISPA_STD::MatchResult<Types::power, IT> power_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_10;
+	::ISPA_STD::MatchResult<Types::power, IT> power_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::unary_expr, IT> unary_expr_12;
+	::ISPA_STD::MatchResult<Types::unary_expr, IT> unary_expr_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_14;
+	::ISPA_STD::MatchResult<Types::power, IT> power_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_16;
+	::ISPA_STD::MatchResult<Types::power, IT> power_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::unary_expr, IT> unary_expr_18;
+	::ISPA_STD::MatchResult<Types::unary_expr, IT> unary_expr_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_20;
+	::ISPA_STD::MatchResult<Types::power, IT> power_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::unary_expr, IT> unary_expr_22;
+	::ISPA_STD::MatchResult<Types::unary_expr, IT> unary_expr_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> power_24;
+	::ISPA_STD::MatchResult<Types::power, IT> power_24;
 	bool success_25;
 	success_1 = false;
 	// grammar `@  ( unary_expr |  power)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FALSE: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			power_2 = power(lookahead_pos_1);
@@ -9407,7 +9407,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			power_4 = power(lookahead_pos_1);
@@ -9425,7 +9425,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			power_6 = power(lookahead_pos_1);
@@ -9443,7 +9443,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			power_8 = power(lookahead_pos_1);
@@ -9461,7 +9461,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			power_10 = power(lookahead_pos_1);
@@ -9479,7 +9479,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			unary_expr_12 = unary_expr(lookahead_pos_1);
@@ -9497,7 +9497,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			power_14 = power(lookahead_pos_1);
@@ -9515,7 +9515,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			power_16 = power(lookahead_pos_1);
@@ -9533,7 +9533,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			unary_expr_18 = unary_expr(lookahead_pos_1);
@@ -9551,7 +9551,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			power_20 = power(lookahead_pos_1);
@@ -9569,7 +9569,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			unary_expr_22 = unary_expr(lookahead_pos_1);
@@ -9587,7 +9587,7 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			power_24 = power(lookahead_pos_1);
@@ -9613,36 +9613,36 @@ template<typename IT, class> auto Parser::Parser::factor(IT pos) -> ::ISPA_STD::
 	}
 	Types::factor result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::factor, IT> match_result;
+	::ISPA_STD::MatchResult<Types::factor, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::factor<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::factor, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::factor<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::factor, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::finally_clause(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::finally_clause, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::FINALLY> FINALLY_0;
+template auto PyRawParser::Parser::factor<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::factor, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::factor<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::factor, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::finally_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, IT> {
+	::ISPA_STD::Node<Types::FINALLY> FINALLY_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_4;
+	::ISPA_STD::Node<Types::COLON> COLON_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_8;
+	::ISPA_STD::MatchResult<Types::block, IT> block_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::FINALLY>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FINALLY");
 		return {};
 	}
-	FINALLY_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FINALLY>>();
+	FINALLY_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::FINALLY>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9651,12 +9651,12 @@ template<typename IT, class> auto Parser::Parser::finally_clause(IT pos) -> ::IS
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -9670,54 +9670,54 @@ template<typename IT, class> auto Parser::Parser::finally_clause(IT pos) -> ::IS
 	pos = block_8.it;
 	Types::finally_clause result;
 	::ISPA_STD::assign_compatible(result.value, block_8.node);
-	::ISPA_STD::MatchResult<Rules, Types::finally_clause, IT> match_result;
+	::ISPA_STD::MatchResult<Types::finally_clause, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::finally_clause<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::finally_clause, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::finally_clause<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::finally_clause, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC> ASYNC_0;
+template auto PyRawParser::Parser::finally_clause<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::finally_clause<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::for_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, IT> {
+	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::FOR> FOR_4;
+	::ISPA_STD::Node<Types::FOR> FOR_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::for_targets, IT> for_targets_8;
+	::ISPA_STD::MatchResult<Types::for_targets, IT> for_targets_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::IN> IN_12;
+	::ISPA_STD::Node<Types::IN> IN_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_16;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_18;
+	::ISPA_STD::Node<Types::__WS> __WS_18;
 	bool success_19;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_20;
+	::ISPA_STD::Node<Types::COLON> COLON_20;
 	bool success_21;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_22;
+	::ISPA_STD::Node<Types::__WS> __WS_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_24;
+	::ISPA_STD::MatchResult<Types::block, IT> block_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_26;
+	::ISPA_STD::Node<Types::__WS> __WS_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> else_clause_28;
+	::ISPA_STD::MatchResult<Types::else_clause, IT> else_clause_28;
 	bool success_29;
 	success_1 = false;
 	if (((*pos)).template holds<Types::ASYNC>()) {
-		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC>>();
+		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASYNC>>();
 		success_1 = true;
 		pos++;
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9726,12 +9726,12 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FOR");
 		return {};
 	}
-	FOR_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FOR>>();
+	FOR_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::FOR>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -9745,7 +9745,7 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 	pos = for_targets_8.it;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -9754,12 +9754,12 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IN");
 		return {};
 	}
-	IN_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IN>>();
+	IN_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IN>>();
 	success_13 = true;
 	pos++;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -9773,7 +9773,7 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 	pos = expr_16.it;
 	success_19 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_18 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_18 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_19 = true;
 		pos++;
 	}
@@ -9782,12 +9782,12 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_20 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_20 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_21 = true;
 	pos++;
 	success_23 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_23 = true;
 		pos++;
 	}
@@ -9801,7 +9801,7 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 	pos = block_24.it;
 	success_27 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_27 = true;
 		pos++;
 	}
@@ -9817,40 +9817,40 @@ template<typename IT, class> auto Parser::Parser::for_stmt(IT pos) -> ::ISPA_STD
 	::ISPA_STD::assign_compatible(result.iterable, expr_16);
 	::ISPA_STD::assign_compatible(result.body, block_24);
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_28);
-	::ISPA_STD::MatchResult<Rules, Types::for_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::for_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::for_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::for_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::for_targets(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_targets, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> assignment_target_0;
+template auto PyRawParser::Parser::for_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::for_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::for_targets, IT> {
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> assignment_target_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::assignment_target>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::assignment_target> tuple_elem_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_24;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_16;
+	::ISPA_STD::Node<Types::assignment_target> element_18;
+	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_19;
+	::ISPA_STD::Node<Types::assignment_target> uvar_15;
+	::ISPA_STD::Node<Types::assignment_target> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> __WS_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_26;
+	::ISPA_STD::Node<Types::COMMA> COMMA_26;
 	bool success_27;
 	success_1 = false;
 	assignment_target_0 = assignment_target(pos);
@@ -9866,7 +9866,7 @@ template<typename IT, class> auto Parser::Parser::for_targets(IT pos) -> ::ISPA_
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -9874,14 +9874,14 @@ template<typename IT, class> auto Parser::Parser::for_targets(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -9908,33 +9908,33 @@ template<typename IT, class> auto Parser::Parser::for_targets(IT pos) -> ::ISPA_
 	pos = begin_22;
 	success_25 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_25 = true;
 		pos++;
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_27 = true;
 		pos++;
 	}
 	Types::for_targets result;
 	::ISPA_STD::assign_compatible(result.first, assignment_target_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::for_targets, IT> match_result;
+	::ISPA_STD::MatchResult<Types::for_targets, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::for_targets<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_targets, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::for_targets<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::for_targets, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::function_def(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_def, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::decorators, IT> decorators_0;
+template auto PyRawParser::Parser::for_targets<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::for_targets, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::for_targets<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::for_targets, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::function_def(IT pos) -> ::ISPA_STD::MatchResult<Types::function_def, IT> {
+	::ISPA_STD::MatchResult<Types::decorators, IT> decorators_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::function_header, IT> function_header_4;
+	::ISPA_STD::MatchResult<Types::function_header, IT> function_header_4;
 	bool success_5;
 	success_1 = false;
 	decorators_0 = decorators(pos);
@@ -9944,7 +9944,7 @@ template<typename IT, class> auto Parser::Parser::function_def(IT pos) -> ::ISPA
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -9959,58 +9959,58 @@ template<typename IT, class> auto Parser::Parser::function_def(IT pos) -> ::ISPA
 	Types::function_def result;
 	::ISPA_STD::assign_compatible(result.decorators, decorators_0);
 	::ISPA_STD::assign_compatible(result.definition, function_header_4);
-	::ISPA_STD::MatchResult<Rules, Types::function_def, IT> match_result;
+	::ISPA_STD::MatchResult<Types::function_def, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::function_def<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_def, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::function_def<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_def, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_header, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC> ASYNC_0;
+template auto PyRawParser::Parser::function_def<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::function_def, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::function_def<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::function_def, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::function_header(IT pos) -> ::ISPA_STD::MatchResult<Types::function_header, IT> {
+	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::DEF> DEF_4;
+	::ISPA_STD::Node<Types::DEF> DEF_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_8;
+	::ISPA_STD::Node<Types::ID> ID_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN> LPAREN_12;
+	::ISPA_STD::Node<Types::LPAREN> LPAREN_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::parameters, IT> parameters_16;
+	::ISPA_STD::MatchResult<Types::parameters, IT> parameters_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_18;
+	::ISPA_STD::Node<Types::__WS> __WS_18;
 	bool success_19;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN> RPAREN_20;
+	::ISPA_STD::Node<Types::RPAREN> RPAREN_20;
 	bool success_21;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_22;
+	::ISPA_STD::Node<Types::__WS> __WS_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::return_annotation, IT> return_annotation_24;
+	::ISPA_STD::MatchResult<Types::return_annotation, IT> return_annotation_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_26;
+	::ISPA_STD::Node<Types::__WS> __WS_26;
 	bool success_27;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_28;
+	::ISPA_STD::Node<Types::COLON> COLON_28;
 	bool success_29;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_30;
+	::ISPA_STD::Node<Types::__WS> __WS_30;
 	bool success_31;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_32;
+	::ISPA_STD::MatchResult<Types::block, IT> block_32;
 	bool success_33;
 	success_1 = false;
 	if (((*pos)).template holds<Types::ASYNC>()) {
-		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC>>();
+		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASYNC>>();
 		success_1 = true;
 		pos++;
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10019,12 +10019,12 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  DEF");
 		return {};
 	}
-	DEF_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DEF>>();
+	DEF_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::DEF>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -10033,12 +10033,12 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -10047,12 +10047,12 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LPAREN");
 		return {};
 	}
-	LPAREN_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN>>();
+	LPAREN_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LPAREN>>();
 	success_13 = true;
 	pos++;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -10064,7 +10064,7 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 	}
 	success_19 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_18 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_18 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_19 = true;
 		pos++;
 	}
@@ -10073,12 +10073,12 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RPAREN");
 		return {};
 	}
-	RPAREN_20 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN>>();
+	RPAREN_20 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RPAREN>>();
 	success_21 = true;
 	pos++;
 	success_23 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_23 = true;
 		pos++;
 	}
@@ -10090,7 +10090,7 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_27 = true;
 		pos++;
 	}
@@ -10099,12 +10099,12 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_28 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_28 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_29 = true;
 	pos++;
 	success_31 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_30 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_30 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_31 = true;
 		pos++;
 	}
@@ -10122,50 +10122,50 @@ template<typename IT, class> auto Parser::Parser::function_header(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(result.params, parameters_16);
 	::ISPA_STD::assign_compatible(result.returns, return_annotation_24);
 	::ISPA_STD::assign_compatible(result.body, block_32);
-	::ISPA_STD::MatchResult<Rules, Types::function_header, IT> match_result;
+	::ISPA_STD::MatchResult<Types::function_header, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::function_header<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_header, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::function_header<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::function_header, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::global_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::GLOBAL> GLOBAL_0;
+template auto PyRawParser::Parser::function_header<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::function_header, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::function_header<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::function_header, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::global_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, IT> {
+	::ISPA_STD::Node<Types::GLOBAL> GLOBAL_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
 	bool success_21;
 	bool success_13;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>> group_8;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> shadow_23;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> uvar_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_23;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_9;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_12;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_14;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_16;
+	::ISPA_STD::Node<Types::COMMA> COMMA_12;
+	::ISPA_STD::Node<Types::COMMA> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_14;
+	::ISPA_STD::Node<Types::__WS> __WS_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_15;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_18;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> uvar_19;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::ID>> shadow_22;
+	::ISPA_STD::Node<Types::__WS> uvar_15;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_18;
+	::ISPA_STD::Node<Types::ID> ID_20;
+	::ISPA_STD::Node<Types::ID> uvar_19;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_22;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::GLOBAL>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  GLOBAL");
 		return {};
 	}
-	GLOBAL_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::GLOBAL>>();
+	GLOBAL_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::GLOBAL>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10174,7 +10174,7 @@ template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	success_10 = false;
@@ -10183,7 +10183,7 @@ template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_
 		auto repeat_ws_25 = begin_24;
 		success_7 = false;
 		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
 			repeat_ws_25++;
 		}
@@ -10191,14 +10191,14 @@ template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
 		repeat_ws_25++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
 		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
 			repeat_ws_25++;
 			shadow_18.push_back(__WS_16);
@@ -10208,7 +10208,7 @@ template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_21 = true;
 		repeat_ws_25++;
 		shadow_22.push_back(ID_20);
@@ -10225,51 +10225,51 @@ template<typename IT, class> auto Parser::Parser::global_stmt(IT pos) -> ::ISPA_
 	Types::global_stmt result;
 	::ISPA_STD::assign_compatible(result.first, ID_4);
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
-	::ISPA_STD::MatchResult<Rules, Types::global_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::global_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::global_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::global_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::global_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::global_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::if_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::IF> IF_0;
+template auto PyRawParser::Parser::global_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::global_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::if_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, IT> {
+	::ISPA_STD::Node<Types::IF> IF_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_8;
+	::ISPA_STD::Node<Types::COLON> COLON_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_12;
+	::ISPA_STD::MatchResult<Types::block, IT> block_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::elif_clause, IT> elif_clause_17;
+	::ISPA_STD::MatchResult<Types::elif_clause, IT> elif_clause_17;
 	bool success_18;
-	::ISPA_STD::Node<::Parser::Rules, Types::elif_clause> element_19;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::elif_clause>> shadow_20;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::elif_clause>> uvar_16;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::elif_clause> element_19;
+	std::vector<::ISPA_STD::Node<Types::elif_clause>> shadow_20;
+	std::vector<::ISPA_STD::Node<Types::elif_clause>> uvar_16;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_22;
+	::ISPA_STD::Node<Types::__WS> __WS_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> else_clause_24;
+	::ISPA_STD::MatchResult<Types::else_clause, IT> else_clause_24;
 	bool success_25;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::IF>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IF");
 		return {};
 	}
-	IF_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IF>>();
+	IF_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IF>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10283,7 +10283,7 @@ template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD:
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -10292,12 +10292,12 @@ template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD:
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -10315,7 +10315,7 @@ template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD:
 		auto repeat_ws_21 = pos;
 		success_15 = false;
 		if (((*repeat_ws_21)).template holds<Types::__WS>()) {
-			__WS_14 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_14 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_15 = true;
 			repeat_ws_21++;
 		}
@@ -10332,7 +10332,7 @@ template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD:
 	::ISPA_STD::assign_compatible(uvar_16, shadow_20);
 	success_23 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_22 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_23 = true;
 		pos++;
 	}
@@ -10347,32 +10347,32 @@ template<typename IT, class> auto Parser::Parser::if_stmt(IT pos) -> ::ISPA_STD:
 	::ISPA_STD::assign_compatible(result.body, block_12);
 	::ISPA_STD::assign_compatible(result.elifs, uvar_16);
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_24);
-	::ISPA_STD::MatchResult<Rules, Types::if_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::if_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::if_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::if_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::if_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::if_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_alias(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_alias, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::AS> AS_0;
+template auto PyRawParser::Parser::if_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::if_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::import_alias, IT> {
+	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::AS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  AS");
 		return {};
 	}
-	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AS>>();
+	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::AS>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10381,45 +10381,45 @@ template<typename IT, class> auto Parser::Parser::import_alias(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	Types::import_alias result;
 	::ISPA_STD::assign_compatible(result.value, ID_4);
-	::ISPA_STD::MatchResult<Rules, Types::import_alias, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_alias, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_alias<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_alias, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_alias<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_alias, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_from(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_from, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::FROM> FROM_0;
+template auto PyRawParser::Parser::import_alias<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_alias, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_alias<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_alias, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_from(IT pos) -> ::ISPA_STD::MatchResult<Types::import_from, IT> {
+	::ISPA_STD::Node<Types::FROM> FROM_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::relative_module, IT> relative_module_4;
+	::ISPA_STD::MatchResult<Types::relative_module, IT> relative_module_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::IMPORT> IMPORT_8;
+	::ISPA_STD::Node<Types::IMPORT> IMPORT_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::import_targets, IT> import_targets_12;
+	::ISPA_STD::MatchResult<Types::import_targets, IT> import_targets_12;
 	bool success_13;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::FROM>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FROM");
 		return {};
 	}
-	FROM_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FROM>>();
+	FROM_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::FROM>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10433,7 +10433,7 @@ template<typename IT, class> auto Parser::Parser::import_from(IT pos) -> ::ISPA_
 	pos = relative_module_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -10442,12 +10442,12 @@ template<typename IT, class> auto Parser::Parser::import_from(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IMPORT");
 		return {};
 	}
-	IMPORT_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IMPORT>>();
+	IMPORT_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IMPORT>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -10462,32 +10462,32 @@ template<typename IT, class> auto Parser::Parser::import_from(IT pos) -> ::ISPA_
 	Types::import_from result;
 	::ISPA_STD::assign_compatible(result.module, relative_module_4);
 	::ISPA_STD::assign_compatible(result.names, import_targets_12);
-	::ISPA_STD::MatchResult<Rules, Types::import_from, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_from, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_from<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_from, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_from<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_from, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_name(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::IMPORT> IMPORT_0;
+template auto PyRawParser::Parser::import_from<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_from, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_from<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_from, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_name(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name, IT> {
+	::ISPA_STD::Node<Types::IMPORT> IMPORT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::dotted_as_names, IT> dotted_as_names_4;
+	::ISPA_STD::MatchResult<Types::dotted_as_names, IT> dotted_as_names_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::IMPORT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IMPORT");
 		return {};
 	}
-	IMPORT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IMPORT>>();
+	IMPORT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IMPORT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10501,32 +10501,32 @@ template<typename IT, class> auto Parser::Parser::import_name(IT pos) -> ::ISPA_
 	pos = dotted_as_names_4.it;
 	Types::import_name result;
 	::ISPA_STD::assign_compatible(result.value, dotted_as_names_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::import_name, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_name, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_name<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_name<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_name_item(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name_item, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_0;
+template auto PyRawParser::Parser::import_name<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_name<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_name_item(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, IT> {
+	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::import_alias, IT> import_alias_4;
+	::ISPA_STD::MatchResult<Types::import_alias, IT> import_alias_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ID>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10539,40 +10539,40 @@ template<typename IT, class> auto Parser::Parser::import_name_item(IT pos) -> ::
 	Types::import_name_item result;
 	::ISPA_STD::assign_compatible(result.name, ID_0);
 	::ISPA_STD::assign_compatible(result.alias, import_alias_4);
-	::ISPA_STD::MatchResult<Rules, Types::import_name_item, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_name_item, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_name_item<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name_item, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_name_item<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_name_item, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_names(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_names, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::import_name_item, IT> import_name_item_0;
+template auto PyRawParser::Parser::import_name_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_name_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> ::ISPA_STD::MatchResult<Types::import_names, IT> {
+	::ISPA_STD::MatchResult<Types::import_name_item, IT> import_name_item_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::import_name_item>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::import_name_item>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::import_name_item>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::import_name_item, IT> import_name_item_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::import_name_item> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::import_name_item>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::import_name_item> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::import_name_item> tuple_elem_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_24;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::import_name_item, IT> import_name_item_16;
+	::ISPA_STD::Node<Types::import_name_item> element_18;
+	std::vector<::ISPA_STD::Node<Types::import_name_item>> shadow_19;
+	::ISPA_STD::Node<Types::import_name_item> uvar_15;
+	::ISPA_STD::Node<Types::import_name_item> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> __WS_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_26;
+	::ISPA_STD::Node<Types::COMMA> COMMA_26;
 	bool success_27;
 	success_1 = false;
 	import_name_item_0 = import_name_item(pos);
@@ -10588,7 +10588,7 @@ template<typename IT, class> auto Parser::Parser::import_names(IT pos) -> ::ISPA
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -10596,14 +10596,14 @@ template<typename IT, class> auto Parser::Parser::import_names(IT pos) -> ::ISPA
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -10630,40 +10630,40 @@ template<typename IT, class> auto Parser::Parser::import_names(IT pos) -> ::ISPA
 	pos = begin_22;
 	success_25 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_25 = true;
 		pos++;
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_27 = true;
 		pos++;
 	}
 	Types::import_names result;
 	::ISPA_STD::assign_compatible(result.first, import_name_item_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::import_names, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_names, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_names<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_names, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_names<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_names, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_stmt, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::import_from>, ::ISPA_STD::Node<::Parser::Rules, Types::import_name>> _0;
+template auto PyRawParser::Parser::import_names<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_names, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_names<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_names, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::import_from>, ::ISPA_STD::Node<Types::import_name>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::import_from, IT> import_from_2;
+	::ISPA_STD::MatchResult<Types::import_from, IT> import_from_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::import_name, IT> import_name_4;
+	::ISPA_STD::MatchResult<Types::import_name, IT> import_name_4;
 	bool success_5;
 	success_1 = false;
 	// grammar `@  ( import_name |  import_from)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FROM: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FROM::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			import_from_2 = import_from(lookahead_pos_1);
@@ -10681,7 +10681,7 @@ template<typename IT, class> auto Parser::Parser::import_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::IMPORT: {
+		case Tokens::IMPORT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			import_name_4 = import_name(lookahead_pos_1);
@@ -10707,29 +10707,29 @@ template<typename IT, class> auto Parser::Parser::import_stmt(IT pos) -> ::ISPA_
 	}
 	Types::import_stmt result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::import_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::import_targets(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_targets, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::import_names>, ::ISPA_STD::Node<::Parser::Rules, Types::parenthesized_imports>, ::ISPA_STD::Node<::Parser::Tokens, Types::STAR>> _0;
+template auto PyRawParser::Parser::import_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::import_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::import_targets, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::import_names>, ::ISPA_STD::Node<Types::parenthesized_imports>, ::ISPA_STD::Node<Types::STAR>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::import_names, IT> import_names_2;
+	::ISPA_STD::MatchResult<Types::import_names, IT> import_names_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_imports, IT> parenthesized_imports_4;
+	::ISPA_STD::MatchResult<Types::parenthesized_imports, IT> parenthesized_imports_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::STAR> STAR_6;
+	::ISPA_STD::Node<Types::STAR> STAR_6;
 	bool success_7;
 	success_1 = false;
 	// grammar `@  ( STAR |  parenthesized_imports |  import_names)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ID: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			import_names_2 = import_names(lookahead_pos_1);
@@ -10747,7 +10747,7 @@ template<typename IT, class> auto Parser::Parser::import_targets(IT pos) -> ::IS
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			parenthesized_imports_4 = parenthesized_imports(lookahead_pos_1);
@@ -10765,14 +10765,14 @@ template<typename IT, class> auto Parser::Parser::import_targets(IT pos) -> ::IS
 			success_1 = true;
 			break;
 		}
-		case Tokens::STAR: {
+		case Tokens::STAR::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::STAR>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  STAR");
 				return {};
 			}
-			STAR_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::STAR>>();
+			STAR_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::STAR>>();
 			success_7 = true;
 			lookahead_pos_1++;
 			if (!success_7) {
@@ -10791,44 +10791,44 @@ template<typename IT, class> auto Parser::Parser::import_targets(IT pos) -> ::IS
 	}
 	Types::import_targets result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::import_targets, IT> match_result;
+	::ISPA_STD::MatchResult<Types::import_targets, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::import_targets<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_targets, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::import_targets<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::import_targets, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::indented_block(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::indented_block, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE> NEWLINE_0;
+template auto PyRawParser::Parser::import_targets<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::import_targets, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::import_targets<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::import_targets, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::indented_block(IT pos) -> ::ISPA_STD::MatchResult<Types::indented_block, IT> {
+	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::INDENT> INDENT_4;
+	::ISPA_STD::Node<Types::INDENT> INDENT_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::statement, IT> statement_9;
+	::ISPA_STD::MatchResult<Types::statement, IT> statement_9;
 	bool success_10;
-	::ISPA_STD::Node<::Parser::Rules, Types::statement> element_11;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::statement>> shadow_12;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::statement>> uvar_8;
+	::ISPA_STD::Node<Types::statement> element_11;
+	std::vector<::ISPA_STD::Node<Types::statement>> shadow_12;
+	std::vector<::ISPA_STD::Node<Types::statement>> uvar_8;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_15;
+	::ISPA_STD::Node<Types::__WS> __WS_15;
 	bool success_16;
-	::ISPA_STD::Node<::Parser::Tokens, Types::DEDENT> DEDENT_17;
+	::ISPA_STD::Node<Types::DEDENT> DEDENT_17;
 	bool success_18;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::NEWLINE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NEWLINE");
 		return {};
 	}
-	NEWLINE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE>>();
+	NEWLINE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NEWLINE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10837,7 +10837,7 @@ template<typename IT, class> auto Parser::Parser::indented_block(IT pos) -> ::IS
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  INDENT");
 		return {};
 	}
-	INDENT_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::INDENT>>();
+	INDENT_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::INDENT>>();
 	success_5 = true;
 	pos++;
 	success_10 = false;
@@ -10847,7 +10847,7 @@ template<typename IT, class> auto Parser::Parser::indented_block(IT pos) -> ::IS
 		auto repeat_ws_14 = pos;
 		success_7 = false;
 		if (((*repeat_ws_14)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_14)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_6 = ((*repeat_ws_14)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
 			repeat_ws_14++;
 		}
@@ -10868,7 +10868,7 @@ template<typename IT, class> auto Parser::Parser::indented_block(IT pos) -> ::IS
 	::ISPA_STD::assign_compatible(uvar_8, shadow_12);
 	success_16 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_15 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_15 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_16 = true;
 		pos++;
 	}
@@ -10877,41 +10877,41 @@ template<typename IT, class> auto Parser::Parser::indented_block(IT pos) -> ::IS
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  DEDENT");
 		return {};
 	}
-	DEDENT_17 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DEDENT>>();
+	DEDENT_17 = ((*pos)).template to_node<::ISPA_STD::Node<Types::DEDENT>>();
 	success_18 = true;
 	pos++;
 	Types::indented_block result;
 	::ISPA_STD::assign_compatible(result.value, uvar_8);
-	::ISPA_STD::MatchResult<Rules, Types::indented_block, IT> match_result;
+	::ISPA_STD::MatchResult<Types::indented_block, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::indented_block<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::indented_block, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::indented_block<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::indented_block, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::index_suffix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::index_suffix, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LBRACKET> LBRACKET_0;
+template auto PyRawParser::Parser::indented_block<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::indented_block, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::indented_block<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::indented_block, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::index_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, IT> {
+	::ISPA_STD::Node<Types::LBRACKET> LBRACKET_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RBRACKET> RBRACKET_8;
+	::ISPA_STD::Node<Types::RBRACKET> RBRACKET_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LBRACKET>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LBRACKET");
 		return {};
 	}
-	LBRACKET_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LBRACKET>>();
+	LBRACKET_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LBRACKET>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -10925,7 +10925,7 @@ template<typename IT, class> auto Parser::Parser::index_suffix(IT pos) -> ::ISPA
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -10934,54 +10934,54 @@ template<typename IT, class> auto Parser::Parser::index_suffix(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RBRACKET");
 		return {};
 	}
-	RBRACKET_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RBRACKET>>();
+	RBRACKET_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RBRACKET>>();
 	success_9 = true;
 	pos++;
 	Types::index_suffix result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::index_suffix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::index_suffix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::index_suffix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::index_suffix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::index_suffix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::index_suffix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::inversion, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::comparison>, ::ISPA_STD::Node<::Parser::Rules, Types::not_inversion>> _0;
+template auto PyRawParser::Parser::index_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::index_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::inversion, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::comparison>, ::ISPA_STD::Node<Types::not_inversion>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_2;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_4;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_6;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_8;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_10;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_12;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_14;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::not_inversion, IT> not_inversion_16;
+	::ISPA_STD::MatchResult<Types::not_inversion, IT> not_inversion_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_18;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_20;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_22;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_24;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::comparison, IT> comparison_26;
+	::ISPA_STD::MatchResult<Types::comparison, IT> comparison_26;
 	bool success_27;
 	success_1 = false;
 	// grammar `@  ( not_inversion |  comparison)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FALSE: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			comparison_2 = comparison(lookahead_pos_1);
@@ -10999,7 +10999,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			comparison_4 = comparison(lookahead_pos_1);
@@ -11017,7 +11017,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			comparison_6 = comparison(lookahead_pos_1);
@@ -11035,7 +11035,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			comparison_8 = comparison(lookahead_pos_1);
@@ -11053,7 +11053,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			comparison_10 = comparison(lookahead_pos_1);
@@ -11071,7 +11071,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			comparison_12 = comparison(lookahead_pos_1);
@@ -11089,7 +11089,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			comparison_14 = comparison(lookahead_pos_1);
@@ -11107,7 +11107,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			not_inversion_16 = not_inversion(lookahead_pos_1);
@@ -11125,7 +11125,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			comparison_18 = comparison(lookahead_pos_1);
@@ -11143,7 +11143,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			comparison_20 = comparison(lookahead_pos_1);
@@ -11161,7 +11161,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			comparison_22 = comparison(lookahead_pos_1);
@@ -11179,7 +11179,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			comparison_24 = comparison(lookahead_pos_1);
@@ -11197,7 +11197,7 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			comparison_26 = comparison(lookahead_pos_1);
@@ -11223,72 +11223,72 @@ template<typename IT, class> auto Parser::Parser::inversion(IT pos) -> ::ISPA_ST
 	}
 	Types::inversion result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::inversion, IT> match_result;
+	::ISPA_STD::MatchResult<Types::inversion, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::inversion<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::inversion, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::inversion<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::inversion, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::is_op(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::is_op, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::IS> IS_0;
+template auto PyRawParser::Parser::inversion<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::inversion, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::inversion<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::inversion, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::is_op(IT pos) -> ::ISPA_STD::MatchResult<Types::is_op, IT> {
+	::ISPA_STD::Node<Types::IS> IS_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NOT> NOT_4;
+	::ISPA_STD::Node<Types::NOT> NOT_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::IS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IS");
 		return {};
 	}
-	IS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IS>>();
+	IS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IS>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
 	success_5 = false;
 	if (((*pos)).template holds<Types::NOT>()) {
-		NOT_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NOT>>();
+		NOT_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NOT>>();
 		success_5 = true;
 		pos++;
 	}
 	Types::is_op result;
-	::ISPA_STD::MatchResult<Rules, Types::is_op, IT> match_result;
+	::ISPA_STD::MatchResult<Types::is_op, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::is_op<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::is_op, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::is_op<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::is_op, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::keyword_arg(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::keyword_arg, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_0;
+template auto PyRawParser::Parser::is_op<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::is_op, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::is_op<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::is_op, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::keyword_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, IT> {
+	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN> ASSIGN_4;
+	::ISPA_STD::Node<Types::ASSIGN> ASSIGN_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_8;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ID>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11297,12 +11297,12 @@ template<typename IT, class> auto Parser::Parser::keyword_arg(IT pos) -> ::ISPA_
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ASSIGN");
 		return {};
 	}
-	ASSIGN_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>>();
+	ASSIGN_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASSIGN>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -11317,36 +11317,36 @@ template<typename IT, class> auto Parser::Parser::keyword_arg(IT pos) -> ::ISPA_
 	Types::keyword_arg result;
 	::ISPA_STD::assign_compatible(result.name, ID_0);
 	::ISPA_STD::assign_compatible(result.value, expr_8);
-	::ISPA_STD::MatchResult<Rules, Types::keyword_arg, IT> match_result;
+	::ISPA_STD::MatchResult<Types::keyword_arg, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::keyword_arg<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::keyword_arg, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::keyword_arg<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::keyword_arg, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::list_expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::list_expr, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LBRACKET> LBRACKET_0;
+template auto PyRawParser::Parser::keyword_arg<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::keyword_arg<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::list_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::list_expr, IT> {
+	::ISPA_STD::Node<Types::LBRACKET> LBRACKET_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr_list, IT> expr_list_4;
+	::ISPA_STD::MatchResult<Types::expr_list, IT> expr_list_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RBRACKET> RBRACKET_8;
+	::ISPA_STD::Node<Types::RBRACKET> RBRACKET_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LBRACKET>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LBRACKET");
 		return {};
 	}
-	LBRACKET_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LBRACKET>>();
+	LBRACKET_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LBRACKET>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11358,7 +11358,7 @@ template<typename IT, class> auto Parser::Parser::list_expr(IT pos) -> ::ISPA_ST
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -11367,25 +11367,25 @@ template<typename IT, class> auto Parser::Parser::list_expr(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RBRACKET");
 		return {};
 	}
-	RBRACKET_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RBRACKET>>();
+	RBRACKET_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RBRACKET>>();
 	success_9 = true;
 	pos++;
 	Types::list_expr result;
 	::ISPA_STD::assign_compatible(result.value, expr_list_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::list_expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::list_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::list_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::list_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::list_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::list_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::main, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::statement, IT> statement_1;
+template auto PyRawParser::Parser::list_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::list_expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::list_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::list_expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT> {
+	::ISPA_STD::MatchResult<Types::statement, IT> statement_1;
 	bool success_2;
-	::ISPA_STD::Node<::Parser::Rules, Types::statement> element_3;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::statement>> shadow_4;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::statement>> uvar_0;
+	::ISPA_STD::Node<Types::statement> element_3;
+	std::vector<::ISPA_STD::Node<Types::statement>> shadow_4;
+	std::vector<::ISPA_STD::Node<Types::statement>> uvar_0;
 	success_2 = false;
 	// grammar `@  statement*;`: repeat named rule; collect every matched value
 	while (true) {
@@ -11401,50 +11401,50 @@ template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::Ma
 	::ISPA_STD::assign_compatible(uvar_0, shadow_4);
 	Types::main result;
 	::ISPA_STD::assign_compatible(result.value, uvar_0);
-	::ISPA_STD::MatchResult<Rules, Types::main, IT> match_result;
+	::ISPA_STD::MatchResult<Types::main, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::main<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::main, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::main<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::main, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::nonlocal_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::NONLOCAL> NONLOCAL_0;
+template auto PyRawParser::Parser::main<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::main<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::nonlocal_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> {
+	::ISPA_STD::Node<Types::NONLOCAL> NONLOCAL_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_4;
+	::ISPA_STD::Node<Types::ID> ID_4;
 	bool success_5;
 	bool success_21;
 	bool success_13;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>> group_8;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> shadow_23;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Tokens, Types::ID>>> uvar_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_23;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_9;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_12;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_14;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_16;
+	::ISPA_STD::Node<Types::COMMA> COMMA_12;
+	::ISPA_STD::Node<Types::COMMA> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_14;
+	::ISPA_STD::Node<Types::__WS> __WS_16;
 	bool success_17;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_15;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_18;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> uvar_19;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::ID>> shadow_22;
+	::ISPA_STD::Node<Types::__WS> uvar_15;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_18;
+	::ISPA_STD::Node<Types::ID> ID_20;
+	::ISPA_STD::Node<Types::ID> uvar_19;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_22;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::NONLOCAL>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NONLOCAL");
 		return {};
 	}
-	NONLOCAL_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NONLOCAL>>();
+	NONLOCAL_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NONLOCAL>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11453,7 +11453,7 @@ template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISP
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_5 = true;
 	pos++;
 	success_10 = false;
@@ -11462,7 +11462,7 @@ template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISP
 		auto repeat_ws_25 = begin_24;
 		success_7 = false;
 		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
 			repeat_ws_25++;
 		}
@@ -11470,14 +11470,14 @@ template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISP
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
 		repeat_ws_25++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
 		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
 			repeat_ws_25++;
 			shadow_18.push_back(__WS_16);
@@ -11487,7 +11487,7 @@ template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISP
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_21 = true;
 		repeat_ws_25++;
 		shadow_22.push_back(ID_20);
@@ -11504,32 +11504,32 @@ template<typename IT, class> auto Parser::Parser::nonlocal_stmt(IT pos) -> ::ISP
 	Types::nonlocal_stmt result;
 	::ISPA_STD::assign_compatible(result.first, ID_4);
 	::ISPA_STD::assign_compatible(result.rest, uvar_19);
-	::ISPA_STD::MatchResult<Rules, Types::nonlocal_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::nonlocal_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::nonlocal_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::nonlocal_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::nonlocal_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::not_in(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_in, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::NOT> NOT_0;
+template auto PyRawParser::Parser::nonlocal_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::nonlocal_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::not_in(IT pos) -> ::ISPA_STD::MatchResult<Types::not_in, IT> {
+	::ISPA_STD::Node<Types::NOT> NOT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::IN> IN_4;
+	::ISPA_STD::Node<Types::IN> IN_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::NOT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NOT");
 		return {};
 	}
-	NOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NOT>>();
+	NOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NOT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11538,36 +11538,36 @@ template<typename IT, class> auto Parser::Parser::not_in(IT pos) -> ::ISPA_STD::
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  IN");
 		return {};
 	}
-	IN_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::IN>>();
+	IN_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::IN>>();
 	success_5 = true;
 	pos++;
 	Types::not_in result;
-	::ISPA_STD::MatchResult<Rules, Types::not_in, IT> match_result;
+	::ISPA_STD::MatchResult<Types::not_in, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::not_in<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_in, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::not_in<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_in, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::not_inversion(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_inversion, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::NOT> NOT_0;
+template auto PyRawParser::Parser::not_in<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::not_in, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::not_in<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::not_in, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::not_inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, IT> {
+	::ISPA_STD::Node<Types::NOT> NOT_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::inversion, IT> inversion_4;
+	::ISPA_STD::MatchResult<Types::inversion, IT> inversion_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::NOT>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NOT");
 		return {};
 	}
-	NOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NOT>>();
+	NOT_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NOT>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11581,32 +11581,32 @@ template<typename IT, class> auto Parser::Parser::not_inversion(IT pos) -> ::ISP
 	pos = inversion_4.it;
 	Types::not_inversion result;
 	::ISPA_STD::assign_compatible(result.value, inversion_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::not_inversion, IT> match_result;
+	::ISPA_STD::MatchResult<Types::not_inversion, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::not_inversion<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_inversion, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::not_inversion<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::not_inversion, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::or_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::or_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::OR> OR_0;
+template auto PyRawParser::Parser::not_inversion<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::not_inversion<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::or_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::or_tail, IT> {
+	::ISPA_STD::Node<Types::OR> OR_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::conjunction, IT> conjunction_4;
+	::ISPA_STD::MatchResult<Types::conjunction, IT> conjunction_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::OR>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  OR");
 		return {};
 	}
-	OR_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::OR>>();
+	OR_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::OR>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11620,36 +11620,36 @@ template<typename IT, class> auto Parser::Parser::or_tail(IT pos) -> ::ISPA_STD:
 	pos = conjunction_4.it;
 	Types::or_tail result;
 	::ISPA_STD::assign_compatible(result.value, conjunction_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::or_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::or_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::or_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::or_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::or_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::or_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parameter(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ID> ID_0;
+template auto PyRawParser::Parser::or_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::or_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::or_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::or_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parameter(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter, IT> {
+	::ISPA_STD::Node<Types::ID> ID_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::parameter_annotation, IT> parameter_annotation_4;
+	::ISPA_STD::MatchResult<Types::parameter_annotation, IT> parameter_annotation_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::parameter_default, IT> parameter_default_8;
+	::ISPA_STD::MatchResult<Types::parameter_default, IT> parameter_default_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ID>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar: @  ID");
 		return {};
 	}
-	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ID>>();
+	ID_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ID>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11661,7 +11661,7 @@ template<typename IT, class> auto Parser::Parser::parameter(IT pos) -> ::ISPA_ST
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -11675,32 +11675,32 @@ template<typename IT, class> auto Parser::Parser::parameter(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.name, ID_0);
 	::ISPA_STD::assign_compatible(result.annotation, parameter_annotation_4);
 	::ISPA_STD::assign_compatible(result.def, parameter_default_8);
-	::ISPA_STD::MatchResult<Rules, Types::parameter, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parameter, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parameter<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parameter<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parameter_annotation(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_annotation, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_0;
+template auto PyRawParser::Parser::parameter<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parameter<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parameter_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, IT> {
+	::ISPA_STD::Node<Types::COLON> COLON_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::COLON>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11714,32 +11714,32 @@ template<typename IT, class> auto Parser::Parser::parameter_annotation(IT pos) -
 	pos = expr_4.it;
 	Types::parameter_annotation result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::parameter_annotation, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parameter_annotation, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parameter_annotation<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_annotation, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parameter_annotation<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_annotation, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parameter_default(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_default, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN> ASSIGN_0;
+template auto PyRawParser::Parser::parameter_annotation<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parameter_annotation<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parameter_default(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, IT> {
+	::ISPA_STD::Node<Types::ASSIGN> ASSIGN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ASSIGN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ASSIGN");
 		return {};
 	}
-	ASSIGN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASSIGN>>();
+	ASSIGN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASSIGN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11753,40 +11753,40 @@ template<typename IT, class> auto Parser::Parser::parameter_default(IT pos) -> :
 	pos = expr_4.it;
 	Types::parameter_default result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::parameter_default, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parameter_default, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parameter_default<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_default, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parameter_default<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameter_default, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parameters(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameters, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::parameter, IT> parameter_0;
+template auto PyRawParser::Parser::parameter_default<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parameter_default<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::ISPA_STD::MatchResult<Types::parameters, IT> {
+	::ISPA_STD::MatchResult<Types::parameter, IT> parameter_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::parameter>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::parameter>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::parameter>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::parameter, IT> parameter_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::parameter> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::parameter>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::parameter> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::parameter> tuple_elem_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_24;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::parameter, IT> parameter_16;
+	::ISPA_STD::Node<Types::parameter> element_18;
+	std::vector<::ISPA_STD::Node<Types::parameter>> shadow_19;
+	::ISPA_STD::Node<Types::parameter> uvar_15;
+	::ISPA_STD::Node<Types::parameter> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> __WS_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_26;
+	::ISPA_STD::Node<Types::COMMA> COMMA_26;
 	bool success_27;
 	success_1 = false;
 	parameter_0 = parameter(pos);
@@ -11802,7 +11802,7 @@ template<typename IT, class> auto Parser::Parser::parameters(IT pos) -> ::ISPA_S
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -11810,14 +11810,14 @@ template<typename IT, class> auto Parser::Parser::parameters(IT pos) -> ::ISPA_S
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -11844,33 +11844,33 @@ template<typename IT, class> auto Parser::Parser::parameters(IT pos) -> ::ISPA_S
 	pos = begin_22;
 	success_25 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_25 = true;
 		pos++;
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_27 = true;
 		pos++;
 	}
 	Types::parameters result;
 	::ISPA_STD::assign_compatible(result.first, parameter_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::parameters, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parameters, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parameters<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameters, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parameters<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parameters, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parenthesized_content(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_content, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::parameters<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parameters, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parameters<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parameters, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parenthesized_content(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::tuple_suffix, IT> tuple_suffix_4;
+	::ISPA_STD::MatchResult<Types::tuple_suffix, IT> tuple_suffix_4;
 	bool success_5;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -11882,7 +11882,7 @@ template<typename IT, class> auto Parser::Parser::parenthesized_content(IT pos) 
 	pos = expr_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11895,36 +11895,36 @@ template<typename IT, class> auto Parser::Parser::parenthesized_content(IT pos) 
 	Types::parenthesized_content result;
 	::ISPA_STD::assign_compatible(result.first, expr_0);
 	::ISPA_STD::assign_compatible(result.rest, tuple_suffix_4);
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_content, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parenthesized_content, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parenthesized_content<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_content, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parenthesized_content<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_content, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parenthesized_expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_expr, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN> LPAREN_0;
+template auto PyRawParser::Parser::parenthesized_content<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parenthesized_content<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parenthesized_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, IT> {
+	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_content, IT> parenthesized_content_4;
+	::ISPA_STD::MatchResult<Types::parenthesized_content, IT> parenthesized_content_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN> RPAREN_8;
+	::ISPA_STD::Node<Types::RPAREN> RPAREN_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LPAREN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LPAREN");
 		return {};
 	}
-	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN>>();
+	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LPAREN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11936,7 +11936,7 @@ template<typename IT, class> auto Parser::Parser::parenthesized_expr(IT pos) -> 
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -11945,41 +11945,41 @@ template<typename IT, class> auto Parser::Parser::parenthesized_expr(IT pos) -> 
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RPAREN");
 		return {};
 	}
-	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN>>();
+	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RPAREN>>();
 	success_9 = true;
 	pos++;
 	Types::parenthesized_expr result;
 	::ISPA_STD::assign_compatible(result.value, parenthesized_content_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parenthesized_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parenthesized_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parenthesized_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::parenthesized_imports(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_imports, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN> LPAREN_0;
+template auto PyRawParser::Parser::parenthesized_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parenthesized_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::parenthesized_imports(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, IT> {
+	::ISPA_STD::Node<Types::LPAREN> LPAREN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::import_names, IT> import_names_4;
+	::ISPA_STD::MatchResult<Types::import_names, IT> import_names_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN> RPAREN_8;
+	::ISPA_STD::Node<Types::RPAREN> RPAREN_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::LPAREN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LPAREN");
 		return {};
 	}
-	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LPAREN>>();
+	LPAREN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::LPAREN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -11993,7 +11993,7 @@ template<typename IT, class> auto Parser::Parser::parenthesized_imports(IT pos) 
 	pos = import_names_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -12002,54 +12002,54 @@ template<typename IT, class> auto Parser::Parser::parenthesized_imports(IT pos) 
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RPAREN");
 		return {};
 	}
-	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RPAREN>>();
+	RPAREN_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RPAREN>>();
 	success_9 = true;
 	pos++;
 	Types::parenthesized_imports result;
 	::ISPA_STD::assign_compatible(result.value, import_names_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::parenthesized_imports, IT> match_result;
+	::ISPA_STD::MatchResult<Types::parenthesized_imports, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::parenthesized_imports<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_imports, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::parenthesized_imports<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::parenthesized_imports, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::pass_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::pass_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::PASS> PASS_0;
+template auto PyRawParser::Parser::parenthesized_imports<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::parenthesized_imports<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::pass_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, IT> {
+	::ISPA_STD::Node<Types::PASS> PASS_0;
 	bool success_1;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::PASS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PASS");
 		return {};
 	}
-	PASS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PASS>>();
+	PASS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::PASS>>();
 	success_1 = true;
 	pos++;
 	Types::pass_stmt result;
-	::ISPA_STD::MatchResult<Rules, Types::pass_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::pass_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::pass_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::pass_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::pass_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::pass_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::postfix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::postfix, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::index_suffix>, ::ISPA_STD::Node<::Parser::Rules, Types::call_suffix>, ::ISPA_STD::Node<::Parser::Rules, Types::attribute_suffix>> _0;
+template auto PyRawParser::Parser::pass_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::pass_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::postfix(IT pos) -> ::ISPA_STD::MatchResult<Types::postfix, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::index_suffix>, ::ISPA_STD::Node<Types::call_suffix>, ::ISPA_STD::Node<Types::attribute_suffix>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::attribute_suffix, IT> attribute_suffix_2;
+	::ISPA_STD::MatchResult<Types::attribute_suffix, IT> attribute_suffix_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::index_suffix, IT> index_suffix_4;
+	::ISPA_STD::MatchResult<Types::index_suffix, IT> index_suffix_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::call_suffix, IT> call_suffix_6;
+	::ISPA_STD::MatchResult<Types::call_suffix, IT> call_suffix_6;
 	bool success_7;
 	success_1 = false;
 	// grammar `@  ( attribute_suffix |  call_suffix |  index_suffix)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::DOT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::DOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			attribute_suffix_2 = attribute_suffix(lookahead_pos_1);
@@ -12067,7 +12067,7 @@ template<typename IT, class> auto Parser::Parser::postfix(IT pos) -> ::ISPA_STD:
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			index_suffix_4 = index_suffix(lookahead_pos_1);
@@ -12085,7 +12085,7 @@ template<typename IT, class> auto Parser::Parser::postfix(IT pos) -> ::ISPA_STD:
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			call_suffix_6 = call_suffix(lookahead_pos_1);
@@ -12111,20 +12111,20 @@ template<typename IT, class> auto Parser::Parser::postfix(IT pos) -> ::ISPA_STD:
 	}
 	Types::postfix result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::postfix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::postfix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::postfix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::postfix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::postfix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::postfix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::power(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::power, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::primary, IT> primary_0;
+template auto PyRawParser::Parser::postfix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::postfix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::postfix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::postfix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::power(IT pos) -> ::ISPA_STD::MatchResult<Types::power, IT> {
+	::ISPA_STD::MatchResult<Types::primary, IT> primary_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::power_tail, IT> power_tail_4;
+	::ISPA_STD::MatchResult<Types::power_tail, IT> power_tail_4;
 	bool success_5;
 	success_1 = false;
 	primary_0 = primary(pos);
@@ -12136,7 +12136,7 @@ template<typename IT, class> auto Parser::Parser::power(IT pos) -> ::ISPA_STD::M
 	pos = primary_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12149,32 +12149,32 @@ template<typename IT, class> auto Parser::Parser::power(IT pos) -> ::ISPA_STD::M
 	Types::power result;
 	::ISPA_STD::assign_compatible(result.base, primary_0);
 	::ISPA_STD::assign_compatible(result.exponent, power_tail_4);
-	::ISPA_STD::MatchResult<Rules, Types::power, IT> match_result;
+	::ISPA_STD::MatchResult<Types::power, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::power<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::power, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::power<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::power, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::power_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::power_tail, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::POWER> POWER_0;
+template auto PyRawParser::Parser::power<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::power, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::power<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::power, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::power_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::power_tail, IT> {
+	::ISPA_STD::Node<Types::POWER> POWER_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::factor, IT> factor_4;
+	::ISPA_STD::MatchResult<Types::factor, IT> factor_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::POWER>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  POWER");
 		return {};
 	}
-	POWER_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::POWER>>();
+	POWER_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::POWER>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12188,23 +12188,23 @@ template<typename IT, class> auto Parser::Parser::power_tail(IT pos) -> ::ISPA_S
 	pos = factor_4.it;
 	Types::power_tail result;
 	::ISPA_STD::assign_compatible(result.value, factor_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::power_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::power_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::power_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::power_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::power_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::power_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::primary(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::primary, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::atom, IT> atom_0;
+template auto PyRawParser::Parser::power_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::power_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::power_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::power_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::primary(IT pos) -> ::ISPA_STD::MatchResult<Types::primary, IT> {
+	::ISPA_STD::MatchResult<Types::atom, IT> atom_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::postfix, IT> postfix_5;
+	::ISPA_STD::MatchResult<Types::postfix, IT> postfix_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::postfix> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::postfix>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::postfix>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::postfix> element_7;
+	std::vector<::ISPA_STD::Node<Types::postfix>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::postfix>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	atom_0 = atom(pos);
@@ -12220,7 +12220,7 @@ template<typename IT, class> auto Parser::Parser::primary(IT pos) -> ::ISPA_STD:
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -12238,32 +12238,32 @@ template<typename IT, class> auto Parser::Parser::primary(IT pos) -> ::ISPA_STD:
 	Types::primary result;
 	::ISPA_STD::assign_compatible(result.base, atom_0);
 	::ISPA_STD::assign_compatible(result.suffixes, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::primary, IT> match_result;
+	::ISPA_STD::MatchResult<Types::primary, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::primary<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::primary, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::primary<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::primary, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::raise_from(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_from, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::FROM> FROM_0;
+template auto PyRawParser::Parser::primary<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::primary, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::primary<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::primary, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::raise_from(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_from, IT> {
+	::ISPA_STD::Node<Types::FROM> FROM_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::FROM>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FROM");
 		return {};
 	}
-	FROM_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FROM>>();
+	FROM_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::FROM>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12277,36 +12277,36 @@ template<typename IT, class> auto Parser::Parser::raise_from(IT pos) -> ::ISPA_S
 	pos = expr_4.it;
 	Types::raise_from result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::raise_from, IT> match_result;
+	::ISPA_STD::MatchResult<Types::raise_from, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::raise_from<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_from, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::raise_from<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_from, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::raise_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::RAISE> RAISE_0;
+template auto PyRawParser::Parser::raise_from<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_from, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::raise_from<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_from, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::raise_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, IT> {
+	::ISPA_STD::Node<Types::RAISE> RAISE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::raise_from, IT> raise_from_8;
+	::ISPA_STD::MatchResult<Types::raise_from, IT> raise_from_8;
 	bool success_9;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::RAISE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RAISE");
 		return {};
 	}
-	RAISE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RAISE>>();
+	RAISE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RAISE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12318,7 +12318,7 @@ template<typename IT, class> auto Parser::Parser::raise_stmt(IT pos) -> ::ISPA_S
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -12331,26 +12331,26 @@ template<typename IT, class> auto Parser::Parser::raise_stmt(IT pos) -> ::ISPA_S
 	Types::raise_stmt result;
 	::ISPA_STD::assign_compatible(result.exception, expr_4);
 	::ISPA_STD::assign_compatible(result.cause, raise_from_8);
-	::ISPA_STD::MatchResult<Rules, Types::raise_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::raise_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::raise_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::raise_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::raise_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::relative_module(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::relative_module, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::DOT> DOT_1;
+template auto PyRawParser::Parser::raise_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::raise_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::relative_module(IT pos) -> ::ISPA_STD::MatchResult<Types::relative_module, IT> {
+	::ISPA_STD::Node<Types::DOT> DOT_1;
 	bool success_2;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>> uvar_0;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>> shadow_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_4;
+	std::vector<::ISPA_STD::Node<Types::DOT>> uvar_0;
+	std::vector<::ISPA_STD::Node<Types::DOT>> shadow_3;
+	::ISPA_STD::Node<Types::__WS> __WS_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::dotted_name, IT> dotted_name_6;
+	::ISPA_STD::MatchResult<Types::dotted_name, IT> dotted_name_6;
 	bool success_7;
 	success_2 = false;
 	while (((*pos)).template holds<Types::DOT>()) {
-		DOT_1 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::DOT>>();
+		DOT_1 = ((*pos)).template to_node<::ISPA_STD::Node<Types::DOT>>();
 		success_2 = true;
 		pos++;
 		shadow_3.push_back(DOT_1);
@@ -12359,7 +12359,7 @@ template<typename IT, class> auto Parser::Parser::relative_module(IT pos) -> ::I
 	::ISPA_STD::assign_compatible(uvar_0, shadow_3);
 	success_5 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_5 = true;
 		pos++;
 	}
@@ -12372,32 +12372,32 @@ template<typename IT, class> auto Parser::Parser::relative_module(IT pos) -> ::I
 	Types::relative_module result;
 	::ISPA_STD::assign_compatible(result.relative, uvar_0);
 	::ISPA_STD::assign_compatible(result.name, dotted_name_6);
-	::ISPA_STD::MatchResult<Rules, Types::relative_module, IT> match_result;
+	::ISPA_STD::MatchResult<Types::relative_module, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::relative_module<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::relative_module, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::relative_module<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::relative_module, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::return_annotation(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_annotation, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ARROW> ARROW_0;
+template auto PyRawParser::Parser::relative_module<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::relative_module, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::relative_module<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::relative_module, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::return_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, IT> {
+	::ISPA_STD::Node<Types::ARROW> ARROW_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::ARROW>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  ARROW");
 		return {};
 	}
-	ARROW_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ARROW>>();
+	ARROW_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ARROW>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12411,32 +12411,32 @@ template<typename IT, class> auto Parser::Parser::return_annotation(IT pos) -> :
 	pos = expr_4.it;
 	Types::return_annotation result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::return_annotation, IT> match_result;
+	::ISPA_STD::MatchResult<Types::return_annotation, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::return_annotation<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_annotation, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::return_annotation<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_annotation, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::return_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::RETURN> RETURN_0;
+template auto PyRawParser::Parser::return_annotation<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::return_annotation<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::return_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, IT> {
+	::ISPA_STD::Node<Types::RETURN> RETURN_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::RETURN>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RETURN");
 		return {};
 	}
-	RETURN_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RETURN>>();
+	RETURN_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::RETURN>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -12448,23 +12448,23 @@ template<typename IT, class> auto Parser::Parser::return_stmt(IT pos) -> ::ISPA_
 	}
 	Types::return_stmt result;
 	::ISPA_STD::assign_compatible(result.value, expr_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::return_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::return_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::return_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::return_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::return_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::shift_expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_expr, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::sum, IT> sum_0;
+template auto PyRawParser::Parser::return_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::return_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::shift_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, IT> {
+	::ISPA_STD::MatchResult<Types::sum, IT> sum_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::shift_tail, IT> shift_tail_5;
+	::ISPA_STD::MatchResult<Types::shift_tail, IT> shift_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::shift_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::shift_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::shift_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::shift_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::shift_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::shift_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	sum_0 = sum(pos);
@@ -12480,7 +12480,7 @@ template<typename IT, class> auto Parser::Parser::shift_expr(IT pos) -> ::ISPA_S
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -12498,38 +12498,38 @@ template<typename IT, class> auto Parser::Parser::shift_expr(IT pos) -> ::ISPA_S
 	Types::shift_expr result;
 	::ISPA_STD::assign_compatible(result.first, sum_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::shift_expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::shift_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::shift_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::shift_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::shift_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_tail, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT>, ::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT>> _0;
+template auto PyRawParser::Parser::shift_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::shift_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::shift_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::RSHIFT>, ::ISPA_STD::Node<Types::LSHIFT>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT> LSHIFT_2;
+	::ISPA_STD::Node<Types::LSHIFT> LSHIFT_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT> RSHIFT_4;
+	::ISPA_STD::Node<Types::RSHIFT> RSHIFT_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::sum, IT> sum_8;
+	::ISPA_STD::MatchResult<Types::sum, IT> sum_8;
 	bool success_9;
 	success_1 = false;
 	// grammar `@  ( LSHIFT |  RSHIFT)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::LSHIFT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::LSHIFT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::LSHIFT>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  LSHIFT");
 				return {};
 			}
-			LSHIFT_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::LSHIFT>>();
+			LSHIFT_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::LSHIFT>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -12540,14 +12540,14 @@ template<typename IT, class> auto Parser::Parser::shift_tail(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::RSHIFT: {
+		case Tokens::RSHIFT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::RSHIFT>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  RSHIFT");
 				return {};
 			}
-			RSHIFT_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::RSHIFT>>();
+			RSHIFT_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::RSHIFT>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -12566,7 +12566,7 @@ template<typename IT, class> auto Parser::Parser::shift_tail(IT pos) -> ::ISPA_S
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -12581,71 +12581,71 @@ template<typename IT, class> auto Parser::Parser::shift_tail(IT pos) -> ::ISPA_S
 	Types::shift_tail result;
 	::ISPA_STD::assign_compatible(result.op, _0);
 	::ISPA_STD::assign_compatible(result.value, sum_8);
-	::ISPA_STD::MatchResult<Rules, Types::shift_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::shift_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::shift_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::shift_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::shift_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmt, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::expr_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::import_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::continue_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::assert_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::break_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::nonlocal_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::pass_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::global_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::return_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::del_stmt>, ::ISPA_STD::Node<::Parser::Rules, Types::raise_stmt>> _0;
+template auto PyRawParser::Parser::shift_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::shift_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::simple_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::expr_stmt>, ::ISPA_STD::Node<Types::import_stmt>, ::ISPA_STD::Node<Types::continue_stmt>, ::ISPA_STD::Node<Types::assert_stmt>, ::ISPA_STD::Node<Types::break_stmt>, ::ISPA_STD::Node<Types::nonlocal_stmt>, ::ISPA_STD::Node<Types::pass_stmt>, ::ISPA_STD::Node<Types::global_stmt>, ::ISPA_STD::Node<Types::return_stmt>, ::ISPA_STD::Node<Types::del_stmt>, ::ISPA_STD::Node<Types::raise_stmt>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::assert_stmt, IT> assert_stmt_2;
+	::ISPA_STD::MatchResult<Types::assert_stmt, IT> assert_stmt_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::break_stmt, IT> break_stmt_4;
+	::ISPA_STD::MatchResult<Types::break_stmt, IT> break_stmt_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::continue_stmt, IT> continue_stmt_6;
+	::ISPA_STD::MatchResult<Types::continue_stmt, IT> continue_stmt_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::del_stmt, IT> del_stmt_8;
+	::ISPA_STD::MatchResult<Types::del_stmt, IT> del_stmt_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_10;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::import_stmt, IT> import_stmt_12;
+	::ISPA_STD::MatchResult<Types::import_stmt, IT> import_stmt_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::global_stmt, IT> global_stmt_14;
+	::ISPA_STD::MatchResult<Types::global_stmt, IT> global_stmt_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_16;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::import_stmt, IT> import_stmt_18;
+	::ISPA_STD::MatchResult<Types::import_stmt, IT> import_stmt_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_20;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_22;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_24;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_26;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_28;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_28;
 	bool success_29;
-	::ISPA_STD::MatchResult<Rules, Types::nonlocal_stmt, IT> nonlocal_stmt_30;
+	::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> nonlocal_stmt_30;
 	bool success_31;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_32;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_32;
 	bool success_33;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_34;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_34;
 	bool success_35;
-	::ISPA_STD::MatchResult<Rules, Types::pass_stmt, IT> pass_stmt_36;
+	::ISPA_STD::MatchResult<Types::pass_stmt, IT> pass_stmt_36;
 	bool success_37;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_38;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_38;
 	bool success_39;
-	::ISPA_STD::MatchResult<Rules, Types::raise_stmt, IT> raise_stmt_40;
+	::ISPA_STD::MatchResult<Types::raise_stmt, IT> raise_stmt_40;
 	bool success_41;
-	::ISPA_STD::MatchResult<Rules, Types::return_stmt, IT> return_stmt_42;
+	::ISPA_STD::MatchResult<Types::return_stmt, IT> return_stmt_42;
 	bool success_43;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_44;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_44;
 	bool success_45;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_46;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_46;
 	bool success_47;
-	::ISPA_STD::MatchResult<Rules, Types::expr_stmt, IT> expr_stmt_48;
+	::ISPA_STD::MatchResult<Types::expr_stmt, IT> expr_stmt_48;
 	bool success_49;
 	success_1 = false;
 	// grammar `@  ( return_stmt |  raise_stmt |  del_stmt |  pass_stmt |  break_stmt |  continue_stmt |  assert_stmt |  global_stmt |  nonlocal_stmt |  import_stmt |  expr_stmt)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ASSERT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ASSERT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			assert_stmt_2 = assert_stmt(lookahead_pos_1);
@@ -12663,7 +12663,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::BREAK: {
+		case Tokens::BREAK::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			break_stmt_4 = break_stmt(lookahead_pos_1);
@@ -12681,7 +12681,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::CONTINUE: {
+		case Tokens::CONTINUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			continue_stmt_6 = continue_stmt(lookahead_pos_1);
@@ -12699,7 +12699,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEL: {
+		case Tokens::DEL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			del_stmt_8 = del_stmt(lookahead_pos_1);
@@ -12717,7 +12717,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE: {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			expr_stmt_10 = expr_stmt(lookahead_pos_1);
@@ -12735,7 +12735,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::FROM: {
+		case Tokens::FROM::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			import_stmt_12 = import_stmt(lookahead_pos_1);
@@ -12753,7 +12753,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::GLOBAL: {
+		case Tokens::GLOBAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			global_stmt_14 = global_stmt(lookahead_pos_1);
@@ -12771,7 +12771,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			expr_stmt_16 = expr_stmt(lookahead_pos_1);
@@ -12789,7 +12789,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::IMPORT: {
+		case Tokens::IMPORT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			import_stmt_18 = import_stmt(lookahead_pos_1);
@@ -12807,7 +12807,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			expr_stmt_20 = expr_stmt(lookahead_pos_1);
@@ -12825,7 +12825,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			expr_stmt_22 = expr_stmt(lookahead_pos_1);
@@ -12843,7 +12843,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			expr_stmt_24 = expr_stmt(lookahead_pos_1);
@@ -12861,7 +12861,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			expr_stmt_26 = expr_stmt(lookahead_pos_1);
@@ -12879,7 +12879,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_29 = false;
 			expr_stmt_28 = expr_stmt(lookahead_pos_1);
@@ -12897,7 +12897,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONLOCAL: {
+		case Tokens::NONLOCAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_31 = false;
 			nonlocal_stmt_30 = nonlocal_stmt(lookahead_pos_1);
@@ -12915,7 +12915,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_33 = false;
 			expr_stmt_32 = expr_stmt(lookahead_pos_1);
@@ -12933,7 +12933,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_35 = false;
 			expr_stmt_34 = expr_stmt(lookahead_pos_1);
@@ -12951,7 +12951,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::PASS: {
+		case Tokens::PASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_37 = false;
 			pass_stmt_36 = pass_stmt(lookahead_pos_1);
@@ -12969,7 +12969,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_39 = false;
 			expr_stmt_38 = expr_stmt(lookahead_pos_1);
@@ -12987,7 +12987,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::RAISE: {
+		case Tokens::RAISE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_41 = false;
 			raise_stmt_40 = raise_stmt(lookahead_pos_1);
@@ -13005,7 +13005,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::RETURN: {
+		case Tokens::RETURN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_43 = false;
 			return_stmt_42 = return_stmt(lookahead_pos_1);
@@ -13023,7 +13023,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_45 = false;
 			expr_stmt_44 = expr_stmt(lookahead_pos_1);
@@ -13041,7 +13041,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_47 = false;
 			expr_stmt_46 = expr_stmt(lookahead_pos_1);
@@ -13059,7 +13059,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_49 = false;
 			expr_stmt_48 = expr_stmt(lookahead_pos_1);
@@ -13085,44 +13085,44 @@ template<typename IT, class> auto Parser::Parser::simple_stmt(IT pos) -> ::ISPA_
 	}
 	Types::simple_stmt result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::simple_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::simple_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::simple_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::simple_stmts(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmt, IT> simple_stmt_0;
+template auto PyRawParser::Parser::simple_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::simple_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, IT> {
+	::ISPA_STD::MatchResult<Types::simple_stmt, IT> simple_stmt_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON> SEMICOLON_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::SEMICOLON> SEMICOLON_8;
+	::ISPA_STD::Node<Types::SEMICOLON> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::SEMICOLON>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmt, IT> simple_stmt_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::simple_stmt> tuple_elem_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_24;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::simple_stmt, IT> simple_stmt_16;
+	::ISPA_STD::Node<Types::simple_stmt> element_18;
+	std::vector<::ISPA_STD::Node<Types::simple_stmt>> shadow_19;
+	::ISPA_STD::Node<Types::simple_stmt> uvar_15;
+	::ISPA_STD::Node<Types::simple_stmt> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> __WS_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON> SEMICOLON_26;
+	::ISPA_STD::Node<Types::SEMICOLON> SEMICOLON_26;
 	bool success_27;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_28;
+	::ISPA_STD::Node<Types::__WS> __WS_28;
 	bool success_29;
-	::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE> NEWLINE_30;
+	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_30;
 	bool success_31;
 	success_1 = false;
 	simple_stmt_0 = simple_stmt(pos);
@@ -13138,7 +13138,7 @@ template<typename IT, class> auto Parser::Parser::simple_stmts(IT pos) -> ::ISPA
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -13146,14 +13146,14 @@ template<typename IT, class> auto Parser::Parser::simple_stmts(IT pos) -> ::ISPA
 			// speculative match failed (diagnostic suppressed):  SEMICOLON
 			break;
 		}
-		SEMICOLON_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>>();
+		SEMICOLON_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(SEMICOLON_8);
 		uvar_7 = SEMICOLON_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -13180,19 +13180,19 @@ template<typename IT, class> auto Parser::Parser::simple_stmts(IT pos) -> ::ISPA
 	pos = begin_22;
 	success_25 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_25 = true;
 		pos++;
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::SEMICOLON>()) {
-		SEMICOLON_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::SEMICOLON>>();
+		SEMICOLON_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
 		success_27 = true;
 		pos++;
 	}
 	success_29 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_28 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_28 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_29 = true;
 		pos++;
 	}
@@ -13201,95 +13201,95 @@ template<typename IT, class> auto Parser::Parser::simple_stmts(IT pos) -> ::ISPA
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NEWLINE");
 		return {};
 	}
-	NEWLINE_30 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::NEWLINE>>();
+	NEWLINE_30 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NEWLINE>>();
 	success_31 = true;
 	pos++;
 	Types::simple_stmts result;
 	::ISPA_STD::assign_compatible(result.first, simple_stmt_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> match_result;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::simple_stmts<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmts, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::simple_stmts<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::simple_stmts, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::statement, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::simple_stmts>, ::ISPA_STD::Node<::Parser::Rules, Types::compound_stmt>> _0;
+template auto PyRawParser::Parser::simple_stmts<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::simple_stmts<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::statement(IT pos) -> ::ISPA_STD::MatchResult<Types::statement, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::simple_stmts>, ::ISPA_STD::Node<Types::compound_stmt>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_2;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_4;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_4;
 	bool success_5;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_6;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_8;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_10;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_12;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_14;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_16;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_16;
 	bool success_17;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_18;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_18;
 	bool success_19;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_20;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_20;
 	bool success_21;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_22;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_22;
 	bool success_23;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_24;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_24;
 	bool success_25;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_26;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_26;
 	bool success_27;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_28;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_28;
 	bool success_29;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_30;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_30;
 	bool success_31;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_32;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_32;
 	bool success_33;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_34;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_34;
 	bool success_35;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_36;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_36;
 	bool success_37;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_38;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_38;
 	bool success_39;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_40;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_40;
 	bool success_41;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_42;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_42;
 	bool success_43;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_44;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_44;
 	bool success_45;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_46;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_46;
 	bool success_47;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_48;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_48;
 	bool success_49;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_50;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_50;
 	bool success_51;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_52;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_52;
 	bool success_53;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_54;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_54;
 	bool success_55;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_56;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_56;
 	bool success_57;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_58;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_58;
 	bool success_59;
-	::ISPA_STD::MatchResult<Rules, Types::simple_stmts, IT> simple_stmts_60;
+	::ISPA_STD::MatchResult<Types::simple_stmts, IT> simple_stmts_60;
 	bool success_61;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_62;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_62;
 	bool success_63;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_64;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_64;
 	bool success_65;
-	::ISPA_STD::MatchResult<Rules, Types::compound_stmt, IT> compound_stmt_66;
+	::ISPA_STD::MatchResult<Types::compound_stmt, IT> compound_stmt_66;
 	bool success_67;
 	success_1 = false;
 	// grammar `@  ( compound_stmt |  simple_stmts)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::ASSERT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::ASSERT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			simple_stmts_2 = simple_stmts(lookahead_pos_1);
@@ -13307,7 +13307,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::ASYNC: {
+		case Tokens::ASYNC::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			compound_stmt_4 = compound_stmt(lookahead_pos_1);
@@ -13325,7 +13325,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::BREAK: {
+		case Tokens::BREAK::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			simple_stmts_6 = simple_stmts(lookahead_pos_1);
@@ -13343,7 +13343,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::CLASS: {
+		case Tokens::CLASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			compound_stmt_8 = compound_stmt(lookahead_pos_1);
@@ -13361,7 +13361,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::CONTINUE: {
+		case Tokens::CONTINUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			simple_stmts_10 = simple_stmts(lookahead_pos_1);
@@ -13379,7 +13379,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEF: {
+		case Tokens::DEF::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_13 = false;
 			compound_stmt_12 = compound_stmt(lookahead_pos_1);
@@ -13397,7 +13397,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::DEL: {
+		case Tokens::DEL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_15 = false;
 			simple_stmts_14 = simple_stmts(lookahead_pos_1);
@@ -13415,7 +13415,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::FALSE: {
+		case Tokens::FALSE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_17 = false;
 			simple_stmts_16 = simple_stmts(lookahead_pos_1);
@@ -13433,7 +13433,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::FOR: {
+		case Tokens::FOR::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_19 = false;
 			compound_stmt_18 = compound_stmt(lookahead_pos_1);
@@ -13451,7 +13451,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::FROM: {
+		case Tokens::FROM::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_21 = false;
 			simple_stmts_20 = simple_stmts(lookahead_pos_1);
@@ -13469,7 +13469,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::GLOBAL: {
+		case Tokens::GLOBAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_23 = false;
 			simple_stmts_22 = simple_stmts(lookahead_pos_1);
@@ -13487,7 +13487,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::ID: {
+		case Tokens::ID::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_25 = false;
 			simple_stmts_24 = simple_stmts(lookahead_pos_1);
@@ -13505,7 +13505,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::IF: {
+		case Tokens::IF::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_27 = false;
 			compound_stmt_26 = compound_stmt(lookahead_pos_1);
@@ -13523,7 +13523,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::IMPORT: {
+		case Tokens::IMPORT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_29 = false;
 			simple_stmts_28 = simple_stmts(lookahead_pos_1);
@@ -13541,7 +13541,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACE: {
+		case Tokens::LBRACE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_31 = false;
 			simple_stmts_30 = simple_stmts(lookahead_pos_1);
@@ -13559,7 +13559,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LBRACKET: {
+		case Tokens::LBRACKET::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_33 = false;
 			simple_stmts_32 = simple_stmts(lookahead_pos_1);
@@ -13577,7 +13577,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::LPAREN: {
+		case Tokens::LPAREN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_35 = false;
 			simple_stmts_34 = simple_stmts(lookahead_pos_1);
@@ -13595,7 +13595,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::MATMUL: {
+		case Tokens::MATMUL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_37 = false;
 			compound_stmt_36 = compound_stmt(lookahead_pos_1);
@@ -13613,7 +13613,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::MINUS: {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_39 = false;
 			simple_stmts_38 = simple_stmts(lookahead_pos_1);
@@ -13631,7 +13631,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONE_V: {
+		case Tokens::NONE_V::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_41 = false;
 			simple_stmts_40 = simple_stmts(lookahead_pos_1);
@@ -13649,7 +13649,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NONLOCAL: {
+		case Tokens::NONLOCAL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_43 = false;
 			simple_stmts_42 = simple_stmts(lookahead_pos_1);
@@ -13667,7 +13667,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NOT: {
+		case Tokens::NOT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_45 = false;
 			simple_stmts_44 = simple_stmts(lookahead_pos_1);
@@ -13685,7 +13685,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::NUMBER: {
+		case Tokens::NUMBER::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_47 = false;
 			simple_stmts_46 = simple_stmts(lookahead_pos_1);
@@ -13703,7 +13703,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::PASS: {
+		case Tokens::PASS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_49 = false;
 			simple_stmts_48 = simple_stmts(lookahead_pos_1);
@@ -13721,7 +13721,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_51 = false;
 			simple_stmts_50 = simple_stmts(lookahead_pos_1);
@@ -13739,7 +13739,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::RAISE: {
+		case Tokens::RAISE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_53 = false;
 			simple_stmts_52 = simple_stmts(lookahead_pos_1);
@@ -13757,7 +13757,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::RETURN: {
+		case Tokens::RETURN::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_55 = false;
 			simple_stmts_54 = simple_stmts(lookahead_pos_1);
@@ -13775,7 +13775,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::STRING: {
+		case Tokens::STRING::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_57 = false;
 			simple_stmts_56 = simple_stmts(lookahead_pos_1);
@@ -13793,7 +13793,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_59 = false;
 			simple_stmts_58 = simple_stmts(lookahead_pos_1);
@@ -13811,7 +13811,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRUE: {
+		case Tokens::TRUE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_61 = false;
 			simple_stmts_60 = simple_stmts(lookahead_pos_1);
@@ -13829,7 +13829,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::TRY: {
+		case Tokens::TRY::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_63 = false;
 			compound_stmt_62 = compound_stmt(lookahead_pos_1);
@@ -13847,7 +13847,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::WHILE: {
+		case Tokens::WHILE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_65 = false;
 			compound_stmt_64 = compound_stmt(lookahead_pos_1);
@@ -13865,7 +13865,7 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::WITH: {
+		case Tokens::WITH::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_67 = false;
 			compound_stmt_66 = compound_stmt(lookahead_pos_1);
@@ -13891,23 +13891,23 @@ template<typename IT, class> auto Parser::Parser::statement(IT pos) -> ::ISPA_ST
 	}
 	Types::statement result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::statement, IT> match_result;
+	::ISPA_STD::MatchResult<Types::statement, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::statement<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::statement, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::statement<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::statement, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::sum(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::term, IT> term_0;
+template auto PyRawParser::Parser::statement<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::statement, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::statement<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::statement, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::sum(IT pos) -> ::ISPA_STD::MatchResult<Types::sum, IT> {
+	::ISPA_STD::MatchResult<Types::term, IT> term_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::sum_tail, IT> sum_tail_5;
+	::ISPA_STD::MatchResult<Types::sum_tail, IT> sum_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::sum_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::sum_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::sum_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::sum_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::sum_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::sum_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	term_0 = term(pos);
@@ -13923,7 +13923,7 @@ template<typename IT, class> auto Parser::Parser::sum(IT pos) -> ::ISPA_STD::Mat
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -13941,38 +13941,38 @@ template<typename IT, class> auto Parser::Parser::sum(IT pos) -> ::ISPA_STD::Mat
 	Types::sum result;
 	::ISPA_STD::assign_compatible(result.first, term_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::sum, IT> match_result;
+	::ISPA_STD::MatchResult<Types::sum, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::sum<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::sum<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::sum_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum_tail, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Tokens, Types::MINUS>, ::ISPA_STD::Node<::Parser::Tokens, Types::PLUS>> _0;
+template auto PyRawParser::Parser::sum<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::sum, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::sum<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::sum, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::sum_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::MINUS>, ::ISPA_STD::Node<Types::PLUS>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::MINUS> MINUS_2;
+	::ISPA_STD::Node<Types::MINUS> MINUS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PLUS> PLUS_4;
+	::ISPA_STD::Node<Types::PLUS> PLUS_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::term, IT> term_8;
+	::ISPA_STD::MatchResult<Types::term, IT> term_8;
 	bool success_9;
 	success_1 = false;
 	// grammar `@  ( PLUS |  MINUS)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::MINUS: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::MINUS>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MINUS");
 				return {};
 			}
-			MINUS_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MINUS>>();
+			MINUS_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::MINUS>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -13983,14 +13983,14 @@ template<typename IT, class> auto Parser::Parser::sum_tail(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PLUS>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PLUS");
 				return {};
 			}
-			PLUS_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PLUS>>();
+			PLUS_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PLUS>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -14009,7 +14009,7 @@ template<typename IT, class> auto Parser::Parser::sum_tail(IT pos) -> ::ISPA_STD
 	}
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -14024,23 +14024,23 @@ template<typename IT, class> auto Parser::Parser::sum_tail(IT pos) -> ::ISPA_STD
 	Types::sum_tail result;
 	::ISPA_STD::assign_compatible(result.op, _0);
 	::ISPA_STD::assign_compatible(result.value, term_8);
-	::ISPA_STD::MatchResult<Rules, Types::sum_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::sum_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::sum_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::sum_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::sum_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::term(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::term, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::factor, IT> factor_0;
+template auto PyRawParser::Parser::sum_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::sum_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::term(IT pos) -> ::ISPA_STD::MatchResult<Types::term, IT> {
+	::ISPA_STD::MatchResult<Types::factor, IT> factor_0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::term_tail, IT> term_tail_5;
+	::ISPA_STD::MatchResult<Types::term_tail, IT> term_tail_5;
 	bool success_6;
-	::ISPA_STD::Node<::Parser::Rules, Types::term_tail> element_7;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::term_tail>> shadow_8;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::term_tail>> uvar_4;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::term_tail> element_7;
+	std::vector<::ISPA_STD::Node<Types::term_tail>> shadow_8;
+	std::vector<::ISPA_STD::Node<Types::term_tail>> uvar_4;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
 	success_1 = false;
 	factor_0 = factor(pos);
@@ -14056,7 +14056,7 @@ template<typename IT, class> auto Parser::Parser::term(IT pos) -> ::ISPA_STD::Ma
 		auto repeat_ws_9 = pos;
 		success_3 = false;
 		if (((*repeat_ws_9)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_9)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_9++;
 		}
@@ -14074,44 +14074,44 @@ template<typename IT, class> auto Parser::Parser::term(IT pos) -> ::ISPA_STD::Ma
 	Types::term result;
 	::ISPA_STD::assign_compatible(result.first, factor_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_4);
-	::ISPA_STD::MatchResult<Rules, Types::term, IT> match_result;
+	::ISPA_STD::MatchResult<Types::term, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::term<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::term, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::term<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::term, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::term_tail, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT>, ::ISPA_STD::Node<::Parser::Tokens, Types::SLASH>, ::ISPA_STD::Node<::Parser::Tokens, Types::STAR>, ::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL>, ::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV>> _0;
+template auto PyRawParser::Parser::term<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::term, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::term<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::term, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::term_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::term_tail, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::PERCENT>, ::ISPA_STD::Node<Types::SLASH>, ::ISPA_STD::Node<Types::STAR>, ::ISPA_STD::Node<Types::MATMUL>, ::ISPA_STD::Node<Types::FLOOR_DIV>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV> FLOOR_DIV_2;
+	::ISPA_STD::Node<Types::FLOOR_DIV> FLOOR_DIV_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL> MATMUL_4;
+	::ISPA_STD::Node<Types::MATMUL> MATMUL_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT> PERCENT_6;
+	::ISPA_STD::Node<Types::PERCENT> PERCENT_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::SLASH> SLASH_8;
+	::ISPA_STD::Node<Types::SLASH> SLASH_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::STAR> STAR_10;
+	::ISPA_STD::Node<Types::STAR> STAR_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::MatchResult<Rules, Types::factor, IT> factor_14;
+	::ISPA_STD::MatchResult<Types::factor, IT> factor_14;
 	bool success_15;
 	success_1 = false;
 	// grammar `@  ( FLOOR_DIV |  STAR |  SLASH |  PERCENT |  MATMUL)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::FLOOR_DIV: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::FLOOR_DIV::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::FLOOR_DIV>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  FLOOR_DIV");
 				return {};
 			}
-			FLOOR_DIV_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::FLOOR_DIV>>();
+			FLOOR_DIV_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::FLOOR_DIV>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -14122,14 +14122,14 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::MATMUL: {
+		case Tokens::MATMUL::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::MATMUL>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MATMUL");
 				return {};
 			}
-			MATMUL_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MATMUL>>();
+			MATMUL_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::MATMUL>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -14140,14 +14140,14 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::PERCENT: {
+		case Tokens::PERCENT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PERCENT>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PERCENT");
 				return {};
 			}
-			PERCENT_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PERCENT>>();
+			PERCENT_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PERCENT>>();
 			success_7 = true;
 			lookahead_pos_1++;
 			if (!success_7) {
@@ -14158,14 +14158,14 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::SLASH: {
+		case Tokens::SLASH::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_9 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::SLASH>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  SLASH");
 				return {};
 			}
-			SLASH_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::SLASH>>();
+			SLASH_8 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::SLASH>>();
 			success_9 = true;
 			lookahead_pos_1++;
 			if (!success_9) {
@@ -14176,14 +14176,14 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 			success_1 = true;
 			break;
 		}
-		case Tokens::STAR: {
+		case Tokens::STAR::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_11 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::STAR>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  STAR");
 				return {};
 			}
-			STAR_10 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::STAR>>();
+			STAR_10 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::STAR>>();
 			success_11 = true;
 			lookahead_pos_1++;
 			if (!success_11) {
@@ -14202,7 +14202,7 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 	}
 	success_13 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_13 = true;
 		pos++;
 	}
@@ -14217,40 +14217,40 @@ template<typename IT, class> auto Parser::Parser::term_tail(IT pos) -> ::ISPA_ST
 	Types::term_tail result;
 	::ISPA_STD::assign_compatible(result.op, _0);
 	::ISPA_STD::assign_compatible(result.value, factor_14);
-	::ISPA_STD::MatchResult<Rules, Types::term_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::term_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::term_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::term_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::term_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::term_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::try_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::TRY> TRY_0;
+template auto PyRawParser::Parser::term_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::term_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::term_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::term_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::try_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, IT> {
+	::ISPA_STD::Node<Types::TRY> TRY_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_4;
+	::ISPA_STD::Node<Types::COLON> COLON_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_8;
+	::ISPA_STD::MatchResult<Types::block, IT> block_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::try_tail, IT> try_tail_12;
+	::ISPA_STD::MatchResult<Types::try_tail, IT> try_tail_12;
 	bool success_13;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::TRY>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  TRY");
 		return {};
 	}
-	TRY_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::TRY>>();
+	TRY_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::TRY>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14259,12 +14259,12 @@ template<typename IT, class> auto Parser::Parser::try_stmt(IT pos) -> ::ISPA_STD
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -14278,7 +14278,7 @@ template<typename IT, class> auto Parser::Parser::try_stmt(IT pos) -> ::ISPA_STD
 	pos = block_8.it;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -14293,27 +14293,27 @@ template<typename IT, class> auto Parser::Parser::try_stmt(IT pos) -> ::ISPA_STD
 	Types::try_stmt result;
 	::ISPA_STD::assign_compatible(result.body, block_8);
 	::ISPA_STD::assign_compatible(result.handlers, try_tail_12);
-	::ISPA_STD::MatchResult<Rules, Types::try_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::try_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::try_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::try_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::try_tail(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_tail, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Rules, Types::finally_clause>, ::ISPA_STD::Node<::Parser::Rules, Types::except_handlers>> _0;
+template auto PyRawParser::Parser::try_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::try_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::try_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::try_tail, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::finally_clause>, ::ISPA_STD::Node<Types::except_handlers>> _0;
 	bool success_1;
-	::ISPA_STD::MatchResult<Rules, Types::except_handlers, IT> except_handlers_2;
+	::ISPA_STD::MatchResult<Types::except_handlers, IT> except_handlers_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::finally_clause, IT> finally_clause_4;
+	::ISPA_STD::MatchResult<Types::finally_clause, IT> finally_clause_4;
 	bool success_5;
 	success_1 = false;
 	// grammar `@  ( except_handlers |  finally_clause)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::EXCEPT: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::EXCEPT::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			except_handlers_2 = except_handlers(lookahead_pos_1);
@@ -14331,7 +14331,7 @@ template<typename IT, class> auto Parser::Parser::try_tail(IT pos) -> ::ISPA_STD
 			success_1 = true;
 			break;
 		}
-		case Tokens::FINALLY: {
+		case Tokens::FINALLY::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			finally_clause_4 = finally_clause(lookahead_pos_1);
@@ -14357,43 +14357,43 @@ template<typename IT, class> auto Parser::Parser::try_tail(IT pos) -> ::ISPA_STD
 	}
 	Types::try_tail result;
 	::ISPA_STD::assign_compatible(result.value, _0);
-	::ISPA_STD::MatchResult<Rules, Types::try_tail, IT> match_result;
+	::ISPA_STD::MatchResult<Types::try_tail, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::try_tail<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_tail, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::try_tail<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::try_tail, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::tuple_elements(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_elements, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::try_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::try_tail, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::try_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::try_tail, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::tuple_elements(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_20;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> group_capture_21;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::expr>> shadow_22;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>> group_4;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::expr> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::expr>> shadow_22;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>>> shadow_24;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::expr>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> shadow_24;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::expr>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::expr> tuple_elem_23;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_27;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_16;
+	::ISPA_STD::Node<Types::expr> element_18;
+	std::vector<::ISPA_STD::Node<Types::expr>> shadow_19;
+	::ISPA_STD::Node<Types::expr> uvar_15;
+	::ISPA_STD::Node<Types::expr> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
 	bool success_28;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_29;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
 	bool success_30;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -14409,7 +14409,7 @@ template<typename IT, class> auto Parser::Parser::tuple_elements(IT pos) -> ::IS
 		auto repeat_ws_26 = begin_25;
 		success_3 = false;
 		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_26++;
 		}
@@ -14417,14 +14417,14 @@ template<typename IT, class> auto Parser::Parser::tuple_elements(IT pos) -> ::IS
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
@@ -14454,45 +14454,45 @@ template<typename IT, class> auto Parser::Parser::tuple_elements(IT pos) -> ::IS
 	pos = begin_25;
 	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_28 = true;
 		pos++;
 	}
 	success_30 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_30 = true;
 		pos++;
 	}
 	Types::tuple_elements result;
 	::ISPA_STD::assign_compatible(result.first, expr_0);
 	::ISPA_STD::assign_compatible(result.rest, shadow_22);
-	::ISPA_STD::MatchResult<Rules, Types::tuple_elements, IT> match_result;
+	::ISPA_STD::MatchResult<Types::tuple_elements, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::tuple_elements<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_elements, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::tuple_elements<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_elements, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::tuple_suffix(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_suffix, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_0;
+template auto PyRawParser::Parser::tuple_elements<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::tuple_elements<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::tuple_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, IT> {
+	::ISPA_STD::Node<Types::COMMA> COMMA_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::tuple_elements, IT> tuple_elements_4;
+	::ISPA_STD::MatchResult<Types::tuple_elements, IT> tuple_elements_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::COMMA>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COMMA");
 		return {};
 	}
-	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+	COMMA_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14504,40 +14504,40 @@ template<typename IT, class> auto Parser::Parser::tuple_suffix(IT pos) -> ::ISPA
 	}
 	Types::tuple_suffix result;
 	::ISPA_STD::assign_compatible(result.value, tuple_elements_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::tuple_suffix, IT> match_result;
+	::ISPA_STD::MatchResult<Types::tuple_suffix, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::tuple_suffix<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_suffix, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::tuple_suffix<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::tuple_suffix, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::unary_expr(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::unary_expr, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<::Parser::Tokens, Types::TILDE>, ::ISPA_STD::Node<::Parser::Tokens, Types::MINUS>, ::ISPA_STD::Node<::Parser::Tokens, Types::PLUS>> _0;
+template auto PyRawParser::Parser::tuple_suffix<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::tuple_suffix<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::unary_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::TILDE>, ::ISPA_STD::Node<Types::MINUS>, ::ISPA_STD::Node<Types::PLUS>> _0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::MINUS> MINUS_2;
+	::ISPA_STD::Node<Types::MINUS> MINUS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::PLUS> PLUS_4;
+	::ISPA_STD::Node<Types::PLUS> PLUS_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::TILDE> TILDE_6;
+	::ISPA_STD::Node<Types::TILDE> TILDE_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_8;
+	::ISPA_STD::Node<Types::__WS> __WS_8;
 	bool success_9;
-	::ISPA_STD::MatchResult<Rules, Types::factor, IT> factor_10;
+	::ISPA_STD::MatchResult<Types::factor, IT> factor_10;
 	bool success_11;
 	success_1 = false;
 	// grammar `@  ( PLUS |  MINUS |  TILDE)`: choice; reset match status before selecting an alternative
 	success_1 = false;
 	auto lookahead_pos_1 = pos;
-	switch (static_cast<Tokens>((*lookahead_pos_1).kind())) {
-		case Tokens::MINUS: {
+	switch ((*lookahead_pos_1).kind()) {
+		case Tokens::MINUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_3 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::MINUS>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  MINUS");
 				return {};
 			}
-			MINUS_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::MINUS>>();
+			MINUS_2 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::MINUS>>();
 			success_3 = true;
 			lookahead_pos_1++;
 			if (!success_3) {
@@ -14548,14 +14548,14 @@ template<typename IT, class> auto Parser::Parser::unary_expr(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::PLUS: {
+		case Tokens::PLUS::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_5 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::PLUS>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  PLUS");
 				return {};
 			}
-			PLUS_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::PLUS>>();
+			PLUS_4 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::PLUS>>();
 			success_5 = true;
 			lookahead_pos_1++;
 			if (!success_5) {
@@ -14566,14 +14566,14 @@ template<typename IT, class> auto Parser::Parser::unary_expr(IT pos) -> ::ISPA_S
 			success_1 = true;
 			break;
 		}
-		case Tokens::TILDE: {
+		case Tokens::TILDE::id: {
 			lookahead_pos_1 = lookahead_pos_1;
 			success_7 = false;
 			if (!(((*lookahead_pos_1)).template holds<Types::TILDE>())) {
 				raise_error(*pos, "ISPA match failure: required token did not match | grammar:  TILDE");
 				return {};
 			}
-			TILDE_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::TILDE>>();
+			TILDE_6 = ((*lookahead_pos_1)).template to_node<::ISPA_STD::Node<Types::TILDE>>();
 			success_7 = true;
 			lookahead_pos_1++;
 			if (!success_7) {
@@ -14592,7 +14592,7 @@ template<typename IT, class> auto Parser::Parser::unary_expr(IT pos) -> ::ISPA_S
 	}
 	success_9 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_9 = true;
 		pos++;
 	}
@@ -14607,44 +14607,44 @@ template<typename IT, class> auto Parser::Parser::unary_expr(IT pos) -> ::ISPA_S
 	Types::unary_expr result;
 	::ISPA_STD::assign_compatible(result.op, _0);
 	::ISPA_STD::assign_compatible(result.value, factor_10);
-	::ISPA_STD::MatchResult<Rules, Types::unary_expr, IT> match_result;
+	::ISPA_STD::MatchResult<Types::unary_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::unary_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::unary_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::unary_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::unary_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::while_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::while_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::WHILE> WHILE_0;
+template auto PyRawParser::Parser::unary_expr<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::unary_expr<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::while_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, IT> {
+	::ISPA_STD::Node<Types::WHILE> WHILE_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_4;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_8;
+	::ISPA_STD::Node<Types::COLON> COLON_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_12;
+	::ISPA_STD::MatchResult<Types::block, IT> block_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::else_clause, IT> else_clause_16;
+	::ISPA_STD::MatchResult<Types::else_clause, IT> else_clause_16;
 	bool success_17;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::WHILE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  WHILE");
 		return {};
 	}
-	WHILE_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::WHILE>>();
+	WHILE_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::WHILE>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14658,7 +14658,7 @@ template<typename IT, class> auto Parser::Parser::while_stmt(IT pos) -> ::ISPA_S
 	pos = expr_4.it;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -14667,12 +14667,12 @@ template<typename IT, class> auto Parser::Parser::while_stmt(IT pos) -> ::ISPA_S
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_8 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_9 = true;
 	pos++;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -14686,7 +14686,7 @@ template<typename IT, class> auto Parser::Parser::while_stmt(IT pos) -> ::ISPA_S
 	pos = block_12.it;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -14700,32 +14700,32 @@ template<typename IT, class> auto Parser::Parser::while_stmt(IT pos) -> ::ISPA_S
 	::ISPA_STD::assign_compatible(result.condition, expr_4);
 	::ISPA_STD::assign_compatible(result.body, block_12);
 	::ISPA_STD::assign_compatible(result.otherwise, else_clause_16);
-	::ISPA_STD::MatchResult<Rules, Types::while_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::while_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::while_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::while_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::while_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::while_stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::with_as(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_as, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::AS> AS_0;
+template auto PyRawParser::Parser::while_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::while_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::with_as(IT pos) -> ::ISPA_STD::MatchResult<Types::with_as, IT> {
+	::ISPA_STD::Node<Types::AS> AS_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::assignment_target, IT> assignment_target_4;
+	::ISPA_STD::MatchResult<Types::assignment_target, IT> assignment_target_4;
 	bool success_5;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::AS>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  AS");
 		return {};
 	}
-	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::AS>>();
+	AS_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::AS>>();
 	success_1 = true;
 	pos++;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14739,20 +14739,20 @@ template<typename IT, class> auto Parser::Parser::with_as(IT pos) -> ::ISPA_STD:
 	pos = assignment_target_4.it;
 	Types::with_as result;
 	::ISPA_STD::assign_compatible(result.value, assignment_target_4.node);
-	::ISPA_STD::MatchResult<Rules, Types::with_as, IT> match_result;
+	::ISPA_STD::MatchResult<Types::with_as, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::with_as<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_as, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::with_as<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_as, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::with_item(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_item, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::expr, IT> expr_0;
+template auto PyRawParser::Parser::with_as<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_as, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::with_as<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_as, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::with_item(IT pos) -> ::ISPA_STD::MatchResult<Types::with_item, IT> {
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Rules, Types::with_as, IT> with_as_4;
+	::ISPA_STD::MatchResult<Types::with_as, IT> with_as_4;
 	bool success_5;
 	success_1 = false;
 	expr_0 = expr(pos);
@@ -14764,7 +14764,7 @@ template<typename IT, class> auto Parser::Parser::with_item(IT pos) -> ::ISPA_ST
 	pos = expr_0.it;
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14777,40 +14777,40 @@ template<typename IT, class> auto Parser::Parser::with_item(IT pos) -> ::ISPA_ST
 	Types::with_item result;
 	::ISPA_STD::assign_compatible(result.context, expr_0);
 	::ISPA_STD::assign_compatible(result.target, with_as_4);
-	::ISPA_STD::MatchResult<Rules, Types::with_item, IT> match_result;
+	::ISPA_STD::MatchResult<Types::with_item, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::with_item<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_item, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::with_item<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_item, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::with_items(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_items, IT> {
-	::ISPA_STD::MatchResult<Rules, Types::with_item, IT> with_item_0;
+template auto PyRawParser::Parser::with_item<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_item, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::with_item<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_item, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::ISPA_STD::MatchResult<Types::with_items, IT> {
+	::ISPA_STD::MatchResult<Types::with_item, IT> with_item_0;
 	bool success_1;
 	bool success_17;
 	bool success_9;
-	std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::with_item>> group_4;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::with_item>>> shadow_21;
-	std::vector<std::tuple<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>, ::ISPA_STD::Node<::Parser::Tokens, Types::__WS>, ::ISPA_STD::Node<::Parser::Rules, Types::with_item>>> uvar_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>>> uvar_5;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_8;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> uvar_7;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>> shadow_10;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_12;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> uvar_11;
-	std::vector<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>> shadow_14;
-	::ISPA_STD::MatchResult<Rules, Types::with_item, IT> with_item_16;
-	::ISPA_STD::Node<::Parser::Rules, Types::with_item> element_18;
-	std::vector<::ISPA_STD::Node<::Parser::Rules, Types::with_item>> shadow_19;
-	::ISPA_STD::Node<::Parser::Rules, Types::with_item> uvar_15;
-	::ISPA_STD::Node<::Parser::Rules, Types::with_item> tuple_elem_20;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_24;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::with_item, IT> with_item_16;
+	::ISPA_STD::Node<Types::with_item> element_18;
+	std::vector<::ISPA_STD::Node<Types::with_item>> shadow_19;
+	::ISPA_STD::Node<Types::with_item> uvar_15;
+	::ISPA_STD::Node<Types::with_item> tuple_elem_20;
+	::ISPA_STD::Node<Types::__WS> __WS_24;
 	bool success_25;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COMMA> COMMA_26;
+	::ISPA_STD::Node<Types::COMMA> COMMA_26;
 	bool success_27;
 	success_1 = false;
 	with_item_0 = with_item(pos);
@@ -14826,7 +14826,7 @@ template<typename IT, class> auto Parser::Parser::with_items(IT pos) -> ::ISPA_S
 		auto repeat_ws_23 = begin_22;
 		success_3 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
 			repeat_ws_23++;
 		}
@@ -14834,14 +14834,14 @@ template<typename IT, class> auto Parser::Parser::with_items(IT pos) -> ::ISPA_S
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
 		repeat_ws_23++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
 		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
 			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
@@ -14868,55 +14868,55 @@ template<typename IT, class> auto Parser::Parser::with_items(IT pos) -> ::ISPA_S
 	pos = begin_22;
 	success_25 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_25 = true;
 		pos++;
 	}
 	success_27 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COMMA>>();
+		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_27 = true;
 		pos++;
 	}
 	Types::with_items result;
 	::ISPA_STD::assign_compatible(result.first, with_item_0);
 	::ISPA_STD::assign_compatible(result.rest, uvar_15);
-	::ISPA_STD::MatchResult<Rules, Types::with_items, IT> match_result;
+	::ISPA_STD::MatchResult<Types::with_items, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::with_items<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_items, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::with_items<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_items, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::with_stmt(IT pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_stmt, IT> {
-	::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC> ASYNC_0;
+template auto PyRawParser::Parser::with_items<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_items, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::with_items<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_items, ::PyRawParser::Lexer::lazy_iterator>;
+template<typename IT, class> auto PyRawParser::Parser::with_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::with_stmt, IT> {
+	::ISPA_STD::Node<Types::ASYNC> ASYNC_0;
 	bool success_1;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_2;
+	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::Node<::Parser::Tokens, Types::WITH> WITH_4;
+	::ISPA_STD::Node<Types::WITH> WITH_4;
 	bool success_5;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_6;
+	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
-	::ISPA_STD::MatchResult<Rules, Types::with_items, IT> with_items_8;
+	::ISPA_STD::MatchResult<Types::with_items, IT> with_items_8;
 	bool success_9;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_10;
+	::ISPA_STD::Node<Types::__WS> __WS_10;
 	bool success_11;
-	::ISPA_STD::Node<::Parser::Tokens, Types::COLON> COLON_12;
+	::ISPA_STD::Node<Types::COLON> COLON_12;
 	bool success_13;
-	::ISPA_STD::Node<::Parser::Tokens, Types::__WS> __WS_14;
+	::ISPA_STD::Node<Types::__WS> __WS_14;
 	bool success_15;
-	::ISPA_STD::MatchResult<Rules, Types::block, IT> block_16;
+	::ISPA_STD::MatchResult<Types::block, IT> block_16;
 	bool success_17;
 	success_1 = false;
 	if (((*pos)).template holds<Types::ASYNC>()) {
-		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::ASYNC>>();
+		ASYNC_0 = ((*pos)).template to_node<::ISPA_STD::Node<Types::ASYNC>>();
 		success_1 = true;
 		pos++;
 	}
 	success_3 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_3 = true;
 		pos++;
 	}
@@ -14925,12 +14925,12 @@ template<typename IT, class> auto Parser::Parser::with_stmt(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  WITH");
 		return {};
 	}
-	WITH_4 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::WITH>>();
+	WITH_4 = ((*pos)).template to_node<::ISPA_STD::Node<Types::WITH>>();
 	success_5 = true;
 	pos++;
 	success_7 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_6 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_7 = true;
 		pos++;
 	}
@@ -14944,7 +14944,7 @@ template<typename IT, class> auto Parser::Parser::with_stmt(IT pos) -> ::ISPA_ST
 	pos = with_items_8.it;
 	success_11 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_10 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_11 = true;
 		pos++;
 	}
@@ -14953,12 +14953,12 @@ template<typename IT, class> auto Parser::Parser::with_stmt(IT pos) -> ::ISPA_ST
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  COLON");
 		return {};
 	}
-	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::COLON>>();
+	COLON_12 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COLON>>();
 	success_13 = true;
 	pos++;
 	success_15 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<::Parser::Tokens, Types::__WS>>();
+		__WS_14 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 		success_15 = true;
 		pos++;
 	}
@@ -14974,18 +14974,18 @@ template<typename IT, class> auto Parser::Parser::with_stmt(IT pos) -> ::ISPA_ST
 	::ISPA_STD::assign_compatible(result.async, ASYNC_0);
 	::ISPA_STD::assign_compatible(result.items, with_items_8);
 	::ISPA_STD::assign_compatible(result.body, block_16);
-	::ISPA_STD::MatchResult<Rules, Types::with_stmt, IT> match_result;
+	::ISPA_STD::MatchResult<Types::with_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::with_stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::with_stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Rules, Types::with_stmt, ::Parser::Lexer::lazy_iterator>;
-auto Parser::Parser::parseFromTokens() -> void {
+template auto PyRawParser::Parser::with_stmt<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::with_stmt, ::PyRawParser::Lexer::iterator>;
+template auto PyRawParser::Parser::with_stmt<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::with_stmt, ::PyRawParser::Lexer::lazy_iterator>;
+auto PyRawParser::Parser::parseFromTokens() -> void {
 	tree = main(Lexer::iterator(lexer)).node.data();
 }
-auto Parser::Parser::lazyParse() -> void {
+auto PyRawParser::Parser::lazyParse() -> void {
 	Lexer lexer;
 	tree = main(Lexer::lazy_iterator(lexer, text)).node.data();
 }

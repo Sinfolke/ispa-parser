@@ -12,6 +12,8 @@ import Dump;
 import AST.API;
 import AST.types;
 import AST.Tree;
+import AST.BackendGuard;
+import UAST.Parser;
 import AST.Pass;
 import Semantic;
 import LRParser;
@@ -145,7 +147,7 @@ namespace {
 }
 
 int main(int argc, char** argv) {
-    Parser::Types::main modules;
+    UAST::main modules;
     auto args = init(argc, argv);
     dumper.setArgsPointer(&args);
     dumper.setDumpDirectory(args.dump_dir);
@@ -171,7 +173,8 @@ int main(int argc, char** argv) {
         }
         Parser::Parser parser;
         auto &main = parser.parse(fileContent.c_str());
-        modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
+        auto syntax = UAST::fromParser(main, std::string(file));
+        modules.value.insert(modules.value.end(), syntax.value.begin(), syntax.value.end());
         // for (const auto &v : main.value) {
         //     modules.push_back(std::get<ISPA_STD::Node<Parser::Rules, Parser::Types::grammar>>(v));
         // }
@@ -183,7 +186,8 @@ int main(int argc, char** argv) {
             // lexer.makeTokens(content.c_str());
             Parser::Parser parser;
             auto &main = parser.parse(content.c_str());
-            modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
+            auto syntax = UAST::fromParser(main, file);
+            modules.value.insert(modules.value.end(), syntax.value.begin(), syntax.value.end());
         }
     }
 
@@ -195,6 +199,7 @@ int main(int argc, char** argv) {
     AST::Builder ast_builder(modules);
     ast_builder.build();
     auto ast = ast_builder.get();
+    AST::requireCppSupport(ast);
 
     Semantic semantic(ast);
     semantic.checkTokenRecursion();

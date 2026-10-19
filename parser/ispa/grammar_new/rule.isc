@@ -1,0 +1,122 @@
+rule:
+    ':' @ value+ @ ast? @ f_binding? @ nested_rule* ';'
+    @{v, ast_pointer, fail_pointer, nested}
+    
+    #ast:
+        @ abbr | full | single_value
+        {@}
+
+        #full:
+            '&' '{' @ part+ '}'
+
+            {@}
+
+            #part:
+                @ ID ':' @ expr
+                @{key, e}
+            ;
+        ;
+        #abbr:
+            '@' '{' @ ID (',' @ ID )* '}'
+            @{f, seq}
+        ;
+        #single_value:
+            '{' @ expr | '@' '}'
+            {@}
+        ;
+    ;
+    #f_binding:
+        '%' '{' @ ID (',' @ ID )* '}'
+        @{f, seq}
+    ;
+    #value:
+        @ one_capture | mul_capture
+
+        {@}
+
+        #var_capture:
+            '&' @ ID
+            {@}
+        ;
+        #ast_capture:
+            '@' \s0 @ ID?
+            {@}
+        ;
+        #fail_capture:
+            '%' \s0 @ name?
+            {@}
+        ;
+        #pattern:
+            @ name | group | dyn | STRING | CGROUP | ANY | SPACE | NOSPACE
+            {@}
+        ;
+        #one_capture:
+            @ var_capture? @ ast_capture? @ fail_capture? @ pattern @ alternative* @ counter? @ shared_counter_registration?
+
+            @{v_cap, ast_cap, fail_cap, val, alts, quantifier, registration}
+        ;
+        #mul_capture:
+            @ '@' | '%' '=' '(' @ one_capture+ ')'
+            
+            @{type, cap}
+        ;
+        #STRING:
+            ['"] @ (('\\' .) | [^'\\])* ['"]
+            {@}
+        ;
+        #CGROUP:
+            '[' @ '^'? @ ([^\\\]] | ('\\' .))+ ']'
+
+            @{negative, v}
+        ;
+        #ANY:
+            '.'
+        ;
+        #SPACE:
+            '\\s'
+        ;
+        #NOSPACE:
+            '\\s0'
+        ;
+        #group:
+            '(' @ value+ ')'
+            {@}
+        ;
+        #dyn:
+            '$' @ dyn_expr | ID
+
+            {@}
+
+            #dyn_expr:
+                '{' @ expr '}'
+                {@}
+            ;
+        ;
+        #alternative:
+            '|' @ pattern
+            {@}
+        ;
+        #QUANTIFIER:
+           @ '?' | '+' | '*'
+           {@}
+        ;
+        #counter:
+           @ QUANTIFIER @ bounded?
+
+           @{quantifier, repetitions}
+           #bounded:
+                 '=' @ NUMBER | ID | expr
+
+                 {@}
+           ;
+        ;
+        #shared_counter_registration:
+            '=>' @ ID
+            {@}
+        ;
+    ;
+    #nested_rule:
+        '#' \s0 @ grammar
+        {@}
+    ;
+;

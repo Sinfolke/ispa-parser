@@ -1,0 +1,52 @@
+ID:
+    @ ([a-zA-Z_] [a-zA-Z0-9_]*)
+    {@}
+;
+NUMBER:
+    @ [0-9]+ ('.' @ % [0-9]+)?
+
+    @{full, floating}
+    %{num_fp_fail}
+;
+name:
+    @ ID ('->' @ % ID)* @ template_params? @ params?
+
+    @{primary, nested, temp_params, param}
+    %{id_nested_specifier_missing}
+;
+PY_RAW:
+    'p{' @ 'py' '}'
+    {@}
+;
+
+expr:
+    @ PY_RAW
+    {@}
+;
+
+explicit_expr:
+    '(' @ % expr ')'
+    {@}
+    %{missing_expr_when_explicit}
+;
+stmt:
+    @ PY_RAW
+    {@}
+;
+forward_declaration:
+    '->' @  ID '->'
+    {@}
+;
+params:
+    '(' @ param? ')'
+    {@}
+;
+template_params:
+    '<' @ param? '>'
+    {@}
+;
+param:
+    @ ID (',' @ % ID)*
+    @{first_p, following_p}
+    %{missing_param_id_in_sequence}
+;
