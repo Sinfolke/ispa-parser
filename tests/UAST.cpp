@@ -190,4 +190,3 @@ TEST(UAST, PythonAstBlocksKeepTargets) {
     ASSERT_EQ(single.size(), 1u);
     EXPECT_TRUE(std::get<AST::PythonAction>(single.front()).target.empty());
 }
-
