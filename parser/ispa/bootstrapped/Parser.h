@@ -4274,7 +4274,7 @@ namespace Parser {
 	};
 } // namespace Parser
 namespace Parser {
-	class Parser : public ::ISPA_STD::LLParser_base<Types::main, Token> {
+	class Parser : public ::ISPA_STD::LLParser<Types::main, Token> {
 	protected:
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto advanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto advanced_rule_dep_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT>;

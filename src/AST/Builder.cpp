@@ -249,13 +249,7 @@ namespace {
         return result;
     }
     static AST::RegularDataBlock makeAtDataBlock() {
-        AST::rvalue rv;
-        rv.value = AST::At{};
-
-        AST::CllExprValue value;
-        value.value = std::move(rv);
-
-        return AST::make_expr_from_value(value);
+        return AST::At{};
     }
 }
 

@@ -16,7 +16,6 @@ class Builder {
     stdu::vector<FrontendFeature> rule_features;
     SpacemodeStates spacemode = SpacemodeStates::MIXED;
     std::string name;
-    Use use;
     UAST::main input;
     std::string file;
     stdu::vector<std::string> fullname;
@@ -41,7 +40,7 @@ public:
         : input(mod.data()), file(std::move(file)) {}
     void build();
     auto get() -> Tree {
-        Tree tree{std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)};
+        Tree tree{std::move(name), std::move(spacemode), std::move(tree_map)};
         tree.getFailBlocks() = std::move(fail_blocks);
         return tree;
     }

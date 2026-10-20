@@ -29,6 +29,11 @@ struct PythonNode {
     SourcePosition position;
     bool absent = false;
     std::vector<PythonNode> children;
+
+    auto members() { return std::tie(kind, field, scalar, position, absent, children); }
+    auto members() const { return std::tie(kind, field, scalar, position, absent, children); }
+    bool operator==(const PythonNode& other) const { return members() == other.members(); }
+    bool operator<(const PythonNode& other) const { return members() < other.members(); }
 };
 
 using __WS = ::Parser::FlatTypes::__WS;

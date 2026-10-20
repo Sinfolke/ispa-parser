@@ -1,5 +1,4 @@
 module LLIR.Rule.MemberBuilder;
-import LLIR.CllBuilder;
 import logging;
 import corelib;
 import cpuf.hex;
@@ -279,7 +278,7 @@ void LLIR::MemberBuilder::buildMember(const AST::RuleMember &member) {
     } else if (member.isNospace()) {
         builder = std::make_unique<NospaceBuilder>(*this);
     } else if (member.isOp()) {
-        builder = std::make_unique<OpBuilder>(*this, member);
+        builder = std::make_unique<AltDispatchBuilder>(*this, member);
     } else if (member.isAny()) {
         builder = std::make_unique<AnyBuilder>(*this, member);
     } else if (member.isCll()) {
@@ -317,7 +316,7 @@ auto LLIR::MemberBuilder::build() -> void {
         } else if (member.isNospace()) {
             builder = std::make_unique<NospaceBuilder>(*this);
         } else if (member.isOp()) {
-            builder = std::make_unique<OpBuilder>(*this, member);
+            builder = std::make_unique<AltDispatchBuilder>(*this, member);
         } else if (member.isAny()) {
             builder = std::make_unique<AnyBuilder>(*this, member);
         } else if (member.isCll()) {
@@ -1466,7 +1465,7 @@ void LLIR::AnyBuilder::build() {
 // }
 
 // Alternative lookahead sets are computed and cached by AST::Tree.
-bool LLIR::OpBuilder::checkLLkConflicts(
+bool LLIR::AltDispatchBuilder::checkLLkConflicts(
     const std::vector<std::set<LookaheadSeq>>& perAlt,
     std::vector<std::tuple<std::size_t, std::size_t, LookaheadSeq>>* conflicts
 ) {
@@ -1497,7 +1496,7 @@ bool LLIR::OpBuilder::checkLLkConflicts(
     return ok;
 }
 
-LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
+LangAPI::Statements LLIR::AltDispatchBuilder::buildDecisionTree(
     const std::vector<std::set<LookaheadSeq>>& perAlt,
     const std::vector<std::shared_ptr<AST::RuleMember>>& op,
     const std::vector<std::size_t>& candidates,
@@ -1741,7 +1740,7 @@ LangAPI::Statements LLIR::OpBuilder::buildDecisionTree(
         };
     }
 }
-auto LLIR::OpBuilder::resolveLLk(
+auto LLIR::AltDispatchBuilder::resolveLLk(
     const std::vector<std::shared_ptr<AST::RuleMember>>& op,
     const stdu::vector<std::string>& rule_name,
     AST::Tree& tree,
@@ -1804,7 +1803,7 @@ auto LLIR::OpBuilder::resolveLLk(
 }
 
 
-void LLIR::OpBuilder::build() {
+void LLIR::AltDispatchBuilder::build() {
     // A quantified choice may fail without being a parsing error.
     SpeculativeMatchScope speculative(
         rule.quantifier == '?' || rule.quantifier == '*' || rule.quantifier == '+');

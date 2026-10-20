@@ -1,5 +1,5 @@
 export module LangAPI;
-import LLIR.LangAPIMembersAccess;
+import LangAPI.Accessor;
 import AST.API;
 import constants;
 import hash;
@@ -111,7 +111,8 @@ export namespace LangAPI {
         DFADebug, TdfaLayout, DfaCaptures,
         ASTPrinter, Concat,
         MatchResultValue, VariantIndex, AssignCompatible,
-        LexerTokenIterator, LexerLazyIterator
+        LexerTokenIterator, LexerLazyIterator,
+        ParserRequired, ParserOptional, ParserRange, ParserRangeOptional
     };
 
 
@@ -188,7 +189,7 @@ export namespace LangAPI {
         friend auto operator<(const Declarations& a, const Declarations& b) -> bool;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
 
         auto members() const {
             return std::tie(static_cast<const stdu::vector<Declaration>&>(*this));
@@ -214,7 +215,7 @@ export namespace LangAPI {
         friend auto operator<(const Statements& a, const Statements& b) -> bool;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
 
         auto members() const {
             return std::tie(static_cast<const stdu::vector<Statement>&>(*this));
@@ -240,7 +241,7 @@ export namespace LangAPI {
         friend auto operator<(const Expression& a, const Expression& b) -> bool;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
 
         auto members() const {
             return std::tie(static_cast<const stdu::vector<ExpressionValue>&>(*this));
@@ -271,7 +272,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Char &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value, escaped);
         }
@@ -289,7 +290,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Int &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -307,7 +308,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Bool &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -325,7 +326,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Float &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -343,7 +344,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const String &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -361,7 +362,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Array &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(values, template_parameters);
         }
@@ -379,7 +380,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const FixedSizeArray &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(values);
         }
@@ -398,7 +399,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Map &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(keys, values, template_parameters);
         }
@@ -419,7 +420,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Pos &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(dereference, offset);
         }
@@ -437,7 +438,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const ArrayMethodCall &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(method, args);
         }
@@ -456,7 +457,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const FunctionCall &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, template_parameters, args);
         }
@@ -475,7 +476,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibSymbol &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(exports);
         }
@@ -507,7 +508,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Symbol &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(path);
         }
@@ -524,7 +525,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const StorageOffset &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(offset);
         }
@@ -542,7 +543,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Property &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name);
         }
@@ -584,7 +585,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const StorageSymbol &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(what, path);
         }
@@ -602,7 +603,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibFunctionCall &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(symbol, args);
         }
@@ -620,7 +621,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Inheritance &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, args);
         }
@@ -693,7 +694,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaTransition &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(symbol, next, new_cst_node, new_member, close_cst_node, new_group, group_close, accept);
         }
@@ -712,7 +713,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaState &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(transitions);
         }
@@ -736,7 +737,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaSpanCharState &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(else_goto, else_goto_accept, state_id);
         }
@@ -762,7 +763,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaSpanMultiTableState &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(else_goto, else_goto_accept, state_id, mutli_table_transitions);
         }
@@ -784,7 +785,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaEmptyState &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(token_name, construction_lambda);
         }
@@ -806,7 +807,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const IspaLibDfaSpan &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type);
         }
@@ -825,7 +826,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Reference &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -848,7 +849,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Span &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(sym);
         }
@@ -863,7 +864,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const EmptyInitializer &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -879,7 +880,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const MakeTuple &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(args);
         }
@@ -897,7 +898,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const GetVariant &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type, sym, is_raw_token);
         }
@@ -915,7 +916,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const CheckVariant &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type, sym, is_raw_token);
         }
@@ -931,7 +932,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const CharToStringConstructor &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(what);
         }
@@ -947,7 +948,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const ToString &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(what);
         }
@@ -964,7 +965,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Cast &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type, what);
         }
@@ -980,7 +981,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const GetFromBox &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(what);
         }
@@ -991,7 +992,7 @@ export namespace LangAPI {
     class RValue : public ExpressionValueLevel {
         std::variant<std::monostate, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant, CheckVariant, ToString, CharToStringConstructor, Cast, GetFromBox> value;
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -1199,7 +1200,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Type &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type, template_parameters);
         }
@@ -1251,7 +1252,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Function &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(type, name, parameters, statements, template_parameters);
         }
@@ -1282,7 +1283,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Class &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, data, inherit_members, default_visibility);
         }
@@ -1301,7 +1302,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Namespace &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name,declarations);
         }
@@ -1325,7 +1326,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const TypeAlias &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, type);
         }
@@ -1354,7 +1355,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Enum &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, value);
         }
@@ -1381,7 +1382,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, type, value);
         }
@@ -1440,7 +1441,7 @@ export namespace LangAPI {
         const auto& getVariable() const { return std::get<Variable>(value); }
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -1463,7 +1464,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Break &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -1478,7 +1479,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Continue &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -1494,7 +1495,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Return &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -1515,7 +1516,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const StringCompare &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(str, is_string);
         }
@@ -1534,7 +1535,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const VariableAssignment &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name, type, value);
         }
@@ -1550,7 +1551,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const CounterIncreament &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -1566,7 +1567,7 @@ export namespace LangAPI {
         std::shared_ptr<Expression> v;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(v);
         }
@@ -1581,7 +1582,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const ResetPosCounter &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -1597,7 +1598,7 @@ export namespace LangAPI {
         std::string name;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(name);
         }
@@ -1612,7 +1613,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const PopPosCounter &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie();
         }
@@ -1629,7 +1630,7 @@ export namespace LangAPI {
         bool isToken;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(isToken);
         }
@@ -1650,7 +1651,7 @@ export namespace LangAPI {
         std::string output_name;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(dfa_count, output_name);
         }
@@ -1667,7 +1668,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(message);
         }
@@ -1684,7 +1685,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const Lambda &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(parameters, statements);
         }
@@ -1709,7 +1710,7 @@ export namespace LangAPI {
         friend auto operator<<(std::ostream& os, const DFADebug &c) -> std::ostream&;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(member, token_name, position_in_token, call, group, rule_run, offset, length, ch);
         }
@@ -1835,7 +1836,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -1866,7 +1867,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(expr, stmt);
         }
@@ -1892,7 +1893,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(expr, stmt, else_stmt);
         }
@@ -1922,7 +1923,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(expression, cases);
         }
@@ -1939,7 +1940,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(throw_value);
         }
@@ -1956,7 +1957,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }
@@ -2010,7 +2011,7 @@ export namespace LangAPI {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         auto members() const {
             return std::tie(value);
         }

@@ -4,8 +4,8 @@
  * (<ispastdlib/node.hpp>, <ispastdlib/lexer.hpp>, ...). This file exists for old code and for hand-written users.
  */
 #pragma once
-#ifndef _ISPA_STD_LIB_CPP
-#define _ISPA_STD_LIB_CPP
+#ifndef ISPA_STD_LIB_CPP
+#define ISPA_STD_LIB_CPP
 #include <ispastdlib/core.hpp>
 #include <ispastdlib/variant_io.hpp>
 #include <ispastdlib/span.hpp>
@@ -19,6 +19,7 @@
 #include <ispastdlib/dfa_run.hpp>
 #include <ispastdlib/raw_token.hpp>
 #include <ispastdlib/lexer.hpp>
-#include <ispastdlib/parser.hpp>
+#include <ispastdlib/parser_base.hpp>
+#include <ispastdlib/parser_ll.hpp>
 #include <ispastdlib/lr_parser.hpp>
-#endif // _ISPA_STD_LIB_CPP
+#endif // ISPA_STD_LIB_CPP

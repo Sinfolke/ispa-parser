@@ -33,35 +33,6 @@ export namespace LLIR {
         void build() override;
         GroupBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
-
-    class CsequenceBuilder : public BuilderBase {
-        const AST::RuleMember &rule;
-    public:
-        void build() override;
-        CsequenceBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    };
-
-    class StringBuilder : public BuilderBase {
-        const AST::RuleMember &rule;
-    public:
-        void build() override;
-        StringBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    };
-
-    // class HexBuilder : public BuilderBase {
-    //     const AST::RuleMember &rule;
-    // public:
-    //     void build() override;
-    //     HexBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    // };
-    //
-    // class BinBuilder : public BuilderBase {
-    //     const AST::RuleMember &rule;
-    // public:
-    //     void build() override;
-    //     BinBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    // };
-
     class NameBuilder : public BuilderBase {
         const AST::RuleMember &rule;
         auto pushBasedOnQualifier(
@@ -82,19 +53,6 @@ export namespace LLIR {
         NameBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
-    class NospaceBuilder : public BuilderBase {
-    public:
-        void build() override;
-        NospaceBuilder(BuilderDataWrapper &data) : BuilderBase(data) {}
-    };
-
-    // class EscapedBuilder : public BuilderBase {
-    //     const AST::RuleMember &rule;
-    // public:
-    //     void build() override;
-    //     EscapedBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
-    // };
-
     class AnyBuilder : public BuilderBase {
         const AST::RuleMember &rule;
     public:
@@ -102,7 +60,7 @@ export namespace LLIR {
         AnyBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 
-    class OpBuilder : public BuilderBase {
+    class AltDispatchBuilder : public BuilderBase {
         const AST::RuleMember &rule;
         std::size_t nesting = 1;
         auto createBlock(
@@ -144,6 +102,6 @@ export namespace LLIR {
                                   std::size_t max_k = 32);
     public:
         void build() override;
-        OpBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
+        AltDispatchBuilder(BuilderDataWrapper &data, const AST::RuleMember &rule) : BuilderBase(data), rule(rule) {}
     };
 }

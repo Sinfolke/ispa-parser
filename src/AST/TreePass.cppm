@@ -1,6 +1,5 @@
 export module AST.Pass;
 import corelib;
-import LLIR.IR;
 import AST.Tree;
 import AST.API;
 import cpuf.op;
@@ -39,7 +38,6 @@ export namespace AST {
         static Types getTypes(const AST::RuleMemberBin&) { return Types::Rule_bin; }
         static Types getTypes(const AST::RuleMemberHex&) { return Types::Rule_hex; }
         static Types getTypes(const AST::RuleMemberAny&) { return Types::Rule_any; }
-        static Types getTypes(const AST::Cll&) { return Types::cll; }
         // never meet types
         static Types getTypes(const AST::RuleMemberName&) { return Types::name; };
         static Types getTypes(const AST::RuleMemberGroup&) { return Types::group; }

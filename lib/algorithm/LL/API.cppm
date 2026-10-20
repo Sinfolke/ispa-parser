@@ -3,7 +3,7 @@ module;
 export module LLIR.API;
 
 import LangAPI;
-import LLIR.LangAPIMembersAccess;
+import LangAPI.Accessor;
 import hash;
 import dstd;
 
@@ -21,7 +21,7 @@ export namespace LLIR {
         const inclosed_map &getInclosedMap() const { return std::get<inclosed_map>(value); };
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct LangAPI::MembersAccess;
         [[nodiscard]] auto members() const {
             return std::tie(value);
         }
@@ -37,7 +37,7 @@ export namespace LLIR {
         char quantifier;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         [[nodiscard]] auto members() const {
             return std::tie(svar, uvar, var, shadow_var, quantifier);
         }
@@ -58,7 +58,7 @@ export namespace LLIR {
 
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
 
         [[nodiscard]] auto members() const {
             return std::tie(
@@ -89,7 +89,7 @@ export namespace LLIR {
         IncrementalBuilderData builder_data;
     private:
         friend struct ::uhash;
-        friend struct ::LLIR::Serialize::MembersAccess;
+        friend struct ::LangAPI::MembersAccess;
         [[nodiscard]] auto members() const {
             return std::tie(block, name, rule_members, builder_data);
         }

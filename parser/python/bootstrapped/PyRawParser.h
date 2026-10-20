@@ -10575,7 +10575,7 @@ namespace PyRawParser {
 	};
 } // namespace PyRawParser
 namespace PyRawParser {
-	class Parser : public ::ISPA_STD::LLParser_base<Types::main, Token> {
+	class Parser : public ::ISPA_STD::LLParser<Types::main, Token> {
 	protected:
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, IT>;

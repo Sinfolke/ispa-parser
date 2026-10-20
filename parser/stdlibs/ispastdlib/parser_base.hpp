@@ -13,47 +13,19 @@
 namespace ISPA_STD {
     /* PARSER */
     template<typename MainNode, typename Token>
-    class LLParser_base {
+    class Parser_base {
     protected:
         Lexer_base<Token>* lexer = nullptr;
         const char* text = nullptr;
         MainNode tree;
-        // skip spaces for tokens
-        template <typename SpaceTokenType, typename IT>
-        void skip_spaces(IT& pos) {
-            if ((*pos).template holds<SpaceTokenType>())
-                ++pos;
-        }
-        void raise_error(const Token& node, const std::string& message) {
-            // if constexpr (is_raw_token_v<Token>) {
-            //     // Error path: report from the shared metadata only. Printing the payload would
-            //     // need a visitor over every alternative, i.e. exactly the instantiation cost
-            //     // RawToken exists to avoid. The source slice is the token's text.
-            //     if (node.empty() && node.meta().start() == nullptr)
-            //         return;
-            //     const auto& m = node.meta();
-            //     std::cerr << "Error at token " << (int) m.name() << "(at position " << m.startpos() << ")" << ": " << message << std::endl;
-            //     if (m.start())
-            //         std::cerr << "Token: \n" << std::string_view(m.start(), m.length()) << std::endl;
-            // } else {
-            //     std::visit([&](auto&& arg) {
-            //         using T = std::decay_t<decltype(arg)>;
-            //         if constexpr (!std::is_same_v<T, std::monostate>) {
-            //             std::cerr << "Error at token " << (int) arg.name() << "(at position " << arg.startpos() << ")" << ": " << message << std::endl;
-            //             std::cerr << "Token: \n" << arg << std::endl;
-            //         }
-            //     }, node);
-            // }
-        }
-        static void PANIC_MODE() {}
     public:
         // Constructors
-        LLParser_base() {}
-        LLParser_base(Lexer_base<Token>& lexer) {
+        Parser_base() {}
+        Parser_base(Lexer_base<Token>& lexer) {
             this->lexer = &lexer;
         }
-        LLParser_base(const char* text) : text(text) {}
-        virtual ~LLParser_base() {}
+        Parser_base(const char* text) : text(text) {}
+        virtual ~Parser_base() {}
         // Parsing methods
         MainNode& parse(Lexer_base<Token>& lex) {
             lexer = &lex;

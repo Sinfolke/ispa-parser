@@ -1,7 +1,7 @@
 module NFA.TNFA;
 import AST.API;
 import LangAPI;
-import LLIR.Builder.Base;
+import Parser.Base;
 import logging;
 import corelib;
 import cpuf.op;
@@ -44,7 +44,7 @@ namespace NFA::TNFA {
 
     // A capture with an Array value keeps every iteration (history register); any other is one span.
     auto captureIsList(const TokenID &capture) -> bool {
-        return LLIR::BuilderBase::deduceVarTypeByRuleMember(capture.member).getValueType() ==
+        return Parser::ParserBase::deduceVarTypeByRuleMember(capture.member).getValueType() ==
                LangAPI::ValueType::Array;
     }
 
@@ -844,7 +844,7 @@ namespace NFA::TNFA {
                 const std::string &name,
                 LangAPI::Statements &out) {
                 const auto &member = sym.member;
-                const LangAPI::Type t = LLIR::BuilderBase::deduceVarTypeByRuleMember(
+                const LangAPI::Type t = Parser::ParserBase::deduceVarTypeByRuleMember(
                     cap ? cap->original_member : sym.original_member);
 
                 // Nested token: its reduction was built when it was wired.
@@ -913,7 +913,7 @@ namespace NFA::TNFA {
                             LangAPI::VariableAssignment{
                                 .name = LangAPI::Symbol{name},
                                 .value = scalar_expression(
-                                    LLIR::BuilderBase::deduceVarTypeByRuleMember(alt->original_member),
+                                    Parser::ParserBase::deduceVarTypeByRuleMember(alt->original_member),
                                     alt_k, name),
                             }));
                         check.else_stmt = std::move(chain);

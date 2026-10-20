@@ -19,7 +19,6 @@ export namespace AST {
         TreeMap tree_map;
         stdu::vector<FailBlock> fail_blocks;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
-        Use use;
         std::string name;
         InitialItemSet initial_item_set;
         UsePlaceTable use_places;
@@ -84,24 +83,20 @@ export namespace AST {
         auto getFollowSet(std::size_t k) -> const LLkTable&;
         auto getAlternativeLookahead(const AST::RuleMember& alt, const stdu::vector<std::string>& ruleName, std::size_t k) -> LLkSet;
         auto getTreeMap() const -> const TreeMap& { return tree_map; };
-        auto getUse() const -> const Use& { return use; };
         auto getSpacemode() const -> const SpacemodeStates& { return spacemode; };
         auto getName() const -> const std::string& { return name; }
         auto getTreeMap() ->  TreeMap& { return tree_map; };
-        auto getUse() ->  Use& { return use; };
         auto getSpacemode() -> SpacemodeStates& { return spacemode; };
         auto getName() -> std::string& { return name; }
         auto begin() const { return tree_map.begin(); };
         auto end() const { return tree_map.end(); };
-        Tree(std::string&& name, SpacemodeStates&& spacemode, Use&& use, TreeMap&& map)
+        Tree(std::string&& name, SpacemodeStates&& spacemode, TreeMap&& map)
             : name(std::move(name)),
               spacemode(std::move(spacemode)),
-              use(std::move(use)),
               tree_map(std::move(map)) {}
-        Tree(std::string& name, SpacemodeStates& spacemode, Use& use, TreeMap& map)
+        Tree(std::string& name, SpacemodeStates& spacemode, TreeMap& map)
             : name(name),
               spacemode(spacemode),
-              use(use),
               tree_map(map) {}
         ~Tree() = default;
         auto getUsePlacesTable() -> UsePlaceTable& {

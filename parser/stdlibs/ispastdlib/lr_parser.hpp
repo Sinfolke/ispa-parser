@@ -3,7 +3,7 @@
  * Part of the split ISPA std lib; include <ispastdlib.hpp> for everything.
  */
 #pragma once
-#include <ispastdlib/parser.hpp>
+#include <ispastdlib/parser_base.hpp>
 
 namespace ISPA_STD {
 #ifdef ISPA_EXPERIMENTAL

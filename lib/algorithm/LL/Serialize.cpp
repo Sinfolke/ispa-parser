@@ -2,7 +2,7 @@ module;
 #include <tsl/ordered_map.h>
 module LLIR.Serialize;
 import corelib;
-import LLIR.LangAPIMembersAccess;
+import LangAPI.Accessor;
 import std;
 
 namespace LLIR::Serialize {

@@ -6,7 +6,7 @@ import LLIR.Builder.Data;
 import LLIR.Builder.DataWrapper;
 import LLIR.Rule.MemberBuilder;
 import LLIR.RuleBuilder;
-import LLIR.CllBuilder;
+import Parser.Base;
 import NFA.IR;
 import NFA.IR.Interpreter;
 import NFA.TNFA;
@@ -180,7 +180,7 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
                 if (members.size() != 1)
                     throw Error("LexerBuilder: token '{}' has a regular data block but {} captured members",
                                 name, members.size());
-                dtb.value = std::make_pair(LangAPI::Expression {}, LLIR::BuilderBase::deduceVarTypeByRuleMember(*members[0]));
+                dtb.value = std::make_pair(LangAPI::Expression {}, Parser::ParserBase::deduceVarTypeByRuleMember(*members[0]));
             } else if (!rule.data_block.empty()) {
                 const auto &field_names = rule.data_block.getTemplatedDataBlock().names;
                 if (field_names.size() != members.size())
@@ -192,7 +192,7 @@ auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
                 for (const auto &field_name : field_names)
                     inclosed_map.emplace(field_name, std::make_pair(
                         LangAPI::Expression {},
-                        LLIR::BuilderBase::deduceVarTypeByRuleMember(*members[i++])
+                        Parser::ParserBase::deduceVarTypeByRuleMember(*members[i++])
                     ));
                 dtb.value = inclosed_map;
             }

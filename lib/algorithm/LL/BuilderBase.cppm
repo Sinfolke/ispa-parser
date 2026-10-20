@@ -27,22 +27,10 @@ export namespace LLIR {
         static void pushVariablePrefix(LangAPI::Expression &expr, const std::optional<char> &prefix);
         static void undoRuleResult(LangAPI::ValueType &type);
 
-        // cll helper functions
-        static auto CllTypeToIR(const AST::CllType &type) -> LangAPI::Type;
-        static auto CllOpToIR(char op) -> LangAPI::OperatorType;
-        static auto CllOpToExpr(char op) -> LangAPI::ExpressionElement;
-        static auto CllCompareOpToExpr(const AST::CllCompareOp &op) -> LangAPI::ExpressionElement;
-        static auto CllLogicalOpToIR(const AST::CllLogicalOp &lop) -> LangAPI::ExpressionElement;
-        static auto CllAssignmentOpToIR(char op) -> LangAPI::OperatorType;
-
         // helper functions to create structures
         auto assignSvar(const LangAPI::Variable &svar, bool value) -> LangAPI::Statement;
         auto getBuilderData() -> BuilderDataWrapper;
 
-        // deduce type functions
-        static auto deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type;
-        static auto deduceVarTypeByRuleMemberBase(const AST::RuleMember &mem) -> LangAPI::Type;
-        static auto deduceVarTypeByRuleMember(const AST::RuleMember &mem) -> LangAPI::Type;
     protected:
         LangAPI::Statements statements;
         stdu::vector<LLIR::ExportsAfterBuild> exports_list;

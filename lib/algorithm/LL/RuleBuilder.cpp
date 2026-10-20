@@ -1,6 +1,5 @@
 module LLIR.RuleBuilder;
 import LLIR.Rule.MemberBuilder;
-import LLIR.CllBuilder;
 import LLIR.IR;
 import logging;
 import cpuf.printf;

@@ -71,8 +71,8 @@ get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/converters/C++2/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/converters/*.cppm
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/converter/*.cppm
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/algorithm/LL/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cppm
 )
 
@@ -98,7 +98,6 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/new
         ${CMAKE_CURRENT_SOURCE_DIR}/external
-        ${CMAKE_CURRENT_SOURCE_DIR}/converters
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped
 )
 
@@ -106,29 +105,47 @@ target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA
 set_target_properties(ispa_modules PROPERTIES
         DISABLE_PRECOMPILE_HEADERS ON
 )
-# =============================================
-# Converter Shared Library
-# =============================================
-get_file_range(CPP_CONVERTER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/converters/C++2/*.cpp
-)
 
-add_library(ispa-converter-cpp SHARED ${CPP_CONVERTER_SOURCES})
-target_link_libraries(ispa-converter-cpp PRIVATE ispa_modules)
-target_include_directories(ispa-converter-cpp PRIVATE converters/C++ parser/stdlibs/new)
-set_target_properties(ispa-converter-cpp PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-set_target_properties(ispa-converter-cpp PROPERTIES
-        DISABLE_PRECOMPILE_HEADERS ON
-)
 # =============================================
 # Main Executable
 # =============================================
 add_executable(ispa ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-target_link_libraries(ispa PRIVATE ispa_modules ispa-converter-cpp)
+target_link_libraries(ispa PRIVATE ispa_modules)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(ispa PRIVATE c++ c++abi m)
 endif()
+function(add_ispa_lib type lib)
+    get_file_range(${type}_${lib}_SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/lib/${type}/${lib}/*.cpp
+    )
+
+    add_library(ispa-${type}-${lib} SHARED ${${type}_${lib}_SOURCES})
+    target_link_libraries(ispa-${type}-${lib} PRIVATE ispa_modules)
+    set_target_properties(ispa-${type}-${lib} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    set_target_properties(ispa-${type}-${lib} PROPERTIES
+            DISABLE_PRECOMPILE_HEADERS ON
+    )
+    target_link_libraries(ispa PRIVATE ispa-${type}-${lib})
+endfunction()
+# =============================================
+# Converter Shared Library
+# =============================================
+function(add_converter language)
+    add_ispa_lib(converter ${language})
+endfunction()
+
+
+add_converter(cpp)
+# =============================================
+# Algorithms Shared Library
+# =============================================
+function(add_algorithm alg)
+    add_ispa_lib(algorithm ${alg})
+endfunction()
+
+
+add_algorithm(LL)
 
 # =============================================
 # Testing

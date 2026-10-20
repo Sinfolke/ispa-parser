@@ -1,5 +1,5 @@
 export module AST.Frontend;
-import LLIR.LangAPIMembersAccess;
+import LangAPI.Accessor;
 import hash;
 import dstd;
 import std;
@@ -15,8 +15,7 @@ struct SourcePosition {
     std::size_t column{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(file, offset, length, line, column); }
     auto members() { return std::tie(file, offset, length, line, column); }
 };
@@ -29,8 +28,7 @@ struct PythonNode {
     stdu::vector<PythonNode> children{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(kind, field, scalar, position, absent, children); }
     auto members() { return std::tie(kind, field, scalar, position, absent, children); }
 };
@@ -40,8 +38,7 @@ struct CaptureBinding {
     bool list{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, optional, list); }
     auto members() { return std::tie(name, optional, list); }
 };
@@ -52,8 +49,7 @@ struct PythonAction {
     std::string target{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(python, bindings, position, target); }
     auto members() { return std::tie(python, bindings, position, target); }
 };
@@ -64,8 +60,7 @@ struct FailBlock {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, parameters, action, position); }
     auto members() { return std::tie(name, parameters, action, position); }
 };
@@ -74,8 +69,7 @@ struct FailBinding {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(names, position); }
     auto members() { return std::tie(names, position); }
 };
@@ -85,8 +79,7 @@ struct FailMarker {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, parameters, position); }
     auto members() { return std::tie(name, parameters, position); }
 };
@@ -95,8 +88,7 @@ struct RegionCapture {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(capture, position); }
     auto members() { return std::tie(capture, position); }
 };
@@ -106,8 +98,7 @@ struct DynamicPattern {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, expression, position); }
     auto members() { return std::tie(name, expression, position); }
 };
@@ -118,8 +109,7 @@ struct Counter {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(kind, bound, expression, position); }
     auto members() { return std::tie(kind, bound, expression, position); }
 };
@@ -128,8 +118,7 @@ struct SharedCounterRegistration {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, position); }
     auto members() { return std::tie(name, position); }
 };
@@ -138,8 +127,7 @@ struct VariableCapture {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(name, position); }
     auto members() { return std::tie(name, position); }
 };
@@ -150,8 +138,7 @@ struct DeclarationSyntax {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(modifiers, parameters, templateParameters, position); }
     auto members() { return std::tie(modifiers, parameters, templateParameters, position); }
 };
@@ -160,8 +147,7 @@ struct AdvancedRule {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(syntax, position); }
     auto members() { return std::tie(syntax, position); }
 };
@@ -169,8 +155,7 @@ struct SpacePattern {
     SourcePosition position{};
 private:
     friend struct ::uhash;
-    friend struct ::LLIR::Serialize::MembersAccess;
-    friend struct ::LLIR::Serialize::MemberAccess;
+    friend struct ::LangAPI::MembersAccess;
     auto members() const { return std::tie(position); }
     auto members() { return std::tie(position); }
 };

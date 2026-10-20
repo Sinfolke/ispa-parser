@@ -1199,7 +1199,7 @@ namespace DepParser {
 	};
 } // namespace DepParser
 namespace DepParser {
-	class Parser : public ::ISPA_STD::LLParser_base<Types::main, Token> {
+	class Parser : public ::ISPA_STD::LLParser<Types::main, Token> {
 	protected:
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto mod_detach(IT pos) -> ::ISPA_STD::MatchResult<Types::mod_detach, IT>;

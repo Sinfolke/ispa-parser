@@ -1,6 +1,6 @@
-export module LLIR.LangAPIMembersAccess;
+export module LangAPI.Accessor;
 
-export namespace LLIR::Serialize {
+export namespace LangAPI {
 
     struct MembersAccess {
         template<typename T>

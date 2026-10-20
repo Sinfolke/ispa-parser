@@ -35,7 +35,8 @@ TEST(UAST, PlainEbnfAndCapture) {
     EXPECT_EQ(member.quantifier, '+');
     ASSERT_TRUE(member.isString());
     EXPECT_EQ(member.getString().value, "a");
-    EXPECT_TRUE(rule.data_block.isRegularDataBlock());
+    ASSERT_TRUE(rule.data_block.isRegularDataBlock());
+    EXPECT_TRUE(std::holds_alternative<AST::At>(rule.data_block.getRegDataBlock()));
 }
 
 TEST(UAST, OwnsParserDataAndPositions) {

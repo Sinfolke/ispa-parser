@@ -11,7 +11,6 @@ export namespace AST {
     };
     using Name = stdu::vector<std::string>;
     using TreeMap = utype::unordered_map<stdu::vector<std::string>, AST::Rule>;
-    using Use = utype::unordered_map<std::string, AST::rvalue>;
     using UsePlaceTable = utype::unordered_map<stdu::vector<std::string>, stdu::vector<stdu::vector<std::string>>>;
     using First = utype::unordered_map<stdu::vector<std::string>, std::set<stdu::vector<std::string>>>;
     using Follow = First;

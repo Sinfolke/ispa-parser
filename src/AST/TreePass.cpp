@@ -3,7 +3,6 @@ module;
 #include <unicode/uchar.h>
 module AST.Pass;
 import corelib;
-import LLIR.IR;
 import AST.Tree;
 import AST.API;
 import cpuf.printf;
@@ -50,8 +49,6 @@ void AST::TreePass::inlineGroupsInSequence(stdu::vector<std::shared_ptr<AST::Rul
             // Quantified/prefixed: this group stays, but its own
             // contents may still hold flattenable nested groups.
             inlineGroupsInSequence(member->getGroup().values);
-        } else if (member->isCll() && member->getCll().isIf()) {
-            inlineGroupsInSequence(member->getCll().getIf().stmt);
         }
         // RuleMemberOp::options intentionally not visited — see above.
 
