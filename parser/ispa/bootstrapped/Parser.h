@@ -1648,6 +1648,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&__WS::write_to_output, &__WS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&__WS::write_to_output, &__WS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1662,6 +1680,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_dep_decl_DEPENDS::write_to_output, &advanced_rule_dep_decl_DEPENDS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_dep_decl_DEPENDS::write_to_output, &advanced_rule_dep_decl_DEPENDS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1676,6 +1712,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&AUTO::write_to_output, &AUTO::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&AUTO::write_to_output, &AUTO::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1690,6 +1744,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&FAIL::write_to_output, &FAIL::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&FAIL::write_to_output, &FAIL::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1704,6 +1776,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1718,6 +1808,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&COLON::write_to_output, &COLON::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&COLON::write_to_output, &COLON::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1732,6 +1840,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&EQUALS_SIGN::write_to_output, &EQUALS_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&EQUALS_SIGN::write_to_output, &EQUALS_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1746,6 +1872,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&AMPERSAND::write_to_output, &AMPERSAND::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&AMPERSAND::write_to_output, &AMPERSAND::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1760,6 +1904,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&PERCENT_SIGN::write_to_output, &PERCENT_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&PERCENT_SIGN::write_to_output, &PERCENT_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1774,6 +1936,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_nested_rule_NUMBER_SIGN::write_to_output, &rule_nested_rule_NUMBER_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_nested_rule_NUMBER_SIGN::write_to_output, &rule_nested_rule_NUMBER_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1790,6 +1970,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_nested_rule::write_to_output, &rule_nested_rule::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_nested_rule::write_to_output, &rule_nested_rule::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1804,6 +2002,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&LEFT_CURLY_BRACKET::write_to_output, &LEFT_CURLY_BRACKET::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&LEFT_CURLY_BRACKET::write_to_output, &LEFT_CURLY_BRACKET::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1818,6 +2034,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_shared_counter_registration_AUTO::write_to_output, &rule_value_shared_counter_registration_AUTO::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_shared_counter_registration_AUTO::write_to_output, &rule_value_shared_counter_registration_AUTO::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1850,6 +2084,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value::write_to_output, &rule_value::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value::write_to_output, &rule_value::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1864,6 +2116,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1879,6 +2149,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_QUANTIFIER::write_to_output, &rule_value_QUANTIFIER::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_QUANTIFIER::write_to_output, &rule_value_QUANTIFIER::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1893,6 +2181,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_NOSPACE::write_to_output, &rule_value_NOSPACE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_NOSPACE::write_to_output, &rule_value_NOSPACE::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1907,6 +2213,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_ANY::write_to_output, &rule_value_ANY::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_ANY::write_to_output, &rule_value_ANY::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1921,6 +2245,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&template_params_LESS_THAN_SIGN::write_to_output, &template_params_LESS_THAN_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&template_params_LESS_THAN_SIGN::write_to_output, &template_params_LESS_THAN_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1936,6 +2278,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_STRING::write_to_output, &rule_value_STRING::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_STRING::write_to_output, &rule_value_STRING::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1950,6 +2310,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&grammar_modifier_AUTO::write_to_output, &grammar_modifier_AUTO::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&grammar_modifier_AUTO::write_to_output, &grammar_modifier_AUTO::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1965,6 +2343,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&grammar_modifier_MOD::write_to_output, &grammar_modifier_MOD::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&grammar_modifier_MOD::write_to_output, &grammar_modifier_MOD::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1979,6 +2375,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_SPACE::write_to_output, &rule_value_SPACE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_SPACE::write_to_output, &rule_value_SPACE::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -1993,6 +2407,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&template_params_GREATER_THAN_SIGN::write_to_output, &template_params_GREATER_THAN_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&template_params_GREATER_THAN_SIGN::write_to_output, &template_params_GREATER_THAN_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2007,6 +2439,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_alternative_VERTICAL_LINE::write_to_output, &rule_value_alternative_VERTICAL_LINE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_alternative_VERTICAL_LINE::write_to_output, &rule_value_alternative_VERTICAL_LINE::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2023,6 +2473,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_alternative::write_to_output, &rule_value_alternative::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_alternative::write_to_output, &rule_value_alternative::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2037,6 +2505,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2051,6 +2537,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_dyn_DOLLAR_SIGN::write_to_output, &rule_value_dyn_DOLLAR_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_dyn_DOLLAR_SIGN::write_to_output, &rule_value_dyn_DOLLAR_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2065,6 +2569,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_regular_match_MATCH::write_to_output, &advanced_rule_regular_match_MATCH::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_regular_match_MATCH::write_to_output, &advanced_rule_regular_match_MATCH::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2079,6 +2601,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2093,6 +2633,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&RIGHT_PARENTHESIS::write_to_output, &RIGHT_PARENTHESIS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&RIGHT_PARENTHESIS::write_to_output, &RIGHT_PARENTHESIS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2107,6 +2665,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&LEFT_PARENTHESIS::write_to_output, &LEFT_PARENTHESIS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&LEFT_PARENTHESIS::write_to_output, &LEFT_PARENTHESIS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2121,6 +2697,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&RIGHT_CURLY_BRACKET::write_to_output, &RIGHT_CURLY_BRACKET::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&RIGHT_CURLY_BRACKET::write_to_output, &RIGHT_CURLY_BRACKET::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2137,6 +2731,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(full, floating);
+			}
+			constexpr auto members() const {
+				return std::tie(full, floating);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"full", "floating"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&NUMBER::write_to_output, &NUMBER::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&NUMBER::write_to_output, &NUMBER::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2152,6 +2764,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&PY_RAW::write_to_output, &PY_RAW::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&PY_RAW::write_to_output, &PY_RAW::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2167,6 +2797,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&ID::write_to_output, &ID::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&ID::write_to_output, &ID::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2183,6 +2831,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(negative, v);
+			}
+			constexpr auto members() const {
+				return std::tie(negative, v);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"negative", "v"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_CGROUP::write_to_output, &rule_value_CGROUP::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_CGROUP::write_to_output, &rule_value_CGROUP::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2198,6 +2864,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_group::write_to_output, &rule_value_group::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_group::write_to_output, &rule_value_group::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2214,6 +2898,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(type, cap);
+			}
+			constexpr auto members() const {
+				return std::tie(type, cap);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"type", "cap"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_mul_capture::write_to_output, &rule_value_mul_capture::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_mul_capture::write_to_output, &rule_value_mul_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2232,6 +2934,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&grammar_modifier::write_to_output, &grammar_modifier::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&grammar_modifier::write_to_output, &grammar_modifier::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2247,6 +2967,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&expr::write_to_output, &expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&expr::write_to_output, &expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2262,6 +3000,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&stmt::write_to_output, &stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&stmt::write_to_output, &stmt::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2278,6 +3034,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_shared_counter_registration::write_to_output, &rule_value_shared_counter_registration::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_shared_counter_registration::write_to_output, &rule_value_shared_counter_registration::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2293,6 +3067,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_regular_match_unpack::write_to_output, &advanced_rule_regular_match_unpack::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_regular_match_unpack::write_to_output, &advanced_rule_regular_match_unpack::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2308,6 +3100,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&forward_declaration::write_to_output, &forward_declaration::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&forward_declaration::write_to_output, &forward_declaration::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2324,6 +3134,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first_p, following_p);
+			}
+			constexpr auto members() const {
+				return std::tie(first_p, following_p);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first_p", "following_p"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&param::write_to_output, &param::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&param::write_to_output, &param::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2340,6 +3168,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(f, seq);
+			}
+			constexpr auto members() const {
+				return std::tie(f, seq);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"f", "seq"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_ast_abbr::write_to_output, &rule_ast_abbr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_ast_abbr::write_to_output, &rule_ast_abbr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2356,6 +3202,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(f, seq);
+			}
+			constexpr auto members() const {
+				return std::tie(f, seq);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"f", "seq"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_f_binding::write_to_output, &rule_f_binding::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_f_binding::write_to_output, &rule_f_binding::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2371,6 +3235,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_ast_capture::write_to_output, &rule_value_ast_capture::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_ast_capture::write_to_output, &rule_value_ast_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2386,6 +3268,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_var_capture::write_to_output, &rule_value_var_capture::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_var_capture::write_to_output, &rule_value_var_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2401,6 +3301,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&explicit_expr::write_to_output, &explicit_expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&explicit_expr::write_to_output, &explicit_expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2417,6 +3335,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(key, e);
+			}
+			constexpr auto members() const {
+				return std::tie(key, e);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"key", "e"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_ast_full_part::write_to_output, &rule_ast_full_part::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_ast_full_part::write_to_output, &rule_ast_full_part::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2432,6 +3368,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_ast_single_value::write_to_output, &rule_ast_single_value::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_ast_single_value::write_to_output, &rule_ast_single_value::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2447,6 +3401,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_counter_bounded::write_to_output, &rule_value_counter_bounded::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_counter_bounded::write_to_output, &rule_value_counter_bounded::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2462,6 +3434,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_dyn_dyn_expr::write_to_output, &rule_value_dyn_dyn_expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_dyn_dyn_expr::write_to_output, &rule_value_dyn_dyn_expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2480,6 +3470,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(patterns, assign_names);
+			}
+			constexpr auto members() const {
+				return std::tie(patterns, assign_names);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"patterns", "assign_names"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_regular_match::write_to_output, &advanced_rule_regular_match::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_regular_match::write_to_output, &advanced_rule_regular_match::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2496,6 +3504,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_dep_decl::write_to_output, &advanced_rule_dep_decl::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_dep_decl::write_to_output, &advanced_rule_dep_decl::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2513,6 +3539,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&template_params::write_to_output, &template_params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&template_params::write_to_output, &template_params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2528,6 +3572,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&params::write_to_output, &params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&params::write_to_output, &params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2544,6 +3606,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_ast_full::write_to_output, &rule_ast_full::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_ast_full::write_to_output, &rule_ast_full::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2561,6 +3641,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(quantifier, repetitions);
+			}
+			constexpr auto members() const {
+				return std::tie(quantifier, repetitions);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"quantifier", "repetitions"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_counter::write_to_output, &rule_value_counter::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_counter::write_to_output, &rule_value_counter::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2578,6 +3676,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_dyn::write_to_output, &rule_value_dyn::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_dyn::write_to_output, &rule_value_dyn::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2597,6 +3713,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(dep, body);
+			}
+			constexpr auto members() const {
+				return std::tie(dep, body);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"dep", "body"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule::write_to_output, &advanced_rule::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule::write_to_output, &advanced_rule::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2615,6 +3749,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(primary, nested, temp_params, param);
+			}
+			constexpr auto members() const {
+				return std::tie(primary, nested, temp_params, param);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 4>{{"primary", "nested", "temp_params", "param"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&name::write_to_output, &name::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&name::write_to_output, &name::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2633,6 +3785,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_ast::write_to_output, &rule_ast::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_ast::write_to_output, &rule_ast::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2651,6 +3821,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(mod, name, entry);
+			}
+			constexpr auto members() const {
+				return std::tie(mod, name, entry);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 3>{{"mod", "name", "entry"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&grammar::write_to_output, &grammar::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&grammar::write_to_output, &grammar::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2666,6 +3854,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&advanced_rule_fail_call::write_to_output, &advanced_rule_fail_call::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&advanced_rule_fail_call::write_to_output, &advanced_rule_fail_call::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2682,6 +3888,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(name, val);
+			}
+			constexpr auto members() const {
+				return std::tie(name, val);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"name", "val"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&fail_block::write_to_output, &fail_block::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&fail_block::write_to_output, &fail_block::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2697,6 +3921,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_fail_capture::write_to_output, &rule_value_fail_capture::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_fail_capture::write_to_output, &rule_value_fail_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2712,6 +3954,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_pattern::write_to_output, &rule_value_pattern::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_pattern::write_to_output, &rule_value_pattern::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2734,6 +3994,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(v, ast_pointer, fail_pointer, nested);
+			}
+			constexpr auto members() const {
+				return std::tie(v, ast_pointer, fail_pointer, nested);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 4>{{"v", "ast_pointer", "fail_pointer", "nested"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule::write_to_output, &rule::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule::write_to_output, &rule::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2749,6 +4027,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&main::write_to_output, &main::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&main::write_to_output, &main::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2770,6 +4066,24 @@ namespace Parser {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(v_cap, ast_cap, fail_cap, val, alts, quantifier, registration);
+			}
+			constexpr auto members() const {
+				return std::tie(v_cap, ast_cap, fail_cap, val, alts, quantifier, registration);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 7>{{"v_cap", "ast_cap", "fail_cap", "val", "alts", "quantifier", "registration"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&rule_value_one_capture::write_to_output, &rule_value_one_capture::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&rule_value_one_capture::write_to_output, &rule_value_one_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
 		};
 	} // namespace FlatTypes
 } // namespace Parser
@@ -2939,6 +4253,24 @@ namespace Parser {
 		static std::unordered_map<long long, std::unordered_map<long long, long long>> debug_index;
 	public:
 		auto makeToken(const char*& pos) -> Token override;
+		constexpr auto members() {
+			return std::tie();
+		}
+		constexpr auto members() const {
+			return std::tie();
+		}
+		static constexpr auto members_str() {
+			return std::array<std::string_view, 0>{{}};
+		}
+		constexpr auto methods() {
+			return std::make_tuple(&Lexer::makeToken);
+		}
+		constexpr auto methods() const {
+			return std::make_tuple(&Lexer::makeToken);
+		}
+		static constexpr auto methods_str() {
+			return std::array<std::string_view, 1>{{"makeToken"}};
+		}
 	};
 } // namespace Parser
 namespace Parser {
@@ -2986,5 +4318,23 @@ namespace Parser {
 	public:
 		auto parseFromTokens() -> void override;
 		auto lazyParse() -> void override;
+		constexpr auto members() {
+			return std::tie();
+		}
+		constexpr auto members() const {
+			return std::tie();
+		}
+		static constexpr auto members_str() {
+			return std::array<std::string_view, 0>{{}};
+		}
+		constexpr auto methods() {
+			return std::make_tuple(&Parser::parseFromTokens, &Parser::lazyParse);
+		}
+		constexpr auto methods() const {
+			return std::make_tuple(&Parser::parseFromTokens, &Parser::lazyParse);
+		}
+		static constexpr auto methods_str() {
+			return std::array<std::string_view, 2>{{"parseFromTokens", "lazyParse"}};
+		}
 	};
 } // namespace Parser

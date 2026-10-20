@@ -27,7 +27,49 @@ namespace Cpp {
         }
         return path;
     }
+    auto generateMembers(
+        Converter::Writer& o,
+        const std::vector<std::string>& fields,
+        const char* interface_name,
+        std::string prefix_for_functions = ""
+    ) -> void {
+        for (const auto is_const : {false, true}) {
+            o.writeln("constexpr auto {}(){} {", interface_name, is_const ? " const" : "");
+            o.increaseIndentation();
 
+            o.write("return std::{}(", prefix_for_functions.empty() ? "tie" : "make_tuple");
+            for (std::size_t i = 0; i < fields.size(); ++i) {
+                if (i) o.dwrite(", ");
+                if (!prefix_for_functions.empty())
+                    o.dwrite("&{}::", prefix_for_functions);
+                o.dwrite(fields[i]);
+            }
+            o.dwriteln(");");
+
+            o.decreaseIndentation();
+            o.writeln("}");
+        }
+    }
+    auto generateMembersStr(
+        Converter::Writer& o,
+        const std::vector<std::string>& fields,
+        const char* interface_name
+    ) -> void {
+        o.writeln("static constexpr auto {}_str() {", interface_name);
+        o.increaseIndentation();
+
+        o.write("return std::array<std::string_view, {}>{{", fields.size());
+
+        for (std::size_t i = 0; i < fields.size(); ++i) {
+            if (i) o.dwrite(", ");
+            o.dwrite("\"{}\"", fields[i]);
+        }
+
+        o.dwriteln("}};");
+
+        o.decreaseIndentation();
+        o.writeln("}");
+    }
     // ------------------------------------------------------------------------
     // File-local helpers.
     //
@@ -702,7 +744,8 @@ namespace Cpp {
         // A class lexically nested in another class must be declared using its
         // unqualified leaf name. `struct Parent::Child {}` is not valid inside Parent.
         const std::string declaration_name = o.in_class ? split.leaf : name;
-
+        std::vector<std::string> fields;
+        std::vector<std::string> methods;
         // struct Name : public A, private B {
         std::string head = setDefaultClsVisibility(cls.default_visibility) + " " + declaration_name;
         if (!cls.inherit_members.empty()) {
@@ -738,6 +781,13 @@ namespace Cpp {
                 current = visibility;
             }
             convertDeclaration(*declaration, member);
+            if (visibility == LangAPI::Visibility::Public) {
+                if (declaration->isVariable()) {
+                    fields.push_back(declaration->getVariable().name);
+                } else if (declaration->isFunction()) {
+                    methods.push_back(declaration->getFunction().name);
+                }
+            }
         }
         if (cls.to_str_fun.has_value()) {
             if (context.visibility != LangAPI::Visibility::Public) {
@@ -747,6 +797,10 @@ namespace Cpp {
             }
             produceFunction(cls.to_str_fun.value(), member);
         }
+        generateMembers(*o.h, fields, "members");
+        generateMembersStr(*o.h, fields, "members");
+        generateMembers(*o.h, methods, "methods", Core::convertSymbol(cls.name));
+        generateMembersStr(*o.h, methods, "methods");
         o.h->decreaseIndentation();
         emitLine(*o.h, "};");
         // A nested class is defined in its enclosing class's def.h. Emit a

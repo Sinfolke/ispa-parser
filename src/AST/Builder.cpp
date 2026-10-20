@@ -6,6 +6,7 @@ import corelib;
 import logging;
 import dstd;
 import std;
+import UAST.Python;
 
 namespace {
     template<typename T>
@@ -34,14 +35,151 @@ namespace {
         for (const auto& segment : n.nested) result.push_back(id(segment));
         return result;
     }
+    // The generated nodes know offset/length/line/column but not the file name;
+    // Builder::build() publishes it here for the duration of the conversion.
+    thread_local const std::string* currentFile = nullptr;
+    struct FileScope {
+        const std::string* previous;
+        explicit FileScope(const std::string& file) : previous(currentFile) { currentFile = &file; }
+        ~FileScope() { currentFile = previous; }
+    };
+    template<class T> UAST::SourcePosition where(const UAST::Node<T>& node) {
+        static const std::string none;
+        return UAST::positionOf(node, currentFile ? *currentFile : none);
+    }
     AST::SourcePosition position(const UAST::SourcePosition& p) {
         return {p.file, p.offset, p.length, p.line, p.column};
+    }
+    template<class T> AST::SourcePosition position(const UAST::Node<T>& node) {
+        return position(where(node));
     }
     AST::PythonNode python(const UAST::PythonNode& n) {
         AST::PythonNode out{n.kind, n.field, n.scalar, position(n.position), n.absent, {}};
         for (const auto& child : n.children) out.children.push_back(python(child));
         return out;
     }
+
+    // Typed Python AST (UAST::py) -> AST::PythonNode. Each typed node becomes one
+    // PythonNode: kind = node type ("BinaryExpr", "If", ...), children carry the
+    // struct's field names, scalar holds the identifier / operator / literal text.
+    namespace pylower {
+        namespace py = UAST::py;
+        using PN = AST::PythonNode;
+        using Pos = UAST::SourcePosition;
+        constexpr std::string_view kCtx[] = {"Load", "Store", "Del"};
+        constexpr std::string_view kBool[] = {"And", "Or"};
+        constexpr std::string_view kBin[] = {"Add", "Sub", "Mult", "MatMult", "Div", "Mod", "Pow", "LShift", "RShift", "BitOr", "BitXor", "BitAnd", "FloorDiv"};
+        constexpr std::string_view kUnary[] = {"Invert", "Not", "UAdd", "USub"};
+        constexpr std::string_view kCmp[] = {"Eq", "NotEq", "Lt", "LtE", "Gt", "GtE", "Is", "IsNot", "In", "NotIn"};
+        constexpr std::string_view kConst[] = {"None", "Bool", "Int", "Float", "Str"};
+        template<class E> std::string name(const std::string_view* table, E e) { return std::string(table[static_cast<std::size_t>(e)]); }
+
+        inline PN make(std::string kind, std::string field, const Pos& p, std::string scalar = {}, std::vector<PN> children = {}) {
+            PN out{std::move(kind), std::move(field), std::move(scalar), position(p), false, {}};
+            for (auto& c : children) out.children.push_back(std::move(c));
+            return out;
+        }
+        inline PN absentNode(std::string field, const Pos& p) {
+            PN out{"absent", std::move(field), {}, position(p), true, {}};
+            return out;
+        }
+
+        struct Lower {
+            PN expr(const py::ExprPtr& e, std::string f, const Pos& fb) const {
+                if (!e) return absentNode(std::move(f), fb);
+                return std::visit([&](const auto& k) { return node(k, std::move(f), e->pos); }, e->kind);
+            }
+            PN stmt(const py::StmtPtr& s, std::string f, const Pos& fb) const {
+                if (!s) return absentNode(std::move(f), fb);
+                return std::visit([&](const auto& k) { return node(k, std::move(f), s->pos); }, s->kind);
+            }
+            PN exprs(const std::vector<py::ExprPtr>& v, std::string f, const Pos& p) const {
+                std::vector<PN> c; for (const auto& e : v) c.push_back(expr(e, {}, p));
+                return make("sequence", std::move(f), p, {}, std::move(c));
+            }
+            PN stmts(const std::vector<py::StmtPtr>& v, std::string f, const Pos& p) const {
+                std::vector<PN> c; for (const auto& s : v) c.push_back(stmt(s, {}, p));
+                return make("sequence", std::move(f), p, {}, std::move(c));
+            }
+            PN keywords(const std::vector<py::Keyword>& v, std::string f, const Pos& p) const {
+                std::vector<PN> c;
+                for (const auto& k : v) c.push_back(make("keyword", {}, k.pos, k.arg, {expr(k.value, "value", k.pos)}));
+                return make("sequence", std::move(f), p, {}, std::move(c));
+            }
+            PN aliases(const std::vector<py::Alias>& v, std::string f, const Pos& p) const {
+                std::vector<PN> c;
+                for (const auto& a : v) c.push_back(make("alias", {}, a.pos, a.name, {make("asname", "asname", a.pos, a.asname)}));
+                return make("sequence", std::move(f), p, {}, std::move(c));
+            }
+            PN strings(const std::vector<std::string>& v, std::string f, const Pos& p) const {
+                std::vector<PN> c; for (const auto& s : v) c.push_back(make("string", {}, p, s));
+                return make("sequence", std::move(f), p, {}, std::move(c));
+            }
+            PN module(const py::Module& m) const { return make("Module", {}, m.pos, {}, {stmts(m.body, "body", m.pos)}); }
+
+            // expressions
+            PN node(const py::Name& x, std::string f, const Pos& p) const { return make("Name", std::move(f), p, x.id, {make("ctx", "ctx", p, name(kCtx, x.ctx))}); }
+            PN node(const py::Constant& x, std::string f, const Pos& p) const { return make("Constant", std::move(f), p, x.value, {make("kind", "kind", p, name(kConst, x.kind))}); }
+            PN node(const py::Attribute& x, std::string f, const Pos& p) const { return make("Attribute", std::move(f), p, x.attr, {expr(x.value, "value", p), make("ctx", "ctx", p, name(kCtx, x.ctx))}); }
+            PN node(const py::Subscript& x, std::string f, const Pos& p) const { return make("Subscript", std::move(f), p, {}, {expr(x.value, "value", p), expr(x.slice, "slice", p), make("ctx", "ctx", p, name(kCtx, x.ctx))}); }
+            PN node(const py::Call& x, std::string f, const Pos& p) const { return make("Call", std::move(f), p, {}, {expr(x.func, "func", p), exprs(x.args, "args", p), keywords(x.keywords, "keywords", p)}); }
+            PN node(const py::UnaryExpr& x, std::string f, const Pos& p) const { return make("UnaryExpr", std::move(f), p, name(kUnary, x.op), {expr(x.operand, "operand", p)}); }
+            PN node(const py::BinaryExpr& x, std::string f, const Pos& p) const { return make("BinaryExpr", std::move(f), p, name(kBin, x.op), {expr(x.left, "left", p), expr(x.right, "right", p)}); }
+            PN node(const py::BoolExpr& x, std::string f, const Pos& p) const { return make("BoolExpr", std::move(f), p, name(kBool, x.op), {exprs(x.values, "values", p)}); }
+            PN node(const py::Compare& x, std::string f, const Pos& p) const {
+                std::vector<PN> ops; for (auto o : x.ops) ops.push_back(make("op", {}, p, name(kCmp, o)));
+                return make("Compare", std::move(f), p, {}, {expr(x.left, "left", p), make("sequence", "ops", p, {}, std::move(ops)), exprs(x.comparators, "comparators", p)});
+            }
+            PN node(const py::IfExpr& x, std::string f, const Pos& p) const { return make("IfExpr", std::move(f), p, {}, {expr(x.test, "test", p), expr(x.body, "body", p), expr(x.orelse, "orelse", p)}); }
+            PN node(const py::Tuple& x, std::string f, const Pos& p) const { return make("Tuple", std::move(f), p, {}, {exprs(x.elts, "elts", p), make("ctx", "ctx", p, name(kCtx, x.ctx))}); }
+            PN node(const py::List& x, std::string f, const Pos& p) const { return make("List", std::move(f), p, {}, {exprs(x.elts, "elts", p), make("ctx", "ctx", p, name(kCtx, x.ctx))}); }
+            PN node(const py::Dict& x, std::string f, const Pos& p) const { return make("Dict", std::move(f), p, {}, {exprs(x.keys, "keys", p), exprs(x.values, "values", p)}); }
+
+            // statements and declarations
+            PN node(const py::FunctionDef& x, std::string f, const Pos& p) const {
+                std::vector<PN> params;
+                for (const auto& a : x.params)
+                    params.push_back(make("Param", {}, a.pos, a.name, {expr(a.annotation, "annotation", a.pos), expr(a.default_value, "default_value", a.pos)}));
+                return make("FunctionDef", std::move(f), p, x.name, {make("sequence", "params", p, {}, std::move(params)), expr(x.returns, "returns", p),
+                    stmts(x.body, "body", p), exprs(x.decorators, "decorators", p), make("bool", "is_async", p, x.is_async ? "true" : "false")});
+            }
+            PN node(const py::ClassDef& x, std::string f, const Pos& p) const {
+                return make("ClassDef", std::move(f), p, x.name, {exprs(x.bases, "bases", p), keywords(x.keywords, "keywords", p), stmts(x.body, "body", p), exprs(x.decorators, "decorators", p)});
+            }
+            PN node(const py::Return& x, std::string f, const Pos& p) const { return make("Return", std::move(f), p, {}, {expr(x.value, "value", p)}); }
+            PN node(const py::Delete& x, std::string f, const Pos& p) const { return make("Delete", std::move(f), p, {}, {exprs(x.targets, "targets", p)}); }
+            PN node(const py::Assign& x, std::string f, const Pos& p) const { return make("Assign", std::move(f), p, {}, {exprs(x.targets, "targets", p), expr(x.value, "value", p)}); }
+            PN node(const py::AugAssign& x, std::string f, const Pos& p) const { return make("AugAssign", std::move(f), p, name(kBin, x.op), {expr(x.target, "target", p), expr(x.value, "value", p)}); }
+            PN node(const py::AnnAssign& x, std::string f, const Pos& p) const { return make("AnnAssign", std::move(f), p, {}, {expr(x.target, "target", p), expr(x.annotation, "annotation", p), expr(x.value, "value", p)}); }
+            PN node(const py::For& x, std::string f, const Pos& p) const {
+                return make("For", std::move(f), p, {}, {expr(x.target, "target", p), expr(x.iter, "iter", p), stmts(x.body, "body", p), stmts(x.orelse, "orelse", p), make("bool", "is_async", p, x.is_async ? "true" : "false")});
+            }
+            PN node(const py::While& x, std::string f, const Pos& p) const { return make("While", std::move(f), p, {}, {expr(x.test, "test", p), stmts(x.body, "body", p), stmts(x.orelse, "orelse", p)}); }
+            PN node(const py::If& x, std::string f, const Pos& p) const { return make("If", std::move(f), p, {}, {expr(x.test, "test", p), stmts(x.body, "body", p), stmts(x.orelse, "orelse", p)}); }
+            PN node(const py::With& x, std::string f, const Pos& p) const {
+                std::vector<PN> items;
+                for (const auto& i : x.items) items.push_back(make("WithItem", {}, i.pos, {}, {expr(i.context, "context", i.pos), expr(i.vars, "vars", i.pos)}));
+                return make("With", std::move(f), p, {}, {make("sequence", "items", p, {}, std::move(items)), stmts(x.body, "body", p), make("bool", "is_async", p, x.is_async ? "true" : "false")});
+            }
+            PN node(const py::Raise& x, std::string f, const Pos& p) const { return make("Raise", std::move(f), p, {}, {expr(x.exc, "exc", p), expr(x.cause, "cause", p)}); }
+            PN node(const py::Try& x, std::string f, const Pos& p) const {
+                std::vector<PN> handlers;
+                for (const auto& h : x.handlers) handlers.push_back(make("ExceptHandler", {}, h.pos, h.name, {expr(h.type, "type", h.pos), stmts(h.body, "body", h.pos)}));
+                return make("Try", std::move(f), p, {}, {stmts(x.body, "body", p), make("sequence", "handlers", p, {}, std::move(handlers)), stmts(x.orelse, "orelse", p), stmts(x.finalbody, "finalbody", p)});
+            }
+            PN node(const py::Assert& x, std::string f, const Pos& p) const { return make("Assert", std::move(f), p, {}, {expr(x.test, "test", p), expr(x.msg, "msg", p)}); }
+            PN node(const py::Import& x, std::string f, const Pos& p) const { return make("Import", std::move(f), p, {}, {aliases(x.names, "names", p)}); }
+            PN node(const py::ImportFrom& x, std::string f, const Pos& p) const { return make("ImportFrom", std::move(f), p, x.module_name, {aliases(x.names, "names", p), make("level", "level", p, std::to_string(x.level))}); }
+            PN node(const py::Global& x, std::string f, const Pos& p) const { return make("Global", std::move(f), p, {}, {strings(x.names, "names", p)}); }
+            PN node(const py::Nonlocal& x, std::string f, const Pos& p) const { return make("Nonlocal", std::move(f), p, {}, {strings(x.names, "names", p)}); }
+            PN node(const py::ExprStmt& x, std::string f, const Pos& p) const { return make("ExprStmt", std::move(f), p, {}, {expr(x.value, "value", p)}); }
+            PN node(const py::Pass&, std::string f, const Pos& p) const { return make("Pass", std::move(f), p); }
+            PN node(const py::Break&, std::string f, const Pos& p) const { return make("Break", std::move(f), p); }
+            PN node(const py::Continue&, std::string f, const Pos& p) const { return make("Continue", std::move(f), p); }
+        };
+    }
+    AST::PythonNode python(const UAST::py::ExprPtr& e, const UAST::SourcePosition& fallback) { return pylower::Lower{}.expr(e, {}, fallback); }
+    AST::PythonNode python(const UAST::py::Module& m, const UAST::SourcePosition&) { return pylower::Lower{}.module(m); }
     template<class Params> stdu::vector<std::string> parameters(const Params& p) {
         stdu::vector<std::string> out;
         if (p.empty() || payload(p).value.empty()) return out;
@@ -50,11 +188,22 @@ namespace {
         for (const auto& arg : args.following_p) out.push_back(id(arg));
         return out;
     }
-    template<class T> AST::PythonAction action(const T& n, const UAST::SourcePosition& p) {
-        AST::PythonAction out{python(n.python), {}, position(p)};
-        for (const auto& binding : n.bindings) out.bindings.push_back({binding.name, binding.optional, binding.list});
-        return out;
+    // `code` is a Node<expr> or Node<stmt>: the generated parser keeps the Python
+    // action as raw text, so it is parsed into the typed UAST::py tree here.
+    // `at` is the node whose position labels the resulting action.
+    template<class T, class At> AST::PythonAction action(const UAST::Node<T>& code, const At& at) {
+        const auto& n = payload(code);
+        auto body = where(n.value);      // text starts after the two-character opening delimiter
+        body.offset += 2;
+        body.column += 2;
+        const auto& source = payload(n.value).value;
+        auto tree = [&] {
+            if constexpr (std::is_same_v<T, UAST::expr>) return python(UAST::parsePythonExpr(source, body), body);
+            else return python(UAST::parsePythonModule(source, body), body);
+        }();
+        return AST::PythonAction{std::move(tree), {}, position(at)};
     }
+    template<class T> AST::PythonAction action(const UAST::Node<T>& code) { return action(code, code); }
     [[noreturn]] void unsupported(const std::string& message) {
         throw std::runtime_error("ISPA bootstrap converter: unsupported " + message);
     }
@@ -123,11 +272,11 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_NOSPACE>>) {
             output.value = AST::RuleMemberNospace{};
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_SPACE>>) {
-            output.features.push_back(AST::SpacePattern{position(item.position)});
+            output.features.push_back(AST::SpacePattern{position(item)});
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::name>>) {
             const auto& n = payload(item);
             if (!n.temp_params.empty() || !n.param.empty())
-                output.features.push_back(AST::DeclarationSyntax{{}, parameters(n.param), parameters(n.temp_params), position(item.position)});
+                output.features.push_back(AST::DeclarationSyntax{{}, parameters(n.param), parameters(n.temp_params), position(item)});
             // Resolve references after all declarations have been collected.
             auto path = qualifiedName(n);
             output.value = AST::RuleMemberName{path};
@@ -140,11 +289,11 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
         }
         else {
             AST::DynamicPattern dynamic;
-            dynamic.position = position(item.position);
+            dynamic.position = position(item);
             std::visit([&](const auto& n) {
                 using D = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<D, UAST::Node<UAST::ID>>) dynamic.name = id(n);
-                else if constexpr (!std::is_same_v<D, std::monostate>) dynamic.expression = action(payload(payload(n).value), payload(n).value.position);
+                else if constexpr (!std::is_same_v<D, std::monostate>) dynamic.expression = action(payload(n).value);
             }, payload(item).value);
             output.features.push_back(std::move(dynamic));
         }
@@ -159,7 +308,7 @@ AST::RuleMember AST::Builder::convertValue(const Value& value) {
             return convertCapture(payload(n));
         else if constexpr (std::is_same_v<T, UAST::Node<std::shared_ptr<UAST::rule_value_mul_capture>>>) {
             AST::RuleMember out;
-            out.position = position(n.position);
+            out.position = position(n);
             AST::RuleMemberGroup group;
             for (const auto& c : payload(n).cap)
                 group.values.push_back(std::make_shared<AST::RuleMember>(convertCapture(payload(c))));
@@ -173,16 +322,16 @@ AST::RuleMember AST::Builder::convertValue(const Value& value) {
 
 AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture& value) {
     AST::RuleMember output = convertPattern(payload(value.val));
-    output.position = position(value.val.position);
+    output.position = position(value.val);
     auto patternFeatures = std::move(output.features);
     output.features.clear();
     if (!value.registration.empty())
-        output.features.push_back(AST::SharedCounterRegistration{id(payload(value.registration).value), position(value.registration.position)});
+        output.features.push_back(AST::SharedCounterRegistration{id(payload(value.registration).value), position(value.registration)});
     if (!value.v_cap.empty())
-        output.features.push_back(AST::VariableCapture{id(payload(value.v_cap).value), position(value.v_cap.position)});
+        output.features.push_back(AST::VariableCapture{id(payload(value.v_cap).value), position(value.v_cap)});
     if (!value.fail_cap.empty()) {
         AST::FailMarker marker;
-        marker.position = position(value.fail_cap.position);
+        marker.position = position(value.fail_cap);
         const auto& n = payload(value.fail_cap).value;
         if (!n.empty()) { marker.name = qualifiedName(payload(n)); marker.parameters = parameters(payload(n).param); }
         output.features.push_back(std::move(marker));
@@ -215,12 +364,12 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
         const auto& q = payload(value.quantifier);
         if (!q.repetitions.empty()) {
             AST::Counter counter;
-            counter.position = position(q.repetitions.position);
+            counter.position = position(q.repetitions);
             std::visit([&](const auto& n) {
                 using T = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<T, UAST::Node<UAST::ID>>) { counter.kind = "name"; counter.bound = id(n); }
                 else if constexpr (std::is_same_v<T, UAST::Node<UAST::NUMBER>>) { counter.kind = "number"; counter.bound = payload(n).full; if (!payload(n).floating.empty()) counter.bound += "." + payload(n).floating; }
-                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = action(payload(n), n.position); }
+                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = action(n); }
             }, payload(q.repetitions).value);
             output.features.push_back(std::move(counter));
         }
@@ -252,7 +401,7 @@ AST::DataBlock AST::Builder::convertData(
                 result.value = makeAtDataBlock();
             } else {
                 const auto& expression = std::get<UAST::Node<UAST::expr>>(single.value);
-                rule_features.push_back(action(payload(expression), expression.position));
+                rule_features.push_back(action(expression));
             }
         } else if constexpr (std::is_same_v<
             T,
@@ -261,7 +410,7 @@ AST::DataBlock AST::Builder::convertData(
             >
         >) {
             for (const auto& part : payload(item).value) {
-                auto a = action(payload(payload(part).e), part.position);
+                auto a = action(payload(part).e, part);
                 a.target = id(payload(part).key);
                 rule_features.push_back(std::move(a));
             }
@@ -280,7 +429,7 @@ void AST::Builder::convertRule(const Rule& rule) {
     rule_features.clear();
     if (!rule.fail_pointer.empty()) {
         AST::FailBinding binding;
-        binding.position = position(rule.fail_pointer.position);
+        binding.position = position(rule.fail_pointer);
         binding.names.push_back(id(payload(rule.fail_pointer).f));
         for (const auto& n : payload(rule.fail_pointer).seq) binding.names.push_back(id(n));
         output.features.push_back(std::move(binding));
@@ -301,7 +450,7 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
     fullname.insert(fullname.end(), path.begin(), path.end());
 
     AST::DeclarationSyntax declaration;
-    declaration.position = position(grammar.name.position);
+    declaration.position = position(grammar.name);
     declaration.parameters = parameters(payload(grammar.name).param);
     declaration.templateParameters = parameters(payload(grammar.name).temp_params);
     for (const auto& mod : grammar.mod) declaration.modifiers.push_back(payload(payload(mod).value).value);
@@ -315,14 +464,14 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
         out.features = std::move(rule_features);
         rule_features.clear();
         const auto& advanced = std::get<UAST::Node<UAST::advanced_rule>>(grammar.entry);
-        out.features.push_back(AST::AdvancedRule{python(UAST::describe(payload(advanced), advanced.position)), position(advanced.position)});
+        out.features.push_back(AST::AdvancedRule{python(UAST::describe(payload(advanced), where(advanced))), position(advanced)});
         for (const auto& entry : payload(advanced).body) {
             if (const auto* statement = std::get_if<UAST::Node<UAST::stmt>>(&entry))
-                out.features.push_back(action(payload(*statement), statement->position));
+                out.features.push_back(action(*statement));
         }
         tree_map[fullname] = std::move(out);
     }
-    tree_map.at(fullname).position = position(grammar.name.position);
+    tree_map.at(fullname).position = position(grammar.name);
     fullname.resize(scopeSize);
 }
 
@@ -335,7 +484,7 @@ void AST::Builder::convertMain(const UAST::main& main) {
             } else if constexpr (std::is_same_v<T, UAST::Node<UAST::fail_block>>) {
                 const auto& block = payload(value);
                 const auto& n = payload(block.name);
-                fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(payload(block.val), block.val.position), position(value.position)});
+                fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(block.val), position(value)});
             }
         }, entry);
     }
@@ -346,6 +495,7 @@ void AST::Builder::build() {
     fail_blocks.clear();
     rule_features.clear();
     fullname.clear();
+    FileScope fileScope(file);
 
     convertMain(input);
 

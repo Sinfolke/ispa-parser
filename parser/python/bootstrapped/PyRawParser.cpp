@@ -5,6 +5,76 @@
 #include <ispastdlib/assign.hpp>
 #include <ispastdlib/to_string.hpp>
 
+auto PyRawParser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("IMPORT", true);
+}
+auto PyRawParser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::IMPORT::to_string() const -> std::string {
+	return ::ISPA_STD::concat("IMPORT {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::TILDE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("TILDE", true);
+}
+auto PyRawParser::FlatTypes::TILDE::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::TILDE::to_string() const -> std::string {
+	return ::ISPA_STD::concat("TILDE {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TILDE value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("LSHIFT_ASSIGN", true);
+}
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("LSHIFT_ASSIGN {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LSHIFT_ASSIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::BREAK::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("BREAK", true);
+}
+auto PyRawParser::FlatTypes::BREAK::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::BREAK::to_string() const -> std::string {
+	return ::ISPA_STD::concat("BREAK {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, BREAK value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::NONLOCAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("NONLOCAL", true);
+}
+auto PyRawParser::FlatTypes::NONLOCAL::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::NONLOCAL::to_string() const -> std::string {
+	return ::ISPA_STD::concat("NONLOCAL {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NONLOCAL value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
 auto PyRawParser::FlatTypes::GLOBAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("GLOBAL", true);
 }
@@ -184,62 +254,6 @@ auto PyRawParser::FlatTypes::RAISE::to_string() const -> std::string {
 	return ::ISPA_STD::concat("RAISE {", "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, RAISE value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::NONLOCAL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("NONLOCAL", true);
-}
-auto PyRawParser::FlatTypes::NONLOCAL::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::NONLOCAL::to_string() const -> std::string {
-	return ::ISPA_STD::concat("NONLOCAL {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, NONLOCAL value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::TILDE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("TILDE", true);
-}
-auto PyRawParser::FlatTypes::TILDE::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::TILDE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("TILDE {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, TILDE value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("LSHIFT_ASSIGN", true);
-}
-auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::LSHIFT_ASSIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("LSHIFT_ASSIGN {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, LSHIFT_ASSIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::BREAK::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("BREAK", true);
-}
-auto PyRawParser::FlatTypes::BREAK::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::BREAK::to_string() const -> std::string {
-	return ::ISPA_STD::concat("BREAK {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, BREAK value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -495,20 +509,6 @@ auto PyRawParser::FlatTypes::SEMICOLON::to_string() const -> std::string {
 	return ::ISPA_STD::concat("SEMICOLON {", "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::IMPORT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("IMPORT", true);
-}
-auto PyRawParser::FlatTypes::IMPORT::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::IMPORT::to_string() const -> std::string {
-	return ::ISPA_STD::concat("IMPORT {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, IMPORT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -862,6 +862,20 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, EQ value) -> std::ost
 	value.print(os);
 	return os;
 }
+auto PyRawParser::FlatTypes::ARROW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("ARROW", true);
+}
+auto PyRawParser::FlatTypes::ARROW::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::ARROW::to_string() const -> std::string {
+	return ::ISPA_STD::concat("ARROW {", "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ARROW value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
 auto PyRawParser::FlatTypes::CARET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("CARET", true);
 }
@@ -1090,20 +1104,6 @@ auto PyRawParser::FlatTypes::FLOOR_DIV::to_string() const -> std::string {
 	return ::ISPA_STD::concat("FLOOR_DIV {", "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::ARROW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("ARROW", true);
-}
-auto PyRawParser::FlatTypes::ARROW::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::ARROW::to_string() const -> std::string {
-	return ::ISPA_STD::concat("ARROW {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, ARROW value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -1716,10 +1716,7 @@ auto PyRawParser::FlatTypes::expr_list::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::expr_list::print(std::ostream& os) const -> void {
@@ -1727,29 +1724,9 @@ auto PyRawParser::FlatTypes::expr_list::print(std::ostream& os) const -> void {
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::expr_list::to_string() const -> std::string {
-	return ::ISPA_STD::concat("expr_list {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("expr_list {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr_list value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::expr_list_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("expr_list_tail", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto PyRawParser::FlatTypes::expr_list_tail::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::expr_list_tail::to_string() const -> std::string {
-	return ::ISPA_STD::concat("expr_list_tail {", "value = ", value.to_string(), "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, expr_list_tail value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -1841,20 +1818,6 @@ auto PyRawParser::FlatTypes::inversion::to_string() const -> std::string {
 	return ::ISPA_STD::concat("inversion {", "value = ", value, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, inversion value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::is_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("is_op", true);
-}
-auto PyRawParser::FlatTypes::is_op::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::is_op::to_string() const -> std::string {
-	return ::ISPA_STD::concat("is_op {", "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, is_op value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -2200,6 +2163,26 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, tuple_suffix value) -
 	value.print(os);
 	return os;
 }
+auto PyRawParser::FlatTypes::is_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("is_op", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto PyRawParser::FlatTypes::is_op::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::is_op::to_string() const -> std::string {
+	return ::ISPA_STD::concat("is_op {", "value = ", value.to_string(), "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, is_op value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
 auto PyRawParser::FlatTypes::atom::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("atom", false);
 	printer.up(false);
@@ -2244,10 +2227,7 @@ auto PyRawParser::FlatTypes::dotted_name::write_to_output(::ISPA_STD::ASTPrinter
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::dotted_name::print(std::ostream& os) const -> void {
@@ -2255,7 +2235,7 @@ auto PyRawParser::FlatTypes::dotted_name::print(std::ostream& os) const -> void 
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::dotted_name::to_string() const -> std::string {
-	return ::ISPA_STD::concat("dotted_name {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("dotted_name {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dotted_name value) -> std::ostream & {
 	value.print(os);
@@ -2288,10 +2268,7 @@ auto PyRawParser::FlatTypes::global_stmt::write_to_output(::ISPA_STD::ASTPrinter
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::global_stmt::print(std::ostream& os) const -> void {
@@ -2299,7 +2276,7 @@ auto PyRawParser::FlatTypes::global_stmt::print(std::ostream& os) const -> void 
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::global_stmt::to_string() const -> std::string {
-	return ::ISPA_STD::concat("global_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("global_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, global_stmt value) -> std::ostream & {
 	value.print(os);
@@ -2356,10 +2333,7 @@ auto PyRawParser::FlatTypes::nonlocal_stmt::write_to_output(::ISPA_STD::ASTPrint
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::nonlocal_stmt::print(std::ostream& os) const -> void {
@@ -2367,7 +2341,7 @@ auto PyRawParser::FlatTypes::nonlocal_stmt::print(std::ostream& os) const -> voi
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::nonlocal_stmt::to_string() const -> std::string {
-	return ::ISPA_STD::concat("nonlocal_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("nonlocal_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, nonlocal_stmt value) -> std::ostream & {
 	value.print(os);
@@ -2723,23 +2697,6 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, while_stmt value) -> 
 	value.print(os);
 	return os;
 }
-auto PyRawParser::FlatTypes::compare_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("compare_op", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto PyRawParser::FlatTypes::compare_op::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::compare_op::to_string() const -> std::string {
-	return ::ISPA_STD::concat("compare_op {", "value = ", value, "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compare_op value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
 auto PyRawParser::FlatTypes::decorator::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("decorator", false);
 	printer.up(false);
@@ -2757,6 +2714,23 @@ auto PyRawParser::FlatTypes::decorator::to_string() const -> std::string {
 	return ::ISPA_STD::concat("decorator {", "value = ", value.to_string(), "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorator value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto PyRawParser::FlatTypes::compare_op::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("compare_op", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto PyRawParser::FlatTypes::compare_op::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::compare_op::to_string() const -> std::string {
+	return ::ISPA_STD::concat("compare_op {", "value = ", value, "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compare_op value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -2995,6 +2969,23 @@ auto PyRawParser::FlatTypes::operator<<(std::ostream & os, raise_stmt value) -> 
 	value.print(os);
 	return os;
 }
+auto PyRawParser::FlatTypes::decorators::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("decorators", false);
+	printer.up(false);
+	printer.subtree("value", value, true);
+	printer.down();
+}
+auto PyRawParser::FlatTypes::decorators::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto PyRawParser::FlatTypes::decorators::to_string() const -> std::string {
+	return ::ISPA_STD::concat("decorators {", "value = ", value, "}");
+}
+auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorators value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
 auto PyRawParser::FlatTypes::compare_tail::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("compare_tail", false);
 	printer.up(false);
@@ -3016,23 +3007,6 @@ auto PyRawParser::FlatTypes::compare_tail::to_string() const -> std::string {
 	return ::ISPA_STD::concat("compare_tail {", "op = ", op.to_string(), ", ", "value = ", value.to_string(), "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, compare_tail value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto PyRawParser::FlatTypes::decorators::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("decorators", false);
-	printer.up(false);
-	printer.subtree("value", value, true);
-	printer.down();
-}
-auto PyRawParser::FlatTypes::decorators::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto PyRawParser::FlatTypes::decorators::to_string() const -> std::string {
-	return ::ISPA_STD::concat("decorators {", "value = ", value, "}");
-}
-auto PyRawParser::FlatTypes::operator<<(std::ostream & os, decorators value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -3064,10 +3038,7 @@ auto PyRawParser::FlatTypes::dotted_as_names::write_to_output(::ISPA_STD::ASTPri
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::dotted_as_names::print(std::ostream& os) const -> void {
@@ -3075,7 +3046,7 @@ auto PyRawParser::FlatTypes::dotted_as_names::print(std::ostream& os) const -> v
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::dotted_as_names::to_string() const -> std::string {
-	return ::ISPA_STD::concat("dotted_as_names {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("dotted_as_names {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, dotted_as_names value) -> std::ostream & {
 	value.print(os);
@@ -3088,10 +3059,7 @@ auto PyRawParser::FlatTypes::import_names::write_to_output(::ISPA_STD::ASTPrinte
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::import_names::print(std::ostream& os) const -> void {
@@ -3099,7 +3067,7 @@ auto PyRawParser::FlatTypes::import_names::print(std::ostream& os) const -> void
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::import_names::to_string() const -> std::string {
-	return ::ISPA_STD::concat("import_names {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("import_names {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, import_names value) -> std::ostream & {
 	value.print(os);
@@ -3129,10 +3097,7 @@ auto PyRawParser::FlatTypes::parameters::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::parameters::print(std::ostream& os) const -> void {
@@ -3140,7 +3105,7 @@ auto PyRawParser::FlatTypes::parameters::print(std::ostream& os) const -> void {
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::parameters::to_string() const -> std::string {
-	return ::ISPA_STD::concat("parameters {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("parameters {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, parameters value) -> std::ostream & {
 	value.print(os);
@@ -3201,10 +3166,7 @@ auto PyRawParser::FlatTypes::del_stmt::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::del_stmt::print(std::ostream& os) const -> void {
@@ -3212,7 +3174,7 @@ auto PyRawParser::FlatTypes::del_stmt::print(std::ostream& os) const -> void {
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::del_stmt::to_string() const -> std::string {
-	return ::ISPA_STD::concat("del_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("del_stmt {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, del_stmt value) -> std::ostream & {
 	value.print(os);
@@ -3225,10 +3187,7 @@ auto PyRawParser::FlatTypes::for_targets::write_to_output(::ISPA_STD::ASTPrinter
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::for_targets::print(std::ostream& os) const -> void {
@@ -3236,7 +3195,7 @@ auto PyRawParser::FlatTypes::for_targets::print(std::ostream& os) const -> void 
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::for_targets::to_string() const -> std::string {
-	return ::ISPA_STD::concat("for_targets {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("for_targets {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, for_targets value) -> std::ostream & {
 	value.print(os);
@@ -3470,10 +3429,7 @@ auto PyRawParser::FlatTypes::with_items::write_to_output(::ISPA_STD::ASTPrinter<
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::with_items::print(std::ostream& os) const -> void {
@@ -3481,7 +3437,7 @@ auto PyRawParser::FlatTypes::with_items::print(std::ostream& os) const -> void {
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::with_items::to_string() const -> std::string {
-	return ::ISPA_STD::concat("with_items {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("with_items {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, with_items value) -> std::ostream & {
 	value.print(os);
@@ -3580,10 +3536,7 @@ auto PyRawParser::FlatTypes::simple_stmts::write_to_output(::ISPA_STD::ASTPrinte
 	printer.up(true);
 	first.print(printer);
 	printer.down();
-	printer.node("rest", true);
-	printer.up(false);
-	rest.print(printer);
-	printer.down();
+	printer.subtree("rest", rest, true);
 	printer.down();
 }
 auto PyRawParser::FlatTypes::simple_stmts::print(std::ostream& os) const -> void {
@@ -3591,7 +3544,7 @@ auto PyRawParser::FlatTypes::simple_stmts::print(std::ostream& os) const -> void
 	write_to_output(printer);
 }
 auto PyRawParser::FlatTypes::simple_stmts::to_string() const -> std::string {
-	return ::ISPA_STD::concat("simple_stmts {", "first = ", first.to_string(), ", ", "rest = ", rest.to_string(), "}");
+	return ::ISPA_STD::concat("simple_stmts {", "first = ", first.to_string(), ", ", "rest = ", rest, "}");
 }
 auto PyRawParser::FlatTypes::operator<<(std::ostream & os, simple_stmts value) -> std::ostream & {
 	value.print(os);
@@ -8252,9 +8205,12 @@ template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISP
 	bool success_5;
 	bool success_21;
 	bool success_13;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_24;
+	::ISPA_STD::Node<Types::assignment_target> group_capture_25;
+	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_26;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_25;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_28;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> uvar_9;
 	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
@@ -8269,7 +8225,7 @@ template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISP
 	::ISPA_STD::Node<Types::assignment_target> element_22;
 	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_23;
 	::ISPA_STD::Node<Types::assignment_target> uvar_19;
-	::ISPA_STD::Node<Types::assignment_target> tuple_elem_24;
+	::ISPA_STD::Node<Types::assignment_target> tuple_elem_27;
 	success_1 = false;
 	if (!(((*pos)).template holds<Types::DEL>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  DEL");
@@ -8293,54 +8249,57 @@ template<typename IT, class> auto PyRawParser::Parser::del_stmt(IT pos) -> ::ISP
 	success_5 = true;
 	pos = assignment_target_4.it;
 	success_10 = false;
-	auto begin_26 = pos;
+	auto begin_29 = pos;
 	while (true) {
-		auto repeat_ws_27 = begin_26;
+		auto repeat_ws_30 = begin_29;
 		success_7 = false;
-		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_30)).template holds<Types::__WS>()) {
+			__WS_6 = ((*repeat_ws_30)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
-			repeat_ws_27++;
+			repeat_ws_30++;
 		}
-		if (!(((*repeat_ws_27)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_30)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_30)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
-		repeat_ws_27++;
+		repeat_ws_30++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
-		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_30)).template holds<Types::__WS>()) {
+			__WS_16 = ((*repeat_ws_30)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
-			repeat_ws_27++;
+			repeat_ws_30++;
 			shadow_18.push_back(__WS_16);
 			uvar_15 = __WS_16;
 		}
-		assignment_target_20 = assignment_target(repeat_ws_27);
+		assignment_target_20 = assignment_target(repeat_ws_30);
 		if (!(assignment_target_20.status)) {
 			// speculative match failed (diagnostic suppressed): @  assignment_target
 			break;
 		}
 		success_21 = true;
-		repeat_ws_27 = assignment_target_20.it;
+		repeat_ws_30 = assignment_target_20.it;
 		element_22 = assignment_target_20.node;
 		shadow_23.push_back(element_22);
 		if (success_13 && success_21) {
-			tuple_elem_24 = assignment_target_20.node;
-			group_8 = std::make_tuple(COMMA_12, __WS_16, tuple_elem_24);
-			shadow_25.push_back(group_8);
+			tuple_elem_27 = assignment_target_20.node;
+			group_8 = std::make_tuple(COMMA_12, __WS_16, tuple_elem_27);
+			shadow_28.push_back(group_8);
+			shadow_24.push_back(COMMA_12);
+			group_capture_25 = assignment_target_20.node;
+			shadow_26.push_back(group_capture_25);
 		}
-		begin_26 = repeat_ws_27;
+		begin_29 = repeat_ws_30;
 	}
 	success_10 = true;
-	::ISPA_STD::assign_compatible(uvar_9, shadow_25);
-	pos = begin_26;
+	::ISPA_STD::assign_compatible(uvar_9, shadow_28);
+	pos = begin_29;
 	Types::del_stmt result;
 	::ISPA_STD::assign_compatible(result.first, assignment_target_4);
-	::ISPA_STD::assign_compatible(result.rest, uvar_19);
+	::ISPA_STD::assign_compatible(result.rest, shadow_26);
 	::ISPA_STD::MatchResult<Types::del_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -8660,9 +8619,12 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::dotted_as_name> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::dotted_as_name>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::dotted_as_name>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -8677,7 +8639,7 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -
 	::ISPA_STD::Node<Types::dotted_as_name> element_18;
 	std::vector<::ISPA_STD::Node<Types::dotted_as_name>> shadow_19;
 	::ISPA_STD::Node<Types::dotted_as_name> uvar_15;
-	::ISPA_STD::Node<Types::dotted_as_name> tuple_elem_20;
+	::ISPA_STD::Node<Types::dotted_as_name> tuple_elem_23;
 	success_1 = false;
 	dotted_as_name_0 = dotted_as_name(pos);
 	if (!(dotted_as_name_0.status)) {
@@ -8687,54 +8649,57 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_as_names(IT pos) -
 	success_1 = true;
 	pos = dotted_as_name_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		dotted_as_name_16 = dotted_as_name(repeat_ws_23);
+		dotted_as_name_16 = dotted_as_name(repeat_ws_26);
 		if (!(dotted_as_name_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  dotted_as_name
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = dotted_as_name_16.it;
+		repeat_ws_26 = dotted_as_name_16.it;
 		element_18 = dotted_as_name_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = dotted_as_name_16.node;
-			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = dotted_as_name_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = dotted_as_name_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
 	Types::dotted_as_names result;
 	::ISPA_STD::assign_compatible(result.first, dotted_as_name_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::dotted_as_names, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -8748,9 +8713,11 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_name(IT pos) -> ::
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::DOT>> shadow_19;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_20;
 	std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_19;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_21;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::DOT>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -8773,53 +8740,55 @@ template<typename IT, class> auto PyRawParser::Parser::dotted_name(IT pos) -> ::
 	success_1 = true;
 	pos++;
 	success_6 = false;
-	auto begin_20 = pos;
+	auto begin_22 = pos;
 	while (true) {
-		auto repeat_ws_21 = begin_20;
+		auto repeat_ws_23 = begin_22;
 		success_3 = false;
-		if (((*repeat_ws_21)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_21++;
+			repeat_ws_23++;
 		}
-		if (!(((*repeat_ws_21)).template holds<Types::DOT>())) {
+		if (!(((*repeat_ws_23)).template holds<Types::DOT>())) {
 			// speculative match failed (diagnostic suppressed):  DOT
 			break;
 		}
-		DOT_8 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::DOT>>();
+		DOT_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::DOT>>();
 		success_9 = true;
-		repeat_ws_21++;
+		repeat_ws_23++;
 		shadow_10.push_back(DOT_8);
 		uvar_7 = DOT_8;
 		success_13 = false;
-		if (((*repeat_ws_21)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_21++;
+			repeat_ws_23++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		if (!(((*repeat_ws_21)).template holds<Types::ID>())) {
+		if (!(((*repeat_ws_23)).template holds<Types::ID>())) {
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_16 = ((*repeat_ws_21)).template to_node<::ISPA_STD::Node<Types::ID>>();
+		ID_16 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_17 = true;
-		repeat_ws_21++;
+		repeat_ws_23++;
 		shadow_18.push_back(ID_16);
 		uvar_15 = ID_16;
 		if (success_9 && success_17) {
 			group_4 = std::make_tuple(DOT_8, __WS_12, ID_16);
-			shadow_19.push_back(group_4);
+			shadow_21.push_back(group_4);
+			shadow_19.push_back(DOT_8);
+			shadow_20.push_back(ID_16);
 		}
-		begin_20 = repeat_ws_21;
+		begin_22 = repeat_ws_23;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_19);
-	pos = begin_20;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
+	pos = begin_22;
 	Types::dotted_name result;
 	::ISPA_STD::assign_compatible(result.first, ID_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_20);
 	::ISPA_STD::MatchResult<Types::dotted_name, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -9201,10 +9170,33 @@ template auto PyRawParser::Parser::expr<::PyRawParser::Lexer::lazy_iterator>(::P
 template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list, IT> {
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
+	bool success_17;
+	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::expr> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::expr>> shadow_22;
+	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_4;
+	bool success_6;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> shadow_24;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
-	::ISPA_STD::MatchResult<Types::expr_list_tail, IT> expr_list_tail_4;
-	bool success_5;
+	::ISPA_STD::Node<Types::COMMA> COMMA_8;
+	::ISPA_STD::Node<Types::COMMA> uvar_7;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_10;
+	::ISPA_STD::Node<Types::__WS> __WS_12;
+	bool success_13;
+	::ISPA_STD::Node<Types::__WS> uvar_11;
+	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_14;
+	::ISPA_STD::MatchResult<Types::expr, IT> expr_16;
+	::ISPA_STD::Node<Types::expr> element_18;
+	std::vector<::ISPA_STD::Node<Types::expr>> shadow_19;
+	::ISPA_STD::Node<Types::expr> uvar_15;
+	::ISPA_STD::Node<Types::expr> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
+	bool success_30;
 	success_1 = false;
 	expr_0 = expr(pos);
 	if (!(expr_0.status)) {
@@ -9213,21 +9205,70 @@ template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::IS
 	}
 	success_1 = true;
 	pos = expr_0.it;
-	success_3 = false;
+	success_6 = false;
+	auto begin_25 = pos;
+	while (true) {
+		auto repeat_ws_26 = begin_25;
+		success_3 = false;
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+			success_3 = true;
+			repeat_ws_26++;
+		}
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
+			// speculative match failed (diagnostic suppressed):  COMMA
+			break;
+		}
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_9 = true;
+		repeat_ws_26++;
+		shadow_10.push_back(COMMA_8);
+		uvar_7 = COMMA_8;
+		success_13 = false;
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+			success_13 = true;
+			repeat_ws_26++;
+			shadow_14.push_back(__WS_12);
+			uvar_11 = __WS_12;
+		}
+		expr_16 = expr(repeat_ws_26);
+		if (!(expr_16.status)) {
+			// speculative match failed (diagnostic suppressed): @  expr
+			break;
+		}
+		success_17 = true;
+		repeat_ws_26 = expr_16.it;
+		element_18 = expr_16.node;
+		shadow_19.push_back(element_18);
+		if (success_9 && success_17) {
+			tuple_elem_23 = expr_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = expr_16.node;
+			shadow_22.push_back(group_capture_21);
+		}
+		begin_25 = repeat_ws_26;
+	}
+	success_6 = true;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_2 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_3 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_5 = false;
-	expr_list_tail_4 = expr_list_tail(pos);
-	if (expr_list_tail_4.status) {
-		success_5 = true;
-		pos = expr_list_tail_4.it;
+	success_30 = false;
+	if (((*pos)).template holds<Types::COMMA>()) {
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_30 = true;
+		pos++;
 	}
 	Types::expr_list result;
 	::ISPA_STD::assign_compatible(result.first, expr_0);
-	::ISPA_STD::assign_compatible(result.rest, expr_list_tail_4);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::expr_list, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -9236,89 +9277,6 @@ template<typename IT, class> auto PyRawParser::Parser::expr_list(IT pos) -> ::IS
 }
 template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::iterator>;
 template auto PyRawParser::Parser::expr_list<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list, ::PyRawParser::Lexer::lazy_iterator>;
-template<typename IT, class> auto PyRawParser::Parser::expr_list_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, IT> {
-	bool success_13;
-	bool success_5;
-	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>> group_0;
-	bool success_2;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> shadow_17;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::expr>>> uvar_1;
-	::ISPA_STD::Node<Types::COMMA> COMMA_4;
-	::ISPA_STD::Node<Types::COMMA> uvar_3;
-	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_6;
-	::ISPA_STD::Node<Types::__WS> __WS_8;
-	bool success_9;
-	::ISPA_STD::Node<Types::__WS> uvar_7;
-	std::vector<::ISPA_STD::Node<Types::__WS>> shadow_10;
-	::ISPA_STD::MatchResult<Types::expr, IT> expr_12;
-	::ISPA_STD::Node<Types::expr> element_14;
-	std::vector<::ISPA_STD::Node<Types::expr>> shadow_15;
-	::ISPA_STD::Node<Types::expr> uvar_11;
-	::ISPA_STD::Node<Types::expr> tuple_elem_16;
-	::ISPA_STD::Node<Types::__WS> __WS_19;
-	bool success_20;
-	::ISPA_STD::Node<Types::COMMA> COMMA_21;
-	bool success_22;
-	success_2 = false;
-	auto begin_18 = pos;
-	while (true) {
-		if (!(((*begin_18)).template holds<Types::COMMA>())) {
-			// speculative match failed (diagnostic suppressed):  COMMA
-			break;
-		}
-		COMMA_4 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_5 = true;
-		begin_18++;
-		shadow_6.push_back(COMMA_4);
-		uvar_3 = COMMA_4;
-		success_9 = false;
-		if (((*begin_18)).template holds<Types::__WS>()) {
-			__WS_8 = ((*begin_18)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-			success_9 = true;
-			begin_18++;
-			shadow_10.push_back(__WS_8);
-			uvar_7 = __WS_8;
-		}
-		expr_12 = expr(begin_18);
-		if (!(expr_12.status)) {
-			// speculative match failed (diagnostic suppressed): @  expr
-			break;
-		}
-		success_13 = true;
-		begin_18 = expr_12.it;
-		element_14 = expr_12.node;
-		shadow_15.push_back(element_14);
-		if (success_5 && success_13) {
-			tuple_elem_16 = expr_12.node;
-			group_0 = std::make_tuple(COMMA_4, __WS_8, tuple_elem_16);
-			shadow_17.push_back(group_0);
-		}
-	}
-	success_2 = true;
-	::ISPA_STD::assign_compatible(uvar_1, shadow_17);
-	pos = begin_18;
-	success_20 = false;
-	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_19 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_20 = true;
-		pos++;
-	}
-	success_22 = false;
-	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_21 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_22 = true;
-		pos++;
-	}
-	Types::expr_list_tail result;
-	::ISPA_STD::assign_compatible(result.value, uvar_11);
-	::ISPA_STD::MatchResult<Types::expr_list_tail, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::iterator>(::PyRawParser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::iterator>;
-template auto PyRawParser::Parser::expr_list_tail<::PyRawParser::Lexer::lazy_iterator>(::PyRawParser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr_list_tail, ::PyRawParser::Lexer::lazy_iterator>;
 template<typename IT, class> auto PyRawParser::Parser::expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, IT> {
 	::ISPA_STD::MatchResult<Types::expr, IT> expr_0;
 	bool success_1;
@@ -9830,9 +9788,12 @@ template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::assignment_target> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::assignment_target>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -9847,11 +9808,11 @@ template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::
 	::ISPA_STD::Node<Types::assignment_target> element_18;
 	std::vector<::ISPA_STD::Node<Types::assignment_target>> shadow_19;
 	::ISPA_STD::Node<Types::assignment_target> uvar_15;
-	::ISPA_STD::Node<Types::assignment_target> tuple_elem_20;
-	::ISPA_STD::Node<Types::__WS> __WS_24;
-	bool success_25;
-	::ISPA_STD::Node<Types::COMMA> COMMA_26;
-	bool success_27;
+	::ISPA_STD::Node<Types::assignment_target> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
+	bool success_30;
 	success_1 = false;
 	assignment_target_0 = assignment_target(pos);
 	if (!(assignment_target_0.status)) {
@@ -9861,66 +9822,69 @@ template<typename IT, class> auto PyRawParser::Parser::for_targets(IT pos) -> ::
 	success_1 = true;
 	pos = assignment_target_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		assignment_target_16 = assignment_target(repeat_ws_23);
+		assignment_target_16 = assignment_target(repeat_ws_26);
 		if (!(assignment_target_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  assignment_target
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = assignment_target_16.it;
+		repeat_ws_26 = assignment_target_16.it;
 		element_18 = assignment_target_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = assignment_target_16.node;
-			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = assignment_target_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = assignment_target_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
-	success_25 = false;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_25 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_27 = false;
+	success_30 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_27 = true;
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_30 = true;
 		pos++;
 	}
 	Types::for_targets result;
 	::ISPA_STD::assign_compatible(result.first, assignment_target_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::for_targets, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -10139,9 +10103,11 @@ template<typename IT, class> auto PyRawParser::Parser::global_stmt(IT pos) -> ::
 	bool success_5;
 	bool success_21;
 	bool success_13;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_23;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_24;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_23;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_25;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_9;
 	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
@@ -10178,53 +10144,55 @@ template<typename IT, class> auto PyRawParser::Parser::global_stmt(IT pos) -> ::
 	success_5 = true;
 	pos++;
 	success_10 = false;
-	auto begin_24 = pos;
+	auto begin_26 = pos;
 	while (true) {
-		auto repeat_ws_25 = begin_24;
+		auto repeat_ws_27 = begin_26;
 		success_7 = false;
-		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
+			__WS_6 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
-			repeat_ws_25++;
+			repeat_ws_27++;
 		}
-		if (!(((*repeat_ws_25)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_27)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
-		repeat_ws_25++;
+		repeat_ws_27++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
-		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
+			__WS_16 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
-			repeat_ws_25++;
+			repeat_ws_27++;
 			shadow_18.push_back(__WS_16);
 			uvar_15 = __WS_16;
 		}
-		if (!(((*repeat_ws_25)).template holds<Types::ID>())) {
+		if (!(((*repeat_ws_27)).template holds<Types::ID>())) {
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::ID>>();
+		ID_20 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_21 = true;
-		repeat_ws_25++;
+		repeat_ws_27++;
 		shadow_22.push_back(ID_20);
 		uvar_19 = ID_20;
 		if (success_13 && success_21) {
 			group_8 = std::make_tuple(COMMA_12, __WS_16, ID_20);
-			shadow_23.push_back(group_8);
+			shadow_25.push_back(group_8);
+			shadow_23.push_back(COMMA_12);
+			shadow_24.push_back(ID_20);
 		}
-		begin_24 = repeat_ws_25;
+		begin_26 = repeat_ws_27;
 	}
 	success_10 = true;
-	::ISPA_STD::assign_compatible(uvar_9, shadow_23);
-	pos = begin_24;
+	::ISPA_STD::assign_compatible(uvar_9, shadow_25);
+	pos = begin_26;
 	Types::global_stmt result;
 	::ISPA_STD::assign_compatible(result.first, ID_4);
-	::ISPA_STD::assign_compatible(result.rest, uvar_19);
+	::ISPA_STD::assign_compatible(result.rest, shadow_24);
 	::ISPA_STD::MatchResult<Types::global_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -10552,9 +10520,12 @@ template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> :
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::import_name_item> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::import_name_item>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::import_name_item>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -10569,11 +10540,11 @@ template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> :
 	::ISPA_STD::Node<Types::import_name_item> element_18;
 	std::vector<::ISPA_STD::Node<Types::import_name_item>> shadow_19;
 	::ISPA_STD::Node<Types::import_name_item> uvar_15;
-	::ISPA_STD::Node<Types::import_name_item> tuple_elem_20;
-	::ISPA_STD::Node<Types::__WS> __WS_24;
-	bool success_25;
-	::ISPA_STD::Node<Types::COMMA> COMMA_26;
-	bool success_27;
+	::ISPA_STD::Node<Types::import_name_item> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
+	bool success_30;
 	success_1 = false;
 	import_name_item_0 = import_name_item(pos);
 	if (!(import_name_item_0.status)) {
@@ -10583,66 +10554,69 @@ template<typename IT, class> auto PyRawParser::Parser::import_names(IT pos) -> :
 	success_1 = true;
 	pos = import_name_item_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		import_name_item_16 = import_name_item(repeat_ws_23);
+		import_name_item_16 = import_name_item(repeat_ws_26);
 		if (!(import_name_item_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  import_name_item
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = import_name_item_16.it;
+		repeat_ws_26 = import_name_item_16.it;
 		element_18 = import_name_item_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = import_name_item_16.node;
-			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = import_name_item_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = import_name_item_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
-	success_25 = false;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_25 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_27 = false;
+	success_30 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_27 = true;
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_30 = true;
 		pos++;
 	}
 	Types::import_names result;
 	::ISPA_STD::assign_compatible(result.first, import_name_item_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::import_names, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -11259,6 +11233,7 @@ template<typename IT, class> auto PyRawParser::Parser::is_op(IT pos) -> ::ISPA_S
 		pos++;
 	}
 	Types::is_op result;
+	::ISPA_STD::assign_compatible(result.value, NOT_4);
 	::ISPA_STD::MatchResult<Types::is_op, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -11418,9 +11393,11 @@ template<typename IT, class> auto PyRawParser::Parser::nonlocal_stmt(IT pos) -> 
 	bool success_5;
 	bool success_21;
 	bool success_13;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_23;
+	std::vector<::ISPA_STD::Node<Types::ID>> shadow_24;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>> group_8;
 	bool success_10;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_23;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> shadow_25;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::ID>>> uvar_9;
 	::ISPA_STD::Node<Types::__WS> __WS_6;
 	bool success_7;
@@ -11457,53 +11434,55 @@ template<typename IT, class> auto PyRawParser::Parser::nonlocal_stmt(IT pos) -> 
 	success_5 = true;
 	pos++;
 	success_10 = false;
-	auto begin_24 = pos;
+	auto begin_26 = pos;
 	while (true) {
-		auto repeat_ws_25 = begin_24;
+		auto repeat_ws_27 = begin_26;
 		success_7 = false;
-		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_6 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
+			__WS_6 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_7 = true;
-			repeat_ws_25++;
+			repeat_ws_27++;
 		}
-		if (!(((*repeat_ws_25)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_27)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_12 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_12 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_13 = true;
-		repeat_ws_25++;
+		repeat_ws_27++;
 		shadow_14.push_back(COMMA_12);
 		uvar_11 = COMMA_12;
 		success_17 = false;
-		if (((*repeat_ws_25)).template holds<Types::__WS>()) {
-			__WS_16 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_27)).template holds<Types::__WS>()) {
+			__WS_16 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_17 = true;
-			repeat_ws_25++;
+			repeat_ws_27++;
 			shadow_18.push_back(__WS_16);
 			uvar_15 = __WS_16;
 		}
-		if (!(((*repeat_ws_25)).template holds<Types::ID>())) {
+		if (!(((*repeat_ws_27)).template holds<Types::ID>())) {
 			// speculative match failed (diagnostic suppressed): @  ID
 			break;
 		}
-		ID_20 = ((*repeat_ws_25)).template to_node<::ISPA_STD::Node<Types::ID>>();
+		ID_20 = ((*repeat_ws_27)).template to_node<::ISPA_STD::Node<Types::ID>>();
 		success_21 = true;
-		repeat_ws_25++;
+		repeat_ws_27++;
 		shadow_22.push_back(ID_20);
 		uvar_19 = ID_20;
 		if (success_13 && success_21) {
 			group_8 = std::make_tuple(COMMA_12, __WS_16, ID_20);
-			shadow_23.push_back(group_8);
+			shadow_25.push_back(group_8);
+			shadow_23.push_back(COMMA_12);
+			shadow_24.push_back(ID_20);
 		}
-		begin_24 = repeat_ws_25;
+		begin_26 = repeat_ws_27;
 	}
 	success_10 = true;
-	::ISPA_STD::assign_compatible(uvar_9, shadow_23);
-	pos = begin_24;
+	::ISPA_STD::assign_compatible(uvar_9, shadow_25);
+	pos = begin_26;
 	Types::nonlocal_stmt result;
 	::ISPA_STD::assign_compatible(result.first, ID_4);
-	::ISPA_STD::assign_compatible(result.rest, uvar_19);
+	::ISPA_STD::assign_compatible(result.rest, shadow_24);
 	::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -11766,9 +11745,12 @@ template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::I
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::parameter> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::parameter>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::parameter>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -11783,11 +11765,11 @@ template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::I
 	::ISPA_STD::Node<Types::parameter> element_18;
 	std::vector<::ISPA_STD::Node<Types::parameter>> shadow_19;
 	::ISPA_STD::Node<Types::parameter> uvar_15;
-	::ISPA_STD::Node<Types::parameter> tuple_elem_20;
-	::ISPA_STD::Node<Types::__WS> __WS_24;
-	bool success_25;
-	::ISPA_STD::Node<Types::COMMA> COMMA_26;
-	bool success_27;
+	::ISPA_STD::Node<Types::parameter> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
+	bool success_30;
 	success_1 = false;
 	parameter_0 = parameter(pos);
 	if (!(parameter_0.status)) {
@@ -11797,66 +11779,69 @@ template<typename IT, class> auto PyRawParser::Parser::parameters(IT pos) -> ::I
 	success_1 = true;
 	pos = parameter_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		parameter_16 = parameter(repeat_ws_23);
+		parameter_16 = parameter(repeat_ws_26);
 		if (!(parameter_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  parameter
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = parameter_16.it;
+		repeat_ws_26 = parameter_16.it;
 		element_18 = parameter_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = parameter_16.node;
-			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = parameter_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = parameter_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
-	success_25 = false;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_25 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_27 = false;
+	success_30 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_27 = true;
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_30 = true;
 		pos++;
 	}
 	Types::parameters result;
 	::ISPA_STD::assign_compatible(result.first, parameter_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::parameters, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -13098,9 +13083,12 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> :
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::SEMICOLON>> shadow_20;
+	::ISPA_STD::Node<Types::simple_stmt> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::simple_stmt>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::SEMICOLON>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::simple_stmt>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -13115,15 +13103,15 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> :
 	::ISPA_STD::Node<Types::simple_stmt> element_18;
 	std::vector<::ISPA_STD::Node<Types::simple_stmt>> shadow_19;
 	::ISPA_STD::Node<Types::simple_stmt> uvar_15;
-	::ISPA_STD::Node<Types::simple_stmt> tuple_elem_20;
-	::ISPA_STD::Node<Types::__WS> __WS_24;
-	bool success_25;
-	::ISPA_STD::Node<Types::SEMICOLON> SEMICOLON_26;
-	bool success_27;
-	::ISPA_STD::Node<Types::__WS> __WS_28;
-	bool success_29;
-	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_30;
-	bool success_31;
+	::ISPA_STD::Node<Types::simple_stmt> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::SEMICOLON> SEMICOLON_29;
+	bool success_30;
+	::ISPA_STD::Node<Types::__WS> __WS_31;
+	bool success_32;
+	::ISPA_STD::Node<Types::NEWLINE> NEWLINE_33;
+	bool success_34;
 	success_1 = false;
 	simple_stmt_0 = simple_stmt(pos);
 	if (!(simple_stmt_0.status)) {
@@ -13133,80 +13121,83 @@ template<typename IT, class> auto PyRawParser::Parser::simple_stmts(IT pos) -> :
 	success_1 = true;
 	pos = simple_stmt_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::SEMICOLON>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::SEMICOLON>())) {
 			// speculative match failed (diagnostic suppressed):  SEMICOLON
 			break;
 		}
-		SEMICOLON_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
+		SEMICOLON_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(SEMICOLON_8);
 		uvar_7 = SEMICOLON_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		simple_stmt_16 = simple_stmt(repeat_ws_23);
+		simple_stmt_16 = simple_stmt(repeat_ws_26);
 		if (!(simple_stmt_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  simple_stmt
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = simple_stmt_16.it;
+		repeat_ws_26 = simple_stmt_16.it;
 		element_18 = simple_stmt_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = simple_stmt_16.node;
-			group_4 = std::make_tuple(SEMICOLON_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = simple_stmt_16.node;
+			group_4 = std::make_tuple(SEMICOLON_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(SEMICOLON_8);
+			group_capture_21 = simple_stmt_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
-	success_25 = false;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_25 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_27 = false;
+	success_30 = false;
 	if (((*pos)).template holds<Types::SEMICOLON>()) {
-		SEMICOLON_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
-		success_27 = true;
+		SEMICOLON_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::SEMICOLON>>();
+		success_30 = true;
 		pos++;
 	}
-	success_29 = false;
+	success_32 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_28 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_29 = true;
+		__WS_31 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_32 = true;
 		pos++;
 	}
-	success_31 = false;
+	success_34 = false;
 	if (!(((*pos)).template holds<Types::NEWLINE>())) {
 		raise_error(*pos, "ISPA match failure: required token did not match | grammar:  NEWLINE");
 		return {};
 	}
-	NEWLINE_30 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NEWLINE>>();
-	success_31 = true;
+	NEWLINE_33 = ((*pos)).template to_node<::ISPA_STD::Node<Types::NEWLINE>>();
+	success_34 = true;
 	pos++;
 	Types::simple_stmts result;
 	::ISPA_STD::assign_compatible(result.first, simple_stmt_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::simple_stmts, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
@@ -14790,9 +14781,12 @@ template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::I
 	bool success_1;
 	bool success_17;
 	bool success_9;
+	std::vector<::ISPA_STD::Node<Types::COMMA>> shadow_20;
+	::ISPA_STD::Node<Types::with_item> group_capture_21;
+	std::vector<::ISPA_STD::Node<Types::with_item>> shadow_22;
 	std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>> group_4;
 	bool success_6;
-	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>>> shadow_21;
+	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>>> shadow_24;
 	std::vector<std::tuple<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::__WS>, ::ISPA_STD::Node<Types::with_item>>> uvar_5;
 	::ISPA_STD::Node<Types::__WS> __WS_2;
 	bool success_3;
@@ -14807,11 +14801,11 @@ template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::I
 	::ISPA_STD::Node<Types::with_item> element_18;
 	std::vector<::ISPA_STD::Node<Types::with_item>> shadow_19;
 	::ISPA_STD::Node<Types::with_item> uvar_15;
-	::ISPA_STD::Node<Types::with_item> tuple_elem_20;
-	::ISPA_STD::Node<Types::__WS> __WS_24;
-	bool success_25;
-	::ISPA_STD::Node<Types::COMMA> COMMA_26;
-	bool success_27;
+	::ISPA_STD::Node<Types::with_item> tuple_elem_23;
+	::ISPA_STD::Node<Types::__WS> __WS_27;
+	bool success_28;
+	::ISPA_STD::Node<Types::COMMA> COMMA_29;
+	bool success_30;
 	success_1 = false;
 	with_item_0 = with_item(pos);
 	if (!(with_item_0.status)) {
@@ -14821,66 +14815,69 @@ template<typename IT, class> auto PyRawParser::Parser::with_items(IT pos) -> ::I
 	success_1 = true;
 	pos = with_item_0.it;
 	success_6 = false;
-	auto begin_22 = pos;
+	auto begin_25 = pos;
 	while (true) {
-		auto repeat_ws_23 = begin_22;
+		auto repeat_ws_26 = begin_25;
 		success_3 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_2 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_2 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_3 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 		}
-		if (!(((*repeat_ws_23)).template holds<Types::COMMA>())) {
+		if (!(((*repeat_ws_26)).template holds<Types::COMMA>())) {
 			// speculative match failed (diagnostic suppressed):  COMMA
 			break;
 		}
-		COMMA_8 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		COMMA_8 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
 		success_9 = true;
-		repeat_ws_23++;
+		repeat_ws_26++;
 		shadow_10.push_back(COMMA_8);
 		uvar_7 = COMMA_8;
 		success_13 = false;
-		if (((*repeat_ws_23)).template holds<Types::__WS>()) {
-			__WS_12 = ((*repeat_ws_23)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		if (((*repeat_ws_26)).template holds<Types::__WS>()) {
+			__WS_12 = ((*repeat_ws_26)).template to_node<::ISPA_STD::Node<Types::__WS>>();
 			success_13 = true;
-			repeat_ws_23++;
+			repeat_ws_26++;
 			shadow_14.push_back(__WS_12);
 			uvar_11 = __WS_12;
 		}
-		with_item_16 = with_item(repeat_ws_23);
+		with_item_16 = with_item(repeat_ws_26);
 		if (!(with_item_16.status)) {
 			// speculative match failed (diagnostic suppressed): @  with_item
 			break;
 		}
 		success_17 = true;
-		repeat_ws_23 = with_item_16.it;
+		repeat_ws_26 = with_item_16.it;
 		element_18 = with_item_16.node;
 		shadow_19.push_back(element_18);
 		if (success_9 && success_17) {
-			tuple_elem_20 = with_item_16.node;
-			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_20);
-			shadow_21.push_back(group_4);
+			tuple_elem_23 = with_item_16.node;
+			group_4 = std::make_tuple(COMMA_8, __WS_12, tuple_elem_23);
+			shadow_24.push_back(group_4);
+			shadow_20.push_back(COMMA_8);
+			group_capture_21 = with_item_16.node;
+			shadow_22.push_back(group_capture_21);
 		}
-		begin_22 = repeat_ws_23;
+		begin_25 = repeat_ws_26;
 	}
 	success_6 = true;
-	::ISPA_STD::assign_compatible(uvar_5, shadow_21);
-	pos = begin_22;
-	success_25 = false;
+	::ISPA_STD::assign_compatible(uvar_5, shadow_24);
+	pos = begin_25;
+	success_28 = false;
 	if (((*pos)).template holds<Types::__WS>()) {
-		__WS_24 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
-		success_25 = true;
+		__WS_27 = ((*pos)).template to_node<::ISPA_STD::Node<Types::__WS>>();
+		success_28 = true;
 		pos++;
 	}
-	success_27 = false;
+	success_30 = false;
 	if (((*pos)).template holds<Types::COMMA>()) {
-		COMMA_26 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
-		success_27 = true;
+		COMMA_29 = ((*pos)).template to_node<::ISPA_STD::Node<Types::COMMA>>();
+		success_30 = true;
 		pos++;
 	}
 	Types::with_items result;
 	::ISPA_STD::assign_compatible(result.first, with_item_0);
-	::ISPA_STD::assign_compatible(result.rest, uvar_15);
+	::ISPA_STD::assign_compatible(result.rest, shadow_22);
 	::ISPA_STD::MatchResult<Types::with_items, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);

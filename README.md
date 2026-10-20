@@ -41,7 +41,7 @@ The backend currently lowers **plain EBNF plus AST captures** to C++. The remain
 
 ISPA is self-hosting for its own grammar. The `.isc` grammar that describes ISPA's input language was compiled by ISPA into the parser that ISPA now uses to read grammars, replacing the original hand-written parser. A Python-subset parser (all statements except classes) and a small module-scanner parser are generated the same way.
 
-The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
+The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped_old`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
 
 <!-- TODO: optional, add the generated grammar's size (rules, tokens, lines) -->
 

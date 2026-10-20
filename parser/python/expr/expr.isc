@@ -52,7 +52,8 @@ not_in:
 ;
 
 is_op:
-    IS NOT?
+    IS @ NOT?
+    {@}
 ;
 bitwise_or:
     @ bitwise_xor @ bitor_tail*
@@ -200,13 +201,8 @@ dict_expr:
 ;
 
 expr_list:
-    @ expr @ expr_list_tail?
+    @ expr (COMMA @ expr)* COMMA?
     @{first, rest}
-;
-
-expr_list_tail:
-    @ (COMMA @ expr)* COMMA?
-    {@}
 ;
 
 dict_items:

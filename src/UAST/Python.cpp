@@ -1,1231 +1,848 @@
 module;
-#include "../../parser/python/parser.hpp"
+#include <python/parser.hpp>
 module UAST.Python;
+import AST.Frontend;
 import std;
 namespace {
-struct ActionParser : PyRawParser::Parser {
-    using PyRawParser::Parser::expr;
-    using PyRawParser::Parser::main;
+struct ActionParser : PyParser::Parser {
+    using PyParser::Parser::expr;
+    using PyParser::Parser::main;
 };
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GLOBAL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ELIF&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASSERT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COMMENT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PASS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEF&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FINALLY&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::WHILE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::WITH&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MATMUL_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASYNC&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CONTINUE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RAISE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NONLOCAL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TILDE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LSHIFT_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::BREAK&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PERCENT_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PLUS_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STAR_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::INDENT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ELSE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IF&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NOT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MATMUL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COMMA&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RPAREN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SEMICOLON&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NEWLINE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RBRACE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STRING&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE_BOOL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRY&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::POWER_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::POWER&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PIPE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::__WS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FOR&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COLON&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EXCEPT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NONE_V&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEDENT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STAR&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LBRACKET&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PLUS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LSHIFT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IMPORT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE_BOOL&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EQ&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CARET&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AND&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NUMBER&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MINUS_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LPAREN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ID&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AMP&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AMP_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CLASS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MINUS&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DOT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CARET_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RSHIFT_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PERCENT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ARROW&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::OR&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PIPE_ASSIGN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RSHIFT&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RETURN&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FROM&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LBRACE&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RBRACKET&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitand_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitor_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_and&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_or&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_xor&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitxor_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::break_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_arg&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_arg_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_args&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_suffix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::comparison&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compound_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::conditional_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::conjunction&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::continue_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::def_header&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_item&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_item_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_items&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::disjunction&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::else_clause&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_handlers&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_list&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_list_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::factor&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::finally_clause&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::indented_block&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::index_suffix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::inversion&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::is_op&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::list_expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::not_in&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::not_inversion&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::or_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_content&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::pass_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::power&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::power_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::primary&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::shift_expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::sum&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::term&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::try_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::try_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::tuple_elements&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::tuple_suffix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::atom&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::attribute_suffix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_name&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_alias&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::global_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_alias&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::keyword_arg&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::nonlocal_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::sum_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::unary_expr&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::term_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_op&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::shift_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_bases&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::annotated_assignment&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assert_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::elif_clause&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::if_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter_annotation&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter_default&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::raise_from&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::return_annotation&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::return_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::while_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compare_op&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorator&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_suffix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::postfix&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::relative_module&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_clause&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_as_name&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_name_item&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_header&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::raise_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compare_tail&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorators&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_target&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_as_names&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_names&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_value&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameters&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_def&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorated_def&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::del_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::for_targets&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_as&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_name&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_imports&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::function_header&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::for_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_item&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_targets&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::function_def&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_items&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_from&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::simple_stmt&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::simple_stmts&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::block&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::statement&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::main&, const UAST::SourcePosition&);
-UAST::PythonNode snapshot(std::monostate, const UAST::SourcePosition& base) { return {"absent", {}, {}, base, true, {}}; }
-UAST::PythonNode snapshot(const std::string& v, const UAST::SourcePosition& base) { return {"string", {}, v, base, false, {}}; }
-UAST::PythonNode snapshot(char v, const UAST::SourcePosition& base) { return {"char", {}, std::string(1, v), base, false, {}}; }
-template<class T> UAST::PythonNode snapshot(const std::shared_ptr<T>& p, const UAST::SourcePosition& base) {
-    return p ? snapshot(*p, base) : UAST::PythonNode{"pointer", {}, {}, base, true, {}};
 }
-template<class T> UAST::PythonNode snapshot(const ISPA_STD::Node<T>& n, const UAST::SourcePosition& base) {
-    if (n.empty()) return {"node", {}, {}, base, true, {}};
-    auto p = base;
-    if (n.startpos() != std::string::npos) p.offset += n.startpos();
-    p.length = n.length();
-    if (n.start() && n.startpos() != std::string::npos) {
-        for (auto c = n.start() - n.startpos(); c < n.start(); ++c) {
-            if (*c == '\n') { ++p.line; p.column = 1; }
-            else ++p.column;
+// Generic, metadata-driven snapshot implementation.
+namespace {
+struct Snapshot {
+    using P = UAST::SourcePosition;
+    using R = UAST::PythonNode;
+    template<class T> static consteval std::string_view type_name() {
+        constexpr std::string_view signature = __PRETTY_FUNCTION__;
+        auto start = signature.find("T = ");
+        if (start == std::string_view::npos) return "unknown";
+        start += 4;
+        auto finish = signature.find_first_of(";]", start);
+        auto name = signature.substr(start, finish - start);
+        auto ns = name.rfind("::");
+        return ns == std::string_view::npos ? name : name.substr(ns + 2);
+    }
+    R operator()(std::monostate, const P& p) const { return {"absent", {}, {}, p, true, {}}; }
+    R operator()(const std::string& x, const P& p) const { return {"string", {}, x, p, false, {}}; }
+    R operator()(char x, const P& p) const { return {"char", {}, std::string(1,x), p, false, {}}; }
+    R operator()(bool x, const P& p) const { return {"bool", {}, x ? "true" : "false", p, false, {}}; }
+    R operator()(const UAST::PythonNode& x, const P&) const { return x; }
+    R operator()(const AST::CaptureBinding& x, const P& p) const {
+        return {"CaptureBinding", {}, {}, p, false, {
+            {"string", "name", x.name, p, false, {}},
+            {"bool", "optional", x.optional ? "true" : "false", p, false, {}},
+            {"bool", "list", x.list ? "true" : "false", p, false, {}}
+        }};
+    }
+    template<class T> R operator()(const std::shared_ptr<T>& x, const P& p) const {
+        return x ? (*this)(*x, p) : R{"pointer", {}, {}, p, true, {}};
+    }
+    template<class T> R operator()(const ISPA_STD::Node<T>& x, const P& base) const {
+        if (x.empty()) return {"node", {}, {}, base, true, {}};
+        auto p = base;
+        if (x.startpos() != std::string::npos) p.offset += x.startpos();
+        p.length = x.length();
+        if (x.start() && x.startpos() != std::string::npos) {
+            for (auto c = x.start() - x.startpos(); c < x.start(); ++c) {
+                if (*c == '\n') { ++p.line; p.column = 1; }
+                else ++p.column;
+            }
+        }
+        auto result = (*this)(x.data(), base);
+        result.position = p;
+        return result;
+    }
+    template<class... T> R operator()(const std::variant<T...>& x, const P& p) const {
+        return {"variant", {}, std::to_string(x.index()), p, false,
+            {std::visit([&](const auto& element) {return (*this)(element,p);}, x)}};
+    }
+    template<class T, class Alloc> R operator()(const std::vector<T,Alloc>& x, const P& p) const {
+        R result{"sequence", {}, {}, p, false, {}};
+        result.children.reserve(x.size());
+        for (const auto& element : x) result.children.push_back((*this)(element,p));
+        return result;
+    }
+    template<class T> requires requires(const T& x) { x.members(); T::members_str(); }
+    R operator()(const T& x, const P& p) const {
+        R result{std::string(type_name<T>()), {}, {}, p, false, {}};
+        constexpr auto names = T::members_str();
+        const auto tuple = x.members();
+        static_assert(names.size() == std::tuple_size_v<decltype(tuple)>);
+        result.children.reserve(names.size());
+        std::apply([&](const auto&... values) {
+            std::size_t index = 0;
+            (([&] {
+                auto child = (*this)(values, p);
+                child.field = names[index++];
+                result.children.push_back(std::move(child));
+            }()), ...);
+        }, tuple);
+        return result;
+    }
+};
+}
+
+
+// ---------------------------------------------------------------------------
+// Typed AST construction.
+//
+// The raw parser output is first viewed through Snapshot (members()/members_str()
+// reflection, so no per-rule glue and no macros). PyBuilder then reads that tree
+// *by rule name and field name*, exactly as the .isc grammar spells them:
+//   `@{first, rest}`  -> fields "first", "rest"
+//   `{@}`             -> field "value"
+// Choice rules (`@ a | b | c {@}`) are looked through, and repetitions are
+// gathered with find_all(), which is deliberately tolerant about how a group
+// capture such as `(COMMA @ expr)*` is shaped by the generator.
+// ---------------------------------------------------------------------------
+// BEGIN-BUILDER
+namespace {
+namespace pyast = UAST::py;
+
+class PyBuilder {
+    using Node = UAST::PythonNode;
+    using Pos = UAST::SourcePosition;
+    using Body = std::vector<pyast::StmtPtr>;
+
+public:
+    pyast::ExprPtr expression(const Node& root) {
+        auto n = unwrap(&root);
+        if (!n || n->kind != "expr") fail(&root, "expected a Python expression, got '" + root.kind + "'");
+        return expr(n);
+    }
+
+    pyast::Module build_module(const Node& root) {
+        if (root.kind != "main" && !root.absent) fail(&root, "expected a Python action body, got '" + root.kind + "'");
+        pyast::Module result;
+        result.pos = root.position;
+        for (auto s : find_all(&root, "statement")) statement(s, result.body);
+        return result;
+    }
+
+private:
+    // ---- generic tree access -------------------------------------------------
+    [[noreturn]] static void fail(const Node* n, const std::string& message) {
+        if (!n) throw std::runtime_error(message);
+        throw std::runtime_error(n->position.file + ":" + std::to_string(n->position.line) + ":" +
+                                 std::to_string(n->position.column) + ": " + message);
+    }
+
+    static const Node* field(const Node* n, std::string_view name) {
+        if (!n) return nullptr;
+        for (const auto& c : n->children)
+            if (c.field == name) return &c;
+        return nullptr;
+    }
+
+    // True for a missing node, an empty Node<T>, or a variant that holds monostate.
+    static bool absent(const Node* n) {
+        if (!n || n->absent) return true;
+        if (n->kind == "variant") return n->children.empty() || absent(&n->children.front());
+        return false;
+    }
+
+    // The payload of a `{@}` rule.
+    static const Node* value_of(const Node* n) {
+        if (auto v = field(n, "value")) return v;
+        if (n && n->children.size() == 1) return &n->children.front();
+        return nullptr;
+    }
+
+    // Rules of the form `@ a | b | c {@}`: nothing but a variant in field "value".
+    static bool is_choice(std::string_view k) {
+        static constexpr std::string_view names[] = {
+            "statement", "compound_stmt", "simple_stmt", "import_stmt", "def_header", "block",
+            "assignment_value", "assignment_suffix", "try_tail", "import_targets", "inversion",
+            "factor", "postfix", "atom", "compare_op", "call_arg"};
+        return std::ranges::find(names, k) != std::end(names);
+    }
+
+    // Looks through variants and choice rules down to the concrete alternative.
+    static const Node* unwrap(const Node* n) {
+        while (!absent(n)) {
+            if (n->kind == "variant") n = n->children.front().absent ? nullptr : &n->children.front();
+            else if (is_choice(n->kind)) n = value_of(n);
+            else return n;
+        }
+        return nullptr;
+    }
+
+    static void collect(const Node* n, std::string_view kind, std::vector<const Node*>& out) {
+        if (absent(n)) return;
+        if (n->kind == kind) { out.push_back(n); return; }
+        for (const auto& c : n->children) collect(&c, kind, out);
+    }
+    // All outermost nodes of `kind` below (or at) n, in source order.
+    static std::vector<const Node*> find_all(const Node* n, std::string_view kind) {
+        std::vector<const Node*> out;
+        collect(n, kind, out);
+        return out;
+    }
+    static const Node* find_first(const Node* n, std::string_view kind) {
+        auto all = find_all(n, kind);
+        return all.empty() ? nullptr : all.front();
+    }
+    static bool contains_kind(const Node* n, std::string_view kind) { return find_first(n, kind) != nullptr; }
+
+    static std::vector<const Node*> elements(const Node* n) {
+        std::vector<const Node*> out;
+        if (absent(n)) return out;
+        if (n->kind == "sequence") {
+            for (const auto& c : n->children)
+                if (!absent(&c)) out.push_back(&c);
+        } else out.push_back(n);
+        return out;
+    }
+
+    static std::string scalar_field(const Node* n, std::string_view name) {
+        auto f = field(n, name);
+        return f && !f->absent ? f->scalar : std::string{};
+    }
+    // Text of an ID token node (or of a Node<ID> field).
+    static std::string text_of(const Node* n) {
+        auto id = find_first(n, "ID");
+        if (!id) fail(n, "expected an identifier");
+        auto v = value_of(id);
+        return v ? v->scalar : std::string{};
+    }
+    static std::string dotted(const Node* n) { // dotted_name {first, rest}
+        std::string out = text_of(field(n, "first"));
+        for (auto id : find_all(field(n, "rest"), "ID")) out += "." + value_of(id)->scalar;
+        return out;
+    }
+
+    static Pos join(const Pos& a, const Pos& b) {
+        Pos r = a;
+        if (a.offset != std::string::npos && b.offset != std::string::npos && b.offset + b.length >= a.offset)
+            r.length = b.offset + b.length - a.offset;
+        return r;
+    }
+
+    template<class K> static pyast::ExprPtr mk(const Pos& pos, K&& k) {
+        return std::make_shared<pyast::Expr>(pyast::Expr{pos, pyast::ExprKind{std::forward<K>(k)}});
+    }
+    template<class K> static pyast::StmtPtr mks(const Pos& pos, K&& k) {
+        return std::make_shared<pyast::Stmt>(pyast::Stmt{pos, pyast::StmtKind{std::forward<K>(k)}});
+    }
+
+    // ---- operators -----------------------------------------------------------
+    static pyast::BinOp binop(const Node* raw) {
+        using enum pyast::BinOp;
+        static const std::unordered_map<std::string_view, pyast::BinOp> table{
+            {"PLUS", Add}, {"MINUS", Sub}, {"STAR", Mult}, {"MATMUL", MatMult}, {"SLASH", Div},
+            {"PERCENT", Mod}, {"FLOOR_DIV", FloorDiv}, {"LSHIFT", LShift}, {"RSHIFT", RShift}};
+        auto t = unwrap(raw);
+        if (!t) fail(raw, "missing operator");
+        auto it = table.find(t->kind);
+        if (it == table.end()) fail(t, "unsupported binary operator '" + t->kind + "'");
+        return it->second;
+    }
+
+    // `x op= y` -> op; nullopt for plain `=`.
+    static std::optional<pyast::BinOp> augop(const Node* t) {
+        using enum pyast::BinOp;
+        static const std::unordered_map<std::string_view, pyast::BinOp> table{
+            {"PLUS_ASSIGN", Add}, {"MINUS_ASSIGN", Sub}, {"STAR_ASSIGN", Mult}, {"MATMUL_ASSIGN", MatMult},
+            {"SLASH_ASSIGN", Div}, {"FLOOR_DIV_ASSIGN", FloorDiv}, {"PERCENT_ASSIGN", Mod},
+            {"POWER_ASSIGN", Pow}, {"AMP_ASSIGN", BitAnd}, {"PIPE_ASSIGN", BitOr},
+            {"CARET_ASSIGN", BitXor}, {"LSHIFT_ASSIGN", LShift}, {"RSHIFT_ASSIGN", RShift}};
+        if (t->kind == "ASSIGN") return std::nullopt;
+        auto it = table.find(t->kind);
+        if (it == table.end()) fail(t, "unsupported assignment operator '" + t->kind + "'");
+        return it->second;
+    }
+
+    static pyast::CmpOp cmpop(const Node* raw) {
+        using enum pyast::CmpOp;
+        auto t = unwrap(raw);
+        if (!t) fail(raw, "missing comparison operator");
+        const auto& k = t->kind;
+        if (k == "EQ") return Eq;
+        if (k == "NE") return NotEq;
+        if (k == "LT") return Lt;
+        if (k == "LE") return LtE;
+        if (k == "GT") return Gt;
+        if (k == "GE") return GtE;
+        if (k == "IN") return In;
+        if (k == "not_in") return NotIn;
+        // `is_op: IS NOT?` — "is not" is recognised by a captured NOT token.
+        if (k == "is_op") return contains_kind(t, "NOT") ? IsNot : Is;
+        fail(t, "unsupported comparison operator '" + k + "'");
+    }
+
+    static void set_ctx(pyast::Expr& e, pyast::ExprContext ctx) {
+        std::visit([&](auto& k) {
+            using T = std::remove_cvref_t<decltype(k)>;
+            if constexpr (std::is_same_v<T, pyast::Name> || std::is_same_v<T, pyast::Attribute> ||
+                          std::is_same_v<T, pyast::Subscript>) {
+                k.ctx = ctx;
+            } else if constexpr (std::is_same_v<T, pyast::Tuple> || std::is_same_v<T, pyast::List>) {
+                k.ctx = ctx;
+                for (auto& x : k.elts) set_ctx(*x, ctx);
+            }
+        }, e.kind);
+    }
+
+    // ---- expressions ---------------------------------------------------------
+    pyast::ExprPtr expr(const Node* raw) {
+        auto n = unwrap(raw);
+        if (!n) fail(raw, "missing Python expression");
+        const auto& k = n->kind;
+        using enum pyast::BinOp;
+
+        if (k == "expr") return conditional(n);
+        if (k == "disjunction") return bool_chain(n, "or_tail", pyast::BoolOp::Or);
+        if (k == "conjunction") return bool_chain(n, "inversion", pyast::BoolOp::And);
+        if (k == "not_inversion")
+            return mk(n->position, pyast::UnaryExpr{pyast::UnaryOp::Not, expr(value_of(n))});
+        if (k == "comparison") return comparison(n);
+        if (k == "bitwise_or") return fold(n, "bitor_tail", BitOr);
+        if (k == "bitwise_xor") return fold(n, "bitxor_tail", BitXor);
+        if (k == "bitwise_and") return fold(n, "bitand_tail", BitAnd);
+        if (k == "shift_expr") return fold(n, "shift_tail", std::nullopt);
+        if (k == "sum") return fold(n, "sum_tail", std::nullopt);
+        if (k == "term") return fold(n, "term_tail", std::nullopt);
+        if (k == "unary_expr") {
+            auto op = unwrap(field(n, "op"));
+            if (!op) fail(n, "missing unary operator");
+            pyast::UnaryOp u;
+            if (op->kind == "PLUS") u = pyast::UnaryOp::UAdd;
+            else if (op->kind == "MINUS") u = pyast::UnaryOp::USub;
+            else if (op->kind == "TILDE") u = pyast::UnaryOp::Invert;
+            else fail(op, "unsupported unary operator '" + op->kind + "'");
+            return mk(n->position, pyast::UnaryExpr{u, expr(field(n, "value"))});
+        }
+        if (k == "power") {
+            auto base = expr(field(n, "base"));
+            auto exponent = field(n, "exponent");
+            if (absent(exponent)) return base;
+            return mk(n->position, pyast::BinaryExpr{base, Pow, expr(value_of(exponent))});
+        }
+        if (k == "primary") {
+            auto cur = expr(field(n, "base"));
+            for (auto s : elements(field(n, "suffixes"))) cur = apply_suffix(cur, s);
+            return cur;
+        }
+        return atom(n);
+    }
+
+    pyast::ExprPtr conditional(const Node* n) {
+        auto body = expr(field(n, "value"));
+        auto tail = field(n, "conditional");
+        if (absent(tail)) return body;
+        return mk(join(body->pos, tail->position),
+                  pyast::IfExpr{expr(field(tail, "condition")), body, expr(field(tail, "otherwise"))});
+    }
+
+    pyast::ExprPtr bool_chain(const Node* n, std::string_view item_kind, pyast::BoolOp op) {
+        std::vector<pyast::ExprPtr> values{expr(field(n, "first"))};
+        for (auto item : find_all(field(n, "rest"), item_kind))
+            values.push_back(expr(item_kind == "or_tail" ? value_of(item) : item));
+        if (values.size() == 1) return std::move(values.front());
+        return mk(n->position, pyast::BoolExpr{op, std::move(values)});
+    }
+
+    // Left-associative chain: first (tail)*. `fixed` is the operator of tails
+    // that only carry the right operand (`{@}` tails); otherwise tails are {op, value}.
+    pyast::ExprPtr fold(const Node* n, std::string_view tail_kind, std::optional<pyast::BinOp> fixed) {
+        auto result = expr(field(n, "first"));
+        for (auto t : find_all(field(n, "rest"), tail_kind)) {
+            auto op = fixed ? *fixed : binop(field(t, "op"));
+            auto rhs = expr(fixed ? value_of(t) : field(t, "value"));
+            result = mk(join(result->pos, t->position), pyast::BinaryExpr{result, op, rhs});
+        }
+        return result;
+    }
+
+    pyast::ExprPtr comparison(const Node* n) {
+        auto first = expr(field(n, "first"));
+        auto tails = find_all(field(n, "rest"), "compare_tail");
+        if (tails.empty()) return first;
+        pyast::Compare c;
+        c.left = first;
+        for (auto t : tails) {
+            c.ops.push_back(cmpop(field(t, "op")));
+            c.comparators.push_back(expr(field(t, "value")));
+        }
+        return mk(join(first->pos, tails.back()->position), std::move(c));
+    }
+
+    pyast::ExprPtr apply_suffix(pyast::ExprPtr cur, const Node* raw) {
+        auto s = unwrap(raw);
+        if (!s) return cur;
+        auto pos = join(cur->pos, s->position);
+        if (s->kind == "attribute_suffix")
+            return mk(pos, pyast::Attribute{cur, text_of(value_of(s))});
+        if (s->kind == "index_suffix")
+            return mk(pos, pyast::Subscript{cur, expr(value_of(s))});
+        if (s->kind == "call_suffix") {
+            pyast::Call call;
+            call.func = cur;
+            call_args(value_of(s), call.args, call.keywords);
+            return mk(pos, std::move(call));
+        }
+        fail(s, "unsupported postfix '" + s->kind + "'");
+    }
+
+    void call_args(const Node* n, std::vector<pyast::ExprPtr>& args, std::vector<pyast::Keyword>& keywords) {
+        for (auto a : find_all(n, "call_arg")) {
+            auto u = unwrap(a);
+            if (!u) continue;
+            if (u->kind == "keyword_arg")
+                keywords.push_back({text_of(field(u, "name")), expr(field(u, "value")), u->position});
+            else
+                args.push_back(expr(u));
         }
     }
-    auto out = snapshot(n.data(), base);
-    out.position = p;
-    return out;
-}
-template<class... T> UAST::PythonNode snapshot(const std::variant<T...>& v, const UAST::SourcePosition& base) {
-    return {"variant", {}, std::to_string(v.index()), base, false, {std::visit([&](const auto& n) { return snapshot(n, base); }, v)}};
-}
-template<class T> UAST::PythonNode snapshot(const std::vector<T>& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"sequence", {}, {}, base, false, {}};
-    for (const auto& n : v) out.children.push_back(snapshot(n, base));
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GLOBAL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"GLOBAL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ELIF& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ELIF", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASSERT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ASSERT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COMMENT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"COMMENT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PASS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PASS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEF& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"DEF", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FINALLY& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FINALLY", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::WHILE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"WHILE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::WITH& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"WITH", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MATMUL_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"MATMUL_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASYNC& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ASYNC", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CONTINUE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"CONTINUE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RAISE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RAISE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NONLOCAL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NONLOCAL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TILDE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"TILDE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LSHIFT_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LSHIFT_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::BREAK& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"BREAK", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PERCENT_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PERCENT_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PLUS_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PLUS_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STAR_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"STAR_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::INDENT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"INDENT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"DEL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"IS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"IN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ELSE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ELSE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IF& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"IF", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NOT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NOT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MATMUL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"MATMUL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COMMA& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"COMMA", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RPAREN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RPAREN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SEMICOLON& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"SEMICOLON", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NEWLINE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NEWLINE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RBRACE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RBRACE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STRING& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"STRING", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FLOOR_DIV", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRUE_BOOL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"TRUE_BOOL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"SLASH_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::TRY& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"TRY", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::POWER_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"POWER_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::POWER& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"POWER", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PIPE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PIPE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::__WS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"__WS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FOR& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FOR", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::COLON& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"COLON", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EXCEPT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"EXCEPT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NONE_V& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NONE_V", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DEDENT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"DEDENT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::STAR& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"STAR", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::SLASH& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"SLASH", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LBRACKET& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LBRACKET", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"GT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PLUS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PLUS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LSHIFT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LSHIFT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::GE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"GE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::IMPORT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"IMPORT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FLOOR_DIV_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FALSE_BOOL& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FALSE_BOOL", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::EQ& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"EQ", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CARET& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"CARET", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AND& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"AND", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::NUMBER& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"NUMBER", {}, {}, base, false, {}};
-    { auto child = snapshot(v.full, base); child.field = "full"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.floating, base); child.field = "floating"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"AS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MINUS_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"MINUS_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LPAREN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LPAREN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ID& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ID", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AMP& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"AMP", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::AMP_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"AMP_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CLASS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"CLASS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::MINUS& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"MINUS", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::DOT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"DOT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::CARET_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"CARET_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RSHIFT_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RSHIFT_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PERCENT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PERCENT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::ARROW& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"ARROW", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::OR& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"OR", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::PIPE_ASSIGN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"PIPE_ASSIGN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RSHIFT& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RSHIFT", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RETURN& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RETURN", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::FROM& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"FROM", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::LBRACE& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"LBRACE", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::RBRACKET& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"RBRACKET", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitand_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitand_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitor_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitor_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_and& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitwise_and", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_or& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitwise_or", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitwise_xor& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitwise_xor", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::bitxor_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"bitxor_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::break_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"break_stmt", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_arg& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"call_arg", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_arg_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"call_arg_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_args& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"call_args", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::call_suffix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"call_suffix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::comparison& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"comparison", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compound_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"compound_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::conditional_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"conditional_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.condition, base); child.field = "condition"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.otherwise, base); child.field = "otherwise"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::conjunction& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"conjunction", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::continue_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"continue_stmt", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::def_header& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"def_header", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dict_expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_item& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dict_item", {}, {}, base, false, {}};
-    { auto child = snapshot(v.key, base); child.field = "key"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_item_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dict_item_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dict_items& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dict_items", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::disjunction& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"disjunction", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::else_clause& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"else_clause", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_handlers& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"except_handlers", {}, {}, base, false, {}};
-    { auto child = snapshot(v.handlers, base); child.field = "handlers"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.otherwise, base); child.field = "otherwise"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.finalizer, base); child.field = "finalizer"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.conditional, base); child.field = "conditional"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_list& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"expr_list", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_list_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"expr_list_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::factor& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"factor", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::finally_clause& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"finally_clause", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::indented_block& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"indented_block", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::index_suffix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"index_suffix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::inversion& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"inversion", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::is_op& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"is_op", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::list_expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"list_expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::not_in& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"not_in", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::not_inversion& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"not_inversion", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::or_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"or_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_content& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parenthesized_content", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parenthesized_expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::pass_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"pass_stmt", {}, {}, base, false, {}};
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::power& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"power", {}, {}, base, false, {}};
-    { auto child = snapshot(v.base, base); child.field = "base"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.exponent, base); child.field = "exponent"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::power_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"power_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::primary& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"primary", {}, {}, base, false, {}};
-    { auto child = snapshot(v.base, base); child.field = "base"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.suffixes, base); child.field = "suffixes"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::shift_expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"shift_expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::sum& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"sum", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::term& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"term", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::try_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"try_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.handlers, base); child.field = "handlers"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::try_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"try_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::tuple_elements& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"tuple_elements", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::tuple_suffix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"tuple_suffix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::atom& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"atom", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::attribute_suffix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"attribute_suffix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_name& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dotted_name", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_alias& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"except_alias", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::global_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"global_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_alias& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_alias", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::keyword_arg& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"keyword_arg", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::nonlocal_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"nonlocal_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::sum_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"sum_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::unary_expr& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"unary_expr", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::term_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"term_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_op& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assignment_op", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::shift_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"shift_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_bases& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"class_bases", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::annotated_assignment& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"annotated_assignment", {}, {}, base, false, {}};
-    { auto child = snapshot(v.annotation, base); child.field = "annotation"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assert_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assert_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.condition, base); child.field = "condition"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.message, base); child.field = "message"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::elif_clause& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"elif_clause", {}, {}, base, false, {}};
-    { auto child = snapshot(v.condition, base); child.field = "condition"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::if_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"if_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.condition, base); child.field = "condition"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.elifs, base); child.field = "elifs"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.otherwise, base); child.field = "otherwise"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter_annotation& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parameter_annotation", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter_default& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parameter_default", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::raise_from& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"raise_from", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::return_annotation& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"return_annotation", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::return_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"return_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::while_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"while_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.condition, base); child.field = "condition"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.otherwise, base); child.field = "otherwise"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compare_op& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"compare_op", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorator& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"decorator", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_suffix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assignment_suffix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::postfix& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"postfix", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::relative_module& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"relative_module", {}, {}, base, false, {}};
-    { auto child = snapshot(v.relative, base); child.field = "relative"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::except_clause& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"except_clause", {}, {}, base, false, {}};
-    { auto child = snapshot(v.exception, base); child.field = "exception"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.alias, base); child.field = "alias"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_as_name& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dotted_as_name", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.alias, base); child.field = "alias"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_name_item& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_name_item", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.alias, base); child.field = "alias"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assignment_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_header& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"class_header", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.bases, base); child.field = "bases"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameter& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parameter", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.annotation, base); child.field = "annotation"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.def, base); child.field = "def"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::raise_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"raise_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.exception, base); child.field = "exception"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.cause, base); child.field = "cause"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::compare_tail& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"compare_tail", {}, {}, base, false, {}};
-    { auto child = snapshot(v.op, base); child.field = "op"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorators& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"decorators", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_target& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assignment_target", {}, {}, base, false, {}};
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.suffixes, base); child.field = "suffixes"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::dotted_as_names& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"dotted_as_names", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_names& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_names", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::assignment_value& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"assignment_value", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parameters& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parameters", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::class_def& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"class_def", {}, {}, base, false, {}};
-    { auto child = snapshot(v.decorators, base); child.field = "decorators"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.definition, base); child.field = "definition"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::decorated_def& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"decorated_def", {}, {}, base, false, {}};
-    { auto child = snapshot(v.decorators, base); child.field = "decorators"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.definition, base); child.field = "definition"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::del_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"del_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::for_targets& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"for_targets", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_as& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"with_as", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_name& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_name", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::parenthesized_imports& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"parenthesized_imports", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::expr_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"expr_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.target, base); child.field = "target"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.assignment, base); child.field = "assignment"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::function_header& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"function_header", {}, {}, base, false, {}};
-    { auto child = snapshot(v.async, base); child.field = "async"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.name, base); child.field = "name"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.params, base); child.field = "params"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.returns, base); child.field = "returns"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::for_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"for_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.async, base); child.field = "async"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.targets, base); child.field = "targets"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.iterable, base); child.field = "iterable"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.otherwise, base); child.field = "otherwise"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_item& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"with_item", {}, {}, base, false, {}};
-    { auto child = snapshot(v.context, base); child.field = "context"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.target, base); child.field = "target"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_targets& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_targets", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::function_def& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"function_def", {}, {}, base, false, {}};
-    { auto child = snapshot(v.decorators, base); child.field = "decorators"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.definition, base); child.field = "definition"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_items& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"with_items", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_from& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_from", {}, {}, base, false, {}};
-    { auto child = snapshot(v.module, base); child.field = "module"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.names, base); child.field = "names"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::with_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"with_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.async, base); child.field = "async"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.items, base); child.field = "items"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.body, base); child.field = "body"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::import_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"import_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::simple_stmt& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"simple_stmt", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::simple_stmts& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"simple_stmts", {}, {}, base, false, {}};
-    { auto child = snapshot(v.first, base); child.field = "first"; out.children.push_back(std::move(child)); }
-    { auto child = snapshot(v.rest, base); child.field = "rest"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::block& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"block", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::statement& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"statement", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-UAST::PythonNode snapshot(const PyRawParser::FlatTypes::main& v, const UAST::SourcePosition& base) {
-    UAST::PythonNode out{"main", {}, {}, base, false, {}};
-    { auto child = snapshot(v.value, base); child.field = "value"; out.children.push_back(std::move(child)); }
-    return out;
-}
-}
-UAST::PythonNode UAST::parsePython(const std::string& source, const SourcePosition& position, bool expression) {
+
+    pyast::ExprPtr atom(const Node* n) {
+        const auto& k = n->kind;
+        using pyast::ConstantKind;
+        if (k == "ID") return mk(n->position, pyast::Name{text_of(n)});
+        if (k == "NUMBER") {
+            auto whole = scalar_field(n, "full"), frac = scalar_field(n, "floating");
+            if (frac.empty()) return mk(n->position, pyast::Constant{ConstantKind::Int, whole});
+            return mk(n->position, pyast::Constant{ConstantKind::Float, whole + "." + frac});
+        }
+        if (k == "STRING") return mk(n->position, pyast::Constant{ConstantKind::Str, scalar_field(n, "value")});
+        if (k == "TRUE_BOOL") return mk(n->position, pyast::Constant{ConstantKind::Bool, "True"});
+        if (k == "FALSE_BOOL") return mk(n->position, pyast::Constant{ConstantKind::Bool, "False"});
+        if (k == "NONE_V") return mk(n->position, pyast::Constant{ConstantKind::None, "None"});
+        if (k == "parenthesized_expr") {
+            auto content = value_of(n);
+            if (absent(content)) return mk(n->position, pyast::Tuple{});
+            auto first = expr(field(content, "first"));
+            auto suffix = field(content, "rest");
+            if (absent(suffix)) return first;            // (e) is just grouping
+            pyast::Tuple t;                              // (e,) / (e, f, ...)
+            t.elts.push_back(first);
+            for (auto e : find_all(value_of(suffix), "expr")) t.elts.push_back(expr(e));
+            return mk(n->position, std::move(t));
+        }
+        if (k == "list_expr") {
+            pyast::List l;
+            for (auto e : find_all(value_of(n), "expr")) l.elts.push_back(expr(e));
+            return mk(n->position, std::move(l));
+        }
+        if (k == "dict_expr") {
+            pyast::Dict d;
+            for (auto item : find_all(value_of(n), "dict_item")) {
+                d.keys.push_back(expr(field(item, "key")));
+                d.values.push_back(expr(field(item, "value")));
+            }
+            return mk(n->position, std::move(d));
+        }
+        fail(n, "unsupported Python expression node '" + k + "'");
+    }
+
+    // `ID suffix*` used by assignment/del/for/with targets.
+    pyast::ExprPtr target(const Node* n, pyast::ExprContext ctx) {
+        auto cur = mk(n->position, pyast::Name{text_of(field(n, "name"))});
+        for (auto s : elements(field(n, "suffixes"))) cur = apply_suffix(cur, s);
+        set_ctx(*cur, ctx);
+        return cur;
+    }
+
+    // ---- statements ----------------------------------------------------------
+    void statement(const Node* raw, Body& out) {
+        auto n = unwrap(raw);
+        if (!n) return;
+        if (n->kind == "simple_stmts") simple_stmts(n, out);
+        else out.push_back(compound(n));
+    }
+
+    void simple_stmts(const Node* n, Body& out) {
+        for (auto s : find_all(field(n, "first"), "simple_stmt")) out.push_back(simple(s));
+        for (auto s : find_all(field(n, "rest"), "simple_stmt")) out.push_back(simple(s));
+    }
+
+    Body block(const Node* raw) {
+        Body out;
+        auto n = unwrap(raw);
+        if (!n) fail(raw, "missing block");
+        if (n->kind == "indented_block") {
+            for (auto s : find_all(n, "statement")) statement(s, out);
+        } else if (n->kind == "simple_stmts") {
+            simple_stmts(n, out);
+        } else {
+            fail(n, "unexpected block node '" + n->kind + "'");
+        }
+        return out;
+    }
+
+    Body else_body(const Node* clause) { // else_clause / finally_clause {value: block}
+        return absent(clause) ? Body{} : block(value_of(clause));
+    }
+
+    pyast::StmtPtr simple(const Node* raw) {
+        auto n = unwrap(raw);
+        if (!n) fail(raw, "missing statement");
+        const auto& k = n->kind;
+        const auto& pos = n->position;
+        if (k == "expr_stmt") return expr_stmt(n);
+        if (k == "return_stmt") {
+            auto v = value_of(n);
+            return mks(pos, pyast::Return{absent(v) ? nullptr : expr(v)});
+        }
+        if (k == "raise_stmt") {
+            pyast::Raise r;
+            if (auto e = field(n, "exception"); !absent(e)) r.exc = expr(e);
+            if (auto c = field(n, "cause"); !absent(c)) r.cause = expr(value_of(c));
+            return mks(pos, std::move(r));
+        }
+        if (k == "del_stmt") {
+            pyast::Delete d;
+            for (auto f : {"first", "rest"})
+                for (auto t : find_all(field(n, f), "assignment_target"))
+                    d.targets.push_back(target(t, pyast::ExprContext::Del));
+            return mks(pos, std::move(d));
+        }
+        if (k == "pass_stmt") return mks(pos, pyast::Pass{});
+        if (k == "break_stmt") return mks(pos, pyast::Break{});
+        if (k == "continue_stmt") return mks(pos, pyast::Continue{});
+        if (k == "assert_stmt") {
+            pyast::Assert a;
+            a.test = expr(field(n, "condition"));
+            if (auto m = find_first(field(n, "message"), "expr")) a.msg = expr(m);
+            return mks(pos, std::move(a));
+        }
+        if (k == "global_stmt" || k == "nonlocal_stmt") {
+            std::vector<std::string> names{text_of(field(n, "first"))};
+            for (auto id : find_all(field(n, "rest"), "ID")) names.push_back(value_of(id)->scalar);
+            if (k == "global_stmt") return mks(pos, pyast::Global{std::move(names)});
+            return mks(pos, pyast::Nonlocal{std::move(names)});
+        }
+        if (k == "import_name") return import_name(n);
+        if (k == "import_from") return import_from(n);
+        fail(n, "unsupported Python statement '" + k + "'");
+    }
+
+    pyast::StmtPtr expr_stmt(const Node* n) {
+        auto tgt = expr(field(n, "target"));
+        auto a = unwrap(field(n, "assignment"));
+        if (!a) return mks(n->position, pyast::ExprStmt{tgt});
+        set_ctx(*tgt, pyast::ExprContext::Store);
+        if (a->kind == "assignment_tail") {
+            auto op = unwrap(field(a, "op"));
+            if (!op) fail(a, "missing assignment operator");
+            auto value = expr(field(a, "value"));
+            if (auto aug = augop(op)) return mks(n->position, pyast::AugAssign{tgt, *aug, value});
+            return mks(n->position, pyast::Assign{{tgt}, value});
+        }
+        if (a->kind == "annotated_assignment") {
+            pyast::AnnAssign x;
+            x.target = tgt;
+            x.annotation = expr(field(a, "annotation"));
+            if (auto v = find_first(field(a, "value"), "expr")) x.value = expr(v);
+            return mks(n->position, std::move(x));
+        }
+        fail(a, "unsupported assignment form '" + a->kind + "'");
+    }
+
+    pyast::StmtPtr import_name(const Node* n) {
+        pyast::Import imp;
+        for (auto a : find_all(value_of(n), "dotted_as_name")) {
+            auto alias = field(a, "alias");
+            imp.names.push_back({dotted(field(a, "name")), absent(alias) ? std::string{} : text_of(alias), a->position});
+        }
+        return mks(n->position, std::move(imp));
+    }
+
+    pyast::StmtPtr import_from(const Node* n) {
+        pyast::ImportFrom imp;
+        auto rel = field(n, "module");
+        imp.level = find_all(field(rel, "relative"), "DOT").size();
+        if (auto name = field(rel, "name"); !absent(name)) imp.module_name = dotted(name);
+        auto targets = unwrap(field(n, "names"));
+        if (targets && targets->kind == "parenthesized_imports") targets = value_of(targets);
+        if (!targets) fail(n, "missing import targets");
+        if (targets->kind == "STAR") {
+            imp.names.push_back({"*", {}, targets->position});
+        } else {
+            for (auto item : find_all(targets, "import_name_item")) {
+                auto alias = field(item, "alias");
+                imp.names.push_back({text_of(field(item, "name")), absent(alias) ? std::string{} : text_of(alias), item->position});
+            }
+        }
+        return mks(n->position, std::move(imp));
+    }
+
+    pyast::StmtPtr compound(const Node* n) {
+        const auto& k = n->kind;
+        const auto& pos = n->position;
+        if (k == "if_stmt") return if_stmt(n);
+        if (k == "while_stmt")
+            return mks(pos, pyast::While{expr(field(n, "condition")), block(field(n, "body")),
+                                         else_body(field(n, "otherwise"))});
+        if (k == "for_stmt") {
+            auto targets = find_all(field(n, "targets"), "assignment_target");
+            if (targets.empty()) fail(n, "missing for-loop target");
+            pyast::ExprPtr tgt;
+            if (targets.size() == 1) {
+                tgt = target(targets.front(), pyast::ExprContext::Store);
+            } else {
+                pyast::Tuple t;
+                for (auto x : targets) t.elts.push_back(target(x, pyast::ExprContext::Store));
+                t.ctx = pyast::ExprContext::Store;
+                tgt = mk(join(t.elts.front()->pos, t.elts.back()->pos), std::move(t));
+            }
+            return mks(pos, pyast::For{tgt, expr(field(n, "iterable")), block(field(n, "body")),
+                                       else_body(field(n, "otherwise")), !absent(field(n, "async"))});
+        }
+        if (k == "with_stmt") {
+            pyast::With w;
+            w.is_async = !absent(field(n, "async"));
+            for (auto item : find_all(field(n, "items"), "with_item")) {
+                pyast::WithItem wi;
+                wi.pos = item->position;
+                wi.context = expr(field(item, "context"));
+                if (auto as = field(item, "target"); !absent(as))
+                    wi.vars = target(find_first(value_of(as), "assignment_target"), pyast::ExprContext::Store);
+                w.items.push_back(std::move(wi));
+            }
+            w.body = block(field(n, "body"));
+            return mks(pos, std::move(w));
+        }
+        if (k == "try_stmt") return try_stmt(n);
+        if (k == "decorated_def" || k == "function_def" || k == "class_def") return definition(n);
+        if (k == "function_header" || k == "class_header") return definition(n);
+        fail(n, "unsupported Python statement '" + k + "'");
+    }
+
+    pyast::StmtPtr if_stmt(const Node* n) {
+        Body orelse = else_body(field(n, "otherwise"));
+        auto elifs = find_all(field(n, "elifs"), "elif_clause");
+        for (auto it = elifs.rbegin(); it != elifs.rend(); ++it) {
+            auto c = *it;
+            Body wrapper;
+            wrapper.push_back(mks(c->position, pyast::If{expr(field(c, "condition")),
+                                                          block(field(c, "body")), std::move(orelse)}));
+            orelse = std::move(wrapper);
+        }
+        return mks(n->position, pyast::If{expr(field(n, "condition")), block(field(n, "body")), std::move(orelse)});
+    }
+
+    pyast::StmtPtr try_stmt(const Node* n) {
+        pyast::Try t;
+        t.body = block(field(n, "body"));
+        auto tail = unwrap(field(n, "handlers"));
+        if (!tail) fail(n, "try statement without except or finally");
+        if (tail->kind == "finally_clause") {
+            t.finalbody = block(value_of(tail));
+        } else if (tail->kind == "except_handlers") {
+            for (auto h : find_all(field(tail, "handlers"), "except_clause")) {
+                pyast::ExceptHandler eh;
+                eh.pos = h->position;
+                if (auto e = field(h, "exception"); !absent(e)) eh.type = expr(e);
+                if (auto a = field(h, "alias"); !absent(a)) eh.name = text_of(value_of(a));
+                eh.body = block(field(h, "body"));
+                t.handlers.push_back(std::move(eh));
+            }
+            t.orelse = else_body(field(tail, "otherwise"));
+            t.finalbody = else_body(field(tail, "finalizer"));
+        } else {
+            fail(tail, "unexpected try tail '" + tail->kind + "'");
+        }
+        return mks(n->position, std::move(t));
+    }
+
+    // decorated_def {decorators, definition} or a bare function_header / class_header.
+    pyast::StmtPtr definition(const Node* n) {
+        std::vector<pyast::ExprPtr> decorators;
+        const Node* def = n;
+        if (n->kind != "function_header" && n->kind != "class_header") {
+            for (auto d : find_all(field(n, "decorators"), "decorator")) decorators.push_back(expr(value_of(d)));
+            def = unwrap(field(n, "definition"));
+            if (!def) fail(n, "decorators without a definition");
+        }
+        if (def->kind == "function_header") {
+            pyast::FunctionDef f;
+            f.name = text_of(field(def, "name"));
+            f.is_async = !absent(field(def, "async"));
+            f.decorators = std::move(decorators);
+            for (auto p : find_all(field(def, "params"), "parameter")) {
+                pyast::Param prm;
+                prm.name = text_of(field(p, "name"));
+                prm.pos = p->position;
+                if (auto a = field(p, "annotation"); !absent(a)) prm.annotation = expr(value_of(a));
+                if (auto d = field(p, "def"); !absent(d)) prm.default_value = expr(value_of(d));
+                f.params.push_back(std::move(prm));
+            }
+            if (auto r = field(def, "returns"); !absent(r)) f.returns = expr(value_of(r));
+            f.body = block(field(def, "body"));
+            return mks(n->position, std::move(f));
+        }
+        if (def->kind == "class_header") {
+            pyast::ClassDef c;
+            c.name = text_of(field(def, "name"));
+            c.decorators = std::move(decorators);
+            if (auto b = field(def, "bases"); !absent(b)) call_args(value_of(b), c.bases, c.keywords);
+            c.body = block(field(def, "body"));
+            return mks(n->position, std::move(c));
+        }
+        fail(def, "unsupported declaration '" + def->kind + "'");
+    }
+};
+}
+// END-BUILDER
+
+// BEGIN-DUMP
+namespace {
+class PyDumper {
+public:
+    std::string out;
+
+    void expr(const pyast::ExprPtr& e) { if (e) expr(*e); else out += "None"; }
+    void expr(const pyast::Expr& e) { std::visit([&](const auto& k) { node(k); }, e.kind); }
+    void stmt(const pyast::StmtPtr& s) { if (s) stmt(*s); else out += "None"; }
+    void stmt(const pyast::Stmt& s) { std::visit([&](const auto& k) { node(k); }, s.kind); }
+    void module_(const pyast::Module& m) { out += "(Module "; body(m.body); out += ')'; }
+
+private:
+    static std::string_view name(pyast::ExprContext c) {
+        switch (c) { case pyast::ExprContext::Load: return "Load"; case pyast::ExprContext::Store: return "Store"; default: return "Del"; }
+    }
+    static std::string_view name(pyast::BoolOp o) { return o == pyast::BoolOp::And ? "And" : "Or"; }
+    static std::string_view name(pyast::UnaryOp o) {
+        switch (o) { case pyast::UnaryOp::Invert: return "Invert"; case pyast::UnaryOp::Not: return "Not";
+                     case pyast::UnaryOp::UAdd: return "UAdd"; default: return "USub"; }
+    }
+    static std::string_view name(pyast::BinOp o) {
+        using enum pyast::BinOp;
+        switch (o) {
+            case Add: return "Add"; case Sub: return "Sub"; case Mult: return "Mult"; case MatMult: return "MatMult";
+            case Div: return "Div"; case Mod: return "Mod"; case Pow: return "Pow"; case LShift: return "LShift";
+            case RShift: return "RShift"; case BitOr: return "BitOr"; case BitXor: return "BitXor";
+            case BitAnd: return "BitAnd"; default: return "FloorDiv";
+        }
+    }
+    static std::string_view name(pyast::CmpOp o) {
+        using enum pyast::CmpOp;
+        switch (o) {
+            case Eq: return "Eq"; case NotEq: return "NotEq"; case Lt: return "Lt"; case LtE: return "LtE";
+            case Gt: return "Gt"; case GtE: return "GtE"; case Is: return "Is"; case IsNot: return "IsNot";
+            case In: return "In"; default: return "NotIn";
+        }
+    }
+
+    void list(const std::vector<pyast::ExprPtr>& v) {
+        out += '[';
+        for (std::size_t i = 0; i < v.size(); ++i) { if (i) out += ' '; expr(v[i]); }
+        out += ']';
+    }
+    void body(const std::vector<pyast::StmtPtr>& v) {
+        out += '[';
+        for (std::size_t i = 0; i < v.size(); ++i) { if (i) out += ' '; stmt(v[i]); }
+        out += ']';
+    }
+    void keywords(const std::vector<pyast::Keyword>& v) {
+        out += '[';
+        for (std::size_t i = 0; i < v.size(); ++i) { if (i) out += ' '; out += v[i].arg + "="; expr(v[i].value); }
+        out += ']';
+    }
+    void aliases(const std::vector<pyast::Alias>& v) {
+        out += '[';
+        for (std::size_t i = 0; i < v.size(); ++i) {
+            if (i) out += ' ';
+            out += v[i].name;
+            if (!v[i].asname.empty()) out += " as " + v[i].asname;
+        }
+        out += ']';
+    }
+    void names(const std::vector<std::string>& v) {
+        out += '[';
+        for (std::size_t i = 0; i < v.size(); ++i) { if (i) out += ' '; out += v[i]; }
+        out += ']';
+    }
+    void sp() { out += ' '; }
+
+    // expressions
+    void node(const pyast::Name& x) { out += "(Name " + x.id + ' '; out += name(x.ctx); out += ')'; }
+    void node(const pyast::Constant& x) {
+        using enum pyast::ConstantKind;
+        switch (x.kind) {
+            case None: out += "(Constant None)"; break;
+            case Bool: out += "(Constant " + x.value + ")"; break;
+            case Int: out += "(Constant int " + x.value + ")"; break;
+            case Float: out += "(Constant float " + x.value + ")"; break;
+            case Str: out += "(Constant str '" + x.value + "')"; break;
+        }
+    }
+    void node(const pyast::Attribute& x) { out += "(Attribute "; expr(x.value); out += ' ' + x.attr + ' '; out += name(x.ctx); out += ')'; }
+    void node(const pyast::Subscript& x) { out += "(Subscript "; expr(x.value); sp(); expr(x.slice); sp(); out += name(x.ctx); out += ')'; }
+    void node(const pyast::Call& x) { out += "(Call "; expr(x.func); sp(); list(x.args); sp(); keywords(x.keywords); out += ')'; }
+    void node(const pyast::UnaryExpr& x) { out += "(Unary "; out += name(x.op); sp(); expr(x.operand); out += ')'; }
+    void node(const pyast::BinaryExpr& x) { out += "(Binary "; out += name(x.op); sp(); expr(x.left); sp(); expr(x.right); out += ')'; }
+    void node(const pyast::BoolExpr& x) { out += "(Bool "; out += name(x.op); sp(); list(x.values); out += ')'; }
+    void node(const pyast::Compare& x) {
+        out += "(Compare "; expr(x.left); out += " [";
+        for (std::size_t i = 0; i < x.ops.size(); ++i) { if (i) out += ' '; out += name(x.ops[i]); }
+        out += "] "; list(x.comparators); out += ')';
+    }
+    void node(const pyast::IfExpr& x) { out += "(IfExpr "; expr(x.test); sp(); expr(x.body); sp(); expr(x.orelse); out += ')'; }
+    void node(const pyast::Tuple& x) { out += "(Tuple "; list(x.elts); sp(); out += name(x.ctx); out += ')'; }
+    void node(const pyast::List& x) { out += "(List "; list(x.elts); sp(); out += name(x.ctx); out += ')'; }
+    void node(const pyast::Dict& x) { out += "(Dict "; list(x.keys); sp(); list(x.values); out += ')'; }
+
+    // statements
+    void node(const pyast::FunctionDef& x) {
+        out += x.is_async ? "(AsyncFunctionDef " : "(FunctionDef "; out += x.name + " [";
+        for (std::size_t i = 0; i < x.params.size(); ++i) {
+            if (i) out += ' ';
+            out += "(" + x.params[i].name + ' '; expr(x.params[i].annotation); sp(); expr(x.params[i].default_value); out += ')';
+        }
+        out += "] "; expr(x.returns); sp(); body(x.body); sp(); list(x.decorators); out += ')';
+    }
+    void node(const pyast::ClassDef& x) {
+        out += "(ClassDef " + x.name + ' '; list(x.bases); sp(); keywords(x.keywords); sp(); body(x.body); sp(); list(x.decorators); out += ')';
+    }
+    void node(const pyast::Return& x) { out += "(Return "; expr(x.value); out += ')'; }
+    void node(const pyast::Delete& x) { out += "(Delete "; list(x.targets); out += ')'; }
+    void node(const pyast::Assign& x) { out += "(Assign "; list(x.targets); sp(); expr(x.value); out += ')'; }
+    void node(const pyast::AugAssign& x) { out += "(AugAssign "; expr(x.target); sp(); out += name(x.op); sp(); expr(x.value); out += ')'; }
+    void node(const pyast::AnnAssign& x) { out += "(AnnAssign "; expr(x.target); sp(); expr(x.annotation); sp(); expr(x.value); out += ')'; }
+    void node(const pyast::For& x) {
+        out += x.is_async ? "(AsyncFor " : "(For "; expr(x.target); sp(); expr(x.iter); sp(); body(x.body); sp(); body(x.orelse); out += ')';
+    }
+    void node(const pyast::While& x) { out += "(While "; expr(x.test); sp(); body(x.body); sp(); body(x.orelse); out += ')'; }
+    void node(const pyast::If& x) { out += "(If "; expr(x.test); sp(); body(x.body); sp(); body(x.orelse); out += ')'; }
+    void node(const pyast::With& x) {
+        out += x.is_async ? "(AsyncWith [" : "(With [";
+        for (std::size_t i = 0; i < x.items.size(); ++i) { if (i) out += ' '; out += '('; expr(x.items[i].context); sp(); expr(x.items[i].vars); out += ')'; }
+        out += "] "; body(x.body); out += ')';
+    }
+    void node(const pyast::Raise& x) { out += "(Raise "; expr(x.exc); sp(); expr(x.cause); out += ')'; }
+    void node(const pyast::Try& x) {
+        out += "(Try "; body(x.body); out += " [";
+        for (std::size_t i = 0; i < x.handlers.size(); ++i) {
+            if (i) out += ' ';
+            out += "(except "; expr(x.handlers[i].type); out += ' ' + (x.handlers[i].name.empty() ? std::string("_") : x.handlers[i].name) + ' ';
+            body(x.handlers[i].body); out += ')';
+        }
+        out += "] "; body(x.orelse); sp(); body(x.finalbody); out += ')';
+    }
+    void node(const pyast::Assert& x) { out += "(Assert "; expr(x.test); sp(); expr(x.msg); out += ')'; }
+    void node(const pyast::Import& x) { out += "(Import "; aliases(x.names); out += ')'; }
+    void node(const pyast::ImportFrom& x) {
+        out += "(ImportFrom " + std::string(x.level, '.') + x.module_name + ' '; aliases(x.names); out += ')';
+    }
+    void node(const pyast::Global& x) { out += "(Global "; names(x.names); out += ')'; }
+    void node(const pyast::Nonlocal& x) { out += "(Nonlocal "; names(x.names); out += ')'; }
+    void node(const pyast::ExprStmt& x) { out += "(Expr "; expr(x.value); out += ')'; }
+    void node(const pyast::Pass&) { out += "(Pass)"; }
+    void node(const pyast::Break&) { out += "(Break)"; }
+    void node(const pyast::Continue&) { out += "(Continue)"; }
+};
+}
+std::string UAST::py::dump(const Expr& e) { PyDumper d; d.expr(e); return std::move(d.out); }
+std::string UAST::py::dump(const Stmt& s) { PyDumper d; d.stmt(s); return std::move(d.out); }
+std::string UAST::py::dump(const Module& m) { PyDumper d; d.module_(m); return std::move(d.out); }
+// END-DUMP
+
+namespace {
+UAST::PythonNode parse_snapshot(const std::string& source, const UAST::SourcePosition& position, bool expression) {
     try {
         PyLexer lexer;
         ActionParser parser;
@@ -1236,12 +853,23 @@ UAST::PythonNode UAST::parsePython(const std::string& source, const SourcePositi
             auto end = result.it;
             if ((*end).template holds<PyRawParser::Types::NEWLINE>()) ++end;
             if (!end.isEnd()) throw std::runtime_error("trailing tokens in Python expression");
-            return snapshot(result.node, position);
+            return Snapshot{}(result.node, position);
         }
         auto result = parser.main(begin);
         if (!result.status || !result.it.isEnd()) throw std::runtime_error("invalid Python action or trailing tokens");
-        return snapshot(result.node, position);
+        return Snapshot{}(result.node, position);
     } catch (const std::exception& error) {
         throw std::runtime_error(position.file + ":" + std::to_string(position.line) + ":" + std::to_string(position.column) + ": " + error.what());
     }
+}
+}
+
+UAST::PythonNode UAST::parsePythonSnapshot(const std::string& source, const SourcePosition& position, bool expression) {
+    return parse_snapshot(source, position, expression);
+}
+UAST::py::ExprPtr UAST::parsePythonExpr(const std::string& source, const SourcePosition& position) {
+    return PyBuilder{}.expression(parse_snapshot(source, position, true));
+}
+UAST::py::Module UAST::parsePythonModule(const std::string& source, const SourcePosition& position) {
+    return PyBuilder{}.build_module(parse_snapshot(source, position, false));
 }

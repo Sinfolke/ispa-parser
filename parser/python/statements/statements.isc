@@ -4,7 +4,7 @@ statement:
 ;
 
 simple_stmts:
-    @ simple_stmt @ (SEMICOLON @ simple_stmt)* SEMICOLON? NEWLINE
+    @ simple_stmt (SEMICOLON @ simple_stmt)* SEMICOLON? NEWLINE
     @{first, rest}
 ;
 
@@ -87,7 +87,7 @@ raise_from:
 ;
 
 del_stmt:
-    DEL @ assignment_target @ (COMMA @ assignment_target)*
+    DEL @ assignment_target (COMMA @ assignment_target)*
     @{first, rest}
 ;
 
@@ -109,12 +109,12 @@ assert_stmt:
 ;
 
 global_stmt:
-    GLOBAL @ ID @ (COMMA @ ID)*
+    GLOBAL @ ID (COMMA @ ID)*
     @{first, rest}
 ;
 
 nonlocal_stmt:
-    NONLOCAL @ ID @ (COMMA @ ID)*
+    NONLOCAL @ ID (COMMA @ ID)*
     @{first, rest}
 ;
 
@@ -174,7 +174,7 @@ for_stmt:
 ;
 
 for_targets:
-    @ assignment_target @ (COMMA @ assignment_target)* COMMA?
+    @ assignment_target (COMMA @ assignment_target)* COMMA?
     @{first, rest}
 ;
 
@@ -195,7 +195,7 @@ return_annotation:
 ;
 
 parameters:
-    @ parameter @ (COMMA @ parameter)* COMMA?
+    @ parameter (COMMA @ parameter)* COMMA?
     @{first, rest}
 ;
 
@@ -245,7 +245,7 @@ with_stmt:
 ;
 
 with_items:
-    @ with_item @ (COMMA @ with_item)* COMMA?
+    @ with_item (COMMA @ with_item)* COMMA?
     @{first, rest}
 ;
 
@@ -310,12 +310,12 @@ relative_module:
 ;
 
 dotted_name:
-    @ ID @ (DOT @ ID)*
+    @ ID (DOT @ ID)*
     @{first, rest}
 ;
 
 dotted_as_names:
-    @ dotted_as_name @ (COMMA @ dotted_as_name)*
+    @ dotted_as_name (COMMA @ dotted_as_name)*
     @{first, rest}
 ;
 
@@ -340,7 +340,7 @@ parenthesized_imports:
 ;
 
 import_names:
-    @ import_name_item @ (COMMA @ import_name_item)* COMMA?
+    @ import_name_item (COMMA @ import_name_item)* COMMA?
     @{first, rest}
 ;
 

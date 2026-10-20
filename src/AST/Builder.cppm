@@ -18,6 +18,7 @@ class Builder {
     std::string name;
     Use use;
     UAST::main input;
+    std::string file;
     stdu::vector<std::string> fullname;
     using Members = stdu::vector<std::shared_ptr<AST::RuleMember>>;
     using Value = UAST::rule_value;
@@ -34,10 +35,10 @@ class Builder {
     void convertMain(const UAST::main& main);
 
 public:
-    explicit Builder(const UAST::main& mod) : input(mod) {}
-    explicit Builder(const Parser::Types::main& mod) : input(UAST::fromParser(mod)) {}
-    explicit Builder(const ::ISPA_STD::Node<Parser::Types::main>& mod)
-        : input(UAST::fromParser(mod.data())) {}
+    // UAST::main is the generated Parser::Types::main. `file` only labels positions.
+    explicit Builder(const UAST::main& mod, std::string file = {}) : input(mod), file(std::move(file)) {}
+    explicit Builder(const ::ISPA_STD::Node<Parser::Types::main>& mod, std::string file = {})
+        : input(mod.data()), file(std::move(file)) {}
     void build();
     auto get() -> Tree {
         Tree tree{std::move(name), std::move(spacemode), std::move(use), std::move(tree_map)};
