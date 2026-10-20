@@ -10,13 +10,82 @@
 #include <ispastdlib/token_flow.hpp>
 #include <ispastdlib/traits.hpp>
 
-#include "parser_base.hpp"
+#include <ispastdlib/parser_base.hpp>
+#include <ispastdlib/ispa_recovery.hpp>
 
 namespace ISPA_STD {
     /* PARSER */
     template<typename MainNode, typename Token>
     class LLParser : public Parser_base<MainNode, Token> {
     protected:
+        Recovery::State recovery_state_;
+
+        // Use these only at committed required matches; unlike the legacy
+        // required() they return an explicit Missing/Boundary result on repair.
+        template<typename NodeStruct, typename IT, typename Fail>
+        auto required_recovering(IT& pos, Fail&& fail) {
+            using NodeT = decltype(pos->template to_node<NodeStruct>());
+            using Result = Recovery::RequiredResult<NodeT>;
+            std::size_t retries = 0;
+            while (true) {
+                if (pos->template holds<NodeStruct>()) {
+                    auto node = pos->template to_node<NodeStruct>();
+                    ++pos;
+                    return Result{Recovery::RequiredStatus::Matched,
+                                  std::move(node), {}};
+                }
+                auto decision = fail(pos, recovery_state_);
+                switch (decision.mode) {
+                case Recovery::Mode::Delete:
+                    if (++retries <= 2) continue;
+                    break;
+                case Recovery::Mode::Retry:
+                    if (++retries <= 1) continue;
+                    break;
+                case Recovery::Mode::Insert:
+                case Recovery::Mode::Replace:
+                    return Result{Recovery::RequiredStatus::Missing,
+                                  std::nullopt, decision};
+                case Recovery::Mode::Abort:
+                    return Result{Recovery::RequiredStatus::Aborted,
+                                  std::nullopt, decision};
+                default:
+                    break;
+                }
+                return Result{Recovery::RequiredStatus::Boundary,
+                              std::nullopt, decision};
+            }
+        }
+
+        template<typename IT, typename Recursive, typename Fail>
+        auto required_rule_recovering(IT& pos, Recursive&& rec, Fail&& fail) {
+            using NodeT = std::decay_t<decltype(rec(pos).node)>;
+            using Result = Recovery::RequiredResult<NodeT>;
+            std::size_t retries = 0;
+            while (true) {
+                // Recursive alternatives may advance their input argument
+                // before failing. Never let a failed probe mutate pos.
+                IT attempt = pos;
+                auto match = rec(attempt);
+                if (match.status) {
+                    pos = match.it;
+                    return Result{Recovery::RequiredStatus::Matched,
+                                  std::move(match.node), {}};
+                }
+                auto decision = fail(pos, recovery_state_);
+                // We cannot synthesize an arbitrary nonterminal from one token.
+                if ((decision.mode == Recovery::Mode::Retry ||
+                     decision.mode == Recovery::Mode::Delete) && ++retries <= 2)
+                    continue;
+                return Result{
+                    decision.mode == Recovery::Mode::Abort
+                        ? Recovery::RequiredStatus::Aborted
+                        : Recovery::RequiredStatus::Boundary,
+                    std::nullopt, decision
+                };
+            }
+        }
+
         // skip spaces for tokens
         template <typename SpaceTokenType, typename IT>
         void skip_spaces(IT& pos) {
@@ -52,6 +121,9 @@ namespace ISPA_STD {
                 return res;
             }
             fail(pos);
+            throw std::logic_error(
+                "ISPA required(): failure handler returned; use required_recovering() "
+                "for recoverable failures");
         }
         template<typename IT, typename Recursive, typename FailFunc>
         auto required(IT &pos, FailFunc &fail, Recursive &rec) {
@@ -60,6 +132,9 @@ namespace ISPA_STD {
                 return match_result.node;
             }
             fail(pos);
+            throw std::logic_error(
+                "ISPA required(): failure handler returned; use "
+                "required_rule_recovering() for recoverable failures");
         }
         template<typename NodeStruct, typename IT>
         auto optional(IT &pos) {
@@ -91,7 +166,7 @@ namespace ISPA_STD {
             return result;
         }
         template<typename NodeStruct, typename IT, typename Recursive, typename FailFunc>
-        auto range(IT &pos, Recursive &rec, FailFunc &fail) {
+        auto range(IT &pos, FailFunc &fail, Recursive &rec) {
             std::vector<NodeStruct> result {required<NodeStruct, IT, Recursive, FailFunc>(pos, rec, fail)};
             while (!pos->isEnd()) {
                 auto v = optional<NodeStruct>(pos, rec, fail);
@@ -103,7 +178,7 @@ namespace ISPA_STD {
             return result;
         }
         template<typename NodeStruct, typename IT, typename FailFunc>
-        auto range_optional(IT &pos, FailFunc &fail) {
+        auto range_optional(IT &pos) {
             std::vector<NodeStruct> result;
             while (!pos->isEnd()) {
                 auto v = optional<NodeStruct>(pos);
@@ -115,7 +190,7 @@ namespace ISPA_STD {
             return result;
         }
         template<typename NodeStruct, typename IT, typename Recursive, typename FailFunc>
-        auto range_optional(IT &pos, Recursive &rec, FailFunc &fail) {
+        auto range_optional(IT &pos, FailFunc &fail, Recursive &rec) {
             std::vector<NodeStruct> result;
             while (!pos->isEnd()) {
                 auto v = optional<NodeStruct>(pos, rec, fail);

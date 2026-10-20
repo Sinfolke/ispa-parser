@@ -32,10 +32,10 @@ export namespace AST {
         static auto compute_group_length(const stdu::vector<std::shared_ptr<AST::RuleMember>> &group) -> std::size_t;
         void getUsePlacesTable(const stdu::vector<std::shared_ptr<AST::RuleMember>> &members, const stdu::vector<std::string> &name);
         void transform_helper(
-            stdu::vector<std::shared_ptr<AST::RuleMember>> &members,
-            const stdu::vector<std::string> &fullname,
-            const stdu::vector<std::string> &original_fullname,
-            utype::unordered_map<stdu::vector<std::string>, std::pair<char, stdu::vector<std::string>>> &replacements
+            stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
+            const stdu::vector<std::string>& fullname,
+            const stdu::vector<std::string>& original_fullname,
+            bool whole_rule = false
         );
         void transform();
         void createInitialItemSet();

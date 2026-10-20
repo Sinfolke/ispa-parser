@@ -11,7 +11,7 @@ import std;
 namespace {
 AST::Tree convert(const char* source) {
     Parser::Parser parser;
-    AST::Builder builder(UAST::fromParser(parser.parse(source), "feature.isc"));
+    AST::Builder builder(parser.parse(source), "feature.isc");
     builder.build();
     return builder.get();
 }
@@ -24,7 +24,7 @@ template<class T> const T& feature(const AST::RuleMember& member) {
 
 TEST(UAST, PlainEbnfAndCapture) {
     Parser::Parser parser;
-    auto syntax = UAST::fromParser(parser.parse("WORD: @ 'a'+ {@};"), "plain.isc");
+    auto syntax = parser.parse("WORD: @ 'a'+ {@};");
     AST::Builder builder(syntax);
     builder.build();
     auto tree = builder.get();
@@ -37,6 +37,8 @@ TEST(UAST, PlainEbnfAndCapture) {
     EXPECT_EQ(member.getString().value, "a");
     ASSERT_TRUE(rule.data_block.isRegularDataBlock());
     EXPECT_TRUE(std::holds_alternative<AST::At>(rule.data_block.getRegDataBlock()));
+    ASSERT_TRUE(rule.data_block.type.has_value());
+    EXPECT_EQ(rule.data_block.type->kind, AST::DataType::Kind::Character);
 }
 
 TEST(UAST, OwnsParserDataAndPositions) {
@@ -44,13 +46,13 @@ TEST(UAST, OwnsParserDataAndPositions) {
     {
         std::string source = "WORD: 'a';";
         Parser::Parser parser;
-        syntax = UAST::fromParser(parser.parse(source.c_str()), "owned.isc");
+        syntax = parser.parse(source.c_str());
     }
     const auto& declaration = std::get<UAST::Node<UAST::grammar>>(syntax.value.at(0));
-    EXPECT_EQ(declaration.position.file, "owned.isc");
-    EXPECT_EQ(declaration.position.offset, 0u);
-    EXPECT_EQ(declaration.position.line, 1u);
-    EXPECT_EQ(declaration.position.column, 1u);
+    EXPECT_EQ(UAST::positionOf(declaration.data().name.data().primary, "owned.isc").file, "owned.isc");
+    EXPECT_EQ(UAST::positionOf(declaration.data().name.data().primary, "owned.isc").offset, 0u);
+    EXPECT_EQ(UAST::positionOf(declaration.data().name.data().primary, "owned.isc").line, 1u);
+    EXPECT_EQ(UAST::positionOf(declaration.data().name.data().primary, "owned.isc").column, 1u);
     EXPECT_FALSE(declaration.empty());
     EXPECT_EQ(declaration.data().name.data().primary.data().value, "WORD");
     AST::Builder builder(syntax);
@@ -148,9 +150,7 @@ TEST(UAST, BoundedCountersAndSharedRegistration) {
 
 TEST(UAST, PythonActionAndFailBlock) {
     Parser::Parser parser;
-    auto syntax = UAST::fromParser(parser.parse("fail recover(value) p{py} T: 'a';"), "python.isc");
-    auto& block = std::get<UAST::Node<UAST::fail_block>>(syntax.value.front()).data();
-    block.val.data().bindings.push_back({"value", true, true});
+    auto syntax = parser.parse("fail recover(value) p{py} T: 'a';");
     AST::Builder builder(syntax);
     builder.build();
     auto tree = builder.get();
@@ -159,17 +159,15 @@ TEST(UAST, PythonActionAndFailBlock) {
     EXPECT_EQ(fail.name.front(), "recover");
     EXPECT_EQ(fail.parameters.front(), "value");
     EXPECT_EQ(fail.action.python.kind, "main");
-    ASSERT_EQ(fail.action.bindings.size(), 1u);
-    EXPECT_TRUE(fail.action.bindings.front().optional);
-    EXPECT_TRUE(fail.action.bindings.front().list);
+    EXPECT_TRUE(fail.action.bindings.empty());
 }
 
 TEST(UAST, PythonSubtreeRetainsStatementsAndExpressions) {
     UAST::SourcePosition pos{"action.isc", 25, 0, 4, 2};
-    const auto statements = UAST::parsePython("x = 3\nif x:\n    return x\n", pos, false);
+    const auto statements = UAST::parsePythonSnapshot("x = 3\nif x:\n    return x\n", pos, false);
     EXPECT_EQ(statements.kind, "main");
     ASSERT_FALSE(statements.children.empty());
-    const auto expression = UAST::parsePython("x + 2", pos, true);
+    const auto expression = UAST::parsePythonSnapshot("x + 2", pos, true);
     EXPECT_EQ(expression.kind, "expr");
     EXPECT_EQ(expression.position.file, "action.isc");
 }
@@ -190,7 +188,7 @@ TEST(UAST, ConvertsBootstrapGrammar) {
         ASSERT_TRUE(input.is_open());
         std::string source((std::istreambuf_iterator<char>(input)), {});
         Parser::Parser parser;
-        auto file = UAST::fromParser(parser.parse(source.c_str()), path.string());
+        auto file = parser.parse(source.c_str());
         ASSERT_FALSE(file.value.empty()) << path;
         syntax.value.insert(syntax.value.end(), file.value.begin(), file.value.end());
     }
@@ -220,4 +218,16 @@ TEST(UAST, PythonAstBlocksKeepTargets) {
     const auto& single = tree.getTreeMap().at({"S"}).features;
     ASSERT_EQ(single.size(), 1u);
     EXPECT_TRUE(std::get<AST::PythonAction>(single.front()).target.empty());
+}
+
+TEST(UAST, DataBlockMetadataUsesResolvedNamesAndFieldOrder) {
+    auto tree = convert("main: @ WORD @ 'x' @{word, suffix}; WORD: 'w';");
+    const auto& fields = tree.getTreeMap().at({"main"}).data_block.fields;
+    ASSERT_EQ(fields.size(), 2u);
+    EXPECT_EQ(fields[0].first, "word");
+    EXPECT_EQ(fields[0].second.kind, AST::DataType::Kind::Token);
+    ASSERT_EQ(fields[0].second.name.size(), 1u);
+    EXPECT_EQ(fields[0].second.name.front(), "WORD");
+    EXPECT_EQ(fields[1].first, "suffix");
+    EXPECT_EQ(fields[1].second.kind, AST::DataType::Kind::Character);
 }

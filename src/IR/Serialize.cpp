@@ -27,8 +27,8 @@ template<class K, class V, class H, class E, class A> struct is_unordered_map<st
 
 template<typename T>
 concept Reflected = requires(T& value, const T& const_value) {
-    MembersAccess::get(value);
-    MembersAccess::get(const_value);
+    LangAPI::MembersAccess::get(value);
+    LangAPI::MembersAccess::get(const_value);
 };
 
 // One dispatch function for every type: recursive calls are never affected by
@@ -91,7 +91,7 @@ template<class T> void write(std::ostream& os, const T& value) {
         }
     } else if constexpr (Reflected<U>) {
         // This assumes members() returns a tuple-like sequence of field REFERENCES.
-        std::apply([&](const auto&... fields) { (write(os, fields), ...); }, MembersAccess::get(value));
+        std::apply([&](const auto&... fields) { (write(os, fields), ...); }, LangAPI::MembersAccess::get(value));
     } else if constexpr (std::is_trivially_copyable_v<U> && !std::is_pointer_v<U>) {
         os.write(reinterpret_cast<const char*>(&value), sizeof(U));
     } else {
@@ -154,7 +154,7 @@ template<class T> void read(std::istream& is, T& value) {
             if (is) value.try_emplace(std::move(key), std::move(val));
         }
     } else if constexpr (Reflected<U>) {
-        auto fields = MembersAccess::get(value);
+        auto fields = LangAPI::MembersAccess::get(value);
 
         std::apply([&](auto&... field) {
             static_assert(

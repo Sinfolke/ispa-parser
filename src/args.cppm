@@ -6,7 +6,7 @@ import std;
 import cpuf.printf;
 export struct Args {
     enum class Algorithm {
-        LL, LR0, LR1, LALR, ELR
+        LL, LR, LALR, LR_STAR
     };
     Algorithm algorithm = Algorithm::LL;
     LangAPI::Language language;
@@ -32,5 +32,8 @@ export struct Args {
     bool dump_all = false;
     bool dump_nfa_from_rule = false;
     bool incremental = false;
+    bool auto_conflicts = true;
+    std::size_t conflict_lookahead = 3;
 };
 export Args parse_args(int argc, char** argv);
+export auto to_string(Args::Algorithm algorithm) -> std::string;

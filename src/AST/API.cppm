@@ -359,7 +359,20 @@ export namespace AST {
         stdu::vector<std::string>::const_iterator end() const;
     };
 
+    // Semantic capture types belong to the AST, independently of a backend.
+    struct DataType {
+        enum class Kind { Unknown, Character, String, Token, Rule, Tuple, Variant, Array };
+        Kind kind = Kind::Unknown;
+        stdu::vector<std::string> name;
+        std::vector<DataType> parameters;
+        bool operator==(const DataType&) const = default;
+    };
+
+    auto captureType(const RuleMember& member) -> DataType;
+
     struct DataBlock {
+        std::optional<DataType> type;
+        std::vector<std::pair<std::string, DataType>> fields;
         std::variant<
             std::monostate,
             RegularDataBlock,
@@ -399,6 +412,8 @@ export namespace AST {
         bool isTopLevel = true;
         SourcePosition position;
         stdu::vector<FrontendFeature> features;
+        // Internal normalization metadata; excluded from source serialization.
+        std::shared_ptr<RuleMember> normalization_source;
 
     private:
         friend struct ::uhash;

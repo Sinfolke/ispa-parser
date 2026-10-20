@@ -1,8 +1,9 @@
-#include <ispa/bootstrapped/Parser.h>
+#include <output/Parser.h>
 #include <ispa_dep_scanner/parser.h>
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
+import cpuf.dlib;
 import CLI;
 import init;
 import args;
@@ -22,6 +23,9 @@ import LLIR.IR;
 import LLIR.Serialize;
 import LangRepr.Construct;
 import LangRepr.Converter;
+import LangRepr.Holder;
+import LRBase;
+import Algorithm.CBinding;
 import hash;
 import AST.Builder;
 import LexerBuilder;
@@ -145,6 +149,7 @@ namespace {
 
 int main(int argc, char** argv) {
     Parser::Types::main modules;
+    std::vector<std::string> source_files;
     auto args = init(argc, argv);
     dumper.setArgsPointer(&args);
     dumper.setDumpDirectory(args.dump_dir);
@@ -157,8 +162,6 @@ int main(int argc, char** argv) {
 
     if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
-    if (args.algorithm != Args::Algorithm::LL)
-        throw UError("Other algorithms but LL (recursive descent) are not yet supported");
 
     for (const auto file : args.files) {
         cpuf::printf("file: {}\n", file);
@@ -171,6 +174,7 @@ int main(int argc, char** argv) {
         Parser::Parser parser;
         auto &main = parser.parse(fileContent.c_str());
         modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
+        source_files.insert(source_files.end(), main.value.size(), file);
         // for (const auto &v : main.value) {
         //     modules.push_back(std::get<ISPA_STD::Node<Parser::Rules, Parser::Types::grammar>>(v));
         // }
@@ -183,6 +187,7 @@ int main(int argc, char** argv) {
             Parser::Parser parser;
             auto &main = parser.parse(content.c_str());
             modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
+            source_files.insert(source_files.end(), main.value.size(), file);
         }
     }
 
@@ -192,6 +197,7 @@ int main(int argc, char** argv) {
         std::ofstream(dumper.makeDumpPath("DFA"), std::ios::trunc);
 
     AST::Builder ast_builder(modules);
+    ast_builder.setSourceFiles(std::move(source_files));
     ast_builder.build();
     auto ast = ast_builder.get();
     AST::requireCppSupport(ast);
@@ -209,9 +215,6 @@ int main(int argc, char** argv) {
     std::filesystem::path output_path = args.output;
     LexerBuilder lexer_data(ast);
     lexer_data.build();
-
-    if (args.algorithm != Args::Algorithm::LL)
-        return 0;
 
     std::string name;
     if (!ast.getName().empty()) {
@@ -245,16 +248,40 @@ int main(int argc, char** argv) {
             changed_rules.emplace(path, rule);
     }
     cpuf::printf("{} of {} rules changed since last run\n", changed_rules.size(), tree_map.size());
+    LangRepr::Holder holder;
+    switch (args.algorithm) {
+        case Args::Algorithm::LL: {
+            auto production_cache = loadIRCache(dir_path / ".codegen-ir-cache");
+            LLIR::Builder builder(ast, changed_rules, production_cache);
+            auto IR = builder.get();
 
-    auto production_cache = loadIRCache(dir_path / ".codegen-ir-cache");
-    LLIR::Builder builder(ast, changed_rules, production_cache);
-    auto IR = builder.get();
+            saveIRCache(dir_path / ".codegen-ir-cache", IR.getData());
+            holder = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), ast, args.language, name);
+            break;
+        }
+        case Args::Algorithm::LR:
+        case Args::Algorithm::LALR: {
+            dlib algorithm_lib("libispa-algorithm-" + to_string(args.algorithm));
+            auto create = algorithm_lib.load<AlgorithmCreateFn*>(to_string(args.algorithm) + "Parser_create");
+            auto finish = algorithm_lib.load<AlgorithmFinishFn*>(to_string(args.algorithm) + "Parser_finish");
+            std::unique_ptr<LRBase, AlgorithmFinishFn*> parser(create(&ast, 1), finish);
+            if (args.auto_conflicts) {
+                parser->resolveConflicts(args.conflict_lookahead);
+                const auto& resolutions = parser->getConflictResolutions();
+                const auto dynamic = std::count_if(resolutions.begin(), resolutions.end(), [](const auto& r) { return r.lookahead == 0; });
+                if (!resolutions.empty()) cpuf::printf("LR conflicts: {} resolved with lookahead, {} use runtime branching\n", resolutions.size() - dynamic, dynamic);
+            }
+            holder = LangRepr::Construct::construct(std::move(lexer_data), *parser, ast, args.language, name);
+            break;
+        }
+        case Args::Algorithm::LR_STAR:
+            throw Error("LR(*) algorithm is not yet supported");
+    }
 
-    auto repr = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), ast, args.language, name);
 
     // dlib-loads libispa-converter-<lang> and resolves "<lang>_construct"
     // (e.g. the extern "C" cpp_construct in converter.cpp) internally.
-    LangRepr::Converter converter(repr, args.language_str, name, args.incremental);
+    LangRepr::Converter converter(holder, args.language_str, name, args.incremental);
     converter.init();
     converter.construct();
 
@@ -264,7 +291,6 @@ int main(int argc, char** argv) {
 
     saveKeyHashMap(manifest_path, result.hashes);
     saveKeyHashMap(rule_manifest_path, new_rule_hashes);
-    saveIRCache(dir_path / ".codegen-ir-cache", builder.getRawData());
 
     std::cout << "Updated " << result.updated << " file(s)\n";
     return 0;

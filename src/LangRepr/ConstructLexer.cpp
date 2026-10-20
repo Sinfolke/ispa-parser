@@ -1,6 +1,5 @@
 module LangRepr.ConstructLexer;
 
-import LLIR.Builder.Base;
 import cpuf.printf;
 import NFA.TNFA.API;
 import NFA.IR.API;

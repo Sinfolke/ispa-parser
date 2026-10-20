@@ -22,6 +22,10 @@ Args parse_args(int argc, char** argv) {
     app.add_option("--dd", args.dump_dir, "Directory where to dump");
     app.add_option("--dump-nfa-from-rule", args.dump_nfa_from_rule, "Dump nfa from rule")->expected(0);
     app.add_flag("--incremental,!--no-incremental", args.incremental, "Output a file-per-production.");
+    app.add_flag("--auto-conflicts,!--no-auto-conflicts", args.auto_conflicts,
+        "Resolve LR conflicts with extra lookahead and deferred runtime branching");
+    app.add_option("--lr-conflict-lookahead", args.conflict_lookahead,
+        "Maximum automatic compile-time LR lookahead before runtime fallback (1..8)");
     try {
         app.parse(argc, argv);
     } catch (CLI::CallForAllHelp&) {
@@ -41,6 +45,9 @@ Args parse_args(int argc, char** argv) {
         std::exit(1);
     }
 
+    if (args.conflict_lookahead < 1 || args.conflict_lookahead > 8)
+        throw Error("--lr-conflict-lookahead must be between 1 and 8");
+
     // Map algorithm string to enum
     if (!args.language_str.empty()) {
         if (args.language_str == "cpp") args.language = LangAPI::Language::Cpp;
@@ -48,12 +55,25 @@ Args parse_args(int argc, char** argv) {
     }
     if (!algorithm.empty()) {
         if (algorithm == "LL") args.algorithm = Args::Algorithm::LL;
-        else if (algorithm == "LR(0)" || algorithm == "LR0") args.algorithm = Args::Algorithm::LR0;
-        else if (algorithm == "LR(1)" || algorithm == "LR1") args.algorithm = Args::Algorithm::LR1;
-        else if (algorithm == "LALR") args.algorithm = Args::Algorithm::LALR;
-        else if (algorithm == "LR(*)" || algorithm == "LR*") args.algorithm = Args::Algorithm::ELR;
+        else if (algorithm == "LR" || algorithm == "LR0") args.algorithm = Args::Algorithm::LR;
+        else if (algorithm == "LALR" || algorithm == "LR1") args.algorithm = Args::Algorithm::LALR;
+        else if (algorithm == "LR(*)" || algorithm == "LR*" || algorithm == "LR_STAR") args.algorithm = Args::Algorithm::LR_STAR;
         else throw Error("Unknown algorithm {}", algorithm);
     }
     args.files = app.remaining();
     return args;
+}
+auto to_string(Args::Algorithm algorithm) -> std::string  {
+    switch (algorithm) {
+        case Args::Algorithm::LL:
+            return "LL";
+        case Args::Algorithm::LR:
+            return "LR";
+        case Args::Algorithm::LALR:
+            return "LALR";
+        case Args::Algorithm::LR_STAR:
+            return "LR_STAR";
+        default:
+            throw Error("Undefined algorithm {}: while converting to string representation", (int) algorithm);
+    }
 }

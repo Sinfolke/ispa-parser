@@ -26,6 +26,18 @@ namespace {
     decltype(auto) payload(const UAST::Node<T>& node) {
         return payload(node.data());
     }
+    // LR literal captures are characters; the LL bootstrap keeps token nodes.
+    char captureMarker(char value) { return value; }
+    template<class... T>
+    char captureMarker(const std::variant<T...>& value) {
+        return std::visit([](const auto& token) -> char {
+            using Token = std::decay_t<decltype(token)>;
+            if constexpr (std::is_same_v<Token, UAST::Node<UAST::COMMERCIAL_AT>>) return '@';
+            else if constexpr (std::is_same_v<Token, UAST::Node<UAST::PERCENT_SIGN>>) return '%';
+            else if constexpr (std::is_same_v<Token, char>) return token;
+            else throw std::runtime_error("Missing capture marker");
+        }, value);
+    }
     std::string id(const UAST::Node<UAST::ID>& node) {
         return payload(node).value;
     }
@@ -307,7 +319,7 @@ AST::RuleMember AST::Builder::convertValue(const Value& value) {
             for (const auto& c : payload(n).cap)
                 group.values.push_back(std::make_shared<AST::RuleMember>(convertCapture(payload(c))));
             out.value = std::move(group);
-            const char kind = std::holds_alternative<UAST::Node<UAST::COMMERCIAL_AT>>(payload(n).type) ? '@' : '%';
+            const char kind = captureMarker(payload(n).type);
             out.features.push_back(AST::RegionCapture{kind, out.position});
             return out;
         } else unsupported("absent rule value");
@@ -387,16 +399,17 @@ AST::DataBlock AST::Builder::convertData(
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_ast_single_value>>) {
             const auto& single = payload(item);
 
-            using AtNode = UAST::Node<
-                UAST::COMMERCIAL_AT
-            >;
-
-            if (std::holds_alternative<AtNode>(single.value)) {
-                result.value = makeAtDataBlock();
-            } else {
-                const auto& expression = std::get<UAST::Node<UAST::expr>>(single.value);
-                rule_features.push_back(action(expression));
-            }
+            std::visit([&](const auto& value) {
+                using Value = std::decay_t<decltype(value)>;
+                if constexpr (std::is_same_v<Value, UAST::Node<UAST::COMMERCIAL_AT>>) {
+                    result.value = makeAtDataBlock();
+                } else if constexpr (std::is_same_v<Value, char>) {
+                    if (value != '@') unsupported("invalid data block marker");
+                    result.value = makeAtDataBlock();
+                } else if constexpr (std::is_same_v<Value, UAST::Node<UAST::expr>>) {
+                    rule_features.push_back(action(value));
+                } else unsupported("absent data block value");
+            }, single.value);
         } else if constexpr (std::is_same_v<
             T,
             UAST::Node<
@@ -470,7 +483,10 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
 }
 
 void AST::Builder::convertMain(const UAST::main& main) {
+    std::size_t source_index = 0;
     for (const auto& entry : main.value) {
+        FileScope source_scope(source_files.empty() ? file : source_files.at(source_index));
+        ++source_index;
         std::visit([&](const auto& value) {
             using T = std::decay_t<decltype(value)>;
             if constexpr (std::is_same_v<T, UAST::Node<UAST::grammar>>) {
@@ -481,6 +497,54 @@ void AST::Builder::convertMain(const UAST::main& main) {
                 fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(block.val), position(value)});
             }
         }, entry);
+    }
+}
+
+
+namespace {
+    void capturedTypes(const stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
+                       std::vector<AST::DataType>& types) {
+        for (const auto& member : members) {
+            if (!member->prefix.empty()) types.push_back(captureType(*member));
+            else if (member->isGroup()) {
+                std::vector<AST::DataType> nested;
+                capturedTypes(member->getGroup().values, nested);
+                for (auto& type : nested) {
+                    if (member->quantifier == '*' || member->quantifier == '+')
+                        type = AST::DataType{AST::DataType::Kind::Array, {}, {type}};
+                    types.push_back(std::move(type));
+                }
+            }
+            else if (member->isOp()) {
+                std::optional<std::vector<AST::DataType>> first;
+                for (const auto& option : member->getOp().options) {
+                    std::vector<AST::DataType> current;
+                    capturedTypes({option}, current);
+                    if (!first) first = std::move(current);
+                    else if (*first != current)
+                        throw Error("AST: alternatives disagree on captured data types");
+                }
+                if (first) types.insert(types.end(), first->begin(), first->end());
+            }
+        }
+    }
+
+    void buildDataTypes(AST::Rule& rule) {
+        auto& block = rule.data_block;
+        if (block.empty()) return;
+        std::vector<AST::DataType> captures;
+        capturedTypes(rule.rule_members, captures);
+        if (block.isRegularDataBlock() && !block.isWithKeys()) {
+            if (captures.size() != 1)
+                throw Error("AST: regular data block requires exactly one captured member, got {}", captures.size());
+            block.type = captures.front();
+        } else if (block.isTemplatedDataBlock()) {
+            const auto& names = block.getTemplatedDataBlock().names;
+            if (names.size() != captures.size())
+                throw Error("AST: data block declares {} fields but has {} captures", names.size(), captures.size());
+            for (std::size_t i = 0; i < names.size(); ++i)
+                block.fields.emplace_back(names[i], captures[i]);
+        }
     }
 }
 
@@ -516,5 +580,6 @@ void AST::Builder::build() {
             }
         };
         for (auto& member : rule.rule_members) resolve(resolve, *member);
+        buildDataTypes(rule);
     }
 }

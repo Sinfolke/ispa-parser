@@ -3,6 +3,7 @@ module;
 export module LLIR.API;
 
 import LangAPI;
+import AST.API;
 import LangAPI.Accessor;
 import hash;
 import dstd;
@@ -97,5 +98,6 @@ export namespace LLIR {
             return std::tie(block, name, rule_members, builder_data);
         }
     };
+    auto dataBlock(const AST::DataBlock& block) -> DataBlock;
     using DataBlockList = tsl::ordered_map<stdu::vector<std::string>, DataBlock, uhash>;
 }

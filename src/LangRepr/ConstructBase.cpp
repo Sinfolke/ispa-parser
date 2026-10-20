@@ -1,6 +1,5 @@
 module ConstructBase;
 import cpuf.printf;
-import LLIR.Builder.Base;
 namespace LangRepr {
     auto ConstructBase::createTypeToken() -> LangAPI::TypeAlias {
         LangAPI::Type variant_type = LangAPI::ValueType::RawToken;          // was LargeVariant

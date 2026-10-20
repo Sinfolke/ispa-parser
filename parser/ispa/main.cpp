@@ -6,6 +6,8 @@
 
 #include <Parser.h>
 
+#include "parser.h"
+
 int main(int argc, const char** argv) {
     if (argc < 2) {
         std::cout << "Usage: " << argv[0] << " \"<input>\" OR " << argv[0] << " --file <path>\n";
@@ -31,7 +33,7 @@ int main(int argc, const char** argv) {
 
     auto start = std::chrono::steady_clock::now();
 
-    Parser::Parser parser;
+    IspaParser parser;
     Parser::Types::main node = parser.parse(input_buffer.c_str());
 
     auto end = std::chrono::steady_clock::now();

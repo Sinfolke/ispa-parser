@@ -842,10 +842,9 @@ namespace NFA::TNFA {
             [&](const TokenID &sym,
                 const TokenID *cap,
                 const std::string &name,
-                LangAPI::Statements &out) {
+                LangAPI::Statements &out, const AST::DataType& type) {
                 const auto &member = sym.member;
-                const LangAPI::Type t = Parser::ParserBase::deduceVarTypeByRuleMember(
-                    cap ? cap->original_member : sym.original_member);
+                const LangAPI::Type t = Parser::ParserBase::dataType(type);
 
                 // Nested token: its reduction was built when it was wired.
                 if (member.isName() && !member.getName().isTerminal()) {
@@ -938,7 +937,7 @@ namespace NFA::TNFA {
             const auto fields = collect_fields();
             if (!fields.empty()) {
                 read_member(*fields.front(), own_capture(*fields.front()),
-                            local("value"), state.statements);
+                            local("value"), state.statements, own_token->data_block->type.value());
                 state.instance_value.args.push_back(symbol(local("value")));
             }
         } else if (own_token->data_block && own_token->data_block->isTemplatedDataBlock()) {
@@ -951,7 +950,7 @@ namespace NFA::TNFA {
             for (std::size_t i = limit; i-- > 0;) {
                 const TokenID &sym = *members_with_prefix[i];
                 const std::string name = local(data_block.names[i]);
-                read_member(sym, own_capture(sym), name, state.statements);
+                read_member(sym, own_capture(sym), name, state.statements, own_token->data_block->fields.at(i).second);
                 state.instance_value.args.push_back(symbol(name));
             }
         } else {

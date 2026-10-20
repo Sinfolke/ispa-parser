@@ -36,7 +36,7 @@ auto qualifiedTypesSymbol(const Name &name) -> LangAPI::Symbol {
     path.reserve(name.size() + 1);
     path.emplace_back(std::string{"Types"});
     for (const auto &part : name) path.emplace_back(part);
-    return LangAPI::Symbol{path};
+    return LangAPI::Symbol{std::move(path)};
 }
 
 // Human-readable "::"-joined form of a (possibly qualified) Class name,

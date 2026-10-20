@@ -3,9 +3,15 @@
  * Part of the split ISPA std lib; include <ispastdlib.hpp> for everything.
  */
 #pragma once
+#include <tuple>
 #include <ispastdlib/node.hpp>
 #include <ispastdlib/raw_token.hpp>
 namespace ISPA_STD {
+    template<class A, class B>
+    std::string to_string_helper(const std::pair<A, B>& value);
+    template<class... Ts>
+    std::string to_string_helper(const std::tuple<Ts...>& value);
+
 
     template<typename Tokens, typename Type>
     std::string to_string_helper(
@@ -135,6 +141,16 @@ namespace ISPA_STD {
         }
 
         return result;
+    }
+    template<class A, class B>
+    std::string to_string_helper(const std::pair<A, B>& value) {
+        return to_string_helper(value.first) + to_string_helper(value.second);
+    }
+    template<class... Ts>
+    std::string to_string_helper(const std::tuple<Ts...>& value) {
+        return std::apply([](const auto&... items) {
+            return (std::string{} + ... + to_string_helper(items));
+        }, value);
     }
     // Base case: zero arguments
     inline std::string concat() {

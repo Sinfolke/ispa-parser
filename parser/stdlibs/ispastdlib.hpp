@@ -22,4 +22,5 @@
 #include <ispastdlib/parser_base.hpp>
 #include <ispastdlib/parser_ll.hpp>
 #include <ispastdlib/lr_parser.hpp>
+#include <ispastdlib/lr_machine.hpp>
 #endif // ISPA_STD_LIB_CPP

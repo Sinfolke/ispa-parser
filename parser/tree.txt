@@ -1,0 +1,534 @@
+main
+└── value
+    └── item
+        ├── grammar
+            ├── mod
+            ├── name
+                ├── name
+                │   ├── primary
+                │       ├── ID
+                │       │   └── value: advanced_rule
+                │   ├── nested
+                │   ├── temp_params
+                │       ├── <empty>
+                │   └── param
+                │       ├── <empty>
+            └── entry
+                ├── rule
+                    ├── v
+                        ├── item
+                        │   ├── rule_value
+                        │   │   └── value
+                        │   │       ├── rule_value_one_capture
+                        │   │           ├── v_cap
+                        │   │               ├── <empty>
+                        │   │           ├── ast_cap
+                        │   │               ├── <empty>
+                        │   │           ├── fail_cap
+                        │   │               ├── <empty>
+                        │   │           ├── val
+                        │   │               ├── rule_value_pattern
+                        │   │               │   └── value
+                        │   │               │       ├── rule_value_STRING
+                        │   │               │           └── value: {
+                        │   │           ├── alts
+                        │   │           ├── quantifier
+                        │   │               ├── <empty>
+                        │   │           └── registration
+                        │   │               ├── <empty>
+                        ├── item
+                        │   ├── rule_value
+                        │   │   └── value
+                        │   │       ├── rule_value_one_capture
+                        │   │           ├── v_cap
+                        │   │               ├── <empty>
+                        │   │           ├── ast_cap
+                        │   │               ├── rule_value_ast_capture
+                        │   │               │   └── value
+                        │   │               │       ├── <empty>
+                        │   │           ├── fail_cap
+                        │   │               ├── <empty>
+                        │   │           ├── val
+                        │   │               ├── rule_value_pattern
+                        │   │               │   └── value
+                        │   │               │       ├── name
+                        │   │               │           ├── primary
+                        │   │               │               ├── ID
+                        │   │               │               │   └── value: dep_decl
+                        │   │               │           ├── nested
+                        │   │               │           ├── temp_params
+                        │   │               │               ├── <empty>
+                        │   │               │           └── param
+                        │   │               │               ├── <empty>
+                        │   │           ├── alts
+                        │   │           ├── quantifier
+                        │   │               ├── rule_value_counter
+                        │   │               │   ├── quantifier
+                        │   │               │       ├── rule_value_QUANTIFIER
+                        │   │               │       │   └── value: *
+                        │   │               │   └── repetitions
+                        │   │               │       ├── <empty>
+                        │   │           └── registration
+                        │   │               ├── <empty>
+                        ├── item
+                        │   ├── rule_value
+                        │   │   └── value
+                        │   │       ├── rule_value_one_capture
+                        │   │           ├── v_cap
+                        │   │               ├── <empty>
+                        │   │           ├── ast_cap
+                        │   │               ├── rule_value_ast_capture
+                        │   │               │   └── value
+                        │   │               │       ├── <empty>
+                        │   │           ├── fail_cap
+                        │   │               ├── <empty>
+                        │   │           ├── val
+                        │   │               ├── rule_value_pattern
+                        │   │               │   └── value
+                        │   │               │       ├── rule_value_group
+                        │   │               │           └── value
+                        │   │               │               └── item
+                        │   │               │                   ├── rule_value
+                        │   │               │                       └── value
+                        │   │               │                           ├── rule_value_one_capture
+                        │   │               │                               ├── v_cap
+                        │   │               │                                   ├── <empty>
+                        │   │               │                               ├── ast_cap
+                        │   │               │                                   ├── <empty>
+                        │   │               │                               ├── fail_cap
+                        │   │               │                                   ├── <empty>
+                        │   │               │                               ├── val
+                        │   │               │                                   ├── rule_value_pattern
+                        │   │               │                                   │   └── value
+                        │   │               │                                   │       ├── name
+                        │   │               │                                   │           ├── primary
+                        │   │               │                                   │               ├── ID
+                        │   │               │                                   │               │   └── value: regular_match
+                        │   │               │                                   │           ├── nested
+                        │   │               │                                   │           ├── temp_params
+                        │   │               │                                   │               ├── <empty>
+                        │   │               │                                   │           └── param
+                        │   │               │                                   │               ├── <empty>
+                        │   │               │                               ├── alts
+                        │   │               │                                   └── item
+                        │   │               │                                   │   ├── rule_value_alternative
+                        │   │               │                                   │       └── value
+                        │   │               │                                   │           ├── rule_value_pattern
+                        │   │               │                                   │               └── value
+                        │   │               │                                   │                   ├── name
+                        │   │               │                                   │                       ├── primary
+                        │   │               │                                   │                           ├── ID
+                        │   │               │                                   │                           │   └── value: stmt
+                        │   │               │                                   │                       ├── nested
+                        │   │               │                                   │                       ├── temp_params
+                        │   │               │                                   │                           ├── <empty>
+                        │   │               │                                   │                       └── param
+                        │   │               │                                   │                           ├── <empty>
+                        │   │               │                               ├── quantifier
+                        │   │               │                                   ├── <empty>
+                        │   │               │                               └── registration
+                        │   │               │                                   ├── <empty>
+                        │   │           ├── alts
+                        │   │           ├── quantifier
+                        │   │               ├── rule_value_counter
+                        │   │               │   ├── quantifier
+                        │   │               │       ├── rule_value_QUANTIFIER
+                        │   │               │       │   └── value: *
+                        │   │               │   └── repetitions
+                        │   │               │       ├── <empty>
+                        │   │           └── registration
+                        │   │               ├── <empty>
+                        └── item
+                        │   ├── rule_value
+                        │       └── value
+                        │           ├── rule_value_one_capture
+                        │               ├── v_cap
+                        │                   ├── <empty>
+                        │               ├── ast_cap
+                        │                   ├── <empty>
+                        │               ├── fail_cap
+                        │                   ├── <empty>
+                        │               ├── val
+                        │                   ├── rule_value_pattern
+                        │                   │   └── value
+                        │                   │       ├── rule_value_STRING
+                        │                   │           └── value: }
+                        │               ├── alts
+                        │               ├── quantifier
+                        │                   ├── <empty>
+                        │               └── registration
+                        │                   ├── <empty>
+                    ├── ast_pointer
+                        ├── rule_ast
+                        │   └── value
+                        │       ├── rule_ast_abbr
+                        │           ├── f
+                        │               ├── ID
+                        │               │   └── value: dep
+                        │           └── seq
+                        │               └── item
+                        │                   ├── ID
+                        │                       └── value: body
+                    ├── fail_pointer
+                        ├── <empty>
+                    └── nested
+                        ├── item
+                            ├── rule_nested_rule
+                            │   └── value
+                            │       ├── grammar
+                            │           ├── mod
+                            │           ├── name
+                            │               ├── name
+                            │               │   ├── primary
+                            │               │       ├── ID
+                            │               │       │   └── value: dep_decl
+                            │               │   ├── nested
+                            │               │   ├── temp_params
+                            │               │       ├── <empty>
+                            │               │   └── param
+                            │               │       ├── <empty>
+                            │           └── entry
+                            │               ├── rule
+                            │                   ├── v
+                            │                       ├── item
+                            │                       │   ├── rule_value
+                            │                       │   │   └── value
+                            │                       │   │       ├── rule_value_one_capture
+                            │                       │   │           ├── v_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── ast_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── fail_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── val
+                            │                       │   │               ├── rule_value_pattern
+                            │                       │   │               │   └── value
+                            │                       │   │               │       ├── rule_value_STRING
+                            │                       │   │               │           └── value: depends
+                            │                       │   │           ├── alts
+                            │                       │   │           ├── quantifier
+                            │                       │   │               ├── <empty>
+                            │                       │   │           └── registration
+                            │                       │   │               ├── <empty>
+                            │                       └── item
+                            │                       │   ├── rule_value
+                            │                       │       └── value
+                            │                       │           ├── rule_value_one_capture
+                            │                       │               ├── v_cap
+                            │                       │                   ├── <empty>
+                            │                       │               ├── ast_cap
+                            │                       │                   ├── rule_value_ast_capture
+                            │                       │                   │   └── value
+                            │                       │                   │       ├── <empty>
+                            │                       │               ├── fail_cap
+                            │                       │                   ├── <empty>
+                            │                       │               ├── val
+                            │                       │                   ├── rule_value_pattern
+                            │                       │                   │   └── value
+                            │                       │                   │       ├── name
+                            │                       │                   │           ├── primary
+                            │                       │                   │               ├── ID
+                            │                       │                   │               │   └── value: forward_declaration
+                            │                       │                   │           ├── nested
+                            │                       │                   │           ├── temp_params
+                            │                       │                   │               ├── <empty>
+                            │                       │                   │           └── param
+                            │                       │                   │               ├── <empty>
+                            │                       │               ├── alts
+                            │                       │               ├── quantifier
+                            │                       │                   ├── <empty>
+                            │                       │               └── registration
+                            │                       │                   ├── <empty>
+                            │                   ├── ast_pointer
+                            │                       ├── rule_ast
+                            │                       │   └── value
+                            │                       │       ├── rule_ast_single_value
+                            │                       │           └── value
+                            │                       │               └── value: @
+                            │                   ├── fail_pointer
+                            │                       ├── <empty>
+                            │                   └── nested
+                        ├── item
+                            ├── rule_nested_rule
+                            │   └── value
+                            │       ├── grammar
+                            │           ├── mod
+                            │           ├── name
+                            │               ├── name
+                            │               │   ├── primary
+                            │               │       ├── ID
+                            │               │       │   └── value: regular_match
+                            │               │   ├── nested
+                            │               │   ├── temp_params
+                            │               │       ├── <empty>
+                            │               │   └── param
+                            │               │       ├── <empty>
+                            │           └── entry
+                            │               ├── rule
+                            │                   ├── v
+                            │                       ├── item
+                            │                       │   ├── rule_value
+                            │                       │   │   └── value
+                            │                       │   │       ├── rule_value_one_capture
+                            │                       │   │           ├── v_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── ast_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── fail_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── val
+                            │                       │   │               ├── rule_value_pattern
+                            │                       │   │               │   └── value
+                            │                       │   │               │       ├── rule_value_STRING
+                            │                       │   │               │           └── value: match
+                            │                       │   │           ├── alts
+                            │                       │   │           ├── quantifier
+                            │                       │   │               ├── <empty>
+                            │                       │   │           └── registration
+                            │                       │   │               ├── <empty>
+                            │                       ├── item
+                            │                       │   ├── rule_value
+                            │                       │   │   └── value
+                            │                       │   │       ├── rule_value_one_capture
+                            │                       │   │           ├── v_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── ast_cap
+                            │                       │   │               ├── rule_value_ast_capture
+                            │                       │   │               │   └── value
+                            │                       │   │               │       ├── <empty>
+                            │                       │   │           ├── fail_cap
+                            │                       │   │               ├── <empty>
+                            │                       │   │           ├── val
+                            │                       │   │               ├── rule_value_pattern
+                            │                       │   │               │   └── value
+                            │                       │   │               │       ├── name
+                            │                       │   │               │           ├── primary
+                            │                       │   │               │               ├── ID
+                            │                       │   │               │               │   └── value: rule
+                            │                       │   │               │           ├── nested
+                            │                       │   │               │               └── item
+                            │                       │   │               │               │   ├── ID
+                            │                       │   │               │               │       └── value: value
+                            │                       │   │               │           ├── temp_params
+                            │                       │   │               │               ├── <empty>
+                            │                       │   │               │           └── param
+                            │                       │   │               │               ├── <empty>
+                            │                       │   │           ├── alts
+                            │                       │   │           ├── quantifier
+                            │                       │   │               ├── rule_value_counter
+                            │                       │   │               │   ├── quantifier
+                            │                       │   │               │       ├── rule_value_QUANTIFIER
+                            │                       │   │               │       │   └── value: +
+                            │                       │   │               │   └── repetitions
+                            │                       │   │               │       ├── <empty>
+                            │                       │   │           └── registration
+                            │                       │   │               ├── <empty>
+                            │                       └── item
+                            │                       │   ├── rule_value
+                            │                       │       └── value
+                            │                       │           ├── rule_value_one_capture
+                            │                       │               ├── v_cap
+                            │                       │                   ├── <empty>
+                            │                       │               ├── ast_cap
+                            │                       │                   ├── rule_value_ast_capture
+                            │                       │                   │   └── value
+                            │                       │                   │       ├── <empty>
+                            │                       │               ├── fail_cap
+                            │                       │                   ├── <empty>
+                            │                       │               ├── val
+                            │                       │                   ├── rule_value_pattern
+                            │                       │                   │   └── value
+                            │                       │                   │       ├── name
+                            │                       │                   │           ├── primary
+                            │                       │                   │               ├── ID
+                            │                       │                   │               │   └── value: unpack
+                            │                       │                   │           ├── nested
+                            │                       │                   │           ├── temp_params
+                            │                       │                   │               ├── <empty>
+                            │                       │                   │           └── param
+                            │                       │                   │               ├── <empty>
+                            │                       │               ├── alts
+                            │                       │                   └── item
+                            │                       │                   │   ├── rule_value_alternative
+                            │                       │                   │       └── value
+                            │                       │                   │           ├── rule_value_pattern
+                            │                       │                   │               └── value
+                            │                       │                   │                   ├── rule_value_STRING
+                            │                       │                   │                       └── value: ;
+                            │                       │               ├── quantifier
+                            │                       │                   ├── <empty>
+                            │                       │               └── registration
+                            │                       │                   ├── <empty>
+                            │                   ├── ast_pointer
+                            │                       ├── rule_ast
+                            │                       │   └── value
+                            │                       │       ├── rule_ast_abbr
+                            │                       │           ├── f
+                            │                       │               ├── ID
+                            │                       │               │   └── value: patterns
+                            │                       │           └── seq
+                            │                       │               └── item
+                            │                       │                   ├── ID
+                            │                       │                       └── value: assign_names
+                            │                   ├── fail_pointer
+                            │                       ├── <empty>
+                            │                   └── nested
+                            │                       └── item
+                            │                           ├── rule_nested_rule
+                            │                               └── value
+                            │                                   ├── grammar
+                            │                                       ├── mod
+                            │                                       ├── name
+                            │                                           ├── name
+                            │                                           │   ├── primary
+                            │                                           │       ├── ID
+                            │                                           │       │   └── value: unpack
+                            │                                           │   ├── nested
+                            │                                           │   ├── temp_params
+                            │                                           │       ├── <empty>
+                            │                                           │   └── param
+                            │                                           │       ├── <empty>
+                            │                                       └── entry
+                            │                                           ├── rule
+                            │                                               ├── v
+                            │                                                   ├── item
+                            │                                                   │   ├── rule_value
+                            │                                                   │   │   └── value
+                            │                                                   │   │       ├── rule_value_one_capture
+                            │                                                   │   │           ├── v_cap
+                            │                                                   │   │               ├── <empty>
+                            │                                                   │   │           ├── ast_cap
+                            │                                                   │   │               ├── <empty>
+                            │                                                   │   │           ├── fail_cap
+                            │                                                   │   │               ├── <empty>
+                            │                                                   │   │           ├── val
+                            │                                                   │   │               ├── rule_value_pattern
+                            │                                                   │   │               │   └── value
+                            │                                                   │   │               │       ├── rule_value_STRING
+                            │                                                   │   │               │           └── value: ->
+                            │                                                   │   │           ├── alts
+                            │                                                   │   │           ├── quantifier
+                            │                                                   │   │               ├── <empty>
+                            │                                                   │   │           └── registration
+                            │                                                   │   │               ├── <empty>
+                            │                                                   └── item
+                            │                                                   │   ├── rule_value
+                            │                                                   │       └── value
+                            │                                                   │           ├── rule_value_one_capture
+                            │                                                   │               ├── v_cap
+                            │                                                   │                   ├── <empty>
+                            │                                                   │               ├── ast_cap
+                            │                                                   │                   ├── rule_value_ast_capture
+                            │                                                   │                   │   └── value
+                            │                                                   │                   │       ├── <empty>
+                            │                                                   │               ├── fail_cap
+                            │                                                   │                   ├── <empty>
+                            │                                                   │               ├── val
+                            │                                                   │                   ├── rule_value_pattern
+                            │                                                   │                   │   └── value
+                            │                                                   │                   │       ├── name
+                            │                                                   │                   │           ├── primary
+                            │                                                   │                   │               ├── ID
+                            │                                                   │                   │               │   └── value: ID
+                            │                                                   │                   │           ├── nested
+                            │                                                   │                   │           ├── temp_params
+                            │                                                   │                   │               ├── <empty>
+                            │                                                   │                   │           └── param
+                            │                                                   │                   │               ├── <empty>
+                            │                                                   │               ├── alts
+                            │                                                   │               ├── quantifier
+                            │                                                   │                   ├── rule_value_counter
+                            │                                                   │                   │   ├── quantifier
+                            │                                                   │                   │       ├── rule_value_QUANTIFIER
+                            │                                                   │                   │       │   └── value: +
+                            │                                                   │                   │   └── repetitions
+                            │                                                   │                   │       ├── <empty>
+                            │                                                   │               └── registration
+                            │                                                   │                   ├── <empty>
+                            │                                               ├── ast_pointer
+                            │                                                   ├── rule_ast
+                            │                                                   │   └── value
+                            │                                                   │       ├── rule_ast_single_value
+                            │                                                   │           └── value
+                            │                                                   │               └── value: @
+                            │                                               ├── fail_pointer
+                            │                                                   ├── <empty>
+                            │                                               └── nested
+                        └── item
+                            ├── rule_nested_rule
+                                └── value
+                                    ├── grammar
+                                        ├── mod
+                                        ├── name
+                                            ├── name
+                                            │   ├── primary
+                                            │       ├── ID
+                                            │       │   └── value: fail_call
+                                            │   ├── nested
+                                            │   ├── temp_params
+                                            │       ├── <empty>
+                                            │   └── param
+                                            │       ├── <empty>
+                                        └── entry
+                                            ├── rule
+                                                ├── v
+                                                    ├── item
+                                                    │   ├── rule_value
+                                                    │   │   └── value
+                                                    │   │       ├── rule_value_one_capture
+                                                    │   │           ├── v_cap
+                                                    │   │               ├── <empty>
+                                                    │   │           ├── ast_cap
+                                                    │   │               ├── <empty>
+                                                    │   │           ├── fail_cap
+                                                    │   │               ├── <empty>
+                                                    │   │           ├── val
+                                                    │   │               ├── rule_value_pattern
+                                                    │   │               │   └── value
+                                                    │   │               │       ├── rule_value_STRING
+                                                    │   │               │           └── value: fail
+                                                    │   │           ├── alts
+                                                    │   │           ├── quantifier
+                                                    │   │               ├── <empty>
+                                                    │   │           └── registration
+                                                    │   │               ├── <empty>
+                                                    └── item
+                                                    │   ├── rule_value
+                                                    │       └── value
+                                                    │           ├── rule_value_one_capture
+                                                    │               ├── v_cap
+                                                    │                   ├── <empty>
+                                                    │               ├── ast_cap
+                                                    │                   ├── rule_value_ast_capture
+                                                    │                   │   └── value
+                                                    │                   │       ├── <empty>
+                                                    │               ├── fail_cap
+                                                    │                   ├── <empty>
+                                                    │               ├── val
+                                                    │                   ├── rule_value_pattern
+                                                    │                   │   └── value
+                                                    │                   │       ├── name
+                                                    │                   │           ├── primary
+                                                    │                   │               ├── ID
+                                                    │                   │               │   └── value: name
+                                                    │                   │           ├── nested
+                                                    │                   │           ├── temp_params
+                                                    │                   │               ├── <empty>
+                                                    │                   │           └── param
+                                                    │                   │               ├── <empty>
+                                                    │               ├── alts
+                                                    │               ├── quantifier
+                                                    │                   ├── <empty>
+                                                    │               └── registration
+                                                    │                   ├── <empty>
+                                                ├── ast_pointer
+                                                    ├── rule_ast
+                                                    │   └── value
+                                                    │       ├── rule_ast_single_value
+                                                    │           └── value
+                                                    │               └── value: @
+                                                ├── fail_pointer
+                                                    ├── <empty>
+                                                └── nested
+
+

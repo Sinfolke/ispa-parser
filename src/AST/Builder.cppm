@@ -18,6 +18,7 @@ class Builder {
     std::string name;
     UAST::main input;
     std::string file;
+    std::vector<std::string> source_files;
     stdu::vector<std::string> fullname;
     using Members = stdu::vector<std::shared_ptr<AST::RuleMember>>;
     using Value = UAST::rule_value;
@@ -38,6 +39,11 @@ public:
     explicit Builder(const UAST::main& mod, std::string file = {}) : input(mod), file(std::move(file)) {}
     explicit Builder(const ::ISPA_STD::Node<Parser::Types::main>& mod, std::string file = {})
         : input(mod.data()), file(std::move(file)) {}
+    // One source label per top-level input entry, for multi-file CLI inputs.
+    void setSourceFiles(std::vector<std::string> files) {
+        if (files.size() != input.value.size()) throw std::invalid_argument("AST source file count does not match input entries");
+        source_files = std::move(files);
+    }
     void build();
     auto get() -> Tree {
         Tree tree{std::move(name), std::move(spacemode), std::move(tree_map)};

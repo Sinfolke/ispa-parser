@@ -207,8 +207,20 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return std::string("::ISPA_STD::MatchResult<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::Lexer:
             return std::string("::ISPA_STD::Lexer_base") + (symbol.template_parameters.empty() ? "" : ("<" + convertTemplates(symbol.template_parameters) + ">"));
+        case LangAPI::StdlibExports::LRGeneralizedParser:
+            return std::string("::ISPA_STD::LRGeneralizedParser<") + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::LRParseGeneralized: return "lr_parse_generalized";
+        case LangAPI::StdlibExports::LRParser:
+            return std::string("::ISPA_STD::LRParser<") + convertTemplates(symbol.template_parameters) + ">";
+        case LangAPI::StdlibExports::LRGet: return "lr_get";
+        case LangAPI::StdlibExports::LRToken: return "lr_token";
+        case LangAPI::StdlibExports::LRPack: return "lr_pack";
+        case LangAPI::StdlibExports::LRCaptureAssign: return "lr_capture_assign";
+        case LangAPI::StdlibExports::LRNode: return "lr_node";
+        case LangAPI::StdlibExports::LRParse:
+            return "lr_parse";
         case LangAPI::StdlibExports::Parser:
-            return std::string("::ISPA_STD::LLParser_base<") + convertTemplates(symbol.template_parameters) + ">";
+            return std::string("::ISPA_STD::LLParser<") + convertTemplates(symbol.template_parameters) + ">";
         case LangAPI::StdlibExports::LexerMakeTokenParameter:
             return (symbol.Const ? "const " : "") + std::string("char*") + (symbol.Reference ? "&" : "");
         case LangAPI::StdlibExports::ParserFunctionParameter:
@@ -245,6 +257,10 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
             return "node";
         case LangAPI::StdlibExports::VariantIndex:
             return "index()";
+        case LangAPI::StdlibExports::ParserRequired: return "required";
+        case LangAPI::StdlibExports::ParserOptional: return "optional";
+        case LangAPI::StdlibExports::ParserRange: return "range";
+        case LangAPI::StdlibExports::ParserRangeOptional: return "range_optional";
         case LangAPI::StdlibExports::AssignCompatible:
             return "::ISPA_STD::assign_compatible";
         case LangAPI::StdlibExports::LexerTokenIterator:
@@ -463,7 +479,10 @@ auto Core::convertFunctionCall(const LangAPI::FunctionCall &call, bool need_temp
 }
 auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) -> std::string {
     std::ostringstream out;
-    out << convertIspaLibSymbol(call.symbol) << "(";
+    out << convertIspaLibSymbol(call.symbol);
+    if (!call.template_parameters.empty())
+        out << "<" << convertTemplates(call.template_parameters) << ">";
+    out << "(";
     bool first = true;
     for (const auto &param : call.args) {
         if (!first) out << ", ";

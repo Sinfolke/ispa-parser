@@ -49,7 +49,28 @@ function(get_file_range output_var)
     endif()
     set(${output_var} ${result} PARENT_SCOPE)
 endfunction()
+function(get_file_range_non_recurse output_var)
+    cmake_parse_arguments(ARG "" "EXCLUDE" "" ${ARGN})
 
+    # Read existing contents from parent scope if available
+    set(result "${${output_var}}")
+
+    foreach(path IN LISTS ARG_UNPARSED_ARGUMENTS)
+        # Use GLOB to match only the specified directory (non-recursive)
+        file(GLOB temp CONFIGURE_DEPENDS ${path})
+        list(APPEND result ${temp})
+    endforeach()
+
+    if(ARG_EXCLUDE AND result)
+        list(FILTER result EXCLUDE REGEX "${ARG_EXCLUDE}")
+    endif()
+
+    if(result)
+        list(REMOVE_DUPLICATES result)
+    endif()
+
+    set(${output_var} "${result}" PARENT_SCOPE)
+endfunction()
 # =============================================
 # Fetch & Find Dependencies
 # =============================================
@@ -71,8 +92,6 @@ get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/converter/*.cppm
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/algorithm/LL/*.cppm
         ${CMAKE_CURRENT_SOURCE_DIR}/external/*.cppm
 )
 
@@ -84,7 +103,10 @@ get_file_range(ISPA_MODULE_SOURCES
         EXCLUDE ".*/main\\.cpp$"
         EXCLUDE "parser/new/.*\\.cpp$"
 )
-list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/converter/*.cppm)
+get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/algorithm/*.cppm)
+list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cpp")
+list(REMOVE_ITEM ISPA_MODULE_INTERFACES "${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cppm")
 target_sources(ispa_modules
         PUBLIC
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
@@ -95,7 +117,6 @@ target_sources(ispa_modules
 
 target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/new
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped
@@ -105,7 +126,6 @@ target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA
 set_target_properties(ispa_modules PROPERTIES
         DISABLE_PRECOMPILE_HEADERS ON
 )
-
 # =============================================
 # Main Executable
 # =============================================
@@ -119,15 +139,36 @@ function(add_ispa_lib type lib)
     get_file_range(${type}_${lib}_SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/${type}/${lib}/*.cpp
     )
+    get_file_range(${type}_${lib}_MODULES
+            ${CMAKE_CURRENT_SOURCE_DIR}/lib/${type}/${lib}/*.cppm
+    )
 
-    add_library(ispa-${type}-${lib} SHARED ${${type}_${lib}_SOURCES})
-    target_link_libraries(ispa-${type}-${lib} PRIVATE ispa_modules)
-    set_target_properties(ispa-${type}-${lib} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-    set_target_properties(ispa-${type}-${lib} PROPERTIES
+    set(target_name "ispa-${type}-${lib}")
+
+    add_library(${target_name} SHARED)
+
+    target_sources(${target_name}
+            PUBLIC
+            FILE_SET cxx_modules TYPE CXX_MODULES FILES ${${type}_${lib}_MODULES}
+            PRIVATE
+            ${${type}_${lib}_SOURCES}
+    )
+
+    # Link language target to shared converter modules and ispa_modules
+    target_link_libraries(${target_name}
+            PRIVATE
+            ispa_modules
+    )
+
+    set_target_properties(${target_name} PROPERTIES
+            WINDOWS_EXPORT_ALL_SYMBOLS ON
             DISABLE_PRECOMPILE_HEADERS ON
     )
-    target_link_libraries(ispa PRIVATE ispa-${type}-${lib})
+
+    # Link language target directly to main ispa binary/library
+    target_link_libraries(ispa PRIVATE ${target_name})
 endfunction()
+
 # =============================================
 # Converter Shared Library
 # =============================================
@@ -135,18 +176,27 @@ function(add_converter language)
     add_ispa_lib(converter ${language})
 endfunction()
 
-
 add_converter(cpp)
+
 # =============================================
 # Algorithms Shared Library
 # =============================================
 function(add_algorithm alg)
     add_ispa_lib(algorithm ${alg})
+
+    if(ARGN)
+        foreach(dep IN LISTS ARGN)
+            target_link_libraries(ispa-algorithm-${alg} PRIVATE ispa-algorithm-${dep})
+        endforeach()
+    endif()
 endfunction()
 
-
 add_algorithm(LL)
-
+target_sources(ispa-algorithm-LL PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cpp
+    PUBLIC FILE_SET cxx_modules TYPE CXX_MODULES FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cppm)
+add_algorithm(LR)
+add_algorithm(LALR LR)
+add_algorithm(LR_STAR LR)
 # =============================================
 # Testing
 # =============================================
@@ -179,6 +229,8 @@ target_compile_definitions(tests PRIVATE
 target_link_libraries(tests
         PRIVATE
         ispa_modules
+        ispa-algorithm-LR
+        ispa-algorithm-LALR
         GTest::gtest
         GTest::gtest_main
         yaml-cpp::yaml-cpp

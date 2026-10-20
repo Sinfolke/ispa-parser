@@ -8,7 +8,7 @@ import std;
 namespace {
 AST::Tree convert(const char* source) {
     Parser::Parser parser;
-    AST::Builder builder(UAST::fromParser(parser.parse(source), "feature.isc"));
+    AST::Builder builder(parser.parse(source), "feature.isc");
     builder.build();
     return builder.get();
 }

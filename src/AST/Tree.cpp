@@ -311,168 +311,170 @@ void AST::Tree::transform_helper(
     stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
     const stdu::vector<std::string>& fullname,
     const stdu::vector<std::string>& original_fullname,
-    utype::unordered_map<stdu::vector<std::string>,
-                         std::pair<char, stdu::vector<std::string>>>& replacements
+    bool whole_rule
 ) {
     using MemberPtr = std::shared_ptr<AST::RuleMember>;
     using Members = stdu::vector<MemberPtr>;
     using RuleName = stdu::vector<std::string>;
 
-    // Ensure logging indentation is restored even if transformation throws.
     logger.increaseIndentLevel();
     const auto restore_indent = [this](void*) { logger.decreaseIndentLevel(); };
     std::shared_ptr<void> indent_guard(nullptr, restore_indent);
-
-    const auto reference = [](const RuleName& name) -> MemberPtr {
-        return std::make_shared<AST::RuleMember>(
-            AST::RuleMember{.value = AST::RuleMemberName{.name = name}});
-    };
 
     const auto append_name = [](RuleName name, const std::string& part) {
         name.push_back(part);
         return name;
     };
-
-    const auto push_rule = [&](const RuleName& name, const Members& values) {
-        initial_item_set[name].push_back(AST::Rule{
+    // Reserve before descending: sibling branches and nested expressions must
+    // never append productions to one another's helpers (or to a user rule).
+    const auto allocate = [&](const RuleName& scope, const std::string& part) {
+        auto name = append_name(scope, part);
+        for (std::size_t suffix = 1; initial_item_set.contains(name) || tree_map.contains(name); ++suffix)
+            name = append_name(scope, part + "_" + std::to_string(suffix));
+        initial_item_set.emplace(name, stdu::vector<AST::Rule>{});
+        return name;
+    };
+    const auto reference = [](const RuleName& name, const AST::RuleMember& source) -> MemberPtr {
+        // Retain occurrence metadata, especially the outer capture. Clearing it
+        // here used to leave the parent's data block with no captured member.
+        auto member = std::make_shared<AST::RuleMember>(source);
+        member->value = AST::RuleMemberName{.name = name};
+        member->quantifier = '\0';
+        return member;
+    };
+    const auto synthetic_reference = [&](const RuleName& name, const AST::RuleMember& source) {
+        auto member = reference(name, source);
+        member->prefix.clear();
+        return member;
+    };
+    const auto push_rule = [&](const RuleName& name, const Members& values, const AST::RuleMember& source) {
+        initial_item_set.at(name).push_back(AST::Rule{
             .rule_members = values,
-            .original_rules = original_fullname
+            .original_rules = original_fullname,
+            .isTopLevel = false,
+            .position = source.position,
+            .features = source.features,
+            .normalization_source = std::make_shared<AST::RuleMember>(source)
         });
     };
-
-    // Expand X? / X+ / X* into generated rules. Payload consists of
-    // already-transformed members with no outer quantifier.
-    const auto expand_quantified = [&](const RuleName& name,
-                                       const Members& payload,
-                                       char quantifier) {
+    const auto expand_quantified = [&](const RuleName& name, const Members& payload,
+                                       char quantifier, const AST::RuleMember& source) {
         switch (quantifier) {
+            case '\0': push_rule(name, payload, source); return;
             case '?':
-                push_rule(name, {});
-                push_rule(name, payload);
+                push_rule(name, {}, source);
+                push_rule(name, payload, source);
                 return;
-            case '*': {
-                push_rule(name, {});
-                auto repeated = payload;
-                repeated.push_back(reference(name));
-                push_rule(name, repeated);
-                return;
-            }
+            case '*':
             case '+': {
-                const RuleName tail = append_name(name, "__tail");
+                if (quantifier == '*') push_rule(name, {}, source);
+                const auto tail = allocate(name, "__tail");
                 auto first = payload;
-                first.push_back(reference(tail));
-                push_rule(name, first);
-
-                push_rule(tail, {});
+                first.push_back(synthetic_reference(tail, source));
+                push_rule(name, first, source);
+                push_rule(tail, {}, source);
                 auto repeated = payload;
-                repeated.push_back(reference(tail));
-                push_rule(tail, repeated);
+                // Trivia belongs to the start of a subsequent iteration, not
+                // to the nullable tail: otherwise A+ \s0 B would accept a gap.
+                if (tree_map.contains(constants::whitespace) && !source.isAutoGenerated) {
+                    const auto ws = allocate(tail, "__repeat_ws");
+                    AST::RuleMember space;
+                    space.isAutoGenerated = true;
+                    space.value = AST::RuleMemberName{.name = constants::whitespace};
+                    push_rule(ws, {}, space);
+                    push_rule(ws, {std::make_shared<AST::RuleMember>(space)}, space);
+                    repeated.insert(repeated.begin(), synthetic_reference(ws, space));
+                }
+                repeated.push_back(synthetic_reference(tail, source));
+                push_rule(tail, repeated, source);
                 return;
             }
-            default:
-                throw Error("Unsupported quantifier in transform_helper");
+            default: throw Error("Unsupported quantifier in transform_helper");
         }
     };
 
-    std::size_t i = 0;
-    while (i < members.size()) {
-        // Own a copy so replacing/erasing members[i] cannot destroy the object
-        // while it is still being examined.
-        MemberPtr current = members[i];
-        if (!current)
-            throw Error("Null RuleMember in transform_helper");
-
+    for (std::size_t i = 0; i < members.size(); ++i) {
+        const auto current = members[i];
+        if (!current) throw Error("Null RuleMember in transform_helper");
         const char quantifier = current->quantifier;
 
         if (current->isGroup()) {
-            // Copy the vector, not the outer RuleMember. The copied pointers
-            // remain alive even after removing the group from `members`.
-            Members values = current->getGroup().values;
-
-            if (quantifier == '\0') {
-                transform_helper(values, fullname, original_fullname, replacements);
-                const std::size_t count = values.size();
-
-                members.erase(members.begin() + i);
-                members.insert(members.begin() + i, values.begin(), values.end());
-
-                logger.log("Expanded unquantified group at {}, {} entries", i, count);
-                // Inserts were already transformed; for an empty group, i
-                // now points to the next original member.
-                i += count;
-                continue;
-            }
-
-            const RuleName generated = append_name(fullname, "__grp" + std::to_string(i));
-            transform_helper(values, generated, original_fullname, replacements);
-            expand_quantified(generated, values, quantifier);
-            members[i] = reference(generated);
-            ++i;
+            const auto generated = allocate(fullname, "__grp" + std::to_string(i));
+            auto values = current->getGroup().values;
+            // A group body is not the entire production owning `generated`:
+            // its alternatives need a separate choice helper before repetition.
+            transform_helper(values, generated, original_fullname);
+            expand_quantified(generated, values, quantifier, *current);
+            members[i] = reference(generated, *current);
             continue;
         }
 
         if (current->isOp()) {
-            // The old representation stores a list of alternatives and may
-            // store an unquantified group as an entire alternative.
-            // Expand each original alternative independently to avoid stale
-            // offsets, iterators and out-of-bounds group-length arithmetic.
-            Members original_options = current->getOp().options;
-            if (original_options.empty())
-                throw Error("Empty alternative group in transform_helper");
-
+            const auto& options = current->getOp().options;
+            if (options.empty()) throw Error("Empty alternative group in transform_helper");
+            const bool root_choice = whole_rule && members.size() == 1 && quantifier == '\0' &&
+                current->features.empty() && current->failure_handler.name.empty() &&
+                current->failure_handler.action.python.kind.empty() && !current->isInline;
+            const auto generated = allocate(fullname, "__rop" + std::to_string(i));
             stdu::vector<Members> alternatives;
-            for (const MemberPtr& option : original_options) {
-                if (!option)
-                    throw Error("Null alternative in transform_helper");
-
+            for (std::size_t branch = 0; branch < options.size(); ++branch) {
+                const auto& option = options[branch];
+                if (!option) throw Error("Null alternative in transform_helper");
                 Members sequence;
-                if (option->isGroup() && option->quantifier == '\0') {
+                if (option->isGroup() && option->quantifier == '\0' && option->prefix.empty() && option->features.empty())
                     sequence = option->getGroup().values;
-                } else {
-                    sequence.push_back(option);
-                }
-                transform_helper(sequence, fullname, original_fullname, replacements);
+                else sequence.push_back(option);
+                const auto scope = append_name(generated, "__alt" + std::to_string(branch));
+                transform_helper(sequence, scope, original_fullname);
                 alternatives.push_back(std::move(sequence));
             }
-
-            // In a single-member rule, the first alternative can occupy the
-            // rule itself. Remaining alternatives become additional rules.
-            // In a larger rule, reference a generated choice nonterminal.
-            if (members.size() == 1) {
-                members.erase(members.begin() + i);
-                members.insert(members.begin() + i,
-                               alternatives.front().begin(), alternatives.front().end());
-                for (std::size_t a = 1; a < alternatives.size(); ++a)
-                    push_rule(fullname, alternatives[a]);
-                i += alternatives.front().size();
-            } else {
-                const RuleName generated = append_name(fullname, "__rop" + std::to_string(i));
-                for (const auto& alternative : alternatives)
-                    push_rule(generated, alternative);
-                members[i] = reference(generated);
-                ++i;
+            if (root_choice) {
+                // These are complete source-rule alternatives, so clone the
+                // rule metadata, not a bare synthetic Rule with no data block.
+                const auto prototype = initial_item_set.at(fullname).front();
+                for (std::size_t branch = 0; branch < alternatives.size(); ++branch) {
+                    auto& sequence = alternatives[branch];
+                    if (!current->prefix.empty()) {
+                        if (sequence.size() == 1) {
+                            auto captured = std::make_shared<AST::RuleMember>(*sequence.front());
+                            captured->prefix = current->prefix;
+                            captured->features.insert(captured->features.end(), current->features.begin(), current->features.end());
+                            sequence.front() = std::move(captured);
+                        } else {
+                            const auto group = allocate(generated, "__capture" + std::to_string(branch));
+                            push_rule(group, sequence, *current);
+                            sequence = {reference(group, *current)};
+                        }
+                    }
+                    if (branch == 0) members = sequence;
+                    else {
+                        auto alternative = prototype;
+                        alternative.rule_members = sequence;
+                        initial_item_set.at(fullname).push_back(std::move(alternative));
+                    }
+                }
+                // `generated` only supplied branch-local scopes, not a symbol.
+                initial_item_set.erase(generated);
+                return;
             }
+            if (quantifier == '\0') {
+                for (const auto& alternative : alternatives) push_rule(generated, alternative, *current);
+            } else {
+                const auto choice = allocate(generated, "__choice");
+                for (const auto& alternative : alternatives) push_rule(choice, alternative, *current);
+                expand_quantified(generated, {synthetic_reference(choice, *current)}, quantifier, *current);
+            }
+            members[i] = reference(generated, *current);
             continue;
         }
 
-        if (quantifier == '\0') {
-            ++i;
-            continue;
-        }
-
-        const auto previous = replacements.find(fullname);
-        if (previous != replacements.end() && previous->second.first == quantifier) {
-            members[i] = reference(previous->second.second);
-            ++i;
-            continue;
-        }
-
-        const RuleName generated = append_name(fullname, "__q" + std::to_string(i));
-        AST::RuleMember unquantified = *current;
-        unquantified.quantifier = '\0';
-        expand_quantified(generated, {std::make_shared<AST::RuleMember>(std::move(unquantified))}, quantifier);
-        members[i] = reference(generated);
-        ++i;
+        if (quantifier == '\0') continue;
+        const auto generated = allocate(fullname, "__q" + std::to_string(i));
+        auto unquantified = std::make_shared<AST::RuleMember>(*current);
+        unquantified->quantifier = '\0';
+        unquantified->prefix.clear(); // the capture belongs to the replacement occurrence
+        expand_quantified(generated, {unquantified}, quantifier, *current);
+        members[i] = reference(generated, *current);
     }
 }
 
@@ -483,8 +485,7 @@ void AST::Tree::transform() {
             keys.push_back(name);
     }
 
-    utype::unordered_map<stdu::vector<std::string>,
-                         std::pair<char, stdu::vector<std::string>>> replacements;
+    std::sort(keys.begin(), keys.end());
     Tlog::Branch log_branch(logger, "AST/transform.log");
 
     for (const auto& name : keys) {
@@ -504,7 +505,7 @@ void AST::Tree::transform() {
         // that storage would dangle the moment that happens; an owned
         // local copy can't be invalidated by it.
         auto members_copy = it->second.front().rule_members;
-        transform_helper(members_copy, name, name, replacements);
+        transform_helper(members_copy, name, name, true);
 
         // initial_item_set may have gained new keys (generated helper
         // rules) during the call, which can rehash the map and invalidate

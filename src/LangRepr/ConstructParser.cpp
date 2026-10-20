@@ -1,6 +1,5 @@
 module LangRepr.ConstructParser;
 
-import LLIR.Builder.Base;
 import cpuf.printf;
 import NFA.TNFA.API;
 import DFA;
@@ -228,8 +227,9 @@ namespace LangRepr {
     }
     auto ConstructParser::constructParser() -> void {
         auto parser = createParserClass();
+        if (lr) constructLRParser(parser);
         // constructTokenMachineDFA(parser);
-        for (const auto &prod : ir) {
+        if (!lr) for (const auto &prod : ir) {
             LangAPI::Type rule_type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
             LangAPI::Type fun_type = ensureTypesNs(LangAPI::Type {LangAPI::ValueType::RuleResult, rule_type, LangAPI::Type {LangAPI::Symbol {"IT"}}});
             LangAPI::Statements stmts;

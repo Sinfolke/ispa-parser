@@ -3,6 +3,7 @@
  * Part of the split ISPA std lib; include <ispastdlib.hpp> for everything.
  */
 #pragma once
+#include <tuple>
 #include <ispastdlib/traits.hpp>
 
 namespace ISPA_STD {
@@ -78,6 +79,7 @@ namespace ISPA_STD {
             } else if constexpr (
                 is_vector<Type>::value ||
                 is_variant<Type>::value ||
+                requires { std::tuple_size<Type>::value; } ||
                 has_write_to_output<Type, ASTPrinter<OS>>::value ||
                 has_ast_print<Type, ASTPrinter<OS>>::value
             ) {
@@ -121,6 +123,11 @@ namespace ISPA_STD {
                     down();
                 }
 
+            } else if constexpr (requires { std::tuple_size<Type>::value; }) {
+                std::apply([this](const auto&... items) {
+                    std::size_t index = 0;
+                    (node_with_value("item", items, ++index == sizeof...(items)), ...);
+                }, value);
             } else if constexpr (is_variant<Type>::value) {
                 std::visit([this](const auto& alternative) {
                     using Alt = std::decay_t<decltype(alternative)>;

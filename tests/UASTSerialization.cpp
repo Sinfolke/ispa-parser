@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 import AST.Frontend;
-import LLIR.LangAPIMembersAccess;
+import LangAPI.Accessor;
 import dstd;
 import std;
 
@@ -31,8 +31,8 @@ template<class T> void write(std::ostream& out, const T& value) {
     } else if constexpr (Variant<T>::value) {
         write(out, value.index());
         std::visit([&](const auto& item) { write(out, item); }, value);
-    } else if constexpr (requires { LLIR::Serialize::MembersAccess::get(value); }) {
-        std::apply([&](const auto&... fields) { (write(out, fields), ...); }, LLIR::Serialize::MembersAccess::get(value));
+    } else if constexpr (requires { LangAPI::MembersAccess::get(value); }) {
+        std::apply([&](const auto&... fields) { (write(out, fields), ...); }, LangAPI::MembersAccess::get(value));
     } else {
         write(out, value.size());
         for (const auto& item : value) write(out, item);
@@ -51,8 +51,8 @@ template<class T> void read(std::istream& in, T& value) {
         std::size_t index{};
         read(in, index);
         readVariant(in, value, index);
-    } else if constexpr (requires { LLIR::Serialize::MembersAccess::get(value); }) {
-        std::apply([&](auto&... fields) { (read(in, fields), ...); }, LLIR::Serialize::MembersAccess::get(value));
+    } else if constexpr (requires { LangAPI::MembersAccess::get(value); }) {
+        std::apply([&](auto&... fields) { (read(in, fields), ...); }, LangAPI::MembersAccess::get(value));
     } else {
         std::size_t size{};
         read(in, size);
@@ -74,7 +74,7 @@ template<class T> T roundTrip(const T& original) {
 }
 
 template<class T, std::size_t Count> constexpr bool reflectsAllMembers =
-    std::tuple_size_v<decltype(LLIR::Serialize::MembersAccess::get(std::declval<T&>()))> == Count;
+    std::tuple_size_v<decltype(LangAPI::MembersAccess::get(std::declval<T&>()))> == Count;
 static_assert(reflectsAllMembers<AST::SourcePosition, 5>);
 static_assert(reflectsAllMembers<AST::PythonNode, 6>);
 static_assert(reflectsAllMembers<AST::CaptureBinding, 3>);

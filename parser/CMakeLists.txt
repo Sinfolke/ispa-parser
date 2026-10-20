@@ -8,6 +8,8 @@ option(ISPA_BUILD_DEP_PARSER "Build the dependency scanner" ON)
 option(ISPA_BUILD_PYTHON_PARSER "Build the Python grammar parser" ON)
 option(ISPA_ENABLE_PCH "Enable precompiled headers for parsers" ON)
 
+set(ISPA_BOOTSTRAPPED_DIR "" CACHE PATH "Override the ISPA grammar bootstrap directory (for example ispa/bootstrapped_ll)")
+
 set(ISPA_PARSER_MODE "AUTO" CACHE STRING "Parser sources: AUTO, INCREMENTAL, or BOOTSTRAPPED")
 set_property(CACHE ISPA_PARSER_MODE PROPERTY STRINGS AUTO INCREMENTAL BOOTSTRAPPED)
 if(NOT ISPA_PARSER_MODE MATCHES "^(AUTO|INCREMENTAL|BOOTSTRAPPED)$")
@@ -42,6 +44,9 @@ function(add_ispa_generated_parser parser_name directory executable_name)
     set(OUTPUT_DIR "${ROOT_DIR}/incremental")
     set(INCREMENTAL_DIR "${OUTPUT_DIR}/incremental")
     set(BOOTSTRAPPED_DIR "${ROOT_DIR}/bootstrapped")
+    if(parser_name STREQUAL "ispa" AND ISPA_BOOTSTRAPPED_DIR)
+        set(BOOTSTRAPPED_DIR "${ISPA_BOOTSTRAPPED_DIR}")
+    endif()
 
     file(GLOB_RECURSE ALL_INCREMENTAL_SOURCES CONFIGURE_DEPENDS
             "${INCREMENTAL_DIR}/*.cpp"

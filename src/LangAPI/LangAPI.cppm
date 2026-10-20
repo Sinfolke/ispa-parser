@@ -104,7 +104,7 @@ export namespace LangAPI {
         Cpp
     };
     enum class StdlibExports {
-        Node, MatchResult, Lexer, Parser, LexerMakeTokenParameter,
+        Node, MatchResult, Lexer, Parser, LRParser, LRGeneralizedParser, LRParse, LRParseGeneralized, LRGet, LRNode, LRPack, LRCaptureAssign, LRToken, LexerMakeTokenParameter,
         DfaState, DfaTable, DfaClassTable, DfaAcceptTable, DfaLRTable, DfaNullState,
         ParserFunctionParameter, Error,
         TokenNodeConstruct, RawTokenNodeConstruct, ParserNodeConstructor,
@@ -112,7 +112,8 @@ export namespace LangAPI {
         ASTPrinter, Concat,
         MatchResultValue, VariantIndex, AssignCompatible,
         LexerTokenIterator, LexerLazyIterator,
-        ParserRequired, ParserOptional, ParserRange, ParserRangeOptional
+        ParserRequired, ParserOptional, ParserRange, ParserRangeOptional,
+        RecoveryDecision, RecoveryState, RecoverEncoded
     };
 
 
@@ -484,14 +485,21 @@ export namespace LangAPI {
             return std::tie(exports);
         }
     };
+    template <typename T>
+    concept DirectPathPart = std::is_convertible_v<std::remove_cvref_t<T>, LangAPI::FunctionCall>
+                          || std::is_convertible_v<std::remove_cvref_t<T>, LangAPI::IspaLibSymbol>
+                          || std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
+
+    template <typename T>
+    concept DecomposableRange = std::ranges::range<T> && !DirectPathPart<T>;
     struct Symbol : RValueLevel {
         using PathPart = std::variant<FunctionCall, IspaLibSymbol, std::string>;
         stdu::vector<PathPart> path;
 
         template<typename... Args>
-        requires (std::constructible_from<PathPart, Args> && ...)
+        requires ((std::constructible_from<PathPart, Args> || std::ranges::range<Args> || std::is_same_v<Args, char> || std::is_integral_v<Args>) && ...)
         Symbol(Args&&... args) {
-            (path.emplace_back(std::forward<Args>(args)), ...);
+            (insertElement(args), ...);
         }
         template<std::ranges::input_range R>
         requires std::constructible_from<PathPart, std::ranges::range_value_t<R>>
@@ -502,6 +510,7 @@ export namespace LangAPI {
         }
         Symbol(const stdu::vector<PathPart> &path) : path(path) {}
         Symbol(stdu::vector<PathPart> &&path) : path(std::move(path)) {}
+        Symbol(const Symbol &other) : path(other.path) {}
         friend bool operator==(const Symbol& a, const Symbol& b);
         friend bool operator!=(const Symbol &a, const Symbol &b) { return !(a == b); }
         friend bool operator<(const Symbol &a, const Symbol& b);
@@ -515,6 +524,25 @@ export namespace LangAPI {
         auto members() {
             return std::tie(path);
         }
+        template<typename T>
+        requires DirectPathPart<T>
+        auto insertElement(const T& el) {
+            if constexpr (std::is_same_v<char, T>) {
+                path.emplace_back(std::string(1, el));
+            } else if constexpr (std::is_integral_v<T>) {
+                path.emplace_back(std::to_string(el));
+            } else {
+                path.emplace_back(el);
+            }
+        }
+        template<typename T>
+        requires DecomposableRange<T>
+        auto insertElement(const T &range) {
+            for (const auto el : range) {
+                insertElement(el);
+            }
+        }
+
     };
     struct StorageOffset : RValueLevel {
         Expression offset;
@@ -596,7 +624,7 @@ export namespace LangAPI {
     struct IspaLibFunctionCall : ExpressionValueLevel {
         IspaLibSymbol symbol;
         stdu::vector<Expression> args;
-
+        stdu::vector<std::variant<std::shared_ptr<Type>, std::shared_ptr<RValue>>> template_parameters;
         friend bool operator==(const IspaLibFunctionCall &a, const IspaLibFunctionCall &b);
         friend bool operator!=(const IspaLibFunctionCall &a, const IspaLibFunctionCall &b) { return !(a == b); }
         friend bool operator<(const IspaLibFunctionCall &a, const IspaLibFunctionCall &b);

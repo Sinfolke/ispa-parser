@@ -644,3 +644,36 @@ namespace AST {
         return *this == second;
     }
 };
+
+auto AST::captureType(const AST::RuleMember& member) -> AST::DataType {
+        using Type = AST::DataType;
+        using Kind = Type::Kind;
+        Type type{Kind::String};
+        if (member.isName()) {
+            type.kind = member.getName().isTerminal() ? Kind::Token : Kind::Rule;
+            type.name = member.getName().name;
+        } else if (member.isGroup() || member.isOp()) {
+            const auto& children = member.isGroup() ? member.getGroup().values : member.getOp().options;
+            for (const auto& child : children) {
+                auto next = captureType(*child);
+                if (!member.isOp() || std::find(type.parameters.begin(), type.parameters.end(), next) == type.parameters.end())
+                    type.parameters.push_back(std::move(next));
+            }
+            if (type.parameters.empty()) return Type{Kind::String};
+            if (type.parameters.size() == 1) type = AST::DataType(type.parameters.front());
+            else if (std::all_of(type.parameters.begin(), type.parameters.end(), [](const Type& t) {
+                return t.kind == Kind::Character || t.kind == Kind::String;
+            })) type = Type{Kind::String};
+            else type.kind = member.isOp() ? Kind::Variant : Kind::Tuple;
+        } else if ((member.isString() && member.getString().value.size() == 1) || member.isAny() ||
+                   (member.isCsequence() && (member.quantifier == '\0' || member.quantifier == '?'))) {
+            type.kind = Kind::Character;
+        }
+        if ((member.quantifier == '*' || member.quantifier == '+') &&
+            (member.isGroup() || member.isOp()) && type.kind == Kind::Character)
+            type.kind = Kind::String;
+        if ((member.quantifier == '*' || member.quantifier == '+') &&
+            type.kind != Kind::Character && type.kind != Kind::String)
+            type = Type{Kind::Array, {}, {type}};
+        return type;
+    }

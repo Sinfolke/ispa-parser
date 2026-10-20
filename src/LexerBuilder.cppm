@@ -1,12 +1,11 @@
 module;
 #include <tsl/ordered_map.h>
 export module LexerBuilder;
+import LLIR.API;
 import LangAPI;
 import AST.API;
 import AST.Tree;
 import LangAPI;
-import LLIR.API;
-import LLIR.IR;
 import AST.Tree;
 import NFA.TNFA.API;
 import DFA;
@@ -24,7 +23,6 @@ public:
 private:
     AST::Tree &ast;
     DFA::ClassifiedDFA dfa;
-    LLIR::IR function_ir;
     DfaCompatibleTable dfa_compatible_table;
     DispatchNamesInvolve dispatch_names_involve;
     NameToDfaMap name_to_dfa;
@@ -47,11 +45,9 @@ public:
     auto& getSemanticTable() const { return semantic_table; }
     auto& getDfaCompatibleTable() { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() { return dispatch_names_involve; }
-    auto& getFunctionsIR() { return function_ir; }
     auto& getDfaCompatibleTable() const { return dfa_compatible_table; }
     auto& getDispatchNamesInvolve() const { return dispatch_names_involve; }
     auto& getNameToDFAIndex() const { return name_to_dfa; }
-    auto& getFunctionsIR() const  { return function_ir; }
     auto& getMaxStatesCount() const{ return highest_states_count; }
     auto& getMaxTransitionCount() const { return highest_transition_count; }
     auto& getRegistersCount() const { return registers_count; }

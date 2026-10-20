@@ -198,6 +198,15 @@ namespace LangAPI {
             case StdlibExports::Node: os << "Node"; break;
             case StdlibExports::MatchResult: os << "MatchResult"; break;
             case StdlibExports::Lexer: os << "Lexer"; break;
+            case StdlibExports::LRGeneralizedParser: os << "LRGeneralizedParser"; break;
+            case StdlibExports::LRParseGeneralized: os << "LRParseGeneralized"; break;
+            case StdlibExports::LRParser: os << "LRParser"; break;
+            case StdlibExports::LRGet: os << "LRGet"; break;
+            case StdlibExports::LRToken: os << "LRToken"; break;
+            case StdlibExports::LRPack: os << "LRPack"; break;
+            case StdlibExports::LRCaptureAssign: os << "LRCaptureAssign"; break;
+            case StdlibExports::LRNode: os << "LRNode"; break;
+            case StdlibExports::LRParse: os << "LRParse"; break;
             case StdlibExports::Parser: os << "Parser"; break;
             case StdlibExports::LexerMakeTokenParameter: os << "LexerMakeTokenParameter"; break;
             case StdlibExports::DfaState: os << "DfaState"; break;
