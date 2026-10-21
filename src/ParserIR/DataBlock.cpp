@@ -1,7 +1,7 @@
-module LLIR.API;
+module ParserIR.API;
 import Parser.Base;
 import std;
-namespace LLIR {
+namespace ParserIR {
 auto dataBlock(const AST::DataBlock& block) -> DataBlock {
     DataBlock result;
     if (block.type) result.value = regular_data_block{{}, Parser::ParserBase::dataType(*block.type)};

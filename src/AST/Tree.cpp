@@ -1181,6 +1181,10 @@ auto AST::Tree::getFollowSet(std::size_t k) -> const LLkTable& {
     return follow_k_cache.at(k);
 }
 
+auto AST::Tree::getMemberFirstSet(const AST::RuleMember& member, std::size_t k) -> LLkSet {
+    return memberFirstK(member, k, getFirstSet(k));
+}
+
 // Demand-scoped FIRST/FOLLOW for a single decision. Unlike getFirstSet(k) /
 // getFollowSet(k), this does not expand every production in the grammar.
 // The selected scope includes the decision's referenced rules, its enclosing

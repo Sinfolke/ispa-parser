@@ -111,4 +111,48 @@ namespace ISPA_STD {
 
     template <typename T>
     struct is_streamable<T, std::void_t<decltype(std::declval<std::ostringstream&>() << std::declval<const T&>())>> : std::true_type {};
+
+    // Primary template: defaults to false
+    template <typename T, typename = void>
+    struct is_tuple_like : std::false_type {};
+
+    // Specialization: matching when std::tuple_size<T>::value is valid
+    template <typename T>
+    struct is_tuple_like<T, std::void_t<decltype(std::tuple_size<T>::value)>> : std::true_type {};
+
+    // Helper variable template
+    template <typename T>
+    inline constexpr bool is_tuple_like_v = is_tuple_like<T>::value;
+
+    template <typename T, typename = void>
+    struct has_meta_name : std::false_type {};
+
+    template <typename T>
+    struct has_meta_name<T, std::void_t<decltype(std::declval<const T&>().meta().name())>> : std::true_type {};
+
+    template <typename T>
+    inline constexpr bool has_meta_name_v = has_meta_name<T>::value;
+
+
+    // Checks if `token.name()` is valid
+    template <typename T, typename = void>
+    struct has_name : std::false_type {};
+
+    template <typename T>
+    struct has_name<T, std::void_t<decltype(std::declval<const T&>().name())>> : std::true_type {};
+
+    template <typename T>
+    inline constexpr bool has_name_v = has_name<T>::value;
+
+
+    // Checks if `token.index()` is valid
+    template <typename T, typename = void>
+    struct has_index : std::false_type {};
+
+    template <typename T>
+    struct has_index<T, std::void_t<decltype(std::declval<const T&>().index())>> : std::true_type {};
+
+    template <typename T>
+    inline constexpr bool has_index_v = has_index<T>::value;
+
 } // namespace ISPA_STD

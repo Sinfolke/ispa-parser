@@ -487,7 +487,7 @@ namespace LangRepr {
     auto ConstructTypes::constructTokensAndRulesEnum() -> void {
         using IdMap = utype::unordered_map<Name, std::size_t>;
 
-        auto generate = [&](const LLIR::DataBlockList& blocks,
+        auto generate = [&](const ParserIR::DataBlockList& blocks,
                             const std::string& numeric_name,
                             const std::string& string_name) {
             Node root;
@@ -587,7 +587,7 @@ namespace LangRepr {
 
 
     auto ConstructTypes::constructTokensAndRulesEnumToString() -> void {
-        auto constructSwitchFromDataBlockList = [](const LLIR::DataBlockList &list, const char* name) {
+        auto constructSwitchFromDataBlockList = [](const ParserIR::DataBlockList &list, const char* name) {
             LangAPI::Switch ss;
             ss.expression = LangAPI::Symbol::createExpression(LangAPI::Symbol {name});
             for (const auto &[name, block] : list) {
@@ -625,7 +625,7 @@ namespace LangRepr {
             }
         };
 
-        auto addData = [&](const LLIR::DataBlockList& blocks) {
+        auto addData = [&](const ParserIR::DataBlockList& blocks) {
             for (const auto& [name, data] : blocks) {
                 addName(name);
                 root.find_or_emplace(name)->data = data;

@@ -40,6 +40,29 @@ protected:
     auto firstOfSuffix(const Production& production, std::size_t begin,
                        const Lookahead& trailing, const Name* prepend = nullptr) const -> Lookaheads;
     auto closure(CanonicalItem items) const -> CanonicalItem;
+    auto closureUncached(CanonicalItem items) const -> CanonicalItem;
+
+    struct Proposal { Lookahead window; Action action; LR0Core item; };
+    std::vector<std::string> production_keys;
+    std::map<std::string, std::size_t> production_ids;
+    std::vector<std::string> state_keys;
+    std::map<std::string, std::size_t> state_ids;
+    mutable std::map<std::string, std::string> cached_closures, current_closures;
+    std::map<std::string, std::string> cached_rows, current_rows;
+    std::string cached_resolutions;
+    mutable std::map<std::set<LR0Core>, std::string> dependency_stamps;
+    virtual auto cacheKind() const -> std::string_view { return "LR"; }
+    void loadCache(std::string_view bytes);
+    void prepareCacheKeys();
+    auto itemKey(const CanonicalItem& items) const -> std::string;
+    auto dependencyStamp(const CanonicalItem& items) const -> std::string;
+    auto encodeItems(const CanonicalItem& items) const -> std::string;
+    auto decodeItems(std::string_view bytes) const -> CanonicalItem;
+    auto proposalsForState(std::size_t state) -> std::vector<Proposal>;
+    auto restoreResolutions(std::size_t max_lookahead) -> bool;
+    void cacheResolutions(std::size_t max_lookahead);
+    auto resolutionKey(std::size_t max_lookahead) const -> std::string;
+
     auto goTo(const CanonicalItem& items, const Name& symbol) const -> CanonicalItem;
     auto isNonterminal(const Name& name) const -> bool;
     static bool looksLikeTerminal(const Name& name);
@@ -51,7 +74,17 @@ protected:
                            const std::vector<Production>& productions) -> std::string;
 
 public:
-    explicit LRParser(AST::Tree* tree, std::size_t k = 1);
+    struct CacheStats {
+        std::size_t closures_reused = 0, closures_built = 0;
+        std::size_t rows_reused = 0, rows_built = 0;
+        bool resolutions_reused = false;
+    };
+private:
+    mutable CacheStats cache_stats;
+public:
+    auto getCacheStats() const -> const CacheStats& { return cache_stats; }
+    auto saveCache() const -> std::string;
+    explicit LRParser(AST::Tree* tree, std::size_t k = 1, std::string_view cache = {});
     explicit LRParser(AST::Tree& tree, std::size_t k = 1);
     virtual ~LRParser() = default;
     LRParser(const LRParser&) = delete;

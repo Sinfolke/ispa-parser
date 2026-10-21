@@ -1,12 +1,12 @@
-export module LLIR.IR;
+export module ParserIR.IR;
 import hash;
 import dstd;
 import LangAPI;
-import LLIR.API;
+import ParserIR.API;
 import DFA;
 import std;
 
-export namespace LLIR {
+export namespace ParserIR {
     class IR {
     protected:
         stdu::vector<Production> data;

@@ -1,7 +1,7 @@
 export module LangRepr.ConstructParser;
 import NFA.TNFA.API;
 import DFA.API;
-import LLIR.IR;
+import ParserIR.IR;
 import LRBase;
 import AST.API;
 import LangRepr.Holder;
@@ -24,8 +24,8 @@ export namespace LangRepr {
 
         auto constructParser() -> void;
         auto constructLRParser(LangAPI::Class &parser) -> void;
-        ConstructParser(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, tree) {}
-        ConstructParser(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, LRBase &parser, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, parser, tree) {}
+        ConstructParser(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, tree) {}
+        ConstructParser(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, LRBase &parser, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, parser, tree) {}
 
         ~ConstructParser() {}
     private:

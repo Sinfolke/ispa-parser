@@ -17,15 +17,9 @@ import AST.BackendGuard;
 import AST.Builder;
 import AST.Pass;
 import Semantic;
-import LLIR.API;
-import LLIR.Builder;
-import LLIR.IR;
-import LLIR.Serialize;
-import LangRepr.Construct;
 import LangRepr.Converter;
-import LangRepr.Holder;
-import LRBase;
-import Algorithm.CBinding;
+import Algorithm.API;
+import Algorithm.Cache;
 import hash;
 import AST.Builder;
 import LexerBuilder;
@@ -68,35 +62,6 @@ namespace {
         std::ofstream out(path, std::ios::trunc);
         for (const auto &[key, hash] : map)
             out << key << '\t' << hash << '\n';
-    }
-
-    // --- per-rule LLIR::Production cache, keyed by dotted rule path ---
-    auto loadIRCache(const std::filesystem::path &path) -> std::unordered_map<std::string, LLIR::Production> {
-        std::unordered_map<std::string, LLIR::Production> cache;
-        std::ifstream in(path, std::ios::binary);
-        if (!in) return cache;
-
-        std::uint32_t version = 0;
-        in.read(reinterpret_cast<char*>(&version), sizeof(version));
-        if (!in || version != LLIR::Serialize::FORMAT_VERSION)
-            return cache; // stale or empty file -> cold cache, every rule rebuilds this run
-
-        while (in.peek() != std::ifstream::traits_type::eof()) {
-            auto prod = LLIR::Serialize::readProductionRecord(in);
-            if (!prod) break; // stop at first bad record rather than risk desync
-            cache[corelib::text::join(prod->name, ".")] = std::move(*prod);
-        }
-        return cache;
-    }
-    auto saveIRCache(const std::filesystem::path &path, const stdu::vector<LLIR::Production> &productions) -> void {
-        std::ofstream out(path, std::ios::binary | std::ios::trunc);
-        std::uint32_t version = LLIR::Serialize::FORMAT_VERSION;
-        out.write(reinterpret_cast<const char*>(&version), sizeof(version));
-        for (const auto &prod : productions) {
-            // Writes nothing for a rule touching DFADebug (AST::RuleMember
-            // isn't serializable yet) — that rule just rebuilds fully next run.
-            LLIR::Serialize::writeProductionRecord(out, prod);
-        }
     }
 
     // --- write generated files, skipping unchanged content (so mtimes and
@@ -229,8 +194,20 @@ int main(int argc, char** argv) {
     std::filesystem::create_directories(dir_path);
     std::filesystem::create_directories(dir_path / "incremental");
 
-    // --- per-rule change detection -> only changed rules go to LLIR::Builder ---
-    const auto rule_manifest_path = dir_path / ".codegen-rule-hashes";
+    // Every algorithm uses the same entry point; output conversion belongs to it.
+    const auto algorithm_name = to_string(args.algorithm);
+    dlib algorithm_lib("libispa-algorithm-" + algorithm_name);
+    const auto* algorithm = algorithm_lib.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    if (!algorithm || algorithm->version != Algorithm::interface_version ||
+        !algorithm->id || algorithm_name != algorithm->id || !algorithm->build)
+        throw std::runtime_error("Incompatible algorithm module: " + algorithm_name);
+    const auto cache_dir = dir_path / ".ispa-cache" / name /
+        (algorithm_name + "-" + std::to_string(algorithm->cache_version)) /
+        (args.language_str + "-" + std::to_string(args.auto_conflicts) + "-" +
+         std::to_string(args.conflict_lookahead));
+    std::filesystem::create_directories(cache_dir);
+    auto metadata = Algorithm::loadMetadata(cache_dir / "data");
+    const auto rule_manifest_path = cache_dir / "rule-hashes";
     const auto previous_rule_hashes = loadKeyHashMap(rule_manifest_path);
 
     const auto &tree_map = ast.getTreeMap();
@@ -248,36 +225,13 @@ int main(int argc, char** argv) {
             changed_rules.emplace(path, rule);
     }
     cpuf::printf("{} of {} rules changed since last run\n", changed_rules.size(), tree_map.size());
-    LangRepr::Holder holder;
-    switch (args.algorithm) {
-        case Args::Algorithm::LL: {
-            auto production_cache = loadIRCache(dir_path / ".codegen-ir-cache");
-            LLIR::Builder builder(ast, changed_rules, production_cache);
-            auto IR = builder.get();
-
-            saveIRCache(dir_path / ".codegen-ir-cache", IR.getData());
-            holder = LangRepr::Construct::construct(std::move(lexer_data), std::move(IR), ast, args.language, name);
-            break;
-        }
-        case Args::Algorithm::LR:
-        case Args::Algorithm::LALR: {
-            dlib algorithm_lib("libispa-algorithm-" + to_string(args.algorithm));
-            auto create = algorithm_lib.load<AlgorithmCreateFn*>(to_string(args.algorithm) + "Parser_create");
-            auto finish = algorithm_lib.load<AlgorithmFinishFn*>(to_string(args.algorithm) + "Parser_finish");
-            std::unique_ptr<LRBase, AlgorithmFinishFn*> parser(create(&ast, 1), finish);
-            if (args.auto_conflicts) {
-                parser->resolveConflicts(args.conflict_lookahead);
-                const auto& resolutions = parser->getConflictResolutions();
-                const auto dynamic = std::count_if(resolutions.begin(), resolutions.end(), [](const auto& r) { return r.lookahead == 0; });
-                if (!resolutions.empty()) cpuf::printf("LR conflicts: {} resolved with lookahead, {} use runtime branching\n", resolutions.size() - dynamic, dynamic);
-            }
-            holder = LangRepr::Construct::construct(std::move(lexer_data), *parser, ast, args.language, name);
-            break;
-        }
-        case Args::Algorithm::LR_STAR:
-            throw Error("LR(*) algorithm is not yet supported");
-    }
-
+    const Algorithm::BuildRequest build_request{ast, changed_rules,
+        args.auto_conflicts, args.conflict_lookahead};
+    auto built = algorithm->build(build_request, metadata);
+    if (!built.output || !built.to_lang_repr)
+        throw std::runtime_error("Algorithm returned no LangRepr converter: " + algorithm_name);
+    Algorithm::ConversionRequest conversion_request{lexer_data, ast, args.language, name};
+    auto holder = built.to_lang_repr(built.output.get(), conversion_request);
 
     // dlib-loads libispa-converter-<lang> and resolves "<lang>_construct"
     // (e.g. the extern "C" cpp_construct in converter.cpp) internally.
@@ -290,6 +244,7 @@ int main(int argc, char** argv) {
     const auto result = writeGeneratedFiles(dir_path, converter.get(), previous_hashes);
 
     saveKeyHashMap(manifest_path, result.hashes);
+    Algorithm::saveMetadata(cache_dir / "data", metadata);
     saveKeyHashMap(rule_manifest_path, new_rule_hashes);
 
     std::cout << "Updated " << result.updated << " file(s)\n";

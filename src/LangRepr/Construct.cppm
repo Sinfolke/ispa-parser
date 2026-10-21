@@ -4,8 +4,8 @@ import LangRepr.Holder;
 
 import LexerBuilder;
 import LangAPI;
-import LLIR.API;
-import LLIR.IR;
+import ParserIR.API;
+import ParserIR.IR;
 import LRBase;
 import AST.Tree;
 import hash;
@@ -17,7 +17,7 @@ export namespace LangRepr {
     class Construct {
         Holder holder;
         LexerBuilder lexer_builder;
-        LLIR::IR ir;
+        ParserIR::IR ir;
         LRBase *lr = nullptr;
         AST::Tree &tree;
         LangAPI::Language lang;
@@ -26,14 +26,14 @@ export namespace LangRepr {
         auto constructLexer() -> void;
         auto constructParser() -> void;
     public:
-        Construct(LexerBuilder &&lexer_builder, LLIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name)
+        Construct(LexerBuilder &&lexer_builder, ParserIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name)
         : lexer_builder(std::move(lexer_builder)), ir(std::move(ir)), tree(tree), lang(lang), namespace_name(namespace_name) {}
 
         Construct(LexerBuilder &&lexer_builder, LRBase &parser, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name);
         static auto construct(LexerBuilder &&lexer_builder, LRBase &parser, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder;
 
         auto construct() -> Holder&;
-        static auto construct(LexerBuilder &&lexer_builder, LLIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder;
+        static auto construct(LexerBuilder &&lexer_builder, ParserIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder;
     };
 
 }

@@ -1,5 +1,5 @@
 module LangRepr.ConstructParser;
-import LLIR.API;
+import ParserIR.API;
 import corelib;
 import constants;
 import std;
@@ -185,7 +185,7 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
         } else {
             Type result_type = Type{Symbol{"Types", production.lhs}};
             reduce.push_back(Variable{.name = "result", .type = result_type});
-            auto block = LLIR::dataBlock(production.source.data_block);
+            auto block = ParserIR::dataBlock(production.source.data_block);
             std::size_t capture = 0;
             for (std::size_t m = 0; m < production.source.rule_members.size(); ++m) {
                 const auto& member = *production.source.rule_members[m];

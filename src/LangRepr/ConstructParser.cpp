@@ -2,6 +2,7 @@ module LangRepr.ConstructParser;
 
 import cpuf.printf;
 import NFA.TNFA.API;
+import Parser.Base;
 import DFA;
 
 import corelib;
@@ -304,7 +305,7 @@ namespace LangRepr {
             stmts.push_back(LangAPI::Return::createStatement(LangAPI::Return { .value = LangAPI::Symbol::createExpression(LangAPI::Symbol {"match_result"}) }));
             LangAPI::Function prod_fun {
                 .type = fun_type,
-                .name = corelib::text::join(prod.name, "_"),
+                .name = Parser::ParserBase::fun_name(prod.name),
                 .parameters = {std::make_pair(LangAPI::Type {LangAPI::Symbol {"IT"}}, "pos")},
                 .statements = stmts,
                 .template_parameters = {std::make_pair("IT", stdu::vector<LangAPI::Type> {

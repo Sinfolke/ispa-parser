@@ -65,11 +65,13 @@ namespace {
         LangAPI::Symbol symbol{kTokensRoot};
         for (const auto& part : path)
             symbol.path.emplace_back(part);
+        symbol.path.emplace_back("id");
         return LangAPI::Type{std::move(symbol)};
     }
 
     // Emits ISPA_STD::Recovery::Tokens<Tokens::A, ..., Recovery::EndOfInput>
     auto setType(const TokenSet& set) -> LangAPI::Type {
+        if (set.tokens.empty() && !set.end) return runtimeType("EmptyTokens");
         auto type = runtimeType("Tokens");
         for (const auto& path : set.tokens)
             type.template_parameters.emplace_back(tokenType(path));
@@ -197,7 +199,7 @@ namespace {
             addLookahead(it->second, spec.expected, "FIRST(nonterminal)");
             spec.expected_text = pathText(name);
         } else {
-            addLookahead(tree.getAlternativeLookahead(member, rule_name, 1),
+            addLookahead(tree.getMemberFirstSet(member, 1),
                          spec.expected, "FIRST(member)");
             spec.expected_text = "<group>";
         }

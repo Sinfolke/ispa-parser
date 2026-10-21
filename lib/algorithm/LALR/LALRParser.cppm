@@ -7,8 +7,9 @@ import std;
 export class LALRParser : public LRParser {
 protected:
     void build() override;
+    auto cacheKind() const -> std::string_view override { return "LALR"; }
     void mergeLR0Cores();
 public:
-    explicit LALRParser(AST::Tree* tree, std::size_t k = 1);
+    explicit LALRParser(AST::Tree* tree, std::size_t k = 1, std::string_view cache = {});
     explicit LALRParser(AST::Tree& tree, std::size_t k = 1);
 };

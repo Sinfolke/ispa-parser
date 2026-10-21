@@ -103,23 +103,27 @@ inline std::vector<TokenId> decode(std::string_view encoded) {
 
 // Default token access for RawToken and Node-based token streams.
 // A custom token_id function can instead be passed to recover(...).
-template<class Token>
+template <class Token>
 TokenId tokenId(const Token& token) {
-    if constexpr (requires { token.meta().name(); })
+    if constexpr (has_meta_name_v<Token>) {
         return static_cast<TokenId>(token.meta().name());
-    else if constexpr (requires { token.name(); })
+    } else if constexpr (has_name_v<Token>) {
         return static_cast<TokenId>(token.name());
-    else if constexpr (requires { token.index(); })
+    } else if constexpr (has_index_v<Token>) {
         return static_cast<TokenId>(token.index());
-    else
+    } else {
         static_assert(sizeof(Token) == 0,
             "ISPA recovery: token must have meta().name(), name(), or index()");
+    }
 }
 
 template<class IT, class TokenKind>
 Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind) {
     const auto kind = [&](const IT& p) -> TokenId {
-        return p->isEnd() ? eof_token : token_kind(*p);
+        if constexpr (requires { p.isEnd(); })
+            return p.isEnd() ? eof_token : token_kind(*p);
+        else
+            return p->isEnd() ? eof_token : token_kind(*p);
     };
     const TokenId at = kind(pos);
     Decision decision{.mode = Mode::Propagate, .unexpected = at};
@@ -166,7 +170,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
             decision.mode = Mode::Synchronize;
         } else {
             // Panic: consume malformed tokens but never consume the boundary.
-            while (!pos->isEnd() && decision.skipped < plan.max_skip &&
+            while (kind(pos) != eof_token && decision.skipped < plan.max_skip &&
                    state.total_skipped + decision.skipped < state.max_total_skipped) {
                 const auto id = kind(pos);
                 if (contains(plan.continuation, id) || contains(plan.follow, id) ||
@@ -175,7 +179,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
                 ++pos;
                 ++decision.skipped;
             }
-            if (pos->isEnd() || decision.skipped == 0) {
+            if (kind(pos) == eof_token || decision.skipped == 0) {
                 decision.mode = Mode::Propagate;
             } else {
                 decision.mode = Mode::PanicUntil;
@@ -228,6 +232,8 @@ struct Tokens {
         return {static_cast<TokenId>(Values)...};
     }
 };
+
+using EmptyTokens = Tokens<>;
 
 template<bool AllowInsertion = true,
          bool AllowDeletion = true,

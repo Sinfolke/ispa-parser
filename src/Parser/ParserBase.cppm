@@ -47,8 +47,6 @@ export namespace Parser {
         LangAPI::Declarations decls;
         LangAPI::Context decls_ctx;
 
-        auto var_name(const std::vector<std::string> &name, bool is_list) -> std::string;
-        auto fun_name(const std::vector<std::string> &name) -> std::string;
         auto account_mem_built(const std::vector<std::string> &name) -> void;
 
         // Presence detection only. Custom failure actions are lowered
@@ -65,6 +63,7 @@ export namespace Parser {
         ) -> LangAPI::Expression;
 
 
+        auto var_name(const std::vector<std::string> &name, bool is_list) -> std::string;
     public:
         ParserBase(const Ctx &ctx) : ctx(ctx), decls_ctx(decls) {
             this->ctx.parser_decls = &decls_ctx;
@@ -77,6 +76,7 @@ export namespace Parser {
 
         static auto dataType(const AST::DataType& type) -> LangAPI::Type;
 
+        static auto fun_name(const std::vector<std::string> &name) -> std::string;
         // deduce type functions
         static auto deduceUvarType(const LangAPI::Variable &var, const LangAPI::Variable &shadow_var) -> LangAPI::Type;
         static auto deduceVarTypeByRuleMemberBase(const AST::RuleMember &mem) -> LangAPI::Type;

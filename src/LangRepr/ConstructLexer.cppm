@@ -1,7 +1,7 @@
 export module LangRepr.ConstructLexer;
 import NFA.TNFA.API;
 import DFA.API;
-import LLIR.IR;
+import ParserIR.IR;
 import AST.API;
 import LangRepr.Holder;
 import ConstructBase;
@@ -37,6 +37,6 @@ export namespace LangRepr {
         ) -> std::pair<std::shared_ptr<LangAPI::Declaration>, LangAPI::Visibility>;
         auto makeSemanticSwitchFunction(const stdu::vector<NFA::TNFA::SemanticState> semantic_table) -> LangAPI::Function;
         auto constructLexer() -> void;
-        ConstructLexer(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, tree) {}
+        ConstructLexer(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, AST::Tree &tree) : ConstructBase(holder, lexer_builder, ir, tree) {}
     };
 }

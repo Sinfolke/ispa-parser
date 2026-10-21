@@ -80,6 +80,8 @@ export namespace AST {
         void constructFirstSet(std::size_t k);
         void constructFollowSet(std::size_t k);
         auto getFirstSet(std::size_t k) -> const LLkTable&;
+        // FIRST of a member, retaining epsilon and without appending FOLLOW.
+        auto getMemberFirstSet(const AST::RuleMember& member, std::size_t k) -> LLkSet;
         auto getFollowSet(std::size_t k) -> const LLkTable&;
         auto getAlternativeLookahead(const AST::RuleMember& alt, const stdu::vector<std::string>& ruleName, std::size_t k) -> LLkSet;
         auto getTreeMap() const -> const TreeMap& { return tree_map; };

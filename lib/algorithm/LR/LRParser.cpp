@@ -7,7 +7,10 @@ LRParser::LRParser(AST::Tree* t, std::size_t lookahead_k, bool build_immediately
     if (!tree) throw std::invalid_argument("LRParser: null grammar tree");
     if (build_immediately) build();
 }
-LRParser::LRParser(AST::Tree* t, std::size_t k) : LRParser(t, k, true) {}
+LRParser::LRParser(AST::Tree* t, std::size_t k, std::string_view cache) : LRParser(t, k, false) {
+    loadCache(cache);
+    build();
+}
 LRParser::LRParser(AST::Tree& t, std::size_t k) : LRParser(&t, k, true) {}
 
 std::string LRParser::formatName(const Name& name) {
@@ -203,7 +206,7 @@ LRParser::Lookaheads LRParser::firstOfSuffix(
     return concatenate(result, Lookaheads{trailing});
 }
 
-LRParser::CanonicalItem LRParser::closure(CanonicalItem items) const {
+LRParser::CanonicalItem LRParser::closureUncached(CanonicalItem items) const {
     bool changed = true;
     while (changed) {
         changed = false;
@@ -251,6 +254,11 @@ void LRParser::buildCanonical() {
     transitions.clear();
     conflicts.clear();
     prepareProductions();
+    prepareCacheKeys();
+    current_closures.clear();
+    current_rows.clear();
+    dependency_stamps.clear();
+    cache_stats = {};
     computeFirstK();
 
     CanonicalItem initial;
@@ -296,6 +304,13 @@ void LRParser::buildTables() {
     k_action_table.clear();
     goto_table.clear();
     conflicts.clear();
+    state_keys.clear();
+    state_ids.clear();
+    for (const auto& items : canonical_item_set) {
+        auto key = itemKey(items);
+        state_ids.emplace(key, state_keys.size());
+        state_keys.push_back(std::move(key));
+    }
     using Cell = std::pair<std::size_t, Lookahead>;
     std::map<Cell, std::vector<Action>> proposals;
     std::map<Cell, std::vector<ConflictOrigin>> origins;
@@ -313,29 +328,8 @@ void LRParser::buildTables() {
         for (const auto& [symbol, target] : transitions[state]) {
             if (isNonterminal(symbol)) goto_table[state][symbol] = target;
         }
-        for (const auto& [core, lookaheads] : canonical_item_set[state]) {
-            const auto& p = productions[core.production];
-            if (core.dot_pos < p.rhs.size()) {
-                const auto& next = p.rhs[core.dot_pos];
-                if (!isNonterminal(next)) {
-                    // For k>1 a SHIFT is valid only on FIRST_k(t beta a), not
-                    // on all windows whose first token is t.
-                    const auto target = transitions.at(state).at(next);
-                    for (const auto& lookahead : lookaheads)
-                        for (const auto& window : firstOfSuffix(p, core.dot_pos + 1, lookahead, &next))
-                            propose(state, window, Action{Action_type::SHIFT, target}, core);
-                }
-            } else {
-                for (const auto& window : lookaheads) {
-                    if (core.production == 0) {
-                        if (window == Lookahead(k, eof))
-                            propose(state, window, Action{Action_type::ACCEPT, 0}, core);
-                    } else {
-                        propose(state, window, Action{Action_type::REDUCE, core.production - 1}, core);
-                    }
-                }
-            }
-        }
+        for (const auto& proposal : proposalsForState(state))
+            propose(state, proposal.window, proposal.action, proposal.item);
     }
     for (const auto& [cell, actions] : proposals) {
         if (actions.size() == 1) {

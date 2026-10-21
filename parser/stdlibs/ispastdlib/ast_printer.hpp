@@ -79,7 +79,7 @@ namespace ISPA_STD {
             } else if constexpr (
                 is_vector<Type>::value ||
                 is_variant<Type>::value ||
-                requires { std::tuple_size<Type>::value; } ||
+                is_tuple_like_v<Type> ||
                 has_write_to_output<Type, ASTPrinter<OS>>::value ||
                 has_ast_print<Type, ASTPrinter<OS>>::value
             ) {
@@ -123,7 +123,7 @@ namespace ISPA_STD {
                     down();
                 }
 
-            } else if constexpr (requires { std::tuple_size<Type>::value; }) {
+            } else if constexpr (is_tuple_like_v<Type>) {
                 std::apply([this](const auto&... items) {
                     std::size_t index = 0;
                     (node_with_value("item", items, ++index == sizeof...(items)), ...);

@@ -2,7 +2,7 @@ module LangRepr.Construct;
 
 import Dump;
 
-import LLIR.API;
+import ParserIR.API;
 import NFA.TNFA.API;
 import DFA.API;
 
@@ -27,16 +27,16 @@ namespace LangRepr {
         : lexer_builder(std::move(lexer_builder)), lr(&parser), tree(tree), lang(lang), namespace_name(namespace_name) {
         if (!parser.isSupported()) throw std::invalid_argument("LR(*) is not implemented");
         if (!parser.automaticConflictResolution()) parser.requireConflictFree();
-        stdu::vector<LLIR::Production> metadata;
+        stdu::vector<ParserIR::Production> metadata;
         for (std::size_t i = 1; i < parser.getProductions().size(); ++i) {
             const auto &production = parser.getProductions()[i];
-            LLIR::Production entry;
+            ParserIR::Production entry;
             entry.name = production.lhs;
-            entry.block = LLIR::dataBlock(production.source.data_block);
+            entry.block = ParserIR::dataBlock(production.source.data_block);
             metadata.push_back(std::move(entry));
         }
         stdu::vector<DFA::DFA> dfas;
-        ir = LLIR::IR(std::move(metadata), false, std::move(dfas));
+        ir = ParserIR::IR(std::move(metadata), false, std::move(dfas));
     }
     auto Construct::construct(LexerBuilder &&lexer_builder, LRBase &parser, AST::Tree &tree,
                               LangAPI::Language lang, const std::string &namespace_name) -> Holder {
@@ -77,7 +77,7 @@ namespace LangRepr {
         holder.push(ns);
         return holder;
     }
-    auto Construct::construct(LexerBuilder &&lexer_builder, LLIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder {
+    auto Construct::construct(LexerBuilder &&lexer_builder, ParserIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder {
         Construct construct(std::move(lexer_builder), std::move(ir), tree,  lang, namespace_name);
         return construct.construct();
     }

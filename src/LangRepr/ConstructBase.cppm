@@ -1,7 +1,7 @@
 export module ConstructBase;
 import LangRepr.Holder;
 import LexerBuilder;
-import LLIR.IR;
+import ParserIR.IR;
 import LRBase;
 import LangAPI;
 import AST.Tree;
@@ -14,7 +14,7 @@ export namespace LangRepr {
     protected:
         Holder &holder;
         LexerBuilder &lexer_builder;
-        LLIR::IR &ir;
+        ParserIR::IR &ir;
         LRBase *lr = nullptr;
         AST::Tree &tree;
         LangAPI::Symbol Token;
@@ -46,8 +46,8 @@ export namespace LangRepr {
         auto extractRawSymbol(const LangAPI::Type &t) -> stdu::vector<LangAPI::Type>;
         auto createTypeToken() -> LangAPI::TypeAlias;
         auto createLexerClass() -> LangAPI::Class;
-        ConstructBase(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, AST::Tree &tree) : holder(holder), lexer_builder(lexer_builder), ir(ir), tree(tree) {}
-        ConstructBase(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, LRBase &parser, AST::Tree &tree) : holder(holder), lexer_builder(lexer_builder), ir(ir), lr(&parser), tree(tree) {}
+        ConstructBase(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, AST::Tree &tree) : holder(holder), lexer_builder(lexer_builder), ir(ir), tree(tree) {}
+        ConstructBase(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, LRBase &parser, AST::Tree &tree) : holder(holder), lexer_builder(lexer_builder), ir(ir), lr(&parser), tree(tree) {}
 
         ~ConstructBase() {}
     private:

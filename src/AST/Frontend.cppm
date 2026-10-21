@@ -4,7 +4,6 @@ import hash;
 import dstd;
 import std;
 
-export namespace LLIR::Serialize { struct MemberAccess; }
 
 export namespace AST {
 struct SourcePosition {

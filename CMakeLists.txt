@@ -85,8 +85,12 @@ add_subdirectory(parser)
 # =============================================
 # ISPA Modules Library
 # =============================================
-add_library(ispa_modules STATIC)
-set_target_properties(ispa_modules PROPERTIES POSITION_INDEPENDENT_CODE ON)
+add_library(ispa_modules SHARED)
+set_target_properties(ispa_modules PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+)
 
 get_file_range(ISPA_MODULE_INTERFACES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
@@ -105,8 +109,7 @@ get_file_range(ISPA_MODULE_SOURCES
 )
 get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/converter/*.cppm)
 get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/algorithm/*.cppm)
-list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cpp")
-list(REMOVE_ITEM ISPA_MODULE_INTERFACES "${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cppm")
+list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 target_sources(ispa_modules
         PUBLIC
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
@@ -165,8 +168,12 @@ function(add_ispa_lib type lib)
             DISABLE_PRECOMPILE_HEADERS ON
     )
 
-    # Link language target directly to main ispa binary/library
-    target_link_libraries(ispa PRIVATE ${target_name})
+    # Algorithms are loaded through their descriptor, never linked into the host.
+    if(type STREQUAL "algorithm")
+        add_dependencies(ispa ${target_name})
+    else()
+        target_link_libraries(ispa PRIVATE ${target_name})
+    endif()
 endfunction()
 
 # =============================================
@@ -192,8 +199,6 @@ function(add_algorithm alg)
 endfunction()
 
 add_algorithm(LL)
-target_sources(ispa-algorithm-LL PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cpp
-    PUBLIC FILE_SET cxx_modules TYPE CXX_MODULES FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/IR/Builder.cppm)
 add_algorithm(LR)
 add_algorithm(LALR LR)
 add_algorithm(LR_STAR LR)

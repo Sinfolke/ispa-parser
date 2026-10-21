@@ -3,11 +3,12 @@ import std;
 
 void LRParser::resolveConflicts(std::size_t max_lookahead) {
     if (!max_lookahead) throw std::invalid_argument("LR conflict lookahead must be positive");
+    if (restoreResolutions(max_lookahead)) return;
     auto_conflicts = true;
     decision_k = k;
     resolutions.clear();
     for (std::size_t i = 0; i < conflicts.size(); ++i) resolutions.push_back(Resolution{i});
-    if (conflicts.empty()) return;
+    if (conflicts.empty()) { cacheResolutions(max_lookahead); return; }
 
     // FIRST/FOLLOW overapproximations are conservative: commit a cell only if
     // every candidate has disjoint continuation windows. Overlaps, exhausted
@@ -98,4 +99,5 @@ void LRParser::resolveConflicts(std::size_t max_lookahead) {
             }
         } catch (const BudgetExceeded&) { break; }
     }
+    cacheResolutions(max_lookahead);
 }

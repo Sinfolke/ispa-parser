@@ -1,7 +1,7 @@
 module;
 #include <tsl/ordered_map.h>
 export module LexerBuilder;
-import LLIR.API;
+import ParserIR.API;
 import LangAPI;
 import AST.API;
 import AST.Tree;
@@ -52,5 +52,5 @@ public:
     auto& getMaxTransitionCount() const { return highest_transition_count; }
     auto& getRegistersCount() const { return registers_count; }
     auto& getOutputCount() const { return output_count; }
-    auto getDataBlocks() const -> LLIR::DataBlockList;
+    auto getDataBlocks() const -> ParserIR::DataBlockList;
 };

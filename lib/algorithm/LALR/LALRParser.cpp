@@ -1,7 +1,7 @@
 module LALRParser;
 import std;
 
-LALRParser::LALRParser(AST::Tree* tree, std::size_t k) : LRParser(tree, k, false) { build(); }
+LALRParser::LALRParser(AST::Tree* tree, std::size_t k, std::string_view cache) : LRParser(tree, k, false) { loadCache(cache); build(); }
 LALRParser::LALRParser(AST::Tree& tree, std::size_t k) : LRParser(&tree, k, false) { build(); }
 
 void LALRParser::mergeLR0Cores() {

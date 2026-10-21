@@ -59,6 +59,26 @@ namespace ISPA_STD {
         } else if constexpr (std::is_constructible_v<To, const From&>) {
             target = To(source);
 
+        } else if constexpr (is_variant_v<From>) {
+            std::visit([&](const auto& value) {
+                using Value = std::decay_t<decltype(value)>;
+                if constexpr (!std::is_same_v<Value, std::monostate>)
+                    assign_compatible(target, value);
+            }, source);
+
+        } else if constexpr (requires { source.data().value; }) {
+            assign_compatible(target, source.data().value);
+
+        } else if constexpr (std::is_same_v<To, char> &&
+                             requires { source.start(); source.length(); }) {
+            if (source.length() != 1 || !source.start())
+                throw IspaInternalExcept("assign_compatible: expected one character", "Parser", true);
+            target = *source.start();
+
+        } else if constexpr (std::is_same_v<To, std::string> &&
+                             requires { source.start(); source.length(); }) {
+            target.assign(source.start(), source.length());
+
         } else {
             static_assert(
                 std::is_constructible_v<To, const From&>,

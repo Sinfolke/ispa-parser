@@ -3,12 +3,13 @@ module;
 export module LLIR.Serialize;
 
 import LangAPI;
-import LLIR.API;
+import ParserIR.API;
 import dstd;
 import std;
 
 export namespace LLIR::Serialize {
-    constexpr std::uint32_t FORMAT_VERSION = 2;
+using namespace ParserIR;
+    constexpr std::uint32_t FORMAT_VERSION = 3;
 
     // Writes one Production as a length-prefixed record.
     // Returns false (and writes nothing) if the Production contains a

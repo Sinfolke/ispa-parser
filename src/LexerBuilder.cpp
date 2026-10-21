@@ -113,11 +113,11 @@ void LexerBuilder::build() {
     output_count = dfa.getOutputCount();
 
 }
-auto LexerBuilder::getDataBlocks() const -> LLIR::DataBlockList {
-    LLIR::DataBlockList list;
+auto LexerBuilder::getDataBlocks() const -> ParserIR::DataBlockList {
+    ParserIR::DataBlockList list;
     for (const auto& [name, rule] : ast) {
         if (corelib::text::isLower(name.back())) continue;
-        list.emplace(name, LLIR::dataBlock(rule.data_block));
+        list.emplace(name, ParserIR::dataBlock(rule.data_block));
     }
     return list;
 }

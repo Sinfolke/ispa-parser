@@ -1,6 +1,6 @@
 module;
 #include <tsl/ordered_map.h>
-export module LLIR.API;
+export module ParserIR.API;
 
 import LangAPI;
 import AST.API;
@@ -8,7 +8,7 @@ import LangAPI.Accessor;
 import hash;
 import dstd;
 
-export namespace LLIR {
+export namespace ParserIR {
     using inclosed_map = tsl::ordered_map<std::string, std::pair<LangAPI::Expression, LangAPI::Type>>;
     using regular_data_block = std::pair<LangAPI::Expression, LangAPI::Type>;
     struct DataBlock {
@@ -46,7 +46,7 @@ export namespace LLIR {
             return std::tie(svar, uvar, var, shadow_var, quantifier);
         }
     };
-    // Serializable subset of LLIR::BuilderData needed by downstream rules
+    // Serializable subset of ParserIR::BuilderData needed by downstream rules
     // and data-block construction after an incremental cache hit.
     struct IncrementalBuilderData {
         stdu::vector<LangAPI::Variable> unnamed_datablock_units;

@@ -2,8 +2,8 @@ module;
 #include <boost/container/flat_map.hpp>
 export module LangRepr.ConstructTypes;
 import LangRepr.Holder;
-import LLIR.IR;
-import LLIR.API;
+import ParserIR.IR;
+import ParserIR.API;
 import LexerBuilder;
 import LangAPI;
 import hash;
@@ -34,7 +34,7 @@ private:
     }
 public:
     ChildT children;
-    LLIR::DataBlock data;
+    ParserIR::DataBlock data;
     auto find(const Name &name) const -> const Node* {
         const Node* current = this;
         for (const auto& part : name) {
@@ -99,20 +99,20 @@ private:
     }
 public:
     ChildT children;
-    LLIR::DataBlock data;
+    ParserIR::DataBlock data;
 };
 auto collectReferencedNames(const LangAPI::Type &type) -> std::pair<utype::unordered_map<Name, std::size_t>, utype::unordered_set<Name>>;
 export namespace LangRepr {
     class ConstructTypes {
         Holder &holder;
         LexerBuilder &lexer_builder;
-        LLIR::IR &ir;
+        ParserIR::IR &ir;
         const std::string &namespace_name;
     public:
         auto constructTokensAndRulesEnum() -> void;
         auto constructTokensAndRulesEnumToString() -> void;
         auto constructTypesNamespace() -> void;
-        ConstructTypes(Holder &holder, LexerBuilder &lexer_builder, LLIR::IR &ir, const std::string &namespace_name) : holder(holder), lexer_builder(lexer_builder), ir(ir), namespace_name(namespace_name) {};
+        ConstructTypes(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, const std::string &namespace_name) : holder(holder), lexer_builder(lexer_builder), ir(ir), namespace_name(namespace_name) {};
 
         ~ConstructTypes() {}
     };

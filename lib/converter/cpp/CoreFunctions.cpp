@@ -99,7 +99,10 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 throw Error("Unknown type: {}", (int) type.getValueType());
         }
     } else if (type.isSymbol()) {
-        return convertSymbol(type.getSymbol());
+        auto name = convertSymbol(type.getSymbol());
+        if (!type.template_parameters.empty())
+            name += "<" + convertTemplates(type.template_parameters) + ">";
+        return name;
     } else if (type.isIspaLibSymbol()) {
         return convertIspaLibSymbol(type.getIspaLibSymbol());
     } else throw Error("unknown variant type in Type::type");
@@ -483,11 +486,24 @@ auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) 
     if (!call.template_parameters.empty())
         out << "<" << convertTemplates(call.template_parameters) << ">";
     out << "(";
-    bool first = true;
-    for (const auto &param : call.args) {
-        if (!first) out << ", ";
-        out << convertExpression(param);
-        first = false;
+    const auto kind = call.symbol.exports;
+    const bool parser_match = kind == LangAPI::StdlibExports::ParserRequired ||
+        kind == LangAPI::StdlibExports::ParserOptional ||
+        kind == LangAPI::StdlibExports::ParserRange ||
+        kind == LangAPI::StdlibExports::ParserRangeOptional;
+    for (std::size_t i = 0; i < call.args.size(); ++i) {
+        if (i) out << ", ";
+        const auto& param = call.args[i];
+        // Rule callbacks are member templates. Bind the parser instance and
+        // let the iterator argument select the specialization at the call site.
+        if (parser_match && i == 1 &&
+            (call.args.size() == 3 || kind == LangAPI::StdlibExports::ParserOptional ||
+             kind == LangAPI::StdlibExports::ParserRangeOptional) && param.size() == 1 &&
+            param.front().isRvalue() && param.front().getRValue().isSymbol())
+            out << "[this](auto cursor) { return this->"
+                << convertExpression(param) << "(cursor); }";
+        else
+            out << convertExpression(param);
     }
     out << ")";
     return out.str();

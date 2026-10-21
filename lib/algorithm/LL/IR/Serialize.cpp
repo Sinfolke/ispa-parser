@@ -6,6 +6,7 @@ import LangAPI.Accessor;
 import std;
 
 namespace LLIR::Serialize {
+using namespace ParserIR;
 namespace detail {
 
 template<class> inline constexpr bool always_false = false;
@@ -30,6 +31,18 @@ concept Reflected = requires(T& value, const T& const_value) {
     LangAPI::MembersAccess::get(value);
     LangAPI::MembersAccess::get(const_value);
 };
+
+// These LangAPI reflection tuples omit template arguments. Persistence must
+// retain them even though existing hashing/traversal uses the shorter tuples.
+template<class T> auto persistedMembers(T& value) {
+    using U = std::remove_cvref_t<T>;
+    if constexpr (std::is_same_v<U, LangAPI::IspaLibFunctionCall>)
+        return std::tie(value.symbol, value.args, value.template_parameters);
+    else if constexpr (std::is_same_v<U, LangAPI::FixedSizeArray>)
+        return std::tie(value.values, value.template_parameters);
+    else
+        return LangAPI::MembersAccess::get(value);
+}
 
 // One dispatch function for every type: recursive calls are never affected by
 // two-phase lookup / overload declaration order.
@@ -91,7 +104,7 @@ template<class T> void write(std::ostream& os, const T& value) {
         }
     } else if constexpr (Reflected<U>) {
         // This assumes members() returns a tuple-like sequence of field REFERENCES.
-        std::apply([&](const auto&... fields) { (write(os, fields), ...); }, LangAPI::MembersAccess::get(value));
+        std::apply([&](const auto&... fields) { (write(os, fields), ...); }, persistedMembers(value));
     } else if constexpr (std::is_trivially_copyable_v<U> && !std::is_pointer_v<U>) {
         os.write(reinterpret_cast<const char*>(&value), sizeof(U));
     } else {
@@ -104,7 +117,7 @@ template<class T> void read(std::istream& is, T& value) {
     if constexpr (std::is_same_v<U, std::string>) {
         std::size_t length{};
         read(is, length);
-        if (!is || length > value.max_size()) { is.setstate(std::ios::failbit); return; }
+        if (!is || length > value.max_size() || length > static_cast<std::size_t>(is.rdbuf()->in_avail())) { is.setstate(std::ios::failbit); return; }
         value.resize(length);
         if (length) is.read(value.data(), static_cast<std::streamsize>(length));
     } else if constexpr (std::is_enum_v<U>) {
@@ -114,7 +127,7 @@ template<class T> void read(std::istream& is, T& value) {
     } else if constexpr (is_vector<U>::value) {
         std::size_t n{};
         read(is, n);
-        if (!is || n > value.max_size()) { is.setstate(std::ios::failbit); return; }
+        if (!is || n > value.max_size() || n > 1000000) { is.setstate(std::ios::failbit); return; }
         value.clear(); value.reserve(n);
         for (std::size_t i = 0; i < n && is; ++i) {
             typename U::value_type item{};
@@ -145,7 +158,7 @@ template<class T> void read(std::istream& is, T& value) {
     } else if constexpr (is_ordered_map<U>::value || is_unordered_map<U>::value) {
         std::size_t n{};
         read(is, n);
-        if (!is) return;
+        if (!is || n > 1000000) { is.setstate(std::ios::failbit); return; }
         value.clear();
         for (std::size_t i = 0; i < n && is; ++i) {
             typename U::key_type key{};
@@ -154,7 +167,7 @@ template<class T> void read(std::istream& is, T& value) {
             if (is) value.try_emplace(std::move(key), std::move(val));
         }
     } else if constexpr (Reflected<U>) {
-        auto fields = LangAPI::MembersAccess::get(value);
+        auto fields = persistedMembers(value);
 
         std::apply([&](auto&... field) {
             static_assert(
@@ -190,6 +203,12 @@ auto readProductionRecord(std::istream& is) -> std::optional<Production> {
     std::size_t length{};
     detail::read(is, length);
     if (!is || length > std::string{}.max_size()) return std::nullopt;
+    const auto start = is.tellg();
+    is.seekg(0, std::ios::end);
+    const auto end = is.tellg();
+    is.seekg(start);
+    if (!is || start < 0 || end < start || length > static_cast<std::size_t>(end - start))
+        return std::nullopt;
     std::string bytes(length, '\0');
     is.read(bytes.data(), static_cast<std::streamsize>(length));
     if (!is) return std::nullopt;
