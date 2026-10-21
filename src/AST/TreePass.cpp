@@ -313,6 +313,12 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
     for (auto &[name, rule] : toInsert) {
         treeMap[name] = std::move(rule);
     }
+    // All promotions are now final, including tokens shared across scopes.
+    // Parser captures hold these token nodes; lexer captures retain their
+    // original character/string types because their literals were not lowered.
+    for (auto& [name, rule] : treeMap)
+        if (!name.empty() && corelib::text::isLower(name.back()))
+            inferDataTypes(rule);
 }
 bool AST::TreePass::prioritySort(const AST::Tree& ast, const AST::String &first, const AST::String &second) {
     if (first.value.size() != second.value.size())

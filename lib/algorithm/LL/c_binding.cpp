@@ -13,8 +13,8 @@ auto build(const Algorithm::BuildRequest& request, Algorithm::Metadata& metadata
     // FIRST/FOLLOW and inferred data types can depend on any other rule. Until
     // those dependencies are tracked, invalidate all productions on any change.
     std::ostringstream grammar;
-    // Invalidate productions emitted by the former statement-rewriting bridge.
-    grammar << "LL metadata lowering v3\n";
+    // Regenerate repetitions with an explicit whitespace separator type.
+    grammar << "LL metadata lowering v7\n";
     for (const auto& [name, rule] : request.tree.getTreeMap()) {
         grammar << corelib::text::join(name, ".") << '\n' << rule << '\n';
     }

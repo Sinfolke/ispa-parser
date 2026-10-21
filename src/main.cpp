@@ -1,4 +1,4 @@
-#include <output/Parser.h>
+#include <ispa/parser.h>
 #include <ispa_dep_scanner/parser.h>
 import cpuf.color;
 import cpuf.printf;
@@ -151,6 +151,9 @@ int main(int argc, char** argv) {
             // lexer.makeTokens(content.c_str());
             Parser::Parser parser;
             auto &main = parser.parse(content.c_str());
+            for (const auto &err : parser.getErrors()) {
+                std::cout << "Expected " << err.expected_text << ", got " << Parser::TokensToString(err.unexpected) << std::endl;
+            }
             modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
             source_files.insert(source_files.end(), main.value.size(), file);
         }

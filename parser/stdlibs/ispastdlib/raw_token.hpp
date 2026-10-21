@@ -256,5 +256,8 @@ namespace ISPA_STD {
             return to_string_table[_type_id](_storage);
         }
     };
-
+    template<typename ...Ts>
+    inline auto operator<<(std::ostream &os, const RawToken<Ts...>& token) {
+        return os << token.print(os);
+    }
 } // namespace ISPA_STD

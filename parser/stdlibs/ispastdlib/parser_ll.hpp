@@ -17,8 +17,59 @@ namespace ISPA_STD {
     /* PARSER */
     template<typename MainNode, typename Token>
     class LLParser : public Parser_base<MainNode, Token> {
+    public:
+        using Parser_base<MainNode, Token>::parse;
+
+        // Diagnostics from the current/last parse, including a parse that threw.
+        // A new parse clears them; callers control how they are displayed.
+        [[nodiscard]] const std::vector<Recovery::Diagnostic>& getErrors() const noexcept {
+            return recovery_state_.diagnostics;
+        }
+
     protected:
         Recovery::State recovery_state_;
+
+        void reset_recovery() {
+            recovery_state_.diagnostics.clear();
+            recovery_state_.total_skipped = 0;
+        }
+        MainNode& parse() override {
+            reset_recovery();
+            return Parser_base<MainNode, Token>::parse();
+        }
+        MainNode& parseLazy() override {
+            reset_recovery();
+            return Parser_base<MainNode, Token>::parseLazy();
+        }
+
+        struct NoMatch {};
+        struct RuleProbe {
+            LLParser& parser;
+            RuleProbe* previous;
+            std::size_t start;
+            bool committed = false;
+            RuleProbe(LLParser& parser, std::size_t start)
+                : parser(parser), previous(parser.probe_), start(start) { parser.probe_ = this; }
+            ~RuleProbe() { parser.probe_ = previous; }
+            RuleProbe(const RuleProbe&) = delete;
+            RuleProbe& operator=(const RuleProbe&) = delete;
+        };
+        RuleProbe* probe_ = nullptr;
+
+        template<typename IT>
+        static auto cursor_position(const IT& pos) -> std::size_t {
+            if constexpr (requires { pos.distance(); }) return pos.distance();
+            else return reinterpret_cast<std::size_t>(std::addressof(*pos));
+        }
+        void reject_absent_rule() {
+            if (probe_ && !probe_->committed)
+                throw NoMatch{};
+        }
+        template<typename IT>
+        void commit_rule(const IT& pos) {
+            for (auto* probe = probe_; probe; probe = probe->previous)
+                if (cursor_position(pos) != probe->start) probe->committed = true;
+        }
 
         // Use these only at committed required matches; unlike the legacy
         // required() they return an explicit Missing/Boundary result on repair.
@@ -31,9 +82,11 @@ namespace ISPA_STD {
                 if (pos->template holds<NodeStruct>()) {
                     auto node = pos->template to_node<NodeStruct>();
                     ++pos;
+                    commit_rule(pos);
                     return Result{Recovery::RequiredStatus::Matched,
                                   std::move(node), {}};
                 }
+                reject_absent_rule();
                 auto decision = fail(pos, recovery_state_);
                 switch (decision.mode) {
                 case Recovery::Mode::Delete:
@@ -69,9 +122,11 @@ namespace ISPA_STD {
                 auto match = rec(attempt);
                 if (match.status) {
                     pos = match.it;
+                    commit_rule(pos);
                     return Result{Recovery::RequiredStatus::Matched,
                                   std::move(match.node), {}};
                 }
+                reject_absent_rule();
                 auto decision = fail(pos, recovery_state_);
                 // We cannot synthesize an arbitrary nonterminal from one token.
                 if ((decision.mode == Recovery::Mode::Retry ||
@@ -122,8 +177,10 @@ namespace ISPA_STD {
                 if (pos->template holds<NodeStruct>()) {
                     auto node = pos->template to_node<NodeStruct>();
                     ++pos;
+                    commit_rule(pos);
                     return node;
                 }
+                reject_absent_rule();
                 fail(pos);
             }
             throw std::logic_error("ISPA required(): required token could not be recovered");
@@ -138,8 +195,10 @@ namespace ISPA_STD {
                 auto match = rec(pos);
                 if (match.status) {
                     pos = match.it;
+                    commit_rule(pos);
                     return std::move(match.node);
                 }
+                reject_absent_rule();
                 fail(pos);
             }
             throw std::logic_error("ISPA required(): required rule could not be recovered");
@@ -149,6 +208,7 @@ namespace ISPA_STD {
             if (pos->template holds<NodeStruct>()) {
                 auto node = pos->template to_node<NodeStruct>();
                 ++pos;
+                commit_rule(pos);
                 return node;
             }
             return Node<NodeStruct>{};
@@ -156,47 +216,82 @@ namespace ISPA_STD {
         template<typename NodeStruct, typename IT, typename Recursive>
         auto optional(IT &pos, Recursive&& rec) {
             auto attempt = pos;
-            if (auto match = rec(attempt); match.status) {
-                pos = match.it;
-                return std::move(match.node);
+            RuleProbe probe(*this, cursor_position(pos));
+            try {
+                if (auto match = rec(attempt); match.status) {
+                    pos = match.it;
+                    commit_rule(pos);
+                    return std::move(match.node);
+                }
+                if (probe.committed)
+                    throw std::logic_error("ISPA optional(): rule failed after consuming input");
+            } catch (const NoMatch&) {
+                // A required descendant did not start. Only the optional
+                // caller handles this signal; recovery has not run.
             }
             return Node<NodeStruct>{};
         }
-        template<typename NodeStruct, typename IT, typename FailFunc>
+        // Separators belong to a successful next iteration, not to the end
+        // of the list. Leave pos (including whitespace) intact on absence.
+        template<typename SpaceToken, typename IT, typename Match>
+        auto repeat_optional(IT& pos, Match&& match, bool separated = true) {
+            auto attempt = pos;
+            if constexpr (!std::is_void_v<SpaceToken>) {
+                if (separated) skip_spaces<SpaceToken>(attempt);
+            }
+            const auto start = cursor_position(attempt);
+            auto node = match(attempt);
+            if (node.empty() || cursor_position(attempt) == start)
+                return decltype(node){};
+            pos = attempt;
+            return node;
+        }
+
+        template<typename NodeStruct, typename SpaceToken = void, typename IT, typename FailFunc>
         auto range(IT &pos, FailFunc&& fail) {
             std::vector<Node<NodeStruct>> result{required<NodeStruct>(pos, fail)};
             while (!pos.isEnd()) {
-                auto node = optional<NodeStruct>(pos);
+                auto node = repeat_optional<SpaceToken>(pos, [&](auto& attempt) {
+                    return optional<NodeStruct>(attempt);
+                });
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
             return result;
         }
-        template<typename NodeStruct, typename IT, typename Recursive, typename FailFunc>
+        template<typename NodeStruct, typename SpaceToken = void, typename IT, typename Recursive, typename FailFunc>
         auto range(IT &pos, Recursive&& rec, FailFunc&& fail) {
+            const auto start = cursor_position(pos);
             std::vector<Node<NodeStruct>> result{required<NodeStruct>(pos, rec, fail)};
+            if (cursor_position(pos) == start) return result;
             while (!pos.isEnd()) {
-                auto node = optional<NodeStruct>(pos, rec);
+                auto node = repeat_optional<SpaceToken>(pos, [&](auto& attempt) {
+                    return optional<NodeStruct>(attempt, rec);
+                });
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
             return result;
         }
-        template<typename NodeStruct, typename IT>
+        template<typename NodeStruct, typename SpaceToken = void, typename IT>
         auto range_optional(IT &pos) {
             std::vector<Node<NodeStruct>> result;
             while (!pos.isEnd()) {
-                auto node = optional<NodeStruct>(pos);
+                auto node = repeat_optional<SpaceToken>(pos, [&](auto& attempt) {
+                    return optional<NodeStruct>(attempt);
+                }, !result.empty());
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
             return result;
         }
-        template<typename NodeStruct, typename IT, typename Recursive>
+        template<typename NodeStruct, typename SpaceToken = void, typename IT, typename Recursive>
         auto range_optional(IT &pos, Recursive&& rec) {
             std::vector<Node<NodeStruct>> result;
             while (!pos.isEnd()) {
-                auto node = optional<NodeStruct>(pos, rec);
+                auto node = repeat_optional<SpaceToken>(pos, [&](auto& attempt) {
+                    return optional<NodeStruct>(attempt, rec);
+                }, !result.empty());
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }

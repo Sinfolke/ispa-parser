@@ -6,6 +6,8 @@ import UAST.Python;
 import AST.Builder;
 import AST.API;
 import AST.Tree;
+import AST.Pass;
+import dstd;
 import std;
 
 namespace {
@@ -39,6 +41,41 @@ TEST(UAST, PlainEbnfAndCapture) {
     EXPECT_TRUE(std::holds_alternative<AST::At>(rule.data_block.getRegDataBlock()));
     ASSERT_TRUE(rule.data_block.type.has_value());
     EXPECT_EQ(rule.data_block.type->kind, AST::DataType::Kind::Character);
+}
+
+TEST(UAST, LiteralChoiceCaptureUsesFinalPromotedTokenName) {
+    auto tree = convert("main: @ unpack | ';' {@}; unpack: 'x'; other: ';';");
+    AST::TreePass::literalsToToken(tree);
+    const auto& rule = tree.getTreeMap().at({"main"});
+    const auto& choice = *rule.rule_members.front();
+    ASSERT_TRUE(choice.isOp());
+    const auto& token = choice.getOp().options.at(1)->getName().name;
+    ASSERT_EQ(token, (stdu::vector<std::string>{"SEMICOLON"}));
+    ASSERT_TRUE(rule.data_block.type.has_value());
+    const auto& type = *rule.data_block.type;
+    ASSERT_EQ(type.kind, AST::DataType::Kind::Variant);
+    ASSERT_EQ(type.parameters.size(), 2u);
+    EXPECT_EQ(type.parameters[0].kind, AST::DataType::Kind::Rule);
+    EXPECT_EQ(type.parameters[0].name, (stdu::vector<std::string>{"unpack"}));
+    EXPECT_EQ(type.parameters[1].kind, AST::DataType::Kind::Token);
+    EXPECT_EQ(type.parameters[1].name, token);
+}
+
+TEST(UAST, TokenPromotionRefreshesParserFieldsAndPreservesLexerCaptureTypes) {
+    auto tree = convert("main: @ 'x' @ ('a' | 'b')+ @{literal, choices}; WORD: @ 'w'+ {@};");
+    AST::TreePass pass(tree);
+    pass.work();
+    const auto& fields = tree.getTreeMap().at({"main"}).data_block.fields;
+    ASSERT_EQ(fields.size(), 2u);
+    EXPECT_EQ(fields[0].second.kind, AST::DataType::Kind::Token);
+    EXPECT_EQ(fields[0].second.name, tree.getTreeMap().at({"main"}).rule_members[0]->getName().name);
+    const auto& choices = fields[1].second;
+    ASSERT_EQ(choices.kind, AST::DataType::Kind::Array);
+    ASSERT_EQ(choices.parameters.size(), 1u);
+    EXPECT_EQ(choices.parameters.front().kind, AST::DataType::Kind::Variant);
+    EXPECT_EQ(tree.getTreeMap().at({"WORD"}).data_block.type->kind, AST::DataType::Kind::Character);
+    AST::inferDataTypes(tree.getTreeMap().at({"main"}));
+    EXPECT_EQ(tree.getTreeMap().at({"main"}).data_block.fields.size(), 2u);
 }
 
 TEST(UAST, OwnsParserDataAndPositions) {
@@ -90,7 +127,7 @@ TEST(UAST, DynamicPattern) {
 }
 
 TEST(UAST, KeepsCombinedCapturesAndDeclarationParameters) {
-    auto tree = convert("#[inline] T<type>(arg): &value @node 'a';");
+    auto tree = convert("#[inline] T<type>>(arg): &value @node 'a';");
     const auto& rule = tree.getTreeMap().at({"T"});
     const auto& member = *rule.rule_members.front();
     EXPECT_EQ(member.prefix.name, "node");
@@ -106,6 +143,28 @@ TEST(UAST, PreservesUnknownReferences) {
     const auto& member = *tree.getTreeMap().at({"T"}).rule_members.front();
     ASSERT_TRUE(member.isName());
     EXPECT_EQ(member.getName().name.front(), "externallyQualifiedName");
+}
+
+TEST(UAST, ExplicitParametersDoNotConsumeFollowingGrammarGroups) {
+    auto tree = convert("main: member>(arg) (OTHER)*; member: 'a'; OTHER: 'b';");
+    const auto& members = tree.getTreeMap().at({"main"}).rule_members;
+    ASSERT_EQ(members.size(), 2u);
+    ASSERT_TRUE(members[0]->isName());
+    EXPECT_EQ(feature<AST::DeclarationSyntax>(*members[0]).parameters, (std::vector<std::string>{"arg"}));
+    ASSERT_TRUE(members[1]->isGroup());
+    EXPECT_EQ(members[1]->quantifier, '*');
+
+    auto plain = convert("main: member (OTHER); member: 'a'; OTHER: 'b';");
+    const auto& plain_members = plain.getTreeMap().at({"main"}).rule_members;
+    ASSERT_EQ(plain_members.size(), 2u);
+    EXPECT_TRUE(plain_members[0]->features.empty());
+    EXPECT_TRUE(plain_members[1]->isGroup());
+}
+
+TEST(UAST, NestedSiblingRulesMayBeSeparatedByWhitespace) {
+    auto tree = convert("outer: ID #a: ID;\n  #b: ID;\n; ID: 'x';");
+    EXPECT_TRUE(tree.contains({"outer", "a"}));
+    EXPECT_TRUE(tree.contains({"outer", "b"}));
 }
 
 TEST(UAST, ResolvesQualifiedAndScopedReferences) {
@@ -150,7 +209,7 @@ TEST(UAST, BoundedCountersAndSharedRegistration) {
 
 TEST(UAST, PythonActionAndFailBlock) {
     Parser::Parser parser;
-    auto syntax = parser.parse("fail recover(value) p{py} T: 'a';");
+    auto syntax = parser.parse("fail recover>(value) p{py} T: 'a';");
     AST::Builder builder(syntax);
     builder.build();
     auto tree = builder.get();
@@ -198,6 +257,8 @@ TEST(UAST, ConvertsBootstrapGrammar) {
     EXPECT_GT(tree.getTreeMap().size(), 30u);
     EXPECT_TRUE(tree.contains({"rule", "value", "mul_capture"}));
     EXPECT_TRUE(tree.contains({"advanced_rule"}));
+    EXPECT_TRUE(tree.contains({"rule", "ast", "abbr"}));
+    EXPECT_TRUE(tree.contains({"rule", "ast", "single_value"}));
 }
 
 TEST(UAST, AdvancedRuleKeepsPythonActions) {

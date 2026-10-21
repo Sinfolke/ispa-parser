@@ -533,7 +533,6 @@ namespace LangRepr {
                     std::move(var)
                 );
             };
-
             // Recursively convert the Node hierarchy into LangAPI namespaces.
             std::function<LangAPI::Namespace(
                 const Node&, const std::string&, Name&, bool
@@ -571,18 +570,40 @@ namespace LangRepr {
             holder.push(build(root, numeric_name, path, false));
             holder.push(build(root, string_name, path, true));
         };
-
+        auto makeToStrFunc = [&](const ParserIR::DataBlockList &dtb, std::string base_symbol) {
+            LangAPI::Function func {
+                .type = LangAPI::Type{LangAPI::ValueType::NonOwnedString},
+                .name = base_symbol + "ToString",
+                .parameters = { std::make_pair<LangAPI::Type>(LangAPI::Type{LangAPI::ValueType::LargeUInt}, "id") }
+            };
+            func.is_static = true;
+            LangAPI::Switch switch_on_id {
+                .expression = LangAPI::Symbol::createExpression(LangAPI::Symbol{"id"})
+            };
+            for (const auto &[name, _] : dtb) {
+                switch_on_id.cases.emplace_back(
+                    LangAPI::Symbol::createRValue(LangAPI::Symbol {base_symbol, name, "id"}),
+                    LangAPI::Return::createExpression(LangAPI::Return {.value = LangAPI::Symbol::createExpression(LangAPI::Symbol {base_symbol + "Str", name, "id"})})
+                );
+            }
+            func.statements = {
+                switch_on_id,
+                LangAPI::Throw::createStatement(LangAPI::Throw {.throw_value = LangAPI::String::createExpression(LangAPI::String {.value = "Invalid " + base_symbol + " ID"})})
+            };
+            holder.push(func);
+        };
         generate(
             lexer_builder.getDataBlocks(),
             "Tokens",
-            "TokenNames"
+            "TokensStr"
         );
-
         generate(
             ir.getDataBlocks(),
             "Rules",
-            "RuleNames"
+            "RulesStr"
         );
+        makeToStrFunc(lexer_builder.getDataBlocks(), "Tokens");
+        makeToStrFunc(ir.getDataBlocks(), "Rules");
     }
 
 

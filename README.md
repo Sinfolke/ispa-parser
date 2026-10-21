@@ -29,7 +29,7 @@ It is built around one idea: **easy to use, without giving up performance, exten
 | Incremental generation | Implemented (regenerates changed parts only) |
 | C++17 target | Implemented; output compiles and runs |
 | Python semantic actions | Syntax parsed, **not yet lowered to output** |
-| Fail blocks (`fail name(...) { ... }`) | Syntax parsed, **not yet lowered to output** |
+| Fail blocks (`fail name>(...) { ... }`) | Syntax parsed, **not yet lowered to output** |
 | Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |
 | Grammar syntax error reporting | Needs work (currently stops, then attempts to generate) |
 
@@ -93,6 +93,11 @@ Flex + bison figures are steady state over 10 iterations.
 - Custom, context-sensitive error messages and recovery through fail blocks *(in progress)*
 
 ## Syntax example
+
+Parameters use an explicit `>` marker: `name>(arg)` supplies parameters, while
+`name (other_rule)*` starts a separate grammar group. This also applies to
+declarations and fail-block names; with template parameters, write `name<T>>(arg)`.
+
 ![Syntax Example](assets/syntax_example.png)
 
 ## Quick start

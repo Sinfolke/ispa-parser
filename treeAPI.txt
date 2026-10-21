@@ -189,9 +189,6 @@ name<__WS> : Rule {
    __WS?;
    ( COMMA  __WS?; @  ID)*;
   Data: TemplatedDataBlock(first_p, following_p)
-}name<template_params_GREATER_THAN_SIGN> : Rule {
-   ">"
-  Data: EmptyDataBlock
 }name<rule_value_pattern> : Rule {
   @  ( name |  rule::value::group |  rule::value::dyn |  rule::value::STRING |  rule::value::CGROUP |  rule::value::ANY |  rule::value::SPACE |  rule::value::NOSPACE)
   Data: [RegularDataBlock: CllExpr]
@@ -200,7 +197,7 @@ name<__WS> : Rule {
    __WS?;
   @  param?;
    __WS?;
-   template_params::GREATER_THAN_SIGN
+   GREATER_THAN_SIGN
   Data: [RegularDataBlock: CllExpr]
 }name<rule_value_alternative_VERTICAL_LINE> : Rule {
    "|"
@@ -230,6 +227,8 @@ name<__WS> : Rule {
    "$"
   Data: EmptyDataBlock
 }name<params> : Rule {
+   GREATER_THAN_SIGN
+   __WS?;
    LEFT_PARENTHESIS
    __WS?;
   @  param?;
@@ -251,12 +250,8 @@ name<__WS> : Rule {
    RIGHT_CURLY_BRACKET
   Data: [RegularDataBlock: CllExpr]
 }name<forward_declaration> : Rule {
-   AUTO
-   __WS?;
-  @  ID
-   __WS?;
-   AUTO
-  Data: [RegularDataBlock: CllExpr]
+   PY_RAW
+  Data: EmptyDataBlock
 }name<advanced_rule_regular_match_MATCH> : Rule {
    "match"
   Data: EmptyDataBlock
@@ -305,6 +300,9 @@ name<__WS> : Rule {
    __WS?;
   @  forward_declaration
   Data: [RegularDataBlock: CllExpr]
+}name<GREATER_THAN_SIGN> : Rule {
+   ">"
+  Data: EmptyDataBlock
 }name<rule_value_shared_counter_registration> : Rule {
    rule::value::shared_counter_registration::AUTO
    __WS?;

@@ -55,6 +55,74 @@ auto convert(const Algorithm::Descriptor& algorithm, AST::Tree& tree,
 }
 }
 
+TEST(AlgorithmPlugin, LLRepeatedRulesAndTokensAcceptWhitespaceSeparators) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "A:'a'; B:'b'; main: @ item+ B @ A* '!' @{rules, tokens}; item: @ A {@};");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-repeat-spaces-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup {
+        std::filesystem::path path;
+        ~Cleanup() { std::filesystem::remove_all(path); }
+    } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Parser parser;
+    const auto& multiple = parser.parse("a a\nb a\na !");
+    if (multiple.rules.size() != 2 || multiple.tokens.size() != 2) return 1;
+    const auto& single = parser.parse("a b !");
+    if (single.rules.size() != 1 || !single.tokens.empty()) return 2;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") +
+        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, CapturedLiteralChoiceRetainsRuleAndTokenPayloads) {
+    for (const std::string name : {"LL", "LR", "LALR"}) {
+        SCOPED_TRACE(name);
+        dlib library("libispa-algorithm-" + name);
+        const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+        auto tree = pluginGrammar("main: @ unpack | ';' {@}; unpack: 'x'; other: ';';");
+        const auto directory = std::filesystem::temp_directory_path() /
+            ("ispa-literal-choice-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+        struct Cleanup {
+            std::filesystem::path path;
+            ~Cleanup() { std::filesystem::remove_all(path); }
+        } cleanup{directory};
+        Algorithm::Metadata metadata;
+        convert(*descriptor, tree, metadata, directory);
+        std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Parser parser;
+    using Unpack = ISPA_STD::Node<PluginTest::Types::unpack>;
+    using Semicolon = ISPA_STD::Node<PluginTest::Types::SEMICOLON>;
+    if (!std::holds_alternative<Unpack>(parser.parse("x").value)) return 1;
+    const auto& result = parser.parse(";").value;
+    if (!std::holds_alternative<Semicolon>(result)) return 2;
+    if (std::get<Semicolon>(result).empty()) return 3;
+}
+)";
+        const auto command = std::string("clang++ -std=c++23 -I\"") +
+            std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+            "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+            (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+            "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        ASSERT_EQ(std::system(command.c_str()), 0);
+        EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+    }
+}
+
 TEST(AlgorithmPlugin, EverySupportedAlgorithmSuppliesItsOwnConversion) {
     for (const std::string name : {"LL", "LR", "LALR"}) {
         SCOPED_TRACE(name);
@@ -185,4 +253,87 @@ TEST(AlgorithmPlugin, LLGeneratedRecoveryAndRuleCallbacksCompile) {
         std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\"";
     EXPECT_EQ(std::system(command.c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLQuantifiedRulesSkipAbsentChildrenWithoutRecovery) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "A:'a'; B:'b'; C:'c'; D:'d'; "
+        "main: item? B item* C item+ D; item: leaf; leaf: A;");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-ll-optional-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup {
+        std::filesystem::path path;
+        ~Cleanup() { std::filesystem::remove_all(path); }
+    } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    for (const char* input : {"bcad", "abaacaad", "b c a d", "a b a a c a a d"}) {
+        PluginTest::Parser parser;
+        parser.parse(input);
+        if (!std::as_const(parser).getErrors().empty()) return 1;
+    }
+    PluginTest::Parser parser;
+    try { parser.parse("bca"); return 2; }
+    catch (const std::logic_error&) {}
+    if (parser.getErrors().empty()) return 3;
+    parser.parse("bcad");
+    if (!parser.getErrors().empty()) return 4;
+
+    PluginTest::Lexer lexer;
+    lexer.makeTokens("bca");
+    try { parser.parse(lexer); return 5; }
+    catch (const std::logic_error&) {}
+    if (parser.getErrors().empty()) return 6;
+    lexer.clearTokens();
+    lexer.makeTokens("bcad");
+    parser.parse(lexer);
+    if (!parser.getErrors().empty()) return 7;
+}
+
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") +
+        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLListCaptureStopsBeforeFollowingRuleWithSharedPrefix) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "A:'a'; B:'b'; main: @ item+ @ tail @{items, last}; "
+        "item: @ plain | marked {@}; plain: '@'? @ A {@}; "
+        "marked: '@' '=' @ A {@}; tail: '@' '{' @ B '}' {@};");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-ll-list-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup {
+        std::filesystem::path path;
+        ~Cleanup() { std::filesystem::remove_all(path); }
+    } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Parser parser;
+    if (parser.parse("a@{b}").items.size() != 1) return 1;
+    if (parser.parse("a@a@=a@{b}").items.size() != 3) return 2;
+    if (parser.parse("a @a @=a @{b}").items.size() != 3) return 3;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") +
+        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }

@@ -660,7 +660,7 @@ auto AST::captureType(const AST::RuleMember& member) -> AST::DataType {
                     type.parameters.push_back(std::move(next));
             }
             if (type.parameters.empty()) return Type{Kind::String};
-            if (type.parameters.size() == 1) type = AST::DataType(type.parameters.front());
+            if (type.parameters.size() == 1) type = Type(type.parameters.front());
             else if (std::all_of(type.parameters.begin(), type.parameters.end(), [](const Type& t) {
                 return t.kind == Kind::Character || t.kind == Kind::String;
             })) type = Type{Kind::String};
@@ -677,3 +677,53 @@ auto AST::captureType(const AST::RuleMember& member) -> AST::DataType {
             type = Type{Kind::Array, {}, {type}};
         return type;
     }
+
+namespace {
+    void capturedTypes(const stdu::vector<std::shared_ptr<AST::RuleMember>>& members,
+                       std::vector<AST::DataType>& types) {
+        for (const auto& member : members) {
+            if (!member->prefix.empty()) types.push_back(captureType(*member));
+            else if (member->isGroup()) {
+                std::vector<AST::DataType> nested;
+                capturedTypes(member->getGroup().values, nested);
+                for (auto& type : nested) {
+                    if (member->quantifier == '*' || member->quantifier == '+')
+                        type = AST::DataType{AST::DataType::Kind::Array, {}, {type}};
+                    types.push_back(std::move(type));
+                }
+            }
+            else if (member->isOp()) {
+                std::optional<std::vector<AST::DataType>> first;
+                for (const auto& option : member->getOp().options) {
+                    std::vector<AST::DataType> current;
+                    capturedTypes({option}, current);
+                    if (!first) first = std::move(current);
+                    else if (*first != current)
+                        throw Error("AST: alternatives disagree on captured data types");
+                }
+                if (first) types.insert(types.end(), first->begin(), first->end());
+            }
+        }
+    }
+
+}
+
+void AST::inferDataTypes(AST::Rule& rule) {
+    auto& block = rule.data_block;
+    if (block.empty()) return;
+    block.type.reset();
+    block.fields.clear();
+    std::vector<AST::DataType> captures;
+    capturedTypes(rule.rule_members, captures);
+    if (block.isRegularDataBlock() && !block.isWithKeys()) {
+        if (captures.size() != 1)
+            throw Error("AST: regular data block requires exactly one captured member, got {}", captures.size());
+        block.type = captures.front();
+    } else if (block.isTemplatedDataBlock()) {
+        const auto& names = block.getTemplatedDataBlock().names;
+        if (names.size() != captures.size())
+            throw Error("AST: data block declares {} fields but has {} captures", names.size(), captures.size());
+        for (std::size_t i = 0; i < names.size(); ++i)
+            block.fields.emplace_back(names[i], captures[i]);
+    }
+}

@@ -427,6 +427,9 @@ export namespace AST {
         }
     };
 
+    // Recompute capture metadata after member/name transformations.
+    void inferDataTypes(Rule& rule);
+
     // Define operator== outside structures
     bool operator==(const String &lhs, const String &rhs);
     bool operator==(const RulePrefix &lhs, const RulePrefix &rhs);

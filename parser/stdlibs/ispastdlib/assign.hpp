@@ -99,6 +99,10 @@ namespace ISPA_STD {
             }
         }
         if constexpr (I == std::variant_size_v<To>) {
+            static_assert(
+                std::is_constructible_v<To, const From&> || std::is_assignable_v<To&, const From&>,
+                "assign_variant_alternative: no compatible alternative found"
+            );
             return false;
         } else {
             using Alternative = std::variant_alternative_t<I, To>;

@@ -31,11 +31,10 @@ stmt:
     {@}
 ;
 forward_declaration:
-    '->' @  ID '->'
-    {@}
+    PY_RAW
 ;
 params:
-    '(' @ param? ')'
+    '>' '(' @ param? ')'
     {@}
 ;
 template_params:

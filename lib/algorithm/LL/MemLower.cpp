@@ -235,6 +235,9 @@ auto MemLower::lowerName(const AST::RuleMember &mem) -> Parser::LowerMeta {
         .args = combinatorArgs(mem),
         .template_parameters = {std::make_shared<LangAPI::Type>(nodeType(name))}
     };
+    if (is_list && tree->getTreeMap().contains(constants::whitespace))
+        call.template_parameters.push_back(std::make_shared<LangAPI::Type>(
+            LangAPI::Type{LangAPI::Symbol{"Types", constants::whitespace}}));
     auto var = bind(vname, deduceVarTypeByRuleMember(mem), LangAPI::IspaLibFunctionCall::createExpression(call));
     (is_list ? meta.value_list : meta.value) = var;
     // var_name already advances the per-name counter.

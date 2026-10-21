@@ -38,7 +38,7 @@ forward_declaration:
     {@}
 ;
 params:
-    '(' @ param? ')'
+    '>' '(' @ param? ')'
     {@}
 ;
 template_params:
