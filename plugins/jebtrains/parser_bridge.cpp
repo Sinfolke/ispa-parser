@@ -1,82 +1,245 @@
 #include "ispa/parser.h"
+#include <algorithm>
 #include <iostream>
+#include <regex>
 #include <string>
+#include <vector>
 
-
-static const char* token_name(Parser::Tokens kind) {
-    switch (kind) {
-        case Parser::Tokens::NONE: return "NONE";
-        case Parser::Tokens::__WS: return "__WS";
-        case Parser::Tokens::AUTO: return "AUTO";
-        case Parser::Tokens::AMPERSAND: return "AMPERSAND";
-        case Parser::Tokens::FAIL: return "FAIL";
-        case Parser::Tokens::advanced_rule_dep_decl_DEPENDS: return "advanced_rule_dep_decl_DEPENDS";
-        case Parser::Tokens::rule_value_counter_bounded_EQUALS_SIGN: return "rule_value_counter_bounded_EQUALS_SIGN";
-        case Parser::Tokens::SEMICOLON: return "SEMICOLON";
-        case Parser::Tokens::COLON: return "COLON";
-        case Parser::Tokens::rule_nested_rule_NUMBER_SIGN: return "rule_nested_rule_NUMBER_SIGN";
-        case Parser::Tokens::LEFT_CURLY_BRACKET: return "LEFT_CURLY_BRACKET";
-        case Parser::Tokens::rule_value_shared_counter_registration_AUTO: return "rule_value_shared_counter_registration_AUTO";
-        case Parser::Tokens::COMMERCIAL_AT: return "COMMERCIAL_AT";
-        case Parser::Tokens::rule_value_QUANTIFIER: return "rule_value_QUANTIFIER";
-        case Parser::Tokens::rule_value_NOSPACE: return "rule_value_NOSPACE";
-        case Parser::Tokens::template_params_LESS_THAN_SIGN: return "template_params_LESS_THAN_SIGN";
-        case Parser::Tokens::rule_value_STRING: return "rule_value_STRING";
-        case Parser::Tokens::grammar_modifier_AUTO: return "grammar_modifier_AUTO";
-        case Parser::Tokens::grammar_modifier_MOD: return "grammar_modifier_MOD";
-        case Parser::Tokens::rule_value_SPACE: return "rule_value_SPACE";
-        case Parser::Tokens::template_params_GREATER_THAN_SIGN: return "template_params_GREATER_THAN_SIGN";
-        case Parser::Tokens::rule_value_alternative_VERTICAL_LINE: return "rule_value_alternative_VERTICAL_LINE";
-        case Parser::Tokens::grammar_modifier_RIGHT_SQUARE_BRACKET: return "grammar_modifier_RIGHT_SQUARE_BRACKET";
-        case Parser::Tokens::rule_value_dyn_DOLLAR_SIGN: return "rule_value_dyn_DOLLAR_SIGN";
-        case Parser::Tokens::advanced_rule_regular_match_MATCH: return "advanced_rule_regular_match_MATCH";
-        case Parser::Tokens::COMMA: return "COMMA";
-        case Parser::Tokens::RIGHT_PARENTHESIS: return "RIGHT_PARENTHESIS";
-        case Parser::Tokens::LEFT_PARENTHESIS: return "LEFT_PARENTHESIS";
-        case Parser::Tokens::RIGHT_CURLY_BRACKET: return "RIGHT_CURLY_BRACKET";
-        case Parser::Tokens::NUMBER: return "NUMBER";
-        case Parser::Tokens::rule_value_ANY: return "rule_value_ANY";
-        case Parser::Tokens::PY_RAW: return "PY_RAW";
-        case Parser::Tokens::ID: return "ID";
-        case Parser::Tokens::rule_value_CGROUP: return "rule_value_CGROUP";
+namespace {
+struct Span { std::string kind, role; std::size_t start, length; };
+struct Diagnostic { std::string message; std::size_t start, length; };
+std::string escaped(const std::string& s) {
+    std::string out;
+    constexpr char hex[] = "0123456789abcdef";
+    for (unsigned char c : s) {
+        if (c == '"' || c == '\\') { out += '\\'; out += c; }
+        else if (c < 0x20) { out += "\\u00"; out += hex[c >> 4]; out += hex[c & 15]; }
+        else out += c;
     }
-    return "UNKNOWN";
+    return out;
 }
-static std::string escaped(const std::string& s) {
-    std::string o; for (unsigned char c : s) { if (c == '"' || c == '\\') { o += '\\'; o += c; }
-      else if (c == '\n') o += "\\n"; else if (c == '\r') o += "\\r"; else if (c == '\t') o += "\\t";
-      else if (c >= 0x20) o += c; } return o;
+void add(std::vector<Diagnostic>& errors, std::string message, std::size_t offset, std::size_t length, std::size_t size) {
+    offset = std::min(offset, size);
+    length = std::min(length, size - offset);
+    if (errors.size() >= 32) return;
+    for (const auto& error : errors) if (error.start == offset && error.message == message) return;
+    errors.push_back({std::move(message), offset, length});
+}
+// Editor validation is file-local: strip preprocessing syntax without resolving
+// imports against the filesystem. Spaces preserve the parser's byte offsets.
+std::string prepare(const std::string& source, std::vector<Diagnostic>& errors) {
+    auto text = source;
+    const auto size = source.size();
+    auto blank = [&](std::size_t start, std::size_t end) {
+        for (; start < end; ++start) if (text[start] != '\n' && text[start] != '\r') text[start] = ' ';
+    };
+    auto quoted = [&](std::size_t start, char close, bool python = false) {
+        bool triple = python && start + 2 < size && source[start + 1] == close && source[start + 2] == close;
+        auto end = start + (triple ? 3 : 1);
+        while (end < size) {
+            if (source[end] == '\\') { end += std::min<std::size_t>(2, size - end); continue; }
+            if (source[end] == close && (!triple || (end + 2 < size && source[end+1] == close && source[end+2] == close)))
+                return end + (triple ? 3 : 1);
+            ++end;
+        }
+        return size;
+    };
+    static const std::string id = "[A-Za-z_][A-Za-z_0-9]*";
+    static const std::string modulePath = id + "(\\s*\\.\\s*" + id + ")*";
+    static const std::string path = id + "(\\s*->\\s*" + id + ")*";
+    static const std::string list = path + "(\\s*,\\s*" + path + ")*";
+    static const std::regex module("module\\s+" + modulePath + "(\\s*->\\s*" + path + ")?\\s*;");
+    static const std::regex imported("import\\s+(" + modulePath + "(\\s+as\\s+" + id + ")?|(" +
+        "\\*|\\{\\s*" + list + "\\s*\\})\\s+from\\s+" + modulePath + ")\\s*;");
+    static const std::regex detached("detach\\s+(feature\\s+)?" + path + "\\s*;");
+    static const std::regex feature("feature\\s+" + path + "\\s*\\{\\s*(" + list + ")?\\s*\\}\\s*;");
+    std::size_t ruleDepth = 0, braces = 0, parentheses = 0;
+    bool declaration = true, header = false, advanced = false, failBlock = false;
+    for (std::size_t i = 0; i < size;) {
+        if (source.compare(i, 2, "//") == 0) {
+            const auto end = source.find('\n', i);
+            auto stop = end == std::string::npos ? size : end;
+            blank(i, stop); i = stop; continue;
+        }
+        if (source.compare(i, 2, "/*") == 0) {
+            auto end = source.find("*/", i + 2);
+            if (end == std::string::npos) { add(errors, "Unterminated block comment", i, 2, size); end = size; }
+            else end += 2;
+            blank(i, end); i = end; continue;
+        }
+        if (source.compare(i, 2, "p{") == 0) {
+            std::size_t depth = 1; i += 2;
+            while (i < size && depth) {
+                if (source[i] == '\'' || source[i] == '"') { i = quoted(i, source[i], true); continue; }
+                if (source[i] == '#') { while (i < size && source[i] != '\n') ++i; continue; }
+                if (source[i] == '{') ++depth;
+                else if (source[i] == '}') --depth;
+                ++i;
+            }
+            if (failBlock && ruleDepth == 0) { declaration = true; header = false; failBlock = false; }
+            continue;
+        }
+        if (source[i] == '\'' || source[i] == '"' || source[i] == '[') {
+            i = quoted(i, source[i] == '[' ? ']' : source[i]); continue;
+        }
+        if (std::isalpha(static_cast<unsigned char>(source[i])) || source[i] == '_') {
+            const auto start = i++;
+            while (i < size && (std::isalnum(static_cast<unsigned char>(source[i])) || source[i] == '_')) ++i;
+            const auto word = source.substr(start, i - start);
+            auto next = i;
+            while (next < size && std::isspace(static_cast<unsigned char>(source[next]))) ++next;
+            if (declaration && next < size && source[next] != ':' &&
+                (word == "module" || word == "import" || word == "detach" || word == "feature")) {
+                auto end = source.find(';', next);
+                if (end == std::string::npos) { add(errors, "Expected ';' after " + word + " directive", size, 0, size); end = size; }
+                else ++end;
+                auto directive = text.substr(start, end - start);
+                const auto& pattern = word == "module" ? module : word == "import" ? imported : word == "detach" ? detached : feature;
+                if (end < size || (end > start && source[end - 1] == ';')) {
+                    if (!std::regex_match(directive, pattern)) add(errors, "Invalid " + word + " directive", start, end - start, size);
+                }
+                blank(start, end); i = end; continue;
+            }
+            if (declaration) { declaration = false; header = true; failBlock = word == "fail"; }
+            continue;
+        }
+        const auto c = source[i++];
+        if (c == '(') ++parentheses;
+        else if (c == ')' && parentheses) --parentheses;
+        else if (c == '{') { if (header && !parentheses) { advanced = ruleDepth == 0; header = false; } ++braces; }
+        else if (c == '}' && braces) { if (--braces == 0 && advanced) { declaration = true; advanced = false; } }
+        else if (c == '#' && i < size && source[i] != '[' && !braces) header = true;
+        else if (c == ':' && header && !braces && !parentheses) { ++ruleDepth; header = false; }
+        else if (c == ';' && !braces && !parentheses) {
+            if (ruleDepth) --ruleDepth;
+            declaration = ruleDepth == 0;
+        }
+    }
+    return text;
+}
+#ifdef ISPA_MODULAR_PARSER
+using Identifier = ::Parser::Types::modules::common::ID;
+#else
+using Identifier = ::Parser::Types::ID;
+#endif
+struct Lexer : IspaLexer {
+    std::size_t stopped = 0;
+    const char* input;
+    explicit Lexer(const std::string& text) : input(text.c_str()) { setInput(input); }
+    Token makeToken(const char*& cursor) override {
+        stopped = cursor - input;
+        auto token = IspaLexer::makeToken(cursor);
+        if (cursor == input + stopped) throw std::runtime_error("Unrecognized character");
+        return token;
+    }
+};
+struct BridgeParser : ::Parser::Parser {
+    using ::Parser::Parser::main;
+    using ::Parser::Parser::skip_spaces;
+};
+struct Semantics {
+    const std::string& source;
+    std::vector<Span>& spans;
+    template<class T> static constexpr std::string_view typeName() { return __PRETTY_FUNCTION__; }
+    template<class T> void visit(const ISPA_STD::Node<T>& node, std::string_view role = {}) {
+        if (node.empty()) return;
+        if constexpr (std::is_same_v<T, Identifier>) {
+            if (role.empty() || !node.start()) return;
+            const auto address = reinterpret_cast<std::uintptr_t>(node.start());
+            const auto base = reinterpret_cast<std::uintptr_t>(source.data());
+            if (address >= base && address - base < source.size())
+                spans.push_back({"ID", std::string(role), address - base, std::min(node.length(), source.size() - (address - base))});
+        } else visit(node.data(), role);
+    }
+    template<class T> void visit(const std::shared_ptr<T>& node, std::string_view role = {}) { if (node) visit(*node, role); }
+    template<class... T> void visit(const std::variant<T...>& node, std::string_view role = {}) {
+        std::visit([&](const auto& value) { visit(value, role); }, node);
+    }
+    template<class T, class A> void visit(const std::vector<T, A>& node, std::string_view role = {}) {
+        for (const auto& value : node) visit(value, role);
+    }
+    template<class T> void visit(const T& node, std::string_view role = {}) {
+        if constexpr (requires { node.members(); T::members_str(); }) {
+            constexpr auto fields = T::members_str();
+            constexpr bool declaration = std::ranges::find(fields, "entry") != fields.end() && std::ranges::find(fields, "name") != fields.end();
+            constexpr auto type = typeName<T>();
+            std::apply([&](const auto&... values) {
+                std::size_t index = 0;
+                (([&] {
+                    const auto field = fields[index++];
+                    auto context = role;
+                    if (declaration && field == "name") context = "declaration";
+                    else if (field == "first_p" || field == "following_p") context = "parameter";
+                    else if (field == "key" || field == "assign_names" ||
+                        (type.find("abbr") != type.npos && (field == "f" || field == "seq")) ||
+                        ((type.find("ast_capture") != type.npos || type.find("var_capture") != type.npos || type.find("shared_counter_registration") != type.npos) && field == "value")) context = "capture";
+                    else if (type.find("fail_block") != type.npos && field == "name") context = "declaration";
+                    visit(values, context);
+                }()), ...);
+            }, node.members());
+        }
+    }
+};
 }
 int main() {
-    std::string source((std::istreambuf_iterator<char>(std::cin)), {});
-    try {
-        // Generated DFA diagnostics must not corrupt the JSON protocol.
-        struct Diagnostics {
-            std::streambuf* previous = std::cout.rdbuf(std::cerr.rdbuf());
-            ~Diagnostics() { std::cout.rdbuf(previous); }
-        };
-        IspaLexer lexer;
-        {
-            Diagnostics diagnostics;
-            lexer.setInput(source);
-            lexer.makeTokens();
-            struct BridgeParser : IspaParser { using Parser::Parser::main; };
-            BridgeParser parser;
-            IspaLexer validationLexer;
-            // The custom lexer needs its input initialized for Python block line metadata.
-            validationLexer.setInput(source.c_str());
-            auto result = parser.main(IspaLexer::lazy_iterator(validationLexer, source.c_str()));
-            if (!result.status)
-                throw std::runtime_error("Could not parse ISPA grammar");
-        }
-        std::cout << "{\"ok\":true,\"tokens\":[";
-        bool first = true;
+    const std::string source((std::istreambuf_iterator<char>(std::cin)), {});
+    std::vector<Span> spans;
+    std::vector<Diagnostic> errors;
+    {
+        // Keep generated DFA traces off the stdout JSON protocol.
+        struct Redirect { std::streambuf* previous = std::cout.rdbuf(std::cerr.rdbuf()); ~Redirect() { std::cout.rdbuf(previous); } } redirect;
+        const auto text = prepare(source, errors);
+        Lexer lexer(text);
+        bool lexed = false;
+        try { lexer.makeTokens(); lexed = true; }
+        catch (const std::exception& e) { add(errors, e.what(), lexer.stopped, 1, source.size()); }
         for (const auto& token : lexer.getTokens()) {
             if (token.empty()) continue;
-            if (!first) std::cout << ','; first = false;
-            std::cout << "{\"kind\":\"" << token_name(token.kind()) << "\",\"start\":" << token.meta().startpos()
-                      << ",\"length\":" << token.meta().length() << '}';
+            const auto& meta = token.meta();
+            const auto address = reinterpret_cast<std::uintptr_t>(meta.start());
+            const auto base = reinterpret_cast<std::uintptr_t>(text.data());
+            const auto start = address >= base && address - base <= text.size() ? address - base : meta.startpos();
+            if (start < text.size() && meta.length())
+                spans.push_back({::Parser::TokensToString(token.kind()), {}, start, std::min(meta.length(), text.size() - start)});
         }
-        std::cout << "]}";
-    } catch (const std::exception& e) { std::cout << "{\"ok\":false,\"error\":\"" << escaped(e.what()) << "\"}"; }
+        if (lexed) {
+            BridgeParser parser;
+            auto begin = ::Parser::Lexer::iterator(lexer);
+            parser.skip_spaces<::Parser::Types::__WS>(begin);
+            try {
+                auto result = parser.main(begin);
+                auto end = result.it;
+                if (result.status) {
+                    parser.skip_spaces<::Parser::Types::__WS>(end);
+                    if (!end.isEnd()) add(errors, "Parsing stopped: expected a rule declaration", end->meta().startpos(), end->meta().length(), source.size());
+                    Semantics{text, spans}.visit(result.node);
+                } else add(errors, "Parsing stopped: expected a rule declaration", begin.isEnd() ? source.size() : begin->meta().startpos(), 1, source.size());
+            } catch (const std::exception& e) {
+                if (parser.getErrors().empty()) add(errors, e.what(), source.size(), 0, source.size());
+            }
+            for (const auto& error : parser.getErrors()) {
+                std::string expected = error.expected_text;
+                if (expected.empty()) for (auto kind : error.expected) {
+                    if (!expected.empty()) expected += ", ";
+                    expected += ::Parser::TokensToString(kind);
+                }
+                const bool eof = error.unexpected == ISPA_STD::Recovery::eof_token;
+                auto message = "Expected " + expected + (eof ? " at end of file" : "; got " + std::string(::Parser::TokensToString(error.unexpected)));
+                add(errors, message, eof ? source.size() : error.offset, error.length, source.size());
+            }
+        }
+    }
+    std::cout << "{\"ok\":" << (errors.empty() ? "true" : "false") << ",\"tokens\":[";
+    bool first = true;
+    for (const auto& span : spans) {
+        if (!first) std::cout << ','; first = false;
+        std::cout << "{\"kind\":\"" << escaped(span.kind) << "\",\"role\":\"" << span.role << "\",\"start\":" << span.start << ",\"length\":" << span.length << '}';
+    }
+    std::cout << "],\"diagnostics\":[";
+    first = true;
+    for (const auto& error : errors) {
+        if (!first) std::cout << ','; first = false;
+        std::cout << "{\"message\":\"" << escaped(error.message) << "\",\"start\":" << error.start << ",\"length\":" << error.length << '}';
+    }
+    std::cout << "]}\n";
 }

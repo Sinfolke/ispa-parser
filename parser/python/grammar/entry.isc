@@ -1,0 +1,6 @@
+module main -> main;
+import statement;
+main:
+    @ statement*
+    {@}
+;

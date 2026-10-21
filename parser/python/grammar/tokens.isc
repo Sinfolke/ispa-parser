@@ -1,3 +1,5 @@
+module tokens;
+
 COLON: ':';
 COMMA: ',';
 SEMICOLON: ';';

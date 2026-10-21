@@ -1,0 +1,28 @@
+// Opaque Python action blocks are lexed using IspaLexer's shared boundary code.
+STRING:
+    @ (['] ([^'\\\0] | ('\\' [^\0]))* [']) | (["] ([^"\\\0] | ('\\' [^\0]))* ["])
+    {@}
+;
+CGROUP:
+    @ '[' ([^\\\]\0] | ('\\' [^\0]))* ']'
+    {@}
+;
+COMMENT:
+    @ ('//' [^\r\n\0]*) | ('/*' ([^*\0] | ('*'+ [^*/\0]))* '*'+ '/')
+    {@}
+;
+MODULE: 'module';
+IMPORT: 'import';
+DETACH: 'detach';
+FEATURE: 'feature';
+AS: 'as';
+FROM: 'from';
+FAIL: 'fail';
+SEMI: ';';
+DOT: '.';
+COLON: ':';
+ALL: '*';
+HASH: '#';
+LBRACE: '{';
+RBRACE: '}';
+OTHER: @ [^\0a-zA-Z0-9_ \t\r\n(){};'"#\[\]] {@};

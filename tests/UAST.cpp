@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include <output/Parser.h>
+#include <ispa/parser.h>
 import UAST;
+import Modules;
 import UAST.Parser;
 import UAST.Python;
 import AST.Builder;
@@ -83,7 +84,7 @@ TEST(UAST, OwnsParserDataAndPositions) {
     {
         std::string source = "WORD: 'a';";
         Parser::Parser parser;
-        syntax = parser.parse(source.c_str());
+        syntax = parser.parse(source.c_str()).value.data();
     }
     const auto& declaration = std::get<UAST::Node<UAST::grammar>>(syntax.value.at(0));
     EXPECT_EQ(UAST::positionOf(declaration.data().name.data().primary, "owned.isc").file, "owned.isc");
@@ -240,25 +241,27 @@ TEST(UAST, PythonExpressionInDynamicPatternAndCounter) {
 }
 
 TEST(UAST, ConvertsBootstrapGrammar) {
+    const auto project = Modules::preprocess({std::string(ROOT_DIR) + "/parser/ispa/grammar"});
     UAST::main syntax;
-    for (const auto* name : {"entry.isc", "common.isc", "rule.isc", "adv_rule.isc", "fail_block.isc"}) {
-        const auto path = std::filesystem::path(ROOT_DIR) / "parser/ispa/grammar" / name;
-        std::ifstream input(path);
-        ASSERT_TRUE(input.is_open());
-        std::string source((std::istreambuf_iterator<char>(input)), {});
-        Parser::Parser parser;
-        auto file = parser.parse(source.c_str());
-        ASSERT_FALSE(file.value.empty()) << path;
-        syntax.value.insert(syntax.value.end(), file.value.begin(), file.value.end());
+    std::vector<std::string> files;
+    for (const auto& source : project.sources) {
+        SCOPED_TRACE(source.file);
+        IspaParser parser;
+        const auto& parsed = parser.parse(source.grammar.c_str()).value.data();
+        ASSERT_TRUE(parser.getErrors().empty()) << source.file;
+        syntax.value.insert(syntax.value.end(), parsed.value.begin(), parsed.value.end());
+        files.insert(files.end(), parsed.value.size(), source.file);
     }
     AST::Builder builder(syntax);
+    builder.setSourceFiles(std::move(files));
+    builder.setModules(project);
     ASSERT_NO_THROW(builder.build());
     auto tree = builder.get();
     EXPECT_GT(tree.getTreeMap().size(), 30u);
-    EXPECT_TRUE(tree.contains({"rule", "value", "mul_capture"}));
-    EXPECT_TRUE(tree.contains({"advanced_rule"}));
-    EXPECT_TRUE(tree.contains({"rule", "ast", "abbr"}));
-    EXPECT_TRUE(tree.contains({"rule", "ast", "single_value"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "value", "mul_capture"}));
+    EXPECT_TRUE(tree.contains({"modules", "advanced_rule", "advanced_rule"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "ast", "abbr"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "ast", "single_value"}));
 }
 
 TEST(UAST, AdvancedRuleKeepsPythonActions) {

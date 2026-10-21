@@ -1,3 +1,5 @@
+module expr_tokens;
+
 AMP: '&';
 AMP_ASSIGN: '&=';
 AND: 'and';

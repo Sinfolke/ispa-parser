@@ -1,5 +1,6 @@
 export module Parser.Base;
 import AST.API;
+import UAST.PyAST;
 import AST.Tree;
 import LangAPI;
 import LangAPI.Context;
@@ -62,6 +63,13 @@ export namespace Parser {
             const RecoveryOptions& options = {}
         ) -> LangAPI::Expression;
 
+        // Build the rule's recovery frame and each member's recovery site.
+        auto recoveryFrame(const AST::LLkToken& rule) -> LangAPI::Expression;
+        auto recoverySite(
+            AST::Tree& tree,
+            const AST::LLkToken& rule,
+            std::size_t member_index
+        ) -> LangAPI::Expression;
 
         auto var_name(const std::vector<std::string> &name, bool is_list) -> std::string;
     public:
@@ -73,6 +81,16 @@ export namespace Parser {
         ParserBase(ParserBase&&) = delete;
         ParserBase& operator=(ParserBase&&) = delete;
 
+
+        // Lower the typed embedded Python AST into the language-neutral IR.
+        // Unsupported constructs throw with their source position. `variables`
+        // names existing bindings (such as captures); assignments update them.
+        // New local bindings must precede branches/loops so they remain visible.
+        static auto convertPython(const UAST::py::Expr& expression) -> LangAPI::Expression;
+        static auto convertPython(const UAST::py::Stmt& statement, const std::set<std::string>& variables = {}) -> LangAPI::Statements;
+        static auto convertPython(const UAST::py::Module& module, const std::set<std::string>& variables = {}) -> LangAPI::Statements;
+        static auto convertPythonDeclaration(const UAST::py::Stmt& declaration) -> LangAPI::Declaration;
+        static auto convertPythonDeclarations(const UAST::py::Module& module) -> LangAPI::Declarations;
 
         static auto dataType(const AST::DataType& type) -> LangAPI::Type;
 

@@ -8,20 +8,100 @@ auto Parser::TokensToString(std::size_t id) -> const char* {
 			return TokensStr::__WS::id;
 			break;
 		}
-		case Tokens::advanced_rule::dep_decl::DEPENDS::id: {
-			return TokensStr::advanced_rule::dep_decl::DEPENDS::id;
+		case Tokens::modules::grammar::modifier::AUTO::id: {
+			return TokensStr::modules::grammar::modifier::AUTO::id;
+			break;
+		}
+		case Tokens::SEMICOLON::id: {
+			return TokensStr::SEMICOLON::id;
+			break;
+		}
+		case Tokens::modules::grammar::modifier::RIGHT_SQUARE_BRACKET::id: {
+			return TokensStr::modules::grammar::modifier::RIGHT_SQUARE_BRACKET::id;
+			break;
+		}
+		case Tokens::modules::fail_block::fail_block::FAIL::id: {
+			return TokensStr::modules::fail_block::fail_block::FAIL::id;
+			break;
+		}
+		case Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id: {
+			return TokensStr::modules::rule::value::dyn::DOLLAR_SIGN::id;
+			break;
+		}
+		case Tokens::modules::rule::value::shared_counter_registration::AUTO::id: {
+			return TokensStr::modules::rule::value::shared_counter_registration::AUTO::id;
+			break;
+		}
+		case Tokens::PERCENT_SIGN::id: {
+			return TokensStr::PERCENT_SIGN::id;
+			break;
+		}
+		case Tokens::AMPERSAND::id: {
+			return TokensStr::AMPERSAND::id;
+			break;
+		}
+		case Tokens::LEFT_CURLY_BRACKET::id: {
+			return TokensStr::LEFT_CURLY_BRACKET::id;
+			break;
+		}
+		case Tokens::modules::rule::nested_rule::NUMBER_SIGN::id: {
+			return TokensStr::modules::rule::nested_rule::NUMBER_SIGN::id;
+			break;
+		}
+		case Tokens::modules::rule::value::NOSPACE::id: {
+			return TokensStr::modules::rule::value::NOSPACE::id;
+			break;
+		}
+		case Tokens::modules::rule::value::SPACE::id: {
+			return TokensStr::modules::rule::value::SPACE::id;
+			break;
+		}
+		case Tokens::modules::rule::value::ANY::id: {
+			return TokensStr::modules::rule::value::ANY::id;
+			break;
+		}
+		case Tokens::modules::rule::value::CGROUP::id: {
+			return TokensStr::modules::rule::value::CGROUP::id;
+			break;
+		}
+		case Tokens::modules::rule::value::QUANTIFIER::id: {
+			return TokensStr::modules::rule::value::QUANTIFIER::id;
+			break;
+		}
+		case Tokens::modules::rule::value::alternative::VERTICAL_LINE::id: {
+			return TokensStr::modules::rule::value::alternative::VERTICAL_LINE::id;
+			break;
+		}
+		case Tokens::modules::rule::value::STRING::id: {
+			return TokensStr::modules::rule::value::STRING::id;
 			break;
 		}
 		case Tokens::AUTO::id: {
 			return TokensStr::AUTO::id;
 			break;
 		}
-		case Tokens::FAIL::id: {
-			return TokensStr::FAIL::id;
+		case Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id: {
+			return TokensStr::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id;
 			break;
 		}
-		case Tokens::SEMICOLON::id: {
-			return TokensStr::SEMICOLON::id;
+		case Tokens::RIGHT_CURLY_BRACKET::id: {
+			return TokensStr::RIGHT_CURLY_BRACKET::id;
+			break;
+		}
+		case Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id: {
+			return TokensStr::modules::advanced_rule::advanced_rule::regular_match::MATCH::id;
+			break;
+		}
+		case Tokens::modules::grammar::modifier::MOD::id: {
+			return TokensStr::modules::grammar::modifier::MOD::id;
+			break;
+		}
+		case Tokens::GREATER_THAN_SIGN::id: {
+			return TokensStr::GREATER_THAN_SIGN::id;
+			break;
+		}
+		case Tokens::COMMERCIAL_AT::id: {
+			return TokensStr::COMMERCIAL_AT::id;
 			break;
 		}
 		case Tokens::COLON::id: {
@@ -32,76 +112,12 @@ auto Parser::TokensToString(std::size_t id) -> const char* {
 			return TokensStr::EQUALS_SIGN::id;
 			break;
 		}
-		case Tokens::AMPERSAND::id: {
-			return TokensStr::AMPERSAND::id;
+		case Tokens::modules::common::ID::id: {
+			return TokensStr::modules::common::ID::id;
 			break;
 		}
-		case Tokens::PERCENT_SIGN::id: {
-			return TokensStr::PERCENT_SIGN::id;
-			break;
-		}
-		case Tokens::rule::nested_rule::NUMBER_SIGN::id: {
-			return TokensStr::rule::nested_rule::NUMBER_SIGN::id;
-			break;
-		}
-		case Tokens::LEFT_CURLY_BRACKET::id: {
-			return TokensStr::LEFT_CURLY_BRACKET::id;
-			break;
-		}
-		case Tokens::rule::value::shared_counter_registration::AUTO::id: {
-			return TokensStr::rule::value::shared_counter_registration::AUTO::id;
-			break;
-		}
-		case Tokens::COMMERCIAL_AT::id: {
-			return TokensStr::COMMERCIAL_AT::id;
-			break;
-		}
-		case Tokens::rule::value::QUANTIFIER::id: {
-			return TokensStr::rule::value::QUANTIFIER::id;
-			break;
-		}
-		case Tokens::rule::value::NOSPACE::id: {
-			return TokensStr::rule::value::NOSPACE::id;
-			break;
-		}
-		case Tokens::rule::value::ANY::id: {
-			return TokensStr::rule::value::ANY::id;
-			break;
-		}
-		case Tokens::template_params::LESS_THAN_SIGN::id: {
-			return TokensStr::template_params::LESS_THAN_SIGN::id;
-			break;
-		}
-		case Tokens::rule::value::STRING::id: {
-			return TokensStr::rule::value::STRING::id;
-			break;
-		}
-		case Tokens::grammar::modifier::AUTO::id: {
-			return TokensStr::grammar::modifier::AUTO::id;
-			break;
-		}
-		case Tokens::grammar::modifier::MOD::id: {
-			return TokensStr::grammar::modifier::MOD::id;
-			break;
-		}
-		case Tokens::rule::value::SPACE::id: {
-			return TokensStr::rule::value::SPACE::id;
-			break;
-		}
-		case Tokens::rule::value::alternative::VERTICAL_LINE::id: {
-			return TokensStr::rule::value::alternative::VERTICAL_LINE::id;
-			break;
-		}
-		case Tokens::grammar::modifier::RIGHT_SQUARE_BRACKET::id: {
-			return TokensStr::grammar::modifier::RIGHT_SQUARE_BRACKET::id;
-			break;
-		}
-		case Tokens::rule::value::dyn::DOLLAR_SIGN::id: {
-			return TokensStr::rule::value::dyn::DOLLAR_SIGN::id;
-			break;
-		}
-		case Tokens::advanced_rule::regular_match::MATCH::id: {
-			return TokensStr::advanced_rule::regular_match::MATCH::id;
+		case Tokens::modules::common::template_params::LESS_THAN_SIGN::id: {
+			return TokensStr::modules::common::template_params::LESS_THAN_SIGN::id;
 			break;
 		}
 		case Tokens::COMMA::id: {
@@ -116,28 +132,12 @@ auto Parser::TokensToString(std::size_t id) -> const char* {
 			return TokensStr::LEFT_PARENTHESIS::id;
 			break;
 		}
-		case Tokens::RIGHT_CURLY_BRACKET::id: {
-			return TokensStr::RIGHT_CURLY_BRACKET::id;
+		case Tokens::modules::common::NUMBER::id: {
+			return TokensStr::modules::common::NUMBER::id;
 			break;
 		}
-		case Tokens::NUMBER::id: {
-			return TokensStr::NUMBER::id;
-			break;
-		}
-		case Tokens::GREATER_THAN_SIGN::id: {
-			return TokensStr::GREATER_THAN_SIGN::id;
-			break;
-		}
-		case Tokens::PY_RAW::id: {
-			return TokensStr::PY_RAW::id;
-			break;
-		}
-		case Tokens::ID::id: {
-			return TokensStr::ID::id;
-			break;
-		}
-		case Tokens::rule::value::CGROUP::id: {
-			return TokensStr::rule::value::CGROUP::id;
+		case Tokens::modules::common::PY_RAW::id: {
+			return TokensStr::modules::common::PY_RAW::id;
 			break;
 		}
 	}
@@ -145,160 +145,156 @@ auto Parser::TokensToString(std::size_t id) -> const char* {
 }
 auto Parser::RulesToString(std::size_t id) -> const char* {
 	switch (id) {
-		case Rules::rule::nested_rule::id: {
-			return RulesStr::rule::nested_rule::id;
-			break;
-		}
-		case Rules::rule::value::counter::id: {
-			return RulesStr::rule::value::counter::id;
-			break;
-		}
-		case Rules::rule::value::dyn::dyn_expr::id: {
-			return RulesStr::rule::value::dyn::dyn_expr::id;
-			break;
-		}
-		case Rules::rule::value::dyn::id: {
-			return RulesStr::rule::value::dyn::id;
-			break;
-		}
-		case Rules::rule::value::mul_capture::id: {
-			return RulesStr::rule::value::mul_capture::id;
-			break;
-		}
-		case Rules::rule::ast::id: {
-			return RulesStr::rule::ast::id;
-			break;
-		}
-		case Rules::rule::value::ast_capture::id: {
-			return RulesStr::rule::value::ast_capture::id;
-			break;
-		}
-		case Rules::rule::f_binding::id: {
-			return RulesStr::rule::f_binding::id;
-			break;
-		}
-		case Rules::rule::value::group::id: {
-			return RulesStr::rule::value::group::id;
-			break;
-		}
-		case Rules::rule::value::fail_capture::id: {
-			return RulesStr::rule::value::fail_capture::id;
-			break;
-		}
-		case Rules::rule::ast::full::part::id: {
-			return RulesStr::rule::ast::full::part::id;
-			break;
-		}
-		case Rules::expr::id: {
-			return RulesStr::expr::id;
-			break;
-		}
-		case Rules::rule::value::one_capture::id: {
-			return RulesStr::rule::value::one_capture::id;
-			break;
-		}
-		case Rules::rule::id: {
-			return RulesStr::rule::id;
-			break;
-		}
-		case Rules::grammar::modifier::id: {
-			return RulesStr::grammar::modifier::id;
-			break;
-		}
-		case Rules::grammar::id: {
-			return RulesStr::grammar::id;
-			break;
-		}
-		case Rules::rule::value::id: {
-			return RulesStr::rule::value::id;
-			break;
-		}
-		case Rules::rule::value::counter::bounded::id: {
-			return RulesStr::rule::value::counter::bounded::id;
-			break;
-		}
-		case Rules::param::id: {
-			return RulesStr::param::id;
-			break;
-		}
-		case Rules::rule::value::pattern::id: {
-			return RulesStr::rule::value::pattern::id;
-			break;
-		}
-		case Rules::template_params::id: {
-			return RulesStr::template_params::id;
-			break;
-		}
-		case Rules::fail_block::id: {
-			return RulesStr::fail_block::id;
-			break;
-		}
-		case Rules::rule::ast::abbr::id: {
-			return RulesStr::rule::ast::abbr::id;
-			break;
-		}
-		case Rules::params::id: {
-			return RulesStr::params::id;
-			break;
-		}
-		case Rules::rule::value::alternative::id: {
-			return RulesStr::rule::value::alternative::id;
-			break;
-		}
-		case Rules::rule::ast::full::id: {
-			return RulesStr::rule::ast::full::id;
-			break;
-		}
-		case Rules::forward_declaration::id: {
-			return RulesStr::forward_declaration::id;
-			break;
-		}
-		case Rules::name::id: {
-			return RulesStr::name::id;
-			break;
-		}
-		case Rules::stmt::id: {
-			return RulesStr::stmt::id;
-			break;
-		}
-		case Rules::advanced_rule::fail_call::id: {
-			return RulesStr::advanced_rule::fail_call::id;
-			break;
-		}
-		case Rules::rule::ast::single_value::id: {
-			return RulesStr::rule::ast::single_value::id;
-			break;
-		}
-		case Rules::advanced_rule::dep_decl::id: {
-			return RulesStr::advanced_rule::dep_decl::id;
-			break;
-		}
-		case Rules::rule::value::shared_counter_registration::id: {
-			return RulesStr::rule::value::shared_counter_registration::id;
-			break;
-		}
-		case Rules::explicit_expr::id: {
-			return RulesStr::explicit_expr::id;
-			break;
-		}
-		case Rules::rule::value::var_capture::id: {
-			return RulesStr::rule::value::var_capture::id;
-			break;
-		}
 		case Rules::main::id: {
 			return RulesStr::main::id;
 			break;
 		}
-		case Rules::advanced_rule::id: {
-			return RulesStr::advanced_rule::id;
+		case Rules::modules::rule::value::counter::id: {
+			return RulesStr::modules::rule::value::counter::id;
 			break;
 		}
-		case Rules::advanced_rule::regular_match::unpack::id: {
-			return RulesStr::advanced_rule::regular_match::unpack::id;
+		case Rules::modules::rule::value::dyn::dyn_expr::id: {
+			return RulesStr::modules::rule::value::dyn::dyn_expr::id;
 			break;
 		}
-		case Rules::advanced_rule::regular_match::id: {
-			return RulesStr::advanced_rule::regular_match::id;
+		case Rules::modules::rule::value::group::id: {
+			return RulesStr::modules::rule::value::group::id;
+			break;
+		}
+		case Rules::modules::rule::ast::abbr::id: {
+			return RulesStr::modules::rule::ast::abbr::id;
+			break;
+		}
+		case Rules::modules::rule::ast::full::id: {
+			return RulesStr::modules::rule::ast::full::id;
+			break;
+		}
+		case Rules::modules::rule::value::alternative::id: {
+			return RulesStr::modules::rule::value::alternative::id;
+			break;
+		}
+		case Rules::modules::rule::value::pattern::id: {
+			return RulesStr::modules::rule::value::pattern::id;
+			break;
+		}
+		case Rules::modules::rule::value::mul_capture::id: {
+			return RulesStr::modules::rule::value::mul_capture::id;
+			break;
+		}
+		case Rules::modules::rule::value::fail_capture::id: {
+			return RulesStr::modules::rule::value::fail_capture::id;
+			break;
+		}
+		case Rules::modules::rule::value::shared_counter_registration::id: {
+			return RulesStr::modules::rule::value::shared_counter_registration::id;
+			break;
+		}
+		case Rules::modules::rule::value::id: {
+			return RulesStr::modules::rule::value::id;
+			break;
+		}
+		case Rules::modules::rule::value::counter::bounded::id: {
+			return RulesStr::modules::rule::value::counter::bounded::id;
+			break;
+		}
+		case Rules::modules::rule::ast::full::part::id: {
+			return RulesStr::modules::rule::ast::full::part::id;
+			break;
+		}
+		case Rules::modules::advanced_rule::advanced_rule::dep_decl::id: {
+			return RulesStr::modules::advanced_rule::advanced_rule::dep_decl::id;
+			break;
+		}
+		case Rules::modules::rule::ast::id: {
+			return RulesStr::modules::rule::ast::id;
+			break;
+		}
+		case Rules::modules::common::params::id: {
+			return RulesStr::modules::common::params::id;
+			break;
+		}
+		case Rules::modules::rule::value::dyn::id: {
+			return RulesStr::modules::rule::value::dyn::id;
+			break;
+		}
+		case Rules::modules::common::template_params::id: {
+			return RulesStr::modules::common::template_params::id;
+			break;
+		}
+		case Rules::modules::advanced_rule::advanced_rule::id: {
+			return RulesStr::modules::advanced_rule::advanced_rule::id;
+			break;
+		}
+		case Rules::modules::grammar::grammar::id: {
+			return RulesStr::modules::grammar::grammar::id;
+			break;
+		}
+		case Rules::modules::fail_block::fail_block::id: {
+			return RulesStr::modules::fail_block::fail_block::id;
+			break;
+		}
+		case Rules::modules::advanced_rule::advanced_rule::regular_match::id: {
+			return RulesStr::modules::advanced_rule::advanced_rule::regular_match::id;
+			break;
+		}
+		case Rules::modules::rule::ast::single_value::id: {
+			return RulesStr::modules::rule::ast::single_value::id;
+			break;
+		}
+		case Rules::modules::grammar::modifier::id: {
+			return RulesStr::modules::grammar::modifier::id;
+			break;
+		}
+		case Rules::modules::common::param::id: {
+			return RulesStr::modules::common::param::id;
+			break;
+		}
+		case Rules::modules::rule::value::var_capture::id: {
+			return RulesStr::modules::rule::value::var_capture::id;
+			break;
+		}
+		case Rules::modules::common::stmt::id: {
+			return RulesStr::modules::common::stmt::id;
+			break;
+		}
+		case Rules::modules::rule::nested_rule::id: {
+			return RulesStr::modules::rule::nested_rule::id;
+			break;
+		}
+		case Rules::modules::main::main::id: {
+			return RulesStr::modules::main::main::id;
+			break;
+		}
+		case Rules::modules::common::name::id: {
+			return RulesStr::modules::common::name::id;
+			break;
+		}
+		case Rules::modules::common::forward_declaration::id: {
+			return RulesStr::modules::common::forward_declaration::id;
+			break;
+		}
+		case Rules::modules::common::expr::id: {
+			return RulesStr::modules::common::expr::id;
+			break;
+		}
+		case Rules::modules::rule::value::ast_capture::id: {
+			return RulesStr::modules::rule::value::ast_capture::id;
+			break;
+		}
+		case Rules::modules::rule::rule::id: {
+			return RulesStr::modules::rule::rule::id;
+			break;
+		}
+		case Rules::modules::advanced_rule::advanced_rule::regular_match::unpack::id: {
+			return RulesStr::modules::advanced_rule::advanced_rule::regular_match::unpack::id;
+			break;
+		}
+		case Rules::modules::rule::value::one_capture::id: {
+			return RulesStr::modules::rule::value::one_capture::id;
+			break;
+		}
+		case Rules::modules::rule::f_binding::id: {
+			return RulesStr::modules::rule::f_binding::id;
 			break;
 		}
 	}
@@ -318,17 +314,364 @@ auto Parser::FlatTypes::operator<<(std::ostream & os, __WS value) -> std::ostrea
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::advanced_rule_dep_decl_DEPENDS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_dep_decl_DEPENDS", true);
+auto Parser::FlatTypes::modules_grammar_modifier_AUTO::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar_modifier_AUTO", true);
 }
-auto Parser::FlatTypes::advanced_rule_dep_decl_DEPENDS::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_grammar_modifier_AUTO::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::advanced_rule_dep_decl_DEPENDS::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_dep_decl_DEPENDS {", "}");
+auto Parser::FlatTypes::modules_grammar_modifier_AUTO::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar_modifier_AUTO {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_dep_decl_DEPENDS value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar_modifier_AUTO value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules", true);
+}
+auto Parser::FlatTypes::modules::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_grammar::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar", true);
+}
+auto Parser::FlatTypes::modules_grammar::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_grammar::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("SEMICOLON", true);
+}
+auto Parser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::SEMICOLON::to_string() const -> std::string {
+	return ::ISPA_STD::concat("SEMICOLON {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar_modifier_RIGHT_SQUARE_BRACKET", true);
+}
+auto Parser::FlatTypes::modules_grammar_modifier_RIGHT_SQUARE_BRACKET::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_grammar_modifier_RIGHT_SQUARE_BRACKET::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar_modifier_RIGHT_SQUARE_BRACKET {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar_modifier_RIGHT_SQUARE_BRACKET value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_fail_block_fail_block_FAIL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_fail_block_fail_block_FAIL", true);
+}
+auto Parser::FlatTypes::modules_fail_block_fail_block_FAIL::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_fail_block_fail_block_FAIL::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_fail_block_fail_block_FAIL {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_fail_block_fail_block_FAIL value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_fail_block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_fail_block", true);
+}
+auto Parser::FlatTypes::modules_fail_block::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_fail_block::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_fail_block {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_fail_block value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_DOLLAR_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_dyn_DOLLAR_SIGN", true);
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_DOLLAR_SIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_DOLLAR_SIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_dyn_DOLLAR_SIGN {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_dyn_DOLLAR_SIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule", true);
+}
+auto Parser::FlatTypes::modules_rule::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration_AUTO::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_shared_counter_registration_AUTO", true);
+}
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration_AUTO::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration_AUTO::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_shared_counter_registration_AUTO {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_shared_counter_registration_AUTO value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::PERCENT_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("PERCENT_SIGN", true);
+}
+auto Parser::FlatTypes::PERCENT_SIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::PERCENT_SIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("PERCENT_SIGN {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, PERCENT_SIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::AMPERSAND::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("AMPERSAND", true);
+}
+auto Parser::FlatTypes::AMPERSAND::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::AMPERSAND::to_string() const -> std::string {
+	return ::ISPA_STD::concat("AMPERSAND {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, AMPERSAND value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::LEFT_CURLY_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("LEFT_CURLY_BRACKET", true);
+}
+auto Parser::FlatTypes::LEFT_CURLY_BRACKET::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::LEFT_CURLY_BRACKET::to_string() const -> std::string {
+	return ::ISPA_STD::concat("LEFT_CURLY_BRACKET {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, LEFT_CURLY_BRACKET value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_nested_rule_NUMBER_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_nested_rule_NUMBER_SIGN", true);
+}
+auto Parser::FlatTypes::modules_rule_nested_rule_NUMBER_SIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_nested_rule_NUMBER_SIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_nested_rule_NUMBER_SIGN {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_nested_rule_NUMBER_SIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_nested_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_nested_rule", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_nested_rule::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_nested_rule::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_nested_rule {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_nested_rule value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_NOSPACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_NOSPACE", true);
+}
+auto Parser::FlatTypes::modules_rule_value_NOSPACE::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_NOSPACE::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_NOSPACE {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_NOSPACE value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_SPACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_SPACE", true);
+}
+auto Parser::FlatTypes::modules_rule_value_SPACE::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_SPACE::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_SPACE {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_SPACE value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_ANY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_ANY", true);
+}
+auto Parser::FlatTypes::modules_rule_value_ANY::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_ANY::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_ANY {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_ANY value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_CGROUP::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_CGROUP", false);
+	printer.up(false);
+	printer.node_with_value("negative", negative, false);
+	printer.node_with_value("v", v, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_CGROUP::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_CGROUP::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_CGROUP {", "negative = ", negative, ", ", "v = ", v, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_CGROUP value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_QUANTIFIER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_QUANTIFIER", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_QUANTIFIER::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_QUANTIFIER::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_QUANTIFIER {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_QUANTIFIER value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_alternative_VERTICAL_LINE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_alternative_VERTICAL_LINE", true);
+}
+auto Parser::FlatTypes::modules_rule_value_alternative_VERTICAL_LINE::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_alternative_VERTICAL_LINE::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_alternative_VERTICAL_LINE {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_alternative_VERTICAL_LINE value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_alternative::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_alternative", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_alternative::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_alternative::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_alternative {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_alternative value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_STRING::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_STRING", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_STRING::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_STRING::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_STRING {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_STRING value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -346,31 +689,104 @@ auto Parser::FlatTypes::operator<<(std::ostream & os, AUTO value) -> std::ostrea
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::FAIL::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("FAIL", true);
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl_DEPENDS::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule_dep_decl_DEPENDS", true);
 }
-auto Parser::FlatTypes::FAIL::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl_DEPENDS::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::FAIL::to_string() const -> std::string {
-	return ::ISPA_STD::concat("FAIL {", "}");
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl_DEPENDS::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule_dep_decl_DEPENDS {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, FAIL value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule_dep_decl_DEPENDS value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::SEMICOLON::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("SEMICOLON", true);
+auto Parser::FlatTypes::modules_advanced_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule", true);
 }
-auto Parser::FlatTypes::SEMICOLON::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_advanced_rule::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::SEMICOLON::to_string() const -> std::string {
-	return ::ISPA_STD::concat("SEMICOLON {", "}");
+auto Parser::FlatTypes::modules_advanced_rule::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, SEMICOLON value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("RIGHT_CURLY_BRACKET", true);
+}
+auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::to_string() const -> std::string {
+	return ::ISPA_STD::concat("RIGHT_CURLY_BRACKET {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, RIGHT_CURLY_BRACKET value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_MATCH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule_regular_match_MATCH", true);
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_MATCH::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_MATCH::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule_regular_match_MATCH {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule_regular_match_MATCH value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_grammar_modifier_MOD::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar_modifier_MOD", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_grammar_modifier_MOD::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_grammar_modifier_MOD::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar_modifier_MOD {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar_modifier_MOD value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::GREATER_THAN_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("GREATER_THAN_SIGN", true);
+}
+auto Parser::FlatTypes::GREATER_THAN_SIGN::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::GREATER_THAN_SIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("GREATER_THAN_SIGN {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, GREATER_THAN_SIGN value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::COMMERCIAL_AT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("COMMERCIAL_AT", true);
+}
+auto Parser::FlatTypes::COMMERCIAL_AT::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::COMMERCIAL_AT::to_string() const -> std::string {
+	return ::ISPA_STD::concat("COMMERCIAL_AT {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, COMMERCIAL_AT value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -402,321 +818,48 @@ auto Parser::FlatTypes::operator<<(std::ostream & os, EQUALS_SIGN value) -> std:
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::AMPERSAND::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("AMPERSAND", true);
-}
-auto Parser::FlatTypes::AMPERSAND::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::AMPERSAND::to_string() const -> std::string {
-	return ::ISPA_STD::concat("AMPERSAND {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, AMPERSAND value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::PERCENT_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("PERCENT_SIGN", true);
-}
-auto Parser::FlatTypes::PERCENT_SIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::PERCENT_SIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("PERCENT_SIGN {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, PERCENT_SIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_nested_rule_NUMBER_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_nested_rule_NUMBER_SIGN", true);
-}
-auto Parser::FlatTypes::rule_nested_rule_NUMBER_SIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_nested_rule_NUMBER_SIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_nested_rule_NUMBER_SIGN {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_nested_rule_NUMBER_SIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_nested_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_nested_rule", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::rule_nested_rule::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_nested_rule::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_nested_rule {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_nested_rule value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::LEFT_CURLY_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("LEFT_CURLY_BRACKET", true);
-}
-auto Parser::FlatTypes::LEFT_CURLY_BRACKET::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::LEFT_CURLY_BRACKET::to_string() const -> std::string {
-	return ::ISPA_STD::concat("LEFT_CURLY_BRACKET {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, LEFT_CURLY_BRACKET value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration_AUTO::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_shared_counter_registration_AUTO", true);
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration_AUTO::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration_AUTO::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_shared_counter_registration_AUTO {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_shared_counter_registration_AUTO value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value", false);
+auto Parser::FlatTypes::modules_common_ID::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_ID", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_ID::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_common_ID::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_ID {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_ID value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::COMMERCIAL_AT::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("COMMERCIAL_AT", true);
+auto Parser::FlatTypes::modules_common::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common", true);
 }
-auto Parser::FlatTypes::COMMERCIAL_AT::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::COMMERCIAL_AT::to_string() const -> std::string {
-	return ::ISPA_STD::concat("COMMERCIAL_AT {", "}");
+auto Parser::FlatTypes::modules_common::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, COMMERCIAL_AT value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_QUANTIFIER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_QUANTIFIER", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
+auto Parser::FlatTypes::modules_common_template_params_LESS_THAN_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_template_params_LESS_THAN_SIGN", true);
 }
-auto Parser::FlatTypes::rule_value_QUANTIFIER::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_template_params_LESS_THAN_SIGN::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_QUANTIFIER::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_QUANTIFIER {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_common_template_params_LESS_THAN_SIGN::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_template_params_LESS_THAN_SIGN {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_QUANTIFIER value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_NOSPACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_NOSPACE", true);
-}
-auto Parser::FlatTypes::rule_value_NOSPACE::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_NOSPACE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_NOSPACE {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_NOSPACE value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_ANY::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_ANY", true);
-}
-auto Parser::FlatTypes::rule_value_ANY::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_ANY::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_ANY {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_ANY value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::template_params_LESS_THAN_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("template_params_LESS_THAN_SIGN", true);
-}
-auto Parser::FlatTypes::template_params_LESS_THAN_SIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::template_params_LESS_THAN_SIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("template_params_LESS_THAN_SIGN {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, template_params_LESS_THAN_SIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_STRING::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_STRING", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_STRING::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_STRING::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_STRING {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_STRING value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::grammar_modifier_AUTO::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("grammar_modifier_AUTO", true);
-}
-auto Parser::FlatTypes::grammar_modifier_AUTO::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::grammar_modifier_AUTO::to_string() const -> std::string {
-	return ::ISPA_STD::concat("grammar_modifier_AUTO {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, grammar_modifier_AUTO value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::grammar_modifier_MOD::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("grammar_modifier_MOD", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::grammar_modifier_MOD::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::grammar_modifier_MOD::to_string() const -> std::string {
-	return ::ISPA_STD::concat("grammar_modifier_MOD {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, grammar_modifier_MOD value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_SPACE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_SPACE", true);
-}
-auto Parser::FlatTypes::rule_value_SPACE::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_SPACE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_SPACE {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_SPACE value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_alternative_VERTICAL_LINE::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_alternative_VERTICAL_LINE", true);
-}
-auto Parser::FlatTypes::rule_value_alternative_VERTICAL_LINE::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_alternative_VERTICAL_LINE::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_alternative_VERTICAL_LINE {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_alternative_VERTICAL_LINE value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_alternative::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_alternative", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_alternative::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_alternative::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_alternative {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_alternative value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("grammar_modifier_RIGHT_SQUARE_BRACKET", true);
-}
-auto Parser::FlatTypes::grammar_modifier_RIGHT_SQUARE_BRACKET::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::grammar_modifier_RIGHT_SQUARE_BRACKET::to_string() const -> std::string {
-	return ::ISPA_STD::concat("grammar_modifier_RIGHT_SQUARE_BRACKET {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, grammar_modifier_RIGHT_SQUARE_BRACKET value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_dyn_DOLLAR_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_dyn_DOLLAR_SIGN", true);
-}
-auto Parser::FlatTypes::rule_value_dyn_DOLLAR_SIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_dyn_DOLLAR_SIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_dyn_DOLLAR_SIGN {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_dyn_DOLLAR_SIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::advanced_rule_regular_match_MATCH::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_regular_match_MATCH", true);
-}
-auto Parser::FlatTypes::advanced_rule_regular_match_MATCH::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::advanced_rule_regular_match_MATCH::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_regular_match_MATCH {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_regular_match_MATCH value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_template_params_LESS_THAN_SIGN value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
@@ -762,155 +905,126 @@ auto Parser::FlatTypes::operator<<(std::ostream & os, LEFT_PARENTHESIS value) ->
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("RIGHT_CURLY_BRACKET", true);
-}
-auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::RIGHT_CURLY_BRACKET::to_string() const -> std::string {
-	return ::ISPA_STD::concat("RIGHT_CURLY_BRACKET {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, RIGHT_CURLY_BRACKET value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::NUMBER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("NUMBER", false);
+auto Parser::FlatTypes::modules_common_NUMBER::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_NUMBER", false);
 	printer.up(false);
 	printer.node_with_value("full", full, false);
 	printer.node_with_value("floating", floating, true);
 	printer.down();
 }
-auto Parser::FlatTypes::NUMBER::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_NUMBER::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::NUMBER::to_string() const -> std::string {
-	return ::ISPA_STD::concat("NUMBER {", "full = ", full, ", ", "floating = ", floating, "}");
+auto Parser::FlatTypes::modules_common_NUMBER::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_NUMBER {", "full = ", full, ", ", "floating = ", floating, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, NUMBER value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_NUMBER value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::GREATER_THAN_SIGN::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("GREATER_THAN_SIGN", true);
-}
-auto Parser::FlatTypes::GREATER_THAN_SIGN::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::GREATER_THAN_SIGN::to_string() const -> std::string {
-	return ::ISPA_STD::concat("GREATER_THAN_SIGN {", "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, GREATER_THAN_SIGN value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::PY_RAW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("PY_RAW", false);
+auto Parser::FlatTypes::modules_common_PY_RAW::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_PY_RAW", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::PY_RAW::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_PY_RAW::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::PY_RAW::to_string() const -> std::string {
-	return ::ISPA_STD::concat("PY_RAW {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_common_PY_RAW::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_PY_RAW {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, PY_RAW value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_PY_RAW value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::ID::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("ID", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::ID::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::ID::to_string() const -> std::string {
-	return ::ISPA_STD::concat("ID {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, ID value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_CGROUP::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_CGROUP", false);
-	printer.up(false);
-	printer.node_with_value("negative", negative, false);
-	printer.node_with_value("v", v, true);
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_CGROUP::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_CGROUP::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_CGROUP {", "negative = ", negative, ", ", "v = ", v, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_CGROUP value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_group::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_group", false);
+auto Parser::FlatTypes::modules_rule_value_group::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_group", false);
 	printer.up(false);
 	printer.subtree("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_group::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_group::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_group::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_group {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_rule_value_group::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_group {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_group value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_group value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::forward_declaration::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("forward_declaration", true);
+auto Parser::FlatTypes::modules_main::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_main", true);
 }
-auto Parser::FlatTypes::forward_declaration::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_main::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::forward_declaration::to_string() const -> std::string {
-	return ::ISPA_STD::concat("forward_declaration {", "}");
+auto Parser::FlatTypes::modules_main::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_main {", "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, forward_declaration value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_main value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_mul_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_mul_capture", false);
+auto Parser::FlatTypes::modules_common_forward_declaration::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_forward_declaration", true);
+}
+auto Parser::FlatTypes::modules_common_forward_declaration::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_common_forward_declaration::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_forward_declaration {", "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_forward_declaration value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_grammar_modifier::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar_modifier", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_grammar_modifier::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_grammar_modifier::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar_modifier {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar_modifier value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_mul_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_mul_capture", false);
 	printer.up(false);
 	printer.node_with_value("type", type, false);
 	printer.subtree("cap", cap, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_mul_capture::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_mul_capture::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_mul_capture::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_mul_capture {", "type = ", type, ", ", "cap = ", cap, "}");
+auto Parser::FlatTypes::modules_rule_value_mul_capture::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_mul_capture {", "type = ", type, ", ", "cap = ", cap, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_mul_capture value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_mul_capture value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::grammar_modifier::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("grammar_modifier", false);
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_shared_counter_registration", false);
 	printer.up(false);
 	printer.node("value", true);
 	printer.up(false);
@@ -918,99 +1032,19 @@ auto Parser::FlatTypes::grammar_modifier::write_to_output(::ISPA_STD::ASTPrinter
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::grammar_modifier::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::grammar_modifier::to_string() const -> std::string {
-	return ::ISPA_STD::concat("grammar_modifier {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_rule_value_shared_counter_registration::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_shared_counter_registration {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, grammar_modifier value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_shared_counter_registration value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("expr", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::expr::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::expr::to_string() const -> std::string {
-	return ::ISPA_STD::concat("expr {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, expr value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("stmt", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::stmt::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::stmt::to_string() const -> std::string {
-	return ::ISPA_STD::concat("stmt {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, stmt value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_shared_counter_registration", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_shared_counter_registration::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_shared_counter_registration {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_shared_counter_registration value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_ast_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_ast_capture", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_ast_capture::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_ast_capture::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_ast_capture {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_ast_capture value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_f_binding::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_f_binding", false);
+auto Parser::FlatTypes::modules_rule_ast_abbr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_ast_abbr", false);
 	printer.up(false);
 	printer.node("f", false);
 	printer.up(true);
@@ -1019,19 +1053,19 @@ auto Parser::FlatTypes::rule_f_binding::write_to_output(::ISPA_STD::ASTPrinter<s
 	printer.subtree("seq", seq, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_f_binding::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_ast_abbr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_f_binding::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_f_binding {", "f = ", f.to_string(), ", ", "seq = ", seq, "}");
+auto Parser::FlatTypes::modules_rule_ast_abbr::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_ast_abbr {", "f = ", f.to_string(), ", ", "seq = ", seq, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_f_binding value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_ast_abbr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::param::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("param", false);
+auto Parser::FlatTypes::modules_common_param::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_param", false);
 	printer.up(false);
 	printer.node("first_p", false);
 	printer.up(true);
@@ -1040,19 +1074,76 @@ auto Parser::FlatTypes::param::write_to_output(::ISPA_STD::ASTPrinter<std::ostre
 	printer.subtree("following_p", following_p, true);
 	printer.down();
 }
-auto Parser::FlatTypes::param::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_param::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::param::to_string() const -> std::string {
-	return ::ISPA_STD::concat("param {", "first_p = ", first_p.to_string(), ", ", "following_p = ", following_p, "}");
+auto Parser::FlatTypes::modules_common_param::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_param {", "first_p = ", first_p.to_string(), ", ", "following_p = ", following_p, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, param value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_param value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_ast_abbr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_ast_abbr", false);
+auto Parser::FlatTypes::modules_rule_value_var_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_var_capture", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_var_capture::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_var_capture::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_var_capture {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_var_capture value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_ast_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_ast_capture", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_ast_capture::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_ast_capture::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_ast_capture {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_ast_capture value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_unpack::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule_regular_match_unpack", false);
+	printer.up(false);
+	printer.subtree("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_unpack::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match_unpack::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule_regular_match_unpack {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule_regular_match_unpack value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_f_binding::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_f_binding", false);
 	printer.up(false);
 	printer.node("f", false);
 	printer.up(true);
@@ -1061,19 +1152,19 @@ auto Parser::FlatTypes::rule_ast_abbr::write_to_output(::ISPA_STD::ASTPrinter<st
 	printer.subtree("seq", seq, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_ast_abbr::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_f_binding::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_ast_abbr::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_ast_abbr {", "f = ", f.to_string(), ", ", "seq = ", seq, "}");
+auto Parser::FlatTypes::modules_rule_f_binding::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_f_binding {", "f = ", f.to_string(), ", ", "seq = ", seq, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_ast_abbr value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_f_binding value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_var_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_var_capture", false);
+auto Parser::FlatTypes::modules_common_stmt::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_stmt", false);
 	printer.up(false);
 	printer.node("value", true);
 	printer.up(false);
@@ -1081,36 +1172,19 @@ auto Parser::FlatTypes::rule_value_var_capture::write_to_output(::ISPA_STD::ASTP
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_var_capture::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_stmt::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_var_capture::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_var_capture {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_common_stmt::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_stmt {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_var_capture value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_stmt value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::advanced_rule_regular_match_unpack::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_regular_match_unpack", false);
-	printer.up(false);
-	printer.subtree("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::advanced_rule_regular_match_unpack::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::advanced_rule_regular_match_unpack::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_regular_match_unpack {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_regular_match_unpack value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::advanced_rule_dep_decl::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_dep_decl", false);
+auto Parser::FlatTypes::modules_common_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_expr", false);
 	printer.up(false);
 	printer.node("value", true);
 	printer.up(false);
@@ -1118,19 +1192,19 @@ auto Parser::FlatTypes::advanced_rule_dep_decl::write_to_output(::ISPA_STD::ASTP
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::advanced_rule_dep_decl::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_expr::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::advanced_rule_dep_decl::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_dep_decl {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_common_expr::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_expr {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_dep_decl value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_expr value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_dyn_dyn_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_dyn_dyn_expr", false);
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule_dep_decl", false);
 	printer.up(false);
 	printer.node("value", true);
 	printer.up(false);
@@ -1138,19 +1212,114 @@ auto Parser::FlatTypes::rule_value_dyn_dyn_expr::write_to_output(::ISPA_STD::AST
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_dyn_dyn_expr::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_dyn_dyn_expr::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_dyn_dyn_expr {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_dep_decl::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule_dep_decl {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_dyn_dyn_expr value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule_dep_decl value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_ast_full_part::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_ast_full_part", false);
+auto Parser::FlatTypes::modules_common_template_params::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_template_params", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_common_template_params::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_common_template_params::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_template_params {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_template_params value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_common_params::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_params", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_common_params::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_common_params::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_params {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_params value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule_regular_match", false);
+	printer.up(false);
+	printer.subtree("patterns", patterns, false);
+	printer.node_with_value("assign_names", assign_names, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule_regular_match::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule_regular_match {", "patterns = ", patterns, ", ", "assign_names = ", assign_names, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule_regular_match value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_dyn_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_dyn_dyn_expr", false);
+	printer.up(false);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_dyn_expr::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_dyn_dyn_expr::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_dyn_dyn_expr {", "value = ", value.to_string(), "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_dyn_dyn_expr value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_counter_bounded::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_counter_bounded", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_value_counter_bounded::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_value_counter_bounded::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_counter_bounded {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_counter_bounded value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_ast_full_part::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_ast_full_part", false);
 	printer.up(false);
 	printer.node("key", false);
 	printer.up(true);
@@ -1162,189 +1331,36 @@ auto Parser::FlatTypes::rule_ast_full_part::write_to_output(::ISPA_STD::ASTPrint
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::rule_ast_full_part::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_ast_full_part::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_ast_full_part::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_ast_full_part {", "key = ", key.to_string(), ", ", "e = ", e.to_string(), "}");
+auto Parser::FlatTypes::modules_rule_ast_full_part::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_ast_full_part {", "key = ", key.to_string(), ", ", "e = ", e.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_ast_full_part value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_ast_full_part value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_counter_bounded::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_counter_bounded", false);
+auto Parser::FlatTypes::modules_rule_ast_single_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_ast_single_value", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_counter_bounded::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_ast_single_value::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_counter_bounded::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_counter_bounded {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_rule_ast_single_value::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_ast_single_value {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_counter_bounded value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_ast_single_value value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_ast_single_value::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_ast_single_value", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::rule_ast_single_value::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_ast_single_value::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_ast_single_value {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_ast_single_value value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::explicit_expr::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("explicit_expr", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::explicit_expr::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::explicit_expr::to_string() const -> std::string {
-	return ::ISPA_STD::concat("explicit_expr {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, explicit_expr value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::template_params::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("template_params", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::template_params::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::template_params::to_string() const -> std::string {
-	return ::ISPA_STD::concat("template_params {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, template_params value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::params::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("params", false);
-	printer.up(false);
-	printer.node("value", true);
-	printer.up(false);
-	value.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::params::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::params::to_string() const -> std::string {
-	return ::ISPA_STD::concat("params {", "value = ", value.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, params value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::advanced_rule_regular_match::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_regular_match", false);
-	printer.up(false);
-	printer.subtree("patterns", patterns, false);
-	printer.node_with_value("assign_names", assign_names, true);
-	printer.down();
-}
-auto Parser::FlatTypes::advanced_rule_regular_match::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::advanced_rule_regular_match::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_regular_match {", "patterns = ", patterns, ", ", "assign_names = ", assign_names, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_regular_match value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_dyn::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_dyn", false);
-	printer.up(false);
-	printer.node_with_value("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_dyn::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_dyn::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_dyn {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_dyn value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_ast_full::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_ast_full", false);
-	printer.up(false);
-	printer.subtree("value", value, true);
-	printer.down();
-}
-auto Parser::FlatTypes::rule_ast_full::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_ast_full::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_ast_full {", "value = ", value, "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_ast_full value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::rule_value_counter::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_counter", false);
-	printer.up(false);
-	printer.node("quantifier", false);
-	printer.up(true);
-	quantifier.print(printer);
-	printer.down();
-	printer.node("repetitions", true);
-	printer.up(false);
-	repetitions.print(printer);
-	printer.down();
-	printer.down();
-}
-auto Parser::FlatTypes::rule_value_counter::print(std::ostream& os) const -> void {
-	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
-	write_to_output(printer);
-}
-auto Parser::FlatTypes::rule_value_counter::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_counter {", "quantifier = ", quantifier.to_string(), ", ", "repetitions = ", repetitions.to_string(), "}");
-}
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_counter value) -> std::ostream & {
-	value.print(os);
-	return os;
-}
-auto Parser::FlatTypes::name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("name", false);
+auto Parser::FlatTypes::modules_common_name::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_common_name", false);
 	printer.up(false);
 	printer.node("primary", false);
 	printer.up(true);
@@ -1361,91 +1377,95 @@ auto Parser::FlatTypes::name::write_to_output(::ISPA_STD::ASTPrinter<std::ostrea
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::name::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_common_name::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::name::to_string() const -> std::string {
-	return ::ISPA_STD::concat("name {", "primary = ", primary.to_string(), ", ", "nested = ", nested, ", ", "temp_params = ", temp_params.to_string(), ", ", "param = ", param.to_string(), "}");
+auto Parser::FlatTypes::modules_common_name::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_common_name {", "primary = ", primary.to_string(), ", ", "nested = ", nested, ", ", "temp_params = ", temp_params.to_string(), ", ", "param = ", param.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, name value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_common_name value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::advanced_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule", false);
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_advanced_rule_advanced_rule", false);
 	printer.up(false);
 	printer.subtree("dep", dep, false);
 	printer.node_with_value("body", body, true);
 	printer.down();
 }
-auto Parser::FlatTypes::advanced_rule::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::advanced_rule::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule {", "dep = ", dep, ", ", "body = ", body, "}");
+auto Parser::FlatTypes::modules_advanced_rule_advanced_rule::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_advanced_rule_advanced_rule {", "dep = ", dep, ", ", "body = ", body, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_advanced_rule_advanced_rule value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_ast::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_ast", false);
+auto Parser::FlatTypes::modules_rule_value_dyn::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_dyn", false);
 	printer.up(false);
 	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_ast::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_dyn::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_ast::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_ast {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_rule_value_dyn::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_dyn {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_ast value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_dyn value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_fail_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_fail_capture", false);
+auto Parser::FlatTypes::modules_rule_value_counter::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_counter", false);
 	printer.up(false);
-	printer.node("value", true);
+	printer.node("quantifier", false);
+	printer.up(true);
+	quantifier.print(printer);
+	printer.down();
+	printer.node("repetitions", true);
 	printer.up(false);
-	value.print(printer);
+	repetitions.print(printer);
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_fail_capture::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_counter::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_fail_capture::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_fail_capture {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_rule_value_counter::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_counter {", "quantifier = ", quantifier.to_string(), ", ", "repetitions = ", repetitions.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_fail_capture value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_counter value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_pattern::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_pattern", false);
+auto Parser::FlatTypes::modules_rule_ast_full::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_ast_full", false);
 	printer.up(false);
-	printer.node_with_value("value", value, true);
+	printer.subtree("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_pattern::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_ast_full::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_pattern::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_pattern {", "value = ", value, "}");
+auto Parser::FlatTypes::modules_rule_ast_full::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_ast_full {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_pattern value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_ast_full value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::fail_block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("fail_block", false);
+auto Parser::FlatTypes::modules_fail_block_fail_block::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_fail_block_fail_block", false);
 	printer.up(false);
 	printer.node("name", false);
 	printer.up(true);
@@ -1457,19 +1477,19 @@ auto Parser::FlatTypes::fail_block::write_to_output(::ISPA_STD::ASTPrinter<std::
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::fail_block::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_fail_block_fail_block::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::fail_block::to_string() const -> std::string {
-	return ::ISPA_STD::concat("fail_block {", "name = ", name.to_string(), ", ", "val = ", val.to_string(), "}");
+auto Parser::FlatTypes::modules_fail_block_fail_block::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_fail_block_fail_block {", "name = ", name.to_string(), ", ", "val = ", val.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, fail_block value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_fail_block_fail_block value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::advanced_rule_fail_call::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("advanced_rule_fail_call", false);
+auto Parser::FlatTypes::modules_rule_value_fail_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_fail_capture", false);
 	printer.up(false);
 	printer.node("value", true);
 	printer.up(false);
@@ -1477,19 +1497,19 @@ auto Parser::FlatTypes::advanced_rule_fail_call::write_to_output(::ISPA_STD::AST
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::advanced_rule_fail_call::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_fail_capture::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::advanced_rule_fail_call::to_string() const -> std::string {
-	return ::ISPA_STD::concat("advanced_rule_fail_call {", "value = ", value.to_string(), "}");
+auto Parser::FlatTypes::modules_rule_value_fail_capture::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_fail_capture {", "value = ", value.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, advanced_rule_fail_call value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_fail_capture value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::grammar::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("grammar", false);
+auto Parser::FlatTypes::modules_grammar_grammar::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_grammar_grammar", false);
 	printer.up(false);
 	printer.subtree("mod", mod, false);
 	printer.node("name", false);
@@ -1499,45 +1519,53 @@ auto Parser::FlatTypes::grammar::write_to_output(::ISPA_STD::ASTPrinter<std::ost
 	printer.node_with_value("entry", entry, true);
 	printer.down();
 }
-auto Parser::FlatTypes::grammar::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_grammar_grammar::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::grammar::to_string() const -> std::string {
-	return ::ISPA_STD::concat("grammar {", "mod = ", mod, ", ", "name = ", name.to_string(), ", ", "entry = ", entry, "}");
+auto Parser::FlatTypes::modules_grammar_grammar::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_grammar_grammar {", "mod = ", mod, ", ", "name = ", name.to_string(), ", ", "entry = ", entry, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, grammar value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_grammar_grammar value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule", false);
+auto Parser::FlatTypes::modules_rule_value_pattern::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_pattern", false);
 	printer.up(false);
-	printer.subtree("v", v, false);
-	printer.node("ast_pointer", false);
-	printer.up(true);
-	ast_pointer.print(printer);
-	printer.down();
-	printer.node("fail_pointer", false);
-	printer.up(true);
-	fail_pointer.print(printer);
-	printer.down();
-	printer.subtree("nested", nested, true);
+	printer.node_with_value("value", value, true);
 	printer.down();
 }
-auto Parser::FlatTypes::rule::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_pattern::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule {", "v = ", v, ", ", "ast_pointer = ", ast_pointer.to_string(), ", ", "fail_pointer = ", fail_pointer.to_string(), ", ", "nested = ", nested, "}");
+auto Parser::FlatTypes::modules_rule_value_pattern::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_pattern {", "value = ", value, "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_pattern value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
-auto Parser::FlatTypes::rule_value_one_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
-	printer.node("rule_value_one_capture", false);
+auto Parser::FlatTypes::modules_rule_ast::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_ast", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_ast::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_ast::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_ast {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_ast value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_value_one_capture::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_value_one_capture", false);
 	printer.up(false);
 	printer.node("v_cap", false);
 	printer.up(true);
@@ -1566,21 +1594,67 @@ auto Parser::FlatTypes::rule_value_one_capture::write_to_output(::ISPA_STD::ASTP
 	printer.down();
 	printer.down();
 }
-auto Parser::FlatTypes::rule_value_one_capture::print(std::ostream& os) const -> void {
+auto Parser::FlatTypes::modules_rule_value_one_capture::print(std::ostream& os) const -> void {
 	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
 	write_to_output(printer);
 }
-auto Parser::FlatTypes::rule_value_one_capture::to_string() const -> std::string {
-	return ::ISPA_STD::concat("rule_value_one_capture {", "v_cap = ", v_cap.to_string(), ", ", "ast_cap = ", ast_cap.to_string(), ", ", "fail_cap = ", fail_cap.to_string(), ", ", "val = ", val.to_string(), ", ", "alts = ", alts, ", ", "quantifier = ", quantifier.to_string(), ", ", "registration = ", registration.to_string(), "}");
+auto Parser::FlatTypes::modules_rule_value_one_capture::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_value_one_capture {", "v_cap = ", v_cap.to_string(), ", ", "ast_cap = ", ast_cap.to_string(), ", ", "fail_cap = ", fail_cap.to_string(), ", ", "val = ", val.to_string(), ", ", "alts = ", alts, ", ", "quantifier = ", quantifier.to_string(), ", ", "registration = ", registration.to_string(), "}");
 }
-auto Parser::FlatTypes::operator<<(std::ostream & os, rule_value_one_capture value) -> std::ostream & {
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_value_one_capture value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_main_main::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_main_main", false);
+	printer.up(false);
+	printer.node_with_value("value", value, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_main_main::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_main_main::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_main_main {", "value = ", value, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_main_main value) -> std::ostream & {
+	value.print(os);
+	return os;
+}
+auto Parser::FlatTypes::modules_rule_rule::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+	printer.node("modules_rule_rule", false);
+	printer.up(false);
+	printer.subtree("v", v, false);
+	printer.node("ast_pointer", false);
+	printer.up(true);
+	ast_pointer.print(printer);
+	printer.down();
+	printer.node("fail_pointer", false);
+	printer.up(true);
+	fail_pointer.print(printer);
+	printer.down();
+	printer.subtree("nested", nested, true);
+	printer.down();
+}
+auto Parser::FlatTypes::modules_rule_rule::print(std::ostream& os) const -> void {
+	::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+	write_to_output(printer);
+}
+auto Parser::FlatTypes::modules_rule_rule::to_string() const -> std::string {
+	return ::ISPA_STD::concat("modules_rule_rule {", "v = ", v, ", ", "ast_pointer = ", ast_pointer.to_string(), ", ", "fail_pointer = ", fail_pointer.to_string(), ", ", "nested = ", nested, "}");
+}
+auto Parser::FlatTypes::operator<<(std::ostream & os, modules_rule_rule value) -> std::ostream & {
 	value.print(os);
 	return os;
 }
 auto Parser::FlatTypes::main::write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
 	printer.node("main", false);
 	printer.up(false);
-	printer.node_with_value("value", value, true);
+	printer.node("value", true);
+	printer.up(false);
+	value.print(printer);
+	printer.down();
 	printer.down();
 }
 auto Parser::FlatTypes::main::print(std::ostream& os) const -> void {
@@ -1588,7 +1662,7 @@ auto Parser::FlatTypes::main::print(std::ostream& os) const -> void {
 	write_to_output(printer);
 }
 auto Parser::FlatTypes::main::to_string() const -> std::string {
-	return ::ISPA_STD::concat("main {", "value = ", value, "}");
+	return ::ISPA_STD::concat("main {", "value = ", value.to_string(), "}");
 }
 auto Parser::FlatTypes::operator<<(std::ostream & os, main value) -> std::ostream & {
 	value.print(os);
@@ -1601,11 +1675,11 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 1: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::nested_rule::NUMBER_SIGN::id, Types::rule::nested_rule::NUMBER_SIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Types::modules::rule::nested_rule::NUMBER_SIGN{}));
 			break;
 		}
 		case 2: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Types::rule::value::dyn::DOLLAR_SIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Types::modules::rule::value::dyn::DOLLAR_SIGN{}));
 			break;
 		}
 		case 3: {
@@ -1626,34 +1700,34 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 		}
 		case 7: {
 			char value;
-			if (captures.is_set(4)) {
-				value = captures.character(4);
+			if (captures.is_set(6)) {
+				value = captures.character(6);
 			} else {
-				if (captures.is_set(6)) {
-					value = captures.character(6);
+				if (captures.is_set(8)) {
+					value = captures.character(8);
 				} else {
-					if (captures.is_set(5)) {
-						value = captures.character(5);
+					if (captures.is_set(7)) {
+						value = captures.character(7);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::QUANTIFIER::id, Types::rule::value::QUANTIFIER{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::QUANTIFIER::id, Types::modules::rule::value::QUANTIFIER{value}));
 			break;
 		}
 		case 8: {
 			char value;
-			if (captures.is_set(4)) {
-				value = captures.character(4);
+			if (captures.is_set(6)) {
+				value = captures.character(6);
 			} else {
-				if (captures.is_set(6)) {
-					value = captures.character(6);
+				if (captures.is_set(8)) {
+					value = captures.character(8);
 				} else {
-					if (captures.is_set(5)) {
-						value = captures.character(5);
+					if (captures.is_set(7)) {
+						value = captures.character(7);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::QUANTIFIER::id, Types::rule::value::QUANTIFIER{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::QUANTIFIER::id, Types::modules::rule::value::QUANTIFIER{value}));
 			break;
 		}
 		case 9: {
@@ -1661,13 +1735,13 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 10: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::ANY::id, Types::rule::value::ANY{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::ANY::id, Types::modules::rule::value::ANY{}));
 			break;
 		}
 		case 11: {
-			std::string floating = captures.text(8);
-			std::string full = captures.text(7);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER::id, Types::NUMBER{full, floating}));
+			std::string floating = captures.text(2);
+			std::string full = captures.text(1);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::NUMBER::id, Types::modules::common::NUMBER{full, floating}));
 			break;
 		}
 		case 12: {
@@ -1679,7 +1753,7 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 14: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::template_params::LESS_THAN_SIGN::id, Types::template_params::LESS_THAN_SIGN{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Types::modules::common::template_params::LESS_THAN_SIGN{}));
 			break;
 		}
 		case 15: {
@@ -1692,18 +1766,18 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 		}
 		case 17: {
 			char value;
-			if (captures.is_set(4)) {
-				value = captures.character(4);
+			if (captures.is_set(6)) {
+				value = captures.character(6);
 			} else {
-				if (captures.is_set(6)) {
-					value = captures.character(6);
+				if (captures.is_set(8)) {
+					value = captures.character(8);
 				} else {
-					if (captures.is_set(5)) {
-						value = captures.character(5);
+					if (captures.is_set(7)) {
+						value = captures.character(7);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::QUANTIFIER::id, Types::rule::value::QUANTIFIER{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::QUANTIFIER::id, Types::modules::rule::value::QUANTIFIER{value}));
 			break;
 		}
 		case 18: {
@@ -1711,12 +1785,12 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 19: {
-			std::string value = captures.text(0);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID::id, Types::ID{value}));
+			std::string value = captures.text(10);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::ID::id, Types::modules::common::ID{value}));
 			break;
 		}
 		case 20: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::grammar::modifier::RIGHT_SQUARE_BRACKET::id, Types::grammar::modifier::RIGHT_SQUARE_BRACKET{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::grammar::modifier::RIGHT_SQUARE_BRACKET::id, Types::modules::grammar::modifier::RIGHT_SQUARE_BRACKET{}));
 			break;
 		}
 		case 21: {
@@ -1724,7 +1798,7 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 22: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::alternative::VERTICAL_LINE::id, Types::rule::value::alternative::VERTICAL_LINE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Types::modules::rule::value::alternative::VERTICAL_LINE{}));
 			break;
 		}
 		case 23: {
@@ -1732,12 +1806,12 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 24: {
-			std::string value = captures.text(12);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::STRING::id, Types::rule::value::STRING{value}));
+			std::string value = captures.text(9);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::STRING::id, Types::modules::rule::value::STRING{value}));
 			break;
 		}
 		case 25: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::grammar::modifier::AUTO::id, Types::grammar::modifier::AUTO{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::grammar::modifier::AUTO::id, Types::modules::grammar::modifier::AUTO{}));
 			break;
 		}
 		case 26: {
@@ -1745,97 +1819,97 @@ auto Parser::Lexer::semantic_action_exec(long long state, const ::ISPA_STD::DFA:
 			break;
 		}
 		case 27: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::shared_counter_registration::AUTO::id, Types::rule::value::shared_counter_registration::AUTO{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::shared_counter_registration::AUTO::id, Types::modules::rule::value::shared_counter_registration::AUTO{}));
 			break;
 		}
 		case 28: {
-			std::string value = captures.text(0);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::ID::id, Types::ID{value}));
+			std::string value = captures.text(10);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::ID::id, Types::modules::common::ID{value}));
 			break;
 		}
 		case 29: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::SPACE::id, Types::rule::value::SPACE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::SPACE::id, Types::modules::rule::value::SPACE{}));
 			break;
 		}
 		case 30: {
-			std::string floating = captures.text(8);
-			std::string full = captures.text(7);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::NUMBER::id, Types::NUMBER{full, floating}));
+			std::string floating = captures.text(2);
+			std::string full = captures.text(1);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::NUMBER::id, Types::modules::common::NUMBER{full, floating}));
 			break;
 		}
 		case 31: {
-			std::string v = captures.text(3);
-			char negative = captures.character(2);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::CGROUP::id, Types::rule::value::CGROUP{negative, v}));
+			std::string v = captures.text(12);
+			char negative = captures.character(11);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::CGROUP::id, Types::modules::rule::value::CGROUP{negative, v}));
 			break;
 		}
 		case 32: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::rule::value::NOSPACE::id, Types::rule::value::NOSPACE{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::rule::value::NOSPACE::id, Types::modules::rule::value::NOSPACE{}));
 			break;
 		}
 		case 33: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::FAIL::id, Types::FAIL{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::fail_block::fail_block::FAIL::id, Types::modules::fail_block::fail_block::FAIL{}));
 			break;
 		}
 		case 34: {
 			std::string value;
-			if (captures.is_set(9)) {
-				value = captures.text(9);
+			if (captures.is_set(3)) {
+				value = captures.text(3);
 			} else {
-				if (captures.is_set(11)) {
-					value = captures.text(11);
+				if (captures.is_set(5)) {
+					value = captures.text(5);
 				} else {
-					if (captures.is_set(10)) {
-						value = captures.text(10);
+					if (captures.is_set(4)) {
+						value = captures.text(4);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::grammar::modifier::MOD::id, Types::grammar::modifier::MOD{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::grammar::modifier::MOD::id, Types::modules::grammar::modifier::MOD{value}));
 			break;
 		}
 		case 35: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::advanced_rule::regular_match::MATCH::id, Types::advanced_rule::regular_match::MATCH{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Types::modules::advanced_rule::advanced_rule::regular_match::MATCH{}));
 			break;
 		}
 		case 36: {
-			std::string value = captures.text(1);
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::PY_RAW::id, Types::PY_RAW{value}));
+			std::string value = captures.text(0);
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::common::PY_RAW::id, Types::modules::common::PY_RAW{value}));
 			break;
 		}
 		case 37: {
 			std::string value;
-			if (captures.is_set(9)) {
-				value = captures.text(9);
+			if (captures.is_set(3)) {
+				value = captures.text(3);
 			} else {
-				if (captures.is_set(11)) {
-					value = captures.text(11);
+				if (captures.is_set(5)) {
+					value = captures.text(5);
 				} else {
-					if (captures.is_set(10)) {
-						value = captures.text(10);
+					if (captures.is_set(4)) {
+						value = captures.text(4);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::grammar::modifier::MOD::id, Types::grammar::modifier::MOD{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::grammar::modifier::MOD::id, Types::modules::grammar::modifier::MOD{value}));
 			break;
 		}
 		case 38: {
 			std::string value;
-			if (captures.is_set(9)) {
-				value = captures.text(9);
+			if (captures.is_set(3)) {
+				value = captures.text(3);
 			} else {
-				if (captures.is_set(11)) {
-					value = captures.text(11);
+				if (captures.is_set(5)) {
+					value = captures.text(5);
 				} else {
-					if (captures.is_set(10)) {
-						value = captures.text(10);
+					if (captures.is_set(4)) {
+						value = captures.text(4);
 					}
 				}
 			}
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::grammar::modifier::MOD::id, Types::grammar::modifier::MOD{value}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::grammar::modifier::MOD::id, Types::modules::grammar::modifier::MOD{value}));
 			break;
 		}
 		case 39: {
-			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::advanced_rule::dep_decl::DEPENDS::id, Types::advanced_rule::dep_decl::DEPENDS{}));
+			return std::make_pair(::ISPA_STD::DFA::API::null_state, Token::create(start_pos, start, length, line, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Types::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS{}));
 			break;
 		}
 	}
@@ -1849,121 +1923,254 @@ auto Parser::Lexer::makeToken(const char*& pos) -> Token {
 }
 ::ISPA_STD::DFA::API::CharToClass Parser::Lexer::char_class_table = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 25, 26, 27, 28, 24, 0, 29, 24, 30, 31, 32, 33, 24, 34, 35, 24, 36, 37, 38, 39, 24, 40, 24, 41, 42, 43, 24, 24, 24, 44, 45, 24, 46, 47, 48, 0, 0, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49};
 ::ISPA_STD::DFA::API::Table<86, 50> Parser::Lexer::dfa_table = {{{::ISPA_STD::DFA::API::null_state, 1, 2, 3, 4, 5, 6, 2, 7, 8, 95, 94, 11, 12, 13, 93, 93, 15, 16, 17, 18, 19, 96, 21, 86, 23, 24, 25, ::ISPA_STD::DFA::API::null_state, 86, 86, 89, 88, 87, 86, 92, 86, 86, 97, 86, 91, 86, 90, 86, 86, 86, 33, 34, 35, ::ISPA_STD::DFA::API::null_state}, {190, 1, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190, 190}, {98, 98, 100, 98, 98, 98, 98, 38, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 99, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, ::ISPA_STD::DFA::API::null_state}, {191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 40, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191, 191}, {192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192}, {193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193}, {194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194, 194}, {195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195}, {196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196}, {101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101}, {102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102}, {199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199, 199}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 41, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}, {103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 104, 14, 14, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103}, {202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202, 202}, {203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203}, {204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204, 204}, {205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 43, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205}, {206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206}, {105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105}, {208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208, 208}, {106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 44, 44, 106, 106, 106, 106, 106, 106, 106, 44, 106, 106, 106, 106, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 106, 106, 106, 106}, {107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 109, ::ISPA_STD::DFA::API::null_state, 108, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, ::ISPA_STD::DFA::API::null_state}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 48, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210, 210}, {111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 112, 112, 111, 111, 111, 111, 111, 111, 111, 112, 111, 111, 111, 111, 112, 112, 112, 49, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 111, 111, 111, 111}, {114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 112, 112, 114, 114, 114, 114, 114, 114, 114, 112, 114, 114, 114, 114, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 50, 112, 114, 114, 114, 114}, {116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 112, 112, 116, 116, 116, 116, 116, 116, 116, 112, 116, 116, 116, 116, 51, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 116, 116, 116, 116}, {118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 112, 112, 118, 118, 118, 118, 118, 118, 118, 112, 118, 118, 118, 118, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 52, 112, 112, 112, 112, 112, 112, 118, 118, 118, 118}, {120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 112, 112, 120, 120, 120, 120, 120, 120, 120, 112, 120, 120, 120, 120, 53, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 120, 120, 120, 120}, {122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 112, 112, 122, 122, 122, 122, 122, 122, 122, 112, 122, 122, 122, 122, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 54, 122, 122, 122}, {124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 112, 112, 124, 124, 124, 124, 124, 124, 124, 112, 124, 124, 124, 124, 112, 112, 112, 112, 112, 112, 112, 55, 112, 112, 112, 112, 112, 112, 112, 112, 112, 124, 124, 124, 124}, {211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211, 211}, {212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212, 212}, {213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213}, {36, 36, 126, 36, 36, 36, 36, 125, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 39, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, ::ISPA_STD::DFA::API::null_state}, {127, 127, 132, 127, 127, 127, 127, 130, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 128, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 214}, {214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214}, {36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, ::ISPA_STD::DFA::API::null_state}, {215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215, 215}, {216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216, 216}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 133, 133, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217, 217}, {134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 134, 44, 44, 134, 134, 134, 134, 134, 134, 134, 44, 134, 134, 134, 134, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 134, 134, 134, 134}, {45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 46, 135, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, ::ISPA_STD::DFA::API::null_state}, {45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, ::ISPA_STD::DFA::API::null_state}, {136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 137, 135, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, ::ISPA_STD::DFA::API::null_state}, {219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 61, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219}, {139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 112, 112, 139, 139, 139, 139, 139, 139, 139, 112, 139, 139, 139, 139, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 62, 112, 112, 112, 112, 112, 139, 139, 139, 139}, {141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 112, 112, 141, 141, 141, 141, 141, 141, 141, 112, 141, 141, 141, 141, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 63, 112, 112, 141, 141, 141, 141}, {143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 112, 112, 143, 143, 143, 143, 143, 143, 143, 112, 143, 143, 143, 143, 112, 112, 112, 112, 112, 112, 64, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 143, 143, 143, 143}, {145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 112, 112, 145, 145, 145, 145, 145, 145, 145, 112, 145, 145, 145, 145, 112, 112, 112, 112, 112, 112, 112, 112, 65, 112, 112, 112, 112, 112, 112, 112, 112, 145, 145, 145, 145}, {147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 112, 112, 147, 147, 147, 147, 147, 147, 147, 112, 147, 147, 147, 147, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 66, 112, 112, 147, 147, 147, 147}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 148, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 112, 112, 150, 150, 150, 150, 150, 150, 150, 112, 150, 150, 150, 150, 112, 112, 112, 112, 112, 112, 68, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 150, 150, 150, 150}, {36, 36, 126, 36, 36, 36, 36, 125, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 39, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 214}, {151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 57, 57, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151}, {221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221, 221}, {59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 60, 152, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, ::ISPA_STD::DFA::API::null_state}, {59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, ::ISPA_STD::DFA::API::null_state}, {222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222, 222}, {154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 112, 112, 154, 154, 154, 154, 154, 154, 154, 112, 154, 154, 154, 154, 112, 112, 112, 70, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 154, 154, 154, 154}, {156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 112, 112, 156, 156, 156, 156, 156, 156, 156, 112, 156, 156, 156, 156, 112, 112, 112, 71, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 156, 156, 156, 156}, {158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 112, 112, 158, 158, 158, 158, 158, 158, 158, 112, 158, 158, 158, 158, 112, 112, 112, 112, 112, 112, 112, 112, 72, 112, 112, 112, 112, 112, 112, 112, 112, 158, 158, 158, 158}, {160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 112, 112, 160, 160, 160, 160, 160, 160, 160, 112, 160, 160, 160, 160, 112, 112, 112, 112, 112, 112, 73, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 160, 160, 160, 160}, {162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 112, 112, 162, 162, 162, 162, 162, 162, 162, 112, 162, 162, 162, 162, 112, 74, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 162, 162, 162, 162}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 75, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state}, {164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 112, 112, 164, 164, 164, 164, 164, 164, 164, 112, 164, 164, 164, 164, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 76, 112, 112, 112, 112, 112, 164, 164, 164, 164}, {166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166, 166}, {168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 112, 112, 168, 168, 168, 168, 168, 168, 168, 112, 168, 168, 168, 168, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 77, 112, 112, 112, 112, 112, 112, 168, 168, 168, 168}, {170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 112, 112, 170, 170, 170, 170, 170, 170, 170, 112, 170, 170, 170, 170, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 78, 112, 112, 112, 112, 170, 170, 170, 170}, {223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 223, 112, 112, 223, 223, 223, 223, 223, 223, 223, 112, 223, 223, 223, 223, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 223, 223, 223, 223}, {172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 172, 112, 112, 172, 172, 172, 172, 172, 172, 172, 112, 172, 172, 172, 172, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 79, 112, 112, 112, 112, 112, 112, 172, 172, 172, 172}, {174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 174, 112, 112, 174, 174, 174, 174, 174, 174, 174, 112, 174, 174, 174, 174, 112, 112, 112, 112, 112, 80, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 174, 174, 174, 174}, {::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, ::ISPA_STD::DFA::API::null_state, 175, ::ISPA_STD::DFA::API::null_state}, {177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 112, 112, 177, 177, 177, 177, 177, 177, 177, 112, 177, 177, 177, 177, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 177, 177, 177, 177}, {179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 179, 112, 112, 179, 179, 179, 179, 179, 179, 179, 112, 179, 179, 179, 179, 112, 112, 82, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 179, 179, 179, 179}, {181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 181, 112, 112, 181, 181, 181, 181, 181, 181, 181, 112, 181, 181, 181, 181, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 83, 112, 112, 112, 112, 112, 112, 181, 181, 181, 181}, {183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 112, 112, 183, 183, 183, 183, 183, 183, 183, 112, 183, 183, 183, 183, 112, 112, 112, 84, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 183, 183, 183, 183}, {225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 112, 112, 225, 225, 225, 225, 225, 225, 225, 112, 225, 225, 225, 225, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 225, 225, 225, 225}, {226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226, 226}, {185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 112, 112, 185, 185, 185, 185, 185, 185, 185, 112, 185, 185, 185, 185, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 85, 112, 112, 112, 185, 185, 185, 185}, {187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 112, 112, 187, 187, 187, 187, 187, 187, 187, 112, 187, 187, 187, 187, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 187, 187, 187, 187}, {189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 189, 112, 112, 189, 189, 189, 189, 189, 189, 189, 112, 189, 189, 189, 189, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 189, 189, 189, 189}, {229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 229, 112, 112, 229, 229, 229, 229, 229, 229, 229, 112, 229, 229, 229, 229, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 229, 229, 229, 229}}};
-::ISPA_STD::DFA::API::Table<104, 4> Parser::Lexer::action_table = {{{1, 0, ::ISPA_STD::DFA::API::null_state, 22}, {1, 26, ::ISPA_STD::DFA::API::null_state, 28}, {1, 26, ::ISPA_STD::DFA::API::null_state, 27}, {1, 26, ::ISPA_STD::DFA::API::null_state, 26}, {1, 26, ::ISPA_STD::DFA::API::null_state, 32}, {1, 26, ::ISPA_STD::DFA::API::null_state, 31}, {1, 26, ::ISPA_STD::DFA::API::null_state, 29}, {1, 14, ::ISPA_STD::DFA::API::null_state, 14}, {1, 12, ::ISPA_STD::DFA::API::null_state, 10}, {1, 8, ::ISPA_STD::DFA::API::null_state, 9}, {1, 10, ::ISPA_STD::DFA::API::null_state, 20}, {1, 26, ::ISPA_STD::DFA::API::null_state, 30}, {1, 24, ::ISPA_STD::DFA::API::null_state, 36}, {1, 24, ::ISPA_STD::DFA::API::null_state, 39}, {1, 26, ::ISPA_STD::DFA::API::null_state, 37}, {1, 9, ::ISPA_STD::DFA::API::null_state, 197}, {1, 13, ::ISPA_STD::DFA::API::null_state, 198}, {1, 15, ::ISPA_STD::DFA::API::null_state, 201}, {1, 15, ::ISPA_STD::DFA::API::null_state, 42}, {1, 11, ::ISPA_STD::DFA::API::null_state, 207}, {1, 1, ::ISPA_STD::DFA::API::null_state, 209}, {1, 6, ::ISPA_STD::DFA::API::null_state, 45}, {1, 6, ::ISPA_STD::DFA::API::null_state, 47}, {1, 6, ::ISPA_STD::DFA::API::null_state, 46}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 110}, {3, 0, 26, 44}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 113}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 115}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 117}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 119}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 121}, {3, 0, 26, 209}, {1, 1, ::ISPA_STD::DFA::API::null_state, 123}, {1, 25, ::ISPA_STD::DFA::API::null_state, 38}, {1, 25, ::ISPA_STD::DFA::API::null_state, 56}, {3, 24, 26, 36}, {3, 24, 26, 39}, {3, 24, 26, 38}, {1, 25, ::ISPA_STD::DFA::API::null_state, 129}, {3, 24, 26, 56}, {1, 25, ::ISPA_STD::DFA::API::null_state, 131}, {1, 16, ::ISPA_STD::DFA::API::null_state, 57}, {1, 1, ::ISPA_STD::DFA::API::null_state, 218}, {1, 7, ::ISPA_STD::DFA::API::null_state, 58}, {1, 5, ::ISPA_STD::DFA::API::null_state, 59}, {1, 5, ::ISPA_STD::DFA::API::null_state, 60}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 138}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 140}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 142}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 144}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 146}, {1, 2, ::ISPA_STD::DFA::API::null_state, 67}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 149}, {1, 17, ::ISPA_STD::DFA::API::null_state, 220}, {1, 7, ::ISPA_STD::DFA::API::null_state, 69}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 153}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 155}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 157}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 159}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 161}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 163}, {3, 6, 5, 221}, {3, 4, 6, 165}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 167}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 169}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 171}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 173}, {1, 3, ::ISPA_STD::DFA::API::null_state, 81}, {3, 20, 26, 224}, {1, 21, ::ISPA_STD::DFA::API::null_state, 176}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 178}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 180}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 182}, {3, 0, 26, 218}, {1, 1, ::ISPA_STD::DFA::API::null_state, 184}, {3, 18, 26, 227}, {1, 19, ::ISPA_STD::DFA::API::null_state, 186}, {3, 22, 26, 228}, {1, 23, ::ISPA_STD::DFA::API::null_state, 188}}};
+::ISPA_STD::DFA::API::Table<104, 4> Parser::Lexer::action_table = {{{1, 20, ::ISPA_STD::DFA::API::null_state, 22}, {1, 26, ::ISPA_STD::DFA::API::null_state, 28}, {1, 26, ::ISPA_STD::DFA::API::null_state, 27}, {1, 26, ::ISPA_STD::DFA::API::null_state, 26}, {1, 26, ::ISPA_STD::DFA::API::null_state, 32}, {1, 26, ::ISPA_STD::DFA::API::null_state, 31}, {1, 26, ::ISPA_STD::DFA::API::null_state, 29}, {1, 2, ::ISPA_STD::DFA::API::null_state, 14}, {1, 16, ::ISPA_STD::DFA::API::null_state, 10}, {1, 12, ::ISPA_STD::DFA::API::null_state, 9}, {1, 14, ::ISPA_STD::DFA::API::null_state, 20}, {1, 26, ::ISPA_STD::DFA::API::null_state, 30}, {1, 18, ::ISPA_STD::DFA::API::null_state, 36}, {1, 18, ::ISPA_STD::DFA::API::null_state, 39}, {1, 26, ::ISPA_STD::DFA::API::null_state, 37}, {1, 13, ::ISPA_STD::DFA::API::null_state, 197}, {1, 17, ::ISPA_STD::DFA::API::null_state, 198}, {1, 3, ::ISPA_STD::DFA::API::null_state, 201}, {1, 3, ::ISPA_STD::DFA::API::null_state, 42}, {1, 15, ::ISPA_STD::DFA::API::null_state, 207}, {1, 21, ::ISPA_STD::DFA::API::null_state, 209}, {1, 24, ::ISPA_STD::DFA::API::null_state, 45}, {1, 24, ::ISPA_STD::DFA::API::null_state, 47}, {1, 24, ::ISPA_STD::DFA::API::null_state, 46}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 110}, {3, 20, 26, 44}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 113}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 115}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 117}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 119}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 121}, {3, 20, 26, 209}, {1, 21, ::ISPA_STD::DFA::API::null_state, 123}, {1, 19, ::ISPA_STD::DFA::API::null_state, 38}, {1, 19, ::ISPA_STD::DFA::API::null_state, 56}, {3, 18, 26, 36}, {3, 18, 26, 39}, {3, 18, 26, 38}, {1, 19, ::ISPA_STD::DFA::API::null_state, 129}, {3, 18, 26, 56}, {1, 19, ::ISPA_STD::DFA::API::null_state, 131}, {1, 4, ::ISPA_STD::DFA::API::null_state, 57}, {1, 21, ::ISPA_STD::DFA::API::null_state, 218}, {1, 25, ::ISPA_STD::DFA::API::null_state, 58}, {1, 23, ::ISPA_STD::DFA::API::null_state, 59}, {1, 23, ::ISPA_STD::DFA::API::null_state, 60}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 138}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 140}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 142}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 144}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 146}, {1, 0, ::ISPA_STD::DFA::API::null_state, 67}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 149}, {1, 5, ::ISPA_STD::DFA::API::null_state, 220}, {1, 25, ::ISPA_STD::DFA::API::null_state, 69}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 153}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 155}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 157}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 159}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 161}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 163}, {3, 24, 23, 221}, {3, 22, 24, 165}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 167}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 169}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 171}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 173}, {1, 1, ::ISPA_STD::DFA::API::null_state, 81}, {3, 8, 26, 224}, {1, 9, ::ISPA_STD::DFA::API::null_state, 176}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 178}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 180}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 182}, {3, 20, 26, 218}, {1, 21, ::ISPA_STD::DFA::API::null_state, 184}, {3, 6, 26, 227}, {1, 7, ::ISPA_STD::DFA::API::null_state, 186}, {3, 10, 26, 228}, {1, 11, ::ISPA_STD::DFA::API::null_state, 188}}};
 std::array<::ISPA_STD::DFA::API::DFADebug, 1> Parser::Lexer::debug_array = {::ISPA_STD::DFA::API::DFADebug {"<Undefined>", "", 0, -1, -1, -1, 0, 1, '\000'}};
 std::unordered_map<long long, std::unordered_map<long long, long long>> Parser::Lexer::debug_index = { { 0, { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 23, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 1, { { 1, 0 } } }, { 2, { { 7, 0 } } }, { 3, { { 25, 0 } } }, { 12, { { 21, 0 } } }, { 14, { { 15, 0 }, { 16, 0 } } }, { 18, { { 21, 0 } } }, { 22, { { 15, 0 }, { 16, 0 }, { 24, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 } } }, { 24, { { 42, 0 } } }, { 26, { { 32, 0 } } }, { 27, { { 44, 0 } } }, { 28, { { 29, 0 } } }, { 29, { { 39, 0 } } }, { 30, { { 29, 0 } } }, { 31, { { 46, 0 } } }, { 32, { { 36, 0 } } }, { 36, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 39, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 44, { { 15, 0 }, { 16, 0 }, { 24, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 } } }, { 45, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 46, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 48, { { 15, 0 } } }, { 49, { { 40, 0 } } }, { 50, { { 43, 0 } } }, { 51, { { 35, 0 } } }, { 52, { { 37, 0 } } }, { 53, { { 43, 0 } } }, { 55, { { 35, 0 } } }, { 56, { { 0, 0 }, { 1, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 57, { { 15, 0 }, { 16, 0 } } }, { 59, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 60, { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 }, { 10, 0 }, { 11, 0 }, { 12, 0 }, { 13, 0 }, { 14, 0 }, { 15, 0 }, { 16, 0 }, { 17, 0 }, { 18, 0 }, { 19, 0 }, { 20, 0 }, { 21, 0 }, { 22, 0 }, { 23, 0 }, { 24, 0 }, { 25, 0 }, { 26, 0 }, { 27, 0 }, { 28, 0 }, { 29, 0 }, { 30, 0 }, { 31, 0 }, { 32, 0 }, { 33, 0 }, { 34, 0 }, { 35, 0 }, { 36, 0 }, { 37, 0 }, { 38, 0 }, { 39, 0 }, { 40, 0 }, { 41, 0 }, { 42, 0 }, { 43, 0 }, { 44, 0 }, { 45, 0 }, { 46, 0 }, { 47, 0 }, { 48, 0 } } }, { 62, { { 32, 0 } } }, { 63, { { 32, 0 } } }, { 64, { { 37, 0 } } }, { 65, { { 35, 0 } } }, { 66, { { 30, 0 } } }, { 67, { { 45, 0 } } }, { 68, { { 40, 0 } } }, { 70, { { 39, 0 } } }, { 71, { { 41, 0 } } }, { 73, { { 39, 0 } } }, { 74, { { 34, 0 } } }, { 77, { { 31, 0 } } }, { 78, { { 39, 0 } } }, { 79, { { 32, 0 } } }, { 82, { { 42, 0 } } } };
-template<typename IT, class> auto Parser::Parser::ruleNested_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, IT> {
-	::ISPA_STD::Node<Types::rule::nested_rule::NUMBER_SIGN> value_rule_nested_rule_NUMBER_SIGN;
-	::ISPA_STD::Node<Types::grammar> value_grammar;
-	value_rule_nested_rule_NUMBER_SIGN = required<Types::rule::nested_rule::NUMBER_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::nested_rule", "rule::nested_rule::NUMBER_SIGN"));
-	value_grammar = required<Types::grammar>(pos, [this](auto cursor) { return this->grammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::nested_rule", "grammar"));
-	Types::rule::nested_rule result;
-	::ISPA_STD::assign_compatible(result.value, value_grammar);
-	::ISPA_STD::MatchResult<Types::rule::nested_rule, IT> match_result;
+template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT> {
+	::ISPA_STD::Node<Types::modules::main::main> value_modules_main_main;
+	value_modules_main_main = required<Types::modules::main::main>(pos, [this](auto cursor) { return this->modulesMainMain(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("main", "modules::main::main"));
+	Types::main result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_main_main);
+	::ISPA_STD::MatchResult<Types::main, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleNested_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleNested_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::nested_rule, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueCounter(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, IT> {
-	::ISPA_STD::Node<Types::rule::value::QUANTIFIER> value_rule_value_QUANTIFIER;
-	::ISPA_STD::Node<Types::rule::value::counter::bounded> value_rule_value_counter_bounded;
-	value_rule_value_QUANTIFIER = required<Types::rule::value::QUANTIFIER>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::rule::value::QUANTIFIER::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::counter", "rule::value::QUANTIFIER"));
+template auto Parser::Parser::main<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::main<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueCounter(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter, IT> {
+	::ISPA_STD::Node<Types::modules::rule::value::QUANTIFIER> value_modules_rule_value_QUANTIFIER;
+	::ISPA_STD::Node<Types::modules::rule::value::counter::bounded> value_modules_rule_value_counter_bounded;
+	value_modules_rule_value_QUANTIFIER = required<Types::modules::rule::value::QUANTIFIER>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::rule::value::QUANTIFIER::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::counter", "modules::rule::value::QUANTIFIER"));
 	skip_spaces<Types::__WS>(pos);
-	value_rule_value_counter_bounded = optional<Types::rule::value::counter::bounded>(pos, [this](auto cursor) { return this->ruleValueCounterBounded(cursor); });
-	Types::rule::value::counter result;
-	::ISPA_STD::assign_compatible(result.quantifier, value_rule_value_QUANTIFIER);
-	::ISPA_STD::assign_compatible(result.repetitions, value_rule_value_counter_bounded);
-	::ISPA_STD::MatchResult<Types::rule::value::counter, IT> match_result;
+	value_modules_rule_value_counter_bounded = optional<Types::modules::rule::value::counter::bounded>(pos, [this](auto cursor) { return this->modulesRuleValueCounterBounded(cursor); });
+	Types::modules::rule::value::counter result;
+	::ISPA_STD::assign_compatible(result.quantifier, value_modules_rule_value_QUANTIFIER);
+	::ISPA_STD::assign_compatible(result.repetitions, value_modules_rule_value_counter_bounded);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::counter, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValueCounter<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueCounter<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueDynDyn_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, IT> {
+template auto Parser::Parser::modulesRuleValueCounter<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueCounter<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueDynDyn_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn::dyn_expr, IT> {
 	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	::ISPA_STD::Node<Types::expr> value_expr;
+	::ISPA_STD::Node<Types::modules::common::expr> value_modules_common_expr;
 	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::dyn::dyn_expr", "LEFT_CURLY_BRACKET"));
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::dyn::dyn_expr", "LEFT_CURLY_BRACKET"));
 	skip_spaces<Types::__WS>(pos);
-	value_expr = required<Types::expr>(pos, [this](auto cursor) { return this->expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::dyn::dyn_expr", "expr"));
+	value_modules_common_expr = required<Types::modules::common::expr>(pos, [this](auto cursor) { return this->modulesCommonExpr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::dyn::dyn_expr", "modules::common::expr"));
 	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::dyn::dyn_expr", "RIGHT_CURLY_BRACKET"));
-	Types::rule::value::dyn::dyn_expr result;
-	::ISPA_STD::assign_compatible(result.value, value_expr);
-	::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, IT> match_result;
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::dyn::dyn_expr", "RIGHT_CURLY_BRACKET"));
+	Types::modules::rule::value::dyn::dyn_expr result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_expr);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::dyn::dyn_expr, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValueDynDyn_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueDynDyn_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn::dyn_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueDyn(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, IT> {
-	::ISPA_STD::Node<Types::rule::value::dyn::DOLLAR_SIGN> value_rule_value_dyn_DOLLAR_SIGN;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::value::dyn::dyn_expr>, ::ISPA_STD::Node<Types::ID>> choice0;
-	bool matched0;
-	::ISPA_STD::Node<Types::rule::value::dyn::dyn_expr> value_rule_value_dyn_dyn_expr;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	value_rule_value_dyn_DOLLAR_SIGN = required<Types::rule::value::dyn::DOLLAR_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::dyn", "rule::value::dyn::DOLLAR_SIGN"));
+template auto Parser::Parser::modulesRuleValueDynDyn_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn::dyn_expr, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueDynDyn_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn::dyn_expr, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueGroup(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::group, IT> {
+	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> value_LEFT_PARENTHESIS;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::value>> value_list_modules_rule_value;
+	::ISPA_STD::Node<Types::RIGHT_PARENTHESIS> value_RIGHT_PARENTHESIS;
+	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::group", "LEFT_PARENTHESIS"));
 	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( rule::value::dyn::dyn_expr |  ID)`: choice; alternative selected by LL(1) lookahead
+	value_list_modules_rule_value = range<Types::modules::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::group", "modules::rule::value"));
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::group", "RIGHT_PARENTHESIS"));
+	Types::modules::rule::value::group result;
+	::ISPA_STD::assign_compatible(result.value, value_list_modules_rule_value);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::group, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueGroup<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::group, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueGroup<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::group, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleAstAbbr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::abbr, IT> {
+	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
+	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::COMMA> value_COMMA;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID_1;
+	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>> group0;
+	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>>> group_list1;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> capture_list2;
+	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
+	value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::abbr", "COMMERCIAL_AT"));
+	skip_spaces<Types::__WS>(pos);
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::abbr", "LEFT_CURLY_BRACKET"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::abbr", "modules::common::ID"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar ` ( COMMA  __WS?; @  modules::common::ID)*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::COMMA::id)) {
+		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::abbr", "<group>"));
+		skip_spaces<Types::__WS>(pos);
+		value_modules_common_ID_1 = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::abbr", "<group>"));
+		group0 = std::make_pair(value_COMMA, value_modules_common_ID_1);
+		group_list1.push_back(group0);
+		capture_list2.push_back(value_modules_common_ID_1);
+		skip_spaces<Types::__WS>(pos);
+	}
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::abbr", "RIGHT_CURLY_BRACKET"));
+	Types::modules::rule::ast::abbr result;
+	::ISPA_STD::assign_compatible(result.f, value_modules_common_ID);
+	::ISPA_STD::assign_compatible(result.seq, capture_list2);
+	::ISPA_STD::MatchResult<Types::modules::rule::ast::abbr, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleAstAbbr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::abbr, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleAstAbbr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::abbr, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleAstFull(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full, IT> {
+	::ISPA_STD::Node<Types::AMPERSAND> value_AMPERSAND;
+	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::ast::full::part>> value_list_modules_rule_ast_full_part;
+	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
+	value_AMPERSAND = required<Types::AMPERSAND>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::full", "AMPERSAND"));
+	skip_spaces<Types::__WS>(pos);
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::full", "LEFT_CURLY_BRACKET"));
+	skip_spaces<Types::__WS>(pos);
+	value_list_modules_rule_ast_full_part = range<Types::modules::rule::ast::full::part, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleAstFullPart(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::full", "modules::rule::ast::full::part"));
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::full", "RIGHT_CURLY_BRACKET"));
+	Types::modules::rule::ast::full result;
+	::ISPA_STD::assign_compatible(result.value, value_list_modules_rule_ast_full_part);
+	::ISPA_STD::MatchResult<Types::modules::rule::ast::full, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleAstFull<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleAstFull<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueAlternative(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::alternative, IT> {
+	::ISPA_STD::Node<Types::modules::rule::value::alternative::VERTICAL_LINE> value_modules_rule_value_alternative_VERTICAL_LINE;
+	::ISPA_STD::Node<Types::modules::rule::value::pattern> value_modules_rule_value_pattern;
+	value_modules_rule_value_alternative_VERTICAL_LINE = required<Types::modules::rule::value::alternative::VERTICAL_LINE>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::rule::value::alternative::VERTICAL_LINE::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::alternative", "modules::rule::value::alternative::VERTICAL_LINE"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_pattern = required<Types::modules::rule::value::pattern>(pos, [this](auto cursor) { return this->modulesRuleValuePattern(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::alternative", "modules::rule::value::pattern"));
+	Types::modules::rule::value::alternative result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_rule_value_pattern);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::alternative, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueAlternative<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::alternative, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueAlternative<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::alternative, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValuePattern(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::pattern, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::common::name>, ::ISPA_STD::Node<Types::modules::rule::value::group>, ::ISPA_STD::Node<Types::modules::rule::value::dyn>, ::ISPA_STD::Node<Types::modules::rule::value::STRING>, ::ISPA_STD::Node<Types::modules::rule::value::CGROUP>, ::ISPA_STD::Node<Types::modules::rule::value::ANY>, ::ISPA_STD::Node<Types::modules::rule::value::SPACE>, ::ISPA_STD::Node<Types::modules::rule::value::NOSPACE>> choice0;
+	bool matched0;
+	::ISPA_STD::Node<Types::modules::common::name> value_modules_common_name;
+	::ISPA_STD::Node<Types::modules::rule::value::group> value_modules_rule_value_group;
+	::ISPA_STD::Node<Types::modules::rule::value::dyn> value_modules_rule_value_dyn;
+	::ISPA_STD::Node<Types::modules::rule::value::STRING> value_modules_rule_value_STRING;
+	::ISPA_STD::Node<Types::modules::rule::value::CGROUP> value_modules_rule_value_CGROUP;
+	::ISPA_STD::Node<Types::modules::rule::value::ANY> value_modules_rule_value_ANY;
+	::ISPA_STD::Node<Types::modules::rule::value::SPACE> value_modules_rule_value_SPACE;
+	::ISPA_STD::Node<Types::modules::rule::value::NOSPACE> value_modules_rule_value_NOSPACE;
+	// grammar `@  ( modules::common::name |  modules::rule::value::group |  modules::rule::value::dyn |  modules::rule::value::STRING |  modules::rule::value::CGROUP |  modules::rule::value::ANY |  modules::rule::value::SPACE |  modules::rule::value::NOSPACE)`: choice; alternative selected by LL(1) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
-		case Tokens::ID::id: {
-			value_ID = required<Types::ID>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::dyn", "<group>"));
-			choice0 = value_ID;
+		case Tokens::LEFT_PARENTHESIS::id: {
+			value_modules_rule_value_group = required<Types::modules::rule::value::group>(la0_1, [this](auto cursor) { return this->modulesRuleValueGroup(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_group;
 			matched0 = true;
 			break;
 		}
-		case Tokens::LEFT_CURLY_BRACKET::id: {
-			value_rule_value_dyn_dyn_expr = required<Types::rule::value::dyn::dyn_expr>(la0_1, [this](auto cursor) { return this->ruleValueDynDyn_expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::dyn", "<group>"));
-			choice0 = value_rule_value_dyn_dyn_expr;
+		case Tokens::modules::common::ID::id: {
+			value_modules_common_name = required<Types::modules::common::name>(la0_1, [this](auto cursor) { return this->modulesCommonName(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_common_name;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::ANY::id: {
+			value_modules_rule_value_ANY = required<Types::modules::rule::value::ANY>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_ANY;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::CGROUP::id: {
+			value_modules_rule_value_CGROUP = required<Types::modules::rule::value::CGROUP>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_CGROUP;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::NOSPACE::id: {
+			value_modules_rule_value_NOSPACE = required<Types::modules::rule::value::NOSPACE>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_NOSPACE;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::SPACE::id: {
+			value_modules_rule_value_SPACE = required<Types::modules::rule::value::SPACE>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_SPACE;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::STRING::id: {
+			value_modules_rule_value_STRING = required<Types::modules::rule::value::STRING>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_STRING;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id: {
+			value_modules_rule_value_dyn = required<Types::modules::rule::value::dyn>(la0_1, [this](auto cursor) { return this->modulesRuleValueDyn(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::pattern", "<group>"));
+			choice0 = value_modules_rule_value_dyn;
 			matched0 = true;
 			break;
 		}
 	}
 	pos = la0_1;
 	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: LEFT_CURLY_BRACKET, ID");
+		raise_error(*pos, "ISPA match failure: expected one of: modules.common.ID, LEFT_PARENTHESIS, modules.rule.value.dyn.DOLLAR_SIGN, modules.rule.value.STRING, modules.rule.value.CGROUP, modules.rule.value.ANY, modules.rule.value.SPACE, modules.rule.value.NOSPACE");
 		return {};
 	}
-	Types::rule::value::dyn result;
+	Types::modules::rule::value::pattern result;
 	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::value::dyn, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::rule::value::pattern, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValueDyn<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueDyn<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::dyn, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueMul_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, IT> {
+template auto Parser::Parser::modulesRuleValuePattern<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::pattern, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValuePattern<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::pattern, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueMul_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::mul_capture, IT> {
 	std::variant<std::monostate, ::ISPA_STD::Node<Types::COMMERCIAL_AT>, ::ISPA_STD::Node<Types::PERCENT_SIGN>> choice0;
 	bool matched0;
 	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
 	::ISPA_STD::Node<Types::PERCENT_SIGN> value_PERCENT_SIGN;
 	::ISPA_STD::Node<Types::EQUALS_SIGN> value_EQUALS_SIGN;
 	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> value_LEFT_PARENTHESIS;
-	std::vector<::ISPA_STD::Node<Types::rule::value::one_capture>> value_list_rule_value_one_capture;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::value::one_capture>> value_list_modules_rule_value_one_capture;
 	::ISPA_STD::Node<Types::RIGHT_PARENTHESIS> value_RIGHT_PARENTHESIS;
 	// grammar `@  ( COMMERCIAL_AT |  PERCENT_SIGN)`: choice; alternative selected by LL(1) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
 		case Tokens::COMMERCIAL_AT::id: {
-			value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::mul_capture", "<group>"));
+			value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::mul_capture", "<group>"));
 			choice0 = value_COMMERCIAL_AT;
 			matched0 = true;
 			break;
 		}
 		case Tokens::PERCENT_SIGN::id: {
-			value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::mul_capture", "<group>"));
+			value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::mul_capture", "<group>"));
 			choice0 = value_PERCENT_SIGN;
 			matched0 = true;
 			break;
@@ -1975,333 +2182,67 @@ template<typename IT, class> auto Parser::Parser::ruleValueMul_capture(IT pos) -
 		return {};
 	}
 	skip_spaces<Types::__WS>(pos);
-	value_EQUALS_SIGN = required<Types::EQUALS_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::mul_capture", "EQUALS_SIGN"));
+	value_EQUALS_SIGN = required<Types::EQUALS_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::mul_capture", "EQUALS_SIGN"));
 	skip_spaces<Types::__WS>(pos);
-	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::mul_capture", "LEFT_PARENTHESIS"));
+	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::mul_capture", "LEFT_PARENTHESIS"));
 	skip_spaces<Types::__WS>(pos);
-	value_list_rule_value_one_capture = range<Types::rule::value::one_capture, Types::__WS>(pos, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::mul_capture", "rule::value::one_capture"));
+	value_list_modules_rule_value_one_capture = range<Types::modules::rule::value::one_capture, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::mul_capture", "modules::rule::value::one_capture"));
 	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::mul_capture", "RIGHT_PARENTHESIS"));
-	Types::rule::value::mul_capture result;
+	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::mul_capture", "RIGHT_PARENTHESIS"));
+	Types::modules::rule::value::mul_capture result;
 	::ISPA_STD::assign_compatible(result.type, choice0);
-	::ISPA_STD::assign_compatible(result.cap, value_list_rule_value_one_capture);
-	::ISPA_STD::MatchResult<Types::rule::value::mul_capture, IT> match_result;
+	::ISPA_STD::assign_compatible(result.cap, value_list_modules_rule_value_one_capture);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::mul_capture, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValueMul_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueMul_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::mul_capture, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleAst(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::ast::abbr>, ::ISPA_STD::Node<Types::rule::ast::full>, ::ISPA_STD::Node<Types::rule::ast::single_value>> choice0;
+template auto Parser::Parser::modulesRuleValueMul_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::mul_capture, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueMul_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::mul_capture, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueFail_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::fail_capture, IT> {
+	::ISPA_STD::Node<Types::PERCENT_SIGN> value_PERCENT_SIGN;
+	::ISPA_STD::Node<Types::modules::common::name> value_modules_common_name;
+	value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::fail_capture", "PERCENT_SIGN"));
+	value_modules_common_name = optional<Types::modules::common::name>(pos, [this](auto cursor) { return this->modulesCommonName(cursor); });
+	Types::modules::rule::value::fail_capture result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_name);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::fail_capture, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueFail_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::fail_capture, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueFail_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::fail_capture, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueShared_counter_registration(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::shared_counter_registration, IT> {
+	::ISPA_STD::Node<Types::modules::rule::value::shared_counter_registration::AUTO> value_modules_rule_value_shared_counter_registration_AUTO;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	value_modules_rule_value_shared_counter_registration_AUTO = required<Types::modules::rule::value::shared_counter_registration::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::shared_counter_registration", "modules::rule::value::shared_counter_registration::AUTO"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::shared_counter_registration", "modules::common::ID"));
+	Types::modules::rule::value::shared_counter_registration result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_ID);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::shared_counter_registration, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueShared_counter_registration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::shared_counter_registration, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueShared_counter_registration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::shared_counter_registration, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValue(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::rule::value::one_capture>, ::ISPA_STD::Node<Types::modules::rule::value::mul_capture>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::rule::ast::abbr> value_rule_ast_abbr;
-	::ISPA_STD::Node<Types::rule::ast::full> value_rule_ast_full;
-	::ISPA_STD::Node<Types::rule::ast::single_value> value_rule_ast_single_value;
-	// grammar `@  ( rule::ast::abbr |  rule::ast::full |  rule::ast::single_value)`: choice; alternative selected by LL(1) lookahead
+	::ISPA_STD::Node<Types::modules::rule::value::one_capture> value_modules_rule_value_one_capture;
+	::ISPA_STD::Node<Types::modules::rule::value::mul_capture> value_modules_rule_value_mul_capture;
+	// grammar `@  ( modules::rule::value::one_capture |  modules::rule::value::mul_capture)`: choice; alternative selected by LL(2) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
 		case Tokens::AMPERSAND::id: {
-			value_rule_ast_full = required<Types::rule::ast::full>(la0_1, [this](auto cursor) { return this->ruleAstFull(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast", "<group>"));
-			choice0 = value_rule_ast_full;
-			matched0 = true;
-			break;
-		}
-		case Tokens::COMMERCIAL_AT::id: {
-			value_rule_ast_abbr = required<Types::rule::ast::abbr>(la0_1, [this](auto cursor) { return this->ruleAstAbbr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast", "<group>"));
-			choice0 = value_rule_ast_abbr;
-			matched0 = true;
-			break;
-		}
-		case Tokens::LEFT_CURLY_BRACKET::id: {
-			value_rule_ast_single_value = required<Types::rule::ast::single_value>(la0_1, [this](auto cursor) { return this->ruleAstSingle_value(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast", "<group>"));
-			choice0 = value_rule_ast_single_value;
-			matched0 = true;
-			break;
-		}
-	}
-	pos = la0_1;
-	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: COMMERCIAL_AT, AMPERSAND, LEFT_CURLY_BRACKET");
-		return {};
-	}
-	Types::rule::ast result;
-	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::ast, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleAst<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleAst<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueAst_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, IT> {
-	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::ast_capture", "COMMERCIAL_AT"));
-	value_ID = optional<Types::ID>(pos);
-	Types::rule::value::ast_capture result;
-	::ISPA_STD::assign_compatible(result.value, value_ID);
-	::ISPA_STD::MatchResult<Types::rule::value::ast_capture, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueAst_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueAst_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::ast_capture, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleF_binding(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, IT> {
-	::ISPA_STD::Node<Types::PERCENT_SIGN> value_PERCENT_SIGN;
-	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::COMMA> value_COMMA;
-	::ISPA_STD::Node<Types::ID> value_ID_1;
-	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>> group0;
-	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>>> group_list1;
-	std::vector<::ISPA_STD::Node<Types::ID>> capture_list2;
-	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::f_binding", "PERCENT_SIGN"));
-	skip_spaces<Types::__WS>(pos);
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::f_binding", "LEFT_CURLY_BRACKET"));
-	skip_spaces<Types::__WS>(pos);
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::f_binding", "ID"));
-	skip_spaces<Types::__WS>(pos);
-	// grammar ` ( COMMA  __WS?; @  ID)*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::COMMA::id)) {
-		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::f_binding", "<group>"));
-		skip_spaces<Types::__WS>(pos);
-		value_ID_1 = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::f_binding", "<group>"));
-		group0 = std::make_pair(value_COMMA, value_ID_1);
-		group_list1.push_back(group0);
-		capture_list2.push_back(value_ID_1);
-		skip_spaces<Types::__WS>(pos);
-	}
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::f_binding", "RIGHT_CURLY_BRACKET"));
-	Types::rule::f_binding result;
-	::ISPA_STD::assign_compatible(result.f, value_ID);
-	::ISPA_STD::assign_compatible(result.seq, capture_list2);
-	::ISPA_STD::MatchResult<Types::rule::f_binding, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleF_binding<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleF_binding<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::f_binding, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueGroup(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, IT> {
-	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> value_LEFT_PARENTHESIS;
-	std::vector<::ISPA_STD::Node<Types::rule::value>> value_list_rule_value;
-	::ISPA_STD::Node<Types::RIGHT_PARENTHESIS> value_RIGHT_PARENTHESIS;
-	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::group", "LEFT_PARENTHESIS"));
-	skip_spaces<Types::__WS>(pos);
-	value_list_rule_value = range<Types::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->ruleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::group", "rule::value"));
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::group", "RIGHT_PARENTHESIS"));
-	Types::rule::value::group result;
-	::ISPA_STD::assign_compatible(result.value, value_list_rule_value);
-	::ISPA_STD::MatchResult<Types::rule::value::group, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueGroup<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueGroup<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::group, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueFail_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, IT> {
-	::ISPA_STD::Node<Types::PERCENT_SIGN> value_PERCENT_SIGN;
-	::ISPA_STD::Node<Types::name> value_name;
-	value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::fail_capture", "PERCENT_SIGN"));
-	value_name = optional<Types::name>(pos, [this](auto cursor) { return this->name(cursor); });
-	Types::rule::value::fail_capture result;
-	::ISPA_STD::assign_compatible(result.value, value_name);
-	::ISPA_STD::MatchResult<Types::rule::value::fail_capture, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueFail_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueFail_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::fail_capture, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleAstFullPart(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, IT> {
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::COLON> value_COLON;
-	::ISPA_STD::Node<Types::expr> value_expr;
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::full::part", "ID"));
-	skip_spaces<Types::__WS>(pos);
-	value_COLON = required<Types::COLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::full::part", "COLON"));
-	skip_spaces<Types::__WS>(pos);
-	value_expr = required<Types::expr>(pos, [this](auto cursor) { return this->expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::full::part", "expr"));
-	Types::rule::ast::full::part result;
-	::ISPA_STD::assign_compatible(result.key, value_ID);
-	::ISPA_STD::assign_compatible(result.e, value_expr);
-	::ISPA_STD::MatchResult<Types::rule::ast::full::part, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleAstFullPart<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleAstFullPart<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full::part, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT> {
-	::ISPA_STD::Node<Types::PY_RAW> value_PY_RAW;
-	value_PY_RAW = required<Types::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("expr", "PY_RAW"));
-	Types::expr result;
-	::ISPA_STD::assign_compatible(result.value, value_PY_RAW);
-	::ISPA_STD::MatchResult<Types::expr, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueOne_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, IT> {
-	::ISPA_STD::Node<Types::rule::value::var_capture> value_rule_value_var_capture;
-	::ISPA_STD::Node<Types::rule::value::ast_capture> value_rule_value_ast_capture;
-	::ISPA_STD::Node<Types::rule::value::fail_capture> value_rule_value_fail_capture;
-	::ISPA_STD::Node<Types::rule::value::pattern> value_rule_value_pattern;
-	std::vector<::ISPA_STD::Node<Types::rule::value::alternative>> value_list_rule_value_alternative;
-	::ISPA_STD::Node<Types::rule::value::counter> value_rule_value_counter;
-	::ISPA_STD::Node<Types::rule::value::shared_counter_registration> value_rule_value_shared_counter_registration;
-	value_rule_value_var_capture = optional<Types::rule::value::var_capture>(pos, [this](auto cursor) { return this->ruleValueVar_capture(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_ast_capture = optional<Types::rule::value::ast_capture>(pos, [this](auto cursor) { return this->ruleValueAst_capture(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_fail_capture = optional<Types::rule::value::fail_capture>(pos, [this](auto cursor) { return this->ruleValueFail_capture(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_pattern = required<Types::rule::value::pattern>(pos, [this](auto cursor) { return this->ruleValuePattern(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::one_capture", "rule::value::pattern"));
-	skip_spaces<Types::__WS>(pos);
-	value_list_rule_value_alternative = range_optional<Types::rule::value::alternative, Types::__WS>(pos, [this](auto cursor) { return this->ruleValueAlternative(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_counter = optional<Types::rule::value::counter>(pos, [this](auto cursor) { return this->ruleValueCounter(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_shared_counter_registration = optional<Types::rule::value::shared_counter_registration>(pos, [this](auto cursor) { return this->ruleValueShared_counter_registration(cursor); });
-	Types::rule::value::one_capture result;
-	::ISPA_STD::assign_compatible(result.v_cap, value_rule_value_var_capture);
-	::ISPA_STD::assign_compatible(result.ast_cap, value_rule_value_ast_capture);
-	::ISPA_STD::assign_compatible(result.fail_cap, value_rule_value_fail_capture);
-	::ISPA_STD::assign_compatible(result.val, value_rule_value_pattern);
-	::ISPA_STD::assign_compatible(result.alts, value_list_rule_value_alternative);
-	::ISPA_STD::assign_compatible(result.quantifier, value_rule_value_counter);
-	::ISPA_STD::assign_compatible(result.registration, value_rule_value_shared_counter_registration);
-	::ISPA_STD::MatchResult<Types::rule::value::one_capture, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueOne_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueOne_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::one_capture, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::rule(IT pos) -> ::ISPA_STD::MatchResult<Types::rule, IT> {
-	::ISPA_STD::Node<Types::COLON> value_COLON;
-	std::vector<::ISPA_STD::Node<Types::rule::value>> value_list_rule_value;
-	::ISPA_STD::Node<Types::rule::ast> value_rule_ast;
-	::ISPA_STD::Node<Types::rule::f_binding> value_rule_f_binding;
-	std::vector<::ISPA_STD::Node<Types::rule::nested_rule>> value_list_rule_nested_rule;
-	::ISPA_STD::Node<Types::SEMICOLON> value_SEMICOLON;
-	value_COLON = required<Types::COLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule", "COLON"));
-	skip_spaces<Types::__WS>(pos);
-	value_list_rule_value = range<Types::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->ruleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule", "rule::value"));
-	skip_spaces<Types::__WS>(pos);
-	value_rule_ast = optional<Types::rule::ast>(pos, [this](auto cursor) { return this->ruleAst(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_rule_f_binding = optional<Types::rule::f_binding>(pos, [this](auto cursor) { return this->ruleF_binding(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_list_rule_nested_rule = range_optional<Types::rule::nested_rule, Types::__WS>(pos, [this](auto cursor) { return this->ruleNested_rule(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_SEMICOLON = required<Types::SEMICOLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule", "SEMICOLON"));
-	Types::rule result;
-	::ISPA_STD::assign_compatible(result.v, value_list_rule_value);
-	::ISPA_STD::assign_compatible(result.ast_pointer, value_rule_ast);
-	::ISPA_STD::assign_compatible(result.fail_pointer, value_rule_f_binding);
-	::ISPA_STD::assign_compatible(result.nested, value_list_rule_nested_rule);
-	::ISPA_STD::MatchResult<Types::rule, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::grammarModifier(IT pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, IT> {
-	::ISPA_STD::Node<Types::grammar::modifier::AUTO> value_grammar_modifier_AUTO;
-	::ISPA_STD::Node<Types::grammar::modifier::MOD> value_grammar_modifier_MOD;
-	::ISPA_STD::Node<Types::grammar::modifier::RIGHT_SQUARE_BRACKET> value_grammar_modifier_RIGHT_SQUARE_BRACKET;
-	value_grammar_modifier_AUTO = required<Types::grammar::modifier::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::grammar::modifier::MOD::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("grammar::modifier", "grammar::modifier::AUTO"));
-	skip_spaces<Types::__WS>(pos);
-	value_grammar_modifier_MOD = required<Types::grammar::modifier::MOD>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::grammar::modifier::MOD::id>, ISPA_STD::Recovery::Tokens<Tokens::grammar::modifier::RIGHT_SQUARE_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("grammar::modifier", "grammar::modifier::MOD"));
-	skip_spaces<Types::__WS>(pos);
-	value_grammar_modifier_RIGHT_SQUARE_BRACKET = required<Types::grammar::modifier::RIGHT_SQUARE_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::grammar::modifier::RIGHT_SQUARE_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("grammar::modifier", "grammar::modifier::RIGHT_SQUARE_BRACKET"));
-	Types::grammar::modifier result;
-	::ISPA_STD::assign_compatible(result.value, value_grammar_modifier_MOD);
-	::ISPA_STD::MatchResult<Types::grammar::modifier, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::grammarModifier<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::grammarModifier<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar::modifier, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::grammar(IT pos) -> ::ISPA_STD::MatchResult<Types::grammar, IT> {
-	std::vector<::ISPA_STD::Node<Types::grammar::modifier>> value_list_grammar_modifier;
-	::ISPA_STD::Node<Types::name> value_name;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule>, ::ISPA_STD::Node<Types::advanced_rule>> choice0;
-	bool matched0;
-	::ISPA_STD::Node<Types::rule> value_rule;
-	::ISPA_STD::Node<Types::advanced_rule> value_advanced_rule;
-	value_list_grammar_modifier = range_optional<Types::grammar::modifier, Types::__WS>(pos, [this](auto cursor) { return this->grammarModifier(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_name = required<Types::name>(pos, [this](auto cursor) { return this->name(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("grammar", "name"));
-	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( rule |  advanced_rule)`: choice; alternative selected by LL(1) lookahead
-	matched0 = false;
-	auto la0_1 = pos;
-	switch ((*la0_1).kind()) {
-		case Tokens::COLON::id: {
-			value_rule = required<Types::rule>(la0_1, [this](auto cursor) { return this->rule(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("grammar", "<group>"));
-			choice0 = value_rule;
-			matched0 = true;
-			break;
-		}
-		case Tokens::LEFT_CURLY_BRACKET::id: {
-			value_advanced_rule = required<Types::advanced_rule>(la0_1, [this](auto cursor) { return this->advanced_rule(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("grammar", "<group>"));
-			choice0 = value_advanced_rule;
-			matched0 = true;
-			break;
-		}
-	}
-	pos = la0_1;
-	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: COLON, LEFT_CURLY_BRACKET");
-		return {};
-	}
-	Types::grammar result;
-	::ISPA_STD::assign_compatible(result.mod, value_list_grammar_modifier);
-	::ISPA_STD::assign_compatible(result.name, value_name);
-	::ISPA_STD::assign_compatible(result.entry, choice0);
-	::ISPA_STD::MatchResult<Types::grammar, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::grammar<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::grammar<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::grammar, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValue(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::rule::value::one_capture>, ::ISPA_STD::Node<Types::rule::value::mul_capture>> choice0;
-	bool matched0;
-	::ISPA_STD::Node<Types::rule::value::one_capture> value_rule_value_one_capture;
-	::ISPA_STD::Node<Types::rule::value::mul_capture> value_rule_value_mul_capture;
-	// grammar `@  ( rule::value::one_capture |  rule::value::mul_capture)`: choice; alternative selected by LL(2) lookahead
-	matched0 = false;
-	auto la0_1 = pos;
-	switch ((*la0_1).kind()) {
-		case Tokens::AMPERSAND::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
@@ -2312,71 +2253,71 @@ template<typename IT, class> auto Parser::Parser::ruleValue(IT pos) -> ::ISPA_ST
 			switch ((*la0_2).kind()) {
 				case Tokens::EQUALS_SIGN::id: {
 					la0_2 = la0_1;
-					value_rule_value_mul_capture = required<Types::rule::value::mul_capture>(la0_2, [this](auto cursor) { return this->ruleValueMul_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_mul_capture;
-					matched0 = true;
-					break;
-				}
-				case Tokens::ID::id: {
-					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_mul_capture = required<Types::modules::rule::value::mul_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueMul_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_mul_capture;
 					matched0 = true;
 					break;
 				}
 				case Tokens::LEFT_PARENTHESIS::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
 				case Tokens::PERCENT_SIGN::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::ANY::id: {
+				case Tokens::modules::common::ID::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::CGROUP::id: {
+				case Tokens::modules::rule::value::ANY::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::NOSPACE::id: {
+				case Tokens::modules::rule::value::CGROUP::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::SPACE::id: {
+				case Tokens::modules::rule::value::NOSPACE::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::STRING::id: {
+				case Tokens::modules::rule::value::SPACE::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::dyn::DOLLAR_SIGN::id: {
+				case Tokens::modules::rule::value::STRING::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
+					matched0 = true;
+					break;
+				}
+				case Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id: {
+					la0_2 = la0_1;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
@@ -2387,15 +2328,9 @@ template<typename IT, class> auto Parser::Parser::ruleValue(IT pos) -> ::ISPA_ST
 			la0_1 = la0_2;
 			break;
 		}
-		case Tokens::ID::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
-			matched0 = true;
-			break;
-		}
 		case Tokens::LEFT_PARENTHESIS::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
@@ -2406,64 +2341,64 @@ template<typename IT, class> auto Parser::Parser::ruleValue(IT pos) -> ::ISPA_ST
 			switch ((*la0_2).kind()) {
 				case Tokens::EQUALS_SIGN::id: {
 					la0_2 = la0_1;
-					value_rule_value_mul_capture = required<Types::rule::value::mul_capture>(la0_2, [this](auto cursor) { return this->ruleValueMul_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_mul_capture;
-					matched0 = true;
-					break;
-				}
-				case Tokens::ID::id: {
-					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_mul_capture = required<Types::modules::rule::value::mul_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueMul_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_mul_capture;
 					matched0 = true;
 					break;
 				}
 				case Tokens::LEFT_PARENTHESIS::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::ANY::id: {
+				case Tokens::modules::common::ID::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::CGROUP::id: {
+				case Tokens::modules::rule::value::ANY::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::NOSPACE::id: {
+				case Tokens::modules::rule::value::CGROUP::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::SPACE::id: {
+				case Tokens::modules::rule::value::NOSPACE::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::STRING::id: {
+				case Tokens::modules::rule::value::SPACE::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
-				case Tokens::rule::value::dyn::DOLLAR_SIGN::id: {
+				case Tokens::modules::rule::value::STRING::id: {
 					la0_2 = la0_1;
-					value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-					choice0 = value_rule_value_one_capture;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
+					matched0 = true;
+					break;
+				}
+				case Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id: {
+					la0_2 = la0_1;
+					value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_2, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+					choice0 = value_modules_rule_value_one_capture;
 					matched0 = true;
 					break;
 				}
@@ -2474,682 +2409,413 @@ template<typename IT, class> auto Parser::Parser::ruleValue(IT pos) -> ::ISPA_ST
 			la0_1 = la0_2;
 			break;
 		}
-		case Tokens::rule::value::ANY::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::common::ID::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
-		case Tokens::rule::value::CGROUP::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::rule::value::ANY::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
-		case Tokens::rule::value::NOSPACE::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::rule::value::CGROUP::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
-		case Tokens::rule::value::SPACE::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::rule::value::NOSPACE::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
-		case Tokens::rule::value::STRING::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::rule::value::SPACE::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
-		case Tokens::rule::value::dyn::DOLLAR_SIGN::id: {
-			value_rule_value_one_capture = required<Types::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->ruleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value", "<group>"));
-			choice0 = value_rule_value_one_capture;
+		case Tokens::modules::rule::value::STRING::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id: {
+			value_modules_rule_value_one_capture = required<Types::modules::rule::value::one_capture>(la0_1, [this](auto cursor) { return this->modulesRuleValueOne_capture(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value", "<group>"));
+			choice0 = value_modules_rule_value_one_capture;
 			matched0 = true;
 			break;
 		}
 	}
 	pos = la0_1;
 	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: AMPERSAND, COMMERCIAL_AT, ID, LEFT_PARENTHESIS, PERCENT_SIGN, rule.value.ANY, rule.value.CGROUP, rule.value.NOSPACE, rule.value.SPACE, rule.value.STRING, rule.value.dyn.DOLLAR_SIGN");
+		raise_error(*pos, "ISPA match failure: expected one of: AMPERSAND, COMMERCIAL_AT, LEFT_PARENTHESIS, PERCENT_SIGN, modules.common.ID, modules.rule.value.ANY, modules.rule.value.CGROUP, modules.rule.value.NOSPACE, modules.rule.value.SPACE, modules.rule.value.STRING, modules.rule.value.dyn.DOLLAR_SIGN");
 		return {};
 	}
-	Types::rule::value result;
+	Types::modules::rule::value result;
 	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::value, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::rule::value, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValue<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValue<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueCounterBounded(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, IT> {
+template auto Parser::Parser::modulesRuleValue<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValue<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueCounterBounded(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter::bounded, IT> {
 	::ISPA_STD::Node<Types::EQUALS_SIGN> value_EQUALS_SIGN;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::NUMBER>, ::ISPA_STD::Node<Types::ID>, ::ISPA_STD::Node<Types::expr>> choice0;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::common::NUMBER>, ::ISPA_STD::Node<Types::modules::common::ID>, ::ISPA_STD::Node<Types::modules::common::expr>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::NUMBER> value_NUMBER;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::expr> value_expr;
-	value_EQUALS_SIGN = required<Types::EQUALS_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::NUMBER::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::counter::bounded", "EQUALS_SIGN"));
+	::ISPA_STD::Node<Types::modules::common::NUMBER> value_modules_common_NUMBER;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::modules::common::expr> value_modules_common_expr;
+	value_EQUALS_SIGN = required<Types::EQUALS_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::EQUALS_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::common::NUMBER::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::counter::bounded", "EQUALS_SIGN"));
 	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( NUMBER |  ID |  expr)`: choice; alternative selected by LL(1) lookahead
+	// grammar `@  ( modules::common::NUMBER |  modules::common::ID |  modules::common::expr)`: choice; alternative selected by LL(1) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
-		case Tokens::ID::id: {
-			value_ID = required<Types::ID>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::NUMBER::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::counter::bounded", "<group>"));
-			choice0 = value_ID;
+		case Tokens::modules::common::ID::id: {
+			value_modules_common_ID = required<Types::modules::common::ID>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::common::NUMBER::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::counter::bounded", "<group>"));
+			choice0 = value_modules_common_ID;
 			matched0 = true;
 			break;
 		}
-		case Tokens::NUMBER::id: {
-			value_NUMBER = required<Types::NUMBER>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::NUMBER::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::counter::bounded", "<group>"));
-			choice0 = value_NUMBER;
+		case Tokens::modules::common::NUMBER::id: {
+			value_modules_common_NUMBER = required<Types::modules::common::NUMBER>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::common::NUMBER::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::counter::bounded", "<group>"));
+			choice0 = value_modules_common_NUMBER;
 			matched0 = true;
 			break;
 		}
-		case Tokens::PY_RAW::id: {
-			value_expr = required<Types::expr>(la0_1, [this](auto cursor) { return this->expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::NUMBER::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::counter::bounded", "<group>"));
-			choice0 = value_expr;
+		case Tokens::modules::common::PY_RAW::id: {
+			value_modules_common_expr = required<Types::modules::common::expr>(la0_1, [this](auto cursor) { return this->modulesCommonExpr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::common::NUMBER::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::counter::bounded", "<group>"));
+			choice0 = value_modules_common_expr;
 			matched0 = true;
 			break;
 		}
 	}
 	pos = la0_1;
 	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: NUMBER, ID, PY_RAW");
+		raise_error(*pos, "ISPA match failure: expected one of: modules.common.NUMBER, modules.common.ID, modules.common.PY_RAW");
 		return {};
 	}
-	Types::rule::value::counter::bounded result;
+	Types::modules::rule::value::counter::bounded result;
 	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::rule::value::counter::bounded, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleValueCounterBounded<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueCounterBounded<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::counter::bounded, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::param(IT pos) -> ::ISPA_STD::MatchResult<Types::param, IT> {
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::COMMA> value_COMMA;
-	::ISPA_STD::Node<Types::ID> value_ID_1;
-	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>> group0;
-	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>>> group_list1;
-	std::vector<::ISPA_STD::Node<Types::ID>> capture_list2;
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("param", "ID"));
+template auto Parser::Parser::modulesRuleValueCounterBounded<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter::bounded, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueCounterBounded<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::counter::bounded, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleAstFullPart(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full::part, IT> {
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::COLON> value_COLON;
+	::ISPA_STD::Node<Types::modules::common::expr> value_modules_common_expr;
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::full::part", "modules::common::ID"));
 	skip_spaces<Types::__WS>(pos);
-	// grammar ` ( COMMA  __WS?; @  ID)*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::COMMA::id)) {
-		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("param", "<group>"));
-		skip_spaces<Types::__WS>(pos);
-		value_ID_1 = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("param", "<group>"));
-		group0 = std::make_pair(value_COMMA, value_ID_1);
-		group_list1.push_back(group0);
-		capture_list2.push_back(value_ID_1);
-		skip_spaces<Types::__WS>(pos);
-	}
-	Types::param result;
-	::ISPA_STD::assign_compatible(result.first_p, value_ID);
-	::ISPA_STD::assign_compatible(result.following_p, capture_list2);
-	::ISPA_STD::MatchResult<Types::param, IT> match_result;
+	value_COLON = required<Types::COLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::full::part", "COLON"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_expr = required<Types::modules::common::expr>(pos, [this](auto cursor) { return this->modulesCommonExpr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::full::part", "modules::common::expr"));
+	Types::modules::rule::ast::full::part result;
+	::ISPA_STD::assign_compatible(result.key, value_modules_common_ID);
+	::ISPA_STD::assign_compatible(result.e, value_modules_common_expr);
+	::ISPA_STD::MatchResult<Types::modules::rule::ast::full::part, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::param<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::param, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::param<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::param, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValuePattern(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::name>, ::ISPA_STD::Node<Types::rule::value::group>, ::ISPA_STD::Node<Types::rule::value::dyn>, ::ISPA_STD::Node<Types::rule::value::STRING>, ::ISPA_STD::Node<Types::rule::value::CGROUP>, ::ISPA_STD::Node<Types::rule::value::ANY>, ::ISPA_STD::Node<Types::rule::value::SPACE>, ::ISPA_STD::Node<Types::rule::value::NOSPACE>> choice0;
+template auto Parser::Parser::modulesRuleAstFullPart<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full::part, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleAstFullPart<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::full::part, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleDep_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::dep_decl, IT> {
+	::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS> value_modules_advanced_rule_advanced_rule_dep_decl_DEPENDS;
+	::ISPA_STD::Node<Types::modules::common::forward_declaration> value_modules_common_forward_declaration;
+	value_modules_advanced_rule_advanced_rule_dep_decl_DEPENDS = required<Types::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule::dep_decl", "modules::advanced_rule::advanced_rule::dep_decl::DEPENDS"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_forward_declaration = required<Types::modules::common::forward_declaration>(pos, [this](auto cursor) { return this->modulesCommonForward_declaration(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule::dep_decl", "modules::common::forward_declaration"));
+	Types::modules::advanced_rule::advanced_rule::dep_decl result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_forward_declaration);
+	::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::dep_decl, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleDep_decl<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::dep_decl, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleDep_decl<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::dep_decl, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleAst(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::rule::ast::abbr>, ::ISPA_STD::Node<Types::modules::rule::ast::full>, ::ISPA_STD::Node<Types::modules::rule::ast::single_value>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::name> value_name;
-	::ISPA_STD::Node<Types::rule::value::group> value_rule_value_group;
-	::ISPA_STD::Node<Types::rule::value::dyn> value_rule_value_dyn;
-	::ISPA_STD::Node<Types::rule::value::STRING> value_rule_value_STRING;
-	::ISPA_STD::Node<Types::rule::value::CGROUP> value_rule_value_CGROUP;
-	::ISPA_STD::Node<Types::rule::value::ANY> value_rule_value_ANY;
-	::ISPA_STD::Node<Types::rule::value::SPACE> value_rule_value_SPACE;
-	::ISPA_STD::Node<Types::rule::value::NOSPACE> value_rule_value_NOSPACE;
-	// grammar `@  ( name |  rule::value::group |  rule::value::dyn |  rule::value::STRING |  rule::value::CGROUP |  rule::value::ANY |  rule::value::SPACE |  rule::value::NOSPACE)`: choice; alternative selected by LL(1) lookahead
+	::ISPA_STD::Node<Types::modules::rule::ast::abbr> value_modules_rule_ast_abbr;
+	::ISPA_STD::Node<Types::modules::rule::ast::full> value_modules_rule_ast_full;
+	::ISPA_STD::Node<Types::modules::rule::ast::single_value> value_modules_rule_ast_single_value;
+	// grammar `@  ( modules::rule::ast::abbr |  modules::rule::ast::full |  modules::rule::ast::single_value)`: choice; alternative selected by LL(1) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
-		case Tokens::ID::id: {
-			value_name = required<Types::name>(la0_1, [this](auto cursor) { return this->name(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_name;
+		case Tokens::AMPERSAND::id: {
+			value_modules_rule_ast_full = required<Types::modules::rule::ast::full>(la0_1, [this](auto cursor) { return this->modulesRuleAstFull(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast", "<group>"));
+			choice0 = value_modules_rule_ast_full;
 			matched0 = true;
 			break;
 		}
-		case Tokens::LEFT_PARENTHESIS::id: {
-			value_rule_value_group = required<Types::rule::value::group>(la0_1, [this](auto cursor) { return this->ruleValueGroup(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_group;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::ANY::id: {
-			value_rule_value_ANY = required<Types::rule::value::ANY>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_ANY;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::CGROUP::id: {
-			value_rule_value_CGROUP = required<Types::rule::value::CGROUP>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_CGROUP;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::NOSPACE::id: {
-			value_rule_value_NOSPACE = required<Types::rule::value::NOSPACE>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_NOSPACE;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::SPACE::id: {
-			value_rule_value_SPACE = required<Types::rule::value::SPACE>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_SPACE;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::STRING::id: {
-			value_rule_value_STRING = required<Types::rule::value::STRING>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_STRING;
-			matched0 = true;
-			break;
-		}
-		case Tokens::rule::value::dyn::DOLLAR_SIGN::id: {
-			value_rule_value_dyn = required<Types::rule::value::dyn>(la0_1, [this](auto cursor) { return this->ruleValueDyn(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::pattern", "<group>"));
-			choice0 = value_rule_value_dyn;
-			matched0 = true;
-			break;
-		}
-	}
-	pos = la0_1;
-	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: ID, LEFT_PARENTHESIS, rule.value.dyn.DOLLAR_SIGN, rule.value.STRING, rule.value.CGROUP, rule.value.ANY, rule.value.SPACE, rule.value.NOSPACE");
-		return {};
-	}
-	Types::rule::value::pattern result;
-	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::value::pattern, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValuePattern<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValuePattern<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::pattern, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::template_params(IT pos) -> ::ISPA_STD::MatchResult<Types::template_params, IT> {
-	::ISPA_STD::Node<Types::template_params::LESS_THAN_SIGN> value_template_params_LESS_THAN_SIGN;
-	::ISPA_STD::Node<Types::param> value_param;
-	::ISPA_STD::Node<Types::GREATER_THAN_SIGN> value_GREATER_THAN_SIGN;
-	value_template_params_LESS_THAN_SIGN = required<Types::template_params::LESS_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("template_params", "template_params::LESS_THAN_SIGN"));
-	skip_spaces<Types::__WS>(pos);
-	value_param = optional<Types::param>(pos, [this](auto cursor) { return this->param(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_GREATER_THAN_SIGN = required<Types::GREATER_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("template_params", "GREATER_THAN_SIGN"));
-	Types::template_params result;
-	::ISPA_STD::assign_compatible(result.value, value_param);
-	::ISPA_STD::MatchResult<Types::template_params, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::template_params<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::template_params, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::template_params<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::template_params, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::fail_block(IT pos) -> ::ISPA_STD::MatchResult<Types::fail_block, IT> {
-	::ISPA_STD::Node<Types::FAIL> value_FAIL;
-	::ISPA_STD::Node<Types::name> value_name;
-	::ISPA_STD::Node<Types::stmt> value_stmt;
-	value_FAIL = required<Types::FAIL>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FAIL::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("fail_block", "FAIL"));
-	skip_spaces<Types::__WS>(pos);
-	value_name = required<Types::name>(pos, [this](auto cursor) { return this->name(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("fail_block", "name"));
-	skip_spaces<Types::__WS>(pos);
-	value_stmt = required<Types::stmt>(pos, [this](auto cursor) { return this->stmt(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("fail_block", "stmt"));
-	Types::fail_block result;
-	::ISPA_STD::assign_compatible(result.name, value_name);
-	::ISPA_STD::assign_compatible(result.val, value_stmt);
-	::ISPA_STD::MatchResult<Types::fail_block, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::fail_block<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::fail_block, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::fail_block<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::fail_block, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleAstAbbr(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, IT> {
-	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
-	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::COMMA> value_COMMA;
-	::ISPA_STD::Node<Types::ID> value_ID_1;
-	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>> group0;
-	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::ID>>> group_list1;
-	std::vector<::ISPA_STD::Node<Types::ID>> capture_list2;
-	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::abbr", "COMMERCIAL_AT"));
-	skip_spaces<Types::__WS>(pos);
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::abbr", "LEFT_CURLY_BRACKET"));
-	skip_spaces<Types::__WS>(pos);
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::abbr", "ID"));
-	skip_spaces<Types::__WS>(pos);
-	// grammar ` ( COMMA  __WS?; @  ID)*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::COMMA::id)) {
-		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::abbr", "<group>"));
-		skip_spaces<Types::__WS>(pos);
-		value_ID_1 = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::abbr", "<group>"));
-		group0 = std::make_pair(value_COMMA, value_ID_1);
-		group_list1.push_back(group0);
-		capture_list2.push_back(value_ID_1);
-		skip_spaces<Types::__WS>(pos);
-	}
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::abbr", "RIGHT_CURLY_BRACKET"));
-	Types::rule::ast::abbr result;
-	::ISPA_STD::assign_compatible(result.f, value_ID);
-	::ISPA_STD::assign_compatible(result.seq, capture_list2);
-	::ISPA_STD::MatchResult<Types::rule::ast::abbr, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleAstAbbr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleAstAbbr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::abbr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::params(IT pos) -> ::ISPA_STD::MatchResult<Types::params, IT> {
-	::ISPA_STD::Node<Types::GREATER_THAN_SIGN> value_GREATER_THAN_SIGN;
-	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> value_LEFT_PARENTHESIS;
-	::ISPA_STD::Node<Types::param> value_param;
-	::ISPA_STD::Node<Types::RIGHT_PARENTHESIS> value_RIGHT_PARENTHESIS;
-	value_GREATER_THAN_SIGN = required<Types::GREATER_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("params", "GREATER_THAN_SIGN"));
-	skip_spaces<Types::__WS>(pos);
-	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("params", "LEFT_PARENTHESIS"));
-	skip_spaces<Types::__WS>(pos);
-	value_param = optional<Types::param>(pos, [this](auto cursor) { return this->param(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("params", "RIGHT_PARENTHESIS"));
-	Types::params result;
-	::ISPA_STD::assign_compatible(result.value, value_param);
-	::ISPA_STD::MatchResult<Types::params, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::params<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::params, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::params<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::params, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueAlternative(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, IT> {
-	::ISPA_STD::Node<Types::rule::value::alternative::VERTICAL_LINE> value_rule_value_alternative_VERTICAL_LINE;
-	::ISPA_STD::Node<Types::rule::value::pattern> value_rule_value_pattern;
-	value_rule_value_alternative_VERTICAL_LINE = required<Types::rule::value::alternative::VERTICAL_LINE>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::rule::value::alternative::VERTICAL_LINE::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::alternative", "rule::value::alternative::VERTICAL_LINE"));
-	skip_spaces<Types::__WS>(pos);
-	value_rule_value_pattern = required<Types::rule::value::pattern>(pos, [this](auto cursor) { return this->ruleValuePattern(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::value::alternative", "rule::value::pattern"));
-	Types::rule::value::alternative result;
-	::ISPA_STD::assign_compatible(result.value, value_rule_value_pattern);
-	::ISPA_STD::MatchResult<Types::rule::value::alternative, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueAlternative<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueAlternative<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::alternative, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleAstFull(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, IT> {
-	::ISPA_STD::Node<Types::AMPERSAND> value_AMPERSAND;
-	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	std::vector<::ISPA_STD::Node<Types::rule::ast::full::part>> value_list_rule_ast_full_part;
-	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_AMPERSAND = required<Types::AMPERSAND>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::full", "AMPERSAND"));
-	skip_spaces<Types::__WS>(pos);
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::full", "LEFT_CURLY_BRACKET"));
-	skip_spaces<Types::__WS>(pos);
-	value_list_rule_ast_full_part = range<Types::rule::ast::full::part, Types::__WS>(pos, [this](auto cursor) { return this->ruleAstFullPart(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::full", "rule::ast::full::part"));
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::full", "RIGHT_CURLY_BRACKET"));
-	Types::rule::ast::full result;
-	::ISPA_STD::assign_compatible(result.value, value_list_rule_ast_full_part);
-	::ISPA_STD::MatchResult<Types::rule::ast::full, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleAstFull<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleAstFull<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::full, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::forward_declaration(IT pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, IT> {
-	::ISPA_STD::Node<Types::PY_RAW> value_PY_RAW;
-	value_PY_RAW = required<Types::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("forward_declaration", "PY_RAW"));
-	Types::forward_declaration result;
-	::ISPA_STD::MatchResult<Types::forward_declaration, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::forward_declaration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::forward_declaration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::forward_declaration, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::name(IT pos) -> ::ISPA_STD::MatchResult<Types::name, IT> {
-	::ISPA_STD::Node<Types::ID> value_ID;
-	::ISPA_STD::Node<Types::AUTO> value_AUTO;
-	::ISPA_STD::Node<Types::ID> value_ID_1;
-	std::pair<::ISPA_STD::Node<Types::AUTO>, ::ISPA_STD::Node<Types::ID>> group0;
-	std::vector<std::pair<::ISPA_STD::Node<Types::AUTO>, ::ISPA_STD::Node<Types::ID>>> group_list1;
-	std::vector<::ISPA_STD::Node<Types::ID>> capture_list2;
-	::ISPA_STD::Node<Types::template_params> value_template_params;
-	::ISPA_STD::Node<Types::params> value_params;
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id, Tokens::template_params::LESS_THAN_SIGN::id, ISPA_STD::Recovery::EndOfInput>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("name", "ID"));
-	skip_spaces<Types::__WS>(pos);
-	// grammar ` ( AUTO  __WS?; @  ID)*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::AUTO::id)) {
-		value_AUTO = required<Types::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id, Tokens::template_params::LESS_THAN_SIGN::id, ISPA_STD::Recovery::EndOfInput>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("name", "<group>"));
-		skip_spaces<Types::__WS>(pos);
-		value_ID_1 = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id, Tokens::template_params::LESS_THAN_SIGN::id, ISPA_STD::Recovery::EndOfInput>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::PY_RAW::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::QUANTIFIER::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::alternative::VERTICAL_LINE::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id, Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("name", "<group>"));
-		group0 = std::make_pair(value_AUTO, value_ID_1);
-		group_list1.push_back(group0);
-		capture_list2.push_back(value_ID_1);
-		skip_spaces<Types::__WS>(pos);
-	}
-	skip_spaces<Types::__WS>(pos);
-	value_template_params = optional<Types::template_params>(pos, [this](auto cursor) { return this->template_params(cursor); });
-	skip_spaces<Types::__WS>(pos);
-	value_params = optional<Types::params>(pos, [this](auto cursor) { return this->params(cursor); });
-	Types::name result;
-	::ISPA_STD::assign_compatible(result.primary, value_ID);
-	::ISPA_STD::assign_compatible(result.nested, capture_list2);
-	::ISPA_STD::assign_compatible(result.temp_params, value_template_params);
-	::ISPA_STD::assign_compatible(result.param, value_params);
-	::ISPA_STD::MatchResult<Types::name, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::name<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::name, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::name<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::name, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::stmt, IT> {
-	::ISPA_STD::Node<Types::PY_RAW> value_PY_RAW;
-	value_PY_RAW = required<Types::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("stmt", "PY_RAW"));
-	Types::stmt result;
-	::ISPA_STD::assign_compatible(result.value, value_PY_RAW);
-	::ISPA_STD::MatchResult<Types::stmt, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::stmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::stmt, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::stmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::stmt, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::advanced_ruleFail_call(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, IT> {
-	::ISPA_STD::Node<Types::FAIL> value_FAIL;
-	::ISPA_STD::Node<Types::name> value_name;
-	value_FAIL = required<Types::FAIL>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FAIL::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule::fail_call", "FAIL"));
-	skip_spaces<Types::__WS>(pos);
-	value_name = required<Types::name>(pos, [this](auto cursor) { return this->name(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule::fail_call", "name"));
-	Types::advanced_rule::fail_call result;
-	::ISPA_STD::assign_compatible(result.value, value_name);
-	::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::advanced_ruleFail_call<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::advanced_ruleFail_call<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::fail_call, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleAstSingle_value(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, IT> {
-	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::expr>, ::ISPA_STD::Node<Types::COMMERCIAL_AT>> choice0;
-	bool matched0;
-	::ISPA_STD::Node<Types::expr> value_expr;
-	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
-	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::single_value", "LEFT_CURLY_BRACKET"));
-	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( expr |  COMMERCIAL_AT)`: choice; alternative selected by LL(1) lookahead
-	matched0 = false;
-	auto la0_1 = pos;
-	switch ((*la0_1).kind()) {
 		case Tokens::COMMERCIAL_AT::id: {
-			value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::single_value", "<group>"));
-			choice0 = value_COMMERCIAL_AT;
+			value_modules_rule_ast_abbr = required<Types::modules::rule::ast::abbr>(la0_1, [this](auto cursor) { return this->modulesRuleAstAbbr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast", "<group>"));
+			choice0 = value_modules_rule_ast_abbr;
 			matched0 = true;
 			break;
 		}
-		case Tokens::PY_RAW::id: {
-			value_expr = required<Types::expr>(la0_1, [this](auto cursor) { return this->expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("rule::ast::single_value", "<group>"));
-			choice0 = value_expr;
+		case Tokens::LEFT_CURLY_BRACKET::id: {
+			value_modules_rule_ast_single_value = required<Types::modules::rule::ast::single_value>(la0_1, [this](auto cursor) { return this->modulesRuleAstSingle_value(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast", "<group>"));
+			choice0 = value_modules_rule_ast_single_value;
 			matched0 = true;
 			break;
 		}
 	}
 	pos = la0_1;
 	if (!matched0) {
-		raise_error(*pos, "ISPA match failure: expected one of: PY_RAW, COMMERCIAL_AT");
+		raise_error(*pos, "ISPA match failure: expected one of: COMMERCIAL_AT, AMPERSAND, LEFT_CURLY_BRACKET");
 		return {};
 	}
-	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::ast::single_value", "RIGHT_CURLY_BRACKET"));
-	Types::rule::ast::single_value result;
+	Types::modules::rule::ast result;
 	::ISPA_STD::assign_compatible(result.value, choice0);
-	::ISPA_STD::MatchResult<Types::rule::ast::single_value, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::rule::ast, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::ruleAstSingle_value<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleAstSingle_value<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::ast::single_value, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::advanced_ruleDep_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT> {
-	::ISPA_STD::Node<Types::advanced_rule::dep_decl::DEPENDS> value_advanced_rule_dep_decl_DEPENDS;
-	::ISPA_STD::Node<Types::forward_declaration> value_forward_declaration;
-	value_advanced_rule_dep_decl_DEPENDS = required<Types::advanced_rule::dep_decl::DEPENDS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::advanced_rule::dep_decl::DEPENDS::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule::dep_decl", "advanced_rule::dep_decl::DEPENDS"));
-	skip_spaces<Types::__WS>(pos);
-	value_forward_declaration = required<Types::forward_declaration>(pos, [this](auto cursor) { return this->forward_declaration(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule::dep_decl", "forward_declaration"));
-	Types::advanced_rule::dep_decl result;
-	::ISPA_STD::assign_compatible(result.value, value_forward_declaration);
-	::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::advanced_ruleDep_decl<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::advanced_ruleDep_decl<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::dep_decl, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueShared_counter_registration(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, IT> {
-	::ISPA_STD::Node<Types::rule::value::shared_counter_registration::AUTO> value_rule_value_shared_counter_registration_AUTO;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	value_rule_value_shared_counter_registration_AUTO = required<Types::rule::value::shared_counter_registration::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::shared_counter_registration", "rule::value::shared_counter_registration::AUTO"));
-	skip_spaces<Types::__WS>(pos);
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::rule::nested_rule::NUMBER_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::shared_counter_registration", "ID"));
-	Types::rule::value::shared_counter_registration result;
-	::ISPA_STD::assign_compatible(result.value, value_ID);
-	::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueShared_counter_registration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueShared_counter_registration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::shared_counter_registration, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::explicit_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, IT> {
+template auto Parser::Parser::modulesRuleAst<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleAst<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonParams(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::params, IT> {
+	::ISPA_STD::Node<Types::GREATER_THAN_SIGN> value_GREATER_THAN_SIGN;
 	::ISPA_STD::Node<Types::LEFT_PARENTHESIS> value_LEFT_PARENTHESIS;
-	::ISPA_STD::Node<Types::expr> value_expr;
+	::ISPA_STD::Node<Types::modules::common::param> value_modules_common_param;
 	::ISPA_STD::Node<Types::RIGHT_PARENTHESIS> value_RIGHT_PARENTHESIS;
-	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("explicit_expr", "LEFT_PARENTHESIS"));
+	value_GREATER_THAN_SIGN = required<Types::GREATER_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::params", "GREATER_THAN_SIGN"));
 	skip_spaces<Types::__WS>(pos);
-	value_expr = required<Types::expr>(pos, [this](auto cursor) { return this->expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("explicit_expr", "expr"));
+	value_LEFT_PARENTHESIS = required<Types::LEFT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::params", "LEFT_PARENTHESIS"));
 	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("explicit_expr", "RIGHT_PARENTHESIS"));
-	Types::explicit_expr result;
-	::ISPA_STD::assign_compatible(result.value, value_expr);
-	::ISPA_STD::MatchResult<Types::explicit_expr, IT> match_result;
+	value_modules_common_param = optional<Types::modules::common::param>(pos, [this](auto cursor) { return this->modulesCommonParam(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_PARENTHESIS = required<Types::RIGHT_PARENTHESIS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::params", "RIGHT_PARENTHESIS"));
+	Types::modules::common::params result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_param);
+	::ISPA_STD::MatchResult<Types::modules::common::params, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::explicit_expr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::explicit_expr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::explicit_expr, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::ruleValueVar_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, IT> {
-	::ISPA_STD::Node<Types::AMPERSAND> value_AMPERSAND;
-	::ISPA_STD::Node<Types::ID> value_ID;
-	value_AMPERSAND = required<Types::AMPERSAND>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::var_capture", "AMPERSAND"));
-	skip_spaces<Types::__WS>(pos);
-	value_ID = required<Types::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("rule::value::var_capture", "ID"));
-	Types::rule::value::var_capture result;
-	::ISPA_STD::assign_compatible(result.value, value_ID);
-	::ISPA_STD::MatchResult<Types::rule::value::var_capture, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::ruleValueVar_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::ruleValueVar_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::rule::value::var_capture, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT> {
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::grammar>, ::ISPA_STD::Node<Types::fail_block>> choice0;
+template auto Parser::Parser::modulesCommonParams<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::params, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonParams<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::params, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueDyn(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn, IT> {
+	::ISPA_STD::Node<Types::modules::rule::value::dyn::DOLLAR_SIGN> value_modules_rule_value_dyn_DOLLAR_SIGN;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::rule::value::dyn::dyn_expr>, ::ISPA_STD::Node<Types::modules::common::ID>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::grammar> value_grammar;
-	::ISPA_STD::Node<Types::fail_block> value_fail_block;
-	std::vector<std::variant<std::monostate, ::ISPA_STD::Node<Types::grammar>, ::ISPA_STD::Node<Types::fail_block>>> group_list1;
-	// grammar `@  ( ( grammar |  fail_block))*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::FAIL::id || (*pos).kind() == Tokens::ID::id || (*pos).kind() == Tokens::grammar::modifier::AUTO::id)) {
-		// grammar ` ( grammar |  fail_block)`: choice; alternative selected by LL(1) lookahead
-		matched0 = false;
-		auto la0_1 = pos;
-		switch ((*la0_1).kind()) {
-			case Tokens::FAIL::id: {
-				value_fail_block = required<Types::fail_block>(la0_1, [this](auto cursor) { return this->fail_block(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("main", "<group>"));
-				choice0 = value_fail_block;
-				matched0 = true;
-				break;
-			}
-			case Tokens::ID::id: {
-				value_grammar = required<Types::grammar>(la0_1, [this](auto cursor) { return this->grammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("main", "<group>"));
-				choice0 = value_grammar;
-				matched0 = true;
-				break;
-			}
-			case Tokens::grammar::modifier::AUTO::id: {
-				value_grammar = required<Types::grammar>(la0_1, [this](auto cursor) { return this->grammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("main", "<group>"));
-				choice0 = value_grammar;
-				matched0 = true;
-				break;
-			}
+	::ISPA_STD::Node<Types::modules::rule::value::dyn::dyn_expr> value_modules_rule_value_dyn_dyn_expr;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	value_modules_rule_value_dyn_DOLLAR_SIGN = required<Types::modules::rule::value::dyn::DOLLAR_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::dyn", "modules::rule::value::dyn::DOLLAR_SIGN"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar `@  ( modules::rule::value::dyn::dyn_expr |  modules::common::ID)`: choice; alternative selected by LL(1) lookahead
+	matched0 = false;
+	auto la0_1 = pos;
+	switch ((*la0_1).kind()) {
+		case Tokens::LEFT_CURLY_BRACKET::id: {
+			value_modules_rule_value_dyn_dyn_expr = required<Types::modules::rule::value::dyn::dyn_expr>(la0_1, [this](auto cursor) { return this->modulesRuleValueDynDyn_expr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::dyn", "<group>"));
+			choice0 = value_modules_rule_value_dyn_dyn_expr;
+			matched0 = true;
+			break;
 		}
-		pos = la0_1;
-		if (!matched0) {
-			raise_error(*pos, "ISPA match failure: expected one of: ID, grammar.modifier.AUTO, FAIL");
-			return {};
+		case Tokens::modules::common::ID::id: {
+			value_modules_common_ID = required<Types::modules::common::ID>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::dyn", "<group>"));
+			choice0 = value_modules_common_ID;
+			matched0 = true;
+			break;
 		}
-		group_list1.push_back(choice0);
-		skip_spaces<Types::__WS>(pos);
 	}
-	Types::main result;
-	::ISPA_STD::assign_compatible(result.value, group_list1);
-	::ISPA_STD::MatchResult<Types::main, IT> match_result;
+	pos = la0_1;
+	if (!matched0) {
+		raise_error(*pos, "ISPA match failure: expected one of: LEFT_CURLY_BRACKET, modules.common.ID");
+		return {};
+	}
+	Types::modules::rule::value::dyn result;
+	::ISPA_STD::assign_compatible(result.value, choice0);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::dyn, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::main<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::main<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::main, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::advanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, IT> {
+template auto Parser::Parser::modulesRuleValueDyn<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueDyn<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::dyn, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonTemplate_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, IT> {
+	::ISPA_STD::Node<Types::modules::common::template_params::LESS_THAN_SIGN> value_modules_common_template_params_LESS_THAN_SIGN;
+	::ISPA_STD::Node<Types::modules::common::param> value_modules_common_param;
+	::ISPA_STD::Node<Types::GREATER_THAN_SIGN> value_GREATER_THAN_SIGN;
+	value_modules_common_template_params_LESS_THAN_SIGN = required<Types::modules::common::template_params::LESS_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::template_params", "modules::common::template_params::LESS_THAN_SIGN"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_param = optional<Types::modules::common::param>(pos, [this](auto cursor) { return this->modulesCommonParam(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_GREATER_THAN_SIGN = required<Types::GREATER_THAN_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::template_params", "GREATER_THAN_SIGN"));
+	Types::modules::common::template_params result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_param);
+	::ISPA_STD::MatchResult<Types::modules::common::template_params, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonTemplate_params<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonTemplate_params<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesAdvanced_ruleAdvanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule, IT> {
 	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
-	std::vector<::ISPA_STD::Node<Types::advanced_rule::dep_decl>> value_list_advanced_rule_dep_decl;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::advanced_rule::regular_match>, ::ISPA_STD::Node<Types::stmt>> choice0;
+	std::vector<::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::dep_decl>> value_list_modules_advanced_rule_advanced_rule_dep_decl;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match>, ::ISPA_STD::Node<Types::modules::common::stmt>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::advanced_rule::regular_match> value_advanced_rule_regular_match;
-	::ISPA_STD::Node<Types::stmt> value_stmt;
-	std::vector<std::variant<std::monostate, ::ISPA_STD::Node<Types::advanced_rule::regular_match>, ::ISPA_STD::Node<Types::stmt>>> group_list1;
+	::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match> value_modules_advanced_rule_advanced_rule_regular_match;
+	::ISPA_STD::Node<Types::modules::common::stmt> value_modules_common_stmt;
+	std::vector<std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match>, ::ISPA_STD::Node<Types::modules::common::stmt>>> group_list1;
 	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
-	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::dep_decl::DEPENDS::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule", "LEFT_CURLY_BRACKET"));
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule", "LEFT_CURLY_BRACKET"));
 	skip_spaces<Types::__WS>(pos);
-	value_list_advanced_rule_dep_decl = range_optional<Types::advanced_rule::dep_decl, Types::__WS>(pos, [this](auto cursor) { return this->advanced_ruleDep_decl(cursor); });
+	value_list_modules_advanced_rule_advanced_rule_dep_decl = range_optional<Types::modules::advanced_rule::advanced_rule::dep_decl, Types::__WS>(pos, [this](auto cursor) { return this->modulesAdvanced_ruleAdvanced_ruleDep_decl(cursor); });
 	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( ( advanced_rule::regular_match |  stmt))*;`: repeat while lookahead is in FIRST
-	while (((*pos).kind() == Tokens::PY_RAW::id || (*pos).kind() == Tokens::advanced_rule::regular_match::MATCH::id)) {
-		// grammar ` ( advanced_rule::regular_match |  stmt)`: choice; alternative selected by LL(1) lookahead
+	// grammar `@  ( ( modules::advanced_rule::advanced_rule::regular_match |  modules::common::stmt))*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id || (*pos).kind() == Tokens::modules::common::PY_RAW::id)) {
+		// grammar ` ( modules::advanced_rule::advanced_rule::regular_match |  modules::common::stmt)`: choice; alternative selected by LL(1) lookahead
 		matched0 = false;
 		auto la0_1 = pos;
 		switch ((*la0_1).kind()) {
-			case Tokens::PY_RAW::id: {
-				value_stmt = required<Types::stmt>(la0_1, [this](auto cursor) { return this->stmt(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule", "<group>"));
-				choice0 = value_stmt;
+			case Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id: {
+				value_modules_advanced_rule_advanced_rule_regular_match = required<Types::modules::advanced_rule::advanced_rule::regular_match>(la0_1, [this](auto cursor) { return this->modulesAdvanced_ruleAdvanced_ruleRegular_match(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule", "<group>"));
+				choice0 = value_modules_advanced_rule_advanced_rule_regular_match;
 				matched0 = true;
 				break;
 			}
-			case Tokens::advanced_rule::regular_match::MATCH::id: {
-				value_advanced_rule_regular_match = required<Types::advanced_rule::regular_match>(la0_1, [this](auto cursor) { return this->advanced_ruleRegular_match(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule", "<group>"));
-				choice0 = value_advanced_rule_regular_match;
+			case Tokens::modules::common::PY_RAW::id: {
+				value_modules_common_stmt = required<Types::modules::common::stmt>(la0_1, [this](auto cursor) { return this->modulesCommonStmt(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule", "<group>"));
+				choice0 = value_modules_common_stmt;
 				matched0 = true;
 				break;
 			}
 		}
 		pos = la0_1;
 		if (!matched0) {
-			raise_error(*pos, "ISPA match failure: expected one of: advanced_rule.regular_match.MATCH, PY_RAW");
+			raise_error(*pos, "ISPA match failure: expected one of: modules.advanced_rule.advanced_rule.regular_match.MATCH, modules.common.PY_RAW");
 			return {};
 		}
 		group_list1.push_back(choice0);
 		skip_spaces<Types::__WS>(pos);
 	}
 	skip_spaces<Types::__WS>(pos);
-	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::FAIL::id, Tokens::ID::id, Tokens::SEMICOLON::id, Tokens::grammar::modifier::AUTO::id, Tokens::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule", "RIGHT_CURLY_BRACKET"));
-	Types::advanced_rule result;
-	::ISPA_STD::assign_compatible(result.dep, value_list_advanced_rule_dep_decl);
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule", "RIGHT_CURLY_BRACKET"));
+	Types::modules::advanced_rule::advanced_rule result;
+	::ISPA_STD::assign_compatible(result.dep, value_list_modules_advanced_rule_advanced_rule_dep_decl);
 	::ISPA_STD::assign_compatible(result.body, group_list1);
-	::ISPA_STD::MatchResult<Types::advanced_rule, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::advanced_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::advanced_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::advanced_ruleRegular_matchUnpack(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, IT> {
-	::ISPA_STD::Node<Types::AUTO> value_AUTO;
-	std::vector<::ISPA_STD::Node<Types::ID>> value_list_ID;
-	value_AUTO = required<Types::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule::regular_match::unpack", "AUTO"));
-	skip_spaces<Types::__WS>(pos);
-	value_list_ID = range<Types::ID, Types::__WS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule::regular_match::unpack", "ID"));
-	Types::advanced_rule::regular_match::unpack result;
-	::ISPA_STD::assign_compatible(result.value, value_list_ID);
-	::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, IT> match_result;
-	match_result.status = true;
-	match_result.node.set_data(result);
-	match_result.it = pos;
-	return match_result;
-}
-template auto Parser::Parser::advanced_ruleRegular_matchUnpack<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::advanced_ruleRegular_matchUnpack<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match::unpack, ::Parser::Lexer::lazy_iterator>;
-template<typename IT, class> auto Parser::Parser::advanced_ruleRegular_match(IT pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, IT> {
-	::ISPA_STD::Node<Types::advanced_rule::regular_match::MATCH> value_advanced_rule_regular_match_MATCH;
-	std::vector<::ISPA_STD::Node<Types::rule::value>> value_list_rule_value;
-	std::variant<std::monostate, ::ISPA_STD::Node<Types::advanced_rule::regular_match::unpack>, ::ISPA_STD::Node<Types::SEMICOLON>> choice0;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesGrammarGrammar(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::grammar, IT> {
+	std::vector<::ISPA_STD::Node<Types::modules::grammar::modifier>> value_list_modules_grammar_modifier;
+	::ISPA_STD::Node<Types::modules::common::name> value_modules_common_name;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::rule::rule>, ::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule>> choice0;
 	bool matched0;
-	::ISPA_STD::Node<Types::advanced_rule::regular_match::unpack> value_advanced_rule_regular_match_unpack;
+	::ISPA_STD::Node<Types::modules::rule::rule> value_modules_rule_rule;
+	::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule> value_modules_advanced_rule_advanced_rule;
+	value_list_modules_grammar_modifier = range_optional<Types::modules::grammar::modifier, Types::__WS>(pos, [this](auto cursor) { return this->modulesGrammarModifier(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_name = required<Types::modules::common::name>(pos, [this](auto cursor) { return this->modulesCommonName(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::grammar::grammar", "modules::common::name"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar `@  ( modules::rule::rule |  modules::advanced_rule::advanced_rule)`: choice; alternative selected by LL(1) lookahead
+	matched0 = false;
+	auto la0_1 = pos;
+	switch ((*la0_1).kind()) {
+		case Tokens::COLON::id: {
+			value_modules_rule_rule = required<Types::modules::rule::rule>(la0_1, [this](auto cursor) { return this->modulesRuleRule(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::grammar::grammar", "<group>"));
+			choice0 = value_modules_rule_rule;
+			matched0 = true;
+			break;
+		}
+		case Tokens::LEFT_CURLY_BRACKET::id: {
+			value_modules_advanced_rule_advanced_rule = required<Types::modules::advanced_rule::advanced_rule>(la0_1, [this](auto cursor) { return this->modulesAdvanced_ruleAdvanced_rule(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::grammar::grammar", "<group>"));
+			choice0 = value_modules_advanced_rule_advanced_rule;
+			matched0 = true;
+			break;
+		}
+	}
+	pos = la0_1;
+	if (!matched0) {
+		raise_error(*pos, "ISPA match failure: expected one of: COLON, LEFT_CURLY_BRACKET");
+		return {};
+	}
+	Types::modules::grammar::grammar result;
+	::ISPA_STD::assign_compatible(result.mod, value_list_modules_grammar_modifier);
+	::ISPA_STD::assign_compatible(result.name, value_modules_common_name);
+	::ISPA_STD::assign_compatible(result.entry, choice0);
+	::ISPA_STD::MatchResult<Types::modules::grammar::grammar, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesGrammarGrammar<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::grammar, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesGrammarGrammar<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::grammar, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesFail_blockFail_block(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, IT> {
+	::ISPA_STD::Node<Types::modules::fail_block::fail_block::FAIL> value_modules_fail_block_fail_block_FAIL;
+	::ISPA_STD::Node<Types::modules::common::name> value_modules_common_name;
+	::ISPA_STD::Node<Types::modules::common::stmt> value_modules_common_stmt;
+	value_modules_fail_block_fail_block_FAIL = required<Types::modules::fail_block::fail_block::FAIL>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::fail_block::fail_block::FAIL::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::fail_block::fail_block", "modules::fail_block::fail_block::FAIL"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_name = required<Types::modules::common::name>(pos, [this](auto cursor) { return this->modulesCommonName(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::fail_block::fail_block", "modules::common::name"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_stmt = required<Types::modules::common::stmt>(pos, [this](auto cursor) { return this->modulesCommonStmt(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::fail_block::fail_block", "modules::common::stmt"));
+	Types::modules::fail_block::fail_block result;
+	::ISPA_STD::assign_compatible(result.name, value_modules_common_name);
+	::ISPA_STD::assign_compatible(result.val, value_modules_common_stmt);
+	::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesFail_blockFail_block<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesFail_blockFail_block<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_match(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match, IT> {
+	::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match::MATCH> value_modules_advanced_rule_advanced_rule_regular_match_MATCH;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::value>> value_list_modules_rule_value;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match::unpack>, ::ISPA_STD::Node<Types::SEMICOLON>> choice0;
+	bool matched0;
+	::ISPA_STD::Node<Types::modules::advanced_rule::advanced_rule::regular_match::unpack> value_modules_advanced_rule_advanced_rule_regular_match_unpack;
 	::ISPA_STD::Node<Types::SEMICOLON> value_SEMICOLON;
-	value_advanced_rule_regular_match_MATCH = required<Types::advanced_rule::regular_match::MATCH>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("advanced_rule::regular_match", "advanced_rule::regular_match::MATCH"));
+	value_modules_advanced_rule_advanced_rule_regular_match_MATCH = required<Types::modules::advanced_rule::advanced_rule::regular_match::MATCH>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule::regular_match", "modules::advanced_rule::advanced_rule::regular_match::MATCH"));
 	skip_spaces<Types::__WS>(pos);
-	value_list_rule_value = range<Types::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->ruleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::ID::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::rule::value::ANY::id, Tokens::rule::value::CGROUP::id, Tokens::rule::value::NOSPACE::id, Tokens::rule::value::SPACE::id, Tokens::rule::value::STRING::id, Tokens::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule::regular_match", "rule::value"));
+	value_list_modules_rule_value = range<Types::modules::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule::regular_match", "modules::rule::value"));
 	skip_spaces<Types::__WS>(pos);
-	// grammar `@  ( advanced_rule::regular_match::unpack |  SEMICOLON)`: choice; alternative selected by LL(1) lookahead
+	// grammar `@  ( modules::advanced_rule::advanced_rule::regular_match::unpack |  SEMICOLON)`: choice; alternative selected by LL(1) lookahead
 	matched0 = false;
 	auto la0_1 = pos;
 	switch ((*la0_1).kind()) {
 		case Tokens::AUTO::id: {
-			value_advanced_rule_regular_match_unpack = required<Types::advanced_rule::regular_match::unpack>(la0_1, [this](auto cursor) { return this->advanced_ruleRegular_matchUnpack(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule::regular_match", "<group>"));
-			choice0 = value_advanced_rule_regular_match_unpack;
+			value_modules_advanced_rule_advanced_rule_regular_match_unpack = required<Types::modules::advanced_rule::advanced_rule::regular_match::unpack>(la0_1, [this](auto cursor) { return this->modulesAdvanced_ruleAdvanced_ruleRegular_matchUnpack(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule::regular_match", "<group>"));
+			choice0 = value_modules_advanced_rule_advanced_rule_regular_match_unpack;
 			matched0 = true;
 			break;
 		}
 		case Tokens::SEMICOLON::id: {
-			value_SEMICOLON = required<Types::SEMICOLON>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::Tokens<Tokens::PY_RAW::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::advanced_rule::regular_match::MATCH::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("advanced_rule::regular_match", "<group>"));
+			value_SEMICOLON = required<Types::SEMICOLON>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id, Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::advanced_rule::advanced_rule::regular_match", "<group>"));
 			choice0 = value_SEMICOLON;
 			matched0 = true;
 			break;
@@ -3160,17 +2826,403 @@ template<typename IT, class> auto Parser::Parser::advanced_ruleRegular_match(IT 
 		raise_error(*pos, "ISPA match failure: expected one of: AUTO, SEMICOLON");
 		return {};
 	}
-	Types::advanced_rule::regular_match result;
-	::ISPA_STD::assign_compatible(result.patterns, value_list_rule_value);
+	Types::modules::advanced_rule::advanced_rule::regular_match result;
+	::ISPA_STD::assign_compatible(result.patterns, value_list_modules_rule_value);
 	::ISPA_STD::assign_compatible(result.assign_names, choice0);
-	::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, IT> match_result;
+	::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match, IT> match_result;
 	match_result.status = true;
 	match_result.node.set_data(result);
 	match_result.it = pos;
 	return match_result;
 }
-template auto Parser::Parser::advanced_ruleRegular_match<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, ::Parser::Lexer::iterator>;
-template auto Parser::Parser::advanced_ruleRegular_match<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::advanced_rule::regular_match, ::Parser::Lexer::lazy_iterator>;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_match<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_match<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleAstSingle_value(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::single_value, IT> {
+	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::common::expr>, ::ISPA_STD::Node<Types::COMMERCIAL_AT>> choice0;
+	bool matched0;
+	::ISPA_STD::Node<Types::modules::common::expr> value_modules_common_expr;
+	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
+	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::single_value", "LEFT_CURLY_BRACKET"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar `@  ( modules::common::expr |  COMMERCIAL_AT)`: choice; alternative selected by LL(1) lookahead
+	matched0 = false;
+	auto la0_1 = pos;
+	switch ((*la0_1).kind()) {
+		case Tokens::COMMERCIAL_AT::id: {
+			value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(la0_1, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::single_value", "<group>"));
+			choice0 = value_COMMERCIAL_AT;
+			matched0 = true;
+			break;
+		}
+		case Tokens::modules::common::PY_RAW::id: {
+			value_modules_common_expr = required<Types::modules::common::expr>(la0_1, [this](auto cursor) { return this->modulesCommonExpr(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::ast::single_value", "<group>"));
+			choice0 = value_modules_common_expr;
+			matched0 = true;
+			break;
+		}
+	}
+	pos = la0_1;
+	if (!matched0) {
+		raise_error(*pos, "ISPA match failure: expected one of: modules.common.PY_RAW, COMMERCIAL_AT");
+		return {};
+	}
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::ast::single_value", "RIGHT_CURLY_BRACKET"));
+	Types::modules::rule::ast::single_value result;
+	::ISPA_STD::assign_compatible(result.value, choice0);
+	::ISPA_STD::MatchResult<Types::modules::rule::ast::single_value, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleAstSingle_value<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::single_value, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleAstSingle_value<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::ast::single_value, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesGrammarModifier(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::modifier, IT> {
+	::ISPA_STD::Node<Types::modules::grammar::modifier::AUTO> value_modules_grammar_modifier_AUTO;
+	::ISPA_STD::Node<Types::modules::grammar::modifier::MOD> value_modules_grammar_modifier_MOD;
+	::ISPA_STD::Node<Types::modules::grammar::modifier::RIGHT_SQUARE_BRACKET> value_modules_grammar_modifier_RIGHT_SQUARE_BRACKET;
+	value_modules_grammar_modifier_AUTO = required<Types::modules::grammar::modifier::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::grammar::modifier::MOD::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::grammar::modifier", "modules::grammar::modifier::AUTO"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_grammar_modifier_MOD = required<Types::modules::grammar::modifier::MOD>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::grammar::modifier::MOD::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::grammar::modifier::RIGHT_SQUARE_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::grammar::modifier", "modules::grammar::modifier::MOD"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_grammar_modifier_RIGHT_SQUARE_BRACKET = required<Types::modules::grammar::modifier::RIGHT_SQUARE_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::grammar::modifier::RIGHT_SQUARE_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::grammar::modifier", "modules::grammar::modifier::RIGHT_SQUARE_BRACKET"));
+	Types::modules::grammar::modifier result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_grammar_modifier_MOD);
+	::ISPA_STD::MatchResult<Types::modules::grammar::modifier, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesGrammarModifier<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::modifier, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesGrammarModifier<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::modifier, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonParam(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, IT> {
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::COMMA> value_COMMA;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID_1;
+	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>> group0;
+	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>>> group_list1;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> capture_list2;
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::param", "modules::common::ID"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar ` ( COMMA  __WS?; @  modules::common::ID)*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::COMMA::id)) {
+		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::param", "<group>"));
+		skip_spaces<Types::__WS>(pos);
+		value_modules_common_ID_1 = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::Tokens<Tokens::GREATER_THAN_SIGN::id, Tokens::RIGHT_PARENTHESIS::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::param", "<group>"));
+		group0 = std::make_pair(value_COMMA, value_modules_common_ID_1);
+		group_list1.push_back(group0);
+		capture_list2.push_back(value_modules_common_ID_1);
+		skip_spaces<Types::__WS>(pos);
+	}
+	Types::modules::common::param result;
+	::ISPA_STD::assign_compatible(result.first_p, value_modules_common_ID);
+	::ISPA_STD::assign_compatible(result.following_p, capture_list2);
+	::ISPA_STD::MatchResult<Types::modules::common::param, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonParam<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonParam<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueVar_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::var_capture, IT> {
+	::ISPA_STD::Node<Types::AMPERSAND> value_AMPERSAND;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	value_AMPERSAND = required<Types::AMPERSAND>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::var_capture", "AMPERSAND"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::var_capture", "modules::common::ID"));
+	Types::modules::rule::value::var_capture result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_ID);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::var_capture, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueVar_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::var_capture, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueVar_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::var_capture, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonStmt(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::stmt, IT> {
+	::ISPA_STD::Node<Types::modules::common::PY_RAW> value_modules_common_PY_RAW;
+	value_modules_common_PY_RAW = required<Types::modules::common::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::stmt", "modules::common::PY_RAW"));
+	Types::modules::common::stmt result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_PY_RAW);
+	::ISPA_STD::MatchResult<Types::modules::common::stmt, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonStmt<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::stmt, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonStmt<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::stmt, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleNested_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::nested_rule, IT> {
+	::ISPA_STD::Node<Types::modules::rule::nested_rule::NUMBER_SIGN> value_modules_rule_nested_rule_NUMBER_SIGN;
+	::ISPA_STD::Node<Types::modules::grammar::grammar> value_modules_grammar_grammar;
+	value_modules_rule_nested_rule_NUMBER_SIGN = required<Types::modules::rule::nested_rule::NUMBER_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::nested_rule", "modules::rule::nested_rule::NUMBER_SIGN"));
+	value_modules_grammar_grammar = required<Types::modules::grammar::grammar>(pos, [this](auto cursor) { return this->modulesGrammarGrammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::nested_rule", "modules::grammar::grammar"));
+	Types::modules::rule::nested_rule result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_grammar_grammar);
+	::ISPA_STD::MatchResult<Types::modules::rule::nested_rule, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleNested_rule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::nested_rule, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleNested_rule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::nested_rule, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesMainMain(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::main::main, IT> {
+	std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::grammar::grammar>, ::ISPA_STD::Node<Types::modules::fail_block::fail_block>> choice0;
+	bool matched0;
+	::ISPA_STD::Node<Types::modules::grammar::grammar> value_modules_grammar_grammar;
+	::ISPA_STD::Node<Types::modules::fail_block::fail_block> value_modules_fail_block_fail_block;
+	std::vector<std::variant<std::monostate, ::ISPA_STD::Node<Types::modules::grammar::grammar>, ::ISPA_STD::Node<Types::modules::fail_block::fail_block>>> group_list1;
+	// grammar `@  ( ( modules::grammar::grammar |  modules::fail_block::fail_block))*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::modules::common::ID::id || (*pos).kind() == Tokens::modules::fail_block::fail_block::FAIL::id || (*pos).kind() == Tokens::modules::grammar::modifier::AUTO::id)) {
+		// grammar ` ( modules::grammar::grammar |  modules::fail_block::fail_block)`: choice; alternative selected by LL(1) lookahead
+		matched0 = false;
+		auto la0_1 = pos;
+		switch ((*la0_1).kind()) {
+			case Tokens::modules::common::ID::id: {
+				value_modules_grammar_grammar = required<Types::modules::grammar::grammar>(la0_1, [this](auto cursor) { return this->modulesGrammarGrammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::main::main", "<group>"));
+				choice0 = value_modules_grammar_grammar;
+				matched0 = true;
+				break;
+			}
+			case Tokens::modules::fail_block::fail_block::FAIL::id: {
+				value_modules_fail_block_fail_block = required<Types::modules::fail_block::fail_block>(la0_1, [this](auto cursor) { return this->modulesFail_blockFail_block(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::main::main", "<group>"));
+				choice0 = value_modules_fail_block_fail_block;
+				matched0 = true;
+				break;
+			}
+			case Tokens::modules::grammar::modifier::AUTO::id: {
+				value_modules_grammar_grammar = required<Types::modules::grammar::grammar>(la0_1, [this](auto cursor) { return this->modulesGrammarGrammar(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::main::main", "<group>"));
+				choice0 = value_modules_grammar_grammar;
+				matched0 = true;
+				break;
+			}
+		}
+		pos = la0_1;
+		if (!matched0) {
+			raise_error(*pos, "ISPA match failure: expected one of: modules.common.ID, modules.grammar.modifier.AUTO, modules.fail_block.fail_block.FAIL");
+			return {};
+		}
+		group_list1.push_back(choice0);
+		skip_spaces<Types::__WS>(pos);
+	}
+	Types::modules::main::main result;
+	::ISPA_STD::assign_compatible(result.value, group_list1);
+	::ISPA_STD::MatchResult<Types::modules::main::main, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesMainMain<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::main::main, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesMainMain<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::main::main, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonName(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name, IT> {
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::AUTO> value_AUTO;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID_1;
+	std::pair<::ISPA_STD::Node<Types::AUTO>, ::ISPA_STD::Node<Types::modules::common::ID>> group0;
+	std::vector<std::pair<::ISPA_STD::Node<Types::AUTO>, ::ISPA_STD::Node<Types::modules::common::ID>>> group_list1;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> capture_list2;
+	::ISPA_STD::Node<Types::modules::common::template_params> value_modules_common_template_params;
+	::ISPA_STD::Node<Types::modules::common::params> value_modules_common_params;
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::name", "modules::common::ID"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar ` ( AUTO  __WS?; @  modules::common::ID)*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::AUTO::id)) {
+		value_AUTO = required<Types::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::name", "<group>"));
+		skip_spaces<Types::__WS>(pos);
+		value_modules_common_ID_1 = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::GREATER_THAN_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::PY_RAW::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::name", "<group>"));
+		group0 = std::make_pair(value_AUTO, value_modules_common_ID_1);
+		group_list1.push_back(group0);
+		capture_list2.push_back(value_modules_common_ID_1);
+		skip_spaces<Types::__WS>(pos);
+	}
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_template_params = optional<Types::modules::common::template_params>(pos, [this](auto cursor) { return this->modulesCommonTemplate_params(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_params = optional<Types::modules::common::params>(pos, [this](auto cursor) { return this->modulesCommonParams(cursor); });
+	Types::modules::common::name result;
+	::ISPA_STD::assign_compatible(result.primary, value_modules_common_ID);
+	::ISPA_STD::assign_compatible(result.nested, capture_list2);
+	::ISPA_STD::assign_compatible(result.temp_params, value_modules_common_template_params);
+	::ISPA_STD::assign_compatible(result.param, value_modules_common_params);
+	::ISPA_STD::MatchResult<Types::modules::common::name, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonName<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonName<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonForward_declaration(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::forward_declaration, IT> {
+	::ISPA_STD::Node<Types::modules::common::PY_RAW> value_modules_common_PY_RAW;
+	value_modules_common_PY_RAW = required<Types::modules::common::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::dep_decl::DEPENDS::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::forward_declaration", "modules::common::PY_RAW"));
+	Types::modules::common::forward_declaration result;
+	::ISPA_STD::MatchResult<Types::modules::common::forward_declaration, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonForward_declaration<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::forward_declaration, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonForward_declaration<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::forward_declaration, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesCommonExpr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::expr, IT> {
+	::ISPA_STD::Node<Types::modules::common::PY_RAW> value_modules_common_PY_RAW;
+	value_modules_common_PY_RAW = required<Types::modules::common::PY_RAW>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_CURLY_BRACKET::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::expr", "modules::common::PY_RAW"));
+	Types::modules::common::expr result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_PY_RAW);
+	::ISPA_STD::MatchResult<Types::modules::common::expr, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesCommonExpr<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::expr, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesCommonExpr<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::common::expr, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueAst_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::ast_capture, IT> {
+	::ISPA_STD::Node<Types::COMMERCIAL_AT> value_COMMERCIAL_AT;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	value_COMMERCIAL_AT = required<Types::COMMERCIAL_AT>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMERCIAL_AT::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::value::ast_capture", "COMMERCIAL_AT"));
+	value_modules_common_ID = optional<Types::modules::common::ID>(pos);
+	Types::modules::rule::value::ast_capture result;
+	::ISPA_STD::assign_compatible(result.value, value_modules_common_ID);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::ast_capture, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueAst_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::ast_capture, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueAst_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::ast_capture, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleRule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::rule, IT> {
+	::ISPA_STD::Node<Types::COLON> value_COLON;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::value>> value_list_modules_rule_value;
+	::ISPA_STD::Node<Types::modules::rule::ast> value_modules_rule_ast;
+	::ISPA_STD::Node<Types::modules::rule::f_binding> value_modules_rule_f_binding;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::nested_rule>> value_list_modules_rule_nested_rule;
+	::ISPA_STD::Node<Types::SEMICOLON> value_SEMICOLON;
+	value_COLON = required<Types::COLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COLON::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::rule", "COLON"));
+	skip_spaces<Types::__WS>(pos);
+	value_list_modules_rule_value = range<Types::modules::rule::value, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleValue(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::PERCENT_SIGN::id, Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::rule", "modules::rule::value"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_ast = optional<Types::modules::rule::ast>(pos, [this](auto cursor) { return this->modulesRuleAst(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_f_binding = optional<Types::modules::rule::f_binding>(pos, [this](auto cursor) { return this->modulesRuleF_binding(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_list_modules_rule_nested_rule = range_optional<Types::modules::rule::nested_rule, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleNested_rule(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_SEMICOLON = required<Types::SEMICOLON>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::fail_block::fail_block::FAIL::id, Tokens::modules::grammar::modifier::AUTO::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::rule", "SEMICOLON"));
+	Types::modules::rule::rule result;
+	::ISPA_STD::assign_compatible(result.v, value_list_modules_rule_value);
+	::ISPA_STD::assign_compatible(result.ast_pointer, value_modules_rule_ast);
+	::ISPA_STD::assign_compatible(result.fail_pointer, value_modules_rule_f_binding);
+	::ISPA_STD::assign_compatible(result.nested, value_list_modules_rule_nested_rule);
+	::ISPA_STD::MatchResult<Types::modules::rule::rule, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleRule<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::rule, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleRule<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::rule, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_matchUnpack(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match::unpack, IT> {
+	::ISPA_STD::Node<Types::AUTO> value_AUTO;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> value_list_modules_common_ID;
+	value_AUTO = required<Types::AUTO>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule::regular_match::unpack", "AUTO"));
+	skip_spaces<Types::__WS>(pos);
+	value_list_modules_common_ID = range<Types::modules::common::ID, Types::__WS>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id, Tokens::modules::advanced_rule::advanced_rule::regular_match::MATCH::id, Tokens::modules::common::PY_RAW::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::advanced_rule::advanced_rule::regular_match::unpack", "modules::common::ID"));
+	Types::modules::advanced_rule::advanced_rule::regular_match::unpack result;
+	::ISPA_STD::assign_compatible(result.value, value_list_modules_common_ID);
+	::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match::unpack, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_matchUnpack<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match::unpack, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesAdvanced_ruleAdvanced_ruleRegular_matchUnpack<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::advanced_rule::advanced_rule::regular_match::unpack, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleValueOne_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::one_capture, IT> {
+	::ISPA_STD::Node<Types::modules::rule::value::var_capture> value_modules_rule_value_var_capture;
+	::ISPA_STD::Node<Types::modules::rule::value::ast_capture> value_modules_rule_value_ast_capture;
+	::ISPA_STD::Node<Types::modules::rule::value::fail_capture> value_modules_rule_value_fail_capture;
+	::ISPA_STD::Node<Types::modules::rule::value::pattern> value_modules_rule_value_pattern;
+	std::vector<::ISPA_STD::Node<Types::modules::rule::value::alternative>> value_list_modules_rule_value_alternative;
+	::ISPA_STD::Node<Types::modules::rule::value::counter> value_modules_rule_value_counter;
+	::ISPA_STD::Node<Types::modules::rule::value::shared_counter_registration> value_modules_rule_value_shared_counter_registration;
+	value_modules_rule_value_var_capture = optional<Types::modules::rule::value::var_capture>(pos, [this](auto cursor) { return this->modulesRuleValueVar_capture(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_ast_capture = optional<Types::modules::rule::value::ast_capture>(pos, [this](auto cursor) { return this->modulesRuleValueAst_capture(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_fail_capture = optional<Types::modules::rule::value::fail_capture>(pos, [this](auto cursor) { return this->modulesRuleValueFail_capture(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_pattern = required<Types::modules::rule::value::pattern>(pos, [this](auto cursor) { return this->modulesRuleValuePattern(cursor); }, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::QUANTIFIER::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::value::shared_counter_registration::AUTO::id>, ISPA_STD::Recovery::Tokens<Tokens::AMPERSAND::id, Tokens::AUTO::id, Tokens::COMMERCIAL_AT::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::value::ANY::id, Tokens::modules::rule::value::CGROUP::id, Tokens::modules::rule::value::NOSPACE::id, Tokens::modules::rule::value::SPACE::id, Tokens::modules::rule::value::STRING::id, Tokens::modules::rule::value::dyn::DOLLAR_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::value::one_capture", "modules::rule::value::pattern"));
+	skip_spaces<Types::__WS>(pos);
+	value_list_modules_rule_value_alternative = range_optional<Types::modules::rule::value::alternative, Types::__WS>(pos, [this](auto cursor) { return this->modulesRuleValueAlternative(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_counter = optional<Types::modules::rule::value::counter>(pos, [this](auto cursor) { return this->modulesRuleValueCounter(cursor); });
+	skip_spaces<Types::__WS>(pos);
+	value_modules_rule_value_shared_counter_registration = optional<Types::modules::rule::value::shared_counter_registration>(pos, [this](auto cursor) { return this->modulesRuleValueShared_counter_registration(cursor); });
+	Types::modules::rule::value::one_capture result;
+	::ISPA_STD::assign_compatible(result.v_cap, value_modules_rule_value_var_capture);
+	::ISPA_STD::assign_compatible(result.ast_cap, value_modules_rule_value_ast_capture);
+	::ISPA_STD::assign_compatible(result.fail_cap, value_modules_rule_value_fail_capture);
+	::ISPA_STD::assign_compatible(result.val, value_modules_rule_value_pattern);
+	::ISPA_STD::assign_compatible(result.alts, value_list_modules_rule_value_alternative);
+	::ISPA_STD::assign_compatible(result.quantifier, value_modules_rule_value_counter);
+	::ISPA_STD::assign_compatible(result.registration, value_modules_rule_value_shared_counter_registration);
+	::ISPA_STD::MatchResult<Types::modules::rule::value::one_capture, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleValueOne_capture<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::one_capture, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleValueOne_capture<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::value::one_capture, ::Parser::Lexer::lazy_iterator>;
+template<typename IT, class> auto Parser::Parser::modulesRuleF_binding(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::f_binding, IT> {
+	::ISPA_STD::Node<Types::PERCENT_SIGN> value_PERCENT_SIGN;
+	::ISPA_STD::Node<Types::LEFT_CURLY_BRACKET> value_LEFT_CURLY_BRACKET;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::COMMA> value_COMMA;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID_1;
+	std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>> group0;
+	std::vector<std::pair<::ISPA_STD::Node<Types::COMMA>, ::ISPA_STD::Node<Types::modules::common::ID>>> group_list1;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> capture_list2;
+	::ISPA_STD::Node<Types::RIGHT_CURLY_BRACKET> value_RIGHT_CURLY_BRACKET;
+	value_PERCENT_SIGN = required<Types::PERCENT_SIGN>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::PERCENT_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::f_binding", "PERCENT_SIGN"));
+	skip_spaces<Types::__WS>(pos);
+	value_LEFT_CURLY_BRACKET = required<Types::LEFT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::LEFT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::f_binding", "LEFT_CURLY_BRACKET"));
+	skip_spaces<Types::__WS>(pos);
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::f_binding", "modules::common::ID"));
+	skip_spaces<Types::__WS>(pos);
+	// grammar ` ( COMMA  __WS?; @  modules::common::ID)*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::COMMA::id)) {
+		value_COMMA = required<Types::COMMA>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::f_binding", "<group>"));
+		skip_spaces<Types::__WS>(pos);
+		value_modules_common_ID_1 = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id>, ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::rule::f_binding", "<group>"));
+		group0 = std::make_pair(value_COMMA, value_modules_common_ID_1);
+		group_list1.push_back(group0);
+		capture_list2.push_back(value_modules_common_ID_1);
+		skip_spaces<Types::__WS>(pos);
+	}
+	skip_spaces<Types::__WS>(pos);
+	value_RIGHT_CURLY_BRACKET = required<Types::RIGHT_CURLY_BRACKET>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::RIGHT_CURLY_BRACKET::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::Tokens<Tokens::SEMICOLON::id, Tokens::modules::rule::nested_rule::NUMBER_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::rule::f_binding", "RIGHT_CURLY_BRACKET"));
+	Types::modules::rule::f_binding result;
+	::ISPA_STD::assign_compatible(result.f, value_modules_common_ID);
+	::ISPA_STD::assign_compatible(result.seq, capture_list2);
+	::ISPA_STD::MatchResult<Types::modules::rule::f_binding, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
+template auto Parser::Parser::modulesRuleF_binding<::Parser::Lexer::iterator>(::Parser::Lexer::iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::f_binding, ::Parser::Lexer::iterator>;
+template auto Parser::Parser::modulesRuleF_binding<::Parser::Lexer::lazy_iterator>(::Parser::Lexer::lazy_iterator pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::f_binding, ::Parser::Lexer::lazy_iterator>;
 auto Parser::Parser::parseFromTokens() -> void {
 	tree = main(Lexer::iterator(lexer)).node.data();
 }

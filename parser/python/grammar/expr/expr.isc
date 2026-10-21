@@ -1,3 +1,7 @@
+module expr -> expr;
+import * from tokens;
+import * from expr_tokens;
+import * from expr_valued_tokens;
 expr:
     @ disjunction @ conditional_tail?
     @{value, conditional}

@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 #include <ispastdlib/lr_conflicts.hpp>
-#include <output/Parser.h>
+#include <ispa/parser.h>
 import AST.Builder;
+import UAST;
+import Modules;
 import AST.Tree;
 import AST.Pass;
 import LRParser;
@@ -57,8 +59,8 @@ TEST(LRDiagnostics, InsertedWhitespaceDoesNotCreateShiftReduceConflicts) {
 
 TEST(LRDiagnostics, KeepsSourceFileLabelsWhenInputsAreCombined) {
     Parser::Parser tokens_parser, rules_parser;
-    auto modules = tokens_parser.parse("A: 'a';");
-    const auto& rules = rules_parser.parse("main: main main | A;");
+    auto modules = tokens_parser.parse("A: 'a';").value.data();
+    const auto& rules = rules_parser.parse("main: main main | A;").value.data();
     modules.value.insert(modules.value.end(), rules.value.begin(), rules.value.end());
     AST::Builder builder(modules);
     builder.setSourceFiles({"tokens.isc", "rules.isc"});
@@ -381,17 +383,20 @@ TEST(LRResolution, ConflictFreeGrammarNeedsNoFallback) {
     EXPECT_EQ(parser.getDecisionLookaheadK(), 1u);
 }
 TEST(LRResolution, ResolvesBootstrapOrdinaryAndMultipleCaptures) {
-    Parser::Types::main syntax;
-    for (const char* file : {"entry.isc", "common.isc", "rule.isc", "adv_rule.isc", "fail_block.isc"}) {
-        const auto path = std::filesystem::path(ROOT_DIR) / "parser/ispa/grammar" / file;
-        std::ifstream source(path);
-        ASSERT_TRUE(source.is_open());
-        const std::string text((std::istreambuf_iterator<char>(source)), {});
-        Parser::Parser parser;
-        const auto& parsed = parser.parse(text.c_str());
+    const auto project = Modules::preprocess({std::string(ROOT_DIR) + "/parser/ispa/grammar"});
+    UAST::main syntax;
+    std::vector<std::string> files;
+    for (const auto& source : project.sources) {
+        SCOPED_TRACE(source.file);
+        IspaParser parser;
+        const auto& parsed = parser.parse(source.grammar.c_str()).value.data();
+        ASSERT_TRUE(parser.getErrors().empty()) << source.file;
         syntax.value.insert(syntax.value.end(), parsed.value.begin(), parsed.value.end());
+        files.insert(files.end(), parsed.value.size(), source.file);
     }
     AST::Builder builder(syntax);
+    builder.setSourceFiles(std::move(files));
+    builder.setModules(project);
     builder.build();
     auto tree = builder.get();
     AST::TreePass pass(tree); pass.work();
@@ -399,9 +404,9 @@ TEST(LRResolution, ResolvesBootstrapOrdinaryAndMultipleCaptures) {
     parser.resolveConflicts(3);
     EXPECT_TRUE(parser.automaticConflictResolution());
     ResolutionDriver driver;
-    const std::vector<LRBase::Name> ordinary{{"ID"}, {"COLON"}, {"COMMERCIAL_AT"}, {"rule", "value", "STRING"}, {"SEMICOLON"}};
+    const std::vector<LRBase::Name> ordinary{{"modules", "common", "ID"}, {"COLON"}, {"COMMERCIAL_AT"}, {"modules", "rule", "value", "STRING"}, {"SEMICOLON"}};
     EXPECT_EQ(driver.run(parser, ordinary).terminals, ordinary.size());
-    const std::vector<LRBase::Name> multiple{{"ID"}, {"COLON"}, {"COMMERCIAL_AT"}, {"EQUALS_SIGN"}, {"LEFT_PARENTHESIS"}, {"rule", "value", "STRING"}, {"RIGHT_PARENTHESIS"}, {"SEMICOLON"}};
+    const std::vector<LRBase::Name> multiple{{"modules", "common", "ID"}, {"COLON"}, {"COMMERCIAL_AT"}, {"EQUALS_SIGN"}, {"LEFT_PARENTHESIS"}, {"modules", "rule", "value", "STRING"}, {"RIGHT_PARENTHESIS"}, {"SEMICOLON"}};
     EXPECT_EQ(driver.run(parser, multiple).terminals, multiple.size());
 }
 

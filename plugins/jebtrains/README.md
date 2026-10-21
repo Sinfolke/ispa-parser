@@ -1,6 +1,8 @@
 # ISPA Grammar for JetBrains IDEs
 
-Recognizes `.isc` grammar files and highlights the token ranges emitted by the repository's `parser/ispa` parser and custom `IspaLexer`. The native bridge also runs `IspaParser` to validate the grammar; parser-backed highlighting is used when parsing succeeds, while an IDE-side tolerant lexer keeps incomplete edits readable. No standard-library source is copied or modified.
+Recognizes `.isc` files with semantic colors for rule and token declarations, references, parameters, and captures. Module directives, features, comments, character classes, and embedded Python have tolerant highlighting while editing. Native parser errors appear in the editor, including the expected symbols and where parsing stopped. Token highlighting remains available after parsing fails; UTF-8 native positions are translated to UTF-16 editor positions.
+
+Validation is local to the current file. Import and detach directives are checked without resolving external modules. Python blocks are balanced and highlighted, but their Python syntax is not validated. The native helper has a two-second timeout; lexical highlighting remains available if it cannot run.
 
 ## Build and install
 
@@ -22,4 +24,6 @@ Use compiler/runtime paths appropriate to your own machine. The packaged native 
 
 Install `build/distributions/ispa-grammar-0.1.0.zip` from **Settings → Plugins → ⚙ → Install Plugin from Disk**, then restart the IDE. `./gradlew runIde` starts a sandbox IDE for testing.
 
-The native build links `ISPA::Parser` from `parser/CMakeLists.txt`, selecting incremental generated sources when available and bootstrapped sources otherwise. Gradle tracks both parser layouts and the split standard library for rebuilds.
+The native build links `ISPA::Parser` from `parser/CMakeLists.txt`, preferring the latest modular bootstrap in `../../parser/ispa/bootstrapped`. It falls back to the repository's normal parser selection when that directory is absent. A standalone CMake build can override the parser with `-DISPA_BOOTSTRAPPED_DIR=/path/to/generated/parser`. Gradle tracks generated parser sources and the shared standard library for rebuilds.
+
+Run `./gradlew test` for lexer restart, Unicode protocol, and packaged helper tests. Run `python3 tests/bridge_test.py build/native-build/ispa-grammar-bridge` for native parsing and error-position tests.

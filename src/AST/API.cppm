@@ -412,8 +412,10 @@ export namespace AST {
         bool isTopLevel = true;
         SourcePosition position;
         stdu::vector<FrontendFeature> features;
+        std::vector<std::string> modifiers;
         // Internal normalization metadata; excluded from source serialization.
         std::shared_ptr<RuleMember> normalization_source;
+
 
     private:
         friend struct ::uhash;

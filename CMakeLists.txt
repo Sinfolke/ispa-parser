@@ -125,7 +125,7 @@ target_include_directories(ispa_modules PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser)
+target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser ISPA::DepScanner)
 set_target_properties(ispa_modules PROPERTIES
         DISABLE_PRECOMPILE_HEADERS ON
 )

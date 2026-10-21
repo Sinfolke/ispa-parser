@@ -11,7 +11,7 @@ Args parse_args(int argc, char** argv) {
     std::string algorithm;
     app.allow_extras();
     app.add_flag("-v,--version",  args.version, "Print version");
-    app.add_option("-d,--dir", args.dir, "Directory where input modules files are located")->expected(1);
+    app.add_option("-d,--dir", args.dir, "Recursively scan a module source directory")->expected(1, -1)->allow_extra_args(false);
     app.add_option("-o", args.output, "Directory where to output generated files");
     app.add_option("-l,--lang", args.language_str, "Set build language")->required();
     app.add_option("-a,--algorithm", algorithm, "Set one of algorithms: LL, LR(0), LR(1), LALR, LR(*)");

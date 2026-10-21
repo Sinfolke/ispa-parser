@@ -237,6 +237,69 @@ namespace {
         }
         return spec;
     }
+
+    // ---------- Hierarchical (context) recovery: per-call-site claims ----------
+    struct ClaimSpec {
+        std::string name;
+        TokenSet first;
+    };
+    struct SiteSpec {
+        std::string rule;
+        std::string expected;            // what the member at member_index is
+        std::vector<ClaimSpec> claims;   // what this rule can still accept here
+    };
+
+    auto makeSiteSpec(AST::Tree& tree,
+                      const AST::LLkToken& rule_name,
+                      std::size_t member_index) -> SiteSpec {
+        if (!tree.contains(rule_name))
+            throw std::invalid_argument("ISPA recovery: rule not in AST::Tree");
+        const auto& rule = tree[rule_name];
+        if (member_index >= rule.rule_members.size() ||
+            !rule.rule_members[member_index])
+            throw std::out_of_range("ISPA recovery: bad member index");
+
+        const auto& first = tree.getFirstSet(1);
+        auto claimFor = [&](const AST::RuleMember& m) {
+            ClaimSpec claim;
+            if (isDirectTerminal(m)) {
+                claim.name = pathText(m.getName().name);
+                addToken(m.getName().name, claim.first, "claim terminal", false);
+            } else if (m.isName()) {
+                const auto& name = m.getName().name;
+                auto it = first.find(name);
+                if (it == first.end())
+                    throw std::invalid_argument(
+                        "ISPA recovery: missing FIRST(1) for " + pathText(name));
+                claim.name = pathText(name);
+                addLookahead(it->second, claim.first, "claim FIRST(nonterminal)");
+            } else {
+                claim.name = "<group>";
+                addLookahead(tree.getMemberFirstSet(m, 1), claim.first,
+                             "claim FIRST(member)");
+            }
+            return claim;
+        };
+
+        SiteSpec site;
+        site.rule = pathText(rule_name);
+        const auto& self = *rule.rule_members[member_index];
+        auto selfClaim = claimFor(self);
+        site.expected = selfClaim.name;
+        // Another iteration of a repeated member is still acceptable here.
+        if (self.quantifier == '*' || self.quantifier == '+')
+            site.claims.push_back(std::move(selfClaim));
+        // Then the suffix, up to and including the first required member.
+        // Tokens that end the rule belong to the parent frame's claims.
+        for (std::size_t i = member_index + 1; i < rule.rule_members.size(); ++i) {
+            if (!rule.rule_members[i])
+                throw std::invalid_argument("ISPA recovery: null suffix member");
+            const auto& m = *rule.rule_members[i];
+            site.claims.push_back(claimFor(m));
+            if (m.quantifier != '?' && m.quantifier != '*') break;
+        }
+        return site;
+    }
 } // anonymous namespace
 
 bool ParserBase::hasCustomFailure(const AST::RuleMember& member) {
@@ -270,6 +333,37 @@ auto ParserBase::recoveryHandler(AST::Tree& tree,
     call.template_parameters.emplace_back(
         std::make_shared<LangAPI::Type>(policyType(spec)));
     call.args = {string_arg(spec.rule), string_arg(spec.expected_text)};
+    return LangAPI::Expression{
+        LangAPI::ExpressionValue{std::move(call)}
+    };
+}
+
+// Expression: recovery_frame("rule")  -- emit once at the top of a rule
+// function as `auto frame = <expr>;` (RAII guard; do not copy).
+auto ParserBase::recoveryFrame(const AST::LLkToken& rule) -> LangAPI::Expression {
+    LangAPI::FunctionCall call;
+    call.name = std::make_shared<LangAPI::Symbol>("recovery_frame");
+    call.args = {string_arg(pathText(rule))};
+    return LangAPI::Expression{
+        LangAPI::ExpressionValue{std::move(call)}
+    };
+}
+
+// Expression: recovery_at<Set...>("expected", "claim0", "claim1", ...)
+// Emit before each member (terminal, nonterminal or group) of the rule body.
+auto ParserBase::recoverySite(AST::Tree& tree,
+                              const AST::LLkToken& rule,
+                              std::size_t member_index)
+    -> LangAPI::Expression {
+    const auto site = makeSiteSpec(tree, rule, member_index);
+    LangAPI::FunctionCall call;
+    call.name = std::make_shared<LangAPI::Symbol>("recovery_at");
+    call.args.push_back(string_arg(site.expected));
+    for (const auto& claim : site.claims) {
+        call.template_parameters.emplace_back(
+            std::make_shared<LangAPI::Type>(setType(claim.first)));
+        call.args.push_back(string_arg(claim.name));
+    }
     return LangAPI::Expression{
         LangAPI::ExpressionValue{std::move(call)}
     };

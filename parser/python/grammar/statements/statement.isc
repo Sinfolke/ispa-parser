@@ -1,3 +1,11 @@
+module statement -> statement;
+import * from expr;
+import * from tokens;
+import * from expr_tokens;
+import * from expr_valued_tokens;
+
+import * from statement_tokens;
+// hello
 statement:
     @ compound_stmt | simple_stmts
     {@}

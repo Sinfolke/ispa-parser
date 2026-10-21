@@ -8,6 +8,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <fileType name="ISPA Grammar" implementationClass="dev.ispa.grammar.IspaFileType" fieldName="INSTANCE" language="ISPA" extensions="isc"/>
     <lang.syntaxHighlighterFactory language="ISPA" implementationClass="dev.ispa.grammar.IspaSyntaxHighlighterFactory"/>
+    <lang.parserDefinition language="ISPA" implementationClass="dev.ispa.grammar.IspaParserDefinition"/>
     <externalAnnotator language="ISPA" implementationClass="dev.ispa.grammar.IspaNativeAnnotator"/>
   </extensions>
 </idea-plugin>

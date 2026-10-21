@@ -1,3 +1,5 @@
+module common;
+
 ID:
     @ ([a-zA-Z_] [a-zA-Z0-9_]*)
     {@}
@@ -7,14 +9,17 @@ NUMBER:
 
     @{full, floating}
 ;
+
+PY_RAW:
+    'p{' @ 'py' '}'
+    {@}
+;
+
+
 name:
     @ ID ('->' @ ID)* @ template_params? @ params?
 
     @{primary, nested, temp_params, param}
-;
-PY_RAW:
-    'p{' @ 'py' '}'
-    {@}
 ;
 
 expr:

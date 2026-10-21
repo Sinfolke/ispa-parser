@@ -441,7 +441,7 @@ void AST::Builder::convertRule(const Rule& rule) {
         for (const auto& n : payload(rule.fail_pointer).seq) binding.names.push_back(id(n));
         output.features.push_back(std::move(binding));
     }
-    output.isTopLevel = fullname.size() == 1;
+    output.isTopLevel = fullname.size() == module_scope_size + 1;
     tree_map[fullname] = std::move(output);
 
     // convertGrammar() owns exactly one scope push/pop per declaration.
@@ -479,6 +479,14 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
         tree_map[fullname] = std::move(out);
     }
     tree_map.at(fullname).position = position(grammar.name);
+    if (module_project && module_project->modular) {
+        const auto& source = module_project->source(*currentFile);
+        Modules::Path relative(fullname.begin() + module_scope_size, fullname.end());
+        if (const auto declared = source.declarations.find(relative); declared != source.declarations.end()) {
+            const auto& p = declared->second;
+            tree_map.at(fullname).position = {p.file, p.offset, 0, p.line, p.column};
+        }
+    }
     fullname.resize(scopeSize);
 }
 
@@ -486,6 +494,13 @@ void AST::Builder::convertMain(const UAST::main& main) {
     std::size_t source_index = 0;
     for (const auto& entry : main.value) {
         FileScope source_scope(source_files.empty() ? file : source_files.at(source_index));
+        fullname.clear();
+        if (module_project && module_project->modular) {
+            fullname.push_back("modules");
+            const auto& source = module_project->source(*currentFile);
+            fullname.insert(fullname.end(), source.name.begin(), source.name.end());
+        }
+        module_scope_size = fullname.size();
         ++source_index;
         std::visit([&](const auto& value) {
             using T = std::decay_t<decltype(value)>;
@@ -509,22 +524,38 @@ void AST::Builder::build() {
     FileScope fileScope(file);
 
     convertMain(input);
+    fullname.clear();
 
     // Search the containing rule and then its enclosing scopes using the
     // entire reference path. Never fall back to a matching final segment:
     // rule.ast must not accidentally bind to a global ast declaration.
     for (auto& [scope, rule] : tree_map) {
+        const Modules::Source* source = module_project && module_project->modular
+            ? &module_project->source(rule.position.file) : nullptr;
+        const std::size_t minimum_scope = source ? source->name.size() + 1 : 0;
         const auto resolve = [&](const auto& self, AST::RuleMember& member) -> void {
             if (member.isName()) {
                 auto& reference = member.getName().name;
+                bool resolved = false;
                 for (std::size_t size = scope.size();; --size) {
                     stdu::vector<std::string> candidate(scope.begin(), scope.begin() + size);
                     candidate.insert(candidate.end(), reference.begin(), reference.end());
-                    if (tree_map.contains(candidate)) {
+                    if (tree_map.contains(candidate) && (!source || tree_map.at(candidate).position.file == source->file)) {
                         reference = std::move(candidate);
+                        resolved = true;
                         break;
                     }
-                    if (size == 0) break;
+                    if (size == minimum_scope) break;
+                }
+                if (!resolved && source) {
+                    Modules::Path local(reference.begin(), reference.end());
+                    const auto found = source->resolved_symbols.find(local);
+                    if (found == source->resolved_symbols.end())
+                        throw std::runtime_error(source->file + ":" + std::to_string(rule.position.line) +
+                            ": unknown or unimported symbol " + Modules::spelling(local));
+                    reference = {"modules"};
+                    reference.insert(reference.end(), found->second.begin(), found->second.end());
+                    if (!tree_map.contains(reference)) throw std::runtime_error("Missing module declaration: " + Modules::spelling(found->second));
                 }
             } else if (member.isGroup()) {
                 for (auto& child : member.getGroup().values) self(self, *child);
@@ -535,4 +566,5 @@ void AST::Builder::build() {
         for (auto& member : rule.rule_members) resolve(resolve, *member);
         inferDataTypes(rule);
     }
+    if (module_project && module_project->modular) specializeModules();
 }

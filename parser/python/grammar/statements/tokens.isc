@@ -1,3 +1,5 @@
+module statement_tokens;
+
 WHILE: 'while';
 FOR: 'for';
 DEF: 'def';

@@ -1,5 +1,4 @@
 #include <ispa/parser.h>
-#include <ispa_dep_scanner/parser.h>
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
@@ -15,6 +14,8 @@ import AST.types;
 import AST.Tree;
 import AST.BackendGuard;
 import AST.Builder;
+import UAST;
+import Modules;
 import AST.Pass;
 import Semantic;
 import LangRepr.Converter;
@@ -113,7 +114,7 @@ namespace {
 }
 
 int main(int argc, char** argv) {
-    Parser::Types::main modules;
+    UAST::main modules;
     std::vector<std::string> source_files;
     auto args = init(argc, argv);
     dumper.setArgsPointer(&args);
@@ -128,35 +129,15 @@ int main(int argc, char** argv) {
     if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
 
-    for (const auto file : args.files) {
-        cpuf::printf("file: {}\n", file);
-        std::string fileContent;
-        try {
-            fileContent = corelib::file::readFile(std::string(file));
-        } catch (std::exception &e) {
-            throw UError("Failed read file: %s", e.what());
-        }
-        Parser::Parser parser;
-        auto &main = parser.parse(fileContent.c_str());
-        modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
-        source_files.insert(source_files.end(), main.value.size(), file);
-        // for (const auto &v : main.value) {
-        //     modules.push_back(std::get<ISPA_STD::Node<Parser::Rules, Parser::Types::grammar>>(v));
-        // }
-    }
-    for (const auto &dirPath : args.dir) {
-        for (auto file : corelib::file::getFilesRecursively(dirPath, ".isc")) {
-            cpuf::printf("file {}", file.c_str());
-            std::string content = corelib::file::readFile(file);
-            // lexer.makeTokens(content.c_str());
-            Parser::Parser parser;
-            auto &main = parser.parse(content.c_str());
-            for (const auto &err : parser.getErrors()) {
-                std::cout << "Expected " << err.expected_text << ", got " << Parser::TokensToString(err.unexpected) << std::endl;
-            }
-            modules.value.insert(modules.value.end(), main.value.begin(), main.value.end());
-            source_files.insert(source_files.end(), main.value.size(), file);
-        }
+    auto module_project = Modules::preprocess(args.dir, args.files);
+    for (const auto& source : module_project.sources) {
+        cpuf::printf("file: {}\n", source.file);
+        IspaParser parser;
+        const auto& syntax = parser.parse(source.grammar.c_str()).value.data();
+        if (!parser.getErrors().empty())
+            throw std::runtime_error("Failed to parse module: " + source.file);
+        modules.value.insert(modules.value.end(), syntax.value.begin(), syntax.value.end());
+        source_files.insert(source_files.end(), syntax.value.size(), source.file);
     }
 
     if (dumper.shouldDump("NFA"))
@@ -166,6 +147,7 @@ int main(int argc, char** argv) {
 
     AST::Builder ast_builder(modules);
     ast_builder.setSourceFiles(std::move(source_files));
+    ast_builder.setModules(module_project);
     ast_builder.build();
     auto ast = ast_builder.get();
     AST::requireCppSupport(ast);

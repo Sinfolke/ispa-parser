@@ -10,7 +10,7 @@ repositories { mavenCentral(); intellijPlatform { defaultRepositories() } }
 
 dependencies {
     intellijPlatform { intellijIdeaCommunity("2024.3.5") }
-    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
 }
 
 kotlin { jvmToolchain(21) }
@@ -18,7 +18,7 @@ kotlin { jvmToolchain(21) }
 intellijPlatform {
     pluginConfiguration {
         ideaVersion { sinceBuild = "243"; untilBuild = provider { null } }
-        changeNotes = "Initial release with bootstrap parser token integration and tolerant fallback highlighting."
+        changeNotes = "Updated modular parser, semantic highlighting, embedded Python colors, and positioned syntax diagnostics."
     }
 }
 
@@ -55,3 +55,6 @@ val stageIspaBridge by tasks.registering(Copy::class) {
 }
 sourceSets.main { resources.srcDir(layout.buildDirectory.dir("generated/ispa-resources")) }
 tasks.processResources { dependsOn(stageIspaBridge) }
+
+// This plugin contributes no searchable settings pages.
+tasks.named("buildSearchableOptions") { enabled = false }

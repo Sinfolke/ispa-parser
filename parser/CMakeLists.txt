@@ -188,6 +188,22 @@ function(add_ispa_generated_parser parser_name directory executable_name)
         endif()
     endif()
 
+    # Consumers of the self parser (including the custom lexer) must use the
+    # same generated namespace layout as the selected parser implementation.
+    if(parser_name STREQUAL "ispa")
+        if(PARSER_SOURCE_MODE STREQUAL "INCREMENTAL")
+            set(SELECTED_PARSER_HEADERS ${MATCHED_PARSER_HEADERS})
+        else()
+            set(SELECTED_PARSER_HEADERS ${MATCHED_BOOTSTRAPPED_HEADERS})
+        endif()
+        foreach(header IN LISTS SELECTED_PARSER_HEADERS)
+            file(READ "${header}" PARSER_HEADER_CONTENT)
+            if(PARSER_HEADER_CONTENT MATCHES "Types::modules::common::ID")
+                target_compile_definitions(${parser_name}_lib PUBLIC ISPA_MODULAR_PARSER=1)
+            endif()
+        endforeach()
+    endif()
+
     target_compile_features(${parser_name}_lib PUBLIC cxx_std_20)
     target_link_libraries(${parser_name}_lib PUBLIC ispastdlib::ispastdlib)
 

@@ -47,6 +47,8 @@ struct Diagnostic {
     std::vector<TokenId> expected;
     Decision decision;
     std::string expected_text; // supplied by typed handler; optional for raw API
+    std::size_t offset = std::numeric_limits<std::size_t>::max();
+    std::size_t length = 0;
 };
 
 struct State {
@@ -126,6 +128,13 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
             return p->isEnd() ? eof_token : token_kind(*p);
     };
     const TokenId at = kind(pos);
+    std::size_t offset = std::numeric_limits<std::size_t>::max(), length = 0;
+    if (at != eof_token) {
+        if constexpr (requires { (*pos).meta().startpos(); (*pos).meta().length(); }) {
+            offset = (*pos).meta().startpos();
+            length = (*pos).meta().length();
+        }
+    }
     Decision decision{.mode = Mode::Propagate, .unexpected = at};
 
     if (state.exhausted()) {
@@ -190,7 +199,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
 
     state.total_skipped += decision.skipped;
     state.diagnostics.push_back(Diagnostic{
-        std::string(plan.rule), at, plan.expected, decision, {}
+        std::string(plan.rule), at, plan.expected, decision, {}, offset, length
     });
     if (state.diagnostics.size() >= state.max_errors ||
         state.total_skipped >= state.max_total_skipped)

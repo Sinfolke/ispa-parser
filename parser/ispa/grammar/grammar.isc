@@ -1,0 +1,21 @@
+module grammar -> grammar;
+import {name} from common;
+import rule.regular;
+import rule.advanced;
+grammar:
+    @ modifier* @ name @ rule->regular | rule->advanced
+
+    @{mod, name, entry}
+
+
+;
+modifier:
+    '#[' @ MOD ']'
+
+    {@}
+
+    #MOD:
+        @ 'inline' | 'skip' | 'extern'
+        {@}
+    ;
+;

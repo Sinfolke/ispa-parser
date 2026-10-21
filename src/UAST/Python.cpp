@@ -12,6 +12,7 @@ struct ActionParser : PyParser::Parser {
 // Generic, metadata-driven snapshot implementation.
 namespace {
 struct Snapshot {
+    std::string_view source;
     using P = UAST::SourcePosition;
     using R = UAST::PythonNode;
     template<class T> static consteval std::string_view type_name() {
@@ -42,14 +43,21 @@ struct Snapshot {
     template<class T> R operator()(const ISPA_STD::Node<T>& x, const P& base) const {
         if (x.empty()) return {"node", {}, {}, base, true, {}};
         auto p = base;
-        if (x.startpos() != std::string::npos) p.offset += x.startpos();
-        p.length = x.length();
-        if (x.start() && x.startpos() != std::string::npos) {
-            for (auto c = x.start() - x.startpos(); c < x.start(); ++c) {
-                if (*c == '\n') { ++p.line; p.column = 1; }
+        // Read positions against the owned input, never by subtracting an
+        // unchecked parser offset from a node pointer (synthetic tokens may
+        // carry sentinel metadata).
+        auto offset = x.startpos();
+        const auto address = reinterpret_cast<std::uintptr_t>(x.start());
+        const auto begin = reinterpret_cast<std::uintptr_t>(source.data());
+        if (address >= begin && address - begin <= source.size()) offset = address - begin;
+        if (offset <= source.size()) {
+            if (p.offset != std::string::npos) p.offset += offset;
+            for (char c : source.substr(0, offset)) {
+                if (c == '\n') { ++p.line; p.column = 1; }
                 else ++p.column;
             }
         }
+        p.length = x.length();
         auto result = (*this)(x.data(), base);
         result.position = p;
         return result;
@@ -154,7 +162,7 @@ private:
     static bool is_choice(std::string_view k) {
         static constexpr std::string_view names[] = {
             "statement", "compound_stmt", "simple_stmt", "import_stmt", "def_header", "block",
-            "assignment_value", "assignment_suffix", "try_tail", "import_targets", "inversion",
+            "assignment_value", "assignment_suffix", "assignment_op", "try_tail", "import_targets", "inversion",
             "factor", "postfix", "atom", "compare_op", "call_arg"};
         return std::ranges::find(names, k) != std::end(names);
     }
@@ -853,11 +861,11 @@ UAST::PythonNode parse_snapshot(const std::string& source, const UAST::SourcePos
             auto end = result.it;
             if ((*end).template holds<PyRawParser::Types::NEWLINE>()) ++end;
             if (!end.isEnd()) throw std::runtime_error("trailing tokens in Python expression");
-            return Snapshot{}(result.node, position);
+            return Snapshot{source}(result.node, position);
         }
         auto result = parser.main(begin);
         if (!result.status || !result.it.isEnd()) throw std::runtime_error("invalid Python action or trailing tokens");
-        return Snapshot{}(result.node, position);
+        return Snapshot{source}(result.node, position);
     } catch (const std::exception& error) {
         throw std::runtime_error(position.file + ":" + std::to_string(position.line) + ":" + std::to_string(position.column) + ": " + error.what());
     }

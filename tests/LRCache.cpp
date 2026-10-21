@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
-#include <output/Parser.h>
+#include <ispa/parser.h>
 import AST.Builder;
+import UAST;
+import Modules;
 import AST.Pass;
 import AST.Tree;
 import LRParser;
@@ -193,16 +195,20 @@ TEST(LRCache, CachedConflictOriginsUseCurrentSourcePositions) {
 }
 
 TEST(LRCache, BootstrapGrammarRestoresWithoutClosureOrRowReconstruction) {
-    Parser::Types::main syntax;
-    for (const char* file : {"entry.isc", "common.isc", "rule.isc", "adv_rule.isc", "fail_block.isc"}) {
-        std::ifstream input(std::filesystem::path(ROOT_DIR) / "parser/ispa/grammar" / file);
-        ASSERT_TRUE(input.is_open());
-        const std::string source((std::istreambuf_iterator<char>(input)), {});
-        Parser::Parser parser;
-        const auto& parsed = parser.parse(source.c_str());
+    const auto project = Modules::preprocess({std::string(ROOT_DIR) + "/parser/ispa/grammar"});
+    UAST::main syntax;
+    std::vector<std::string> files;
+    for (const auto& source : project.sources) {
+        SCOPED_TRACE(source.file);
+        IspaParser parser;
+        const auto& parsed = parser.parse(source.grammar.c_str()).value.data();
+        ASSERT_TRUE(parser.getErrors().empty()) << source.file;
         syntax.value.insert(syntax.value.end(), parsed.value.begin(), parsed.value.end());
+        files.insert(files.end(), parsed.value.size(), source.file);
     }
     AST::Builder builder(syntax);
+    builder.setSourceFiles(std::move(files));
+    builder.setModules(project);
     builder.build();
     auto tree = builder.get();
     AST::TreePass pass(tree); pass.work();

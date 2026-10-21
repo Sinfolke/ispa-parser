@@ -1,3 +1,6 @@
+module fail_block -> fail_block;
+import {name, stmt} from common;
+
 fail_block:
     'fail' @ name @ stmt
 
