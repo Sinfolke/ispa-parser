@@ -240,7 +240,8 @@ TEST(AlgorithmPlugin, LLGeneratedRecoveryAndRuleCallbacksCompile) {
     const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
     auto tree = pluginGrammar(
         "A:'a'; B:'b'; main: item item? item* item+ A+ B* "
-        "@ (A B) @ ('x' | 'y') (B @ A)* @{pair, kind, nested}; item:@ A {@};");
+        "@ (A B) @ ('x' | 'y') (B @ A)* @{pair, kind, nested}; item:@ A {@}; "
+        "recursive: B recursive? A;");
     const auto directory = std::filesystem::temp_directory_path() /
         ("ispa-ll-compile-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
     struct Cleanup {
@@ -253,6 +254,55 @@ TEST(AlgorithmPlugin, LLGeneratedRecoveryAndRuleCallbacksCompile) {
         std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\"";
     EXPECT_EQ(std::system(command.c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLRecoveryFindsNestedAndEnclosingTerminalsBeyondFollowOne) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "A:'a'; B:'b'; C:'c'; D:'d'; E:'e'; X:'x'; "
+        "main: A item @ E {@}; item: B deep; deep: first | second; "
+        "first: C D; second: '(' B ')';");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-ll-recovery-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup {
+        std::filesystem::path path;
+        ~Cleanup() { std::filesystem::remove_all(path); }
+    } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+#include <iostream>
+int main() {
+    PluginTest::Parser parser;
+    for (const char* input : {"axxcde", "axxde", "abxxe", "abcdxe", "abxx)e"}) {
+        try {
+            const auto& root = parser.parse(input);
+            if (root.value.empty()) { std::cerr << "lost tail: " << input; return 1; }
+            if (parser.getErrors().empty()) { std::cerr << "lost error: " << input; return 2; }
+            if (parser.getErrors().front().message.find("expected") == std::string::npos) return 3;
+            const auto offset = parser.getErrors().front().offset;
+            if (offset >= std::char_traits<char>::length(input) || input[offset] != 'x') return 6;
+        } catch (const std::exception& error) {
+            std::cerr << input << ": " << error.what(); return 4;
+        }
+    }
+    parser.parse("abcde");
+    if (!parser.getErrors().empty() || !parser.getContextErrors().empty()) {
+        for (const auto& error : parser.getErrors()) std::cerr << error.message << '\n';
+        for (const auto& error : parser.getContextErrors()) std::cerr << error.message << '\n';
+        return 5;
+    }
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") +
+        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
 
 TEST(AlgorithmPlugin, LLQuantifiedRulesSkipAbsentChildrenWithoutRecovery) {

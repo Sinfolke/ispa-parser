@@ -7,7 +7,7 @@ namespace Modules {
 std::string spelling(const Path& path) {
     std::string out;
     for (const auto& part : path) {
-        if (!out.empty()) out += "->";
+        if (!out.empty()) out += ".";
         out += part;
     }
     return out;
@@ -55,17 +55,9 @@ class SourceSyntax {
         erased.push_back({begin.startpos(), finish - begin.startpos()});
         out.has_directives = true;
     }
-    template<class Name> std::string identifier(const Name& value) const {
-        return std::visit([&](const auto& token) -> std::string {
-            using T = std::decay_t<decltype(token)>;
-            if constexpr (std::is_same_v<T, std::monostate>)
-                throw std::runtime_error("missing generated identifier");
-            else return out.grammar.substr(token.startpos(), token.length());
-        }, value.value);
-    }
     Path path(const Syntax::module_path& value) const {
-        Path result{identifier(data(value.primary))};
-        for (const auto& part : value.nested) result.push_back(identifier(data(part)));
+        Path result{data(value.primary).value};
+        for (const auto& part : value.nested) result.push_back(data(part).value);
         return result;
     }
     Path path(const Common::name& value) const {
@@ -73,32 +65,12 @@ class SourceSyntax {
         for (const auto& part : value.nested) result.push_back(data(part).value);
         return result;
     }
-    Path path(const Syntax::keyword_name& value) const {
-        Path result{identifier(data(value.primary))};
-        if (!value.tail.empty()) result = joined(std::move(result), path(data(value.tail)));
-        return result;
-    }
     Path path(const Syntax::source_name& value) const {
-        return std::visit([&](const auto& node) -> Path {
-            using T = std::decay_t<decltype(node)>;
-            if constexpr (std::is_same_v<T, std::monostate>) throw std::runtime_error("missing generated name");
-            else return path(data(node));
-        }, value.value);
+        return path(data(value.value));
     }
     Position namePosition(const Common::name& value) const { return position(value.primary); }
-    Position namePosition(const Syntax::keyword_name& value) const {
-        return std::visit([&](const auto& token) -> Position {
-            using T = std::decay_t<decltype(token)>;
-            if constexpr (std::is_same_v<T, std::monostate>) return position(0);
-            else return position(token);
-        }, data(value.primary).value);
-    }
     Position namePosition(const Syntax::source_name& value) const {
-        return std::visit([&](const auto& node) -> Position {
-            using T = std::decay_t<decltype(node)>;
-            if constexpr (std::is_same_v<T, std::monostate>) return position(0);
-            else return namePosition(data(node));
-        }, value.value);
+        return namePosition(data(value.value));
     }
     void visit(const Syntax::mod_module& value) {
         const auto at = position(value.begin);
@@ -119,7 +91,7 @@ class SourceSyntax {
                 using D = std::decay_t<decltype(import)>;
                 imp.source = path(data(import.source));
                 if constexpr (std::is_same_v<D, Syntax::mod_import::import_value::module_import>) {
-                    if (!import.alias.empty()) imp.alias = identifier(data(import.alias));
+                    if (!import.alias.empty()) imp.alias = data(import.alias).value;
                 } else {
                     std::visit([&](const auto& selection) {
                         using S = std::decay_t<decltype(selection)>;
@@ -166,7 +138,8 @@ class SourceSyntax {
         erase(value.begin, value.end);
     }
     void declaration(const Syntax::declaration& value, const Path& parent = {}) {
-        const auto& name = data(value.name);
+        const auto& form = data(value.value);
+        const auto& name = data(form.name);
         const auto full = joined(parent, path(name));
         const auto at = namePosition(name);
         if (!out.declarations.emplace(full, at).second) fail(at, "duplicate rule " + spelling(full));
@@ -177,7 +150,7 @@ class SourceSyntax {
                 if constexpr (std::is_same_v<D, Syntax::body::regular>)
                     for (const auto& item : data(node).value) member(data(item), full);
             }
-        }, data(value.body).value);
+        }, data(form.body).value);
     }
     void member(const Syntax::member& value, const Path& parent) {
         std::visit([&](const auto& node) {
@@ -202,7 +175,7 @@ public:
                 if constexpr (!std::is_same_v<T, std::monostate>) {
                     using D = std::decay_t<decltype(data(node))>;
                     if constexpr (std::is_same_v<D, Syntax::declaration>) declaration(data(node));
-                    else if constexpr (!std::is_same_v<D, Syntax::fail_decl> && !std::is_same_v<D, Syntax::COMMENT>) visit(data(node));
+                    else if constexpr (requires { data(node).begin; }) visit(data(node));
                 }
             }, entry);
         } catch (const std::exception& error) {

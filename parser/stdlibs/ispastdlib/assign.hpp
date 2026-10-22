@@ -26,6 +26,11 @@ namespace ISPA_STD {
     void assign_compatible(To& target, const From& source);
     template<typename To, typename From>
     void assign_compatible(To& target, const From& source) {
+        // Recovered required captures may be absent. Leave their destination
+        // default-initialized rather than dereferencing a missing node.
+        if constexpr (is_node_v<From>) {
+            if (source.empty()) return;
+        }
         if constexpr (is_match_result_v<From>) {
             // MatchResult<Rules, T, IT> -> Node<Rules, T>
             // Then recursively convert to the destination type.

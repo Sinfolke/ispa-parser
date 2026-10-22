@@ -49,6 +49,7 @@ struct Diagnostic {
     std::string expected_text; // supplied by typed handler; optional for raw API
     std::size_t offset = std::numeric_limits<std::size_t>::max();
     std::size_t length = 0;
+    std::string message;
 };
 
 struct State {
@@ -56,6 +57,8 @@ struct State {
     std::size_t max_total_skipped = 2048;
     std::size_t total_skipped = 0;
     std::vector<Diagnostic> diagnostics;
+    // Active call-site suffixes, including terminals inside nested productions.
+    std::vector<std::vector<TokenId>> anchors;
 
     // Custom handlers can return Abort without modifying State.
     bool exhausted() const noexcept {
@@ -128,12 +131,24 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
             return p->isEnd() ? eof_token : token_kind(*p);
     };
     const TokenId at = kind(pos);
+    const auto anchor = [&](TokenId id) {
+        if (contains(plan.explicit_sync, id)) return true;
+        for (const auto& tokens : state.anchors)
+            if (contains(tokens, id)) return true;
+        return false;
+    };
     std::size_t offset = std::numeric_limits<std::size_t>::max(), length = 0;
+    std::string actual = "end of input";
     if (at != eof_token) {
         if constexpr (requires { (*pos).meta().startpos(); (*pos).meta().length(); }) {
             offset = (*pos).meta().startpos();
             length = (*pos).meta().length();
         }
+        if constexpr (requires { (*pos).meta().start(); (*pos).meta().length(); }) {
+            if ((*pos).meta().start())
+                actual = "'" + std::string((*pos).meta().start(), (*pos).meta().length()) + "'";
+            else actual = "token " + std::to_string(at);
+        } else actual = "token " + std::to_string(at);
     }
     Decision decision{.mode = Mode::Propagate, .unexpected = at};
 
@@ -153,7 +168,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
         const bool expected_one = plan.expected.size() == 1;
         // Do not delete enclosing delimiters / caller-owned follow tokens.
         const bool protected_token =
-            contains(plan.follow, at) || contains(plan.explicit_sync, at);
+            contains(plan.follow, at) || anchor(at);
 
         if (plan.allow_deletion && !protected_token && at != eof_token &&
             contains(plan.expected, next)) {
@@ -174,7 +189,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
             // Let the enclosing rule consume this boundary token.
             decision.mode = Mode::Propagate;
         } else if (contains(plan.continuation, at) ||
-                   contains(plan.explicit_sync, at)) {
+                   anchor(at)) {
             // No input consumed; enclosing rule handles the incomplete construct.
             decision.mode = Mode::Synchronize;
         } else {
@@ -182,17 +197,23 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
             while (kind(pos) != eof_token && decision.skipped < plan.max_skip &&
                    state.total_skipped + decision.skipped < state.max_total_skipped) {
                 const auto id = kind(pos);
-                if (contains(plan.continuation, id) || contains(plan.follow, id) ||
-                    contains(plan.explicit_sync, id))
+                if (contains(plan.expected, id) ||
+                    contains(plan.continuation, id) || contains(plan.follow, id) ||
+                    anchor(id))
                     break;
                 ++pos;
                 ++decision.skipped;
             }
-            if (kind(pos) == eof_token || decision.skipped == 0) {
+            if (contains(plan.expected, kind(pos))) {
+                decision.mode = Mode::Retry;
+            } else if (kind(pos) == eof_token || decision.skipped == 0) {
                 decision.mode = Mode::Propagate;
-            } else {
+            } else if (contains(plan.continuation, kind(pos)) ||
+                       contains(plan.follow, kind(pos)) || anchor(kind(pos))) {
                 decision.mode = Mode::PanicUntil;
                 // PanicUntil means a boundary was located, NOT a successful match.
+            } else {
+                decision.mode = Mode::Propagate;
             }
         }
     }
@@ -201,6 +222,7 @@ Decision recover(IT& pos, State& state, const Plan& plan, TokenKind&& token_kind
     state.diagnostics.push_back(Diagnostic{
         std::string(plan.rule), at, plan.expected, decision, {}, offset, length
     });
+    state.diagnostics.back().message = "unexpected " + actual + " in " + std::string(plan.rule);
     if (state.diagnostics.size() >= state.max_errors ||
         state.total_skipped >= state.max_total_skipped)
         decision.mode = Mode::Abort;
@@ -240,6 +262,10 @@ struct Tokens {
     static auto values() -> std::vector<TokenId> {
         return {static_cast<TokenId>(Values)...};
     }
+    template<class Token>
+    static bool matches(const Token& token) {
+        return ((tokenId(token) == static_cast<TokenId>(Values)) || ...);
+    }
 };
 
 using EmptyTokens = Tokens<>;
@@ -278,6 +304,19 @@ struct Handler {
         auto decision = recover(pos, state, plan);
         if (!state.diagnostics.empty())
             state.diagnostics.back().expected_text = expected_text;
+        if (!state.diagnostics.empty()) {
+            auto& diagnostic = state.diagnostics.back();
+            diagnostic.message += "; expected " + expected_text;
+            switch (decision.mode) {
+            case Mode::Insert: diagnostic.message += "; inserted missing token"; break;
+            case Mode::Replace: diagnostic.message += "; replaced unexpected token"; break;
+            case Mode::Delete: diagnostic.message += "; deleted unexpected token"; break;
+            case Mode::Abort: diagnostic.message += "; recovery limit reached"; break;
+            default: break;
+            }
+            if (decision.skipped > 1)
+                diagnostic.message += "; skipped " + std::to_string(decision.skipped) + " tokens";
+        }
         return decision;
     }
 };

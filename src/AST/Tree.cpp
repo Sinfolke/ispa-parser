@@ -1013,6 +1013,8 @@ auto AST::Tree::memberBaseFirstK(const AST::RuleMember& member,
     if (member.isGroup()) {
         LLkSet result{LLkSeq{}};
         for (const auto& sub : member.getGroup().values) {
+            if (std::all_of(result.begin(), result.end(),
+                    [k](const auto& prefix) { return prefix.size() >= k; })) break;
             if (sub->isName() && sub->getName().name == constants::whitespace) {
                 continue;
                 }
@@ -1051,6 +1053,8 @@ auto AST::Tree::sequenceFirstK(
     std::size_t k, const LLkTable& table) const -> LLkSet {
     LLkSet result{LLkSeq{}};
     for (const auto& member : members) {
+        if (std::all_of(result.begin(), result.end(),
+                [k](const auto& prefix) { return prefix.size() >= k; })) break;
         // addSpaceToken (AST::TreePass) inserts a `__WS?` sibling between
         // every pair of real members. It's lexer-level filler that may or
         // may not appear at that position -- it must never factor into
@@ -1193,6 +1197,12 @@ auto AST::Tree::getAlternativeLookahead(
     const AST::RuleMember& alt,
     const stdu::vector<std::string>& ruleName, std::size_t k) -> LLkSet {
     if (k == 0) throw Error("Lookahead requires k >= 1");
+    // A non-nullable FIRST(1) already fills the entire lookahead. FOLLOW
+    // cannot change it; avoid walking every enclosing recursive production.
+    if (k == 1) {
+        auto first = getMemberFirstSet(alt, 1);
+        if (!first.contains(LLkSeq{})) return first;
+    }
     createInitialItemSet();
 
     using Key = stdu::vector<std::string>;

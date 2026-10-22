@@ -2,8 +2,9 @@ module grammar -> grammar;
 import {name} from common;
 import rule.regular;
 import rule.advanced;
+
 grammar:
-    @ modifier* @ name @ rule->regular | rule->advanced
+    @ modifier* @ name @ rule.regular | rule.advanced
 
     @{mod, name, entry}
 
@@ -15,7 +16,7 @@ modifier:
     {@}
 
     #MOD:
-        @ 'inline' | 'skip' | 'extern'
+        @ 'inline' | 'skip' | 'extern' | 'global'
         {@}
     ;
 ;

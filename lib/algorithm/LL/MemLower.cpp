@@ -47,6 +47,7 @@ namespace {
         }
         return out;
     }
+
 }
 
 // ---------------------------------------------------------------- helpers ----
@@ -572,16 +573,22 @@ auto MemLower::lowerDispatch(const AST::RuleMember &mem) -> Parser::LowerMeta {
     for (auto &stmt : decisionTree(res, bodies, candidates, 1, op_id, {}, matched))
         push(stmt);
 
-    std::vector<AST::LLkToken> expected;
-    for (const auto &seqs : res.perAlt)
-        for (const auto &seq : seqs)
-            if (!seq.empty() && std::find(expected.begin(), expected.end(), seq.front()) == expected.end())
-                expected.push_back(seq.front());
+    LangAPI::Switch recovery_switch{
+        .expression = recoveryChoice(*tree, fun_ctx->rule_name, mem)};
+    for (std::size_t i = 0; i < bodies.size(); ++i) {
+        auto body = bodies[i];
+        body.push_back(setBool(matched.name, true));
+        recovery_switch.cases.emplace_back(
+            LangAPI::Int::createRValue(LangAPI::Int{.value = static_cast<long long>(i)}),
+            std::move(body));
+    }
+    push(LangAPI::If::createStatement(LangAPI::If{
+        notExpr(matched.name),
+        LangAPI::Statements{LangAPI::Switch::createStatement(std::move(recovery_switch))}
+    }));
     push(LangAPI::If::createStatement(LangAPI::If {
         notExpr(matched.name),
         LangAPI::Statements {
-            LangAPI::ReportError::createStatement(LangAPI::ReportError {
-                .message = "ISPA match failure: expected one of: " + joinTokens(expected)}),
             LangAPI::Return::createStatements(LangAPI::Return {}).front()
         }
     }));

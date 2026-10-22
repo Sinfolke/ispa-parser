@@ -129,15 +129,42 @@ int main(int argc, char** argv) {
     if (args.files.empty() && args.dir.empty())
         throw UError("No input files");
 
-    auto module_project = Modules::preprocess(args.dir, args.files);
+    Modules::Project module_project;
+    try {
+        module_project = Modules::preprocess(args.dir, args.files);
+    } catch (const std::exception& error) {
+        cpuf::printf("{}\n", error.what());
+        return 1;
+    }
     for (const auto& source : module_project.sources) {
         cpuf::printf("file: {}\n", source.file);
         IspaParser parser;
-        const auto& syntax = parser.parse(source.grammar.c_str()).value.data();
-        if (!parser.getErrors().empty())
-            throw std::runtime_error("Failed to parse module: " + source.file);
-        modules.value.insert(modules.value.end(), syntax.value.begin(), syntax.value.end());
-        source_files.insert(source_files.end(), syntax.value.size(), source.file);
+        const auto print_errors = [&] {
+            for (const auto& e : parser.getErrors()) {
+                const auto offset = std::min(e.offset, source.grammar.size());
+                std::size_t line = 1, column = 1;
+                for (std::size_t i = 0; i < offset; ++i) {
+                    if (source.grammar[i] == '\n') { ++line; column = 1; }
+                    else ++column;
+                }
+                cpuf::printf("{}:{}:{}: {}\n", source.file, line, column, e.message);
+            }
+            for (const auto& e : parser.getContextErrors())
+                cpuf::printf("[{}] {}\n", source.file, e.message);
+        };
+        decltype(&parser.parse(source.grammar.c_str()).value.data()) syntax = nullptr;
+        try {
+            syntax = &parser.parse(source.grammar.c_str()).value.data();
+        } catch (const std::exception& error) {
+            print_errors();
+            if (parser.getErrors().empty() && parser.getContextErrors().empty())
+                cpuf::printf("{}: {}\n", source.file, error.what());
+            return 1;
+        }
+        print_errors();
+        if (!parser.getErrors().empty() || !parser.getContextErrors().empty()) return 1;
+        modules.value.insert(modules.value.end(), syntax->value.begin(), syntax->value.end());
+        source_files.insert(source_files.end(), syntax->value.size(), source.file);
     }
 
     if (dumper.shouldDump("NFA"))

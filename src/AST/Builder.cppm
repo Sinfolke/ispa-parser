@@ -28,7 +28,7 @@ class Builder {
     using Value = UAST::rule_value;
     using Pattern = UAST::rule_value_pattern;
     using Grammar = UAST::grammar;
-    using Rule = UAST::rule;
+    using Rule = UAST::rule::regular_rule;
 
     AST::RuleMember convertPattern(const Pattern& pattern);
     AST::RuleMember convertValue(const Value& value);

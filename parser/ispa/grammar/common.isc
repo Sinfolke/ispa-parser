@@ -17,7 +17,7 @@ PY_RAW:
 
 
 name:
-    @ ID ('->' @ ID)* @ template_params? @ params?
+    @ ID ('.' @ ID)* @ template_params? @ params?
 
     @{primary, nested, temp_params, param}
 ;
@@ -34,9 +34,6 @@ explicit_expr:
 stmt:
     @ PY_RAW
     {@}
-;
-forward_declaration:
-    PY_RAW
 ;
 params:
     '>' '(' @ param? ')'

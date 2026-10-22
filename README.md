@@ -31,7 +31,7 @@ It is built around one idea: **easy to use, without giving up performance, exten
 | Python semantic actions | Syntax parsed, **not yet lowered to output** |
 | Fail blocks (`fail name>(...) { ... }`) | Syntax parsed, **not yet lowered to output** |
 | Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |
-| Grammar syntax error reporting | Needs work (currently stops, then attempts to generate) |
+| Grammar syntax error reporting | Automatic LL recovery and source diagnostics; syntax errors stop generation |
 
 The backend currently lowers **plain EBNF plus AST captures** to C++. The remaining grammar features above are parsed by the frontend and are being integrated into lowering.
 

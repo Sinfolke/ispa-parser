@@ -12,6 +12,8 @@ struct Span { std::size_t offset, length; };
 // Only opaque Python blocks need a custom lexical boundary. All ISPA source
 // structure, strings, character groups and comments come from grammar.isc.
 class IspaDepLexer : public DepParser::Lexer {
+    struct Delimiter { char value; std::size_t offset; };
+    std::vector<Delimiter> delimiters;
 public:
     using Token = DepParser::Token;
     std::vector<IspaDependency::Span> comments;
@@ -22,7 +24,30 @@ public:
         // Whitespace and comments are trivia in the dependency grammar. Keep
         // their byte spans in the source, without feeding trivia to the parser.
         if (token.template holds<DepParser::Types::__WS>()) return;
+        const auto& meta = token.meta();
+        if (meta.start() && meta.length() == 1) {
+            const char value = *meta.start();
+            if (value == '(' || value == '{') delimiters.push_back({value, meta.startpos()});
+            else if (value == ')' || value == '}') {
+                const char opening = value == ')' ? '(' : '{';
+                if (delimiters.empty() || delimiters.back().value != opening) {
+                    offset = meta.startpos();
+                    throw std::runtime_error(std::string("unexpected closing delimiter '") + value + "'");
+                }
+                delimiters.pop_back();
+            }
+        }
         DepParser::Lexer::push(std::move(token));
+    }
+    void push() override {
+        if (!delimiters.empty()) {
+            const auto opening = delimiters.back();
+            offset = std::strlen(_in);
+            const char closing = opening.value == '(' ? ')' : '}';
+            throw std::runtime_error(std::string("expected '") + closing + "' to close '" +
+                opening.value + "' opened at line " + std::to_string(__line(_in + opening.offset)));
+        }
+        DepParser::Lexer::push();
     }
 
     Token makeToken(const char*& pos) override {
@@ -37,7 +62,10 @@ public:
         auto token = DepParser::Lexer::makeToken(pos);
         if (token.empty() || pos == _in + offset)
             throw std::runtime_error("unterminated or unrecognized token in ISPA source");
-        if (token.template holds<IspaDependency::Syntax::COMMENT>()) {
+        // COMMENT may live in scanner_tokens or in the legacy scanner module.
+        // Strings and Python blocks keep their own lexical boundaries.
+        if (token.meta().length() >= 2 && token.meta().start()[0] == '/' &&
+            (token.meta().start()[1] == '/' || token.meta().start()[1] == '*')) {
             const auto& meta = token.meta();
             comments.push_back({meta.startpos(), meta.length()});
             return Token::create(meta.startpos(), meta.start(), meta.length(), 0,

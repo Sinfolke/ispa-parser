@@ -1,0 +1,7 @@
+// Parse source structure here; the ISPA parser validates rule body contents.
+import * from ispa_dep_scanner;
+import {COMMENT} from scanner_tokens;
+main:
+    @ (mod_module | mod_import | mod_detach | feature_decl | declaration | fail_decl | COMMENT)*
+    {@}
+;

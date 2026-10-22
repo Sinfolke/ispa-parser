@@ -156,6 +156,31 @@ namespace {
                member.getName().isTerminal();
     }
 
+    // Recovery anchors are not lookahead: a useful terminal can occur after
+    // several required members, or inside a referenced production. Walk the
+    // complete reachable grammar, stopping cycles rather than limiting depth.
+    void collectRecoveryTerminals(AST::Tree& tree, const AST::RuleMember& member,
+                                  TokenSet& output,
+                                  std::set<AST::LLkToken>& visited) {
+        if (member.isName()) {
+            const auto& name = member.getName().name;
+            if (isDirectTerminal(member)) {
+                // Whitespace is never a useful place to resume a construct.
+                if (name != AST::LLkToken{"__WS"})
+                    addToken(name, output, "recovery anchor", false);
+            } else if (visited.insert(name).second && tree.contains(name)) {
+                for (const auto& child : tree[name].rule_members)
+                    if (child) collectRecoveryTerminals(tree, *child, output, visited);
+            }
+        } else if (member.isGroup()) {
+            for (const auto& child : member.getGroup().values)
+                if (child) collectRecoveryTerminals(tree, *child, output, visited);
+        } else if (member.isOp()) {
+            for (const auto& child : member.getOp().options)
+                if (child) collectRecoveryTerminals(tree, *child, output, visited);
+        }
+    }
+
     auto makeRecoverySpec(AST::Tree& tree,
                           const AST::LLkToken& rule_name,
                           std::size_t member_index,
@@ -224,6 +249,11 @@ namespace {
         for (const auto& path : options.sync)
             addToken(path, spec.sync, "explicit sync", true);
 
+        std::set<AST::LLkToken> visited;
+        for (std::size_t i = member_index; i < rule.rule_members.size(); ++i)
+            if (rule.rule_members[i])
+                collectRecoveryTerminals(tree, *rule.rule_members[i], spec.sync, visited);
+
         // Only a committed, required *single terminal* may be synthesized.
         if (member.quantifier == '?' || member.quantifier == '*' ||
             !isDirectTerminal(member)) {
@@ -264,7 +294,8 @@ namespace {
             ClaimSpec claim;
             if (isDirectTerminal(m)) {
                 claim.name = pathText(m.getName().name);
-                addToken(m.getName().name, claim.first, "claim terminal", false);
+                if (m.getName().name != AST::LLkToken{"__WS"})
+                    addToken(m.getName().name, claim.first, "claim terminal", false);
             } else if (m.isName()) {
                 const auto& name = m.getName().name;
                 auto it = first.find(name);
@@ -272,11 +303,12 @@ namespace {
                     throw std::invalid_argument(
                         "ISPA recovery: missing FIRST(1) for " + pathText(name));
                 claim.name = pathText(name);
-                addLookahead(it->second, claim.first, "claim FIRST(nonterminal)");
+                std::set<AST::LLkToken> visited;
+                collectRecoveryTerminals(tree, m, claim.first, visited);
             } else {
                 claim.name = "<group>";
-                addLookahead(tree.getMemberFirstSet(m, 1), claim.first,
-                             "claim FIRST(member)");
+                std::set<AST::LLkToken> visited;
+                collectRecoveryTerminals(tree, m, claim.first, visited);
             }
             return claim;
         };
@@ -286,17 +318,15 @@ namespace {
         const auto& self = *rule.rule_members[member_index];
         auto selfClaim = claimFor(self);
         site.expected = selfClaim.name;
-        // Another iteration of a repeated member is still acceptable here.
-        if (self.quantifier == '*' || self.quantifier == '+')
-            site.claims.push_back(std::move(selfClaim));
-        // Then the suffix, up to and including the first required member.
+        // The current member can resume at an interior terminal too.
+        site.claims.push_back(std::move(selfClaim));
+        // Include the complete suffix, including nested required productions.
         // Tokens that end the rule belong to the parent frame's claims.
         for (std::size_t i = member_index + 1; i < rule.rule_members.size(); ++i) {
             if (!rule.rule_members[i])
                 throw std::invalid_argument("ISPA recovery: null suffix member");
             const auto& m = *rule.rule_members[i];
             site.claims.push_back(claimFor(m));
-            if (m.quantifier != '?' && m.quantifier != '*') break;
         }
         return site;
     }
@@ -367,6 +397,28 @@ auto ParserBase::recoverySite(AST::Tree& tree,
     return LangAPI::Expression{
         LangAPI::ExpressionValue{std::move(call)}
     };
+}
+
+auto ParserBase::recoveryChoice(AST::Tree& tree, const AST::LLkToken& rule,
+                                const AST::RuleMember& choice) -> LangAPI::Expression {
+    LangAPI::FunctionCall call;
+    call.name = std::make_shared<LangAPI::Symbol>("recover_choice");
+    std::string expected;
+    for (const auto& alternative : choice.getOp().options) {
+        TokenSet first, reachable;
+        addLookahead(tree.getMemberFirstSet(*alternative, 1), first, "choice FIRST");
+        std::set<AST::LLkToken> visited;
+        collectRecoveryTerminals(tree, *alternative, reachable, visited);
+        call.template_parameters.emplace_back(std::make_shared<LangAPI::Type>(setType(first)));
+        call.template_parameters.emplace_back(std::make_shared<LangAPI::Type>(setType(reachable)));
+        for (const auto& token : first.tokens) {
+            if (!expected.empty()) expected += ", ";
+            expected += pathText(token);
+        }
+    }
+    call.args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"}),
+                 string_arg(pathText(rule)), string_arg(expected)};
+    return LangAPI::FunctionCall::createExpression(std::move(call));
 }
 } // namespace Parser
 

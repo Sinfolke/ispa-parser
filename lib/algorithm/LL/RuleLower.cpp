@@ -17,12 +17,29 @@ void RuleLower::build(const std::vector<std::string> name, const AST::Rule &rule
     fun_ctx.statements = &fun.statements;
     fun_ctx.rule_name = AST::LLkToken(name.begin(), name.end());
 
+    LangAPI::Variable frame;
+    frame.name = "recovery_scope";
+    frame.type = LangAPI::Type{LangAPI::Symbol{"auto"}};
+    frame.value = recoveryFrame(fun_ctx.rule_name);
+    fun.statements.push_back(LangAPI::Variable::createStatement(frame));
+
     std::size_t idx = 0;
     for (const auto &rule_member : rule.rule_members) {
+        LangAPI::Statements member_statements;
+        fun_ctx.statements = &member_statements;
+        member_statements.push_back(LangAPI::Expression::createStatement(
+            recoverySite(*tree, fun_ctx.rule_name, idx)));
         MemLower lower(ctx, fun_ctx, *tree, idx);
         lower.build(*rule_member);
+        LangAPI::Expression condition{LangAPI::ExpressionValue{LangAPI::ExpressionElement::Not}};
+        const auto call = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+            .name = std::make_shared<LangAPI::Symbol>("unwinding")});
+        condition.insert(condition.end(), call.begin(), call.end());
+        fun.statements.push_back(LangAPI::If::createStatement(
+            LangAPI::If{condition, std::move(member_statements)}));
         ++idx;
     }
+    fun_ctx.statements = &fun.statements;
 
     // Member lowering hoists every value variable so that values produced
     // inside optional / repeated / chosen blocks stay visible to later members

@@ -12,11 +12,11 @@
 namespace IspaSyntax {
 #ifdef ISPA_MODULAR_PARSER
 using Python = ::Parser::Types::modules::common::PY_RAW;
-using String = ::Parser::Types::modules::rule::value::STRING;
-using CharacterGroup = ::Parser::Types::modules::rule::value::CGROUP;
+using String = ::Parser::Types::modules::rule::regular::value::STRING;
+using CharacterGroup = ::Parser::Types::modules::rule::regular::value::CGROUP;
 inline const auto pythonToken = ::Parser::Tokens::modules::common::PY_RAW::id;
-inline const auto stringToken = ::Parser::Tokens::modules::rule::value::STRING::id;
-inline const auto characterGroupToken = ::Parser::Tokens::modules::rule::value::CGROUP::id;
+inline const auto stringToken = ::Parser::Tokens::modules::rule::regular::value::STRING::id;
+inline const auto characterGroupToken = ::Parser::Tokens::modules::rule::regular::value::CGROUP::id;
 #else
 using Python = ::Parser::Types::PY_RAW;
 using String = ::Parser::Types::rule::value::STRING;
@@ -178,6 +178,8 @@ class IspaParser : public Parser::Parser {
             auto end = res.it;
             skip_spaces<::Parser::Types::__WS>(end);
             if (!res.status || !end.isEnd()) {
+                raise_error(*end, "unexpected " + describe_token(end) +
+                    "; expected a grammar declaration or end of input");
                 throw ISPA_STD::IspaAPIExcept("Could not parse ISPA grammar");
             }
             tree = res.node.data();

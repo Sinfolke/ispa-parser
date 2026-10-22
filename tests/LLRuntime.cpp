@@ -59,6 +59,53 @@ struct RecoveryParser : Parser {
     void setErrorBudget(std::size_t limit) { recovery_state_.max_errors = limit; }
     auto errorBudget() const { return recovery_state_.max_errors; }
 };
+
+struct AnchorParser : Parser {
+    using LLParser::recovery_frame;
+    using LLParser::recovery_at;
+    using LLParser::recovery_state_;
+};
+}
+
+TEST(LLRuntime, PanicRetriesExpectedTerminalBeyondOneTokenLookahead) {
+    const Token tokens[]{Token{{}, Other{}}, Token{{}, Other{}},
+                         Token{{}, Leaf{}}, Token{}};
+    Iter pos{tokens};
+    Parser parser;
+    ISPA_STD::Recovery::State state;
+    const auto fail = [&](Iter& cursor, ISPA_STD::Recovery::State&) {
+        return ISPA_STD::Recovery::recover(cursor, state, {
+            .rule = "entry", .expected = {1},
+            .allow_insertion = false, .allow_replacement = false
+        }, [](const Token& token) { return token.holds<Leaf>() ? 1u : 2u; });
+    };
+    EXPECT_FALSE(parser.required<Leaf>(pos, fail).empty());
+    EXPECT_EQ(pos.index, 3u);
+    ASSERT_EQ(state.diagnostics.size(), 1u);
+    EXPECT_EQ(state.diagnostics.front().decision.skipped, 2u);
+}
+
+TEST(LLRuntime, NestedRecoveryPreservesEnclosingProductionAnchor) {
+    const Token tokens[]{Token{{0, nullptr, nullptr, 0, 0, 0, 2}, Other{}},
+                         Token{{0, nullptr, nullptr, 0, 0, 0, 2}, Other{}},
+                         Token{{0, nullptr, nullptr, 0, 0, 0, 3}, Space{}}, Token{}};
+    Iter pos{tokens};
+    AnchorParser parser;
+    auto outer = parser.recovery_frame("outer");
+    parser.recovery_at<ISPA_STD::Recovery::Tokens<3>>("nested", "later_nested_terminal");
+    {
+        auto inner = parser.recovery_frame("inner");
+        parser.recovery_at<ISPA_STD::Recovery::Tokens<1>>("Leaf", "Leaf");
+        auto fail = ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<1>,
+            ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::EmptyTokens,
+            ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Policy<false, false, false>>(
+                "inner", "Leaf");
+        EXPECT_TRUE(parser.required<Leaf>(pos, fail).empty());
+        EXPECT_EQ(pos.index, 2u);
+        ASSERT_EQ(parser.getErrors().size(), 1u);
+        EXPECT_NE(parser.getErrors().front().message.find("expected Leaf"), std::string::npos);
+    }
+    EXPECT_EQ(parser.recovery_state_.anchors.size(), 1u);
 }
 
 TEST(LLRuntime, GetErrorsExposesRecoveredDiagnosticsThroughConstParser) {

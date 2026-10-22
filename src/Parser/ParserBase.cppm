@@ -70,6 +70,8 @@ export namespace Parser {
             const AST::LLkToken& rule,
             std::size_t member_index
         ) -> LangAPI::Expression;
+        auto recoveryChoice(AST::Tree& tree, const AST::LLkToken& rule,
+                            const AST::RuleMember& choice) -> LangAPI::Expression;
 
         auto var_name(const std::vector<std::string> &name, bool is_list) -> std::string;
     public:

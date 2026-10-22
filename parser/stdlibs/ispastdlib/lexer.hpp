@@ -152,6 +152,9 @@ namespace ISPA_STD {
                 : owner(lexer),
                   state(std::make_shared<SharedState>(in)),
                   token_index(0) {
+                // Token offsets are relative to the source used by this lazy
+                // stream, just as they are for makeTokens(input).
+                owner->_in = in;
                 ensure_token();
             }
 

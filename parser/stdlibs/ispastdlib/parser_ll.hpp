@@ -72,6 +72,7 @@ namespace ISPA_STD {
         void reset_recovery() {
             recovery_state_.diagnostics.clear();
             recovery_state_.total_skipped = 0;
+            recovery_state_.anchors.clear();
             frames_.clear();
             unwind_ = 0;
             last_resume_pos_ = npos_;
@@ -117,11 +118,13 @@ namespace ISPA_STD {
             LLParser& p;
             FrameGuard(LLParser& parser, std::string_view rule) : p(parser) {
                 p.frames_.push_back(Frame{rule, {}, {}});
+                p.recovery_state_.anchors.emplace_back();
             }
             // Abandoned frames count down the unwind request; the frame that
             // is the resume target is the first one that sees it reach zero.
             ~FrameGuard() {
                 p.frames_.pop_back();
+                p.recovery_state_.anchors.pop_back();
                 if (p.unwind_) --p.unwind_;
             }
             FrameGuard(const FrameGuard&) = delete;
@@ -140,6 +143,13 @@ namespace ISPA_STD {
             auto& frame = frames_.back();
             frame.expecting = expecting;
             frame.claims.clear();
+            auto& anchors = recovery_state_.anchors.back();
+            anchors.clear();
+            const auto add = [&]<class Set>() {
+                const auto values = Set::values();
+                anchors.insert(anchors.end(), values.begin(), values.end());
+            };
+            (add.template operator()<Sets>(), ...);
             const std::string_view n[] = {std::string_view(names)..., std::string_view{}};
             std::size_t i = 0;
             (frame.claims.push_back({n[i++], &LLParser::claim_matches<Sets>}), ...);
@@ -215,9 +225,9 @@ namespace ISPA_STD {
 
             switch (kind) {
             case Recovery::ContextKind::Misplaced:
-                d.message = "'" + d.claim + "' (at " + tok + ") cannot be nested within '" +
-                            d.rule + "'" + expected + "; closing '" + d.rule +
-                            "' and continuing in '" + d.resume_rule + "'";
+                d.message = "unexpected " + tok + " while parsing '" + d.rule +
+                            "'" + expected + "; continuing at '" + d.claim +
+                            "' in enclosing rule '" + d.resume_rule + "'";
                 break;
             case Recovery::ContextKind::Stray:
                 d.message = "unexpected " + tok + " in " + where +
@@ -243,8 +253,9 @@ namespace ISPA_STD {
         // in the enclosing frames, skip to it, and request unwinding.
         template<typename IT>
         bool recover_at_context(IT& pos, Recovery::ContextKind kind) {
-            if (frames_.empty()) return false;
-            auto r = resolve_context(pos, context_max_skip_);
+            if (frames_.empty() || recovery_state_.exhausted()) return false;
+            const auto remaining = recovery_state_.max_total_skipped - recovery_state_.total_skipped;
+            auto r = resolve_context(pos, std::min(context_max_skip_, remaining));
             if (!r) return false;
             const bool innermost = r->frame + 1 == frames_.size();
             if (!innermost && r->skip == 0 && r->claim)
@@ -252,6 +263,7 @@ namespace ISPA_STD {
             if (!recovering_ || kind == Recovery::ContextKind::Misplaced)
                 report_context(pos, kind, *r);
             for (std::size_t i = 0; i < r->skip && !pos.isEnd(); ++i) ++pos;
+            recovery_state_.total_skipped += r->skip;
             last_resume_pos_ = cursor_position(pos);
             unwind_ = frames_.size() - 1 - r->frame;
             recovering_ = true;
@@ -260,10 +272,13 @@ namespace ISPA_STD {
 
         // A loop ended on a token that no active frame can accept: report here,
         // where the mistake is, rather than at the next required member.
-        template<typename IT>
+        template<typename SpaceToken = void, typename IT>
         void sync_loop(IT& pos) {
             if (pos.isEnd() || frames_.empty() || unwinding()) return;
-            const void* tok = std::addressof(*pos);
+            auto candidate = pos;
+            if constexpr (!std::is_void_v<SpaceToken>) skip_spaces<SpaceToken>(candidate);
+            if (candidate.isEnd()) return;
+            const void* tok = std::addressof(*candidate);
             bool any_claims = false;
             for (const auto& f : frames_) {
                 for (const auto& c : f.claims) {
@@ -272,7 +287,74 @@ namespace ISPA_STD {
                 }
             }
             if (!any_claims) return;
+            pos = candidate;
             recover_at_context(pos, Recovery::ContextKind::Stray);
+        }
+
+        // Called only after normal LL(k) selection failed. Prefer an
+        // unambiguous FIRST token, then an unambiguous terminal inside an
+        // alternative. Shared interior terminals do not identify a branch.
+        template<class... Sets, class IT>
+        int recover_choice(IT& pos, std::string_view rule, std::string_view expected) {
+            reject_absent_rule();
+            const std::vector<std::vector<Recovery::TokenId>> sets{Sets::values()...};
+            static_assert(sizeof...(Sets) % 2 == 0);
+            Recovery::Diagnostic diagnostic;
+            diagnostic.rule = std::string(rule);
+            diagnostic.expected_text = std::string(expected);
+            diagnostic.message = "unexpected " + describe_token(pos) + " in " +
+                std::string(rule) + "; expected one of: " + std::string(expected);
+            if (!pos.isEnd()) {
+                diagnostic.unexpected = Recovery::tokenId(*pos);
+                if constexpr (requires { pos->meta().startpos(); pos->meta().length(); }) {
+                    diagnostic.offset = pos->meta().startpos();
+                    diagnostic.length = pos->meta().length();
+                }
+            }
+            for (std::size_t i = 0; i < sets.size(); i += 2)
+                diagnostic.expected.insert(diagnostic.expected.end(), sets[i].begin(), sets[i].end());
+            int selected = -1;
+            std::size_t skipped = 0;
+            if (!recovery_state_.exhausted()) {
+                while (!pos.isEnd()) {
+                    const auto id = Recovery::tokenId(*pos);
+                    for (std::size_t phase = 0; phase < 2 && selected == -1; ++phase) {
+                        int candidate = -1;
+                        bool ambiguous = false;
+                        for (std::size_t i = phase; i < sets.size(); i += 2) {
+                            if (!Recovery::contains(sets[i], id)) continue;
+                            if (candidate != -1) ambiguous = true;
+                            candidate = static_cast<int>(i / 2);
+                        }
+                        if (ambiguous) break;
+                        selected = candidate;
+                    }
+                    if (selected != -1) break;
+                    bool boundary = false;
+                    for (const auto& anchors : recovery_state_.anchors)
+                        if (Recovery::contains(anchors, id)) boundary = true;
+                    if (boundary || skipped >= context_max_skip_ ||
+                        recovery_state_.total_skipped + skipped >= recovery_state_.max_total_skipped)
+                        break;
+                    ++pos;
+                    ++skipped;
+                }
+            }
+            recovery_state_.total_skipped += skipped;
+            diagnostic.decision.skipped = skipped;
+            diagnostic.decision.mode = selected == -1
+                ? Recovery::Mode::Propagate : Recovery::Mode::Synchronize;
+            diagnostic.message += selected == -1
+                ? "; no unambiguous alternative at recovery boundary"
+                : "; continuing in alternative " + std::to_string(selected + 1);
+            if (skipped) diagnostic.message += "; skipped " + std::to_string(skipped) + " tokens";
+            recovery_state_.diagnostics.push_back(std::move(diagnostic));
+            if (recovery_state_.exhausted()) {
+                recovery_state_.diagnostics.back().decision.mode = Recovery::Mode::Abort;
+                recovery_state_.diagnostics.back().message += "; recovery limit reached";
+                return -1;
+            }
+            return selected;
         }
 
         void reject_absent_rule() {
@@ -292,6 +374,7 @@ namespace ISPA_STD {
         auto required_recovering(IT& pos, Fail&& fail) {
             using NodeT = decltype(pos->template to_node<NodeStruct>());
             using Result = Recovery::RequiredResult<NodeT>;
+            if (unwinding()) return Result{};
             std::size_t retries = 0;
             while (true) {
                 if (pos->template holds<NodeStruct>()) {
@@ -323,7 +406,8 @@ namespace ISPA_STD {
                 }
                 // Local repair did not work: look for a recovery point in the
                 // enclosing frames (may skip tokens and request unwinding).
-                recover_at_context(pos, Recovery::ContextKind::Mismatch);
+                if (decision.mode == Recovery::Mode::Propagate)
+                    recover_at_context(pos, Recovery::ContextKind::Mismatch);
                 return Result{Recovery::RequiredStatus::Boundary,
                               std::nullopt, decision};
             }
@@ -333,6 +417,7 @@ namespace ISPA_STD {
         auto required_rule_recovering(IT& pos, Recursive&& rec, Fail&& fail) {
             using NodeT = std::decay_t<decltype(rec(pos).node)>;
             using Result = Recovery::RequiredResult<NodeT>;
+            if (unwinding()) return Result{};
             std::size_t retries = 0;
             while (true) {
                 // Recursive alternatives may advance their input argument
@@ -347,6 +432,7 @@ namespace ISPA_STD {
                                   std::move(match.node), {}};
                 }
                 if (unwinding()) {
+                    pos = match.it;
                     // The child abandoned itself for an outer frame; do not
                     // repair here, just propagate.
                     return Result{Recovery::RequiredStatus::Boundary,
@@ -358,7 +444,7 @@ namespace ISPA_STD {
                 if ((decision.mode == Recovery::Mode::Retry ||
                      decision.mode == Recovery::Mode::Delete) && ++retries <= 2)
                     continue;
-                if (decision.mode != Recovery::Mode::Abort)
+                if (decision.mode == Recovery::Mode::Propagate)
                     recover_at_context(pos, Recovery::ContextKind::Mismatch);
                 return Result{
                     decision.mode == Recovery::Mode::Abort
@@ -376,31 +462,27 @@ namespace ISPA_STD {
                 ++pos;
         }
         void raise_error(const Token& node, const std::string& message) {
-            // if constexpr (is_raw_token_v<Token>) {
-            //     // Error path: report from the shared metadata only. Printing the payload would
-            //     // need a visitor over every alternative, i.e. exactly the instantiation cost
-            //     // RawToken exists to avoid. The source slice is the token's text.
-            //     if (node.empty() && node.meta().start() == nullptr)
-            //         return;
-            //     const auto& m = node.meta();
-            //     std::cerr << "Error at token " << (int) m.name() << "(at position " << m.startpos() << ")" << ": " << message << std::endl;
-            //     if (m.start())
-            //         std::cerr << "Token: \n" << std::string_view(m.start(), m.length()) << std::endl;
-            // } else {
-            //     std::visit([&](auto&& arg) {
-            //         using T = std::decay_t<decltype(arg)>;
-            //         if constexpr (!std::is_same_v<T, std::monostate>) {
-            //             std::cerr << "Error at token " << (int) arg.name() << "(at position " << arg.startpos() << ")" << ": " << message << std::endl;
-            //             std::cerr << "Token: \n" << arg << std::endl;
-            //         }
-            //     }, node);
-            // }
+            reject_absent_rule();
+            Recovery::Diagnostic diagnostic;
+            diagnostic.rule = frames_.empty() ? "<rule>" : std::string(frames_.back().rule);
+            diagnostic.message = message;
+            if constexpr (requires { node.meta().startpos(); node.meta().length(); }) {
+                diagnostic.offset = node.meta().startpos();
+                diagnostic.length = node.meta().length();
+            }
+            recovery_state_.diagnostics.push_back(std::move(diagnostic));
+
         }
         template<typename NodeStruct, typename IT, typename FailFunc>
         auto required(IT &pos, FailFunc&& fail) {
             if constexpr (std::is_invocable_v<FailFunc&, IT&, Recovery::State&>) {
                 auto result = required_recovering<NodeStruct>(pos, fail);
                 if (result.node) return std::move(*result.node);
+                if (result.status != Recovery::RequiredStatus::Aborted &&
+                    (result.status == Recovery::RequiredStatus::Missing ||
+                     unwinding() ||
+                     (!pos.isEnd() && result.recovery.mode != Recovery::Mode::Propagate)))
+                    return std::decay_t<decltype(*result.node)>{};
             } else {
                 if (pos->template holds<NodeStruct>()) {
                     auto node = pos->template to_node<NodeStruct>();
@@ -411,7 +493,9 @@ namespace ISPA_STD {
                 reject_absent_rule();
                 fail(pos);
             }
-            throw std::logic_error("ISPA required(): required token could not be recovered");
+            throw std::logic_error(recovery_state_.diagnostics.empty()
+                ? "ISPA required(): required token could not be recovered"
+                : recovery_state_.diagnostics.back().message);
         }
         // All rule combinators take (pos, rec, [fail]), matching LL lowering.
         template<typename NodeStruct, typename IT, typename Recursive, typename FailFunc>
@@ -419,6 +503,9 @@ namespace ISPA_STD {
             if constexpr (std::is_invocable_v<FailFunc&, IT&, Recovery::State&>) {
                 auto result = required_rule_recovering(pos, rec, fail);
                 if (result.node) return std::move(*result.node);
+                if (result.status != Recovery::RequiredStatus::Aborted &&
+                    (unwinding() || (!pos.isEnd() && result.recovery.mode != Recovery::Mode::Propagate)))
+                    return std::decay_t<decltype(*result.node)>{};
             } else {
                 auto match = rec(pos);
                 if (match.status) {
@@ -429,7 +516,9 @@ namespace ISPA_STD {
                 reject_absent_rule();
                 fail(pos);
             }
-            throw std::logic_error("ISPA required(): required rule could not be recovered");
+            throw std::logic_error(recovery_state_.diagnostics.empty()
+                ? "ISPA required(): required rule could not be recovered"
+                : recovery_state_.diagnostics.back().message);
         }
         template<typename NodeStruct, typename IT>
         auto optional(IT &pos) {
@@ -496,7 +585,7 @@ namespace ISPA_STD {
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
-            sync_loop(pos);
+            sync_loop<SpaceToken>(pos);
             return result;
         }
         template<typename NodeStruct, typename SpaceToken = void, typename IT, typename Recursive, typename FailFunc>
@@ -518,7 +607,7 @@ namespace ISPA_STD {
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
-            sync_loop(pos);
+            sync_loop<SpaceToken>(pos);
             return result;
         }
         template<typename NodeStruct, typename SpaceToken = void, typename IT>
@@ -531,7 +620,7 @@ namespace ISPA_STD {
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
-            sync_loop(pos);
+            sync_loop<SpaceToken>(pos);
             return result;
         }
         template<typename NodeStruct, typename SpaceToken = void, typename IT, typename Recursive>
@@ -544,7 +633,7 @@ namespace ISPA_STD {
                 if (node.empty()) break;
                 result.push_back(std::move(node));
             }
-            sync_loop(pos);
+            sync_loop<SpaceToken>(pos);
             return result;
         }
     };

@@ -118,6 +118,17 @@ TEST(Modules, ImportErrorsAreReportedAtTheirSource) {
     files.write("lib.isc", "module lib; rule: 'x';");
     EXPECT_THROW(build(files.preprocess()), std::runtime_error);
 }
+TEST(Modules, MissingDelimiterReportsExpectedCloserAndOpeningLine) {
+    ModuleFiles files;
+    const auto file = files.write("main.isc", "A: 'a';\nmain: ( A ;\n");
+    try { files.preprocess(); FAIL() << "expected missing delimiter"; }
+    catch (const std::exception& error) {
+        const std::string message = error.what();
+        EXPECT_NE(message.find(file + ":3:1:"), std::string::npos) << message;
+        EXPECT_NE(message.find("expected ')'"), std::string::npos) << message;
+        EXPECT_NE(message.find("opened at line 2"), std::string::npos) << message;
+    }
+}
 TEST(Modules, CyclicImportsResolveRulesAndFeatures) {
     ModuleFiles files;
     files.write("a.isc", "import {two} from b; one: 'a' two?; feature recursion {two};");
@@ -353,24 +364,24 @@ TEST(Modules, DependencyLexerAndGeneratedParserSupportTokenizedInput) {
     EXPECT_EQ(lexer.comments.size(), 1u);
 }
 
-TEST(Modules, GeneratedDependencyParserDistinguishesDirectiveWordsFromRuleNames) {
+TEST(Modules, GeneratedDependencyParserDistinguishesDirectivesFromRuleNames) {
     ModuleFiles files;
-    files.write("lib.isc", "feature: 'x';");
+    files.write("lib.isc", "feature_rule: 'x';");
     files.write("main.isc", R"(module app.front -> main;
-import {feature} from lib;
-module: 'm';
-import: 'i';
-detach: 'd';
-feature optional {feature};
+import {feature_rule} from lib;
+module_rule: 'm';
+import_rule: 'i';
+detach_rule: 'd';
+feature optional {feature_rule};
 detach feature optional;
-main: module import detach;
+main: module_rule import_rule detach_rule;
 )");
     const auto project = files.preprocess();
     const auto& source = module(project, {"app", "front"});
-    EXPECT_TRUE(source.declarations.contains({"module"}));
-    EXPECT_TRUE(source.declarations.contains({"import"}));
-    EXPECT_TRUE(source.declarations.contains({"detach"}));
-    EXPECT_EQ(source.imports.front().symbols, (std::vector<Modules::Path>{{"feature"}}));
+    EXPECT_TRUE(source.declarations.contains({"module_rule"}));
+    EXPECT_TRUE(source.declarations.contains({"import_rule"}));
+    EXPECT_TRUE(source.declarations.contains({"detach_rule"}));
+    EXPECT_EQ(source.imports.front().symbols, (std::vector<Modules::Path>{{"feature_rule"}}));
     EXPECT_TRUE(source.detach.front().feature);
-    EXPECT_TRUE(source.detached_symbols.contains({"lib", "feature"}));
+    EXPECT_TRUE(source.detached_symbols.contains({"lib", "feature_rule"}));
 }

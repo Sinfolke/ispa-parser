@@ -1,33 +1,28 @@
 module ispa_dep_scanner;
 import {name, ID, NUMBER, PY_RAW, template_params, params} from common;
-
-// Parse source structure here; the ISPA parser validates rule body contents.
-main:
-    @ (mod_module | mod_import | mod_detach | feature_decl | declaration | fail_decl | COMMENT)*
-    {@}
-;
+import * from scanner_tokens;
 mod_module:
-    @ MODULE @ module_path @ template_params? ('->' @ source_name)? @ SEMI
+    @ 'module' @ module_path @ template_params? ('->' @ source_name)? @ ';'
     @{begin, name, parameters, entry, end}
 ;
 mod_import:
-    @ IMPORT @ import_value @ SEMI
+    @ 'import' @ import_value @ ';'
     @{begin, value, end}
     #import_value:
         @ module_import | from_import
         {@}
         #module_import:
-            @ module_path (AS @ identifier)?
+            @ module_path ('as' @ ID)?
             @{source, alias}
         ;
         #from_import:
-            @ selection FROM @ module_path
+            @ selection 'from' @ module_path
             @{sel, source}
             #selection:
-                @ ALL | items
+                @ '*' | items
                 {@}
                 #items:
-                    LBRACE @ source_name (',' @ source_name)* RBRACE
+                    '{' @ source_name (',' @ source_name)* '}'
                     @{first, sequence}
                 ;
             ;
@@ -35,41 +30,28 @@ mod_import:
     ;
 ;
 mod_detach:
-    @ DETACH @ detach_value @ SEMI
+    @ 'detach' @ detach_value @ ';'
     @{begin, value, end}
     #detach_value:
-        @ feature | source_name
+        @ feature_ref | source_name
         {@}
-        #feature:
-            FEATURE @ source_name
+        #feature_ref:
+            'feature' @ source_name
             {@}
         ;
     ;
 ;
 feature_decl:
-    @ FEATURE @ source_name LBRACE @ symbol_list? RBRACE @ SEMI
+    @ 'feature' @ source_name '{' @ symbol_list? '}' @ ';'
     @{begin, name, symbols, end}
 ;
 module_path:
-    @ identifier (DOT @ identifier)*
+    @ ID ('.' @ ID)*
     @{primary, nested}
 ;
-identifier:
-    @ ID | MODULE | IMPORT | DETACH | FEATURE | AS | FROM | FAIL
-    {@}
-;
 // Keep common's name/parameter grammar, including for declaration headers.
-// Reserved directive words remain valid identifiers in source names.
 source_name:
-    @ name | keyword_name
-    {@}
-;
-keyword_name:
-    @ keyword ('->' @ name)? @ template_params? @ params?
-    @{primary, tail, templates, parameters}
-;
-keyword:
-    @ MODULE | IMPORT | DETACH | FEATURE | AS | FROM | FAIL
+    @ name
     {@}
 ;
 symbol_list:
@@ -77,16 +59,20 @@ symbol_list:
     @{first, following}
 ;
 declaration:
-    @ modifier* @ source_name @ body
-    @{modifiers, name, body}
+    @ modifier* @ form
+    @{modifiers, value}
+    #form:
+        @ name @ body
+        @{name, body}
+    ;
 ;
-modifier: HASH CGROUP;
-fail_decl: FAIL source_name PY_RAW;
+modifier: '#' CGROUP;
+fail_decl: 'fail' source_name PY_RAW;
 body:
     @ regular | braces
     {@}
     #regular:
-        COLON @ member* SEMI
+        ':' @ member* ';'
         {@}
     ;
 ;
@@ -95,15 +81,15 @@ member:
     {@}
 ;
 nested_rule:
-    HASH @ declaration
+    '#' @ declaration
     {@}
 ;
 parentheses:
     '(' balanced_item* ')'
 ;
-braces: LBRACE balanced_item* RBRACE;
-balanced_item: parentheses | braces | atom | SEMI | HASH;
+braces: '{' balanced_item* '}';
+balanced_item: parentheses | braces | atom | ';' | '#';
 atom:
-    identifier | NUMBER | STRING | CGROUP | PY_RAW | COMMENT | OTHER |
-    '->' | ',' | DOT | '<' | '>' | COLON | ALL
+    ID | NUMBER | STRING | CGROUP | PY_RAW | COMMENT | OTHER |
+    '->' | ',' | '.' | '<' | '>' | ':' | '*'
 ;

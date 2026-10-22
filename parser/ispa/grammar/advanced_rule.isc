@@ -1,6 +1,7 @@
 module rule.advanced -> advanced_rule;
 
-import {name, stmt, forward_declaration, ID} from common;
+import {name, stmt, ID} from common;
+import forward_declaration;
 import rule.regular;
 advanced_rule:
     '{' @ dep_decl* @ (regular_match | stmt)* '}'
@@ -11,7 +12,7 @@ advanced_rule:
         {@}
     ;
     #regular_match:
-        'match' @ rule->regular->value+ ';' @ unpack?
+        'match' @ rule.regular.value+ ';' @ unpack?
         @{patterns, assign_names}
 
         #unpack:
