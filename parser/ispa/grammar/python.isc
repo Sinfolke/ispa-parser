@@ -1,0 +1,17 @@
+module ispa_python;
+
+import extern python ispa_python as python;
+
+expr:
+    @ python.expr
+    {@}
+;
+
+explicit_expr:
+    '(' @ expr ')'
+    {@}
+;
+stmt:
+    @ python.stmt
+    {@}
+;

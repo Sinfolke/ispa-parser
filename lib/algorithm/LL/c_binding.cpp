@@ -23,7 +23,7 @@ auto build(const Algorithm::BuildRequest& request, Algorithm::Metadata& metadata
     const auto source = grammar.str();
     // Action bodies and fail blocks are not represented by Rule's text dump.
     // Until the cache key includes their complete syntax, rebuild action grammars.
-    const bool actions = !request.tree.getFailBlocks().empty() || std::ranges::any_of(request.tree.getTreeMap(),
+    const bool actions = !request.tree.getPythonDeclarations().empty() || !request.tree.getFailBlocks().empty() || std::ranges::any_of(request.tree.getTreeMap(),
         [](const auto& entry) { return !entry.second.features.empty(); });
     std::unordered_map<std::string, ParserIR::Production> cache;
     if (const auto stamp = metadata.cache.find("grammar");

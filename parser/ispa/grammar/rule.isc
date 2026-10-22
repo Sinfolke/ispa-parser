@@ -1,9 +1,11 @@
 module rule.regular -> regular_rule;
 import grammar;
 import {name, expr, ID, NUMBER} from common;
+
 regular_rule:
     ':' @ value+ @ ast? @ f_binding? @ nested_rule* ';'
     @{v, ast_pointer, fail_pointer, nested}
+    %{missing_colon}
 ;
 ast:
     @ abbr | full | single_value
@@ -124,3 +126,6 @@ nested_rule:
     '#' \s0 @ grammar
     {@}
 ;
+fail rule.missing_colon {
+    raise Error("Missing colon")
+}

@@ -33,6 +33,10 @@ mod_import:
         ;
     ;
 ;
+mod_python_import:
+    @ 'import' 'py' @ module_path ('as' @ ID)? @ ';'
+    @{begin, source, alias, end}
+;
 mod_detach:
     @ 'detach' @ detach_value @ ';'
     @{begin, value, end}

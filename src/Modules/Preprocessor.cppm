@@ -30,6 +30,11 @@ struct Detach {
     bool feature = false;
     Position position;
 };
+struct PythonImport {
+    Path source;
+    std::string alias;
+    Position position;
+};
 struct Source {
     std::string file;
     Path name;
@@ -38,6 +43,7 @@ struct Source {
     std::string grammar;
     std::map<Path, Position> declarations;
     std::vector<Import> imports;
+    std::vector<PythonImport> python_imports;
     std::vector<Detach> detach;
     std::map<Path, std::vector<Path>> features;
     // Local spelling -> canonical declaration. No transitive re-exports.

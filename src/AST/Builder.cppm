@@ -9,11 +9,13 @@ import hash;
 import UAST;
 import UAST.Parser;
 import Modules;
+import LangAPI;
 
 export namespace AST {
 class Builder {
     TreeMap tree_map;
     stdu::vector<FailBlock> fail_blocks;
+    LangAPI::Declarations python_declarations;
     stdu::vector<FrontendFeature> rule_features;
     SpacemodeStates spacemode = SpacemodeStates::MIXED;
     std::string name;
@@ -56,6 +58,7 @@ public:
     auto get() -> Tree {
         Tree tree{std::move(name), std::move(spacemode), std::move(tree_map)};
         tree.getFailBlocks() = std::move(fail_blocks);
+        tree.getPythonDeclarations() = std::move(python_declarations);
         return tree;
     }
 };

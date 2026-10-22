@@ -7,6 +7,7 @@ import logging;
 import dstd;
 import std;
 import UAST.Python;
+import Python.Imports;
 
 namespace {
     template<typename T>
@@ -50,6 +51,18 @@ namespace {
     // The generated nodes know offset/length/line/column but not the file name;
     // Builder::build() publishes it here for the duration of the conversion.
     thread_local const std::string* currentFile = nullptr;
+    thread_local const Python::Imports* currentPythonImports = nullptr;
+    struct PythonScope {
+        const Python::Imports* previous;
+        explicit PythonScope(const Python::Imports& imports) : previous(currentPythonImports) { currentPythonImports = &imports; }
+        ~PythonScope() { currentPythonImports = previous; }
+    };
+    void bindPython(AST::PythonAction& action) {
+        if (currentPythonImports) std::visit([&](auto& syntax) {
+            if constexpr (!std::is_same_v<std::decay_t<decltype(syntax)>, std::monostate>)
+                currentPythonImports->bind(syntax, action.position.file);
+        }, action.code);
+    }
     struct FileScope {
         const std::string* previous;
         explicit FileScope(const std::string& file) : previous(currentFile) { currentFile = &file; }
@@ -212,6 +225,7 @@ namespace {
             result.position = position(at);
             if constexpr (std::is_same_v<T, UAST::expr>) result.code = *UAST::convertPythonExpr(n.value, body);
             else result.code = UAST::convertPythonModule(n.value, body);
+            bindPython(result);
             std::visit([&](const auto& syntax) {
                 if constexpr (!std::is_same_v<std::decay_t<decltype(syntax)>, std::monostate>) result.python = python(syntax, body);
             }, result.code);
@@ -225,6 +239,7 @@ namespace {
         result.position = position(at);
         if constexpr (std::is_same_v<T, UAST::expr>) result.code = *UAST::parsePythonExpr(source, body);
         else result.code = UAST::parsePythonModule(source, body);
+        bindPython(result);
         std::visit([&](const auto& syntax) {
             if constexpr (!std::is_same_v<std::decay_t<decltype(syntax)>, std::monostate>) result.python = python(syntax, body);
         }, result.code);
@@ -578,6 +593,9 @@ void AST::Builder::build() {
     rule_features.clear();
     fullname.clear();
     FileScope fileScope(file);
+    Python::Imports pythonImports(module_project);
+    PythonScope pythonScope(pythonImports);
+    python_declarations = pythonImports.takeDeclarations();
 
     convertMain(input);
     fullname.clear();

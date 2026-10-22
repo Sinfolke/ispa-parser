@@ -11,7 +11,22 @@ namespace py = UAST::py;
 namespace la = LangAPI;
 struct ActionFields {
     std::map<std::string, la::Type> locals;
+    std::map<std::string, la::Type> imported_types;
     inclosed_map fields;
+    void imports(const la::Declarations& declarations, const std::string& scope = {}) {
+        for (const auto& declaration : declarations) {
+            if (declaration.isNamespace()) {
+                const auto& ns = declaration.getNamespace();
+                imports(ns.declarations, scope + ns.name + ".");
+            } else if (declaration.isFunction()) {
+                const auto& f = declaration.getFunction();
+                imported_types.emplace(scope + f.name, f.type);
+            } else if (declaration.isVariable()) {
+                const auto& v = declaration.getVariable();
+                imported_types.emplace(scope + v.name, v.type);
+            }
+        }
+    }
     [[noreturn]] static void error(const UAST::SourcePosition& p, const std::string& message) {
         throw std::invalid_argument(p.file + ":" + std::to_string(p.line) + ":" + std::to_string(p.column) + ": " + message);
     }
@@ -45,6 +60,10 @@ struct ActionFields {
                 }
             } else if constexpr (std::is_same_v<T, py::Name>) {
                 if (locals.contains(x.id)) return locals.at(x.id);
+                if (imported_types.contains(x.id)) return imported_types.at(x.id);
+            } else if constexpr (std::is_same_v<T, py::Call>) {
+                if (auto name = x.func ? x.func->template get<py::Name>() : nullptr;
+                    name && imported_types.contains(name->id)) return imported_types.at(name->id);
             } else if constexpr (std::is_same_v<T, py::Compare> || std::is_same_v<T, py::BoolExpr>) return la::ValueType::Bool;
             else if constexpr (std::is_same_v<T, py::UnaryExpr>) return x.op == py::UnaryOp::Not ? la::Type{la::ValueType::Bool} : infer(x.operand);
             else if constexpr (std::is_same_v<T, py::BinaryExpr>) {
@@ -68,6 +87,7 @@ struct ActionFields {
     void assign(const py::ExprPtr& target, const py::ExprPtr& value, const py::ExprPtr& annotated = {}) {
         const auto field = astField(target);
         auto type = annotated ? annotation(annotated) : infer(value);
+        if (type == la::ValueType::Void) error(target->pos, "a function returning None cannot initialize an AST field");
         if (!field.empty()) {
             if (fields.contains(field)) {
                 if (annotated && !(fields.at(field).second == type)) error(target->pos, "conflicting annotation for ctx.ast." + field);
@@ -128,6 +148,7 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
         // semantic exports, regardless of declaration placement or control flow.
         production.rule_members = lowered.function.statements;
         ActionFields action_fields;
+        action_fields.imports(tree.getPythonDeclarations());
         if (production.block.is_inclosed_map()) action_fields.fields = production.block.getInclosedMap();
         for (const auto& member : rule.rule_members) action_fields.member(*member);
         for (const auto& feature : rule.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) action_fields.action(*action);

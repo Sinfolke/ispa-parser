@@ -1,5 +1,6 @@
 module fail_block -> fail_block;
-import {name, stmt} from common;
+import {name} from common;
+import {stmt} from ispa_python;
 
 fail_block:
     'fail' @ name '{' @ stmt? '}'

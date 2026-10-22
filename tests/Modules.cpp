@@ -104,6 +104,22 @@ TEST(Modules, AliasesAndNestedRuleScopes) {
     EXPECT_EQ(references(tree.getTreeMap().at(name({"modules", "lib", "main"}))).front(),
               (Modules::Path{"modules", "lib", "main", "inner"}));
 }
+TEST(Modules, UnusedDiscoveredModulesDoNotRequireExternalDependencies) {
+    ModuleFiles files;
+    const auto main = files.write("main.isc", "module main; main: 'x';");
+    const auto optional = files.write("optional.isc",
+        "import extern foreign expression; main: expression;");
+    auto project = files.preprocess({main});
+    ASSERT_EQ(project.sources.size(), 1u);
+    EXPECT_NO_THROW(build(project));
+    EXPECT_THROW(files.preprocess({main, optional}), std::runtime_error);
+
+    files.write("main.isc", "import optional; main: optional;");
+    EXPECT_THROW(files.preprocess({main}), std::runtime_error);
+    files.write("middle.isc", "import optional; main: optional;");
+    files.write("main.isc", "import middle; main: middle;");
+    EXPECT_THROW(files.preprocess({main}), std::runtime_error);
+}
 TEST(Modules, ImportErrorsAreReportedAtTheirSource) {
     ModuleFiles files;
     files.write("lib.isc", "rule: 'x';");
@@ -224,6 +240,136 @@ TEST(Modules, SourcesWithoutDirectivesKeepSharedLegacyScope) {
     auto tree = build(project);
     EXPECT_TRUE(tree.getTreeMap().contains(name({"main"})));
     EXPECT_EQ(references(tree.getTreeMap().at(name({"main"}))).front(), (Modules::Path{"TOKEN"}));
+}
+
+TEST(Modules, PythonImportsAreErasedWithoutChangingSourcePositions) {
+    ModuleFiles files;
+    const std::string text = "import py package.helpers as h;\nmain: 'x';";
+    files.write("main.isc", text);
+    const auto project = files.preprocess();
+    const auto& source = module(project, {"main"});
+    ASSERT_EQ(source.python_imports.size(), 1u);
+    EXPECT_EQ(source.python_imports.front().source, (Modules::Path{"package", "helpers"}));
+    EXPECT_EQ(source.python_imports.front().alias, "h");
+    EXPECT_TRUE(source.imports.empty());
+    EXPECT_EQ(source.grammar.size(), text.size());
+    EXPECT_EQ(source.grammar.find("main:"), text.find("main:"));
+    EXPECT_EQ(source.declarations.at({"main"}).line, 2u);
+}
+
+TEST(Modules, PythonImportsRejectClassesAndUnsupportedModulesAtTheirSource) {
+    ModuleFiles files;
+    files.write("main.isc", "import py helpers; main: 'x';");
+    const auto python = files.write("helpers.py", "class Box:\n    pass\n");
+    for (const auto* code : {
+        "class Box:\n    pass\n",
+        "def helper() -> int:\n    class Box:\n        pass\n    return 1\n",
+        "import math\n",
+        "def helper(value):\n    return value\n",
+        "def helper(value: int = 1) -> int:\n    return value\n",
+        "value = [1, 2]\n"}) {
+        files.write("helpers.py", code);
+        try { build(files.preprocess()); FAIL() << code; }
+        catch (const std::exception& error) {
+            EXPECT_NE(std::string(error.what()).find(python + ":"), std::string::npos) << error.what();
+            if (std::string_view(code).find("class Box") != std::string_view::npos)
+                EXPECT_NE(std::string(error.what()).find("classes are not supported"), std::string::npos);
+        }
+    }
+}
+
+TEST(Modules, PythonImportsValidateFilesExportsAndCallArguments) {
+    ModuleFiles files;
+    files.write("helpers.py", "def scale(value: int) -> int:\n    return value * 2\n");
+    files.write("other.py", "OTHER = 1\n");
+    for (const auto* code : {
+        "import py absent; main: 'x';",
+        "import py helpers as h; main { ctx.ast.value = h.absent(1) }",
+        "import py helpers as h; main { ctx.ast.value = h.scale() }",
+        "import py helpers as h; import py other as h; main: 'x';",
+        "import py helpers as ctx; main: 'x';",
+        "import py helpers as h; main { h = 1 }"}) {
+        files.write("main.isc", code);
+        EXPECT_THROW(build(files.preprocess()), std::invalid_argument) << code;
+    }
+}
+
+TEST(Modules, PythonImportsResolveDottedPathsRelativeToTheirGrammarAndDeduplicateAliases) {
+    ModuleFiles files;
+    files.write("nested/main.isc", "import py package.helpers; import py package.helpers as h; main: 'x';");
+    files.write("nested/package/helpers.py", "def scale(value: int) -> int:\n    return value * 2\n");
+    auto tree = build(files.preprocess());
+    ASSERT_EQ(tree.getPythonDeclarations().size(), 1u);
+    const auto& python = tree.getPythonDeclarations().front().getNamespace();
+    ASSERT_EQ(python.declarations.size(), 1u);
+    const auto& package = python.declarations.front().getNamespace();
+    EXPECT_EQ(package.name, "package");
+    ASSERT_EQ(package.declarations.size(), 1u);
+    EXPECT_EQ(package.declarations.front().getNamespace().name, "helpers");
+}
+
+TEST(Modules, GeneratedParserCallsImportedPythonFunctionsAndVariables) {
+    ModuleFiles files;
+    files.write("helpers.py", R"py("""Helpers compiled into the generated parser."""
+FACTOR = 2
+OFFSET: int = 1
+def add(value: int) -> int:
+    return value + OFFSET
+def scale(value: int) -> int:
+    return add(value) * FACTOR
+def local(value: int) -> int:
+    FACTOR = 3
+    return value * FACTOR
+def noop() -> None:
+    pass
+)py");
+    files.write("main.isc", R"isc(import py helpers as h;
+import py helpers;
+main {
+    match 'x';
+    h.noop()
+    ctx.ast.result = h.scale(20)
+    ctx.ast.again = helpers.scale(20)
+    ctx.ast.local = h.local(4)
+    ctx.ast.factor = h.FACTOR
+}
+)isc");
+    auto tree = build(files.preprocess());
+    ASSERT_EQ(tree.getPythonDeclarations().size(), 1u);
+    AST::TreePass pass(tree);
+    pass.work();
+    static Args settings{};
+    dumper.setArgsPointer(&settings);
+    LexerBuilder lexer(tree);
+    lexer.build();
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    Algorithm::Metadata metadata;
+    auto result = descriptor->build({tree, {}}, metadata);
+    Algorithm::ConversionRequest request{lexer, tree, LangAPI::Language::Cpp, "PythonRuntime"};
+    auto holder = result.to_lang_repr(result.output.get(), request);
+    LangRepr::Converter converter(holder, "cpp", "PythonRuntime", false);
+    converter.init();
+    converter.construct();
+    for (const auto& [name, text] : converter.get()) files.write("generated/" + name, text);
+    files.write("generated/run.cpp", R"cpp(
+#include "PythonRuntime.h"
+int main() {
+    PythonRuntime::Parser parser;
+    const auto& ast = parser.parse("x").value.data();
+    if (ast.result != 42 || ast.again != 42 || ast.local != 12 || ast.factor != 2) return 1;
+    if (python::helpers::scale(20) != 42) return 2;
+    if (!parser.getErrors().empty()) return 3;
+}
+)cpp");
+    const auto generated = files.root / "generated";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs\" -I\"" + generated.string() + "\" \"" +
+        (generated / "PythonRuntime.cpp").string() + "\" \"" +
+        (generated / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (generated / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (generated / "run").string() + '"').c_str()), 0);
 }
 
 TEST(Modules, DetachingOptionalCapturesUpdatesDataFields) {

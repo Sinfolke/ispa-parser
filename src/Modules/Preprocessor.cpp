@@ -111,6 +111,14 @@ class SourceSyntax {
         out.imports.push_back(std::move(imp));
         erase(value.begin, value.end);
     }
+    void visit(const Syntax::mod_python_import& value) {
+        PythonImport imp;
+        imp.position = position(value.begin);
+        imp.source = path(data(value.source));
+        if (!value.alias.empty()) imp.alias = data(value.alias).value;
+        out.python_imports.push_back(std::move(imp));
+        erase(value.begin, value.end);
+    }
     void visit(const Syntax::mod_detach& value) {
         Detach detached;
         detached.position = position(value.begin);
@@ -233,6 +241,41 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
     // Preserve the shared scope used by existing split grammars that contain
     // no module directives at all.
     if (!project.modular) return project;
+    const Source* root = nullptr;
+    if (!files.empty()) root = &project.source(fs::canonical(files.front()).string());
+    else {
+        for (const auto& source : project.sources)
+            if (source.name == Path{"main"}) { root = &source; break; }
+        if (!root) for (const auto& source : project.sources) {
+            if (source.entry || source.declarations.contains(Path{"main"})) {
+                if (root) throw std::runtime_error("Multiple module entries; specify the root source file explicitly");
+                root = &source;
+            }
+        }
+    }
+    if (!root && project.sources.size() == 1) root = &project.sources.front();
+    if (root) {
+        project.root = root->name;
+        auto entry = root->entry;
+        if (!entry && root->declarations.contains(Path{"main"})) entry = Path{"main"};
+        if (entry) project.entry = joined(root->name, *entry);
+    }
+    if (root) {
+        // Directory discovery makes modules available; only imported modules
+        // (and explicit inputs) need their external dependencies resolved.
+        std::set<Path> needed;
+        auto include = [&](auto& self, const Source& source) -> void {
+            if (!needed.insert(source.name).second) return;
+            for (const auto& imp : source.imports) {
+                if (!imp.external.empty()) continue;
+                for (const auto& candidate : project.sources)
+                    if (candidate.name == imp.source) self(self, candidate);
+            }
+        };
+        include(include, *root);
+        for (const auto& file : files) include(include, project.source(fs::canonical(file).string()));
+        std::erase_if(project.sources, [&](const Source& source) { return !needed.contains(source.name); });
+    }
     std::map<Path, std::size_t> modules;
     for (std::size_t index = 0; index < project.sources.size(); ++index) {
         auto& source = project.sources[index];
@@ -349,25 +392,6 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
         std::erase_if(source.allowed_symbols, [&](const auto& binding) {
             return std::ranges::any_of(source.detached_symbols, [&](const Path& removed) { return startsWith(binding.second, removed); });
         });
-    }
-    const Source* root = nullptr;
-    if (!files.empty()) root = &project.source(fs::canonical(files.front()).string());
-    else {
-        for (const auto& source : project.sources)
-            if (source.name == Path{"main"}) { root = &source; break; }
-        if (!root) for (const auto& source : project.sources) {
-            if (source.entry || source.declarations.contains(Path{"main"})) {
-                if (root) throw std::runtime_error("Multiple module entries; specify the root source file explicitly");
-                root = &source;
-            }
-        }
-    }
-    if (!root && project.sources.size() == 1) root = &project.sources.front();
-    if (root) {
-        project.root = root->name;
-        auto entry = root->entry;
-        if (!entry && root->declarations.contains(Path{"main"})) entry = Path{"main"};
-        if (entry) project.entry = joined(root->name, *entry);
     }
     return project;
 }

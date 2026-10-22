@@ -6,6 +6,19 @@ namespace Parser {
 namespace {
 namespace py = UAST::py;
 namespace la = LangAPI;
+// Dots occur only in synthetic names bound by Python.Imports. Keep namespace
+// paths in the language-neutral symbol rather than embedding C++ spelling.
+la::Symbol pythonSymbol(const std::string& name) {
+    la::Symbol result;
+    std::size_t begin = 0;
+    do {
+        const auto end = name.find('.', begin);
+        result.path.emplace_back(name.substr(begin, end - begin));
+        if (end == std::string::npos) break;
+        begin = end + 1;
+    } while (true);
+    return result;
+}
 [[noreturn]] void unsupported(const UAST::SourcePosition& p, std::string_view what) {
     throw std::invalid_argument(p.file + ":" + std::to_string(p.line) + ":" +
         std::to_string(p.column) + ": Python conversion: " + std::string(what));
@@ -89,7 +102,7 @@ struct PythonConverter {
     la::Expression expr(const py::Expr& e) {
         return std::visit([&](const auto& x) -> la::Expression {
             using T = std::decay_t<decltype(x)>;
-            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(la::Symbol{localName(x.id)});
+            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(pythonSymbol(localName(x.id)));
             else if constexpr (std::is_same_v<T, py::Constant>) {
                 switch (x.kind) {
                     case py::ConstantKind::Bool: return la::Bool::createExpression(la::Bool{.value = x.value == "True"});
@@ -155,7 +168,7 @@ struct PythonConverter {
                 la::FunctionCall call;
                 for (const auto& a : x.args) call.args.push_back(expr(a));
                 if (auto n = x.func ? x.func->template get<py::Name>() : nullptr) {
-                    call.name = std::make_shared<la::Symbol>(n->id);
+                    call.name = std::make_shared<la::Symbol>(pythonSymbol(localName(n->id)));
                     return la::FunctionCall::createExpression(call);
                 }
                 if (auto a = x.func ? x.func->template get<py::Attribute>() : nullptr) {

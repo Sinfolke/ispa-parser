@@ -1,5 +1,4 @@
 module common;
-import extern python ispa_python as python;
 
 ID:
     @ ([a-zA-Z_] [a-zA-Z0-9_]*)
@@ -14,20 +13,6 @@ name:
     @ ID ('.' @ ID)* @ template_params? @ params?
 
     @{primary, nested, temp_params, param}
-;
-
-expr:
-    @ python.expr
-    {@}
-;
-
-explicit_expr:
-    '(' @ expr ')'
-    {@}
-;
-stmt:
-    @ python.stmt
-    {@}
 ;
 params:
     '>' '(' @ param? ')'

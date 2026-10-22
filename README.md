@@ -157,6 +157,37 @@ expressions, declare a field with a Python annotation, for example
 `int`, `float`, `bool`, and `str`. A bare `return` or `return ctx.ast` returns the
 current result early. Locals persist between sequential Python blocks.
 
+Python helpers can also live in ordinary `.py` files next to the importing
+grammar. `import py helpers;` loads `helpers.py`; dotted paths such as
+`import py package.helpers as h;` load `package/helpers.py`. Imports are scoped
+to the grammar file that declares them. Imported functions and variables are
+lowered into generated C++ under `python::helpers` (or
+`python::package::helpers`), without a Python runtime.
+
+```python
+# helpers.py
+FACTOR = 2
+
+def scale(value: int) -> int:
+    return value * FACTOR
+```
+
+```isc
+import py helpers as h;
+main {
+    match 'x';
+    ctx.ast.result = h.scale(21)
+}
+```
+
+The initial subset supports functions with annotated parameters and returns,
+initialized module variables, and the expressions and control flow supported
+by ISPA's Python lowering. Types are `int`, `float`, `bool`, and `str`; function
+returns can also be `None`. Literal module variables can omit their annotation.
+Classes, Python imports inside helper files, decorators, default parameters,
+and keyword arguments are rejected with source locations. Imported function
+return types participate in AST field inference.
+
 Fail blocks run for required matches selected by `%handler` or a rule's
 `%{handler}` binding. Their context shares the owning rule's AST and the failure
 cursor, and additionally exposes the read-only `ctx.failed_rule` qualified name

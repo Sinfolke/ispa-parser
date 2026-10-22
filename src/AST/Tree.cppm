@@ -18,6 +18,7 @@ export namespace AST {
     class Tree {
         TreeMap tree_map;
         stdu::vector<FailBlock> fail_blocks;
+        LangAPI::Declarations python_declarations;
         SpacemodeStates spacemode = SpacemodeStates::MIXED;
         std::string name;
         InitialItemSet initial_item_set;
@@ -77,6 +78,8 @@ export namespace AST {
 
         auto getFailBlocks() const -> const stdu::vector<FailBlock>& { return fail_blocks; }
         auto getFailBlocks() -> stdu::vector<FailBlock>& { return fail_blocks; }
+        auto getPythonDeclarations() const -> const LangAPI::Declarations& { return python_declarations; }
+        auto getPythonDeclarations() -> LangAPI::Declarations& { return python_declarations; }
         void constructFirstSet(std::size_t k);
         void constructFollowSet(std::size_t k);
         auto getFirstSet(std::size_t k) -> const LLkTable&;

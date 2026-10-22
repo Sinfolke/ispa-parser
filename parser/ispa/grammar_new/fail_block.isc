@@ -1,6 +1,0 @@
-fail_block:
-    'fail' @ % name @ % stmt
-
-    @{name, val}
-    %{fail_block_name_missing, stmt_name_missing}
-;
