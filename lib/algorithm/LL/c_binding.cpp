@@ -1,5 +1,6 @@
 import Algorithm.API;
 import AST.types;
+import AST.BackendGuard;
 import LLIR.Builder;
 import LLIR.Serialize;
 import ParserIR.API;
@@ -10,11 +11,12 @@ import std;
 
 namespace {
 auto build(const Algorithm::BuildRequest& request, Algorithm::Metadata& metadata) -> Algorithm::Result {
+    AST::requireCppSupport(request.tree);
     // FIRST/FOLLOW and inferred data types can depend on any other rule. Until
     // those dependencies are tracked, invalidate all productions on any change.
     std::ostringstream grammar;
     // Recovery sets include the complete reachable production suffix.
-    grammar << "LL metadata lowering v8\n";
+    grammar << "LL metadata lowering v11 external parser imports\n";
     for (const auto& [name, rule] : request.tree.getTreeMap()) {
         grammar << corelib::text::join(name, ".") << '\n' << rule << '\n';
     }

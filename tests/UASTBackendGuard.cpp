@@ -17,6 +17,8 @@ AST::Tree convert(const char* source) {
 TEST(UAST, BackendGuardAllowsSupportedGrammar) {
     auto tree = convert("T: @ ('a' | 'b')+ {@}; main: @ T {@};");
     EXPECT_NO_THROW(AST::requireCppSupport(tree));
+    auto counted = convert("A:'a'; main: A=x A=3 A* => saved;");
+    EXPECT_NO_THROW(AST::requireCppSupport(counted));
 }
 
 TEST(UAST, BackendGuardRejectsUnsupportedFeaturesWithPositions) {

@@ -1,3 +1,4 @@
+#pragma once
 #include <PyRawParser.h>
 #include <iostream>
 #include <fstream>
@@ -19,6 +20,8 @@ private:
     bool line_has_code = false;
     bool last_logical_line_terminated = true;
     bool finished = false;
+    ISPA_STD::RawTokenMeta anchor;
+    const char* boundary = nullptr;
 
     template<typename T>
     static bool is(const Token& token) {
@@ -26,20 +29,21 @@ private:
     }
 
     template<typename T>
-    static Token makeToken() {
-        return Token{ISPA_STD::RawTokenMeta {}, T {}};
+    Token synthetic(std::size_t id) {
+        return Token{ISPA_STD::RawTokenMeta{anchor.startpos(), anchor.start(), anchor.start(), 0,
+            anchor.line(), anchor.column(), id}, T {}};
     }
 
-    static Token makeIndent() {
-        return makeToken<PyRawParser::FlatTypes::INDENT>();
+    Token makeIndent() {
+        return synthetic<PyRawParser::FlatTypes::INDENT>(PyRawParser::Tokens::INDENT::id);
     }
 
-    static Token makeDedent() {
-        return makeToken<PyRawParser::FlatTypes::DEDENT>();
+    Token makeDedent() {
+        return synthetic<PyRawParser::FlatTypes::DEDENT>(PyRawParser::Tokens::DEDENT::id);
     }
 
-    static Token makeNewline() {
-        return makeToken<PyRawParser::FlatTypes::NEWLINE>();
+    Token makeNewline() {
+        return synthetic<PyRawParser::FlatTypes::NEWLINE>(PyRawParser::Tokens::NEWLINE::id);
     }
 
     void processIndentation() {
@@ -79,13 +83,47 @@ private:
     }
 
 public:
+    void setBoundary(const char* end) { boundary = end; setExternalBoundary(); }
+    Token makeToken(const char*& pos) override {
+        if (boundary && pos >= boundary) return {};
+        const char* start = pos;
+        auto make = [&](std::size_t id, auto value) {
+            line = __line(pos);
+            return Token::create(getCurrentPos(start), start, pos - start, __line(start), id, std::move(value));
+        };
+        if (*pos == ' ' || *pos == '\t' || *pos == '\f') {
+            while (*pos == ' ' || *pos == '\t' || *pos == '\f') ++pos;
+            return make(PyRawParser::Tokens::__WS::id, PyRawParser::Types::__WS{});
+        }
+        if (*pos == '\n' || *pos == '\r') {
+            if (*pos++ == '\r' && *pos == '\n') ++pos;
+            return make(PyRawParser::Tokens::NEWLINE::id, PyRawParser::Types::NEWLINE{});
+        }
+        if (*pos == '\'' || *pos == '"') {
+            const char quote = *pos++;
+            const bool triple = pos[0] == quote && pos[1] == quote;
+            if (triple) pos += 2;
+            const char* content = pos;
+            while (*pos) {
+                if (*pos == '\\' && pos[1]) { pos += 2; continue; }
+                if (*pos == quote && (!triple || (pos[1] == quote && pos[2] == quote))) {
+                    const auto value = std::string(content, pos);
+                    pos += triple ? 3 : 1;
+                    return make(PyRawParser::Tokens::STRING::id, PyRawParser::Types::STRING{value});
+                }
+                if (!triple && (*pos == '\n' || *pos == '\r')) break;
+                ++pos;
+            }
+            throw std::runtime_error("Unterminated Python string");
+        }
+        return PyRawParser::Lexer::makeToken(pos);
+    }
     void push(Token &&token) override {
-        std::cout << "push(&&);" << std::endl;
         push(static_cast<const Token&>(token));
     }
     void push(const Token& token) override {
-        std::cout << "push(&);" << std::endl;
-        auto t = std::move(token);
+        auto t = token;
+        anchor = t.meta();
         if (finished) {
             throw std::logic_error(
                 "PyLexer::push() called after finish()"
@@ -96,8 +134,11 @@ public:
         }
         // Whitespace at the beginning of a physical line.
         if (at_line_start && is<PyRawParser::FlatTypes::__WS>(t)) {
-            pending_indent += t.to_node<PyRawParser::FlatTypes::__WS>().length();
+            for (const char* p = t.meta().start(); p != t.meta().end(); ++p)
+                pending_indent = *p == '\t' ? (pending_indent / 8 + 1) * 8 : pending_indent + 1;
+            return;
         }
+        if (is<PyRawParser::FlatTypes::__WS>(t)) { PyRawParser::Lexer::push(std::move(t)); return; }
 
         // Bracket tracking for implicit line continuation.
         if (is<PyRawParser::FlatTypes::LPAREN>(t) ||
@@ -164,6 +205,8 @@ public:
         }
 
         auto& output = getTokensReference();
+        const char* end = boundary ? boundary : _in + std::char_traits<char>::length(_in);
+        anchor = ISPA_STD::RawTokenMeta{static_cast<std::size_t>(end - _in), end, end, 0, __line(end), __column(end), 0};
 
         // Complete the last logical line.
         if (line_has_code && !last_logical_line_terminated) {

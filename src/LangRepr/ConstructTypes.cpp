@@ -1,6 +1,7 @@
 module LangRepr.ConstructTypes;
 
 import LangAPI;
+import AST.API;
 import corelib;
 import std;
 auto collectReferencedNames(const LangAPI::Type &type) -> std::pair<utype::unordered_map<Name, std::size_t>, utype::unordered_set<Name>> {
@@ -486,6 +487,30 @@ namespace LangRepr {
 
     auto ConstructTypes::constructTokensAndRulesEnum() -> void {
         using IdMap = utype::unordered_map<Name, std::size_t>;
+        auto tokenIdentity = [&](const Name& name) {
+            std::set<Name> visiting;
+            std::ostringstream pattern;
+            auto member = [&](auto&& self, const AST::RuleMember& value) -> void {
+                pattern << '(';
+                if (value.isName() && tree.contains(value.getName().name) && visiting.insert(value.getName().name).second) {
+                    for (const auto& child : tree[value.getName().name].rule_members) self(self, *child);
+                    visiting.erase(value.getName().name);
+                } else if (value.isGroup()) {
+                    for (const auto& child : value.getGroup().values) self(self, *child);
+                } else if (value.isOp()) {
+                    for (const auto& child : value.getOp().options) { pattern << '|'; self(self, *child); }
+                } else std::visit([&](const auto& atom) {
+                    if constexpr (!std::is_same_v<std::decay_t<decltype(atom)>, std::monostate>) pattern << atom;
+                }, value.value);
+                pattern << ')' << value.quantifier;
+            };
+            if (tree.contains(name)) for (const auto& value : tree[name].rule_members) member(member, *value);
+            std::uint64_t hash = 14695981039346656037ull;
+            // The exported terminal name is its semantic identity; parser and
+            // module names and payload layouts do not participate in this ID.
+            for (unsigned char c : name.back() + '\0' + pattern.str()) { hash ^= c; hash *= 1099511628211ull; }
+            return static_cast<std::size_t>(hash & 0x7fffffffffffffffull);
+        };
 
         auto generate = [&](const ParserIR::DataBlockList& blocks,
                             const std::string& numeric_name,
@@ -501,7 +526,7 @@ namespace LangRepr {
                 root.find_or_emplace(name)->data = data;
 
                 if (!ids.contains(name))
-                    ids.emplace(name, ids.size());
+                    ids.emplace(name, numeric_name == "Tokens" ? tokenIdentity(name) : ids.size());
             }
 
             // Ensure that all intermediate nodes have IDs too.
@@ -550,6 +575,10 @@ namespace LangRepr {
                     result.declarations.push_back(
                         makeVariable(path, as_string)
                     );
+                    if (numeric_name == "Tokens" && !as_string) result.declarations.push_back(
+                        LangAPI::Variable::createDeclaration(LangAPI::Variable{
+                            .name = "shared", .type = LangAPI::Type{LangAPI::ValueType::Const, LangAPI::Type{LangAPI::ValueType::Bool}},
+                            .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = true})}));
                 }
 
                 for (const auto& [child_name, child] : node.children) {
@@ -592,8 +621,10 @@ namespace LangRepr {
             };
             holder.push(func);
         };
+        auto tokens = lexer_builder.getDataBlocks();
+        for (const auto& [name, rule] : tree) if (rule.external_token) tokens.emplace(name, ParserIR::DataBlock{});
         generate(
-            lexer_builder.getDataBlocks(),
+            tokens,
             "Tokens",
             "TokensStr"
         );
@@ -602,7 +633,7 @@ namespace LangRepr {
             "Rules",
             "RulesStr"
         );
-        makeToStrFunc(lexer_builder.getDataBlocks(), "Tokens");
+        makeToStrFunc(tokens, "Tokens");
         makeToStrFunc(ir.getDataBlocks(), "Rules");
     }
 
@@ -837,6 +868,11 @@ namespace LangRepr {
         // Emit all canonical forward declarations before any fields/aliases.
         LangAPI::Declarations flatForwards;
         for (const Name& n : names) {
+            if (tree.contains(n) && tree[n].external) {
+                flatForwards.push_back(LangAPI::TypeAlias::createDeclaration(LangAPI::TypeAlias{
+                    .name = flattenName(n), .type = LangAPI::Type{LangAPI::Symbol{"::" + tree[n].external->cpp_type}}}));
+                continue;
+            }
             flatForwards.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(
                 LangAPI::ForwardDeclaredClass{.name = flattenName(n), .isStruct = true}));
         }
@@ -847,6 +883,7 @@ namespace LangRepr {
         // LangAPI class names in this namespace are SIMPLE flat identifiers.
         // The types' generated printer methods stay on the canonical classes.
         for (const Name& fullName : sorted) {
+            if (tree.contains(fullName) && tree[fullName].external) continue;
             const Node* old = root.find(fullName);
             if (!old) throw std::runtime_error("ISPA: missing type tree node");
 

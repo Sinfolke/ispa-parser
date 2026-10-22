@@ -881,3 +881,9 @@ UAST::py::ExprPtr UAST::parsePythonExpr(const std::string& source, const SourceP
 UAST::py::Module UAST::parsePythonModule(const std::string& source, const SourcePosition& position) {
     return PyBuilder{}.build_module(parse_snapshot(source, position, false));
 }
+UAST::py::ExprPtr UAST::convertPythonExpr(const Node<ExternalPythonExpression>& syntax, const SourcePosition& position) {
+    return PyBuilder{}.expression(Snapshot{std::string_view(syntax.start(), syntax.length())}(syntax, position));
+}
+UAST::py::Module UAST::convertPythonModule(const Node<ExternalPythonStatements>& syntax, const SourcePosition& position) {
+    return PyBuilder{}.build_module(Snapshot{std::string_view(syntax.start(), syntax.length())}(syntax, position));
+}

@@ -153,7 +153,7 @@ void Builder::specializeModules() {
     for (const auto& [name, rule] : tree_map) origins.emplace(name, name);
     auto process = [&](auto& self, const Modules::Source& source) -> void {
         if (!done.insert(source.name).second) return;
-        for (const auto& imp : source.imports) self(self, *sources.at(imp.source));
+        for (const auto& imp : source.imports) if (imp.external.empty()) self(self, *sources.at(imp.source));
         std::set<Name> own;
         for (const auto& [relative, position] : source.declarations) {
             auto name = source.name;

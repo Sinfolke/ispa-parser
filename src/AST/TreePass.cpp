@@ -192,6 +192,9 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
 
         identity.prefix.clear();
         identity.quantifier = '\0';
+        std::erase_if(identity.features, [](const auto& feature) {
+            return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature);
+        });
 
         return identity;
     };
@@ -266,6 +269,9 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
                 AST::RuleMember token_member = member;
                 token_member.prefix.clear();
                 token_member.quantifier = '\0';
+                std::erase_if(token_member.features, [](const auto& feature) {
+                    return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature);
+                });
 
                 AST::Rule newRule;
                 newRule.rule_members = {
@@ -501,9 +507,14 @@ void AST::TreePass::addSpaceToken(AST::Tree &ast) {
     bool whitespace_referenced = false;
     bool whitespace_token_referenced = false;
 
-    auto createsExplicitWhitespace = [](auto self, const std::shared_ptr<RuleMember> &mem) -> bool {
+    auto createsExplicitWhitespace = [&ast](auto self, const std::shared_ptr<RuleMember> &mem) -> bool {
         if (!mem) return false;
         if (mem->isNospace() || mem->isAny()) return true;
+        if (mem->isName() && !mem->getName().name.empty()) {
+            const auto& name = mem->getName().name.back();
+            if (name == "__WS" || name == "NEWLINE") return true;
+            if (ast.contains(mem->getName().name) && ast[mem->getName().name].external) return true;
+        }
 
         if (mem->isGroup()) {
             const auto &vals = mem->getGroup().values;
@@ -589,6 +600,7 @@ void AST::TreePass::addSpaceToken(AST::Tree &ast) {
     };
 
     for (auto &[name, rule] : ast.getTreeMap()) {
+        if (rule.external || rule.external_token) continue;
         if (name == constants::whitespace || name == constants::whitespace_rule || name == constants::whitespace_token)
             continue;
         processMembers(processMembers, rule.rule_members, corelib::text::isUpper(name.back()));

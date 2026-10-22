@@ -36,7 +36,7 @@ class IspaLexer : LexerBase() {
     private var state = 0
     private var nextState = 0
     private var token: IElementType? = null
-    private val keywords = setOf("module", "import", "from", "as", "detach", "feature", "fail", "depends", "match", "inline", "skip", "extern", "auto")
+    private val keywords = setOf("module", "import", "from", "as", "detach", "feature", "fail", "depends", "match", "inline", "skip", "extern", "global", "auto")
     private val pythonKeywords = setOf("False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield")
 
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
@@ -71,7 +71,7 @@ class IspaLexer : LexerBase() {
                 IspaTokens.STRING
             }
             python == 0 && c == 'p' && at(end) == '{' -> {
-                end++; nextState = 256; IspaTokens.CAPTURE
+                end++; nextState = state + 256; IspaTokens.CAPTURE
             }
             python > 0 && c == '{' -> { nextState = state + 256; IspaTokens.OPERATOR }
             python > 0 && c == '}' -> { nextState = state - 256; IspaTokens.OPERATOR }
@@ -87,7 +87,7 @@ class IspaLexer : LexerBase() {
                 when {
                     python > 0 -> if (word in pythonKeywords) IspaTokens.KEYWORD else IspaTokens.ID
                     word in keywords -> {
-                        nextState = when (word) { "module", "from", "as" -> 1; "feature" -> 2; "detach" -> 1; else -> state }
+                        nextState = when (word) { "module", "import", "from", "as" -> 1; "feature" -> 2; "detach" -> 1; else -> state }
                         IspaTokens.KEYWORD
                     }
                     state == 1 || state == 2 -> { if (state == 2) nextState = 0; IspaTokens.MODULE }

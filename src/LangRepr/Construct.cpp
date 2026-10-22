@@ -44,7 +44,7 @@ namespace LangRepr {
         return construct.construct();
     }
     auto Construct::constructTypes() -> void {
-        ConstructTypes construct_types(holder, lexer_builder, ir, namespace_name);
+        ConstructTypes construct_types(holder, lexer_builder, ir, namespace_name, tree);
         construct_types.constructTokensAndRulesEnum();
         // construct_types.constructTokensAndRulesEnumToString();
         construct_types.constructTypesNamespace();
@@ -66,6 +66,10 @@ namespace LangRepr {
     }
 
     auto Construct::construct() -> Holder& {
+        for (const auto& [name, rule] : tree) if (rule.external) {
+            holder.include(rule.external->header);
+            holder.include("ispastdlib/external.hpp");
+        }
         constructTypes();
         constructLexer();
         constructParser();

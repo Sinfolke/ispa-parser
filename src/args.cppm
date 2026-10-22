@@ -13,6 +13,10 @@ export struct Args {
     std::string language_str;
     std::vector<std::string> dir;
     std::vector<std::string> files;
+    std::vector<std::pair<std::string, std::string>> dependencies;
+    bool no_dep = false;
+    // Internal: keep every exported module when generating a dependency.
+    bool dependency_build = false;
     // debug set to true by default in debug builds
 #ifdef DEBUG
     bool debug = true;

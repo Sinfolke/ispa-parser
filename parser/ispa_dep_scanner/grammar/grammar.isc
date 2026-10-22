@@ -6,8 +6,12 @@ mod_module:
     @{begin, name, parameters, entry, end}
 ;
 mod_import:
-    @ 'import' @ import_value @ ';'
-    @{begin, value, end}
+    @ 'import' @ external_import? @ import_value @ ';'
+    @{begin, external, value, end}
+    #external_import:
+        'extern' @ ID
+        {@}
+    ;
     #import_value:
         @ module_import | from_import
         {@}

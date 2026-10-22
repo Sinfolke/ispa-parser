@@ -6,6 +6,8 @@ export namespace UAST {
     // `position` is where the Python source starts in the host file.
     py::ExprPtr parsePythonExpr(const std::string& source, const SourcePosition& position);
     py::Module parsePythonModule(const std::string& source, const SourcePosition& position);
+    py::ExprPtr convertPythonExpr(const Node<ExternalPythonExpression>& syntax, const SourcePosition& position);
+    py::Module convertPythonModule(const Node<ExternalPythonStatements>& syntax, const SourcePosition& position);
 
     // Lossless, generic view of the raw parser output (node kinds, field names,
     // variants, absent nodes). Debugging aid only; the typed AST is built from it.

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <PyRawParser.h>
 import Parser.Base;
 import ParserIR.API;
 import AST.API;
@@ -17,6 +18,33 @@ auto statements(const std::string& source) {
     return Parser::ParserBase::convertPython(UAST::parsePythonModule(source, position));
 }
 }
+TEST(PythonConversion, ExternalExpressionUsesOriginalParserTypeAndSource) {
+    using Binding = PyRawParser::Exports::ExpressionBlock;
+    static_assert(std::is_same_v<Binding::node_type, PyRawParser::Types::expr>);
+    const std::string source = "host\np{(a + 2) * b} trailing";
+    auto result = Binding::parse(source.c_str(), source.c_str() + 5);
+    ASSERT_TRUE(result.status);
+    EXPECT_EQ(result.node.start(), source.c_str() + 7);
+    EXPECT_EQ(result.node.line(), 2u);
+    EXPECT_EQ(std::string_view(result.end), " trailing");
+    const auto syntax = UAST::convertPythonExpr(result.node, {"extern.isc", 7, result.node.length(), 2, 3});
+    ASSERT_TRUE(syntax);
+    EXPECT_FALSE(Parser::ParserBase::convertPython(*syntax).empty());
+}
+
+TEST(PythonConversion, ExternalStatementsPreserveIndentationAndHostBoundary) {
+    using Binding = PyRawParser::Exports::StatementsBlock;
+    static_assert(std::is_same_v<Binding::node_type, PyRawParser::Types::main>);
+    const std::string source = "p{x = 1\nif x:\n    x = x + 1\n} NEXT";
+    const auto result = Binding::parse(source.c_str(), source.c_str());
+    ASSERT_TRUE(result.status);
+    EXPECT_EQ(std::string_view(result.end), " NEXT");
+    const auto syntax = UAST::convertPythonModule(result.node, {"extern.isc", 2, result.node.length(), 1, 3});
+    EXPECT_EQ(syntax.body.size(), 2u);
+    const char invalid[] = "p{x = }";
+    EXPECT_THROW(Binding::parse(invalid, invalid), std::runtime_error);
+}
+
 TEST(PythonConversion, ArithmeticPreservesGrouping) {
     const auto value = expression("(a + b) * c");
     ASSERT_FALSE(value.empty());

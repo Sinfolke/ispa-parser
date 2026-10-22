@@ -115,7 +115,6 @@ target_sources(ispa_modules
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
         PRIVATE
             ${ISPA_MODULE_SOURCES}
-            ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped/PyRawParser.cpp
 )
 
 target_include_directories(ispa_modules PRIVATE

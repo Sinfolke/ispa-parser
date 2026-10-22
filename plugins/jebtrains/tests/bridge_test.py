@@ -54,6 +54,58 @@ class BridgeTests(unittest.TestCase):
                 self.assertFalse(result['ok'])
                 self.assertIn('Invalid ' + directive.split()[0], result['diagnostics'][0]['message'])
 
+    def test_external_imports(self):
+        for directive in (
+            "import extern python ispa_python as python;",
+            "import extern foreign expression;",
+            "import extern foreign {value, outer->inner} from expression;",
+            "import extern foreign * from expression.core;",
+        ):
+            with self.subTest(directive=directive):
+                result = self.parse(directive + " entry: 'x';")
+                self.assertTrue(result['ok'], result['diagnostics'])
+
+    def test_invalid_external_imports(self):
+        for directive in (
+            "import extern;", "import extern python;",
+            "import extern python ispa_python as;",
+            "import extern python {} from ispa_python;",
+            "import extern python * from;",
+        ):
+            with self.subTest(directive=directive):
+                result = self.parse(directive + " entry: 'x';")
+                self.assertFalse(result['ok'])
+                self.assertIn('Invalid import', result['diagnostics'][0]['message'])
+
+    def test_embedded_python(self):
+        for source in (
+            "entry: @ 'x' {p{value}};",
+            "entry: 'x' =p{count + 1};",
+            "entry { p{return value} }",
+            "entry { p{x = 1\nif x:\n    x = x + 1\n} p{return x} }",
+            "fail handler p{return None}",
+            "entry: 'x' {p{ {'value': 1} }}; tail: 'y';",
+            "entry: 'x' {p{value # } import extern ignored;\n}}; tail: 'y';",
+        ):
+            with self.subTest(source=source):
+                result = self.parse(source)
+                self.assertTrue(result['ok'], result['diagnostics'])
+                self.assertTrue(any(t['role'] == 'declaration' for t in result['tokens']))
+
+    def test_invalid_python(self):
+        source = "// 😀\nentry: 'x' {p{value + }};"
+        result = self.parse(source)
+        self.assertFalse(result['ok'])
+        self.assertTrue(result['tokens'])
+        self.assertTrue(result['diagnostics'])
+
+    def test_unterminated_python(self):
+        source = "entry: 'x' {p{value"
+        result = self.parse(source)
+        self.assertFalse(result['ok'])
+        self.assertEqual(source.index('p{'), result['diagnostics'][0]['start'])
+        self.assertIn('Unterminated Python', result['diagnostics'][0]['message'])
+
     def test_expected_semicolon_at_eof(self):
         source = "// 😀\nentry: 'x'"
         result = self.parse(source)

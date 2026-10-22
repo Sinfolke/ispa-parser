@@ -103,9 +103,12 @@ value:
        {@}
     ;
     #counter:
-       @ QUANTIFIER @ bounded?
-
-       @{quantifier, repetitions}
+       @ bounded | quantified
+       {@}
+       #quantified:
+           @ QUANTIFIER @ bounded?
+           @{quantifier, repetitions}
+       ;
        #bounded:
              '=' @ NUMBER | ID | expr
 

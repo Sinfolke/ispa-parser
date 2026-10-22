@@ -41,9 +41,47 @@ The backend currently lowers **plain EBNF plus AST captures** to C++. The remain
 
 ISPA is self-hosting for its own grammar. The `.isc` grammar that describes ISPA's input language was compiled by ISPA into the parser that ISPA now uses to read grammars, replacing the original hand-written parser. A Python-subset parser (all statements except classes) and a small module-scanner parser are generated the same way.
 
-The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped_old`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
+The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped_0`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
 
 <!-- TODO: optional, add the generated grammar's size (rules, tokens, lines) -->
+
+## External parsers
+
+An external import calls a separately generated parser and captures its original
+node type:
+
+```isc
+import extern python ispa_python as python;
+expr: @ python.expr {@};
+```
+
+Use `--dep NAME PREFIX` to select an existing parser. `PREFIX` has no extension;
+ISPA reads `PREFIX.ispa-export` for exported symbols and uses `PREFIX.h` as its
+public header. For example:
+
+```sh
+ispa -l cpp -a LL --dir parser/ispa/grammar parser/ispa/entry.isc \
+  --dep python parser/python/bootstrapped/PyRawParser -o build/Parser
+```
+
+The generated C++ includes `<PyRawParser.h>` and uses `PyRawParser::Types`
+directly. Add the dependency directory to the compiler's include path and link
+its implementation as a static or shared library. The host does not generate
+copies of the imported parser's productions or types. Export entry declarations
+live in the dependency header; their definitions live in its `.cpp` file.
+
+With `--no-dep`, ISPA discovers external grammar modules in the supplied `--dir`
+directories and generates each dependency beside the host, using the external
+dependency name as its output prefix. Dependencies remain separate `.h`/`.cpp`
+files and must be compiled and linked by the build system. Nested dependencies
+are generated before their consumers; dependency cycles are diagnosed. Explicit
+`--dep` bindings may supply existing libraries while `--no-dep` builds the rest.
+
+External parser calls currently require LL generation and lazy tokenization.
+An eager lexer rejects grammars containing external calls with an `AMBIGUOUS`
+diagnostic. Lazy calls re-lex the imported span with the target lexer so token
+payloads match the target parser, then resume the host lexer at the returned
+source position.
 
 ---
 

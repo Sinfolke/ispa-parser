@@ -16,6 +16,7 @@ import AST.BackendGuard;
 import AST.Builder;
 import UAST;
 import Modules;
+import External.Exports;
 import AST.Pass;
 import Semantic;
 import LangRepr.Converter;
@@ -113,10 +114,102 @@ namespace {
     }
 }
 
-int main(int argc, char** argv) {
+int generate(Args args);
+
+// Plan external packages from the same discovered grammar sources, then run
+// each package through the ordinary generator with its own namespace/cache.
+// No generated parser implementation is folded into its consumer.
+void generateDependencies(Args& args) {
+    namespace fs = std::filesystem;
+    const auto discovered = Modules::discover(args.dir, args.files);
+    if (!discovered.modular) return;
+    std::map<Modules::Path, const Modules::Source*> sources;
+    for (const auto& source : discovered.sources)
+        if (!sources.emplace(source.name, &source).second)
+            throw std::runtime_error("Duplicate module: " + Modules::spelling(source.name));
+    std::map<std::string, std::string> dependencies;
+    for (const auto& [name, prefix] : args.dependencies)
+        if (!dependencies.emplace(name, prefix).second)
+            throw std::runtime_error("Duplicate --dep binding: " + name);
+    const Modules::Source* root = nullptr;
+    if (!args.files.empty()) root = &discovered.source(fs::canonical(args.files.front()).string());
+    else {
+        for (const auto& source : discovered.sources)
+            if (source.name == Modules::Path{"main"}) { root = &source; break; }
+        if (!root)
+        for (const auto& source : discovered.sources) {
+            if (source.entry || source.declarations.contains({"main"})) {
+                if (root) throw std::runtime_error("Multiple module entries; specify the root source file explicitly");
+                root = &source;
+            }
+        }
+    }
+    if (!root && discovered.sources.size() == 1) root = &discovered.sources.front();
+    if (!root) throw std::runtime_error("--no-dep requires a root grammar source");
+
+    auto closure = [&](const std::set<Modules::Path>& roots) {
+        std::set<Modules::Path> visited;
+        auto visit = [&](auto& self, const Modules::Path& name) -> void {
+            if (!visited.insert(name).second) return;
+            const auto found = sources.find(name);
+            if (found == sources.end()) throw std::runtime_error("Dependency grammar module not found: " + Modules::spelling(name));
+            for (const auto& imp : found->second->imports)
+                if (imp.external.empty()) self(self, imp.source);
+        };
+        for (const auto& name : roots) visit(visit, name);
+        return visited;
+    };
+    const auto host = closure({root->name});
+    std::map<std::string, std::set<Modules::Path>> packages;
+    auto collect = [&](const std::set<Modules::Path>& modules) {
+        bool changed = false;
+        for (const auto& module : modules)
+            for (const auto& imp : sources.at(module)->imports)
+                if (!imp.external.empty() && !dependencies.contains(imp.external))
+                    changed |= packages[imp.external].insert(imp.source).second;
+        return changed;
+    };
+    collect(host);
+    for (bool changed = true; changed;) {
+        changed = false;
+        const auto snapshot = packages;
+        for (const auto& [name, roots] : snapshot) changed |= collect(closure(roots));
+    }
+    const auto output_dir = fs::path(args.output).has_parent_path() ? fs::path(args.output).parent_path() : fs::path(".");
+    const auto host_name = fs::path(args.output).filename().string();
+    std::set<std::string> visiting, built;
+    auto build = [&](auto& self, const std::string& name) -> void {
+        if (built.contains(name)) return;
+        if (!visiting.insert(name).second) throw std::runtime_error("Cyclic external parser dependency: " + name);
+        if (name == host_name) throw std::runtime_error("Dependency output collides with host parser: " + name);
+        const auto modules = closure(packages.at(name));
+        for (const auto& module : modules)
+            for (const auto& imp : sources.at(module)->imports)
+                if (!imp.external.empty() && packages.contains(imp.external)) self(self, imp.external);
+        Args child = args;
+        child.no_dep = false;
+        child.dependency_build = true;
+        child.dir.clear();
+        child.files.clear();
+        for (const auto& module : modules) child.files.push_back(sources.at(module)->file);
+        child.output = (output_dir / name).string();
+        child.dependencies.assign(dependencies.begin(), dependencies.end());
+        if (generate(std::move(child)) != 0) throw std::runtime_error("Failed to generate external parser: " + name);
+        dependencies.emplace(name, (output_dir / name).string());
+        visiting.erase(name);
+        built.insert(name);
+    };
+    for (const auto& [name, roots] : packages) build(build, name);
+    args.dependencies.assign(dependencies.begin(), dependencies.end());
+    args.dir.clear();
+    args.files = {root->file};
+    for (const auto& module : host) if (module != root->name) args.files.push_back(sources.at(module)->file);
+}
+
+int generate(Args args) {
     UAST::main modules;
     std::vector<std::string> source_files;
-    auto args = init(argc, argv);
+    if (args.no_dep) generateDependencies(args);
     dumper.setArgsPointer(&args);
     dumper.setDumpDirectory(args.dump_dir);
     dumper.initDumpDirectory();
@@ -131,7 +224,25 @@ int main(int argc, char** argv) {
 
     Modules::Project module_project;
     try {
-        module_project = Modules::preprocess(args.dir, args.files);
+        std::map<std::string, std::string> resolve;
+        for (const auto& [name, path] : args.dependencies)
+            if (!resolve.emplace(name, path).second) throw std::runtime_error("Duplicate --dep binding: " + name);
+        module_project = Modules::preprocess(args.dir, args.files, resolve);
+        if (args.dependency_build) {
+            module_project.root.reset();
+            // A library module can export rules without declaring a default
+            // entry. The generated parser class still needs an internal main.
+            if (!module_project.entry) {
+                for (const auto& source : module_project.sources) {
+                    if (source.declarations.empty()) continue;
+                    auto relative = source.entry.value_or(source.declarations.begin()->first);
+                    auto entry = source.name;
+                    entry.insert(entry.end(), relative.begin(), relative.end());
+                    module_project.entry = std::move(entry);
+                    if (source.entry) break;
+                }
+            }
+        }
     } catch (const std::exception& error) {
         cpuf::printf("{}\n", error.what());
         return 1;
@@ -194,7 +305,7 @@ int main(int argc, char** argv) {
     lexer_data.build();
 
     std::string name;
-    if (!ast.getName().empty()) {
+    if (!ast.getName().empty() && !args.dependency_build) {
         name = ast.getName();
         output_path.append(ast.getName());
     } else {
@@ -251,9 +362,18 @@ int main(int argc, char** argv) {
     converter.init();
     converter.construct();
 
-    const auto manifest_path = dir_path / ".codegen-manifest";
+    const auto manifest_path = dir_path / (".codegen-manifest." + name);
     const auto previous_hashes = loadKeyHashMap(manifest_path);
-    const auto result = writeGeneratedFiles(dir_path, converter.get(), previous_hashes);
+    auto generated = converter.get();
+    if (args.algorithm == Args::Algorithm::LL) {
+        auto exports = External::exports(ast, module_project, name);
+        for (auto& [file, code] : exports) {
+            auto target = std::ranges::find_if(generated, [&](const auto& item) { return item.first == file; });
+            if (target == generated.end()) generated.emplace_back(std::move(file), std::move(code));
+            else target->second += code;
+        }
+    }
+    const auto result = writeGeneratedFiles(dir_path, generated, previous_hashes);
 
     saveKeyHashMap(manifest_path, result.hashes);
     Algorithm::saveMetadata(cache_dir / "data", metadata);
@@ -261,4 +381,12 @@ int main(int argc, char** argv) {
 
     std::cout << "Updated " << result.updated << " file(s)\n";
     return 0;
+}
+
+int main(int argc, char** argv) {
+    try { return generate(init(argc, argv)); }
+    catch (const std::exception& error) {
+        std::cerr << error.what() << '\n';
+        return 1;
+    }
 }

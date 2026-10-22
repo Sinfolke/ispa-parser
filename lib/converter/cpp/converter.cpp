@@ -1055,10 +1055,9 @@ namespace Cpp {
     }
     // converter.cpp
     auto Construct::construct() -> void {
-        // Tokens() / Rules() / Lexer::iterator are built as "::<name>::...". With an empty name that
-        // produced "::::Lexer::iterator". Fall back to the namespace name when nobody set it.
-        if (Core::name.empty())
-            Core::name = std::string(namespace_name);
+        // A process can generate several dependency parsers. Resolve runtime
+        // symbols in this parser's namespace on every invocation.
+        Core::name = std::string(namespace_name);
 
         // ---- pre-pass: where does every named thing live? (needed to resolve dependencies) ----
         std::size_t order = 0;

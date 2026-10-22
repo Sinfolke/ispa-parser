@@ -26,9 +26,21 @@ export namespace LangRepr {
         }
         auto construct() -> void {
             builder->construct();
+            files = builder->get_files();
+            for (auto& [name, source] : files) {
+                if (!name.ends_with(".h")) continue;
+                std::ostringstream headers;
+                for (const auto& header : holder.getIncludes()) {
+                    headers << "#include ";
+                    if (header.starts_with('<') && header.ends_with('>')) headers << header;
+                    else headers << std::quoted(header);
+                    headers << '\n';
+                }
+                source.insert(source.starts_with("#pragma once\n") ? 13 : 0, headers.str());
+            }
         }
         [[nodiscard]] auto get() const -> const std::vector<std::pair<std::string, std::string>>& {
-            return builder->get_files();
+            return files;
         }
         ~Converter() {
             converter_lib.loadfun<void, ::Converter::ConstructBase*>("cpp_construct_finish")(builder);

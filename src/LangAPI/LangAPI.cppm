@@ -113,7 +113,7 @@ export namespace LangAPI {
         MatchResultValue, VariantIndex, AssignCompatible,
         LexerTokenIterator, LexerLazyIterator,
         ParserRequired, ParserOptional, ParserRange, ParserRangeOptional,
-        RecoveryDecision, RecoveryState, RecoverEncoded
+        RecoveryDecision, RecoveryState, RecoverEncoded, ParserCounted
     };
 
 

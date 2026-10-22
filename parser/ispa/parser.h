@@ -11,10 +11,12 @@
 // Keep one custom lexer implementation for both generated parser layouts.
 namespace IspaSyntax {
 #ifdef ISPA_MODULAR_PARSER
+#ifndef ISPA_EXTERNAL_PYTHON
 using Python = ::Parser::Types::modules::common::PY_RAW;
+inline const auto pythonToken = ::Parser::Tokens::modules::common::PY_RAW::id;
+#endif
 using String = ::Parser::Types::modules::rule::regular::value::STRING;
 using CharacterGroup = ::Parser::Types::modules::rule::regular::value::CGROUP;
-inline const auto pythonToken = ::Parser::Tokens::modules::common::PY_RAW::id;
 inline const auto stringToken = ::Parser::Tokens::modules::rule::regular::value::STRING::id;
 inline const auto characterGroupToken = ::Parser::Tokens::modules::rule::regular::value::CGROUP::id;
 #else
@@ -101,6 +103,16 @@ private:
 
 public:
     Token makeToken(const char*& pos) override {
+#ifdef ISPA_EXTERNAL_PYTHON
+        // Preserve the lexical priority of the Python block delimiter over
+        // the host identifier "p". The external parser owns its payload.
+        if (pos[0] == 'p' && pos[1] == '{') {
+            const char* begin = pos;
+            pos += 2;
+            return Token::ambiguous(ISPA_STD::RawTokenMeta{getCurrentPos(begin), begin, pos,
+                2, __line(begin), __column(begin), Token::ambiguous_id});
+        }
+#else
         // Python semantic code block: p{ ... }
         if (pos[0] == 'p' && pos[1] == '{') {
             const char* begin = pos;
@@ -120,6 +132,7 @@ public:
             pos = end;
             return token;
         }
+#endif
 
         // Single-quoted ISPA grammar string.
         if (pos[0] == '\'') {
@@ -166,6 +179,9 @@ public:
             return token;
         }
         return Parser::Lexer::makeToken(pos);
+    }
+    auto clone() const -> std::shared_ptr<ISPA_STD::Lexer_base<Token>> override {
+        return std::make_shared<IspaLexer>(*this);
     }
 };
 class IspaParser : public Parser::Parser {

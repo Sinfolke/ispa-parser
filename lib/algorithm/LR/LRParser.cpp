@@ -55,6 +55,18 @@ bool LRParser::isNonterminal(const Name& name) const {
 }
 
 void LRParser::prepareProductions() {
+    auto rejectCounters = [&](auto&& self, const AST::RuleMember& member) -> void {
+        for (const auto& feature : member.features)
+            if (std::holds_alternative<AST::Counter>(feature) || std::holds_alternative<AST::SharedCounterRegistration>(feature))
+                throw std::invalid_argument(member.position.file + ":" + std::to_string(member.position.line) +
+                    ": counted repetitions require the LL algorithm");
+        if (member.isGroup()) for (const auto& child : member.getGroup().values) self(self, *child);
+        if (member.isOp()) for (const auto& child : member.getOp().options) self(self, *child);
+    };
+    for (const auto& [name, rule] : tree->getTreeMap()) {
+        if (rule.external) throw std::invalid_argument("External parser calls currently require the LL algorithm");
+        for (const auto& member : rule.rule_members) rejectCounters(rejectCounters, *member);
+    }
     productions.clear();
     productions_by_lhs.clear();
     rules.clear();

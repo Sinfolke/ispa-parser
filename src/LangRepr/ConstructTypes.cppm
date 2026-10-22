@@ -9,6 +9,7 @@ import LangAPI;
 import hash;
 import dstd;
 import std;
+import AST.Tree;
 using Name = stdu::vector<std::string>;
 class Node {
 public:
@@ -108,11 +109,12 @@ export namespace LangRepr {
         LexerBuilder &lexer_builder;
         ParserIR::IR &ir;
         const std::string &namespace_name;
+        const AST::Tree& tree;
     public:
         auto constructTokensAndRulesEnum() -> void;
         auto constructTokensAndRulesEnumToString() -> void;
         auto constructTypesNamespace() -> void;
-        ConstructTypes(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, const std::string &namespace_name) : holder(holder), lexer_builder(lexer_builder), ir(ir), namespace_name(namespace_name) {};
+        ConstructTypes(Holder &holder, LexerBuilder &lexer_builder, ParserIR::IR &ir, const std::string &namespace_name, const AST::Tree& tree) : holder(holder), lexer_builder(lexer_builder), ir(ir), namespace_name(namespace_name), tree(tree) {};
 
         ~ConstructTypes() {}
     };

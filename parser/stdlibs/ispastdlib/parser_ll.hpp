@@ -13,11 +13,13 @@
 #include <ispastdlib/parser_base.hpp>
 #include <ispastdlib/ispa_recovery.hpp>
 #include <ispastdlib/ispa_recovery_context.hpp>
+#include <ispastdlib/counter.hpp>
 
 #include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
+#include <map>
 
 namespace ISPA_STD {
     /* PARSER */
@@ -38,6 +40,30 @@ namespace ISPA_STD {
 
     protected:
         Recovery::State recovery_state_;
+        std::map<std::string, std::size_t, std::less<>> counters_;
+
+        // Bindings belong to an invocation; callees see their caller's bindings.
+        struct CounterScope {
+            LLParser& parser;
+            decltype(counters_) saved;
+            explicit CounterScope(LLParser& parser)
+                : parser(parser), saved(parser.counters_) {}
+            ~CounterScope() { parser.counters_.swap(saved); }
+            CounterScope(const CounterScope&) = delete;
+            CounterScope& operator=(const CounterScope&) = delete;
+        };
+        auto counter_scope() { return CounterScope(*this); }
+
+        template<class Value>
+        void bind_counter(std::string_view name, const Value& value) {
+            const auto count = [&]() -> std::size_t {
+                if constexpr (requires { value.size(); }) return value.size();
+                else return value.empty() ? 0 : 1;
+            }();
+            const auto [it, inserted] = counters_.try_emplace(std::string(name), count);
+            if (!inserted && it->second != count)
+                throw std::logic_error("Shared counter '" + std::string(name) + "' has a different count");
+        }
 
         // ---------------------------------------------------------------
         // Hierarchical (context) recovery
@@ -70,6 +96,7 @@ namespace ISPA_STD {
         std::vector<Recovery::ContextDiagnostic> context_errors_;
 
         void reset_recovery() {
+            counters_.clear();
             recovery_state_.diagnostics.clear();
             recovery_state_.total_skipped = 0;
             recovery_state_.anchors.clear();
@@ -278,6 +305,11 @@ namespace ISPA_STD {
             auto candidate = pos;
             if constexpr (!std::is_void_v<SpaceToken>) skip_spaces<SpaceToken>(candidate);
             if (candidate.isEnd()) return;
+            // External FIRST sets are predicates over source text. A boundary
+            // token cannot be classified by the host recovery token sets.
+            if constexpr (requires { candidate->isAmbiguous(); }) {
+                if (candidate->isAmbiguous()) return;
+            }
             const void* tok = std::addressof(*candidate);
             bool any_claims = false;
             for (const auto& f : frames_) {
@@ -551,6 +583,62 @@ namespace ISPA_STD {
             }
             return Node<NodeStruct>{};
         }
+        template<class NodeStruct, class SpaceToken, class IT, class Match>
+        auto counted_impl(IT& pos, CountSpec spec, Match&& match) {
+            auto limit = spec.count;
+            if (!spec.name.empty()) {
+                if (auto found = counters_.find(spec.name); found != counters_.end())
+                    limit = found->second;
+            }
+            std::vector<Node<NodeStruct>> nodes;
+            auto cursor = pos;
+            while (!limit || nodes.size() < *limit) {
+                auto attempt = cursor;
+                if constexpr (!std::is_void_v<SpaceToken>) {
+                    if (!nodes.empty()) skip_spaces<SpaceToken>(attempt);
+                }
+                const auto before = cursor_position(attempt);
+                auto node = match(attempt);
+                if (node.empty()) break;
+                if (!limit && cursor_position(attempt) == before)
+                    throw std::logic_error("Unbound counted repetition matched without consuming input");
+                nodes.push_back(std::move(node));
+                cursor = attempt;
+            }
+            if ((limit && nodes.size() != *limit) || nodes.size() < spec.minimum) {
+                reject_absent_rule();
+                Recovery::Diagnostic diagnostic;
+                diagnostic.rule = frames_.empty() ? "<rule>" : std::string(frames_.back().rule);
+                diagnostic.message = "Counted repetition" +
+                    (spec.name.empty() ? std::string{} : " '" + spec.name + "'") +
+                    " expected " + std::to_string(std::max(limit.value_or(0), spec.minimum)) +
+                    " matches, got " + std::to_string(nodes.size());
+                if (!cursor.isEnd()) {
+                    diagnostic.unexpected = Recovery::tokenId(*cursor);
+                    if constexpr (requires { cursor->meta().startpos(); })
+                        diagnostic.offset = cursor->meta().startpos();
+                }
+                const auto message = diagnostic.message;
+                recovery_state_.diagnostics.push_back(std::move(diagnostic));
+                throw std::logic_error(message);
+            }
+            if (!spec.name.empty()) counters_.try_emplace(spec.name, nodes.size());
+            pos = cursor;
+            commit_rule(pos);
+            return nodes;
+        }
+
+        template<class NodeStruct, class SpaceToken = void, class IT>
+        auto counted(IT& pos, CountSpec spec) {
+            return counted_impl<NodeStruct, SpaceToken>(pos, std::move(spec),
+                [&](IT& attempt) { return optional<NodeStruct>(attempt); });
+        }
+        template<class NodeStruct, class SpaceToken = void, class IT, class Recursive>
+        auto counted(IT& pos, CountSpec spec, Recursive&& rec) {
+            return counted_impl<NodeStruct, SpaceToken>(pos, std::move(spec),
+                [&](IT& attempt) { return optional<NodeStruct>(attempt, rec); });
+        }
+
         // Separators belong to a successful next iteration, not to the end
         // of the list. Leave pos (including whitespace) intact on absence.
         template<typename SpaceToken, typename IT, typename Match>

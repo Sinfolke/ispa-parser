@@ -1,5 +1,6 @@
 module;
 #include <output/Parser.h>
+#include <PyRawParser.h>
 export module UAST;
 export import UAST.PyAST;
 import std;
@@ -69,7 +70,11 @@ using RIGHT_PARENTHESIS = ::Parser::Types::RIGHT_PARENTHESIS;
 using LEFT_PARENTHESIS = ::Parser::Types::LEFT_PARENTHESIS;
 using RIGHT_CURLY_BRACKET = ::Parser::Types::RIGHT_CURLY_BRACKET;
 using NUMBER = ::Parser::Types::modules::common::NUMBER;
+#ifndef ISPA_EXTERNAL_PYTHON
 using PY_RAW = ::Parser::Types::modules::common::PY_RAW;
+#endif
+using ExternalPythonExpression = ::PyRawParser::Types::expr;
+using ExternalPythonStatements = ::PyRawParser::Types::main;
 using ID = ::Parser::Types::modules::common::ID;
 using rule_value_CGROUP = ::Parser::Types::modules::rule::regular::value::CGROUP;
 using rule_value_group = ::Parser::Types::modules::rule::regular::value::group;

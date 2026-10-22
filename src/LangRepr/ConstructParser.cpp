@@ -233,6 +233,23 @@ namespace LangRepr {
         if (!lr) for (const auto &prod : ir) {
             LangAPI::Type rule_type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
             LangAPI::Type fun_type = ensureTypesNs(LangAPI::Type {LangAPI::ValueType::RuleResult, rule_type, LangAPI::Type {LangAPI::Symbol {"IT"}}});
+            if (tree.contains(prod.name) && tree[prod.name].external) {
+                const auto& external = *tree[prod.name].external;
+                LangAPI::Function function;
+                function.name = Parser::ParserBase::fun_name(prod.name);
+                function.type = fun_type;
+                function.parameters = {{LangAPI::Type{LangAPI::Symbol{"IT"}}, "pos"}};
+                function.template_parameters = {{"IT", {
+                    LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerTokenIterator},
+                    LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerLazyIterator}}}};
+                function.statements = LangAPI::Return::createStatements(LangAPI::Return{
+                    .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                        .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"::ISPA_STD", "external_match"}),
+                        .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})},
+                        .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"::" + external.cpp_binding}})}})});
+                parser.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(function)), LangAPI::Visibility::Protected);
+                continue;
+            }
             LangAPI::Statements stmts;
             for (const auto &stmt : prod.rule_members) {
                 stmts.push_back(finalizeReturnStatement(finalizeTypes(stmt)));

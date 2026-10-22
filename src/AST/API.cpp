@@ -593,6 +593,12 @@ namespace AST {
         }, rm.value);
         if (rm.quantifier)
             os << rm.quantifier << ";";
+        for (const auto& feature : rm.features) {
+            if (const auto* counter = std::get_if<Counter>(&feature))
+                os << " count(" << counter->kind << ':' << counter->bound << ')';
+            if (const auto* registration = std::get_if<SharedCounterRegistration>(&feature))
+                os << " =>" << registration->name;
+        }
         return os;
     }
 
@@ -633,6 +639,7 @@ namespace AST {
 
     std::ostream& operator<<(std::ostream& os, const Rule& r) {
         os << "Rule {\n";
+        if (r.external) os << "external " << r.external->cpp_type << ' ' << r.external->cpp_binding << ' ' << r.external->header << '\n';
         for (const auto& m : r.rule_members)
             os << "  ", print_shared_ptr(os, m), os << "\n";
         os << "  Data: " << r.data_block << "\n";

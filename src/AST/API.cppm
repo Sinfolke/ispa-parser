@@ -405,6 +405,15 @@ export namespace AST {
         }
     };
 
+    struct ExternalRule {
+        std::string cpp_type, cpp_binding, header;
+        stdu::vector<std::string> marker;
+    private:
+        friend struct ::uhash;
+        friend struct ::LangAPI::MembersAccess;
+        auto members() const { return std::tie(cpp_type, cpp_binding, header, marker); }
+        auto members() { return std::tie(cpp_type, cpp_binding, header, marker); }
+    };
     struct Rule {
         stdu::vector<std::shared_ptr<AST::RuleMember>> rule_members;
         AST::DataBlock data_block;
@@ -415,6 +424,8 @@ export namespace AST {
         std::vector<std::string> modifiers;
         // Internal normalization metadata; excluded from source serialization.
         std::shared_ptr<RuleMember> normalization_source;
+        std::optional<ExternalRule> external;
+        bool external_token = false;
 
 
     private:
@@ -422,10 +433,10 @@ export namespace AST {
         friend struct ::LangAPI::MembersAccess;
 
         auto members() const {
-            return std::tie(position, features, rule_members, data_block, original_rules, isTopLevel);
+            return std::tie(position, features, rule_members, data_block, original_rules, isTopLevel, external, external_token);
         }
         auto members() {
-            return std::tie(position, features, rule_members, data_block, original_rules, isTopLevel);
+            return std::tie(position, features, rule_members, data_block, original_rules, isTopLevel, external, external_token);
         }
     };
 

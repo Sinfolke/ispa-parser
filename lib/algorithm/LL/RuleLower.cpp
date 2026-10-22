@@ -17,6 +17,23 @@ void RuleLower::build(const std::vector<std::string> name, const AST::Rule &rule
     fun_ctx.statements = &fun.statements;
     fun_ctx.rule_name = AST::LLkToken(name.begin(), name.end());
 
+    auto hasCounter = [&](auto&& self, const AST::RuleMember& member) -> bool {
+        for (const auto& feature : member.features)
+            if (std::holds_alternative<AST::Counter>(feature) ||
+                std::holds_alternative<AST::SharedCounterRegistration>(feature)) return true;
+        if (member.isGroup()) for (const auto& child : member.getGroup().values) if (self(self, *child)) return true;
+        if (member.isOp()) for (const auto& child : member.getOp().options) if (self(self, *child)) return true;
+        return false;
+    };
+    if (std::ranges::any_of(rule.rule_members, [&](const auto& member) { return hasCounter(hasCounter, *member); })) {
+        LangAPI::Variable counter_scope;
+        counter_scope.name = "counter_bindings_scope";
+        counter_scope.type = LangAPI::Type{LangAPI::Symbol{"auto"}};
+        counter_scope.value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+            .name = std::make_shared<LangAPI::Symbol>("counter_scope")});
+        fun.statements.push_back(LangAPI::Variable::createStatement(counter_scope));
+    }
+
     LangAPI::Variable frame;
     frame.name = "recovery_scope";
     frame.type = LangAPI::Type{LangAPI::Symbol{"auto"}};

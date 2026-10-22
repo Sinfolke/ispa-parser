@@ -12,9 +12,19 @@ struct Import {
     Kind kind = Kind::Qualified;
     Path source;
     std::string alias;
+    std::string external;
     std::vector<Path> symbols;
     Position position;
 };
+struct ExternalSymbol {
+    std::string cpp_type, cpp_binding, header;
+};
+struct ExternalModule {
+    std::optional<Path> entry;
+    std::map<Path, ExternalSymbol> symbols;
+};
+using ExternalPackage = std::map<Path, ExternalModule>;
+ExternalPackage readExternal(const std::string& prefix);
 struct Detach {
     Path name;
     bool feature = false;
@@ -44,12 +54,16 @@ struct Project {
     bool modular = false;
     std::optional<Path> entry;
     std::optional<Path> root;
+    std::map<Path, ExternalSymbol> external_symbols;
     const Source& source(const std::string& file) const;
 };
+Project discover(const std::vector<std::string>& directories,
+                 const std::vector<std::string>& files = {});
 // Recursively discover .isc files in the supplied directories, plus explicit
 // inputs. Discovery is deterministic and overlapping paths are deduplicated.
 // With no module directives, CLI inputs retain their historical shared scope.
 Project preprocess(const std::vector<std::string>& directories,
-                   const std::vector<std::string>& files = {});
+                   const std::vector<std::string>& files = {},
+                   const std::map<std::string, std::string>& resolve = {});
 std::string spelling(const Path& path);
 }

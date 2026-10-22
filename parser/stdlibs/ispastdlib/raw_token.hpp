@@ -74,6 +74,9 @@ namespace ISPA_STD {
 
     public:
         using meta_type = RawTokenMeta;
+        static constexpr std::size_t ambiguous_id = std::numeric_limits<std::size_t>::max() - 1;
+        static RawToken ambiguous(meta_type meta) { RawToken out; out._meta = meta; return out; }
+        bool isAmbiguous() const { return kind() == ambiguous_id; }
 
         RawToken() = default;
 

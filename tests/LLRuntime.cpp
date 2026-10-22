@@ -1,4 +1,5 @@
 #include <ispastdlib/parser_ll.hpp>
+#include <ispastdlib/external.hpp>
 #include <gtest/gtest.h>
 
 namespace {
@@ -20,6 +21,9 @@ struct Parser : ISPA_STD::LLParser<Leaf, Token> {
     using LLParser::required;
     using LLParser::range;
     using LLParser::range_optional;
+    using LLParser::counted;
+    using LLParser::counter_scope;
+    using LLParser::bind_counter;
     int failures = 0;
     void parseFromTokens() override {}
     void lazyParse() override {}
@@ -64,6 +68,30 @@ struct AnchorParser : Parser {
     using LLParser::recovery_frame;
     using LLParser::recovery_at;
     using LLParser::recovery_state_;
+};
+struct HandoffLexer : ISPA_STD::Lexer_base<Token> {
+    std::size_t scanned = 0;
+    Token makeToken(const char*& p) override {
+        const char* start = p++;
+        ++scanned;
+        ISPA_STD::RawTokenMeta meta{getCurrentPos(start), start, p, 1, 1, 1, *start == 'a' ? 1u : 2u};
+        if (*start == 'a') return Token{meta, Leaf{}};
+        return Token{meta, Other{}};
+    }
+    auto clone() const -> std::shared_ptr<ISPA_STD::Lexer_base<Token>> override { return std::make_shared<HandoffLexer>(*this); }
+    std::any checkpoint() const override { return scanned; }
+    void restoreCheckpoint(const std::any& state) override { scanned = std::any_cast<std::size_t>(state); }
+};
+struct ExternalLeaf {
+    using node_type = Leaf;
+    static bool starts(const char*, const char* start) { return *start == 'a'; }
+    static ISPA_STD::ExternalResult<Leaf> parse(const char* origin, const char* start) {
+        const char* end = start;
+        while (*end == 'a') ++end;
+        ISPA_STD::Node<Leaf> node;
+        node.set_data(Leaf{});
+        return {true, ISPA_STD::external_node(origin, start, end, std::move(node)), end};
+    }
 };
 }
 
@@ -219,4 +247,111 @@ TEST(LLRuntime, RepetitionPreservesInitialAndExplicitNoSpaceBoundaries) {
     auto adjacent = parser.range<Leaf>(pos, [](Iter&) {});
     EXPECT_EQ(adjacent.size(), 1u);
     EXPECT_EQ(pos.index, 2u);
+}
+
+TEST(LLRuntime, FixedCountsMeasureTokensAndLeaveTheNextToken) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::fixed(2)).size(), 2u);
+    EXPECT_EQ(pos.index, 2u);
+    EXPECT_TRUE(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::fixed(0)).empty());
+    EXPECT_EQ(pos.index, 2u);
+    EXPECT_THROW(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::fixed(2)), std::logic_error);
+    EXPECT_EQ(pos.index, 2u);
+}
+
+TEST(LLRuntime, NamedCountsBindOnceAndAreInheritedByProductions) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Other{}},
+                         Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    auto scope = parser.counter_scope();
+    EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x")).size(), 2u);
+    ++pos;
+    {
+        auto child = parser.counter_scope();
+        EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x"),
+            [&](Iter cursor) { return parser.leaf(cursor); }).size(), 2u);
+    }
+    EXPECT_EQ(pos.index, 5u);
+    EXPECT_THROW(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x")), std::logic_error);
+}
+
+TEST(LLRuntime, ProductionCountsMeasureInvocationsRatherThanConsumedTokens) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Leaf{}},
+                         Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::fixed(2),
+        [&](Iter cursor) { return parser.pair(cursor); }).size(), 2u);
+    EXPECT_EQ(pos.index, 4u);
+}
+
+TEST(LLRuntime, CounterBindingsRestoreOnRuleExitAndExceptions) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Other{}},
+                         Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    try {
+        auto scope = parser.counter_scope();
+        EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x")).size(), 1u);
+        throw std::runtime_error("leave rule");
+    } catch (const std::runtime_error&) {}
+    ++pos;
+    auto scope = parser.counter_scope();
+    EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x")).size(), 2u);
+    EXPECT_EQ(pos.index, 4u);
+}
+
+TEST(LLRuntime, CounterSeparatorsBelongOnlyToSuccessfulIterations) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Space{}}, Token{{}, Leaf{}},
+                         Token{{}, Space{}}, Token{{}, Other{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    EXPECT_EQ((parser.counted<Leaf, Space>(pos, ISPA_STD::CountSpec::named("x")).size()), 2u);
+    EXPECT_EQ(pos.index, 3u);
+}
+
+TEST(LLRuntime, UnboundCountsRejectNullableLoopsAndKnownCountsAllowThem) {
+    const Token tokens[]{Token{{}, Other{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    auto empty = [](Iter cursor) -> ISPA_STD::MatchResult<Leaf, Iter> {
+        ISPA_STD::Node<Leaf> node;
+        node.set_data(Leaf{});
+        return {true, node, cursor};
+    };
+    EXPECT_THROW(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::named("x"), empty), std::logic_error);
+    EXPECT_EQ(parser.counted<Leaf>(pos, ISPA_STD::CountSpec::fixed(3), empty).size(), 3u);
+    EXPECT_EQ(pos.index, 0u);
+}
+
+TEST(LLRuntime, CounterRegistrationUsesSuccessfulMatches) {
+    const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Other{}},
+                         Token{{}, Space{}}, Token{{}, Space{}}, Token{{}, Space{}}, Token{}};
+    Parser parser;
+    Iter pos{tokens};
+    const auto nodes = parser.range_optional<Leaf>(pos);
+    parser.bind_counter("x", nodes);
+    ++pos;
+    EXPECT_EQ(parser.counted<Space>(pos, ISPA_STD::CountSpec::named("x")).size(), 2u);
+    EXPECT_EQ(pos.index, 5u);
+}
+
+TEST(LLRuntime, ExternalHandoffPreservesPrefetchedAndFailedProbeCursors) {
+    HandoffLexer lexer;
+    const char* source = "aa!";
+    HandoffLexer::lazy_iterator original(lexer, source);
+    auto lookahead = original;
+    ++lookahead; ++lookahead;
+    EXPECT_EQ(lookahead->kind(), 2u);
+    const auto result = ISPA_STD::external_match<ExternalLeaf>(original);
+    ASSERT_TRUE(result.status);
+    EXPECT_EQ(result.it.sourcePosition(), source + 2);
+    EXPECT_EQ(result.it->kind(), 2u);
+    EXPECT_EQ(original.sourcePosition(), source);
+    EXPECT_EQ(original->kind(), 1u);
+    EXPECT_GT(result.it.distance(), original.distance());
+    EXPECT_EQ(lookahead.sourcePosition(), source + 2);
 }

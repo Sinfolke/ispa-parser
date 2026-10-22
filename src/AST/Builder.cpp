@@ -200,11 +200,19 @@ namespace {
         for (const auto& arg : args.following_p) out.push_back(id(arg));
         return out;
     }
-    // `code` is a Node<expr> or Node<stmt>: the generated parser keeps the Python
-    // action as raw text, so it is parsed into the typed UAST::py tree here.
+    // External Python actions carry the original PyRawParser nodes.
     // `at` is the node whose position labels the resulting action.
     template<class T, class At> AST::PythonAction action(const UAST::Node<T>& code, const At& at) {
         const auto& n = payload(code);
+        if constexpr (std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonExpression> ||
+                      std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonStatements>) {
+            const auto body = where(n.value);
+            auto tree = [&] {
+                if constexpr (std::is_same_v<T, UAST::expr>) return python(UAST::convertPythonExpr(n.value, body), body);
+                else return python(UAST::convertPythonModule(n.value, body), body);
+            }();
+            return AST::PythonAction{std::move(tree), {}, position(at)};
+        } else {
         auto body = where(n.value);      // text starts after the two-character opening delimiter
         body.offset += 2;
         body.column += 2;
@@ -214,6 +222,7 @@ namespace {
             else return python(UAST::parsePythonModule(source, body), body);
         }();
         return AST::PythonAction{std::move(tree), {}, position(at)};
+        }
     }
     template<class T> AST::PythonAction action(const UAST::Node<T>& code) { return action(code, code); }
     [[noreturn]] void unsupported(const std::string& message) {
@@ -368,18 +377,30 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
 
     if (!value.quantifier.empty()) {
         const auto& q = payload(value.quantifier);
-        if (!q.repetitions.empty()) {
+        auto bounded = [&](const auto& repetitions) {
             AST::Counter counter;
-            counter.position = position(q.repetitions);
+            counter.position = position(repetitions);
             std::visit([&](const auto& n) {
                 using T = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<T, UAST::Node<UAST::ID>>) { counter.kind = "name"; counter.bound = id(n); }
                 else if constexpr (std::is_same_v<T, UAST::Node<UAST::NUMBER>>) { counter.kind = "number"; counter.bound = payload(n).full; if (!payload(n).floating.empty()) counter.bound += "." + payload(n).floating; }
                 else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = action(n); }
-            }, payload(q.repetitions).value);
+            }, payload(repetitions).value);
             output.features.push_back(std::move(counter));
-        }
-        if (!q.quantifier.empty()) output.quantifier = payload(q.quantifier).value;
+        };
+        std::visit([&](const auto& node) {
+            using T = std::decay_t<decltype(node)>;
+            if constexpr (!std::is_same_v<T, std::monostate>) {
+                if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_counter_bounded>>) {
+                    output.quantifier = '*';
+                    bounded(node);
+                } else {
+                    const auto& quantified = payload(node);
+                    if (!quantified.quantifier.empty()) output.quantifier = payload(quantified.quantifier).value;
+                    if (!quantified.repetitions.empty()) bounded(quantified.repetitions);
+                }
+            }
+        }, q.value);
     }
     return output;
 }
@@ -525,11 +546,25 @@ void AST::Builder::build() {
 
     convertMain(input);
     fullname.clear();
+    if (module_project) for (const auto& [name, symbol] : module_project->external_symbols) {
+        stdu::vector<std::string> full{"modules"};
+        full.insert(full.end(), name.begin(), name.end());
+        stdu::vector<std::string> marker{"__ISPA_EXTERNAL_" + std::to_string(tree_map.size())};
+        AST::Rule token;
+        token.external_token = true;
+        token.rule_members.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{.value = AST::RuleMemberAny{}}));
+        tree_map.emplace(marker, std::move(token));
+        AST::Rule proxy;
+        proxy.external = AST::ExternalRule{symbol.cpp_type, symbol.cpp_binding, symbol.header, marker};
+        proxy.rule_members.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{.value = AST::RuleMemberName{.name = marker}}));
+        tree_map.emplace(std::move(full), std::move(proxy));
+    }
 
     // Search the containing rule and then its enclosing scopes using the
     // entire reference path. Never fall back to a matching final segment:
     // rule.ast must not accidentally bind to a global ast declaration.
     for (auto& [scope, rule] : tree_map) {
+        if (rule.external || rule.external_token) continue;
         const Modules::Source* source = module_project && module_project->modular
             ? &module_project->source(rule.position.file) : nullptr;
         const std::size_t minimum_scope = source ? source->name.size() + 1 : 0;

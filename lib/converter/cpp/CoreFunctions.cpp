@@ -264,6 +264,7 @@ auto Core::convertIspaLibSymbol(const LangAPI::IspaLibSymbol &symbol) -> std::st
         case LangAPI::StdlibExports::ParserOptional: return "optional";
         case LangAPI::StdlibExports::ParserRange: return "range";
         case LangAPI::StdlibExports::ParserRangeOptional: return "range_optional";
+        case LangAPI::StdlibExports::ParserCounted: return "counted";
         case LangAPI::StdlibExports::AssignCompatible:
             return "::ISPA_STD::assign_compatible";
         case LangAPI::StdlibExports::LexerTokenIterator:
@@ -496,9 +497,10 @@ auto Core::convertIspaLibFunctionCall(const LangAPI::IspaLibFunctionCall &call) 
         const auto& param = call.args[i];
         // Rule callbacks are member templates. Bind the parser instance and
         // let the iterator argument select the specialization at the call site.
-        if (parser_match && i == 1 &&
+        const bool counted_callback = kind == LangAPI::StdlibExports::ParserCounted && i == 2;
+        if (((parser_match && i == 1 &&
             (call.args.size() == 3 || kind == LangAPI::StdlibExports::ParserOptional ||
-             kind == LangAPI::StdlibExports::ParserRangeOptional) && param.size() == 1 &&
+             kind == LangAPI::StdlibExports::ParserRangeOptional)) || counted_callback) && param.size() == 1 &&
             param.front().isRvalue() && param.front().getRValue().isSymbol())
             out << "[this](auto cursor) { return this->"
                 << convertExpression(param) << "(cursor); }";

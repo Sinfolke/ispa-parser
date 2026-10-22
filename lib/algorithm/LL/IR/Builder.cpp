@@ -13,6 +13,12 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
     RuleLower lower(ctx, tree);
     for (const auto& [name, rule] : tree) {
         if (corelib::text::isUpper(name.back())) continue;
+        if (rule.external) {
+            Production production;
+            production.name = name;
+            data.push_back(std::move(production));
+            continue;
+        }
         const auto cached = cache.find(corelib::text::join(name, "."));
         if (!changed.contains(name) && cached != cache.end()) {
             data.push_back(cached->second);

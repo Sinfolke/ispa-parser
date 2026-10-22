@@ -5,6 +5,7 @@ import std;
 export namespace LangRepr {
     class Holder {
         LangAPI::Declarations data;
+        std::vector<std::string> includes;
     public:
         Holder(const LangAPI::Declarations &data) : data(data) {}
         Holder(LangAPI::Declarations &&data) : data(std::move(data)) {}
@@ -12,6 +13,10 @@ export namespace LangRepr {
 
         auto get() -> LangAPI::Declarations& { return data; };
         auto get() const -> const LangAPI::Declarations& { return data; };
+        void include(std::string path) {
+            if (std::ranges::find(includes, path) == includes.end()) includes.push_back(std::move(path));
+        }
+        const auto& getIncludes() const { return includes; }
 
         auto push(const LangAPI::Declaration &declaration) -> void { data.push_back(declaration); };
         auto push(LangAPI::Declaration &&declaration) -> void { data.push_back(std::move(declaration)); };

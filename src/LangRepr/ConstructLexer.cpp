@@ -442,6 +442,16 @@ namespace LangRepr {
         holder.push(LangAPI::TypeAlias::createDeclaration(createTypeToken()));
         Tlog::Branch b(logger, "LangRepr/ConstructLexer.log");
         auto lexer = createLexerClass();
+        if (std::ranges::any_of(tree.getTreeMap(), [](const auto& entry) { return entry.second.external.has_value(); })) {
+            LangAPI::Function external;
+            external.name = "hasExternalRules";
+            external.type = LangAPI::Type{LangAPI::ValueType::Bool};
+            external.is_const = true;
+            external.override = true;
+            external.statements = LangAPI::Return::createStatements(LangAPI::Return{
+                .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = true})});
+            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(external)), LangAPI::Visibility::Public);
+        }
 
         const auto &dfa = lexer_builder.getDFA();
         const auto &class_table = dfa.table;

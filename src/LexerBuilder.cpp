@@ -116,7 +116,7 @@ void LexerBuilder::build() {
 auto LexerBuilder::getDataBlocks() const -> ParserIR::DataBlockList {
     ParserIR::DataBlockList list;
     for (const auto& [name, rule] : ast) {
-        if (corelib::text::isLower(name.back())) continue;
+        if (rule.external_token || corelib::text::isLower(name.back())) continue;
         list.emplace(name, ParserIR::dataBlock(rule.data_block));
     }
     return list;

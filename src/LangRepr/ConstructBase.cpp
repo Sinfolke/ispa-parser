@@ -14,11 +14,25 @@ namespace LangRepr {
     auto ConstructBase::createLexerClass() -> LangAPI::Class {
         LangAPI::IspaLibSymbol lexer_s {.exports = LangAPI::StdlibExports::Lexer};
         lexer_s.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Symbol {"Token"}));
-        return LangAPI::Class {
+        auto result = LangAPI::Class {
             .name = "Lexer",
             .inherit_members = {std::make_pair(LangAPI::Visibility::Public, lexer_s)},
             .default_visibility = LangAPI::Visibility::Private
         };
+        LangAPI::Type shared{LangAPI::Symbol{"std", "shared_ptr"}};
+        shared.template_parameters.push_back(LangAPI::Type{lexer_s});
+        LangAPI::Function clone;
+        clone.name = "clone";
+        clone.type = shared;
+        clone.is_const = true;
+        clone.override = true;
+        clone.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
+            .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"std", "make_shared"}),
+                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"*this"})},
+                .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"Lexer"}})}})}));
+        result.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(clone)), LangAPI::Visibility::Public);
+        return result;
     }
 
     auto ConstructBase::makeIntRValue(int v) -> std::shared_ptr<LangAPI::RValue> {

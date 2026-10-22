@@ -49,7 +49,7 @@ std::string prepare(const std::string& source, std::vector<Diagnostic>& errors) 
     static const std::string path = id + "(\\s*->\\s*" + id + ")*";
     static const std::string list = path + "(\\s*,\\s*" + path + ")*";
     static const std::regex module("module\\s+" + modulePath + "(\\s*->\\s*" + path + ")?\\s*;");
-    static const std::regex imported("import\\s+(" + modulePath + "(\\s+as\\s+" + id + ")?|(" +
+    static const std::regex imported("import\\s+(extern\\s+" + id + "\\s+)?((?!extern\\b)" + modulePath + "(\\s+as\\s+" + id + ")?|(" +
         "\\*|\\{\\s*" + list + "\\s*\\})\\s+from\\s+" + modulePath + ")\\s*;");
     static const std::regex detached("detach\\s+(feature\\s+)?" + path + "\\s*;");
     static const std::regex feature("feature\\s+" + path + "\\s*\\{\\s*(" + list + ")?\\s*\\}\\s*;");
@@ -128,9 +128,20 @@ struct Lexer : IspaLexer {
     explicit Lexer(const std::string& text) : input(text.c_str()) { setInput(input); }
     Token makeToken(const char*& cursor) override {
         stopped = cursor - input;
+        // Keep whitespace explicit so custom boundaries are checked again at
+        // the next token, including before Python and at the end of the file.
+        if (std::isspace(static_cast<unsigned char>(*cursor))) {
+            const char* start = cursor;
+            while (std::isspace(static_cast<unsigned char>(*cursor))) ++cursor;
+            return Token::create(getCurrentPos(start), start, cursor - start, 0,
+                ::Parser::Tokens::__WS::id, ::Parser::Types::__WS{});
+        }
         auto token = IspaLexer::makeToken(cursor);
         if (cursor == input + stopped) throw std::runtime_error("Unrecognized character");
         return token;
+    }
+    auto clone() const -> std::shared_ptr<ISPA_STD::Lexer_base<Token>> override {
+        return std::make_shared<Lexer>(*this);
     }
 };
 struct BridgeParser : ::Parser::Parser {
@@ -149,7 +160,10 @@ struct Semantics {
             const auto base = reinterpret_cast<std::uintptr_t>(source.data());
             if (address >= base && address - base < source.size())
                 spans.push_back({"ID", std::string(role), address - base, std::min(node.length(), source.size() - (address - base))});
-        } else visit(node.data(), role);
+        } else if constexpr (typeName<T>().find("PyRawParser::") == std::string_view::npos) {
+            // Python identifiers belong to the embedded language, not ISPA captures.
+            visit(node.data(), role);
+        }
     }
     template<class T> void visit(const std::shared_ptr<T>& node, std::string_view role = {}) { if (node) visit(*node, role); }
     template<class... T> void visit(const std::variant<T...>& node, std::string_view role = {}) {
@@ -191,7 +205,20 @@ int main() {
         const auto text = prepare(source, errors);
         Lexer lexer(text);
         bool lexed = false;
-        try { lexer.makeTokens(); lexed = true; }
+        try {
+            // Collect host tokens for highlighting without lexing Python as ISPA.
+            // Parsing below uses a separate lazy stream for external rule calls.
+            const char* cursor = text.c_str();
+            while (*cursor) {
+                lexer.stopped = cursor - text.c_str();
+                if (cursor[0] == 'p' && cursor[1] == '{') {
+                    cursor = IspaSyntax::scanPythonBlock(cursor);
+                    continue;
+                }
+                lexer.push(lexer.makeToken(cursor));
+            }
+            lexed = true;
+        }
         catch (const std::exception& e) { add(errors, e.what(), lexer.stopped, 1, source.size()); }
         for (const auto& token : lexer.getTokens()) {
             if (token.empty()) continue;
@@ -204,9 +231,10 @@ int main() {
         }
         if (lexed) {
             BridgeParser parser;
-            auto begin = ::Parser::Lexer::iterator(lexer);
-            parser.skip_spaces<::Parser::Types::__WS>(begin);
+            Lexer parserLexer(text);
             try {
+                auto begin = ::Parser::Lexer::lazy_iterator(parserLexer, text.c_str());
+                parser.skip_spaces<::Parser::Types::__WS>(begin);
                 auto result = parser.main(begin);
                 auto end = result.it;
                 if (result.status) {
@@ -215,7 +243,7 @@ int main() {
                     Semantics{text, spans}.visit(result.node);
                 } else add(errors, "Parsing stopped: expected a rule declaration", begin.isEnd() ? source.size() : begin->meta().startpos(), 1, source.size());
             } catch (const std::exception& e) {
-                if (parser.getErrors().empty()) add(errors, e.what(), source.size(), 0, source.size());
+                if (parser.getErrors().empty()) add(errors, e.what(), parserLexer.stopped, 1, source.size());
             }
             for (const auto& error : parser.getErrors()) {
                 std::string expected = error.expected_text;
@@ -228,6 +256,7 @@ int main() {
                 add(errors, message, eof ? source.size() : error.offset, error.length, source.size());
             }
         }
+        std::stable_sort(errors.begin(), errors.end(), [](const auto& a, const auto& b) { return a.start < b.start; });
     }
     std::cout << "{\"ok\":" << (errors.empty() ? "true" : "false") << ",\"tokens\":[";
     bool first = true;

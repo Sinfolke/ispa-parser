@@ -84,6 +84,7 @@ class SourceSyntax {
     void visit(const Syntax::mod_import& value) {
         Import imp;
         imp.position = position(value.begin);
+        if (!value.external.empty()) imp.external = data(data(value.external).value).value;
         std::visit([&](const auto& node) {
             using T = std::decay_t<decltype(node)>;
             if constexpr (!std::is_same_v<T, std::monostate>) {
@@ -191,7 +192,7 @@ public:
 };
 }
 
-Project preprocess(const std::vector<std::string>& directories, const std::vector<std::string>& files) {
+Project discover(const std::vector<std::string>& directories, const std::vector<std::string>& files) {
     namespace fs = std::filesystem;
     Project project;
     std::map<fs::path, fs::path> discovered;
@@ -222,6 +223,13 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
         project.modular |= source.has_directives;
         project.sources.push_back(std::move(source));
     }
+    return project;
+}
+
+Project preprocess(const std::vector<std::string>& directories, const std::vector<std::string>& files,
+                   const std::map<std::string, std::string>& resolve) {
+    namespace fs = std::filesystem;
+    auto project = discover(directories, files);
     // Preserve the shared scope used by existing split grammars that contain
     // no module directives at all.
     if (!project.modular) return project;
@@ -259,10 +267,36 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
         return imp.kind != Import::Kind::Selected || std::ranges::any_of(imp.symbols,
             [&](const Path& item) { return startsWith(name, item); });
     };
+    std::map<std::string, ExternalPackage> packages;
+    std::map<std::pair<std::string, Path>, Path> external_names;
     // Every module's declarations are already registered. Bind imports without
     // traversing dependency edges: mutually recursive rules need no build order.
     for (auto& source : project.sources) {
         for (const auto& imp : source.imports) {
+            if (!imp.external.empty()) {
+                if (!resolve.contains(imp.external)) fail(imp.position, "external parser needs --dep " + imp.external + " OUTPUT_PREFIX (or --no-dep with its grammar sources)");
+                if (!packages.contains(imp.external)) packages.emplace(imp.external, readExternal(resolve.at(imp.external)));
+                const auto& package = packages.at(imp.external);
+                const auto found = package.find(imp.source);
+                if (found == package.end()) fail(imp.position, "external module not exported: " + spelling(imp.source));
+                const auto& target = found->second;
+                for (const auto& symbol : imp.symbols)
+                    if (!target.symbols.contains(symbol)) fail(imp.position, "external symbol not exported: " + spelling(symbol));
+                auto canonical = [&](const Path& symbol) {
+                    const auto key = std::make_pair(imp.external, joined(imp.source, symbol));
+                    if (!external_names.contains(key)) {
+                        Path name{"__external", imp.external, "symbol_" + std::to_string(external_names.size())};
+                        project.external_symbols.emplace(name, target.symbols.at(symbol));
+                        external_names.emplace(key, std::move(name));
+                    }
+                    return external_names.at(key);
+                };
+                for (const auto& [name, symbol] : target.symbols)
+                    if (selected(imp, name)) bind(source, joined(prefix(imp), name), canonical(name), imp.position);
+                if (imp.kind == Import::Kind::Qualified && target.entry)
+                    bind(source, prefix(imp), canonical(*target.entry), imp.position);
+                continue;
+            }
             auto found = modules.find(imp.source);
             if (found == modules.end()) fail(imp.position, "module not found: " + spelling(imp.source));
             const auto& target = project.sources[found->second];
@@ -295,6 +329,7 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
     }
     for (auto& source : project.sources) {
         for (const auto& imp : source.imports) {
+            if (!imp.external.empty()) continue;
             const auto& target = project.sources[modules.at(imp.source)];
             for (const auto& [name, symbols] : target.features)
                 if (selected(imp, name)) bind_feature(source, joined(prefix(imp), name), target.allowed_features.at(name), imp.position);

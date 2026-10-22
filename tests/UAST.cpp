@@ -208,6 +208,18 @@ TEST(UAST, BoundedCountersAndSharedRegistration) {
     EXPECT_EQ(feature<AST::SharedCounterRegistration>(*members[0]).name, "count");
 }
 
+TEST(UAST, DirectCountSyntaxPreservesFollowingMembers) {
+    auto tree = convert("A:'a'; main: A=x A=3 A* A+;");
+    const auto& members = tree.getTreeMap().at({"main"}).rule_members;
+    ASSERT_EQ(members.size(), 4u);
+    EXPECT_EQ(feature<AST::Counter>(*members[0]).bound, "x");
+    EXPECT_EQ(feature<AST::Counter>(*members[1]).bound, "3");
+    EXPECT_EQ(members[0]->quantifier, '*');
+    EXPECT_TRUE(members[2]->features.empty());
+    EXPECT_EQ(members[2]->quantifier, '*');
+    EXPECT_EQ(members[3]->quantifier, '+');
+}
+
 TEST(UAST, PythonActionAndFailBlock) {
     Parser::Parser parser;
     auto syntax = parser.parse("fail recover>(value) p{py} T: 'a';");
@@ -230,6 +242,27 @@ TEST(UAST, PythonSubtreeRetainsStatementsAndExpressions) {
     const auto expression = UAST::parsePythonSnapshot("x + 2", pos, true);
     EXPECT_EQ(expression.kind, "expr");
     EXPECT_EQ(expression.position.file, "action.isc");
+}
+
+TEST(UAST, EmbeddedExternalPythonActionsResumeGrammar) {
+    IspaParser parser;
+    const auto& syntax = parser.parse(R"(
+fail recover p{
+x = {'brace': '}'}
+if x:
+    x = 2
+}
+T: ${p{(a + 2) * b}} 'a'+=p{3};
+U: 'b';
+)");
+    ASSERT_TRUE(parser.getErrors().empty());
+    AST::Builder builder(syntax, "external-python.isc");
+    builder.build();
+    const auto tree = builder.get();
+    ASSERT_EQ(tree.getFailBlocks().size(), 1u);
+    EXPECT_EQ(tree.getFailBlocks().front().action.python.kind, "Module");
+    EXPECT_TRUE(tree.getTreeMap().contains({"T"}));
+    EXPECT_TRUE(tree.getTreeMap().contains({"U"}));
 }
 
 TEST(UAST, PythonExpressionInDynamicPatternAndCounter) {

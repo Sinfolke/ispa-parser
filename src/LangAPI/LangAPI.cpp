@@ -216,6 +216,7 @@ namespace LangAPI {
             case StdlibExports::DfaLRTable: os << "DfaLRTable"; break;
             case StdlibExports::DfaNullState: os << "DfaNullState"; break;
             case StdlibExports::ParserFunctionParameter: os << "ParserFunctionParameter"; break;
+            case StdlibExports::ParserCounted: os << "ParserCounted"; break;
         }
         return os;
     }

@@ -4,6 +4,8 @@
  */
 #pragma once
 #include <stdexcept>
+#include <any>
+#include <cstring>
 #include <ispastdlib/core.hpp>
 #include <ispastdlib/dfa_run.hpp>
 #include <ispastdlib/token_flow.hpp>
@@ -15,7 +17,7 @@ namespace ISPA_STD {
     template<typename Token>
     constexpr bool is_token_end(const Token& token) {
         if constexpr (is_raw_token_v<Token>) {
-            return token.empty();
+            return token.empty() && !token.isAmbiguous();
         } else {
             return std::holds_alternative<std::monostate>(token);
         }
@@ -28,6 +30,7 @@ namespace ISPA_STD {
         std::string _owned_input;
         TokenFlow<Token> tokens;
         long long line = 1;
+        bool external_boundary = false;
 
         std::size_t getCurrentPos(const char* pos) const {
             return pos - _in;
@@ -92,6 +95,7 @@ namespace ISPA_STD {
             struct SharedState {
                 const char* pos = nullptr;
                 bool eof_processed = false;
+                std::vector<std::any> checkpoints;
 
                 explicit SharedState(const char* in) : pos(in) {}
             };
@@ -99,6 +103,8 @@ namespace ISPA_STD {
             Lexer_base* owner = nullptr;
             std::shared_ptr<SharedState> state;
             std::size_t token_index = 0;
+            std::size_t distance_base = 0;
+            std::shared_ptr<Lexer_base> owned_owner;
 
             void ensure_token() {
                 if (!owner || !state)
@@ -129,7 +135,21 @@ namespace ISPA_STD {
 
                     const char* before = state->pos;
 
+                    const auto checkpoint = owner->checkpoint();
                     Token raw = owner->makeToken(state->pos);
+                    if (raw.empty() && owner->external_boundary) {
+                        state->pos = before;
+                        state->eof_processed = true;
+                        owner->push();
+                        break;
+                    }
+                    if constexpr (is_raw_token_v<Token>) {
+                        if (raw.empty() && !raw.isAmbiguous() && owner->hasExternalRules()) {
+                            state->pos = before + 1;
+                            raw = Token::ambiguous(RawTokenMeta{owner->getCurrentPos(before), before, state->pos,
+                                1, owner->__line(before), owner->__column(before), Token::ambiguous_id});
+                        }
+                    }
 
                     if (state->pos == before) {
                         throw std::runtime_error(
@@ -139,6 +159,7 @@ namespace ISPA_STD {
 
                     // Must dispatch through the derived lexer.
                     owner->push(std::move(raw));
+                    while (state->checkpoints.size() < owner->tokens.size()) state->checkpoints.push_back(checkpoint);
 
                     // push() may emit zero, one, or multiple tokens.
                     // Keep lexing until the requested token exists.
@@ -155,11 +176,45 @@ namespace ISPA_STD {
                 // Token offsets are relative to the source used by this lazy
                 // stream, just as they are for makeTokens(input).
                 owner->_in = in;
-                ensure_token();
             }
 
             lazy_iterator(Lexer_base& lexer, const char* in)
                 : lazy_iterator(&lexer, in) {}
+
+            lazy_iterator(Lexer_base& lexer, const char* origin, const char* start)
+                : lazy_iterator(&lexer, origin) {
+                state->pos = start;
+                owner->line = owner->__line(start);
+            }
+
+            const char* sourceOrigin() const { return owner ? owner->_in : nullptr; }
+            const char* sourcePosition() const {
+                if (!owner || !state) return nullptr;
+                if (token_index < owner->tokens.size()) {
+                    const auto& token = owner->tokens[token_index];
+                    if (!is_token_end(token) && token.meta().start()) return token.meta().start();
+                }
+                return state->pos;
+            }
+            // A separate cache/lexer branch preserves all pre-call iterator
+            // copies, including callers probing an optional external rule.
+            void consumeExternal(const char* end) {
+                const char* begin = sourcePosition();
+                const char* origin = sourceOrigin();
+                if (!origin || !begin || !end || end < begin || end > origin + std::strlen(origin))
+                    throw std::logic_error("External parser returned an invalid source cursor");
+                auto branch = owner->clone();
+                if (token_index < state->checkpoints.size()) branch->restoreCheckpoint(state->checkpoints[token_index]);
+                branch->tokens.clear();
+                branch->_in = origin;
+                branch->line = branch->__line(end);
+                branch->externalAdvance(begin, end);
+                distance_base = distance() + (end != begin ? 1 : 0);
+                token_index = 0;
+                owned_owner = std::move(branch);
+                owner = owned_owner.get();
+                state = std::make_shared<SharedState>(end);
+            }
 
             bool isEnd() const {
                 if (!owner || !state)
@@ -175,9 +230,7 @@ namespace ISPA_STD {
 
             lazy_iterator& operator++() {
                 if (!isEnd()) {
-                    const auto old = token_index;
                     ++token_index;
-                    ensure_token();
                 }
 
                 return *this;
@@ -202,18 +255,18 @@ namespace ISPA_STD {
             }
 
             const Token* operator->() const {
-                return &owner->tokens[token_index];
+                return &operator*();
             }
 
             std::ptrdiff_t operator-(
                 const lazy_iterator& other
             ) const {
-                return static_cast<std::ptrdiff_t>(token_index) -
-                       static_cast<std::ptrdiff_t>(other.token_index);
+                return static_cast<std::ptrdiff_t>(distance()) -
+                       static_cast<std::ptrdiff_t>(other.distance());
             }
 
             std::size_t distance() const {
-                return token_index;
+                return distance_base + token_index;
             }
             auto &current_state() const {
                 return *state;
@@ -272,7 +325,7 @@ namespace ISPA_STD {
                 if (is_token_end(current))
                     return false;
 
-                const char* start = current.meta().pos;
+                const char* start = current.meta().start();
 
                 if (!start)
                     return false;
@@ -367,6 +420,14 @@ namespace ISPA_STD {
 
         virtual Token makeToken(const char*& pos) = 0;
         virtual void init() {}
+        virtual std::shared_ptr<Lexer_base> clone() const {
+            throw std::logic_error("External parser handoff requires a cloneable lexer");
+        }
+        virtual std::any checkpoint() const { return {}; }
+        virtual void restoreCheckpoint(const std::any&) {}
+        virtual void externalAdvance(const char*, const char*) {}
+        virtual bool hasExternalRules() const { return false; }
+        void setExternalBoundary(bool enabled = true) { external_boundary = enabled; }
 
         Lexer_base() { init(); }
         explicit Lexer_base(const std::string& in) : _owned_input(in), _in(_owned_input.c_str()) { init(); }
@@ -398,6 +459,7 @@ namespace ISPA_STD {
         virtual void push() { tokens.emplace_back(); }
 
         virtual TokenFlow<Token>& makeTokens() {
+            if (hasExternalRules()) throw std::logic_error("AMBIGUOUS eager token stream: use lazy tokenization with external parsers");
             if (_in == nullptr) {
                 throw IspaAPIExcept("can't lex because no input provided. ");
             }

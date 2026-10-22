@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <output/Parser.h>
+#include <ispa/parser.h>
 import Algorithm.API;
 import Algorithm.Cache;
 import AST.Builder;
@@ -18,7 +18,7 @@ import std;
 
 namespace {
 auto pluginGrammar(const char* source) -> AST::Tree {
-    Parser::Parser parser;
+    IspaParser parser;
     AST::Builder builder(parser.parse(source), "plugin.isc");
     builder.build();
     auto tree = builder.get();
@@ -378,6 +378,7 @@ int main() {
     if (parser.parse("a@a@=a@{b}").items.size() != 3) return 2;
     if (parser.parse("a @a @=a @{b}").items.size() != 3) return 3;
 }
+
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
         std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
@@ -386,4 +387,110 @@ int main() {
         "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+
+TEST(AlgorithmPlugin, LLCountedTokensAndProductionsShareCountsInBothIteratorModes) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "__WS:' '; NEWLINE:'\\n'; A:'a'; B:'b'; C:'c'; "
+        "main: @ A=x ':' @ body @ NEWLINE @ B=2 '!' @{first, body, newline, last}; "
+        "body: @ item=x {@}; item: @ C {@}; "
+        "aligned: @ __WS=x 'header' NEWLINE @ line+ '!' @{spaces, lines}; "
+        "line: @ __WS=x 'item' NEWLINE {@};");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-counted-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup {
+        std::filesystem::path path;
+        ~Cleanup() { std::filesystem::remove_all(path); }
+    } cleanup{directory};
+    Algorithm::Metadata metadata;
+    const auto cold = convert(*descriptor, tree, metadata, directory);
+    EXPECT_EQ(convert(*descriptor, tree, metadata), cold);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+#include <iostream>
+struct Exposed : PluginTest::Parser { using PluginTest::Parser::aligned; };
+int main() {
+    PluginTest::Parser parser;
+    for (const bool lazy : {true, false}) {
+        const auto run = [&](const char* input) -> const PluginTest::Types::main& {
+            if (lazy) return parser.parse(input);
+            static PluginTest::Lexer lexer;
+            lexer.clearTokens();
+            lexer.makeTokens(input);
+            return parser.parse(lexer);
+        };
+        for (const auto& [input, count] : {std::pair{"aa:cc\nbb!", 2u},
+                                         std::pair{"a:c\nb b!", 1u},
+                                         std::pair{":\nbb!", 0u}}) {
+            const auto& root = run(input);
+            if (!parser.getErrors().empty()) return 1;
+            if (root.first.size() != count || root.body.data().value.size() != count ||
+                root.last.size() != 2) return 2;
+        }
+        for (const char* input : {"aa:c\nbb!", "a:cc\nbb!", "a:c\nb!", "a:c\nbbb!", "a:c \nbb!"}) {
+            try { run(input); if (parser.getErrors().empty()) { std::cerr << input; return 3; } }
+            catch (const std::logic_error&) {}
+        }
+        run("aaa:ccc\nbb!");
+        if (!parser.getErrors().empty()) return 4;
+        Exposed aligned;
+        PluginTest::Lexer indentation;
+        const char* input = "  header\n  item\n  item\n!";
+        if (lazy) {
+            auto result = aligned.aligned(PluginTest::Lexer::lazy_iterator(indentation, input));
+            if (!result.status || !result.it.isEnd() || result.node.data().lines.size() != 2) return 5;
+        } else {
+            indentation.makeTokens(input);
+            auto result = aligned.aligned(PluginTest::Lexer::iterator(indentation));
+            if (!result.status || !result.it.isEnd() || result.node.data().lines.size() != 2) return 6;
+        }
+        if (!aligned.getErrors().empty()) return 7;
+    }
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") +
+        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLCounterChangesInvalidateCachedProductions) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto first = pluginGrammar("A:'a'; main: A=2 '!';");
+    auto second = pluginGrammar("A:'a'; main: A=3 '!';");
+    Algorithm::Metadata metadata;
+    const auto old = convert(*descriptor, first, metadata);
+    const auto updated = convert(*descriptor, second, metadata);
+    EXPECT_NE(old, updated);
+    EXPECT_EQ(convert(*descriptor, second, metadata), updated);
+}
+
+TEST(AlgorithmPlugin, LLFixedCountsHaveFiniteLookaheadIncludingZero) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    for (const char* source : {
+        "A:'a'; B:'b'; main: small | large; small: A=2 B; large: A=3 B;",
+        "A:'a'; B:'b'; main: empty | full; empty: A=0 B; full: A B;"
+    }) {
+        auto tree = pluginGrammar(source);
+        Algorithm::Metadata metadata;
+        EXPECT_FALSE(convert(*descriptor, tree, metadata).empty());
+    }
+}
+
+TEST(AlgorithmPlugin, LRFamilyRejectsCountedRepetitions) {
+    for (const std::string name : {"LR", "LALR"}) {
+        dlib library("libispa-algorithm-" + name);
+        const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+        auto tree = pluginGrammar("A:'a'; main: A=x '!';");
+        Algorithm::Metadata metadata;
+        EXPECT_THROW(convert(*descriptor, tree, metadata), std::invalid_argument);
+    }
 }
