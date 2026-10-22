@@ -222,7 +222,7 @@ TEST(UAST, DirectCountSyntaxPreservesFollowingMembers) {
 
 TEST(UAST, PythonActionAndFailBlock) {
     Parser::Parser parser;
-    auto syntax = parser.parse("fail recover>(value) p{py} T: 'a';");
+    auto syntax = parser.parse("fail recover>(value) {py} T: 'a';");
     AST::Builder builder(syntax);
     builder.build();
     auto tree = builder.get();
@@ -230,7 +230,7 @@ TEST(UAST, PythonActionAndFailBlock) {
     const auto& fail = tree.getFailBlocks().front();
     EXPECT_EQ(fail.name.front(), "recover");
     EXPECT_EQ(fail.parameters.front(), "value");
-    EXPECT_EQ(fail.action.python.kind, "main");
+    EXPECT_EQ(fail.action.python.kind, "Module");
     EXPECT_TRUE(fail.action.bindings.empty());
 }
 
@@ -247,7 +247,7 @@ TEST(UAST, PythonSubtreeRetainsStatementsAndExpressions) {
 TEST(UAST, EmbeddedExternalPythonActionsResumeGrammar) {
     IspaParser parser;
     const auto& syntax = parser.parse(R"(
-fail recover p{
+fail recover {
 x = {'brace': '}'}
 if x:
     x = 2
@@ -298,11 +298,43 @@ TEST(UAST, ConvertsBootstrapGrammar) {
 }
 
 TEST(UAST, AdvancedRuleKeepsPythonActions) {
-    auto tree = convert("T { p{py} }");
+    auto tree = convert("T { py }");
     const auto& features = tree.getTreeMap().at({"T"}).features;
     ASSERT_EQ(features.size(), 2u);
-    EXPECT_EQ(std::get<AST::AdvancedRule>(features[0]).syntax.kind, "advanced_rule");
-    EXPECT_EQ(std::get<AST::PythonAction>(features[1]).python.kind, "main");
+    EXPECT_TRUE(std::get<AST::AdvancedRule>(features[0]).syntax.kind.ends_with("advanced_rule"));
+    EXPECT_EQ(std::get<AST::PythonAction>(features[1]).python.kind, "Module");
+}
+
+TEST(UAST, DirectPythonBodiesPreserveMatchBoundaries) {
+    IspaParser parser;
+    const auto& syntax = parser.parse(R"(
+main {
+    ctx.ast.label = "match }"
+    # An unmatched brace in a Python comment: }
+    if True:
+        ctx.ast.count = 1
+    match A;
+    match A;
+    ctx.ast.done = True
+}
+fail repair { ctx.ast.expected = ctx.failed_rule }
+fail empty {}
+A: 'a';
+)");
+    ASSERT_TRUE(parser.getErrors().empty());
+    AST::Builder builder(syntax, "direct.isc");
+    builder.build();
+    const auto tree = builder.get();
+    EXPECT_EQ(tree.getTreeMap().at({"main"}).rule_members.size(), 4u);
+    ASSERT_EQ(tree.getFailBlocks().size(), 2u);
+    EXPECT_TRUE(std::holds_alternative<UAST::py::Module>(tree.getFailBlocks()[1].action.code));
+    for (const auto* old : {"main { p{ctx.ast.value = 1} }", "fail repair p{ctx.ast.value = 1} main: 'a';"}) {
+        IspaParser invalid;
+        bool rejected = false;
+        try { invalid.parse(old); rejected = !invalid.getErrors().empty() || !invalid.getContextErrors().empty(); }
+        catch (const std::exception&) { rejected = true; }
+        EXPECT_TRUE(rejected) << old;
+    }
 }
 
 TEST(UAST, PythonAstBlocksKeepTargets) {

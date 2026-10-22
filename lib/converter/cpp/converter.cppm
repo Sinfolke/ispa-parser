@@ -98,6 +98,11 @@ namespace Cpp {
     public:
         Construct(const LangAPI::Declarations *source, const char *namespace_name, bool incremental) : ConstructBase(source, namespace_name, incremental) {
             Core::symbol_path = &context.symbol_path;
+            Core::lambda_body = [this](const LangAPI::Statements& body) {
+                Converter::Writer writer;
+                convertStatements(body, writer);
+                return writer.get();
+            };
         }
         auto get_files() -> const std::vector<std::pair<std::string, std::string>>& override {;
             return writable_files;

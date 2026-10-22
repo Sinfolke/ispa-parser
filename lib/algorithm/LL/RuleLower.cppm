@@ -28,6 +28,7 @@ export struct FunctionCtx {
     AST::LLkToken rule_name;                     // rule being lowered (for lookahead / recovery)
     std::size_t next_id = 0;                     // unique suffixes for generated names
     utype::unordered_map<std::vector<std::string>, std::size_t> variables_lowered;
+    std::set<std::string> action_locals;
 
     auto uid() -> std::size_t { return next_id++; }
 };

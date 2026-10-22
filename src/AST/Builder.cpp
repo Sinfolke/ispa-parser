@@ -191,6 +191,7 @@ namespace {
         };
     }
     AST::PythonNode python(const UAST::py::ExprPtr& e, const UAST::SourcePosition& fallback) { return pylower::Lower{}.expr(e, {}, fallback); }
+    AST::PythonNode python(const UAST::py::Expr& e, const UAST::SourcePosition& fallback) { return pylower::Lower{}.expr(std::make_shared<UAST::py::Expr>(e), {}, fallback); }
     AST::PythonNode python(const UAST::py::Module& m, const UAST::SourcePosition&) { return pylower::Lower{}.module(m); }
     template<class Params> stdu::vector<std::string> parameters(const Params& p) {
         stdu::vector<std::string> out;
@@ -207,21 +208,27 @@ namespace {
         if constexpr (std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonExpression> ||
                       std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonStatements>) {
             const auto body = where(n.value);
-            auto tree = [&] {
-                if constexpr (std::is_same_v<T, UAST::expr>) return python(UAST::convertPythonExpr(n.value, body), body);
-                else return python(UAST::convertPythonModule(n.value, body), body);
-            }();
-            return AST::PythonAction{std::move(tree), {}, position(at)};
+            AST::PythonAction result;
+            result.position = position(at);
+            if constexpr (std::is_same_v<T, UAST::expr>) result.code = *UAST::convertPythonExpr(n.value, body);
+            else result.code = UAST::convertPythonModule(n.value, body);
+            std::visit([&](const auto& syntax) {
+                if constexpr (!std::is_same_v<std::decay_t<decltype(syntax)>, std::monostate>) result.python = python(syntax, body);
+            }, result.code);
+            return result;
         } else {
         auto body = where(n.value);      // text starts after the two-character opening delimiter
         body.offset += 2;
         body.column += 2;
         const auto& source = payload(n.value).value;
-        auto tree = [&] {
-            if constexpr (std::is_same_v<T, UAST::expr>) return python(UAST::parsePythonExpr(source, body), body);
-            else return python(UAST::parsePythonModule(source, body), body);
-        }();
-        return AST::PythonAction{std::move(tree), {}, position(at)};
+        AST::PythonAction result;
+        result.position = position(at);
+        if constexpr (std::is_same_v<T, UAST::expr>) result.code = *UAST::parsePythonExpr(source, body);
+        else result.code = UAST::parsePythonModule(source, body);
+        std::visit([&](const auto& syntax) {
+            if constexpr (!std::is_same_v<std::decay_t<decltype(syntax)>, std::monostate>) result.python = python(syntax, body);
+        }, result.code);
+        return result;
         }
     }
     template<class T> AST::PythonAction action(const UAST::Node<T>& code) { return action(code, code); }
@@ -494,8 +501,31 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
         const auto& advanced = std::get<UAST::Node<UAST::advanced_rule>>(grammar.entry);
         out.features.push_back(AST::AdvancedRule{python(UAST::describe(payload(advanced), where(advanced))), position(advanced)});
         for (const auto& entry : payload(advanced).body) {
-            if (const auto* statement = std::get_if<UAST::Node<UAST::stmt>>(&entry))
-                out.features.push_back(action(*statement));
+            if (const auto* statement = std::get_if<UAST::Node<UAST::stmt>>(&entry)) {
+                auto code = action(*statement);
+                out.features.push_back(code);
+                auto member = std::make_shared<AST::RuleMember>();
+                member->value = AST::RuleMemberGroup{}; // zero-width action, preserves source order
+                member->position = position(*statement);
+                member->features.push_back(std::move(code));
+                out.rule_members.push_back(std::move(member));
+            } else if (const auto* match = std::get_if<UAST::Node<UAST::advanced_rule_regular_match>>(&entry)) {
+                const auto& syntax = payload(*match);
+                auto members = convertValues(syntax.patterns, [this](const Value& v) { return convertValue(v); });
+                if (!syntax.assign_names.empty()) {
+                    const auto& names = payload(syntax.assign_names).value;
+                    if (names.size() != members.size()) unsupported("match unpack requires one name per pattern");
+                    for (std::size_t i = 0; i < names.size(); ++i)
+                        members[i]->features.push_back(AST::VariableCapture{id(names[i]), position(names[i])});
+                }
+                out.rule_members.insert(out.rule_members.end(), members.begin(), members.end());
+            }
+        }
+        if (out.rule_members.empty()) {
+            auto epsilon = std::make_shared<AST::RuleMember>();
+            epsilon->value = AST::RuleMemberGroup{};
+            epsilon->features.push_back(AST::AdvancedRule{});
+            out.rule_members.push_back(std::move(epsilon));
         }
         tree_map[fullname] = std::move(out);
     }
@@ -530,7 +560,12 @@ void AST::Builder::convertMain(const UAST::main& main) {
             } else if constexpr (std::is_same_v<T, UAST::Node<UAST::fail_block>>) {
                 const auto& block = payload(value);
                 const auto& n = payload(block.name);
-                fail_blocks.push_back(AST::FailBlock{qualifiedName(n), parameters(n.param), action(block.val), position(value)});
+                auto block_name = fullname;
+                const auto local_name = qualifiedName(n);
+                block_name.insert(block_name.end(), local_name.begin(), local_name.end());
+                auto code = block.val.empty() ? AST::PythonAction{} : action(block.val);
+                if (block.val.empty()) code.code = UAST::py::Module{};
+                fail_blocks.push_back(AST::FailBlock{std::move(block_name), parameters(n.param), std::move(code), position(value)});
             }
         }, entry);
     }

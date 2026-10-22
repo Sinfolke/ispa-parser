@@ -14,6 +14,8 @@ struct Span { std::size_t offset, length; };
 class IspaDepLexer : public DepParser::Lexer {
     struct Delimiter { char value; std::size_t offset; };
     std::vector<Delimiter> delimiters;
+    bool directive_braces = false;
+    const char* opaque_end = nullptr;
 public:
     using Token = DepParser::Token;
     std::vector<IspaDependency::Span> comments;
@@ -25,7 +27,7 @@ public:
         // their byte spans in the source, without feeding trivia to the parser.
         if (token.template holds<DepParser::Types::__WS>()) return;
         const auto& meta = token.meta();
-        if (meta.start() && meta.length() == 1) {
+        if (meta.start() && meta.length() == 1 && !token.template holds<DepParser::Types::modules::scanner_tokens::PY_RAW>()) {
             const char value = *meta.start();
             if (value == '(' || value == '{') delimiters.push_back({value, meta.startpos()});
             else if (value == ')' || value == '}') {
@@ -52,12 +54,28 @@ public:
 
     Token makeToken(const char*& pos) override {
         offset = getCurrentPos(pos);
+        if (opaque_end && pos < opaque_end) {
+            const char* begin = pos;
+            pos = opaque_end;
+            opaque_end = nullptr;
+            return Token::create(offset, begin, pos - begin, 0,
+                DepParser::Tokens::modules::scanner_tokens::PY_RAW::id,
+                DepParser::Types::modules::scanner_tokens::PY_RAW{std::string(begin, pos)});
+        }
+        opaque_end = nullptr;
+        if (delimiters.empty()) {
+            if (IspaSyntax::keyword(pos, "import") || IspaSyntax::keyword(pos, "feature")) directive_braces = true;
+            if (*pos == ';') directive_braces = false;
+        }
+        // Module directive selections remain structured. Every grammar body
+        // brace is opaque to dependency discovery, including direct Python.
+        if (*pos == '{' && !directive_braces) opaque_end = IspaSyntax::scanBracedPython(pos) - 1;
         if (pos[0] == 'p' && pos[1] == '{') {
             const char* begin = pos;
             pos = IspaSyntax::scanPythonBlock(begin);
             return Token::create(offset, begin, pos - begin, 0,
-                DepParser::Tokens::modules::common::PY_RAW::id,
-                ::DepParser::Types::modules::common::PY_RAW{std::string(begin, pos)});
+                DepParser::Tokens::modules::scanner_tokens::PY_RAW::id,
+                ::DepParser::Types::modules::scanner_tokens::PY_RAW{std::string(begin, pos)});
         }
         auto token = DepParser::Lexer::makeToken(pos);
         if (token.empty() || pos == _in + offset)

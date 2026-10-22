@@ -241,6 +241,15 @@ namespace ISPA_STD {
                 ++(*this);
                 return previous;
             }
+            lazy_iterator& operator+=(std::size_t count) {
+                while (count-- && !isEnd()) ++(*this);
+                return *this;
+            }
+            lazy_iterator operator+(std::size_t count) const {
+                auto next = *this;
+                next += count;
+                return next;
+            }
 
             const Token& operator*() const {
                 const_cast<lazy_iterator*>(this)->ensure_token();

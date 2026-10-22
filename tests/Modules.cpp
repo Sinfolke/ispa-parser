@@ -114,7 +114,7 @@ TEST(Modules, ImportErrorsAreReportedAtTheirSource) {
     EXPECT_THROW(files.preprocess(), std::runtime_error);
     files.write("main.isc", "import {rule} from lib; rule: 'y'; main: rule;");
     EXPECT_THROW(files.preprocess(), std::runtime_error);
-    files.write("main.isc", "main: lib->rule;");
+    files.write("main.isc", "main: lib.rule;");
     files.write("lib.isc", "module lib; rule: 'x';");
     EXPECT_THROW(build(files.preprocess()), std::runtime_error);
 }
@@ -206,7 +206,7 @@ TEST(Modules, StringsCommentsAndPythonDoNotCreateDependencies) {
 // import missing;
 /* detach main; */
 main: 'import absent; detach main;' [import]*;
-action { p{ text = "import missing;" } }
+action { text = "import missing;" }
 )");
     auto project = files.preprocess();
     const auto& source = module(project, {"example"});
@@ -314,15 +314,15 @@ TEST(Modules, CyclicDetachPropagatesToAnAlreadyVisitedRoot) {
 TEST(Modules, GeneratedDependencyParserCollectsNestedDeclarationsAndSpans) {
     ModuleFiles files;
     const std::string text = R"isc(module /* header */ app.front -> main;
-feature optional { main->nested };
+feature optional { main.nested };
 // import missing;
 #[inline] main>(arg): (';' | [;#{}]) @{arg}
     #nested: 'x';
 ;
-action { p{ value = {"text": "import absent; #nested: ';';"}
+action { value = {"text": "import absent; #nested: ';';"}
 # A Python comment with unmatched delimiters: } )
 value = """ } import absent; """
-} }
+}
 )isc";
     files.write("main.isc", text);
     auto project = files.preprocess();

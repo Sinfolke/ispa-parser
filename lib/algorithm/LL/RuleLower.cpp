@@ -47,13 +47,36 @@ void RuleLower::build(const std::vector<std::string> name, const AST::Rule &rule
         member_statements.push_back(LangAPI::Expression::createStatement(
             recoverySite(*tree, fun_ctx.rule_name, idx)));
         MemLower lower(ctx, fun_ctx, *tree, idx);
+        const auto previous_captures = fun_ctx.captures.size();
         lower.build(*rule_member);
+        // Publish captures as they become available, so a later fail block
+        // observes the partial AST and its edits are not overwritten at return.
+        for (std::size_t i = previous_captures; i < fun_ctx.captures.size(); ++i) {
+            std::string field;
+            if (rule.data_block.type) field = "value";
+            else if (i < rule.data_block.fields.size()) field = rule.data_block.fields[i].first;
+            else continue;
+            const auto& meta = fun_ctx.captures[i].meta;
+            const auto& value = meta.value.name.empty() ? meta.value_list : meta.value;
+            LangAPI::StorageSymbol destination{field};
+            destination.what = LangAPI::Symbol::createExpression(LangAPI::Symbol{"result"});
+            member_statements.push_back(LangAPI::IspaLibFunctionCall::createStatement(LangAPI::IspaLibFunctionCall{
+                .symbol = LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::AssignCompatible},
+                .args = {LangAPI::StorageSymbol::createExpression(destination),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{value.name})}}));
+        }
         LangAPI::Expression condition{LangAPI::ExpressionValue{LangAPI::ExpressionElement::Not}};
         const auto call = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
             .name = std::make_shared<LangAPI::Symbol>("unwinding")});
         condition.insert(condition.end(), call.begin(), call.end());
-        fun.statements.push_back(LangAPI::If::createStatement(
-            LangAPI::If{condition, std::move(member_statements)}));
+        condition.erase(condition.begin()); // unwinding(): leave this invocation before further actions
+        fun.statements.push_back(LangAPI::If::createStatement(LangAPI::If{condition,
+            LangAPI::Return::createStatements(LangAPI::Return{
+                .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("action_result"),
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"result"}),
+                        LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}})})}));
+        fun.statements.insert(fun.statements.end(), member_statements.begin(), member_statements.end());
         ++idx;
     }
     fun_ctx.statements = &fun.statements;

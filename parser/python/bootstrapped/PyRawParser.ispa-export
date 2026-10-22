@@ -2,4 +2,4 @@ ISPA_EXTERN 1
 header "<PyRawParser.h>"
 module "ispa_python" "stmt"
 symbol "ispa_python" "expr" "PyRawParser::Types::expr" "PyRawParser::Exports::ExpressionBlock"
-symbol "ispa_python" "stmt" "PyRawParser::Types::main" "PyRawParser::Exports::StatementsBlock"
+symbol "ispa_python" "stmt" "PyRawParser::Types::main" "PyRawParser::Exports::RawStatements"

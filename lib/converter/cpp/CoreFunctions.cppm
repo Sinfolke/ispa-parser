@@ -12,6 +12,7 @@ export namespace Core {
     std::string name;
     stdu::vector<std::string> *symbol_path = nullptr;
     std::size_t inside_array = 0;
+    std::function<std::string(const LangAPI::Statements&)> lambda_body;
     std::stringstream init_content;
     // helper
     auto isNestedArrayType(const LangAPI::Type &t) -> bool;

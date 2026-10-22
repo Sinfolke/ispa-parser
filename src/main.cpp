@@ -288,7 +288,7 @@ int generate(Args args) {
     ast_builder.setModules(module_project);
     ast_builder.build();
     auto ast = ast_builder.get();
-    AST::requireCppSupport(ast);
+    AST::requireCppSupport(ast, args.algorithm == Args::Algorithm::LL);
 
     Semantic semantic(ast);
     semantic.checkTokenRecursion();

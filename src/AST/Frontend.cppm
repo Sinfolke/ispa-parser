@@ -1,5 +1,6 @@
 export module AST.Frontend;
 import LangAPI.Accessor;
+import UAST.PyAST;
 import hash;
 import dstd;
 import std;
@@ -46,11 +47,13 @@ struct PythonAction {
     stdu::vector<CaptureBinding> bindings{};
     SourcePosition position{};
     std::string target{};
+    // Keep executable syntax as well as the diagnostic/inspection snapshot.
+    std::variant<std::monostate, UAST::py::Expr, UAST::py::Module> code{};
 private:
     friend struct ::uhash;
     friend struct ::LangAPI::MembersAccess;
-    auto members() const { return std::tie(python, bindings, position, target); }
-    auto members() { return std::tie(python, bindings, position, target); }
+    auto members() const { return std::tie(python, bindings, position, target, code); }
+    auto members() { return std::tie(python, bindings, position, target, code); }
 };
 struct FailBlock {
     stdu::vector<std::string> name{};

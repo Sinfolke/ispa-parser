@@ -24,6 +24,6 @@ Use compiler/runtime paths appropriate to your own machine. The packaged native 
 
 Install `build/distributions/ispa-grammar-0.2.0.zip` from **Settings → Plugins → ⚙ → Install Plugin from Disk**, then restart the IDE. `./gradlew runIde` starts a sandbox IDE for testing.
 
-The native build links `ISPA::Parser` from `parser/CMakeLists.txt`, using the current bootstrap in `../../parser/ispa/bootstrapped` and linking its bundled Python dependency. A standalone CMake build can override the parser with `-DISPA_BOOTSTRAPPED_DIR=/path/to/generated/parser`. Gradle tracks generated ISPA and Python parser sources and the shared standard library for rebuilds.
+The native build links `ISPA::Parser` from `parser/CMakeLists.txt`, using the current bootstrap in `../../parser/ispa/bootstrapped_)` and linking its bundled Python dependency. A standalone CMake build can override the parser with `-DISPA_BOOTSTRAPPED_DIR=/path/to/generated/parser`. Gradle tracks generated ISPA and Python parser sources and the shared standard library for rebuilds.
 
 Run `./gradlew test` for lexer restart, Unicode protocol, and packaged helper tests. Run `python3 tests/bridge_test.py build/native-build/ispa-grammar-bridge` for native parsing and error-position tests.

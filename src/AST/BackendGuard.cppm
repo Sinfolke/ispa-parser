@@ -5,5 +5,5 @@ import std;
 
 export namespace AST {
     // Called by the driver before passes, automata construction, or LLIR.
-    void requireCppSupport(const Tree& tree);
+    void requireCppSupport(const Tree& tree, bool ll_actions = false);
 }

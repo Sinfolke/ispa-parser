@@ -28,8 +28,12 @@ namespace {
                 (explicitWhitespaceBoundary(tree, *values.front(), visiting, leading) ||
                  explicitWhitespaceBoundary(tree, *values.back(), visiting, false));
         }
-        if (member.isOp()) for (const auto& child : member.getOp().options)
-            if (explicitWhitespaceBoundary(tree, *child, visiting, leading)) return true;
+        if (member.isOp()) {
+            // A mixed external/host choice still needs host whitespace between
+            // iterations of its ordinary alternatives.
+            return !member.getOp().options.empty() && std::ranges::all_of(member.getOp().options,
+                [&](const auto& child) { return explicitWhitespaceBoundary(tree, *child, visiting, leading); });
+        }
         return false;
     }
     bool explicitWhitespaceBoundary(const AST::Tree& tree, const AST::RuleMember& member) {
@@ -196,6 +200,9 @@ auto MemLower::build(const AST::RuleMember &mem) -> void {
 auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
     const auto capture_begin = fun_ctx->captures.size();
     Parser::LowerMeta meta;
+    for (const auto& feature : mem.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) {
+        for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals)) push(statement);
+    }
     if (isWhitespaceRef(mem)) {
         // Inserted by TreePass::addSpaceToken between members. Same effect as
         // optional<__WS>, without creating a value.
@@ -214,6 +221,18 @@ auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
         throw Error("Unsupported member in LL rule {}: literals and character sets must be lexer tokens", fun_ctx->rule_name);
     }
     if (hasValue(meta)) {
+        for (const auto& feature : mem.features) if (const auto* capture = std::get_if<AST::VariableCapture>(&feature)) {
+            if (capture->name == "ctx" || fun_ctx->action_locals.contains(capture->name))
+                throw Error("Duplicate or reserved action binding {}", capture->name);
+            const auto& value = meta.value.name.empty() ? meta.value_list : meta.value;
+            const auto binding = "ispa_action_" + capture->name;
+            const auto expression = LangAPI::Symbol::createExpression(LangAPI::Symbol{value.name});
+            if (declare(binding, value.type)) push(LangAPI::VariableAssignment::createStatement(
+                LangAPI::VariableAssignment{.name = LangAPI::Symbol{binding}, .value = expression}));
+            else push(LangAPI::Variable::createStatement(LangAPI::Variable{.name = binding,
+                .type = value.type, .value = expression}));
+            fun_ctx->action_locals.insert(capture->name);
+        }
         fun_ctx->exports.push_back(LoweredExport {
             .prefix = mem.prefix, .meta = meta, .quantifier = mem.quantifier,
             .member_index = mem_idx, .depth = depth
@@ -231,15 +250,58 @@ auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
 
 // Only '\0' and '+' can fail: for '?' and '*' "not present" is a valid result.
 auto MemLower::failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression {
-    if (hasCustomFailure(mem)) {
-        auto handler = mem.failure_handler.name;
-        if (handler.empty()) {
-            handler = mem.getName().name;
-            if (const auto it = ctx.variables_lowered.find(handler); it != ctx.variables_lowered.end() && it->second)
-                handler.push_back(std::to_string(it->second));
-            handler.push_back("failure_handler");
+    std::vector<std::pair<stdu::vector<std::string>, stdu::vector<std::string>>> handlers;
+    bool marked = false;
+    for (const auto& feature : mem.features) if (const auto* marker = std::get_if<AST::FailMarker>(&feature)) {
+        marked = true;
+        if (!marker->name.empty()) handlers.emplace_back(marker->name, marker->parameters);
+    }
+    if (handlers.empty()) for (const auto& feature : tree->getTreeMap().at(fun_ctx->rule_name).features)
+        if (const auto* binding = std::get_if<AST::FailBinding>(&feature))
+            for (const auto& name : binding->names) handlers.push_back({{name}, {}});
+    if (marked && handlers.empty()) throw Error("Fail marker in {} has no bound fail block", fun_ctx->rule_name);
+    if (!handlers.empty()) {
+        auto symbol = [](const std::string& name) { return LangAPI::Symbol::createExpression(LangAPI::Symbol{name}); };
+        auto call = [](const std::string& name, stdu::vector<LangAPI::Expression> args) {
+            return LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(name), .args = std::move(args)});
+        };
+        LangAPI::Lambda callback;
+        callback.parameters = {{LangAPI::Type{LangAPI::Symbol{"auto&"}}, "failed_pos"},
+                               {LangAPI::Type{LangAPI::Symbol{"auto&"}}, "recovery_state"}};
+        callback.statements.push_back(LangAPI::Variable{.name = "before_failure", .type = LangAPI::Type{LangAPI::ValueType::Undef}, .value = symbol("failed_pos")});
+        callback.statements.push_back(LangAPI::Variable{.name = "ctx", .type = LangAPI::Type{LangAPI::ValueType::Undef},
+            .value = call("fail_context", {symbol("failed_pos"), symbol("result"), symbol("start_pos"),
+                LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(fun_ctx->rule_name, ".")}),
+                LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(mem.getName().name, ".")})})});
+        for (const auto& [name, arguments] : handlers) {
+            const AST::FailBlock* block = nullptr;
+            // Resolve in the containing rule's lexical scopes, then globally.
+            for (std::size_t size = fun_ctx->rule_name.size();; --size) {
+                stdu::vector<std::string> candidate(fun_ctx->rule_name.begin(), fun_ctx->rule_name.begin() + size);
+                candidate.insert(candidate.end(), name.begin(), name.end());
+                for (const auto& fail : tree->getFailBlocks()) if (fail.name == candidate) { block = &fail; break; }
+                if (block || size == 0) break;
+            }
+            if (!block) throw Error("Unknown fail block {} in {}", name, fun_ctx->rule_name);
+            if (block->parameters.size() != arguments.size()) throw Error("Fail block {} expects {} arguments, got {}", name, block->parameters.size(), arguments.size());
+            std::set<std::string> locals = fun_ctx->action_locals;
+            LangAPI::Statements body;
+            for (std::size_t i = 0; i < arguments.size(); ++i) {
+                if (block->parameters[i] == "ctx") throw Error("ctx is reserved in fail block {}", name);
+                const auto argument = fun_ctx->action_locals.contains(arguments[i]) ? "ispa_action_" + arguments[i] : arguments[i];
+                const auto temporary = "ispa_failure_argument_" + std::to_string(fun_ctx->uid());
+                callback.statements.push_back(LangAPI::Variable{.name = temporary, .type = LangAPI::Type{LangAPI::ValueType::Undef}, .value = symbol(argument)});
+                body.push_back(LangAPI::Variable{.name = "ispa_action_" + block->parameters[i], .type = LangAPI::Type{LangAPI::ValueType::Undef}, .value = symbol(temporary)});
+                locals.insert(block->parameters[i]);
+            }
+            const auto code = convertPythonAction(block->action, locals, true);
+            body.insert(body.end(), code.begin(), code.end());
+            callback.statements.push_back(LangAPI::If{LangAPI::Bool::createExpression(LangAPI::Bool{.value = true}), std::move(body)});
         }
-        return LangAPI::Symbol::createExpression(LangAPI::Symbol {fun_name(handler)});
+        callback.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
+            .value = call("custom_failure_decision", {symbol("before_failure"), symbol("failed_pos")})}));
+        return call("custom_failure", {LangAPI::Lambda::createExpression(std::move(callback))});
     }
     return recoveryHandler(*tree, fun_ctx->rule_name, mem_idx, {
         .allow_insertion = true,

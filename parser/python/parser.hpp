@@ -84,6 +84,10 @@ private:
 
 public:
     void setBoundary(const char* end) { boundary = end; setExternalBoundary(); }
+    void setBaseIndent(std::size_t indent) {
+        indent_stack.assign(1, indent);
+        at_line_start = false;
+    }
     Token makeToken(const char*& pos) override {
         if (boundary && pos >= boundary) return {};
         const char* start = pos;

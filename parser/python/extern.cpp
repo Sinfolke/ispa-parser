@@ -56,4 +56,34 @@ bool ExpressionBlock::starts(const char*, const char* start) {
 bool StatementsBlock::starts(const char* origin, const char* start) { return ExpressionBlock::starts(origin, start); }
 ISPA_STD::ExternalResult<ExpressionBlock::node_type> ExpressionBlock::parse(const char* origin, const char* start) { return parseBlock<true>(origin, start); }
 ISPA_STD::ExternalResult<StatementsBlock::node_type> StatementsBlock::parse(const char* origin, const char* start) { return parseBlock<false>(origin, start); }
+bool RawStatements::starts(const char*, const char* start) {
+    start = blockStart(start);
+    return start && *start && *start != '}' && !IspaSyntax::keyword(start, "match") &&
+        !IspaSyntax::keyword(start, "depends");
+}
+ISPA_STD::ExternalResult<RawStatements::node_type> RawStatements::parse(const char* origin, const char* start) {
+    start = blockStart(start);
+    if (start && start[0] == 'p' && start[1] == '{')
+        throw std::runtime_error("Python action at line " + std::to_string(1 + std::count(origin, start, '\n')) +
+            ": use direct Python in advanced rules and fail blocks; p{...} wrappers are unsupported");
+    const char* end = IspaSyntax::scanPythonStatements(start);
+    if (end == start) return {};
+    const char* line = start;
+    while (line != origin && line[-1] != '\n' && line[-1] != '\r') --line;
+    std::size_t indent = 0;
+    while (*line == ' ' || *line == '\t') {
+        indent = *line++ == '\t' ? (indent / 8 + 1) * 8 : indent + 1;
+    }
+    PyLexer lexer;
+    lexer.setBoundary(end);
+    lexer.setBaseIndent(indent);
+    Parser parser;
+    auto result = parser.main(PyLexer::lazy_iterator(lexer, origin, start));
+    if (!result.status || !result.it.isEnd()) {
+        std::string message = "invalid Python action";
+        if (!parser.getErrors().empty()) message += ": " + parser.getErrors().front().message;
+        throw std::runtime_error("Python action at line " + std::to_string(1 + std::count(origin, start, '\n')) + ": " + message);
+    }
+    return {true, ISPA_STD::external_node(origin, start, end, std::move(result.node)), end};
+}
 }

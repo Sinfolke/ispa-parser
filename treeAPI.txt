@@ -138,7 +138,7 @@ name<modules_rule_regular_nested_rule_NUMBER_SIGN> : Rule {
   @  modules::common::ID
   Data: [RegularDataBlock: CllExpr]
 }name<modules___external_python_symbol_1> : Rule {
-external PyRawParser::Types::main PyRawParser::Exports::StatementsBlock <PyRawParser.h>
+external PyRawParser::Types::main PyRawParser::Exports::RawStatements <PyRawParser.h>
    __ISPA_EXTERNAL_56
   Data: EmptyDataBlock
 }name<modules_rule_regular_ast_full> : Rule {
@@ -298,9 +298,9 @@ external PyRawParser::Types::main PyRawParser::Exports::StatementsBlock <PyRawPa
    __WS?;
   @  modules::rule::regular::value+;
    __WS?;
-   SEMICOLON
-   __WS?;
   @  modules::rule::advanced::advanced_rule::regular_match::unpack?;
+   __WS?;
+   SEMICOLON
   Data: TemplatedDataBlock(patterns, assign_names)
 }name<modules_forward_declaration_cls_class_method> : Rule {
    modules::forward_declaration::cls::class_method::METHOD
@@ -327,7 +327,11 @@ external PyRawParser::Types::main PyRawParser::Exports::StatementsBlock <PyRawPa
    __WS?;
   @  modules::common::name
    __WS?;
-  @  modules::common::stmt
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::common::stmt?;
+   __WS?;
+   RIGHT_CURLY_BRACKET
   Data: TemplatedDataBlock(name, val)
 }name<modules_forward_declaration_cls_class_property_PROPERTY> : Rule {
    "property"

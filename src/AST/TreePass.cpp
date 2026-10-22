@@ -38,7 +38,7 @@ void AST::TreePass::inlineGroupsInSequence(stdu::vector<std::shared_ptr<AST::Rul
     for (auto it = members.begin(); it != members.end(); /* no auto-increment */) {
         auto &member = *it;
 
-        if (member->isGroup() && member->quantifier == '\0' && member->prefix.empty()) {
+        if (member->isGroup() && member->quantifier == '\0' && member->prefix.empty() && member->features.empty()) {
             auto group = member->getGroup(); // copy before erase
             it = members.erase(it);
             it = inlineGroup(group, members, it);
@@ -193,7 +193,8 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
         identity.prefix.clear();
         identity.quantifier = '\0';
         std::erase_if(identity.features, [](const auto& feature) {
-            return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature);
+            return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature) ||
+                   std::holds_alternative<VariableCapture>(feature) || std::holds_alternative<FailMarker>(feature);
         });
 
         return identity;
@@ -270,7 +271,8 @@ void AST::TreePass::literalsToToken(AST::Tree &ast) {
                 token_member.prefix.clear();
                 token_member.quantifier = '\0';
                 std::erase_if(token_member.features, [](const auto& feature) {
-                    return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature);
+                    return std::holds_alternative<Counter>(feature) || std::holds_alternative<SharedCounterRegistration>(feature) ||
+                           std::holds_alternative<VariableCapture>(feature) || std::holds_alternative<FailMarker>(feature);
                 });
 
                 AST::Rule newRule;

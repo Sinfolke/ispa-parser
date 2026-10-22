@@ -28,12 +28,12 @@ It is built around one idea: **easy to use, without giving up performance, exten
 | Parser (LR-family modes) | Experimental; not yet stable |
 | Incremental generation | Implemented (regenerates changed parts only) |
 | C++17 target | Implemented; output compiles and runs |
-| Python semantic actions | Syntax parsed, **not yet lowered to output** |
-| Fail blocks (`fail name>(...) { ... }`) | Syntax parsed, **not yet lowered to output** |
+| Python semantic actions | Executable in LL advanced parser rules; Python subset supported by LangAPI |
+| Fail blocks (`fail name>(...) { ... }`) | Executable for required LL parser matches |
 | Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |
 | Grammar syntax error reporting | Automatic LL recovery and source diagnostics; syntax errors stop generation |
 
-The backend currently lowers **plain EBNF plus AST captures** to C++. The remaining grammar features above are parsed by the frontend and are being integrated into lowering.
+The backend lowers **plain EBNF plus AST captures** to C++. LL also executes advanced parser rules and fail blocks with direct Python bodies and invocation-local `ctx` objects. The remaining grammar features above are being integrated into lowering.
 
 ---
 
@@ -132,6 +132,51 @@ Flex + bison figures are steady state over 10 iterations.
 
 ## Syntax example
 
+Advanced parser rules execute Python blocks between `match` statements when
+using the LL C++ backend. Their `ctx.ast` object becomes the rule's returned AST,
+so another rule can capture it in the usual way:
+
+```isc
+A: 'a';
+main: @ item {@};
+item {
+    ctx.ast.count = 0
+    match A -> captured;
+    ctx.ast.token = captured
+    ctx.ast.count += 1
+}
+```
+
+`ctx.pos` is the writable current token cursor; saving and restoring it controls
+where the next match starts. `ctx.ast` is the writable result being built.
+`ctx.start_pos` is a read-only copy of the rule-entry cursor, and `ctx.rule` is
+the read-only qualified name of the current rule. AST fields are inferred from
+assignments of literals, match bindings, and simple expressions. For other
+expressions, declare a field with a Python annotation, for example
+`ctx.ast.count: int = compute_count()`. Supported primitive annotations are
+`int`, `float`, `bool`, and `str`. A bare `return` or `return ctx.ast` returns the
+current result early. Locals persist between sequential Python blocks.
+
+Fail blocks run for required matches selected by `%handler` or a rule's
+`%{handler}` binding. Their context shares the owning rule's AST and the failure
+cursor, and additionally exposes the read-only `ctx.failed_rule` qualified name
+of the expected production. `ctx.start_pos` still identifies the owning rule's
+entry. Moving the failure cursor requests a retry of the required match; leaving
+it unchanged accepts a missing value and continues. Retries are bounded by the
+runtime. Optional or zero-or-more matches do not invoke fail blocks.
+
+```isc
+fail missing {
+    ctx.ast.missing = ctx.failed_rule
+}
+item {
+    match %missing A;
+}
+```
+
+Contexts belong to one invocation and must not escape it. Advanced lexer rules
+and advanced rules in the LR-family backends remain unsupported.
+
 Parameters use an explicit `>` marker: `name>(arg)` supplies parameters, while
 `name (other_rule)*` starts a separate grammar group. This also applies to
 declarations and fail-block names; with template parameters, write `name<T>>(arg)`.
@@ -167,7 +212,8 @@ python3 examples/json/generate_json.py -o huge_100mb.json -s 100 -d 2
 
 ## 🔮 Future Roadmap
 
-- [ ] **Lower Python semantic actions, fail blocks, and dynamic regex** to generated code
+- [x] **LL advanced parser actions and fail blocks** with writable cursor and AST contexts
+- [ ] **Lexer/LR actions and dynamic regex** in generated code
 - [ ] **Clean grammar syntax error reporting**
 - [ ] **PLL algorithm**: finalize the custom Predictive LL algorithm to resolve left recursion in LL parsers while keeping structural parity with LR parsers
 - [ ] **Multi-target code generation**

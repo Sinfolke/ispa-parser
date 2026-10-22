@@ -41,7 +41,7 @@ endif()
 
 function(add_ispa_generated_parser parser_name directory executable_name)
     set(ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${directory}")
-    set(OUTPUT_DIR "${ROOT_DIR}/incremental")
+    set(OUTPUT_DIR "${ROOT_DIR}/bootstrapped_incremental")
     set(INCREMENTAL_DIR "${OUTPUT_DIR}/incremental")
     set(BOOTSTRAPPED_DIR "${ROOT_DIR}/bootstrapped")
     if(parser_name STREQUAL "ispa" AND ISPA_BOOTSTRAPPED_DIR)

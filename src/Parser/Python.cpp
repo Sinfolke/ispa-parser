@@ -12,6 +12,10 @@ namespace la = LangAPI;
 }
 struct PythonConverter {
     std::set<std::string> locals;
+    bool action_context = false, failure_context = false;
+    std::string localName(const std::string& name) const {
+        return action_context && locals.contains(name) ? "ispa_action_" + name : name;
+    }
     std::size_t block_depth = 0, loop_depth = 0;
     la::Statements nested(const py::StmtList& list, bool loop = false) {
         ++block_depth;
@@ -61,6 +65,19 @@ struct PythonConverter {
         unsupported(p->pos, "unsupported type annotation");
     }
     std::variant<la::Symbol, la::StorageSymbol> target(const py::ExprPtr& p) {
+        if (action_context) {
+            const py::Expr* root = p.get();
+            const py::Attribute* property = nullptr;
+            while (root) {
+                if (auto a = root->get<py::Attribute>()) { property = a; root = a->value.get(); }
+                else if (auto s = root->get<py::Subscript>()) root = s->value.get();
+                else break;
+            }
+            if (root) if (auto n = root->get<py::Name>(); n && n->id == "ctx") {
+                if (!property || (property->attr != "pos" && property->attr != "ast"))
+                    unsupported(p->pos, "ctx and its metadata are read-only; only ctx.pos and ctx.ast are writable");
+            }
+        }
         auto e = expr(p);
         if (e.size() == 1 && e.front().isRvalue()) {
             auto& r = e.front().getRValue();
@@ -72,7 +89,7 @@ struct PythonConverter {
     la::Expression expr(const py::Expr& e) {
         return std::visit([&](const auto& x) -> la::Expression {
             using T = std::decay_t<decltype(x)>;
-            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(la::Symbol{x.id});
+            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(la::Symbol{localName(x.id)});
             else if constexpr (std::is_same_v<T, py::Constant>) {
                 switch (x.kind) {
                     case py::ConstantKind::Bool: return la::Bool::createExpression(la::Bool{.value = x.value == "True"});
@@ -121,6 +138,13 @@ struct PythonConverter {
                     default: unsupported(e.pos, "None has no LangAPI value representation");
                 }
             } else if constexpr (std::is_same_v<T, py::Attribute> || std::is_same_v<T, py::Subscript>) {
+                if constexpr (std::is_same_v<T, py::Attribute>) {
+                    if (action_context && x.value) if (auto n = x.value->template get<py::Name>(); n && n->id == "ctx") {
+                        if (x.attr != "pos" && x.attr != "ast" && x.attr != "start_pos" && x.attr != "rule" &&
+                            !(failure_context && x.attr == "failed_rule"))
+                            unsupported(e.pos, "unknown ctx property: " + x.attr);
+                    }
+                }
                 la::StorageSymbol s;
                 s.what = group(expr(x.value));
                 if constexpr (std::is_same_v<T, py::Attribute>) s.path.emplace_back(x.attr);
@@ -212,7 +236,19 @@ struct PythonConverter {
             using T = std::decay_t<decltype(x)>;
             if constexpr (std::is_same_v<T, py::Pass>) return {};
             else if constexpr (std::is_same_v<T, py::ExprStmt>) return la::Statements{la::Statement{expr(x.value)}};
-            else if constexpr (std::is_same_v<T, py::Return>) return la::Return::createStatements(la::Return{.value = x.value ? expr(x.value) : la::Expression{}});
+            else if constexpr (std::is_same_v<T, py::Return>) {
+                if (!action_context) return la::Return::createStatements(la::Return{.value = x.value ? expr(x.value) : la::Expression{}});
+                if (failure_context && x.value) unsupported(s.pos, "fail blocks use a bare return");
+                la::FunctionCall call;
+                call.name = std::make_shared<la::Symbol>(failure_context ? "custom_failure_decision" : "action_result");
+                if (failure_context) call.args = {la::Symbol::createExpression(la::Symbol{"before_failure"}), la::Symbol::createExpression(la::Symbol{"failed_pos"})};
+                else {
+                    la::StorageSymbol ast{"ast"}, pos{"pos"};
+                    ast.what = pos.what = la::Symbol::createExpression(la::Symbol{"ctx"});
+                    call.args = {x.value ? expr(x.value) : la::StorageSymbol::createExpression(ast), la::StorageSymbol::createExpression(pos)};
+                }
+                return la::Return::createStatements(la::Return{.value = la::FunctionCall::createExpression(call)});
+            }
             else if constexpr (std::is_same_v<T, py::Break>) {
                 if (!loop_depth) unsupported(s.pos, "break outside loop");
                 return la::Break::createStatements(la::Break{});
@@ -229,17 +265,24 @@ struct PythonConverter {
                 if (x.targets.size() != 1) unsupported(s.pos, "multiple assignment targets are unsupported");
                 auto value = expr(x.value);
                 if (auto n = x.targets[0] ? x.targets[0]->template get<py::Name>() : nullptr; n && !locals.contains(n->id)) {
+                    if (action_context && n->id == "ctx") unsupported(s.pos, "ctx cannot be rebound");
                     if (block_depth) unsupported(s.pos, "declare local before entering a branch or loop");
                     locals.insert(n->id);
-                    return la::Statements{la::Variable{.name = n->id, .type = la::Type{la::ValueType::Undef}, .value = value}};
+                    return la::Statements{la::Variable{.name = localName(n->id), .type = la::Type{la::ValueType::Undef}, .value = value}};
                 }
                 return la::VariableAssignment::createStatements(la::VariableAssignment{.name = target(x.targets[0]), .value = value});
             } else if constexpr (std::is_same_v<T, py::AnnAssign>) {
                 auto n = x.target ? x.target->template get<py::Name>() : nullptr;
+                if (!n && action_context) {
+                    const auto destination = target(x.target);
+                    if (!x.value) return {};
+                    return la::VariableAssignment::createStatements(la::VariableAssignment{.name = destination, .value = expr(x.value)});
+                }
                 if (!n) unsupported(s.pos, "annotated target must be a name");
+                if (action_context && n->id == "ctx") unsupported(s.pos, "ctx cannot be rebound");
                 if (block_depth || locals.contains(n->id)) unsupported(s.pos, "annotated declaration must introduce a local outside branches and loops");
                 locals.insert(n->id);
-                return la::Statements{la::Variable{.name = n->id, .type = type(x.annotation), .value = x.value ? expr(x.value) : la::Expression{}}};
+                return la::Statements{la::Variable{.name = localName(n->id), .type = type(x.annotation), .value = x.value ? expr(x.value) : la::Expression{}}};
             } else if constexpr (std::is_same_v<T, py::AugAssign>) {
                 la::OperatorType op;
                 switch (x.op) {
@@ -308,5 +351,16 @@ auto ParserBase::convertPythonDeclarations(const UAST::py::Module& m) -> LangAPI
         out.push_back(converter.declaration(*s));
     }
     return out;
+}
+auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<std::string>& variables, bool failure) -> LangAPI::Statements {
+    PythonConverter converter{variables, true, failure};
+    auto result = std::visit([&](const auto& code) -> LangAPI::Statements {
+        using T = std::decay_t<decltype(code)>;
+        if constexpr (std::is_same_v<T, UAST::py::Module>) return converter.body(code.body);
+        else if constexpr (std::is_same_v<T, UAST::py::Expr>) return {LangAPI::Statement{converter.expr(code)}};
+        else throw std::invalid_argument("Python action has no executable syntax");
+    }, action.code);
+    variables = std::move(converter.locals);
+    return result;
 }
 }

@@ -45,6 +45,24 @@ TEST(PythonConversion, ExternalStatementsPreserveIndentationAndHostBoundary) {
     EXPECT_THROW(Binding::parse(invalid, invalid), std::runtime_error);
 }
 
+TEST(PythonConversion, RawStatementsRespectPythonBoundariesAndBaseIndent) {
+    using Binding = PyRawParser::Exports::RawStatements;
+    const std::string source = R"(
+    value = {'brace': '}', 'word': 'match A;'}
+    # } match B;
+    if value:
+        value = 2
+    match A -> captured;
+})";
+    auto parsed = Binding::parse(source.c_str(), source.c_str());
+    ASSERT_TRUE(parsed.status);
+    EXPECT_TRUE(std::string_view(parsed.end).starts_with("match A"));
+    auto syntax = UAST::convertPythonModule(parsed.node, {"raw.isc", parsed.node.startpos(), parsed.node.length(), parsed.node.line(), parsed.node.column()});
+    EXPECT_EQ(syntax.body.size(), 2u);
+    EXPECT_FALSE(Binding::starts(source.c_str(), parsed.end));
+    EXPECT_FALSE(Binding::starts(source.c_str(), " }"));
+}
+
 TEST(PythonConversion, ArithmeticPreservesGrouping) {
     const auto value = expression("(a + b) * c");
     ASSERT_FALSE(value.empty());
@@ -134,4 +152,20 @@ TEST(PythonConversion, DeclarationsReachExistingCodeEmitter) {
     EXPECT_NE(output.find("add("), std::string::npos);
     EXPECT_NE(output.find("return "), std::string::npos);
     EXPECT_NE(output.find(" + "), std::string::npos);
+}
+
+TEST(PythonConversion, ActionContextValidatesMetadataAndPreservesLocals) {
+    const auto action = [](const std::string& source) {
+        AST::PythonAction result;
+        result.code = UAST::parsePythonModule(source, position);
+        return result;
+    };
+    std::set<std::string> locals;
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("saved = ctx.pos\nctx.ast.count: int = 3\n"), locals));
+    EXPECT_TRUE(locals.contains("saved"));
+    const auto restore = Parser::ParserBase::convertPythonAction(action("ctx.pos = saved\n"), locals);
+    EXPECT_TRUE(restore.front().getExpression().front().isVariableAssignment());
+    for (const auto* source : {"ctx = 1\n", "ctx: int = 1\n", "ctx.rule = 'x'\n", "ctx.start_pos += 1\n", "x = ctx.unknown\n", "x = ctx.failed_rule\n"})
+        EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals), std::invalid_argument) << source;
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("name = ctx.failed_rule\nreturn\n"), locals, true));
 }

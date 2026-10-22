@@ -10728,4 +10728,9 @@ struct StatementsBlock {
     static bool starts(const char* origin, const char* start);
     static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
+struct RawStatements {
+    using node_type = PyRawParser::Types::main;
+    static bool starts(const char* origin, const char* start);
+    static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
 }

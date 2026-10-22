@@ -103,6 +103,15 @@ private:
 
 public:
     Token makeToken(const char*& pos) override {
+#ifdef ISPA_MODULAR_PARSER
+        // These delimit the host statements in an otherwise Python body.
+        if (IspaSyntax::keyword(pos, "match")) {
+            const char* begin = pos; pos += 5;
+            return Token::create(getCurrentPos(begin), begin, 5, __line(begin),
+                Parser::Tokens::modules::rule::advanced::advanced_rule::regular_match::MATCH::id,
+                Parser::Types::modules::rule::advanced::advanced_rule::regular_match::MATCH{});
+        }
+#endif
 #ifdef ISPA_EXTERNAL_PYTHON
         // Preserve the lexical priority of the Python block delimiter over
         // the host identifier "p". The external parser owns its payload.

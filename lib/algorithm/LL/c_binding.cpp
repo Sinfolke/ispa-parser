@@ -11,19 +11,23 @@ import std;
 
 namespace {
 auto build(const Algorithm::BuildRequest& request, Algorithm::Metadata& metadata) -> Algorithm::Result {
-    AST::requireCppSupport(request.tree);
+    AST::requireCppSupport(request.tree, true);
     // FIRST/FOLLOW and inferred data types can depend on any other rule. Until
     // those dependencies are tracked, invalidate all productions on any change.
     std::ostringstream grammar;
     // Recovery sets include the complete reachable production suffix.
-    grammar << "LL metadata lowering v11 external parser imports\n";
+    grammar << "LL metadata lowering v12 action contexts\n";
     for (const auto& [name, rule] : request.tree.getTreeMap()) {
         grammar << corelib::text::join(name, ".") << '\n' << rule << '\n';
     }
     const auto source = grammar.str();
+    // Action bodies and fail blocks are not represented by Rule's text dump.
+    // Until the cache key includes their complete syntax, rebuild action grammars.
+    const bool actions = !request.tree.getFailBlocks().empty() || std::ranges::any_of(request.tree.getTreeMap(),
+        [](const auto& entry) { return !entry.second.features.empty(); });
     std::unordered_map<std::string, ParserIR::Production> cache;
     if (const auto stamp = metadata.cache.find("grammar");
-        stamp != metadata.cache.end() && stamp->second == source) {
+        !actions && stamp != metadata.cache.end() && stamp->second == source) {
         if (const auto records = metadata.cache.find("productions"); records != metadata.cache.end()) {
             std::istringstream in(records->second);
             while (in.peek() != std::char_traits<char>::eof()) {

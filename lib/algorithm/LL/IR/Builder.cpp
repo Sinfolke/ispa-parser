@@ -1,10 +1,105 @@
 module LLIR.Builder;
 import RuleLower;
 import Parser.Base;
+import UAST.PyAST;
 import corelib;
 import std;
 namespace LLIR {
 using namespace ParserIR;
+namespace {
+namespace py = UAST::py;
+namespace la = LangAPI;
+struct ActionFields {
+    std::map<std::string, la::Type> locals;
+    inclosed_map fields;
+    [[noreturn]] static void error(const UAST::SourcePosition& p, const std::string& message) {
+        throw std::invalid_argument(p.file + ":" + std::to_string(p.line) + ":" + std::to_string(p.column) + ": " + message);
+    }
+    static std::string astField(const py::ExprPtr& expression) {
+        if (!expression) return {};
+        const auto* field = expression->get<py::Attribute>();
+        const auto* ast = field && field->value ? field->value->get<py::Attribute>() : nullptr;
+        const auto* ctx = ast && ast->value ? ast->value->get<py::Name>() : nullptr;
+        return ctx && ctx->id == "ctx" && ast->attr == "ast" ? field->attr : std::string{};
+    }
+    la::Type annotation(const py::ExprPtr& expression) {
+        if (expression) if (auto name = expression->get<py::Name>()) {
+            if (name->id == "int") return la::ValueType::Int;
+            if (name->id == "float") return la::ValueType::Float;
+            if (name->id == "str") return la::ValueType::String;
+            if (name->id == "bool") return la::ValueType::Bool;
+        }
+        error(expression ? expression->pos : UAST::SourcePosition{}, "ctx.ast field annotation must be int, float, str or bool");
+    }
+    la::Type infer(const py::ExprPtr& expression) {
+        if (!expression) return la::ValueType::Undef;
+        return std::visit([&](const auto& x) -> la::Type {
+            using T = std::decay_t<decltype(x)>;
+            if constexpr (std::is_same_v<T, py::Constant>) {
+                switch (x.kind) {
+                    case py::ConstantKind::Int: return la::ValueType::Int;
+                    case py::ConstantKind::Float: return la::ValueType::Float;
+                    case py::ConstantKind::Bool: return la::ValueType::Bool;
+                    case py::ConstantKind::Str: return la::ValueType::String;
+                    default: return la::ValueType::Undef;
+                }
+            } else if constexpr (std::is_same_v<T, py::Name>) {
+                if (locals.contains(x.id)) return locals.at(x.id);
+            } else if constexpr (std::is_same_v<T, py::Compare> || std::is_same_v<T, py::BoolExpr>) return la::ValueType::Bool;
+            else if constexpr (std::is_same_v<T, py::UnaryExpr>) return x.op == py::UnaryOp::Not ? la::Type{la::ValueType::Bool} : infer(x.operand);
+            else if constexpr (std::is_same_v<T, py::BinaryExpr>) {
+                auto left = infer(x.left), right = infer(x.right);
+                if (left == la::ValueType::Float || right == la::ValueType::Float) return la::ValueType::Float;
+                return left;
+            } else if constexpr (std::is_same_v<T, py::List>) {
+                if (!x.elts.empty()) {
+                    auto element = infer(x.elts.front());
+                    if (element != la::ValueType::Undef) return la::Type{la::ValueType::Array, element};
+                }
+            } else if constexpr (std::is_same_v<T, py::Attribute>) {
+                const auto field = astField(expression);
+                if (fields.contains(field)) return fields.at(field).second;
+                if (auto n = x.value ? x.value->template get<py::Name>() : nullptr; n && n->id == "ctx" &&
+                    (x.attr == "rule" || x.attr == "failed_rule")) return la::ValueType::String;
+            }
+            return la::ValueType::Undef;
+        }, expression->kind);
+    }
+    void assign(const py::ExprPtr& target, const py::ExprPtr& value, const py::ExprPtr& annotated = {}) {
+        const auto field = astField(target);
+        auto type = annotated ? annotation(annotated) : infer(value);
+        if (!field.empty()) {
+            if (fields.contains(field)) {
+                if (annotated && !(fields.at(field).second == type)) error(target->pos, "conflicting annotation for ctx.ast." + field);
+                return;
+            }
+            if (type == la::ValueType::Undef)
+                error(target->pos, "cannot infer ctx.ast." + field + "; add a field annotation");
+            fields.emplace(field, regular_data_block{{}, std::move(type)});
+        } else if (auto name = target ? target->get<py::Name>() : nullptr) locals.insert_or_assign(name->id, std::move(type));
+    }
+    void body(const py::StmtList& statements) {
+        for (const auto& statement : statements) if (statement) std::visit([&](const auto& x) {
+            using T = std::decay_t<decltype(x)>;
+            if constexpr (std::is_same_v<T, py::Assign>) { for (const auto& target : x.targets) assign(target, x.value); }
+            else if constexpr (std::is_same_v<T, py::AnnAssign>) assign(x.target, x.value, x.annotation);
+            else if constexpr (std::is_same_v<T, py::If> || std::is_same_v<T, py::While>) { body(x.body); body(x.orelse); }
+        }, statement->kind);
+    }
+    void action(const AST::PythonAction& action) {
+        if (const auto* module = std::get_if<py::Module>(&action.code)) body(module->body);
+    }
+    void member(const AST::RuleMember& member) {
+        for (const auto& feature : member.features) {
+            if (const auto* capture = std::get_if<AST::VariableCapture>(&feature))
+                locals.insert_or_assign(capture->name, Parser::ParserBase::dataType(AST::captureType(member)));
+            if (const auto* code = std::get_if<AST::PythonAction>(&feature)) action(*code);
+        }
+        if (member.isGroup()) for (const auto& child : member.getGroup().values) this->member(*child);
+        if (member.isOp()) for (const auto& child : member.getOp().options) this->member(*child);
+    }
+};
+}
 Builder::Builder(AST::Tree& tree, int) : Builder(tree, AST::TreeMap{}, {}) {}
 
 Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
@@ -32,17 +127,56 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
         // The body is opaque to the Builder: all value bindings come from the
         // semantic exports, regardless of declaration placement or control flow.
         production.rule_members = lowered.function.statements;
+        ActionFields action_fields;
+        if (production.block.is_inclosed_map()) action_fields.fields = production.block.getInclosedMap();
+        for (const auto& member : rule.rule_members) action_fields.member(*member);
+        for (const auto& feature : rule.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) action_fields.action(*action);
+        // A handler shares the AST shape of its owning rule. Include fields
+        // introduced by handlers selected by markers or rule-level bindings.
+        std::map<stdu::vector<std::string>, stdu::vector<std::string>> handler_names;
+        for (const auto& feature : rule.features) if (const auto* binding = std::get_if<AST::FailBinding>(&feature))
+            for (const auto& name : binding->names) handler_names.emplace(stdu::vector<std::string>{name}, stdu::vector<std::string>{});
+        const auto gather = [&](auto&& self, const AST::RuleMember& member) -> void {
+            for (const auto& feature : member.features) if (const auto* marker = std::get_if<AST::FailMarker>(&feature); marker && !marker->name.empty())
+                handler_names.insert_or_assign(marker->name, marker->parameters);
+            if (member.isGroup()) for (const auto& child : member.getGroup().values) self(self, *child);
+            if (member.isOp()) for (const auto& child : member.getOp().options) self(self, *child);
+        };
+        for (const auto& member : rule.rule_members) gather(gather, *member);
+        for (const auto& [handler, arguments] : handler_names) {
+            const AST::FailBlock* resolved = nullptr;
+            for (std::size_t size = name.size();; --size) {
+                stdu::vector<std::string> candidate(name.begin(), name.begin() + size);
+                candidate.insert(candidate.end(), handler.begin(), handler.end());
+                for (const auto& block : tree.getFailBlocks()) if (block.name == candidate) { resolved = &block; break; }
+                if (resolved || size == 0) break;
+            }
+            if (resolved) {
+                for (std::size_t i = 0; i < arguments.size() && i < resolved->parameters.size(); ++i)
+                    if (action_fields.locals.contains(arguments[i])) action_fields.locals.insert_or_assign(resolved->parameters[i], action_fields.locals.at(arguments[i]));
+                action_fields.action(resolved->action);
+            }
+        }
+        if (!action_fields.fields.empty()) {
+            if (production.block.is_regular_data_block() && !action_fields.fields.contains("value"))
+                action_fields.fields.emplace("value", production.block.getRegularDataBlock());
+            production.block.value = std::move(action_fields.fields);
+        }
         std::size_t capture = 0;
         for (const auto& exported : lowered.captures) {
             if (exported.prefix.empty()) continue;
-            const auto& value = exported.meta.value.name.empty()
-                ? exported.meta.value_list : exported.meta.value;
+            // Preserve capture metadata for IR consumers. ConstructParser uses
+            // the live assignments emitted by RuleLower for these fields.
+            const auto& value = exported.meta.value.name.empty() ? exported.meta.value_list : exported.meta.value;
             auto expression = LangAPI::Symbol::createExpression(LangAPI::Symbol{value.name});
             if (production.block.is_regular_data_block())
                 production.block.getRegularDataBlock().first = std::move(expression);
             else if (production.block.is_inclosed_map()) {
-                const auto& field = rule.data_block.fields.at(capture).first;
-                production.block.getInclosedMap().at(field).first = std::move(expression);
+                if (rule.data_block.type) production.block.getInclosedMap().at("value").first = std::move(expression);
+                else if (capture < rule.data_block.fields.size()) {
+                    const auto& field = rule.data_block.fields.at(capture).first;
+                    production.block.getInclosedMap().at(field).first = std::move(expression);
+                }
             }
             ++capture;
         }

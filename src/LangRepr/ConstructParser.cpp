@@ -138,7 +138,7 @@ namespace LangRepr {
             const auto &expr = stmt.getExpression();
             if (expr.back().isReturn()) {
                 auto ret = expr.front().getReturn();
-                ret.value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer {});
+                if (ret.value.empty()) ret.value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer {});
                 return LangAPI::Return::createStatement(ret);
             }
             // else if (expr.back().isReportError()) {
@@ -251,16 +251,43 @@ namespace LangRepr {
                 continue;
             }
             LangAPI::Statements stmts;
-            for (const auto &stmt : prod.rule_members) {
-                stmts.push_back(finalizeReturnStatement(finalizeTypes(stmt)));
-            }
             LangAPI::Variable result_v;
             result_v.type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
             result_v.name = "result";
+            result_v.value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer{});
             stmts.push_back(LangAPI::Variable::createStatement(result_v));
+            const auto& source_rule = tree[prod.name];
+            const bool advanced = std::ranges::any_of(source_rule.features, [](const auto& feature) {
+                return std::holds_alternative<AST::AdvancedRule>(feature);
+            });
+            const auto has_failure = [&](auto&& self, const AST::RuleMember& member) -> bool {
+                for (const auto& feature : member.features) if (std::holds_alternative<AST::FailMarker>(feature)) return true;
+                if (member.isGroup()) for (const auto& child : member.getGroup().values) if (self(self, *child)) return true;
+                if (member.isOp()) for (const auto& child : member.getOp().options) if (self(self, *child)) return true;
+                return false;
+            };
+            const bool needs_cursor = advanced || std::ranges::any_of(source_rule.features, [](const auto& feature) {
+                return std::holds_alternative<AST::FailBinding>(feature);
+            }) || std::ranges::any_of(source_rule.rule_members, [&](const auto& member) { return has_failure(has_failure, *member); });
+            if (needs_cursor) stmts.push_back(LangAPI::Variable{.name = "start_pos", .type = LangAPI::Type{LangAPI::Symbol{"IT"}},
+                .value = LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})});
+            if (advanced) stmts.push_back(LangAPI::Variable{.name = "ctx", .type = LangAPI::Type{LangAPI::ValueType::Undef},
+                .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("rule_context"),
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"}),
+                        LangAPI::Symbol::createExpression(LangAPI::Symbol{"result"}),
+                        LangAPI::Symbol::createExpression(LangAPI::Symbol{"start_pos"}),
+                        LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(prod.name, ".")})}})});
+            for (const auto &stmt : prod.rule_members) {
+                stmts.push_back(finalizeReturnStatement(finalizeTypes(stmt)));
+            }
             if (prod.block.is_inclosed_map()) {
                 const auto ib = prod.block.getInclosedMap();
                 for (const auto &[name, expr] : ib) {
+                    if (expr.first.empty()) continue; // initialized directly through ctx.ast
+                    if ((name == "value" && source_rule.data_block.type) ||
+                        std::ranges::any_of(source_rule.data_block.fields, [&](const auto& field) { return field.first == name; }))
+                        continue; // capture was published when its match completed
                     LangAPI::StorageSymbol s;
                     s.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"result"});
                     s.path.push_back(name);
@@ -271,7 +298,7 @@ namespace LangRepr {
                         )
                     );
                 }
-            } else if (prod.block.is_regular_data_block()) {
+            } else if (prod.block.is_regular_data_block() && !prod.block.getRegularDataBlock().first.empty() && !source_rule.data_block.type) {
                 auto v = LangAPI::StorageSymbol {"value"};
                 v.what = LangAPI::Symbol::createExpression(LangAPI::Symbol {"result"});
                 stmts.push_back(

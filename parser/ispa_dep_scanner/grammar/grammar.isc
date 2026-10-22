@@ -1,5 +1,5 @@
 module ispa_dep_scanner;
-import {name, ID, NUMBER, PY_RAW, template_params, params} from common;
+import {name, ID, NUMBER, template_params, params} from common;
 import * from scanner_tokens;
 mod_module:
     @ 'module' @ module_path @ template_params? ('->' @ source_name)? @ ';'
@@ -71,7 +71,7 @@ declaration:
     ;
 ;
 modifier: '#' CGROUP;
-fail_decl: 'fail' source_name PY_RAW;
+fail_decl: 'fail' source_name braces;
 body:
     @ regular | braces
     {@}

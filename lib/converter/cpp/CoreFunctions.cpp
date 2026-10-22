@@ -94,7 +94,7 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
             case LangAPI::ValueType::Span:
                 return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
-                return "Undef";
+                return "auto";
             default:
                 throw Error("Unknown type: {}", (int) type.getValueType());
         }
@@ -369,9 +369,9 @@ auto Core::convertExpression(const LangAPI::Expression &expression) -> std::stri
             case LangAPI::ExpressionValueType::ReportError:
                 out << "raise_error(*pos, \"" << expr.getReportError().message << "\")";
                 break;
-            // case LangAPI::ExpressionValueType::Lambda:
-            //     out << convertLambda(expr.getLambda());
-            //     break;
+            case LangAPI::ExpressionValueType::Lambda:
+                out << convertLambda(expr.getLambda());
+                break;
             case LangAPI::ExpressionValueType::IspaLibFunctionCall:
                 out << convertIspaLibFunctionCall(expr.getIspaLibFunctionCall());
                 break;
@@ -429,6 +429,14 @@ auto Core::convertExpressionElement(LangAPI::ExpressionElement element) -> const
         default:
             throw Error("Unknown expression element");
     }
+}
+auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
+    std::string out = "[&](";
+    for (std::size_t i = 0; i < lambda.parameters.size(); ++i) {
+        if (i) out += ", ";
+        out += convertType(lambda.parameters[i].first) + " " + lambda.parameters[i].second;
+    }
+    return out + ") {\n" + lambda_body(lambda.statements) + "}";
 }
 // auto Core::convertLambda(const LangAPI::Lambda &lambda) -> std::string {
 //     // use lower level interaction to writer to output lambda in correct place with correct indentation

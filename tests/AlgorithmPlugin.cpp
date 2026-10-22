@@ -87,6 +87,101 @@ int main() {
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
 
+TEST(AlgorithmPlugin, LLAdvancedContextsExecuteAndReturnTheirAst) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"(
+A: 'a'; B: 'b'; X: 'x';
+main: @ item {@};
+item {
+    ctx.ast.total = 1
+    match A -> first;
+    ctx.ast.first = first
+    saved = ctx.pos
+    ctx.pos = ctx.start_pos
+    ctx.ast.total += 2
+    match A;
+    ctx.pos = saved
+    match %oops>(first) B;
+    ctx.ast.total += 4
+    return ctx.ast
+    ctx.ast.total = 999
+}
+fail oops>(previous) {
+    ctx.ast.failed = ctx.failed_rule
+    ctx.ast.owner = ctx.rule
+    ctx.ast.recovered = True
+    ctx.ast.had_previous = not previous.empty()
+    ctx.pos += 1
+}
+regular: @ A suffix @{token} %{missing};
+suffix: B;
+fail missing {
+    ctx.ast.saw_token = not ctx.ast.token.empty()
+    ctx.ast.expected = ctx.failed_rule
+}
+starts: @ start_failure {@};
+optional_rule: @ start_failure? {@};
+start_failure {
+    match %at_start A;
+    ctx.ast.finished = True
+}
+fail at_start {
+    ctx.ast.recovered = True
+    ctx.pos += 1
+}
+)");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-action-context-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    const auto generated = convert(*descriptor, tree, metadata, directory);
+    EXPECT_NE(generated.find("fail_context("), std::string::npos);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+struct Harness : PluginTest::Parser {
+    auto parseRegular(const char* text) {
+        PluginTest::Lexer lexer;
+        return regular(PluginTest::Lexer::lazy_iterator(lexer, text));
+    }
+    auto parseStarts(const char* text) {
+        PluginTest::Lexer lexer;
+        return starts(PluginTest::Lexer::lazy_iterator(lexer, text));
+    }
+    auto parseOptional(const char* text) {
+        PluginTest::Lexer lexer;
+        return optional_rule(PluginTest::Lexer::lazy_iterator(lexer, text));
+    }
+};
+int main() {
+    PluginTest::Parser parser;
+    const auto& good = parser.parse("ab").value.data();
+    if (good.total != 7 || good.first.empty() || !good.failed.empty()) return 1;
+    const auto& repaired = parser.parse("axb").value.data();
+    if (repaired.total != 7 || !repaired.recovered || !repaired.had_previous || repaired.failed != "B" || repaired.owner != "item") return 2;
+    const auto& again = parser.parse("ab").value.data();
+    if (again.total != 7 || !again.failed.empty()) return 3;
+    PluginTest::Lexer lexer;
+    lexer.setInput("axb");
+    lexer.makeTokens();
+    if (parser.parse(lexer).value.data().total != 7) return 4;
+    Harness harness;
+    const auto partial = harness.parseRegular("a");
+    if (!partial.status || !partial.node.data().saw_token || partial.node.data().expected != "suffix") return 5;
+    const auto initial = harness.parseStarts("xa");
+    if (!initial.status || !initial.node.data().value.data().recovered || !initial.node.data().value.data().finished) return 6;
+    const auto absent = harness.parseOptional("b");
+    if (!absent.status || !absent.node.data().value.empty()) return 7;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" + (directory / "PluginTest.cpp").string() +
+        "\" \"" + (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
 TEST(AlgorithmPlugin, CapturedLiteralChoiceRetainsRuleAndTokenPayloads) {
     for (const std::string name : {"LL", "LR", "LALR"}) {
         SCOPED_TRACE(name);

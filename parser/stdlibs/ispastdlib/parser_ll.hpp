@@ -39,6 +39,56 @@ namespace ISPA_STD {
         }
 
     protected:
+        // Contexts borrow invocation-local storage. Cursor and AST changes are
+        // immediately visible to subsequent matches and to the rule's caller.
+        template<class IT, class AST>
+        struct RuleContext {
+            IT& pos;
+            AST& ast;
+            const IT start_pos;
+            const std::string rule;
+        };
+        template<class IT, class AST>
+        struct FailContext {
+            IT& pos;
+            AST& ast;
+            const IT start_pos;
+            const std::string rule;
+            const std::string failed_rule;
+        };
+        template<class IT, class AST>
+        static auto rule_context(IT& pos, AST& ast, IT start, std::string rule) {
+            return RuleContext<IT, AST>{pos, ast, start, std::move(rule)};
+        }
+        template<class IT, class AST>
+        static auto fail_context(IT& pos, AST& ast, IT start,
+                                 std::string rule, std::string failed_rule) {
+            return FailContext<IT, AST>{pos, ast, start, std::move(rule), std::move(failed_rule)};
+        }
+        template<class IT>
+        static auto custom_failure_decision(const IT& before, const IT& after) {
+            Recovery::Decision decision;
+            decision.mode = cursor_position(before) == cursor_position(after)
+                ? Recovery::Mode::Insert : Recovery::Mode::Retry;
+            return decision;
+        }
+        template<class Action>
+        struct ActionFailure {
+            static constexpr bool custom_action = true;
+            Action action;
+            template<class IT>
+            auto operator()(IT& pos, Recovery::State& state) { return action(pos, state); }
+        };
+        template<class Action>
+        static auto custom_failure(Action action) { return ActionFailure<Action>{std::move(action)}; }
+        template<class AST, class IT>
+        static auto action_result(const AST& ast, IT pos) {
+            MatchResult<AST, IT> result;
+            result.status = true;
+            result.node.set_data(ast);
+            result.it = std::move(pos);
+            return result;
+        }
         Recovery::State recovery_state_;
         std::map<std::string, std::size_t, std::less<>> counters_;
 
@@ -455,7 +505,15 @@ namespace ISPA_STD {
                 // Recursive alternatives may advance their input argument
                 // before failing. Never let a failed probe mutate pos.
                 IT attempt = pos;
-                auto match = rec(attempt);
+                auto match = [&] {
+                    if constexpr (requires { std::decay_t<Fail>::custom_action; }) {
+                        decltype(rec(attempt)) result{};
+                        RuleProbe probe(*this, cursor_position(attempt));
+                        try { result = rec(attempt); }
+                        catch (const NoMatch&) { /* invoke the explicitly bound parent handler */ }
+                        return result;
+                    } else return rec(attempt);
+                }();
                 if (match.status) {
                     pos = match.it;
                     commit_rule(pos);
@@ -481,7 +539,8 @@ namespace ISPA_STD {
                 return Result{
                     decision.mode == Recovery::Mode::Abort
                         ? Recovery::RequiredStatus::Aborted
-                        : Recovery::RequiredStatus::Boundary,
+                        : (decision.mode == Recovery::Mode::Insert || decision.mode == Recovery::Mode::Replace)
+                            ? Recovery::RequiredStatus::Missing : Recovery::RequiredStatus::Boundary,
                     std::nullopt, decision
                 };
             }
@@ -536,7 +595,8 @@ namespace ISPA_STD {
                 auto result = required_rule_recovering(pos, rec, fail);
                 if (result.node) return std::move(*result.node);
                 if (result.status != Recovery::RequiredStatus::Aborted &&
-                    (unwinding() || (!pos.isEnd() && result.recovery.mode != Recovery::Mode::Propagate)))
+                    (result.status == Recovery::RequiredStatus::Missing || unwinding() ||
+                     (!pos.isEnd() && result.recovery.mode != Recovery::Mode::Propagate)))
                     return std::decay_t<decltype(*result.node)>{};
             } else {
                 auto match = rec(pos);
