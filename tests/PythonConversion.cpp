@@ -75,6 +75,17 @@ TEST(PythonConversion, ArithmeticPreservesGrouping) {
     EXPECT_EQ(adds, 1);
     EXPECT_EQ(multiplies, 1);
 }
+
+TEST(PythonConversion, RecoveredSyntaxCannotBecomeExecutableActions) {
+    for (const auto* source : {"1 +", "f(1", "[1", "{'k': }"})
+        EXPECT_THROW(UAST::parsePythonExpr(source, position), std::runtime_error) << source;
+    for (const auto* source : {"x =\ny = 2\n", "if True\n    pass\n"})
+        EXPECT_THROW(UAST::parsePythonModule(source, position), std::runtime_error) << source;
+    for (const auto* source : {"1 + }", "f(1, +)}"})
+        EXPECT_THROW(PyRawParser::Exports::ExpressionBlock::parse(source, source), std::runtime_error) << source;
+    const char* source = "x =\ny = 2\n}";
+    EXPECT_THROW(PyRawParser::Exports::RawStatements::parse(source, source), std::runtime_error);
+}
 TEST(PythonConversion, CallsAndStorage) {
     auto call = expression("make(1, True)").front().getFunctionCall();
     ASSERT_EQ(call.args.size(), 2u);
@@ -170,6 +181,8 @@ TEST(PythonConversion, ActionContextValidatesMetadataAndPreservesLocals) {
     EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("name = ctx.failed_rule\nreturn\n"), locals, true));
     EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("ctx.sync('}', ';')\nctx.insert()\n"), locals, true));
     EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("x = ctx.at(ID) or ctx.at(common.ID) or ctx.at('=')\n"), locals, true));
-    for (const auto* source : {"ctx.sync()\n", "ctx.sync('')\n", "ctx.sync(42)\n"})
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("ctx.sync_tokens('NEWLINE', 'DEDENT')\nctx.insert()\n"), locals, true));
+    for (const auto* source : {"ctx.sync()\n", "ctx.sync('')\n", "ctx.sync(42)\n",
+                               "ctx.sync_tokens()\n", "ctx.sync_tokens('')\n", "ctx.sync_tokens(42)\n"})
         EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals, true), std::invalid_argument);
 }

@@ -210,6 +210,22 @@ skip budget; exhaustion aborts recovery. Follow it with `ctx.insert()` to accept
 a missing expression instead of retrying the boundary. Eager token streams
 cannot use `sync`.
 
+`ctx.sync_tokens("NEWLINE", "DEDENT")` scans tokens instead of source bytes.
+It accepts one or more nonempty string literals, matched by spelling or token
+name with the same qualification rules as `ctx.at`. It leaves the first matching
+token for its owner and stops at EOF. It works with eager and lazy token streams,
+including synthetic indentation tokens. Every skipped token counts against the
+shared skip budget; exhaustion aborts recovery. It does not balance delimiters:
+include all boundaries that must be preserved. Follow it with `ctx.insert()` to
+accept a missing value, or `ctx.retry()` to retry at the boundary.
+
+Fail blocks can report `ctx.error("message")` and explicitly choose a repair:
+`ctx.skip()` skips one token; `ctx.insert()` accepts a missing value;
+`ctx.replace()` skips one token and accepts a missing value; `ctx.retry()` retries
+the required match; `ctx.abort()` stops recovery. An abort cannot be undone by
+`insert`, `retry`, or another synchronization call. These methods are available
+only in fail blocks, and diagnostics remain in the owning parser's `getErrors()`.
+
 Python expressions are direct: `${(a + 2) * b}`, `&= { count: 3 }`, and
 `{value}`. Expression entry points do not accept `p{...}` wrappers. Recovered
 missing expressions remain invalid and cannot be compiled.

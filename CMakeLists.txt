@@ -235,6 +235,7 @@ target_link_libraries(tests
         ispa_modules
         ispa-algorithm-LR
         ispa-algorithm-LALR
+        ispa-algorithm-LR_STAR
         GTest::gtest
         GTest::gtest_main
         yaml-cpp::yaml-cpp

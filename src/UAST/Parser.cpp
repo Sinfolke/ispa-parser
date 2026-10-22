@@ -61,6 +61,14 @@ struct Snapshot {
         for (const auto& element : x) result.children.push_back((*this)(element,p));
         return result;
     }
+    template<class A, class B> R operator()(const std::pair<A, B>& x, const P& p) const {
+        return {"sequence", {}, {}, p, false, {(*this)(x.first, p), (*this)(x.second, p)}};
+    }
+    template<class... T> R operator()(const std::tuple<T...>& x, const P& p) const {
+        R result{"sequence", {}, {}, p, false, {}};
+        std::apply([&](const auto&... values) { (result.children.push_back((*this)(values, p)), ...); }, x);
+        return result;
+    }
     template<class T> requires requires(const T& x) { x.members(); T::members_str(); }
     R operator()(const T& x, const P& p) const {
         R result{std::string(type_name<T>()), {}, {}, p, false, {}};

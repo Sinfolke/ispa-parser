@@ -24,6 +24,9 @@ int main(int argc, const char** argv) {
     PyParser parser;
     lexer.makeTokens(i);
     PyRawParser::Types::main node = parser.parse(lexer);
+    for (const auto &e : parser.getErrors()) {
+        std::cout << "Error: " << e.message << std::endl;
+    }
     std::ofstream of("tree.txt");
     of << node << "\n\n";
     std::cout << "Successfully parsed and saved to tree.txt\n";

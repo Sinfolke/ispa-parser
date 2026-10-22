@@ -123,6 +123,21 @@ namespace ISPA_STD {
                     throw std::logic_error("ctx.sync requires a lazy source cursor");
                 }
             }
+            // Preserve token-stream structure (including synthetic indentation)
+            // instead of bypassing the lexer as source-level sync does.
+            template<class... Boundaries>
+            void sync_tokens(Boundaries... boundaries) {
+                static_assert(sizeof...(Boundaries) > 0);
+                const std::string_view stops[]{boundaries...};
+                for (auto stop : stops) if (stop.empty())
+                    throw std::invalid_argument("ctx.sync_tokens requires nonempty boundaries");
+                while (true) {
+                    if (recovery.exhausted() || requested == Recovery::Mode::Abort) { abort(); return; }
+                    if (pos.isEnd()) return;
+                    for (auto stop : stops) if (at(stop)) return;
+                    skip();
+                }
+            }
             void skip() {
                 if (recovery.exhausted()) { abort(); return; }
                 if (!pos.isEnd()) { ++pos; ++skipped; ++recovery.total_skipped; }

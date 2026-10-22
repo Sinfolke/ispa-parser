@@ -426,3 +426,46 @@ TEST(LLRuntime, FailSyncPreservesHardBoundariesAndBoundsBrokenStrings) {
         EXPECT_LE(parser.recovery_state_.total_skipped, 4u);
     }
 }
+
+TEST(LLRuntime, FailSyncTokensPreservesBoundaryAndStopsAtEof) {
+    const char source[] = "xx;";
+    const Token tokens[]{Token{{0, source, source + 1, 1, 1, 1, 1}, Leaf{}},
+                         Token{{1, source + 1, source + 2, 1, 1, 2, 1}, Leaf{}},
+                         Token{{2, source + 2, source + 3, 1, 1, 3, 2}, Other{}}, Token{}};
+    for (const bool named : {false, true}) {
+        Iter pos{tokens};
+        AnchorParser parser;
+        Leaf ast;
+        const auto before = pos;
+        auto ctx = parser.fail_context(pos, ast, pos, "owner", "expression",
+            +[](std::size_t id) -> const char* { return id == 2 ? "python.DEDENT" : "python.ID"; });
+        ctx.error("missing expression");
+        if (named) ctx.sync_tokens("NEWLINE", "DEDENT");
+        else ctx.sync_tokens(";");
+        EXPECT_EQ(pos.index, 2u);
+        ctx.insert();
+        EXPECT_EQ(ctx.finish(before).mode, ISPA_STD::Recovery::Mode::Replace);
+        EXPECT_EQ(parser.recovery_state_.total_skipped, 2u);
+        ctx.sync_tokens("absent");
+        EXPECT_TRUE(pos.isEnd());
+    }
+}
+
+TEST(LLRuntime, FailSyncTokensHonorsSkipBudgetAndAbort) {
+    const Token tokens[]{Token{ISPA_STD::RawTokenMeta{}, Leaf{}},
+                         Token{ISPA_STD::RawTokenMeta{}, Other{}}, Token{}};
+    Iter pos{tokens};
+    AnchorParser parser;
+    parser.recovery_state_.max_total_skipped = 1;
+    Leaf ast;
+    const auto before = pos;
+    auto ctx = parser.fail_context(pos, ast, pos, "owner", "expression");
+    EXPECT_THROW(ctx.sync_tokens(""), std::invalid_argument);
+    ctx.sync_tokens("missing");
+    ctx.insert();
+    EXPECT_EQ(ctx.finish(before).mode, ISPA_STD::Recovery::Mode::Abort);
+    EXPECT_EQ(pos.index, 1u);
+    EXPECT_EQ(parser.recovery_state_.total_skipped, 1u);
+    ctx.sync_tokens("missing");
+    EXPECT_EQ(pos.index, 1u);
+}

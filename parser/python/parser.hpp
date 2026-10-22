@@ -202,12 +202,8 @@ public:
         if (finished)
             return;
 
-        if (bracket_depth != 0) {
-            throw std::runtime_error(
-                "SyntaxError: unexpected EOF inside brackets"
-            );
-        }
-
+        // Let required closing-delimiter matches report and repair EOF.
+        // The final logical newline still belongs to the containing statement.
         auto& output = getTokensReference();
         const char* end = boundary ? boundary : _in + std::char_traits<char>::length(_in);
         anchor = ISPA_STD::RawTokenMeta{static_cast<std::size_t>(end - _in), end, end, 0, __line(end), __column(end), 0};
@@ -248,9 +244,21 @@ public:
 };
 class PyParser : public ::PyRawParser::Parser {
 public:
+    using ::PyRawParser::Parser::parseLazy;
+    template<class IT>
+    auto parseExpression(IT begin) {
+        reset_recovery();
+        // A standalone expression leaves the lexer's final logical newline
+        // to its caller. Give hierarchical recovery that enclosing boundary.
+        auto frame = recovery_frame("Python expression entry");
+        recovery_at<ISPA_STD::Recovery::Tokens<PyRawParser::Tokens::NEWLINE::id>>(
+            "NEWLINE", "NEWLINE");
+        return expr(begin);
+    }
     auto parseLazy(const std::string& source)
         -> ::PyRawParser::Types::main
     {
+        reset_recovery();
         PyLexer lexer;
         lexer.setInput(source);
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ispastdlib/variant_io.hpp>
-#include <ispastdlib/lr_machine.hpp>
+#include <ispastdlib/parser_ll.hpp>
 
 namespace DepParser {
 	namespace Tokens {
@@ -1236,14 +1236,14 @@ namespace DepParser {
 namespace DepParser {
 	namespace Rules {
 		namespace main {
-			inline const std::size_t id = 0;
+			inline const std::size_t id = 32;
 		} // namespace main
 	} // namespace Rules
 } // namespace DepParser
 namespace DepParser {
 	namespace Rules {
 		namespace modules {
-			inline const std::size_t id = 65;
+			inline const std::size_t id = 34;
 		} // namespace modules
 	} // namespace Rules
 } // namespace DepParser
@@ -1251,7 +1251,7 @@ namespace DepParser {
 	namespace Rules {
 		namespace modules {
 			namespace common {
-				inline const std::size_t id = 66;
+				inline const std::size_t id = 35;
 			} // namespace common
 		} // namespace modules
 	} // namespace Rules
@@ -1261,61 +1261,7 @@ namespace DepParser {
 		namespace modules {
 			namespace common {
 				namespace name {
-					inline const std::size_t id = 1;
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __grp2 {
-						inline const std::size_t id = 2;
-					} // namespace __grp2
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __grp2 {
-						namespace __tail {
-							inline const std::size_t id = 3;
-						} // namespace __tail
-					} // namespace __grp2
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __q4 {
-						inline const std::size_t id = 4;
-					} // namespace __q4
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __q6 {
-						inline const std::size_t id = 5;
-					} // namespace __q6
+					inline const std::size_t id = 21;
 				} // namespace name
 			} // namespace common
 		} // namespace modules
@@ -1326,35 +1272,7 @@ namespace DepParser {
 		namespace modules {
 			namespace common {
 				namespace param {
-					inline const std::size_t id = 6;
-				} // namespace param
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace param {
-					namespace __grp2 {
-						inline const std::size_t id = 7;
-					} // namespace __grp2
-				} // namespace param
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace param {
-					namespace __grp2 {
-						namespace __tail {
-							inline const std::size_t id = 8;
-						} // namespace __tail
-					} // namespace __grp2
+					inline const std::size_t id = 30;
 				} // namespace param
 			} // namespace common
 		} // namespace modules
@@ -1365,20 +1283,7 @@ namespace DepParser {
 		namespace modules {
 			namespace common {
 				namespace params {
-					inline const std::size_t id = 9;
-				} // namespace params
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace params {
-					namespace __q4 {
-						inline const std::size_t id = 10;
-					} // namespace __q4
+					inline const std::size_t id = 33;
 				} // namespace params
 			} // namespace common
 		} // namespace modules
@@ -1389,20 +1294,7 @@ namespace DepParser {
 		namespace modules {
 			namespace common {
 				namespace template_params {
-					inline const std::size_t id = 11;
-				} // namespace template_params
-			} // namespace common
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace common {
-				namespace template_params {
-					namespace __q2 {
-						inline const std::size_t id = 12;
-					} // namespace __q2
+					inline const std::size_t id = 16;
 				} // namespace template_params
 			} // namespace common
 		} // namespace modules
@@ -1412,7 +1304,7 @@ namespace DepParser {
 	namespace Rules {
 		namespace modules {
 			namespace entry {
-				inline const std::size_t id = 67;
+				inline const std::size_t id = 36;
 			} // namespace entry
 		} // namespace modules
 	} // namespace Rules
@@ -1422,50 +1314,7 @@ namespace DepParser {
 		namespace modules {
 			namespace entry {
 				namespace main {
-					inline const std::size_t id = 13;
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						inline const std::size_t id = 14;
-					} // namespace __grp0
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						namespace __rop0 {
-							inline const std::size_t id = 15;
-						} // namespace __rop0
-					} // namespace __grp0
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						namespace __tail {
-							inline const std::size_t id = 16;
-						} // namespace __tail
-					} // namespace __grp0
+					inline const std::size_t id = 24;
 				} // namespace main
 			} // namespace entry
 		} // namespace modules
@@ -1475,7 +1324,7 @@ namespace DepParser {
 	namespace Rules {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				inline const std::size_t id = 68;
+				inline const std::size_t id = 37;
 			} // namespace ispa_dep_scanner
 		} // namespace modules
 	} // namespace Rules
@@ -1485,7 +1334,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace atom {
-					inline const std::size_t id = 17;
+					inline const std::size_t id = 3;
 				} // namespace atom
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1496,7 +1345,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace balanced_item {
-					inline const std::size_t id = 18;
+					inline const std::size_t id = 15;
 				} // namespace balanced_item
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1507,7 +1356,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace body {
-					inline const std::size_t id = 19;
+					inline const std::size_t id = 8;
 				} // namespace body
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1519,39 +1368,7 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace body {
 					namespace regular {
-						inline const std::size_t id = 20;
-					} // namespace regular
-				} // namespace body
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace body {
-					namespace regular {
-						namespace __q2 {
-							inline const std::size_t id = 21;
-						} // namespace __q2
-					} // namespace regular
-				} // namespace body
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace body {
-					namespace regular {
-						namespace __q2 {
-							namespace __tail {
-								inline const std::size_t id = 22;
-							} // namespace __tail
-						} // namespace __q2
+						inline const std::size_t id = 7;
 					} // namespace regular
 				} // namespace body
 			} // namespace ispa_dep_scanner
@@ -1563,35 +1380,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace braces {
-					inline const std::size_t id = 23;
-				} // namespace braces
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace braces {
-					namespace __q2 {
-						inline const std::size_t id = 24;
-					} // namespace __q2
-				} // namespace braces
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace braces {
-					namespace __q2 {
-						namespace __tail {
-							inline const std::size_t id = 25;
-						} // namespace __tail
-					} // namespace __q2
+					inline const std::size_t id = 1;
 				} // namespace braces
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1602,35 +1391,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace declaration {
-					inline const std::size_t id = 26;
-				} // namespace declaration
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace declaration {
-					namespace __q0 {
-						inline const std::size_t id = 27;
-					} // namespace __q0
-				} // namespace declaration
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace declaration {
-					namespace __q0 {
-						namespace __tail {
-							inline const std::size_t id = 28;
-						} // namespace __tail
-					} // namespace __q0
+					inline const std::size_t id = 11;
 				} // namespace declaration
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1642,7 +1403,7 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace declaration {
 					namespace form {
-						inline const std::size_t id = 29;
+						inline const std::size_t id = 10;
 					} // namespace form
 				} // namespace declaration
 			} // namespace ispa_dep_scanner
@@ -1654,7 +1415,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace fail_decl {
-					inline const std::size_t id = 30;
+					inline const std::size_t id = 9;
 				} // namespace fail_decl
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1665,20 +1426,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace feature_decl {
-					inline const std::size_t id = 31;
-				} // namespace feature_decl
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace feature_decl {
-					namespace __q6 {
-						inline const std::size_t id = 32;
-					} // namespace __q6
+					inline const std::size_t id = 17;
 				} // namespace feature_decl
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1689,7 +1437,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace member {
-					inline const std::size_t id = 33;
+					inline const std::size_t id = 12;
 				} // namespace member
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1700,7 +1448,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace mod_detach {
-					inline const std::size_t id = 34;
+					inline const std::size_t id = 26;
 				} // namespace mod_detach
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1712,7 +1460,7 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace mod_detach {
 					namespace detach_value {
-						inline const std::size_t id = 35;
+						inline const std::size_t id = 29;
 					} // namespace detach_value
 				} // namespace mod_detach
 			} // namespace ispa_dep_scanner
@@ -1726,7 +1474,7 @@ namespace DepParser {
 				namespace mod_detach {
 					namespace detach_value {
 						namespace feature_ref {
-							inline const std::size_t id = 36;
+							inline const std::size_t id = 14;
 						} // namespace feature_ref
 					} // namespace detach_value
 				} // namespace mod_detach
@@ -1739,20 +1487,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace mod_import {
-					inline const std::size_t id = 37;
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace __q2 {
-						inline const std::size_t id = 38;
-					} // namespace __q2
+					inline const std::size_t id = 31;
 				} // namespace mod_import
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1764,7 +1499,7 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace mod_import {
 					namespace external_import {
-						inline const std::size_t id = 39;
+						inline const std::size_t id = 23;
 					} // namespace external_import
 				} // namespace mod_import
 			} // namespace ispa_dep_scanner
@@ -1777,7 +1512,7 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace mod_import {
 					namespace import_value {
-						inline const std::size_t id = 40;
+						inline const std::size_t id = 22;
 					} // namespace import_value
 				} // namespace mod_import
 			} // namespace ispa_dep_scanner
@@ -1791,7 +1526,7 @@ namespace DepParser {
 				namespace mod_import {
 					namespace import_value {
 						namespace from_import {
-							inline const std::size_t id = 41;
+							inline const std::size_t id = 2;
 						} // namespace from_import
 					} // namespace import_value
 				} // namespace mod_import
@@ -1807,7 +1542,7 @@ namespace DepParser {
 					namespace import_value {
 						namespace from_import {
 							namespace selection {
-								inline const std::size_t id = 42;
+								inline const std::size_t id = 0;
 							} // namespace selection
 						} // namespace from_import
 					} // namespace import_value
@@ -1825,51 +1560,7 @@ namespace DepParser {
 						namespace from_import {
 							namespace selection {
 								namespace items {
-									inline const std::size_t id = 43;
-								} // namespace items
-							} // namespace selection
-						} // namespace from_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
-						namespace from_import {
-							namespace selection {
-								namespace items {
-									namespace __grp4 {
-										inline const std::size_t id = 44;
-									} // namespace __grp4
-								} // namespace items
-							} // namespace selection
-						} // namespace from_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
-						namespace from_import {
-							namespace selection {
-								namespace items {
-									namespace __grp4 {
-										namespace __tail {
-											inline const std::size_t id = 45;
-										} // namespace __tail
-									} // namespace __grp4
+									inline const std::size_t id = 28;
 								} // namespace items
 							} // namespace selection
 						} // namespace from_import
@@ -1886,24 +1577,7 @@ namespace DepParser {
 				namespace mod_import {
 					namespace import_value {
 						namespace module_import {
-							inline const std::size_t id = 46;
-						} // namespace module_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
-						namespace module_import {
-							namespace __grp2 {
-								inline const std::size_t id = 47;
-							} // namespace __grp2
+							inline const std::size_t id = 20;
 						} // namespace module_import
 					} // namespace import_value
 				} // namespace mod_import
@@ -1916,33 +1590,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace mod_module {
-					inline const std::size_t id = 48;
-				} // namespace mod_module
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_module {
-					namespace __grp6 {
-						inline const std::size_t id = 49;
-					} // namespace __grp6
-				} // namespace mod_module
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_module {
-					namespace __q4 {
-						inline const std::size_t id = 50;
-					} // namespace __q4
+					inline const std::size_t id = 27;
 				} // namespace mod_module
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1953,20 +1601,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace mod_python_import {
-					inline const std::size_t id = 51;
-				} // namespace mod_python_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_python_import {
-					namespace __grp6 {
-						inline const std::size_t id = 52;
-					} // namespace __grp6
+					inline const std::size_t id = 18;
 				} // namespace mod_python_import
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1977,7 +1612,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace modifier {
-					inline const std::size_t id = 53;
+					inline const std::size_t id = 19;
 				} // namespace modifier
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -1988,35 +1623,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace module_path {
-					inline const std::size_t id = 54;
-				} // namespace module_path
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace module_path {
-					namespace __grp2 {
-						inline const std::size_t id = 55;
-					} // namespace __grp2
-				} // namespace module_path
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace module_path {
-					namespace __grp2 {
-						namespace __tail {
-							inline const std::size_t id = 56;
-						} // namespace __tail
-					} // namespace __grp2
+					inline const std::size_t id = 25;
 				} // namespace module_path
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2027,7 +1634,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace nested_rule {
-					inline const std::size_t id = 57;
+					inline const std::size_t id = 6;
 				} // namespace nested_rule
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2038,35 +1645,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace parentheses {
-					inline const std::size_t id = 58;
-				} // namespace parentheses
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace parentheses {
-					namespace __q2 {
-						inline const std::size_t id = 59;
-					} // namespace __q2
-				} // namespace parentheses
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace parentheses {
-					namespace __q2 {
-						namespace __tail {
-							inline const std::size_t id = 60;
-						} // namespace __tail
-					} // namespace __q2
+					inline const std::size_t id = 5;
 				} // namespace parentheses
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2077,7 +1656,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace source_name {
-					inline const std::size_t id = 61;
+					inline const std::size_t id = 13;
 				} // namespace source_name
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2088,35 +1667,7 @@ namespace DepParser {
 		namespace modules {
 			namespace ispa_dep_scanner {
 				namespace symbol_list {
-					inline const std::size_t id = 62;
-				} // namespace symbol_list
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace symbol_list {
-					namespace __grp2 {
-						inline const std::size_t id = 63;
-					} // namespace __grp2
-				} // namespace symbol_list
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace Rules
-} // namespace DepParser
-namespace DepParser {
-	namespace Rules {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace symbol_list {
-					namespace __grp2 {
-						namespace __tail {
-							inline const std::size_t id = 64;
-						} // namespace __tail
-					} // namespace __grp2
+					inline const std::size_t id = 4;
 				} // namespace symbol_list
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2160,90 +1711,8 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace common {
-				namespace name {
-					namespace __grp2 {
-						inline const char* const id = "modules.common.name.__grp2";
-					} // namespace __grp2
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __grp2 {
-						namespace __tail {
-							inline const char* const id = "modules.common.name.__grp2.__tail";
-						} // namespace __tail
-					} // namespace __grp2
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __q4 {
-						inline const char* const id = "modules.common.name.__q4";
-					} // namespace __q4
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace name {
-					namespace __q6 {
-						inline const char* const id = "modules.common.name.__q6";
-					} // namespace __q6
-				} // namespace name
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
 				namespace param {
 					inline const char* const id = "modules.common.param";
-				} // namespace param
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace param {
-					namespace __grp2 {
-						inline const char* const id = "modules.common.param.__grp2";
-					} // namespace __grp2
-				} // namespace param
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace param {
-					namespace __grp2 {
-						namespace __tail {
-							inline const char* const id = "modules.common.param.__grp2.__tail";
-						} // namespace __tail
-					} // namespace __grp2
 				} // namespace param
 			} // namespace common
 		} // namespace modules
@@ -2264,34 +1733,8 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace common {
-				namespace params {
-					namespace __q4 {
-						inline const char* const id = "modules.common.params.__q4";
-					} // namespace __q4
-				} // namespace params
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
 				namespace template_params {
 					inline const char* const id = "modules.common.template_params";
-				} // namespace template_params
-			} // namespace common
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace common {
-				namespace template_params {
-					namespace __q2 {
-						inline const char* const id = "modules.common.template_params.__q2";
-					} // namespace __q2
 				} // namespace template_params
 			} // namespace common
 		} // namespace modules
@@ -2312,49 +1755,6 @@ namespace DepParser {
 			namespace entry {
 				namespace main {
 					inline const char* const id = "modules.entry.main";
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						inline const char* const id = "modules.entry.main.__grp0";
-					} // namespace __grp0
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						namespace __rop0 {
-							inline const char* const id = "modules.entry.main.__grp0.__rop0";
-						} // namespace __rop0
-					} // namespace __grp0
-				} // namespace main
-			} // namespace entry
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace entry {
-				namespace main {
-					namespace __grp0 {
-						namespace __tail {
-							inline const char* const id = "modules.entry.main.__grp0.__tail";
-						} // namespace __tail
-					} // namespace __grp0
 				} // namespace main
 			} // namespace entry
 		} // namespace modules
@@ -2419,38 +1819,6 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				namespace body {
-					namespace regular {
-						namespace __q2 {
-							inline const char* const id = "modules.ispa_dep_scanner.body.regular.__q2";
-						} // namespace __q2
-					} // namespace regular
-				} // namespace body
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace body {
-					namespace regular {
-						namespace __q2 {
-							namespace __tail {
-								inline const char* const id = "modules.ispa_dep_scanner.body.regular.__q2.__tail";
-							} // namespace __tail
-						} // namespace __q2
-					} // namespace regular
-				} // namespace body
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
 				namespace braces {
 					inline const char* const id = "modules.ispa_dep_scanner.braces";
 				} // namespace braces
@@ -2462,64 +1830,8 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				namespace braces {
-					namespace __q2 {
-						inline const char* const id = "modules.ispa_dep_scanner.braces.__q2";
-					} // namespace __q2
-				} // namespace braces
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace braces {
-					namespace __q2 {
-						namespace __tail {
-							inline const char* const id = "modules.ispa_dep_scanner.braces.__q2.__tail";
-						} // namespace __tail
-					} // namespace __q2
-				} // namespace braces
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
 				namespace declaration {
 					inline const char* const id = "modules.ispa_dep_scanner.declaration";
-				} // namespace declaration
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace declaration {
-					namespace __q0 {
-						inline const char* const id = "modules.ispa_dep_scanner.declaration.__q0";
-					} // namespace __q0
-				} // namespace declaration
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace declaration {
-					namespace __q0 {
-						namespace __tail {
-							inline const char* const id = "modules.ispa_dep_scanner.declaration.__q0.__tail";
-						} // namespace __tail
-					} // namespace __q0
 				} // namespace declaration
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2555,19 +1867,6 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace feature_decl {
 					inline const char* const id = "modules.ispa_dep_scanner.feature_decl";
-				} // namespace feature_decl
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace feature_decl {
-					namespace __q6 {
-						inline const char* const id = "modules.ispa_dep_scanner.feature_decl.__q6";
-					} // namespace __q6
 				} // namespace feature_decl
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2629,19 +1928,6 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace mod_import {
 					inline const char* const id = "modules.ispa_dep_scanner.mod_import";
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace __q2 {
-						inline const char* const id = "modules.ispa_dep_scanner.mod_import.__q2";
-					} // namespace __q2
 				} // namespace mod_import
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2730,69 +2016,8 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace mod_import {
 					namespace import_value {
-						namespace from_import {
-							namespace selection {
-								namespace items {
-									namespace __grp4 {
-										inline const char* const id = "modules.ispa_dep_scanner.mod_import.import_value.from_import.selection.items.__grp4";
-									} // namespace __grp4
-								} // namespace items
-							} // namespace selection
-						} // namespace from_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
-						namespace from_import {
-							namespace selection {
-								namespace items {
-									namespace __grp4 {
-										namespace __tail {
-											inline const char* const id = "modules.ispa_dep_scanner.mod_import.import_value.from_import.selection.items.__grp4.__tail";
-										} // namespace __tail
-									} // namespace __grp4
-								} // namespace items
-							} // namespace selection
-						} // namespace from_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
 						namespace module_import {
 							inline const char* const id = "modules.ispa_dep_scanner.mod_import.import_value.module_import";
-						} // namespace module_import
-					} // namespace import_value
-				} // namespace mod_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_import {
-					namespace import_value {
-						namespace module_import {
-							namespace __grp2 {
-								inline const char* const id = "modules.ispa_dep_scanner.mod_import.import_value.module_import.__grp2";
-							} // namespace __grp2
 						} // namespace module_import
 					} // namespace import_value
 				} // namespace mod_import
@@ -2815,47 +2040,8 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				namespace mod_module {
-					namespace __grp6 {
-						inline const char* const id = "modules.ispa_dep_scanner.mod_module.__grp6";
-					} // namespace __grp6
-				} // namespace mod_module
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_module {
-					namespace __q4 {
-						inline const char* const id = "modules.ispa_dep_scanner.mod_module.__q4";
-					} // namespace __q4
-				} // namespace mod_module
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
 				namespace mod_python_import {
 					inline const char* const id = "modules.ispa_dep_scanner.mod_python_import";
-				} // namespace mod_python_import
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace mod_python_import {
-					namespace __grp6 {
-						inline const char* const id = "modules.ispa_dep_scanner.mod_python_import.__grp6";
-					} // namespace __grp6
 				} // namespace mod_python_import
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -2887,34 +2073,6 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				namespace module_path {
-					namespace __grp2 {
-						inline const char* const id = "modules.ispa_dep_scanner.module_path.__grp2";
-					} // namespace __grp2
-				} // namespace module_path
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace module_path {
-					namespace __grp2 {
-						namespace __tail {
-							inline const char* const id = "modules.ispa_dep_scanner.module_path.__grp2.__tail";
-						} // namespace __tail
-					} // namespace __grp2
-				} // namespace module_path
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
 				namespace nested_rule {
 					inline const char* const id = "modules.ispa_dep_scanner.nested_rule";
 				} // namespace nested_rule
@@ -2937,34 +2095,6 @@ namespace DepParser {
 	namespace RulesStr {
 		namespace modules {
 			namespace ispa_dep_scanner {
-				namespace parentheses {
-					namespace __q2 {
-						inline const char* const id = "modules.ispa_dep_scanner.parentheses.__q2";
-					} // namespace __q2
-				} // namespace parentheses
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace parentheses {
-					namespace __q2 {
-						namespace __tail {
-							inline const char* const id = "modules.ispa_dep_scanner.parentheses.__q2.__tail";
-						} // namespace __tail
-					} // namespace __q2
-				} // namespace parentheses
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
 				namespace source_name {
 					inline const char* const id = "modules.ispa_dep_scanner.source_name";
 				} // namespace source_name
@@ -2978,34 +2108,6 @@ namespace DepParser {
 			namespace ispa_dep_scanner {
 				namespace symbol_list {
 					inline const char* const id = "modules.ispa_dep_scanner.symbol_list";
-				} // namespace symbol_list
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace symbol_list {
-					namespace __grp2 {
-						inline const char* const id = "modules.ispa_dep_scanner.symbol_list.__grp2";
-					} // namespace __grp2
-				} // namespace symbol_list
-			} // namespace ispa_dep_scanner
-		} // namespace modules
-	} // namespace RulesStr
-} // namespace DepParser
-namespace DepParser {
-	namespace RulesStr {
-		namespace modules {
-			namespace ispa_dep_scanner {
-				namespace symbol_list {
-					namespace __grp2 {
-						namespace __tail {
-							inline const char* const id = "modules.ispa_dep_scanner.symbol_list.__grp2.__tail";
-						} // namespace __tail
-					} // namespace __grp2
 				} // namespace symbol_list
 			} // namespace ispa_dep_scanner
 		} // namespace modules
@@ -3052,71 +2154,40 @@ namespace DepParser::FlatTypes { struct modules_common_NUMBER; }
 namespace DepParser::FlatTypes { struct modules_common; }
 namespace DepParser::FlatTypes { struct modules_common_ID; }
 namespace DepParser::FlatTypes { struct LESS_THAN_SIGN; }
+namespace DepParser::FlatTypes { struct FEATURE; }
 namespace DepParser::FlatTypes { struct modules_scanner_tokens_STRING; }
 namespace DepParser::FlatTypes { struct SEMICOLON; }
 namespace DepParser::FlatTypes { struct modules_scanner_tokens_COMMENT; }
-namespace DepParser::FlatTypes { struct FEATURE; }
 namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_external_import_EXTERN; }
 namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_external_import; }
 namespace DepParser::FlatTypes { struct modules_scanner_tokens_CGROUP; }
-namespace DepParser::FlatTypes { struct main; }
-namespace DepParser::FlatTypes { struct modules_common_name; }
-namespace DepParser::FlatTypes { struct modules_common_name___grp2; }
-namespace DepParser::FlatTypes { struct modules_common_name___grp2___tail; }
-namespace DepParser::FlatTypes { struct modules_common_name___q4; }
-namespace DepParser::FlatTypes { struct modules_common_name___q6; }
-namespace DepParser::FlatTypes { struct modules_common_param; }
-namespace DepParser::FlatTypes { struct modules_common_param___grp2; }
-namespace DepParser::FlatTypes { struct modules_common_param___grp2___tail; }
-namespace DepParser::FlatTypes { struct modules_common_params; }
-namespace DepParser::FlatTypes { struct modules_common_params___q4; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_braces; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_atom; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_symbol_list; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_parentheses; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_nested_rule; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body_regular; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration_form; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_member; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_source_name; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_detach_detach_value_feature_ref; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_detach_detach_value; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_balanced_item; }
 namespace DepParser::FlatTypes { struct modules_common_template_params; }
-namespace DepParser::FlatTypes { struct modules_common_template_params___q2; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_feature_decl; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_modifier; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_module_import; }
+namespace DepParser::FlatTypes { struct modules_common_name; }
 namespace DepParser::FlatTypes { struct modules_entry_main; }
 namespace DepParser::FlatTypes { struct modules_entry; }
-namespace DepParser::FlatTypes { struct modules_entry_main___grp0; }
-namespace DepParser::FlatTypes { struct modules_entry_main___grp0___rop0; }
-namespace DepParser::FlatTypes { struct modules_entry_main___grp0___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_atom; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_balanced_item; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body_regular; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body_regular___q2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_body_regular___q2___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_braces; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_braces___q2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_braces___q2___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration___q0; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration___q0___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_declaration_form; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_feature_decl; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_feature_decl___q6; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_member; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_detach_detach_value; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_detach_detach_value_feature_ref; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import___q2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_module_import; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_module___grp6; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_module___q4; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_python_import___grp6; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_modifier; }
 namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_module_path; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_module_path___grp2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_module_path___grp2___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_nested_rule; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_parentheses; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_parentheses___q2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_parentheses___q2___tail; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_source_name; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_symbol_list; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_symbol_list___grp2; }
-namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_symbol_list___grp2___tail; }
+namespace DepParser::FlatTypes { struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items; }
+namespace DepParser::FlatTypes { struct modules_common_param; }
+namespace DepParser::FlatTypes { struct main; }
+namespace DepParser::FlatTypes { struct modules_common_params; }
 namespace DepParser {
 	namespace FlatTypes {
 		auto operator<<(std::ostream & os, __WS value) -> std::ostream &;
@@ -3230,19 +2301,19 @@ namespace DepParser {
 			using mod_import = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import;
 			using mod_python_import = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_python_import;
 			using fail_decl = ::DepParser::FlatTypes::modules_ispa_dep_scanner_fail_decl;
-			using atom = ::DepParser::FlatTypes::modules_ispa_dep_scanner_atom;
-			using balanced_item = ::DepParser::FlatTypes::modules_ispa_dep_scanner_balanced_item;
-			using body = ::DepParser::FlatTypes::modules_ispa_dep_scanner_body;
 			using braces = ::DepParser::FlatTypes::modules_ispa_dep_scanner_braces;
+			using atom = ::DepParser::FlatTypes::modules_ispa_dep_scanner_atom;
+			using symbol_list = ::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list;
+			using parentheses = ::DepParser::FlatTypes::modules_ispa_dep_scanner_parentheses;
+			using nested_rule = ::DepParser::FlatTypes::modules_ispa_dep_scanner_nested_rule;
+			using body = ::DepParser::FlatTypes::modules_ispa_dep_scanner_body;
 			using declaration = ::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration;
-			using feature_decl = ::DepParser::FlatTypes::modules_ispa_dep_scanner_feature_decl;
 			using member = ::DepParser::FlatTypes::modules_ispa_dep_scanner_member;
+			using source_name = ::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name;
+			using balanced_item = ::DepParser::FlatTypes::modules_ispa_dep_scanner_balanced_item;
+			using feature_decl = ::DepParser::FlatTypes::modules_ispa_dep_scanner_feature_decl;
 			using modifier = ::DepParser::FlatTypes::modules_ispa_dep_scanner_modifier;
 			using module_path = ::DepParser::FlatTypes::modules_ispa_dep_scanner_module_path;
-			using nested_rule = ::DepParser::FlatTypes::modules_ispa_dep_scanner_nested_rule;
-			using parentheses = ::DepParser::FlatTypes::modules_ispa_dep_scanner_parentheses;
-			using source_name = ::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name;
-			using symbol_list = ::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -3991,10 +3062,10 @@ namespace DepParser {
 		struct modules_common {
 			using NUMBER = ::DepParser::FlatTypes::modules_common_NUMBER;
 			using ID = ::DepParser::FlatTypes::modules_common_ID;
+			using template_params = ::DepParser::FlatTypes::modules_common_template_params;
 			using name = ::DepParser::FlatTypes::modules_common_name;
 			using param = ::DepParser::FlatTypes::modules_common_param;
 			using params = ::DepParser::FlatTypes::modules_common_params;
-			using template_params = ::DepParser::FlatTypes::modules_common_template_params;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4077,6 +3148,38 @@ namespace DepParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&LESS_THAN_SIGN::write_to_output, &LESS_THAN_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, FEATURE value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		struct FEATURE {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&FEATURE::write_to_output, &FEATURE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&FEATURE::write_to_output, &FEATURE::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4184,38 +3287,6 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, FEATURE value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct FEATURE {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&FEATURE::write_to_output, &FEATURE::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&FEATURE::write_to_output, &FEATURE::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_import_external_import_EXTERN value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
@@ -4281,13 +3352,12 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name___grp2 value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_braces value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_common_name___grp2 {
-			using __tail = ::DepParser::FlatTypes::modules_common_name___grp2___tail;
+		struct modules_ispa_dep_scanner_braces {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4301,366 +3371,10 @@ namespace DepParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_common_name___grp2::write_to_output, &modules_common_name___grp2::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_braces::write_to_output, &modules_ispa_dep_scanner_braces::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_name___grp2::write_to_output, &modules_common_name___grp2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name___grp2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_name___grp2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_name___grp2___tail::write_to_output, &modules_common_name___grp2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_name___grp2___tail::write_to_output, &modules_common_name___grp2___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name___q4 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_name___q4 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_name___q4::write_to_output, &modules_common_name___q4::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_name___q4::write_to_output, &modules_common_name___q4::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name___q6 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_name___q6 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_name___q6::write_to_output, &modules_common_name___q6::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_name___q6::write_to_output, &modules_common_name___q6::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_param___grp2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_param___grp2 {
-			using __tail = ::DepParser::FlatTypes::modules_common_param___grp2___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_param___grp2::write_to_output, &modules_common_param___grp2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_param___grp2::write_to_output, &modules_common_param___grp2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_param___grp2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_param___grp2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_param___grp2___tail::write_to_output, &modules_common_param___grp2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_param___grp2___tail::write_to_output, &modules_common_param___grp2___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_params___q4 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_params___q4 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_params___q4::write_to_output, &modules_common_params___q4::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_params___q4::write_to_output, &modules_common_params___q4::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_template_params___q2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_template_params___q2 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_template_params___q2::write_to_output, &modules_common_template_params___q2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_template_params___q2::write_to_output, &modules_common_template_params___q2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_entry value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_entry {
-			using main = ::DepParser::FlatTypes::modules_entry_main;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_entry::write_to_output, &modules_entry::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_entry::write_to_output, &modules_entry::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_entry_main___grp0 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_entry_main___grp0 {
-			using __rop0 = ::DepParser::FlatTypes::modules_entry_main___grp0___rop0;
-			using __tail = ::DepParser::FlatTypes::modules_entry_main___grp0___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_entry_main___grp0::write_to_output, &modules_entry_main___grp0::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_entry_main___grp0::write_to_output, &modules_entry_main___grp0::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_entry_main___grp0___rop0 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_entry_main___grp0___rop0 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_entry_main___grp0___rop0::write_to_output, &modules_entry_main___grp0___rop0::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_entry_main___grp0___rop0::write_to_output, &modules_entry_main___grp0___rop0::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_entry_main___grp0___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_entry_main___grp0___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_entry_main___grp0___tail::write_to_output, &modules_entry_main___grp0___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_entry_main___grp0___tail::write_to_output, &modules_entry_main___grp0___tail::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_braces::write_to_output, &modules_ispa_dep_scanner_braces::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4702,12 +3416,12 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_balanced_item value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_parentheses value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_balanced_item {
+		struct modules_ispa_dep_scanner_parentheses {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4721,626 +3435,10 @@ namespace DepParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_balanced_item::write_to_output, &modules_ispa_dep_scanner_balanced_item::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_parentheses::write_to_output, &modules_ispa_dep_scanner_parentheses::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_balanced_item::write_to_output, &modules_ispa_dep_scanner_balanced_item::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_body_regular value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_body_regular {
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::DepParser::FlatTypes::modules_ispa_dep_scanner_member>>> value;
-			using __q2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_body_regular___q2;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular::write_to_output, &modules_ispa_dep_scanner_body_regular::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular::write_to_output, &modules_ispa_dep_scanner_body_regular::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_body_regular___q2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_body_regular___q2 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_body_regular___q2___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular___q2::write_to_output, &modules_ispa_dep_scanner_body_regular___q2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular___q2::write_to_output, &modules_ispa_dep_scanner_body_regular___q2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_body_regular___q2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_body_regular___q2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular___q2___tail::write_to_output, &modules_ispa_dep_scanner_body_regular___q2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_body_regular___q2___tail::write_to_output, &modules_ispa_dep_scanner_body_regular___q2___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_braces value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_braces {
-			using __q2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_braces___q2;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces::write_to_output, &modules_ispa_dep_scanner_braces::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces::write_to_output, &modules_ispa_dep_scanner_braces::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_braces___q2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_braces___q2 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_braces___q2___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces___q2::write_to_output, &modules_ispa_dep_scanner_braces___q2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces___q2::write_to_output, &modules_ispa_dep_scanner_braces___q2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_braces___q2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_braces___q2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces___q2___tail::write_to_output, &modules_ispa_dep_scanner_braces___q2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_braces___q2___tail::write_to_output, &modules_ispa_dep_scanner_braces___q2___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_declaration___q0 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_declaration___q0 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration___q0___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration___q0::write_to_output, &modules_ispa_dep_scanner_declaration___q0::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration___q0::write_to_output, &modules_ispa_dep_scanner_declaration___q0::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_declaration___q0___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_declaration___q0___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration___q0___tail::write_to_output, &modules_ispa_dep_scanner_declaration___q0___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration___q0___tail::write_to_output, &modules_ispa_dep_scanner_declaration___q0___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_feature_decl___q6 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_feature_decl___q6 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl___q6::write_to_output, &modules_ispa_dep_scanner_feature_decl___q6::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl___q6::write_to_output, &modules_ispa_dep_scanner_feature_decl___q6::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_import___q2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_import___q2 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import___q2::write_to_output, &modules_ispa_dep_scanner_mod_import___q2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import___q2::write_to_output, &modules_ispa_dep_scanner_mod_import___q2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4___tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_module___grp6 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_module___grp6 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_module___grp6::write_to_output, &modules_ispa_dep_scanner_mod_module___grp6::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_module___grp6::write_to_output, &modules_ispa_dep_scanner_mod_module___grp6::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_module___q4 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_module___q4 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_module___q4::write_to_output, &modules_ispa_dep_scanner_mod_module___q4::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_module___q4::write_to_output, &modules_ispa_dep_scanner_mod_module___q4::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_mod_python_import___grp6 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_mod_python_import___grp6 {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_python_import___grp6::write_to_output, &modules_ispa_dep_scanner_mod_python_import___grp6::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_mod_python_import___grp6::write_to_output, &modules_ispa_dep_scanner_mod_python_import___grp6::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_modifier value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_modifier {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_modifier::write_to_output, &modules_ispa_dep_scanner_modifier::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_modifier::write_to_output, &modules_ispa_dep_scanner_modifier::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_module_path___grp2 value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_module_path___grp2 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_module_path___grp2___tail;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_module_path___grp2::write_to_output, &modules_ispa_dep_scanner_module_path___grp2::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_module_path___grp2::write_to_output, &modules_ispa_dep_scanner_module_path___grp2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_module_path___grp2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_module_path___grp2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_module_path___grp2___tail::write_to_output, &modules_ispa_dep_scanner_module_path___grp2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_module_path___grp2___tail::write_to_output, &modules_ispa_dep_scanner_module_path___grp2___tail::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_parentheses::write_to_output, &modules_ispa_dep_scanner_parentheses::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5383,30 +3481,30 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_parentheses value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_body_regular value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_parentheses {
-			using __q2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_parentheses___q2;
+		struct modules_ispa_dep_scanner_body_regular {
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::DepParser::FlatTypes::modules_ispa_dep_scanner_member>>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie();
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie();
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses::write_to_output, &modules_ispa_dep_scanner_parentheses::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_body_regular::write_to_output, &modules_ispa_dep_scanner_body_regular::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses::write_to_output, &modules_ispa_dep_scanner_parentheses::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_body_regular::write_to_output, &modules_ispa_dep_scanner_body_regular::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5416,13 +3514,12 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_parentheses___q2 value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_balanced_item value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_parentheses___q2 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_parentheses___q2___tail;
+		struct modules_ispa_dep_scanner_balanced_item {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5436,10 +3533,10 @@ namespace DepParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses___q2::write_to_output, &modules_ispa_dep_scanner_parentheses___q2::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_balanced_item::write_to_output, &modules_ispa_dep_scanner_balanced_item::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses___q2::write_to_output, &modules_ispa_dep_scanner_parentheses___q2::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_balanced_item::write_to_output, &modules_ispa_dep_scanner_balanced_item::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5449,12 +3546,12 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_parentheses___q2___tail value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_modifier value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_parentheses___q2___tail {
+		struct modules_ispa_dep_scanner_modifier {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5468,10 +3565,10 @@ namespace DepParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses___q2___tail::write_to_output, &modules_ispa_dep_scanner_parentheses___q2___tail::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_modifier::write_to_output, &modules_ispa_dep_scanner_modifier::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_parentheses___q2___tail::write_to_output, &modules_ispa_dep_scanner_parentheses___q2___tail::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_modifier::write_to_output, &modules_ispa_dep_scanner_modifier::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5481,13 +3578,13 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_symbol_list___grp2 value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_entry value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_symbol_list___grp2 {
-			using __tail = ::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list___grp2___tail;
+		struct modules_entry {
+			using main = ::DepParser::FlatTypes::modules_entry_main;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5501,42 +3598,10 @@ namespace DepParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list___grp2::write_to_output, &modules_ispa_dep_scanner_symbol_list___grp2::print);
+				return std::make_tuple(&modules_entry::write_to_output, &modules_entry::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list___grp2::write_to_output, &modules_ispa_dep_scanner_symbol_list___grp2::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_symbol_list___grp2___tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_symbol_list___grp2___tail {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list___grp2___tail::write_to_output, &modules_ispa_dep_scanner_symbol_list___grp2___tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list___grp2___tail::write_to_output, &modules_ispa_dep_scanner_symbol_list___grp2___tail::print);
+				return std::make_tuple(&modules_entry::write_to_output, &modules_entry::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5580,41 +3645,6 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_param value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_param {
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID> first_p;
-			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID>> following_p;
-			using __grp2 = ::DepParser::FlatTypes::modules_common_param___grp2;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first_p, following_p);
-			}
-			constexpr auto members() const {
-				return std::tie(first_p, following_p);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first_p", "following_p"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_module_path value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
@@ -5623,7 +3653,6 @@ namespace DepParser {
 		struct modules_ispa_dep_scanner_module_path {
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID> primary;
 			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID>> nested;
-			using __grp2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_module_path___grp2;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5641,6 +3670,40 @@ namespace DepParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_ispa_dep_scanner_module_path::write_to_output, &modules_ispa_dep_scanner_module_path::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_param value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		struct modules_common_param {
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID> first_p;
+			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID>> following_p;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first_p, following_p);
+			}
+			constexpr auto members() const {
+				return std::tie(first_p, following_p);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first_p", "following_p"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5684,42 +3747,6 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_declaration value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_declaration {
-			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_modifier>> modifiers;
-			::ISPA_STD::Node<std::shared_ptr<::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration_form>> value;
-			using __q0 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration___q0;
-			using form = ::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration_form;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(modifiers, value);
-			}
-			constexpr auto members() const {
-				return std::tie(modifiers, value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"modifiers", "value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration::write_to_output, &modules_ispa_dep_scanner_declaration::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_declaration::write_to_output, &modules_ispa_dep_scanner_declaration::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_member value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
@@ -5753,65 +3780,32 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_params value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_declaration value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_common_params {
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_param> value;
-			using __q4 = ::DepParser::FlatTypes::modules_common_params___q4;
+		struct modules_ispa_dep_scanner_declaration {
+			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_modifier>> modifiers;
+			::ISPA_STD::Node<std::shared_ptr<::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration_form>> value;
+			using form = ::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration_form;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(value);
+				return std::tie(modifiers, value);
 			}
 			constexpr auto members() const {
-				return std::tie(value);
+				return std::tie(modifiers, value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
+				return std::array<std::string_view, 2>{{"modifiers", "value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_declaration::write_to_output, &modules_ispa_dep_scanner_declaration::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_template_params value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_common_template_params {
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_param> value;
-			using __q2 = ::DepParser::FlatTypes::modules_common_template_params___q2;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_template_params::write_to_output, &modules_common_template_params::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_template_params::write_to_output, &modules_common_template_params::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_declaration::write_to_output, &modules_ispa_dep_scanner_declaration::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5832,7 +3826,6 @@ namespace DepParser {
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID> alias;
 			::ISPA_STD::Node<::DepParser::FlatTypes::SEMICOLON> end;
 			using PY = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_python_import_PY;
-			using __grp6 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_python_import___grp6;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5867,7 +3860,6 @@ namespace DepParser {
 		struct modules_ispa_dep_scanner_mod_import_import_value_module_import {
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_module_path> source;
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID> alias;
-			using __grp2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import_import_value_module_import___grp2;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5894,6 +3886,72 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_template_params value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		struct modules_common_template_params {
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_param> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_template_params::write_to_output, &modules_common_template_params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_template_params::write_to_output, &modules_common_template_params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_params value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		struct modules_common_params {
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_param> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_common_name value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
@@ -5904,9 +3962,6 @@ namespace DepParser {
 			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_ID>> nested;
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_template_params> temp_params;
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_common_params> param;
-			using __grp2 = ::DepParser::FlatTypes::modules_common_name___grp2;
-			using __q4 = ::DepParser::FlatTypes::modules_common_name___q4;
-			using __q6 = ::DepParser::FlatTypes::modules_common_name___q6;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6012,8 +4067,6 @@ namespace DepParser {
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> entry;
 			::ISPA_STD::Node<::DepParser::FlatTypes::SEMICOLON> end;
 			using MODULE = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_module_MODULE;
-			using __grp6 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_module___grp6;
-			using __q4 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_module___q4;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6031,6 +4084,40 @@ namespace DepParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_ispa_dep_scanner_mod_module::write_to_output, &modules_ispa_dep_scanner_mod_module::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_symbol_list value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace DepParser
+namespace DepParser {
+	namespace FlatTypes {
+		struct modules_ispa_dep_scanner_symbol_list {
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> first;
+			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name>> following;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, following);
+			}
+			constexpr auto members() const {
+				return std::tie(first, following);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "following"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list::write_to_output, &modules_ispa_dep_scanner_symbol_list::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list::write_to_output, &modules_ispa_dep_scanner_symbol_list::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6081,7 +4168,6 @@ namespace DepParser {
 		struct modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items {
 			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> first;
 			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name>> sequence;
-			using __grp4 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items___grp4;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6108,32 +4194,33 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_symbol_list value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_feature_decl value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace DepParser
 namespace DepParser {
 	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_symbol_list {
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> first;
-			std::vector<::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name>> following;
-			using __grp2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list___grp2;
+		struct modules_ispa_dep_scanner_feature_decl {
+			::ISPA_STD::Node<::DepParser::FlatTypes::FEATURE> begin;
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> name;
+			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list> symbols;
+			::ISPA_STD::Node<::DepParser::FlatTypes::SEMICOLON> end;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(first, following);
+				return std::tie(begin, name, symbols, end);
 			}
 			constexpr auto members() const {
-				return std::tie(first, following);
+				return std::tie(begin, name, symbols, end);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "following"}};
+				return std::array<std::string_view, 4>{{"begin", "name", "symbols", "end"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list::write_to_output, &modules_ispa_dep_scanner_symbol_list::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl::write_to_output, &modules_ispa_dep_scanner_feature_decl::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_symbol_list::write_to_output, &modules_ispa_dep_scanner_symbol_list::print);
+				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl::write_to_output, &modules_ispa_dep_scanner_feature_decl::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6202,43 +4289,6 @@ namespace DepParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_ispa_dep_scanner_mod_import_import_value_from_import_selection::write_to_output, &modules_ispa_dep_scanner_mod_import_import_value_from_import_selection::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_dep_scanner_feature_decl value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace DepParser
-namespace DepParser {
-	namespace FlatTypes {
-		struct modules_ispa_dep_scanner_feature_decl {
-			::ISPA_STD::Node<::DepParser::FlatTypes::FEATURE> begin;
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_source_name> name;
-			::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_symbol_list> symbols;
-			::ISPA_STD::Node<::DepParser::FlatTypes::SEMICOLON> end;
-			using __q6 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_feature_decl___q6;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(begin, name, symbols, end);
-			}
-			constexpr auto members() const {
-				return std::tie(begin, name, symbols, end);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 4>{{"begin", "name", "symbols", "end"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl::write_to_output, &modules_ispa_dep_scanner_feature_decl::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_dep_scanner_feature_decl::write_to_output, &modules_ispa_dep_scanner_feature_decl::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6368,7 +4418,6 @@ namespace DepParser {
 			::ISPA_STD::Node<::DepParser::FlatTypes::SEMICOLON> end;
 			using import_value = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import_import_value;
 			using external_import = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import_external_import;
-			using __q2 = ::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import___q2;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6402,7 +4451,6 @@ namespace DepParser {
 	namespace FlatTypes {
 		struct modules_entry_main {
 			std::vector<std::variant<std::monostate, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_module>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_python_import>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_import>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_mod_detach>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_feature_decl>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_declaration>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_ispa_dep_scanner_fail_decl>, ::ISPA_STD::Node<::DepParser::FlatTypes::modules_scanner_tokens_COMMENT>>> value;
-			using __grp0 = ::DepParser::FlatTypes::modules_entry_main___grp0;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6542,12 +4590,12 @@ namespace DepParser {
 } // namespace DepParser
 namespace DepParser {
 	namespace Types {
-		using SEMICOLON = ::DepParser::FlatTypes::SEMICOLON;
+		using FEATURE = ::DepParser::FlatTypes::FEATURE;
 	} // namespace Types
 } // namespace DepParser
 namespace DepParser {
 	namespace Types {
-		using FEATURE = ::DepParser::FlatTypes::FEATURE;
+		using SEMICOLON = ::DepParser::FlatTypes::SEMICOLON;
 	} // namespace Types
 } // namespace DepParser
 namespace DepParser {
@@ -6556,7 +4604,7 @@ namespace DepParser {
 	} // namespace Types
 } // namespace DepParser
 namespace DepParser {
-	using Token = ::ISPA_STD::RawToken<Types::__WS, Types::modules::ispa_dep_scanner::mod_module::MODULE, Types::modules::ispa_dep_scanner::mod_detach::DETACH, Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::FROM, Types::AS, Types::modules::ispa_dep_scanner::mod_python_import::PY, Types::IMPORT, Types::RIGHT_CURLY_BRACKET, Types::modules::ispa_dep_scanner::fail_decl::FAIL, Types::LEFT_CURLY_BRACKET, Types::ASTERISK, Types::COLON, Types::GREATER_THAN_SIGN, Types::FULL_STOP, Types::AUTO, Types::modules::scanner_tokens::OTHER, Types::modules::scanner_tokens::PY_RAW, Types::NUMBER_SIGN, Types::RIGHT_PARENTHESIS, Types::LEFT_PARENTHESIS, Types::COMMA, Types::modules::common::NUMBER, Types::modules::common::ID, Types::LESS_THAN_SIGN, Types::modules::scanner_tokens::STRING, Types::SEMICOLON, Types::modules::scanner_tokens::COMMENT, Types::FEATURE, Types::modules::ispa_dep_scanner::mod_import::external_import::EXTERN, Types::modules::scanner_tokens::CGROUP>;
+	using Token = ::ISPA_STD::RawToken<Types::__WS, Types::modules::ispa_dep_scanner::mod_module::MODULE, Types::modules::ispa_dep_scanner::mod_detach::DETACH, Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::FROM, Types::AS, Types::modules::ispa_dep_scanner::mod_python_import::PY, Types::IMPORT, Types::RIGHT_CURLY_BRACKET, Types::modules::ispa_dep_scanner::fail_decl::FAIL, Types::LEFT_CURLY_BRACKET, Types::ASTERISK, Types::COLON, Types::GREATER_THAN_SIGN, Types::FULL_STOP, Types::AUTO, Types::modules::scanner_tokens::OTHER, Types::modules::scanner_tokens::PY_RAW, Types::NUMBER_SIGN, Types::RIGHT_PARENTHESIS, Types::LEFT_PARENTHESIS, Types::COMMA, Types::modules::common::NUMBER, Types::modules::common::ID, Types::LESS_THAN_SIGN, Types::FEATURE, Types::modules::scanner_tokens::STRING, Types::SEMICOLON, Types::modules::scanner_tokens::COMMENT, Types::modules::ispa_dep_scanner::mod_import::external_import::EXTERN, Types::modules::scanner_tokens::CGROUP>;
 } // namespace DepParser
 namespace DepParser {
 	class Lexer : public ::ISPA_STD::Lexer_base<Token> {
@@ -6595,19 +4643,42 @@ namespace DepParser {
 	};
 } // namespace DepParser
 namespace DepParser {
-	class Parser : public ::ISPA_STD::LRParser<Types::main, Token> {
-	public:
-		static auto lr_k() -> std::size_t;
-		static auto lr_is_space(const Token& token) -> bool;
-		static auto lr_space(std::size_t rule, std::size_t gap) -> bool;
-		static auto lr_action(std::size_t state, const std::vector<std::size_t>& window) -> long long;
-		static auto lr_goto(std::size_t state, std::size_t lhs) -> std::size_t;
-		static auto lr_length(std::size_t rule) -> std::size_t;
-		static auto lr_lhs(std::size_t rule) -> std::size_t;
-		static auto lr_reduce(std::size_t rule, const std::vector<std::any>& values) -> std::any;
-		static auto lr_shift(const Token& token) -> std::any;
+	class Parser : public ::ISPA_STD::LLParser<Types::main, Token> {
 	protected:
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importImport_valueFrom_importSelection(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::selection, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerBraces(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::braces, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importImport_valueFrom_import(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::import_value::from_import, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerAtom(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::atom, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerSymbol_list(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::symbol_list, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerParentheses(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::parentheses, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerNested_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::nested_rule, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerBodyRegular(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::body::regular, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerBody(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::body, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerFail_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::fail_decl, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerDeclarationForm(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::declaration::form, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerDeclaration(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::declaration, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMember(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::member, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerSource_name(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::source_name, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_detachDetach_valueFeature_ref(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_detach::detach_value::feature_ref, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerBalanced_item(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::balanced_item, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesCommonTemplate_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerFeature_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::feature_decl, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_python_import(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_python_import, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerModifier(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::modifier, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importImport_valueModule_import(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::import_value::module_import, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesCommonName(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importImport_value(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::import_value, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importExternal_import(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::external_import, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesEntryMain(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::entry::main, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerModule_path(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::module_path, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_detach(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_detach, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_module(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_module, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_importImport_valueFrom_importSelectionItems(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::selection::items, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_detachDetach_value(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_detach::detach_value, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesCommonParam(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesIspa_dep_scannerMod_import(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_dep_scanner::mod_import, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::DepParser::Lexer::lazy_iterator>>> auto modulesCommonParams(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::params, IT>;
 	public:
 		auto parseFromTokens() -> void override;
 		auto lazyParse() -> void override;
@@ -6621,13 +4692,217 @@ namespace DepParser {
 			return std::array<std::string_view, 0>{{}};
 		}
 		constexpr auto methods() {
-			return std::make_tuple(&Parser::lr_k, &Parser::lr_is_space, &Parser::lr_space, &Parser::lr_action, &Parser::lr_goto, &Parser::lr_length, &Parser::lr_lhs, &Parser::lr_reduce, &Parser::lr_shift, &Parser::parseFromTokens, &Parser::lazyParse);
+			return std::make_tuple(&Parser::parseFromTokens, &Parser::lazyParse);
 		}
 		constexpr auto methods() const {
-			return std::make_tuple(&Parser::lr_k, &Parser::lr_is_space, &Parser::lr_space, &Parser::lr_action, &Parser::lr_goto, &Parser::lr_length, &Parser::lr_lhs, &Parser::lr_reduce, &Parser::lr_shift, &Parser::parseFromTokens, &Parser::lazyParse);
+			return std::make_tuple(&Parser::parseFromTokens, &Parser::lazyParse);
 		}
 		static constexpr auto methods_str() {
-			return std::array<std::string_view, 11>{{"lr_k", "lr_is_space", "lr_space", "lr_action", "lr_goto", "lr_length", "lr_lhs", "lr_reduce", "lr_shift", "parseFromTokens", "lazyParse"}};
+			return std::array<std::string_view, 2>{{"parseFromTokens", "lazyParse"}};
 		}
 	};
 } // namespace DepParser
+
+#include <ispastdlib/external.hpp>
+namespace DepParser::Exports {
+struct symbol_0 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::ID;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_1 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::NUMBER;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_2 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::name;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_3 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::param;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_4 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::params;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_5 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::common::template_params;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_6 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::entry::main;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_7 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::atom;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_8 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::balanced_item;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_9 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::body;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_10 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::body::regular;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_11 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::braces;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_12 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::declaration;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_13 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::declaration::form;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_14 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::fail_decl;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_15 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::feature_decl;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_16 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::member;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_17 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_detach;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_18 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_detach::detach_value;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_19 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_detach::detach_value::feature_ref;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_20 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_21 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::external_import;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_22 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::import_value;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_23 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::import_value::from_import;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_24 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::selection;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_25 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::import_value::from_import::selection::items;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_26 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_import::import_value::module_import;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_27 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_module;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_28 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::mod_python_import;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_29 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::modifier;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_30 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::module_path;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_31 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::nested_rule;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_32 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::parentheses;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_33 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::source_name;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_34 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::ispa_dep_scanner::symbol_list;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_35 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::scanner_tokens::CGROUP;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_36 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::scanner_tokens::COMMENT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_37 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::scanner_tokens::OTHER;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_38 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::scanner_tokens::PY_RAW;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_39 : ::DepParser::Parser {
+using node_type = ::DepParser::Types::modules::scanner_tokens::STRING;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+}

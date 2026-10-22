@@ -4,9 +4,8 @@ module UAST.Python;
 import AST.Frontend;
 import std;
 namespace {
-struct ActionParser : PyParser::Parser {
-    using PyParser::Parser::expr;
-    using PyParser::Parser::main;
+struct ActionParser : PyParser {
+    using PyParser::main;
 };
 }
 // Generic, metadata-driven snapshot implementation.
@@ -90,6 +89,14 @@ struct Snapshot {
         R result{"sequence", {}, {}, p, false, {}};
         result.children.reserve(x.size());
         for (const auto& element : x) result.children.push_back((*this)(element,p));
+        return result;
+    }
+    template<class A, class B> R operator()(const std::pair<A, B>& x, const P& p) const {
+        return {"sequence", {}, {}, p, false, {(*this)(x.first, p), (*this)(x.second, p)}};
+    }
+    template<class... T> R operator()(const std::tuple<T...>& x, const P& p) const {
+        R result{"sequence", {}, {}, p, false, {}};
+        std::apply([&](const auto&... values) { (result.children.push_back((*this)(values, p)), ...); }, x);
         return result;
     }
     template<class T> requires requires(const T& x) { x.members(); T::members_str(); }
@@ -876,15 +883,17 @@ UAST::PythonNode parse_snapshot(const std::string& source, const UAST::SourcePos
         ActionParser parser;
         PyRawParser::Lexer::lazy_iterator begin(lexer, source.c_str());
         if (expression) {
-            auto result = parser.expr(begin);
-            if (!result.status) throw std::runtime_error("invalid Python expression");
+            auto result = parser.parseExpression(begin);
+            if (!result.status || !parser.getErrors().empty() || !parser.getContextErrors().empty())
+                throw std::runtime_error(parser.getErrors().empty() ? "invalid Python expression" : parser.getErrors().front().message);
             auto end = result.it;
             if ((*end).template holds<PyRawParser::Types::NEWLINE>()) ++end;
             if (!end.isEnd()) throw std::runtime_error("trailing tokens in Python expression");
             return Snapshot{source}(result.node, position);
         }
         auto result = parser.main(begin);
-        if (!result.status || !result.it.isEnd()) throw std::runtime_error("invalid Python action or trailing tokens");
+        if (!result.status || !result.it.isEnd() || !parser.getErrors().empty() || !parser.getContextErrors().empty())
+            throw std::runtime_error(parser.getErrors().empty() ? "invalid Python action or trailing tokens" : parser.getErrors().front().message);
         return Snapshot{source}(result.node, position);
     } catch (const std::exception& error) {
         throw std::runtime_error(position.file + ":" + std::to_string(position.line) + ":" + std::to_string(position.column) + ": " + error.what());

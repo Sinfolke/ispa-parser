@@ -6,9 +6,8 @@
 
 namespace PyRawParser::Exports {
 namespace {
-struct Parser : PyRawParser::Parser {
-    using PyRawParser::Parser::expr;
-    using PyRawParser::Parser::main;
+struct Parser : PyParser {
+    using PyParser::main;
 };
 const char* blockStart(const char* start) {
     while (start && *start && std::isspace(static_cast<unsigned char>(*start))) ++start;
@@ -25,17 +24,15 @@ auto parseBlock(const char* origin, const char* start) {
         Parser parser;
         PyLexer::lazy_iterator begin(lexer, origin, start + 2);
         auto result = [&] {
-            if constexpr (expression) return parser.expr(begin);
+            if constexpr (expression) return parser.parseExpression(begin);
             else return parser.main(begin);
         }();
         auto cursor = result.it;
         if constexpr (expression) {
             if (!cursor.isEnd() && cursor->template holds<PyRawParser::Types::NEWLINE>()) ++cursor;
         }
-        // The shipped Python parser predates transactional probe diagnostics:
-        // failed optional suffix probes may leave diagnostics on a valid tree.
-        // Its authoritative result is the match status and the consumed span.
-        if (!result.status || !cursor.isEnd()) {
+        if (!result.status || !cursor.isEnd() || !parser.getErrors().empty() ||
+            !parser.getContextErrors().empty()) {
             std::string detail = "invalid Python action or unconsumed Python tokens";
             if (!parser.getErrors().empty()) detail += ": " + parser.getErrors().front().message;
             else if (!cursor.isEnd()) detail += ": " + std::string(cursor->meta().start(), cursor->meta().length());
@@ -72,15 +69,9 @@ ISPA_STD::ExternalResult<ExpressionBlock::node_type> ExpressionBlock::parse(cons
     PyLexer lexer;
     lexer.setBoundary(boundary.end);
     Parser parser;
-    auto result = parser.expr(PyLexer::lazy_iterator(lexer, origin, start));
+    auto result = parser.parseExpression(PyLexer::lazy_iterator(lexer, origin, start));
     const char* end = result.status ? result.it.sourcePosition() : start;
-    const char* tail = blockStart(end);
-    // The legacy Python parser records failed optional suffix probes even on
-    // valid expressions. Check the returned span instead of those diagnostics.
-    // A leftover Python operator/opener means a committed suffix was broken.
-    const bool incomplete = tail < boundary.end && *tail &&
-        std::string_view("([{.+-*/%@&|^<>=!,").find(*tail) != std::string_view::npos;
-    if (!result.status || incomplete) {
+    if (!result.status || !parser.getErrors().empty() || !parser.getContextErrors().empty()) {
         std::string message = "invalid Python expression";
         if (!parser.getErrors().empty()) message += ": " + parser.getErrors().front().message;
         throw std::runtime_error(message);
@@ -111,7 +102,7 @@ ISPA_STD::ExternalResult<RawStatements::node_type> RawStatements::parse(const ch
     lexer.setBaseIndent(indent);
     Parser parser;
     auto result = parser.main(PyLexer::lazy_iterator(lexer, origin, start));
-    if (!result.status || !result.it.isEnd()) {
+    if (!result.status || !result.it.isEnd() || !parser.getErrors().empty() || !parser.getContextErrors().empty()) {
         std::string message = "invalid Python action";
         if (!parser.getErrors().empty()) message += ": " + parser.getErrors().front().message;
         throw std::runtime_error("Python action at line " + std::to_string(1 + std::count(origin, start, '\n')) + ": " + message);

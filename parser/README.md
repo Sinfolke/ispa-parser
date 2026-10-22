@@ -18,3 +18,8 @@ call sites. Grammar traversal handles recursive cycles without a depth limit.
 Input scanning remains bounded by the recovery skip and error budgets. Choice
 recovery uses an interior terminal only when it identifies one alternative;
 shared interior terminals do not establish which branch was intended.
+
+The Python parser has grammar-defined recovery for missing operands and
+assignment values, attribute names, closing delimiters, compound-header colons,
+blocks, and statement terminators. See [Python recovery](python/README.md) for
+the API, limitations, and bootstrap regeneration command.

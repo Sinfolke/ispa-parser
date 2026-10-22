@@ -5,14 +5,13 @@ import * from expr_tokens;
 import * from expr_valued_tokens;
 
 import * from statement_tokens;
-// hello
 statement:
     @ compound_stmt | simple_stmts
     {@}
 ;
 
 simple_stmts:
-    @ simple_stmt (SEMICOLON @ simple_stmt)* SEMICOLON? NEWLINE
+    @ simple_stmt (SEMICOLON @ simple_stmt)* SEMICOLON? %statement_end NEWLINE
     @{first, rest}
 ;
 
@@ -42,7 +41,7 @@ assignment_value:
 ;
 
 assignment_tail:
-    @ assignment_op @ expr
+    @ assignment_op @ %expected_expression expr
     @{op, value}
 ;
 
@@ -65,7 +64,7 @@ assignment_op:
 ;
 
 annotated_assignment:
-    COLON @ expr @ (ASSIGN @ expr)?
+    COLON @ %expected_expression expr @ (ASSIGN @ %expected_expression expr)?
     @{annotation, value}
 ;
 
@@ -90,7 +89,7 @@ raise_stmt:
 ;
 
 raise_from:
-    FROM @ expr
+    FROM @ %expected_expression expr
     {@}
 ;
 
@@ -112,7 +111,7 @@ continue_stmt:
 ;
 
 assert_stmt:
-    ASSERT @ expr @ (COMMA @ expr)?
+    ASSERT @ %expected_expression expr @ (COMMA @ expr)?
     @{condition, message}
 ;
 
@@ -157,27 +156,27 @@ indented_block:
 ;
 
 if_stmt:
-    IF @ expr COLON @ block @ elif_clause* @ else_clause?
+    IF @ %expected_expression expr %header_colon COLON @ %expected_block block @ elif_clause* @ else_clause?
     @{condition, body, elifs, otherwise}
 ;
 
 elif_clause:
-    ELIF @ expr COLON @ block
+    ELIF @ %expected_expression expr %header_colon COLON @ %expected_block block
     @{condition, body}
 ;
 
 else_clause:
-    ELSE COLON @ block
+    ELSE %header_colon COLON @ %expected_block block
     {@}
 ;
 
 while_stmt:
-    WHILE @ expr COLON @ block @ else_clause?
+    WHILE @ %expected_expression expr %header_colon COLON @ %expected_block block @ else_clause?
     @{condition, body, otherwise}
 ;
 
 for_stmt:
-    @ ASYNC? FOR @ for_targets IN @ expr COLON @ block @ else_clause?
+    @ ASYNC? FOR @ for_targets IN @ %expected_expression expr %header_colon COLON @ %expected_block block @ else_clause?
     @{async, targets, iterable, body, otherwise}
 ;
 
@@ -192,13 +191,13 @@ function_def:
 ;
 
 function_header:
-    @ ASYNC? DEF @ ID LPAREN @ parameters? RPAREN
-    @ return_annotation? COLON @ block
+    @ ASYNC? DEF @ ID LPAREN @ parameters? %header_rparen RPAREN
+    @ return_annotation? %header_colon COLON @ %expected_block block
     @{async, name, params, returns, body}
 ;
 
 return_annotation:
-    ARROW @ expr
+    ARROW @ %expected_expression expr
     {@}
 ;
 
@@ -213,12 +212,12 @@ parameter:
 ;
 
 parameter_annotation:
-    COLON @ expr
+    COLON @ %expected_expression expr
     {@}
 ;
 
 parameter_default:
-    ASSIGN @ expr
+    ASSIGN @ %expected_expression expr
     {@}
 ;
 
@@ -238,17 +237,17 @@ class_def:
 ;
 
 class_header:
-    CLASS @ ID @ class_bases? COLON @ block
+    CLASS @ ID @ class_bases? %header_colon COLON @ %expected_block block
     @{name, bases, body}
 ;
 
 class_bases:
-    LPAREN @ call_args? RPAREN
+    LPAREN @ call_args? %header_rparen RPAREN
     {@}
 ;
 
 with_stmt:
-    @ ASYNC? WITH @ with_items COLON @ block
+    @ ASYNC? WITH @ with_items %header_colon COLON @ %expected_block block
     @{async, items, body}
 ;
 
@@ -268,7 +267,7 @@ with_as:
 ;
 
 try_stmt:
-    TRY COLON @ block @ try_tail
+    TRY %header_colon COLON @ %expected_block block @ try_tail
     @{body, handlers}
 ;
 
@@ -283,7 +282,7 @@ except_handlers:
 ;
 
 except_clause:
-    EXCEPT @ expr? @ except_alias? COLON @ block
+    EXCEPT @ expr? @ except_alias? %header_colon COLON @ %expected_block block
     @{exception, alias, body}
 ;
 
@@ -293,7 +292,7 @@ except_alias:
 ;
 
 finally_clause:
-    FINALLY COLON @ block
+    FINALLY %header_colon COLON @ %expected_block block
     {@}
 ;
 
@@ -343,7 +342,7 @@ import_targets:
 ;
 
 parenthesized_imports:
-    LPAREN @ import_names RPAREN
+    LPAREN @ import_names %header_rparen RPAREN
     {@}
 ;
 
@@ -356,3 +355,29 @@ import_name_item:
     @ ID @ import_alias?
     @{name, alias}
 ;
+
+fail expected_expression {
+    ctx.error("Expected a Python expression")
+    ctx.sync_tokens("COMMA", "COLON", "SEMICOLON", "NEWLINE", "DEDENT", "RPAREN", "RBRACKET", "RBRACE")
+    ctx.insert()
+}
+fail header_colon {
+    ctx.error("Expected ':' after Python compound statement header")
+    ctx.insert()
+}
+fail header_rparen {
+    ctx.error("Expected ')' after Python parameters or bases")
+    ctx.insert()
+}
+fail expected_block {
+    ctx.error("Expected a Python statement block")
+    ctx.insert()
+}
+fail statement_end {
+    ctx.error("Expected a newline or ';' after Python statement")
+    ctx.sync_tokens("NEWLINE", "DEDENT")
+    if ctx.at("NEWLINE"):
+        ctx.retry()
+    else:
+        ctx.insert()
+}

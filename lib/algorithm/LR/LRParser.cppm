@@ -9,7 +9,16 @@ export import hash;
 export import dstd;
 import std;
 
-export class LRParser : public LRBase {
+// C++ module export controls visibility to importers, not DLL symbol exports.
+// LALR and LR_STAR need the protected constructor and inherited virtual methods
+// even when MSVC would otherwise inline them away in the LR DLL.
+#if defined(_WIN32)
+#define ISPA_LR_EXPORT __declspec(dllexport)
+#else
+#define ISPA_LR_EXPORT
+#endif
+
+export class ISPA_LR_EXPORT LRParser : public LRBase {
 protected:
     AST::Tree* tree = nullptr; // borrowed; must outlive parser
     ActionTable action_table; // populated only when k==1
@@ -117,3 +126,5 @@ public:
     void printTables(const std::string& filename) const override;
     void printCanonicalCollection(const std::string& filename) const override;
 };
+
+#undef ISPA_LR_EXPORT

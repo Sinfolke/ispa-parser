@@ -8,7 +8,7 @@ expr:
 ;
 
 conditional_tail:
-    IF @ disjunction ELSE @ expr
+    IF @ %missing_operand disjunction %missing_else ELSE @ %missing_operand expr
     @{condition, otherwise}
 ;
 
@@ -18,13 +18,13 @@ disjunction:
 ;
 
 or_tail:
-    OR @ conjunction
+    OR @ %missing_operand conjunction
 
     {@}
 ;
 
 conjunction:
-    @ inversion (AND @ inversion)*
+    @ inversion (AND @ %missing_operand inversion)*
     @{first, rest}
 ;
 inversion:
@@ -33,7 +33,7 @@ inversion:
 ;
 
 not_inversion:
-    NOT @ inversion
+    NOT @ %missing_operand inversion
     {@}
 ;
 
@@ -43,7 +43,7 @@ comparison:
 ;
 
 compare_tail:
-    @ compare_op @ bitwise_or
+    @ compare_op @ %missing_operand bitwise_or
     @{op, value}
 ;
 
@@ -65,7 +65,7 @@ bitwise_or:
 ;
 
 bitor_tail:
-    PIPE @ bitwise_xor
+    PIPE @ %missing_operand bitwise_xor
 
     {@}
 ;
@@ -76,7 +76,7 @@ bitwise_xor:
 ;
 
 bitxor_tail:
-    CARET @ bitwise_and
+    CARET @ %missing_operand bitwise_and
 
     {@}
 ;
@@ -87,7 +87,7 @@ bitwise_and:
 ;
 
 bitand_tail:
-    AMP @ shift_expr
+    AMP @ %missing_operand shift_expr
 
     {@}
 ;
@@ -98,7 +98,7 @@ shift_expr:
 ;
 
 shift_tail:
-    @ LSHIFT | RSHIFT @ sum
+    @ LSHIFT | RSHIFT @ %missing_operand sum
     @{op, value}
 ;
 
@@ -108,7 +108,7 @@ sum:
 ;
 
 sum_tail:
-    @ PLUS | MINUS @ term
+    @ PLUS | MINUS @ %missing_operand term
     @{op, value}
 ;
 
@@ -118,7 +118,7 @@ term:
 ;
 
 term_tail:
-    @ FLOOR_DIV | STAR | SLASH | PERCENT | MATMUL @ factor
+    @ FLOOR_DIV | STAR | SLASH | PERCENT | MATMUL @ %missing_operand factor
     @{op, value}
 ;
 
@@ -128,7 +128,7 @@ factor:
 ;
 
 unary_expr:
-    @ PLUS | MINUS | TILDE @ factor
+    @ PLUS | MINUS | TILDE @ %missing_operand factor
     @{op, value}
 ;
 power:
@@ -137,7 +137,7 @@ power:
 ;
 
 power_tail:
-    POWER @ factor
+    POWER @ %missing_operand factor
 
     {@}
 ;
@@ -152,19 +152,19 @@ postfix:
 ;
 
 attribute_suffix:
-    DOT @ ID
+    DOT @ %missing_attribute ID
 
     {@}
 ;
 
 call_suffix:
-    LPAREN @ call_args? RPAREN
+    LPAREN @ call_args? %missing_rparen RPAREN
 
     {@}
 ;
 
 index_suffix:
-    LBRACKET @ expr RBRACKET
+    LBRACKET @ expr %missing_rbracket RBRACKET
 
     {@}
 ;
@@ -176,7 +176,7 @@ atom:
 ;
 
 parenthesized_expr:
-    LPAREN @ parenthesized_content? RPAREN
+    LPAREN @ parenthesized_content? %missing_rparen RPAREN
     {@}
 ;
 
@@ -195,12 +195,12 @@ tuple_elements:
     @{first, rest}
 ;
 list_expr:
-    LBRACKET @ expr_list? RBRACKET
+    LBRACKET @ expr_list? %missing_rbracket RBRACKET
     {@}
 ;
 
 dict_expr:
-    LBRACE @ dict_items? RBRACE
+    LBRACE @ dict_items? %missing_rbrace RBRACE
     {@}
 ;
 
@@ -220,7 +220,7 @@ dict_item_tail:
 ;
 
 dict_item:
-    @ expr COLON @ expr
+    @ expr %missing_colon COLON @ %missing_operand expr
     @{key, value}
 ;
 
@@ -241,6 +241,36 @@ call_arg:
 ;
 
 keyword_arg:
-    @ ID ASSIGN @ expr
+    @ ID ASSIGN @ %missing_operand expr
     @{name, value}
 ;
+// Synchronize in token space so NEWLINE and synthetic DEDENT survive recovery.
+fail missing_operand {
+    ctx.error("Expected a Python expression")
+    ctx.sync_tokens("COMMA", "COLON", "SEMICOLON", "NEWLINE", "DEDENT", "RPAREN", "RBRACKET", "RBRACE")
+    ctx.insert()
+}
+fail missing_attribute {
+    ctx.error("Expected an attribute name after '.'")
+    ctx.insert()
+}
+fail missing_rparen {
+    ctx.error("Expected ')' to close Python expression")
+    ctx.insert()
+}
+fail missing_rbracket {
+    ctx.error("Expected ']' to close Python expression")
+    ctx.insert()
+}
+fail missing_rbrace {
+    ctx.error("Expected '}' to close Python expression")
+    ctx.insert()
+}
+fail missing_colon {
+    ctx.error("Expected ':' between dictionary key and value")
+    ctx.insert()
+}
+fail missing_else {
+    ctx.error("Expected 'else' in conditional expression")
+    ctx.insert()
+}

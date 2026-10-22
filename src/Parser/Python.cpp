@@ -169,15 +169,15 @@ struct PythonConverter {
                     if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr; owner && owner->id == "ctx") {
                         const auto& name = method->attr;
                         const bool argument = name == "error" || name == "at";
-                        if (!failure_context || (!argument && name != "sync" && name != "skip" && name != "insert" &&
+                        if (!failure_context || (!argument && name != "sync" && name != "sync_tokens" && name != "skip" && name != "insert" &&
                             name != "replace" && name != "retry" && name != "abort"))
                             unsupported(e.pos, "unknown context method: " + name);
-                        if (name == "sync") {
-                            if (x.args.empty()) unsupported(e.pos, "ctx.sync requires at least one boundary");
+                        if (name == "sync" || name == "sync_tokens") {
+                            if (x.args.empty()) unsupported(e.pos, "ctx." + name + " requires at least one boundary");
                             for (const auto& arg : x.args) {
                                 auto literal = arg ? arg->template get<py::Constant>() : nullptr;
                                 if (!literal || literal->kind != py::ConstantKind::Str || literal->value.empty())
-                                    unsupported(e.pos, "ctx.sync boundaries must be nonempty string literals");
+                                    unsupported(e.pos, "ctx." + name + " boundaries must be nonempty string literals");
                             }
                         } else if (x.args.size() != (argument ? 1u : 0u)) unsupported(e.pos, "wrong argument count for ctx." + name);
                         if (name == "at" && x.args.size() == 1) {

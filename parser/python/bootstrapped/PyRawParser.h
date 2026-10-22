@@ -1,1810 +1,2406 @@
 #pragma once
 
-#include <ispastdlib.hpp>
+#include <ispastdlib/variant_io.hpp>
+#include <ispastdlib/parser_ll.hpp>
 
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AMP {
-			inline const std::size_t id = 69;
+			inline const std::size_t id = 931299391017785116;
+		} // namespace AMP
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace AMP {
+			inline const bool shared = true;
 		} // namespace AMP
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AMP_ASSIGN {
-			inline const std::size_t id = 70;
+			inline const std::size_t id = 3980374795003523205;
+		} // namespace AMP_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace AMP_ASSIGN {
+			inline const bool shared = true;
 		} // namespace AMP_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AND {
-			inline const std::size_t id = 63;
+			inline const std::size_t id = 5719114619194226252;
+		} // namespace AND
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace AND {
+			inline const bool shared = true;
 		} // namespace AND
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ARROW {
-			inline const std::size_t id = 61;
+			inline const std::size_t id = 2225642380987741934;
+		} // namespace ARROW
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ARROW {
+			inline const bool shared = true;
 		} // namespace ARROW
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace AS {
-			inline const std::size_t id = 65;
+			inline const std::size_t id = 7866058533070003308;
+		} // namespace AS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace AS {
+			inline const bool shared = true;
 		} // namespace AS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ASSERT {
-			inline const std::size_t id = 7;
+			inline const std::size_t id = 2925754041031270980;
+		} // namespace ASSERT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ASSERT {
+			inline const bool shared = true;
 		} // namespace ASSERT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ASSIGN {
-			inline const std::size_t id = 28;
+			inline const std::size_t id = 3154997877004573892;
+		} // namespace ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ASSIGN {
+			inline const bool shared = true;
 		} // namespace ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ASYNC {
-			inline const std::size_t id = 15;
+			inline const std::size_t id = 988125919966281128;
+		} // namespace ASYNC
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ASYNC {
+			inline const bool shared = true;
 		} // namespace ASYNC
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace BREAK {
-			inline const std::size_t id = 3;
+			inline const std::size_t id = 8799800558137997700;
+		} // namespace BREAK
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace BREAK {
+			inline const bool shared = true;
 		} // namespace BREAK
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CARET {
-			inline const std::size_t id = 62;
+			inline const std::size_t id = 3687445288139564159;
+		} // namespace CARET
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace CARET {
+			inline const bool shared = true;
 		} // namespace CARET
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CARET_ASSIGN {
-			inline const std::size_t id = 74;
+			inline const std::size_t id = 1373723680514335218;
+		} // namespace CARET_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace CARET_ASSIGN {
+			inline const bool shared = true;
 		} // namespace CARET_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CLASS {
-			inline const std::size_t id = 71;
+			inline const std::size_t id = 5271977979917090008;
+		} // namespace CLASS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace CLASS {
+			inline const bool shared = true;
 		} // namespace CLASS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace COLON {
-			inline const std::size_t id = 45;
+			inline const std::size_t id = 6117006710521381487;
+		} // namespace COLON
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace COLON {
+			inline const bool shared = true;
 		} // namespace COLON
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace COMMA {
-			inline const std::size_t id = 30;
+			inline const std::size_t id = 5686608199639315557;
+		} // namespace COMMA
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace COMMA {
+			inline const bool shared = true;
 		} // namespace COMMA
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace COMMENT {
-			inline const std::size_t id = 8;
+			inline const std::size_t id = 6031490217091227033;
+		} // namespace COMMENT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace COMMENT {
+			inline const bool shared = true;
 		} // namespace COMMENT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace CONTINUE {
-			inline const std::size_t id = 16;
+			inline const std::size_t id = 3122948979000355546;
+		} // namespace CONTINUE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace CONTINUE {
+			inline const bool shared = true;
 		} // namespace CONTINUE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DEDENT {
-			inline const std::size_t id = 48;
+			inline const std::size_t id = 257092364803754070;
+		} // namespace DEDENT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace DEDENT {
+			inline const bool shared = true;
 		} // namespace DEDENT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DEF {
-			inline const std::size_t id = 10;
+			inline const std::size_t id = 3300087349647169416;
+		} // namespace DEF
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace DEF {
+			inline const bool shared = true;
 		} // namespace DEF
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DEL {
-			inline const std::size_t id = 22;
+			inline const std::size_t id = 3671841567879492652;
+		} // namespace DEL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace DEL {
+			inline const bool shared = true;
 		} // namespace DEL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace DOT {
-			inline const std::size_t id = 73;
+			inline const std::size_t id = 4236882903527304135;
+		} // namespace DOT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace DOT {
+			inline const bool shared = true;
 		} // namespace DOT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ELIF {
-			inline const std::size_t id = 6;
+			inline const std::size_t id = 6118773116026783860;
+		} // namespace ELIF
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ELIF {
+			inline const bool shared = true;
 		} // namespace ELIF
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ELSE {
-			inline const std::size_t id = 25;
+			inline const std::size_t id = 3361199427894141586;
+		} // namespace ELSE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ELSE {
+			inline const bool shared = true;
 		} // namespace ELSE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace EQ {
-			inline const std::size_t id = 60;
+			inline const std::size_t id = 3667770698196225788;
+		} // namespace EQ
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace EQ {
+			inline const bool shared = true;
 		} // namespace EQ
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace EXCEPT {
-			inline const std::size_t id = 46;
+			inline const std::size_t id = 5146015575540754858;
+		} // namespace EXCEPT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace EXCEPT {
+			inline const bool shared = true;
 		} // namespace EXCEPT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FALSE_BOOL {
-			inline const std::size_t id = 59;
+			inline const std::size_t id = 8083661166879395911;
+		} // namespace FALSE_BOOL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FALSE_BOOL {
+			inline const bool shared = true;
 		} // namespace FALSE_BOOL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FINALLY {
-			inline const std::size_t id = 11;
+			inline const std::size_t id = 3843675005688874984;
+		} // namespace FINALLY
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FINALLY {
+			inline const bool shared = true;
 		} // namespace FINALLY
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FLOOR_DIV {
-			inline const std::size_t id = 77;
+			inline const std::size_t id = 3746913046071944070;
+		} // namespace FLOOR_DIV
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FLOOR_DIV {
+			inline const bool shared = true;
 		} // namespace FLOOR_DIV
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FLOOR_DIV_ASSIGN {
-			inline const std::size_t id = 36;
+			inline const std::size_t id = 7801814945103411955;
+		} // namespace FLOOR_DIV_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FLOOR_DIV_ASSIGN {
+			inline const bool shared = true;
 		} // namespace FLOOR_DIV_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FOR {
-			inline const std::size_t id = 44;
+			inline const std::size_t id = 7437639519635277340;
+		} // namespace FOR
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FOR {
+			inline const bool shared = true;
 		} // namespace FOR
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace FROM {
-			inline const std::size_t id = 82;
+			inline const std::size_t id = 6458189689850260604;
+		} // namespace FROM
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace FROM {
+			inline const bool shared = true;
 		} // namespace FROM
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace GE {
-			inline const std::size_t id = 58;
+			inline const std::size_t id = 4097234598474058599;
+		} // namespace GE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace GE {
+			inline const bool shared = true;
 		} // namespace GE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace GLOBAL {
-			inline const std::size_t id = 5;
+			inline const std::size_t id = 863419667726131626;
+		} // namespace GLOBAL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace GLOBAL {
+			inline const bool shared = true;
 		} // namespace GLOBAL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace GT {
-			inline const std::size_t id = 55;
+			inline const std::size_t id = 2203219553840511845;
+		} // namespace GT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace GT {
+			inline const bool shared = true;
 		} // namespace GT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace ID {
-			inline const std::size_t id = 68;
+			inline const std::size_t id = 3566194818457047717;
+		} // namespace ID
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace ID {
+			inline const bool shared = true;
 		} // namespace ID
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace IF {
-			inline const std::size_t id = 26;
+			inline const std::size_t id = 1834275528534820074;
+		} // namespace IF
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace IF {
+			inline const bool shared = true;
 		} // namespace IF
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace IMPORT {
-			inline const std::size_t id = 0;
+			inline const std::size_t id = 2468616044975172998;
+		} // namespace IMPORT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace IMPORT {
+			inline const bool shared = true;
 		} // namespace IMPORT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace IN {
-			inline const std::size_t id = 24;
+			inline const std::size_t id = 4674793644690677402;
+		} // namespace IN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace IN {
+			inline const bool shared = true;
 		} // namespace IN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace INDENT {
-			inline const std::size_t id = 21;
+			inline const std::size_t id = 8769255810240518930;
+		} // namespace INDENT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace INDENT {
+			inline const bool shared = true;
 		} // namespace INDENT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace IS {
-			inline const std::size_t id = 23;
+			inline const std::size_t id = 8903749784309988540;
+		} // namespace IS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace IS {
+			inline const bool shared = true;
 		} // namespace IS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LBRACE {
-			inline const std::size_t id = 83;
+			inline const std::size_t id = 7915221314825749284;
+		} // namespace LBRACE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LBRACE {
+			inline const bool shared = true;
 		} // namespace LBRACE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LBRACKET {
-			inline const std::size_t id = 54;
+			inline const std::size_t id = 4604983552015692201;
+		} // namespace LBRACKET
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LBRACKET {
+			inline const bool shared = true;
 		} // namespace LBRACKET
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LE {
-			inline const std::size_t id = 51;
+			inline const std::size_t id = 8454712677529406450;
+		} // namespace LE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LE {
+			inline const bool shared = true;
 		} // namespace LE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LPAREN {
-			inline const std::size_t id = 67;
+			inline const std::size_t id = 4186228276183359238;
+		} // namespace LPAREN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LPAREN {
+			inline const bool shared = true;
 		} // namespace LPAREN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LSHIFT {
-			inline const std::size_t id = 57;
+			inline const std::size_t id = 8850860390525254656;
+		} // namespace LSHIFT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LSHIFT {
+			inline const bool shared = true;
 		} // namespace LSHIFT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LSHIFT_ASSIGN {
-			inline const std::size_t id = 2;
+			inline const std::size_t id = 8929147946131082257;
+		} // namespace LSHIFT_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LSHIFT_ASSIGN {
+			inline const bool shared = true;
 		} // namespace LSHIFT_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace LT {
-			inline const std::size_t id = 50;
+			inline const std::size_t id = 7362946975444191418;
+		} // namespace LT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace LT {
+			inline const bool shared = true;
 		} // namespace LT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MATMUL {
-			inline const std::size_t id = 29;
+			inline const std::size_t id = 7859001191158883546;
+		} // namespace MATMUL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace MATMUL {
+			inline const bool shared = true;
 		} // namespace MATMUL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MATMUL_ASSIGN {
-			inline const std::size_t id = 14;
+			inline const std::size_t id = 3710792075414839683;
+		} // namespace MATMUL_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace MATMUL_ASSIGN {
+			inline const bool shared = true;
 		} // namespace MATMUL_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MINUS {
-			inline const std::size_t id = 72;
+			inline const std::size_t id = 6537678350411291445;
+		} // namespace MINUS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace MINUS {
+			inline const bool shared = true;
 		} // namespace MINUS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace MINUS_ASSIGN {
-			inline const std::size_t id = 66;
+			inline const std::size_t id = 6857410717446072986;
+		} // namespace MINUS_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace MINUS_ASSIGN {
+			inline const bool shared = true;
 		} // namespace MINUS_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NE {
-			inline const std::size_t id = 49;
+			inline const std::size_t id = 8972551455109029947;
+		} // namespace NE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NE {
+			inline const bool shared = true;
 		} // namespace NE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NEWLINE {
-			inline const std::size_t id = 32;
+			inline const std::size_t id = 3011843206173993327;
+		} // namespace NEWLINE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NEWLINE {
+			inline const bool shared = true;
 		} // namespace NEWLINE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NONE_V {
-			inline const std::size_t id = 47;
+			inline const std::size_t id = 4405276864611270677;
+		} // namespace NONE_V
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NONE_V {
+			inline const bool shared = true;
 		} // namespace NONE_V
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NONLOCAL {
-			inline const std::size_t id = 4;
+			inline const std::size_t id = 5052469031491437980;
+		} // namespace NONLOCAL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NONLOCAL {
+			inline const bool shared = true;
 		} // namespace NONLOCAL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NOT {
-			inline const std::size_t id = 27;
+			inline const std::size_t id = 1130299202233138432;
+		} // namespace NOT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NOT {
+			inline const bool shared = true;
 		} // namespace NOT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace NUMBER {
-			inline const std::size_t id = 64;
+			inline const std::size_t id = 1936675144337159023;
+		} // namespace NUMBER
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace NUMBER {
+			inline const bool shared = true;
 		} // namespace NUMBER
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace OR {
-			inline const std::size_t id = 78;
+			inline const std::size_t id = 5192824354275792150;
+		} // namespace OR
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace OR {
+			inline const bool shared = true;
 		} // namespace OR
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PASS {
-			inline const std::size_t id = 9;
+			inline const std::size_t id = 8095079916089433174;
+		} // namespace PASS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PASS {
+			inline const bool shared = true;
 		} // namespace PASS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PERCENT {
-			inline const std::size_t id = 76;
+			inline const std::size_t id = 1759965824428120430;
+		} // namespace PERCENT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PERCENT {
+			inline const bool shared = true;
 		} // namespace PERCENT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PERCENT_ASSIGN {
-			inline const std::size_t id = 18;
+			inline const std::size_t id = 3546828451000981033;
+		} // namespace PERCENT_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PERCENT_ASSIGN {
+			inline const bool shared = true;
 		} // namespace PERCENT_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PIPE {
-			inline const std::size_t id = 42;
+			inline const std::size_t id = 1331963349939201590;
+		} // namespace PIPE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PIPE {
+			inline const bool shared = true;
 		} // namespace PIPE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PIPE_ASSIGN {
-			inline const std::size_t id = 79;
+			inline const std::size_t id = 1524900011149691647;
+		} // namespace PIPE_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PIPE_ASSIGN {
+			inline const bool shared = true;
 		} // namespace PIPE_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PLUS {
-			inline const std::size_t id = 56;
+			inline const std::size_t id = 8158240688778106585;
+		} // namespace PLUS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PLUS {
+			inline const bool shared = true;
 		} // namespace PLUS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace PLUS_ASSIGN {
-			inline const std::size_t id = 19;
+			inline const std::size_t id = 3352861530148454826;
+		} // namespace PLUS_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace PLUS_ASSIGN {
+			inline const bool shared = true;
 		} // namespace PLUS_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace POWER {
-			inline const std::size_t id = 41;
+			inline const std::size_t id = 6202473013319426663;
+		} // namespace POWER
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace POWER {
+			inline const bool shared = true;
 		} // namespace POWER
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace POWER_ASSIGN {
-			inline const std::size_t id = 40;
+			inline const std::size_t id = 7605942935508750066;
+		} // namespace POWER_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace POWER_ASSIGN {
+			inline const bool shared = true;
 		} // namespace POWER_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RAISE {
-			inline const std::size_t id = 17;
+			inline const std::size_t id = 5285532852076618036;
+		} // namespace RAISE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RAISE {
+			inline const bool shared = true;
 		} // namespace RAISE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RBRACE {
-			inline const std::size_t id = 33;
+			inline const std::size_t id = 8140628923003051200;
+		} // namespace RBRACE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RBRACE {
+			inline const bool shared = true;
 		} // namespace RBRACE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RBRACKET {
-			inline const std::size_t id = 84;
+			inline const std::size_t id = 2082388645762428345;
+		} // namespace RBRACKET
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RBRACKET {
+			inline const bool shared = true;
 		} // namespace RBRACKET
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RETURN {
-			inline const std::size_t id = 81;
+			inline const std::size_t id = 2220367250505627260;
+		} // namespace RETURN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RETURN {
+			inline const bool shared = true;
 		} // namespace RETURN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RPAREN {
-			inline const std::size_t id = 31;
+			inline const std::size_t id = 7440638477908733277;
+		} // namespace RPAREN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RPAREN {
+			inline const bool shared = true;
 		} // namespace RPAREN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RSHIFT {
-			inline const std::size_t id = 80;
+			inline const std::size_t id = 3743503256916032086;
+		} // namespace RSHIFT
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RSHIFT {
+			inline const bool shared = true;
 		} // namespace RSHIFT
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace RSHIFT_ASSIGN {
-			inline const std::size_t id = 75;
+			inline const std::size_t id = 4926783617763186059;
+		} // namespace RSHIFT_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace RSHIFT_ASSIGN {
+			inline const bool shared = true;
 		} // namespace RSHIFT_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SEMICOLON {
-			inline const std::size_t id = 35;
+			inline const std::size_t id = 4500830768321029708;
+		} // namespace SEMICOLON
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace SEMICOLON {
+			inline const bool shared = true;
 		} // namespace SEMICOLON
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SLASH {
-			inline const std::size_t id = 53;
+			inline const std::size_t id = 4767955450444856644;
+		} // namespace SLASH
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace SLASH {
+			inline const bool shared = true;
 		} // namespace SLASH
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace SLASH_ASSIGN {
-			inline const std::size_t id = 38;
+			inline const std::size_t id = 6380096718104459539;
+		} // namespace SLASH_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace SLASH_ASSIGN {
+			inline const bool shared = true;
 		} // namespace SLASH_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace STAR {
-			inline const std::size_t id = 52;
+			inline const std::size_t id = 6125813738547984904;
+		} // namespace STAR
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace STAR {
+			inline const bool shared = true;
 		} // namespace STAR
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace STAR_ASSIGN {
-			inline const std::size_t id = 20;
+			inline const std::size_t id = 8253630721010380625;
+		} // namespace STAR_ASSIGN
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace STAR_ASSIGN {
+			inline const bool shared = true;
 		} // namespace STAR_ASSIGN
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace STRING {
-			inline const std::size_t id = 34;
+			inline const std::size_t id = 1032829566123911454;
+		} // namespace STRING
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace STRING {
+			inline const bool shared = true;
 		} // namespace STRING
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace TILDE {
-			inline const std::size_t id = 1;
+			inline const std::size_t id = 3747210247902136916;
+		} // namespace TILDE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace TILDE {
+			inline const bool shared = true;
 		} // namespace TILDE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace TRUE_BOOL {
-			inline const std::size_t id = 37;
+			inline const std::size_t id = 4893059590761646871;
+		} // namespace TRUE_BOOL
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace TRUE_BOOL {
+			inline const bool shared = true;
 		} // namespace TRUE_BOOL
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace TRY {
-			inline const std::size_t id = 39;
+			inline const std::size_t id = 7766839849323390620;
+		} // namespace TRY
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace TRY {
+			inline const bool shared = true;
 		} // namespace TRY
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace WHILE {
-			inline const std::size_t id = 12;
+			inline const std::size_t id = 7792213019451889296;
+		} // namespace WHILE
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace WHILE {
+			inline const bool shared = true;
 		} // namespace WHILE
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace WITH {
-			inline const std::size_t id = 13;
+			inline const std::size_t id = 8063741014590196124;
+		} // namespace WITH
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Tokens {
+		namespace WITH {
+			inline const bool shared = true;
 		} // namespace WITH
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Tokens {
 		namespace __WS {
-			inline const std::size_t id = 43;
+			inline const std::size_t id = 2288775507628772018;
 		} // namespace __WS
 	} // namespace Tokens
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace Tokens {
+		namespace __WS {
+			inline const bool shared = true;
+		} // namespace __WS
+	} // namespace Tokens
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace TokensStr {
 		namespace AMP {
 			inline const char* const id = "AMP";
 		} // namespace AMP
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace AMP_ASSIGN {
 			inline const char* const id = "AMP_ASSIGN";
 		} // namespace AMP_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace AND {
 			inline const char* const id = "AND";
 		} // namespace AND
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ARROW {
 			inline const char* const id = "ARROW";
 		} // namespace ARROW
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace AS {
 			inline const char* const id = "AS";
 		} // namespace AS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ASSERT {
 			inline const char* const id = "ASSERT";
 		} // namespace ASSERT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ASSIGN {
 			inline const char* const id = "ASSIGN";
 		} // namespace ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ASYNC {
 			inline const char* const id = "ASYNC";
 		} // namespace ASYNC
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace BREAK {
 			inline const char* const id = "BREAK";
 		} // namespace BREAK
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace CARET {
 			inline const char* const id = "CARET";
 		} // namespace CARET
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace CARET_ASSIGN {
 			inline const char* const id = "CARET_ASSIGN";
 		} // namespace CARET_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace CLASS {
 			inline const char* const id = "CLASS";
 		} // namespace CLASS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace COLON {
 			inline const char* const id = "COLON";
 		} // namespace COLON
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace COMMA {
 			inline const char* const id = "COMMA";
 		} // namespace COMMA
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace COMMENT {
 			inline const char* const id = "COMMENT";
 		} // namespace COMMENT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace CONTINUE {
 			inline const char* const id = "CONTINUE";
 		} // namespace CONTINUE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace DEDENT {
 			inline const char* const id = "DEDENT";
 		} // namespace DEDENT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace DEF {
 			inline const char* const id = "DEF";
 		} // namespace DEF
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace DEL {
 			inline const char* const id = "DEL";
 		} // namespace DEL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace DOT {
 			inline const char* const id = "DOT";
 		} // namespace DOT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ELIF {
 			inline const char* const id = "ELIF";
 		} // namespace ELIF
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ELSE {
 			inline const char* const id = "ELSE";
 		} // namespace ELSE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace EQ {
 			inline const char* const id = "EQ";
 		} // namespace EQ
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace EXCEPT {
 			inline const char* const id = "EXCEPT";
 		} // namespace EXCEPT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FALSE_BOOL {
 			inline const char* const id = "FALSE_BOOL";
 		} // namespace FALSE_BOOL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FINALLY {
 			inline const char* const id = "FINALLY";
 		} // namespace FINALLY
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FLOOR_DIV {
 			inline const char* const id = "FLOOR_DIV";
 		} // namespace FLOOR_DIV
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FLOOR_DIV_ASSIGN {
 			inline const char* const id = "FLOOR_DIV_ASSIGN";
 		} // namespace FLOOR_DIV_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FOR {
 			inline const char* const id = "FOR";
 		} // namespace FOR
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace FROM {
 			inline const char* const id = "FROM";
 		} // namespace FROM
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace GE {
 			inline const char* const id = "GE";
 		} // namespace GE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace GLOBAL {
 			inline const char* const id = "GLOBAL";
 		} // namespace GLOBAL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace GT {
 			inline const char* const id = "GT";
 		} // namespace GT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace ID {
 			inline const char* const id = "ID";
 		} // namespace ID
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace IF {
 			inline const char* const id = "IF";
 		} // namespace IF
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace IMPORT {
 			inline const char* const id = "IMPORT";
 		} // namespace IMPORT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace IN {
 			inline const char* const id = "IN";
 		} // namespace IN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace INDENT {
 			inline const char* const id = "INDENT";
 		} // namespace INDENT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace IS {
 			inline const char* const id = "IS";
 		} // namespace IS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LBRACE {
 			inline const char* const id = "LBRACE";
 		} // namespace LBRACE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LBRACKET {
 			inline const char* const id = "LBRACKET";
 		} // namespace LBRACKET
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LE {
 			inline const char* const id = "LE";
 		} // namespace LE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LPAREN {
 			inline const char* const id = "LPAREN";
 		} // namespace LPAREN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LSHIFT {
 			inline const char* const id = "LSHIFT";
 		} // namespace LSHIFT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LSHIFT_ASSIGN {
 			inline const char* const id = "LSHIFT_ASSIGN";
 		} // namespace LSHIFT_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace LT {
 			inline const char* const id = "LT";
 		} // namespace LT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace MATMUL {
 			inline const char* const id = "MATMUL";
 		} // namespace MATMUL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace MATMUL_ASSIGN {
 			inline const char* const id = "MATMUL_ASSIGN";
 		} // namespace MATMUL_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace MINUS {
 			inline const char* const id = "MINUS";
 		} // namespace MINUS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace MINUS_ASSIGN {
 			inline const char* const id = "MINUS_ASSIGN";
 		} // namespace MINUS_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NE {
 			inline const char* const id = "NE";
 		} // namespace NE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NEWLINE {
 			inline const char* const id = "NEWLINE";
 		} // namespace NEWLINE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NONE_V {
 			inline const char* const id = "NONE_V";
 		} // namespace NONE_V
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NONLOCAL {
 			inline const char* const id = "NONLOCAL";
 		} // namespace NONLOCAL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NOT {
 			inline const char* const id = "NOT";
 		} // namespace NOT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace NUMBER {
 			inline const char* const id = "NUMBER";
 		} // namespace NUMBER
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace OR {
 			inline const char* const id = "OR";
 		} // namespace OR
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PASS {
 			inline const char* const id = "PASS";
 		} // namespace PASS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PERCENT {
 			inline const char* const id = "PERCENT";
 		} // namespace PERCENT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PERCENT_ASSIGN {
 			inline const char* const id = "PERCENT_ASSIGN";
 		} // namespace PERCENT_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PIPE {
 			inline const char* const id = "PIPE";
 		} // namespace PIPE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PIPE_ASSIGN {
 			inline const char* const id = "PIPE_ASSIGN";
 		} // namespace PIPE_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PLUS {
 			inline const char* const id = "PLUS";
 		} // namespace PLUS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace PLUS_ASSIGN {
 			inline const char* const id = "PLUS_ASSIGN";
 		} // namespace PLUS_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace POWER {
 			inline const char* const id = "POWER";
 		} // namespace POWER
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace POWER_ASSIGN {
 			inline const char* const id = "POWER_ASSIGN";
 		} // namespace POWER_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RAISE {
 			inline const char* const id = "RAISE";
 		} // namespace RAISE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RBRACE {
 			inline const char* const id = "RBRACE";
 		} // namespace RBRACE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RBRACKET {
 			inline const char* const id = "RBRACKET";
 		} // namespace RBRACKET
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RETURN {
 			inline const char* const id = "RETURN";
 		} // namespace RETURN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RPAREN {
 			inline const char* const id = "RPAREN";
 		} // namespace RPAREN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RSHIFT {
 			inline const char* const id = "RSHIFT";
 		} // namespace RSHIFT
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace RSHIFT_ASSIGN {
 			inline const char* const id = "RSHIFT_ASSIGN";
 		} // namespace RSHIFT_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace SEMICOLON {
 			inline const char* const id = "SEMICOLON";
 		} // namespace SEMICOLON
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace SLASH {
 			inline const char* const id = "SLASH";
 		} // namespace SLASH
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace SLASH_ASSIGN {
 			inline const char* const id = "SLASH_ASSIGN";
 		} // namespace SLASH_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace STAR {
 			inline const char* const id = "STAR";
 		} // namespace STAR
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace STAR_ASSIGN {
 			inline const char* const id = "STAR_ASSIGN";
 		} // namespace STAR_ASSIGN
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace STRING {
 			inline const char* const id = "STRING";
 		} // namespace STRING
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace TILDE {
 			inline const char* const id = "TILDE";
 		} // namespace TILDE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace TRUE_BOOL {
 			inline const char* const id = "TRUE_BOOL";
 		} // namespace TRUE_BOOL
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace TRY {
 			inline const char* const id = "TRY";
 		} // namespace TRY
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace WHILE {
 			inline const char* const id = "WHILE";
 		} // namespace WHILE
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace WITH {
 			inline const char* const id = "WITH";
 		} // namespace WITH
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace TokenNames {
+	namespace TokensStr {
 		namespace __WS {
 			inline const char* const id = "__WS";
 		} // namespace __WS
-	} // namespace TokenNames
+	} // namespace TokensStr
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace annotated_assignment {
-			inline const std::size_t id = 0;
+			inline const std::size_t id = 39;
 		} // namespace annotated_assignment
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assert_stmt {
-			inline const std::size_t id = 1;
+			inline const std::size_t id = 26;
 		} // namespace assert_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assignment_op {
-			inline const std::size_t id = 2;
+			inline const std::size_t id = 72;
 		} // namespace assignment_op
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assignment_suffix {
-			inline const std::size_t id = 3;
+			inline const std::size_t id = 34;
 		} // namespace assignment_suffix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assignment_tail {
-			inline const std::size_t id = 4;
+			inline const std::size_t id = 9;
 		} // namespace assignment_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assignment_target {
-			inline const std::size_t id = 5;
+			inline const std::size_t id = 37;
 		} // namespace assignment_target
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace assignment_value {
-			inline const std::size_t id = 6;
+			inline const std::size_t id = 40;
 		} // namespace assignment_value
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace atom {
-			inline const std::size_t id = 7;
+			inline const std::size_t id = 106;
 		} // namespace atom
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace attribute_suffix {
-			inline const std::size_t id = 8;
+			inline const std::size_t id = 71;
 		} // namespace attribute_suffix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitand_tail {
-			inline const std::size_t id = 9;
+			inline const std::size_t id = 73;
 		} // namespace bitand_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitor_tail {
-			inline const std::size_t id = 10;
+			inline const std::size_t id = 92;
 		} // namespace bitor_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitwise_and {
-			inline const std::size_t id = 11;
+			inline const std::size_t id = 45;
 		} // namespace bitwise_and
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitwise_or {
-			inline const std::size_t id = 12;
+			inline const std::size_t id = 97;
 		} // namespace bitwise_or
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitwise_xor {
-			inline const std::size_t id = 13;
+			inline const std::size_t id = 50;
 		} // namespace bitwise_xor
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace bitxor_tail {
-			inline const std::size_t id = 14;
+			inline const std::size_t id = 78;
 		} // namespace bitxor_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace block {
-			inline const std::size_t id = 15;
+			inline const std::size_t id = 91;
 		} // namespace block
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace break_stmt {
-			inline const std::size_t id = 16;
+			inline const std::size_t id = 27;
 		} // namespace break_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace call_arg {
-			inline const std::size_t id = 17;
+			inline const std::size_t id = 111;
 		} // namespace call_arg
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace call_arg_tail {
-			inline const std::size_t id = 18;
+			inline const std::size_t id = 67;
 		} // namespace call_arg_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace call_args {
-			inline const std::size_t id = 19;
+			inline const std::size_t id = 64;
 		} // namespace call_args
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace call_suffix {
-			inline const std::size_t id = 20;
+			inline const std::size_t id = 84;
 		} // namespace call_suffix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace class_bases {
-			inline const std::size_t id = 21;
+			inline const std::size_t id = 12;
 		} // namespace class_bases
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace class_def {
-			inline const std::size_t id = 22;
+			inline const std::size_t id = 85;
 		} // namespace class_def
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace class_header {
-			inline const std::size_t id = 23;
+			inline const std::size_t id = 13;
 		} // namespace class_header
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace compare_op {
-			inline const std::size_t id = 24;
+			inline const std::size_t id = 56;
 		} // namespace compare_op
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace compare_tail {
-			inline const std::size_t id = 25;
+			inline const std::size_t id = 98;
 		} // namespace compare_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace comparison {
-			inline const std::size_t id = 26;
+			inline const std::size_t id = 101;
 		} // namespace comparison
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace compound_stmt {
-			inline const std::size_t id = 27;
+			inline const std::size_t id = 103;
 		} // namespace compound_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace conditional_tail {
-			inline const std::size_t id = 28;
+			inline const std::size_t id = 110;
 		} // namespace conditional_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace conjunction {
-			inline const std::size_t id = 29;
+			inline const std::size_t id = 47;
 		} // namespace conjunction
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace continue_stmt {
-			inline const std::size_t id = 30;
+			inline const std::size_t id = 57;
 		} // namespace continue_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace decorated_def {
-			inline const std::size_t id = 31;
+			inline const std::size_t id = 25;
 		} // namespace decorated_def
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace decorator {
-			inline const std::size_t id = 32;
+			inline const std::size_t id = 14;
 		} // namespace decorator
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace decorators {
-			inline const std::size_t id = 33;
+			inline const std::size_t id = 112;
 		} // namespace decorators
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace def_header {
-			inline const std::size_t id = 34;
+			inline const std::size_t id = 107;
 		} // namespace def_header
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace del_stmt {
-			inline const std::size_t id = 35;
+			inline const std::size_t id = 30;
 		} // namespace del_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dict_expr {
-			inline const std::size_t id = 36;
+			inline const std::size_t id = 24;
 		} // namespace dict_expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dict_item {
-			inline const std::size_t id = 37;
+			inline const std::size_t id = 61;
 		} // namespace dict_item
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dict_item_tail {
-			inline const std::size_t id = 38;
+			inline const std::size_t id = 58;
 		} // namespace dict_item_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dict_items {
-			inline const std::size_t id = 39;
+			inline const std::size_t id = 113;
 		} // namespace dict_items
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace disjunction {
-			inline const std::size_t id = 40;
+			inline const std::size_t id = 99;
 		} // namespace disjunction
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dotted_as_name {
-			inline const std::size_t id = 41;
+			inline const std::size_t id = 4;
 		} // namespace dotted_as_name
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dotted_as_names {
-			inline const std::size_t id = 42;
+			inline const std::size_t id = 28;
 		} // namespace dotted_as_names
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace dotted_name {
-			inline const std::size_t id = 43;
+			inline const std::size_t id = 95;
 		} // namespace dotted_name
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace elif_clause {
-			inline const std::size_t id = 44;
+			inline const std::size_t id = 22;
 		} // namespace elif_clause
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace else_clause {
-			inline const std::size_t id = 45;
+			inline const std::size_t id = 21;
 		} // namespace else_clause
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace except_alias {
-			inline const std::size_t id = 46;
+			inline const std::size_t id = 7;
 		} // namespace except_alias
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace except_clause {
-			inline const std::size_t id = 47;
+			inline const std::size_t id = 87;
 		} // namespace except_clause
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace except_handlers {
-			inline const std::size_t id = 48;
+			inline const std::size_t id = 100;
 		} // namespace except_handlers
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace expr {
-			inline const std::size_t id = 49;
+			inline const std::size_t id = 89;
 		} // namespace expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace expr_list {
-			inline const std::size_t id = 50;
+			inline const std::size_t id = 94;
 		} // namespace expr_list
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace expr_stmt {
-			inline const std::size_t id = 51;
+			inline const std::size_t id = 96;
 		} // namespace expr_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace factor {
-			inline const std::size_t id = 52;
+			inline const std::size_t id = 93;
 		} // namespace factor
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace finally_clause {
-			inline const std::size_t id = 53;
+			inline const std::size_t id = 42;
 		} // namespace finally_clause
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace for_stmt {
-			inline const std::size_t id = 54;
+			inline const std::size_t id = 20;
 		} // namespace for_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace for_targets {
-			inline const std::size_t id = 55;
+			inline const std::size_t id = 19;
 		} // namespace for_targets
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace function_def {
-			inline const std::size_t id = 56;
+			inline const std::size_t id = 18;
 		} // namespace function_def
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace function_header {
-			inline const std::size_t id = 57;
+			inline const std::size_t id = 43;
 		} // namespace function_header
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace global_stmt {
-			inline const std::size_t id = 58;
+			inline const std::size_t id = 52;
 		} // namespace global_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace if_stmt {
-			inline const std::size_t id = 59;
+			inline const std::size_t id = 77;
 		} // namespace if_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_alias {
-			inline const std::size_t id = 60;
+			inline const std::size_t id = 70;
 		} // namespace import_alias
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_from {
-			inline const std::size_t id = 61;
+			inline const std::size_t id = 44;
 		} // namespace import_from
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_name {
-			inline const std::size_t id = 62;
+			inline const std::size_t id = 36;
 		} // namespace import_name
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_name_item {
-			inline const std::size_t id = 63;
+			inline const std::size_t id = 2;
 		} // namespace import_name_item
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_names {
-			inline const std::size_t id = 64;
+			inline const std::size_t id = 76;
 		} // namespace import_names
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_stmt {
-			inline const std::size_t id = 65;
+			inline const std::size_t id = 6;
 		} // namespace import_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace import_targets {
-			inline const std::size_t id = 66;
+			inline const std::size_t id = 3;
 		} // namespace import_targets
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace indented_block {
-			inline const std::size_t id = 67;
+			inline const std::size_t id = 23;
 		} // namespace indented_block
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace index_suffix {
-			inline const std::size_t id = 68;
+			inline const std::size_t id = 38;
 		} // namespace index_suffix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace inversion {
-			inline const std::size_t id = 69;
+			inline const std::size_t id = 35;
 		} // namespace inversion
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace is_op {
-			inline const std::size_t id = 70;
+			inline const std::size_t id = 83;
 		} // namespace is_op
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace keyword_arg {
-			inline const std::size_t id = 71;
+			inline const std::size_t id = 62;
 		} // namespace keyword_arg
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace list_expr {
-			inline const std::size_t id = 72;
+			inline const std::size_t id = 80;
 		} // namespace list_expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace main {
-			inline const std::size_t id = 73;
+			inline const std::size_t id = 49;
 		} // namespace main
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace nonlocal_stmt {
-			inline const std::size_t id = 74;
+			inline const std::size_t id = 1;
 		} // namespace nonlocal_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace not_in {
-			inline const std::size_t id = 75;
+			inline const std::size_t id = 108;
 		} // namespace not_in
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace not_inversion {
-			inline const std::size_t id = 76;
+			inline const std::size_t id = 102;
 		} // namespace not_inversion
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace or_tail {
-			inline const std::size_t id = 77;
+			inline const std::size_t id = 54;
 		} // namespace or_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parameter {
-			inline const std::size_t id = 78;
+			inline const std::size_t id = 16;
 		} // namespace parameter
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parameter_annotation {
-			inline const std::size_t id = 79;
+			inline const std::size_t id = 59;
 		} // namespace parameter_annotation
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parameter_default {
-			inline const std::size_t id = 80;
+			inline const std::size_t id = 15;
 		} // namespace parameter_default
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parameters {
-			inline const std::size_t id = 81;
+			inline const std::size_t id = 109;
 		} // namespace parameters
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parenthesized_content {
-			inline const std::size_t id = 82;
+			inline const std::size_t id = 63;
 		} // namespace parenthesized_content
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parenthesized_expr {
-			inline const std::size_t id = 83;
+			inline const std::size_t id = 53;
 		} // namespace parenthesized_expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace parenthesized_imports {
-			inline const std::size_t id = 84;
+			inline const std::size_t id = 51;
 		} // namespace parenthesized_imports
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace pass_stmt {
-			inline const std::size_t id = 85;
+			inline const std::size_t id = 29;
 		} // namespace pass_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace postfix {
-			inline const std::size_t id = 86;
+			inline const std::size_t id = 79;
 		} // namespace postfix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace power {
-			inline const std::size_t id = 87;
+			inline const std::size_t id = 68;
 		} // namespace power
 	} // namespace Rules
 } // namespace PyRawParser
@@ -1818,112 +2414,112 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Rules {
 		namespace primary {
-			inline const std::size_t id = 89;
+			inline const std::size_t id = 69;
 		} // namespace primary
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace raise_from {
-			inline const std::size_t id = 90;
+			inline const std::size_t id = 31;
 		} // namespace raise_from
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace raise_stmt {
-			inline const std::size_t id = 91;
+			inline const std::size_t id = 46;
 		} // namespace raise_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace relative_module {
-			inline const std::size_t id = 92;
+			inline const std::size_t id = 55;
 		} // namespace relative_module
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace return_annotation {
-			inline const std::size_t id = 93;
+			inline const std::size_t id = 17;
 		} // namespace return_annotation
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace return_stmt {
-			inline const std::size_t id = 94;
+			inline const std::size_t id = 33;
 		} // namespace return_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace shift_expr {
-			inline const std::size_t id = 95;
+			inline const std::size_t id = 90;
 		} // namespace shift_expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace shift_tail {
-			inline const std::size_t id = 96;
+			inline const std::size_t id = 0;
 		} // namespace shift_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace simple_stmt {
-			inline const std::size_t id = 97;
+			inline const std::size_t id = 41;
 		} // namespace simple_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace simple_stmts {
-			inline const std::size_t id = 98;
+			inline const std::size_t id = 81;
 		} // namespace simple_stmts
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace statement {
-			inline const std::size_t id = 99;
+			inline const std::size_t id = 60;
 		} // namespace statement
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace sum {
-			inline const std::size_t id = 100;
+			inline const std::size_t id = 48;
 		} // namespace sum
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace sum_tail {
-			inline const std::size_t id = 101;
+			inline const std::size_t id = 82;
 		} // namespace sum_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace term {
-			inline const std::size_t id = 102;
+			inline const std::size_t id = 5;
 		} // namespace term
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace term_tail {
-			inline const std::size_t id = 103;
+			inline const std::size_t id = 86;
 		} // namespace term_tail
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace try_stmt {
-			inline const std::size_t id = 104;
+			inline const std::size_t id = 32;
 		} // namespace try_stmt
 	} // namespace Rules
 } // namespace PyRawParser
@@ -1937,858 +2533,874 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Rules {
 		namespace tuple_elements {
-			inline const std::size_t id = 106;
+			inline const std::size_t id = 65;
 		} // namespace tuple_elements
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace tuple_suffix {
-			inline const std::size_t id = 107;
+			inline const std::size_t id = 66;
 		} // namespace tuple_suffix
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace unary_expr {
-			inline const std::size_t id = 108;
+			inline const std::size_t id = 104;
 		} // namespace unary_expr
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace while_stmt {
-			inline const std::size_t id = 109;
+			inline const std::size_t id = 75;
 		} // namespace while_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace with_as {
-			inline const std::size_t id = 110;
+			inline const std::size_t id = 8;
 		} // namespace with_as
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace with_item {
-			inline const std::size_t id = 111;
+			inline const std::size_t id = 74;
 		} // namespace with_item
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace with_items {
-			inline const std::size_t id = 112;
+			inline const std::size_t id = 10;
 		} // namespace with_items
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Rules {
 		namespace with_stmt {
-			inline const std::size_t id = 113;
+			inline const std::size_t id = 11;
 		} // namespace with_stmt
 	} // namespace Rules
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace annotated_assignment {
 			inline const char* const id = "annotated_assignment";
 		} // namespace annotated_assignment
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assert_stmt {
 			inline const char* const id = "assert_stmt";
 		} // namespace assert_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assignment_op {
 			inline const char* const id = "assignment_op";
 		} // namespace assignment_op
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assignment_suffix {
 			inline const char* const id = "assignment_suffix";
 		} // namespace assignment_suffix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assignment_tail {
 			inline const char* const id = "assignment_tail";
 		} // namespace assignment_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assignment_target {
 			inline const char* const id = "assignment_target";
 		} // namespace assignment_target
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace assignment_value {
 			inline const char* const id = "assignment_value";
 		} // namespace assignment_value
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace atom {
 			inline const char* const id = "atom";
 		} // namespace atom
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace attribute_suffix {
 			inline const char* const id = "attribute_suffix";
 		} // namespace attribute_suffix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitand_tail {
 			inline const char* const id = "bitand_tail";
 		} // namespace bitand_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitor_tail {
 			inline const char* const id = "bitor_tail";
 		} // namespace bitor_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitwise_and {
 			inline const char* const id = "bitwise_and";
 		} // namespace bitwise_and
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitwise_or {
 			inline const char* const id = "bitwise_or";
 		} // namespace bitwise_or
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitwise_xor {
 			inline const char* const id = "bitwise_xor";
 		} // namespace bitwise_xor
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace bitxor_tail {
 			inline const char* const id = "bitxor_tail";
 		} // namespace bitxor_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace block {
 			inline const char* const id = "block";
 		} // namespace block
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace break_stmt {
 			inline const char* const id = "break_stmt";
 		} // namespace break_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace call_arg {
 			inline const char* const id = "call_arg";
 		} // namespace call_arg
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace call_arg_tail {
 			inline const char* const id = "call_arg_tail";
 		} // namespace call_arg_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace call_args {
 			inline const char* const id = "call_args";
 		} // namespace call_args
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace call_suffix {
 			inline const char* const id = "call_suffix";
 		} // namespace call_suffix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace class_bases {
 			inline const char* const id = "class_bases";
 		} // namespace class_bases
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace class_def {
 			inline const char* const id = "class_def";
 		} // namespace class_def
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace class_header {
 			inline const char* const id = "class_header";
 		} // namespace class_header
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace compare_op {
 			inline const char* const id = "compare_op";
 		} // namespace compare_op
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace compare_tail {
 			inline const char* const id = "compare_tail";
 		} // namespace compare_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace comparison {
 			inline const char* const id = "comparison";
 		} // namespace comparison
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace compound_stmt {
 			inline const char* const id = "compound_stmt";
 		} // namespace compound_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace conditional_tail {
 			inline const char* const id = "conditional_tail";
 		} // namespace conditional_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace conjunction {
 			inline const char* const id = "conjunction";
 		} // namespace conjunction
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace continue_stmt {
 			inline const char* const id = "continue_stmt";
 		} // namespace continue_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace decorated_def {
 			inline const char* const id = "decorated_def";
 		} // namespace decorated_def
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace decorator {
 			inline const char* const id = "decorator";
 		} // namespace decorator
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace decorators {
 			inline const char* const id = "decorators";
 		} // namespace decorators
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace def_header {
 			inline const char* const id = "def_header";
 		} // namespace def_header
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace del_stmt {
 			inline const char* const id = "del_stmt";
 		} // namespace del_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dict_expr {
 			inline const char* const id = "dict_expr";
 		} // namespace dict_expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dict_item {
 			inline const char* const id = "dict_item";
 		} // namespace dict_item
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dict_item_tail {
 			inline const char* const id = "dict_item_tail";
 		} // namespace dict_item_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dict_items {
 			inline const char* const id = "dict_items";
 		} // namespace dict_items
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace disjunction {
 			inline const char* const id = "disjunction";
 		} // namespace disjunction
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dotted_as_name {
 			inline const char* const id = "dotted_as_name";
 		} // namespace dotted_as_name
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dotted_as_names {
 			inline const char* const id = "dotted_as_names";
 		} // namespace dotted_as_names
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace dotted_name {
 			inline const char* const id = "dotted_name";
 		} // namespace dotted_name
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace elif_clause {
 			inline const char* const id = "elif_clause";
 		} // namespace elif_clause
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace else_clause {
 			inline const char* const id = "else_clause";
 		} // namespace else_clause
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace except_alias {
 			inline const char* const id = "except_alias";
 		} // namespace except_alias
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace except_clause {
 			inline const char* const id = "except_clause";
 		} // namespace except_clause
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace except_handlers {
 			inline const char* const id = "except_handlers";
 		} // namespace except_handlers
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace expr {
 			inline const char* const id = "expr";
 		} // namespace expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace expr_list {
 			inline const char* const id = "expr_list";
 		} // namespace expr_list
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace expr_stmt {
 			inline const char* const id = "expr_stmt";
 		} // namespace expr_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace factor {
 			inline const char* const id = "factor";
 		} // namespace factor
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace finally_clause {
 			inline const char* const id = "finally_clause";
 		} // namespace finally_clause
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace for_stmt {
 			inline const char* const id = "for_stmt";
 		} // namespace for_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace for_targets {
 			inline const char* const id = "for_targets";
 		} // namespace for_targets
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace function_def {
 			inline const char* const id = "function_def";
 		} // namespace function_def
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace function_header {
 			inline const char* const id = "function_header";
 		} // namespace function_header
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace global_stmt {
 			inline const char* const id = "global_stmt";
 		} // namespace global_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace if_stmt {
 			inline const char* const id = "if_stmt";
 		} // namespace if_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_alias {
 			inline const char* const id = "import_alias";
 		} // namespace import_alias
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_from {
 			inline const char* const id = "import_from";
 		} // namespace import_from
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_name {
 			inline const char* const id = "import_name";
 		} // namespace import_name
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_name_item {
 			inline const char* const id = "import_name_item";
 		} // namespace import_name_item
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_names {
 			inline const char* const id = "import_names";
 		} // namespace import_names
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_stmt {
 			inline const char* const id = "import_stmt";
 		} // namespace import_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace import_targets {
 			inline const char* const id = "import_targets";
 		} // namespace import_targets
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace indented_block {
 			inline const char* const id = "indented_block";
 		} // namespace indented_block
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace index_suffix {
 			inline const char* const id = "index_suffix";
 		} // namespace index_suffix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace inversion {
 			inline const char* const id = "inversion";
 		} // namespace inversion
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace is_op {
 			inline const char* const id = "is_op";
 		} // namespace is_op
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace keyword_arg {
 			inline const char* const id = "keyword_arg";
 		} // namespace keyword_arg
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace list_expr {
 			inline const char* const id = "list_expr";
 		} // namespace list_expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace main {
 			inline const char* const id = "main";
 		} // namespace main
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace nonlocal_stmt {
 			inline const char* const id = "nonlocal_stmt";
 		} // namespace nonlocal_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace not_in {
 			inline const char* const id = "not_in";
 		} // namespace not_in
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace not_inversion {
 			inline const char* const id = "not_inversion";
 		} // namespace not_inversion
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace or_tail {
 			inline const char* const id = "or_tail";
 		} // namespace or_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parameter {
 			inline const char* const id = "parameter";
 		} // namespace parameter
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parameter_annotation {
 			inline const char* const id = "parameter_annotation";
 		} // namespace parameter_annotation
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parameter_default {
 			inline const char* const id = "parameter_default";
 		} // namespace parameter_default
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parameters {
 			inline const char* const id = "parameters";
 		} // namespace parameters
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parenthesized_content {
 			inline const char* const id = "parenthesized_content";
 		} // namespace parenthesized_content
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parenthesized_expr {
 			inline const char* const id = "parenthesized_expr";
 		} // namespace parenthesized_expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace parenthesized_imports {
 			inline const char* const id = "parenthesized_imports";
 		} // namespace parenthesized_imports
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace pass_stmt {
 			inline const char* const id = "pass_stmt";
 		} // namespace pass_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace postfix {
 			inline const char* const id = "postfix";
 		} // namespace postfix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace power {
 			inline const char* const id = "power";
 		} // namespace power
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace power_tail {
 			inline const char* const id = "power_tail";
 		} // namespace power_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace primary {
 			inline const char* const id = "primary";
 		} // namespace primary
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace raise_from {
 			inline const char* const id = "raise_from";
 		} // namespace raise_from
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace raise_stmt {
 			inline const char* const id = "raise_stmt";
 		} // namespace raise_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace relative_module {
 			inline const char* const id = "relative_module";
 		} // namespace relative_module
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace return_annotation {
 			inline const char* const id = "return_annotation";
 		} // namespace return_annotation
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace return_stmt {
 			inline const char* const id = "return_stmt";
 		} // namespace return_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace shift_expr {
 			inline const char* const id = "shift_expr";
 		} // namespace shift_expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace shift_tail {
 			inline const char* const id = "shift_tail";
 		} // namespace shift_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace simple_stmt {
 			inline const char* const id = "simple_stmt";
 		} // namespace simple_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace simple_stmts {
 			inline const char* const id = "simple_stmts";
 		} // namespace simple_stmts
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace statement {
 			inline const char* const id = "statement";
 		} // namespace statement
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace sum {
 			inline const char* const id = "sum";
 		} // namespace sum
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace sum_tail {
 			inline const char* const id = "sum_tail";
 		} // namespace sum_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace term {
 			inline const char* const id = "term";
 		} // namespace term
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace term_tail {
 			inline const char* const id = "term_tail";
 		} // namespace term_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace try_stmt {
 			inline const char* const id = "try_stmt";
 		} // namespace try_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace try_tail {
 			inline const char* const id = "try_tail";
 		} // namespace try_tail
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace tuple_elements {
 			inline const char* const id = "tuple_elements";
 		} // namespace tuple_elements
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace tuple_suffix {
 			inline const char* const id = "tuple_suffix";
 		} // namespace tuple_suffix
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace unary_expr {
 			inline const char* const id = "unary_expr";
 		} // namespace unary_expr
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace while_stmt {
 			inline const char* const id = "while_stmt";
 		} // namespace while_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace with_as {
 			inline const char* const id = "with_as";
 		} // namespace with_as
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace with_item {
 			inline const char* const id = "with_item";
 		} // namespace with_item
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace with_items {
 			inline const char* const id = "with_items";
 		} // namespace with_items
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
 namespace PyRawParser {
-	namespace RuleNames {
+	namespace RulesStr {
 		namespace with_stmt {
 			inline const char* const id = "with_stmt";
 		} // namespace with_stmt
-	} // namespace RuleNames
+	} // namespace RulesStr
 } // namespace PyRawParser
-namespace PyRawParser::FlatTypes { struct IMPORT; }
+namespace PyRawParser {
+	auto TokensToString(std::size_t id) -> const char*;
+} // namespace PyRawParser
+namespace PyRawParser {
+	auto RulesToString(std::size_t id) -> const char*;
+} // namespace PyRawParser
+namespace PyRawParser::FlatTypes { struct INDENT; }
+namespace PyRawParser::FlatTypes { struct DEL; }
+namespace PyRawParser::FlatTypes { struct IS; }
+namespace PyRawParser::FlatTypes { struct IN; }
+namespace PyRawParser::FlatTypes { struct ELSE; }
+namespace PyRawParser::FlatTypes { struct NOT; }
+namespace PyRawParser::FlatTypes { struct ASSIGN; }
+namespace PyRawParser::FlatTypes { struct COMMA; }
+namespace PyRawParser::FlatTypes { struct RPAREN; }
+namespace PyRawParser::FlatTypes { struct SEMICOLON; }
+namespace PyRawParser::FlatTypes { struct NEWLINE; }
 namespace PyRawParser::FlatTypes { struct TILDE; }
 namespace PyRawParser::FlatTypes { struct LSHIFT_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct BREAK; }
@@ -2804,26 +3416,18 @@ namespace PyRawParser::FlatTypes { struct WHILE; }
 namespace PyRawParser::FlatTypes { struct WITH; }
 namespace PyRawParser::FlatTypes { struct MATMUL_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct ASYNC; }
+namespace PyRawParser::FlatTypes { struct COLON; }
+namespace PyRawParser::FlatTypes { struct __WS; }
+namespace PyRawParser::FlatTypes { struct FOR; }
 namespace PyRawParser::FlatTypes { struct CONTINUE; }
 namespace PyRawParser::FlatTypes { struct RAISE; }
+namespace PyRawParser::FlatTypes { struct IF; }
+namespace PyRawParser::FlatTypes { struct MATMUL; }
 namespace PyRawParser::FlatTypes { struct PERCENT_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct PLUS_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct STAR_ASSIGN; }
-namespace PyRawParser::FlatTypes { struct INDENT; }
-namespace PyRawParser::FlatTypes { struct DEL; }
-namespace PyRawParser::FlatTypes { struct IS; }
-namespace PyRawParser::FlatTypes { struct IN; }
-namespace PyRawParser::FlatTypes { struct ELSE; }
-namespace PyRawParser::FlatTypes { struct IF; }
-namespace PyRawParser::FlatTypes { struct NOT; }
-namespace PyRawParser::FlatTypes { struct ASSIGN; }
-namespace PyRawParser::FlatTypes { struct MATMUL; }
-namespace PyRawParser::FlatTypes { struct COMMA; }
-namespace PyRawParser::FlatTypes { struct RPAREN; }
-namespace PyRawParser::FlatTypes { struct NEWLINE; }
 namespace PyRawParser::FlatTypes { struct RBRACE; }
 namespace PyRawParser::FlatTypes { struct STRING; }
-namespace PyRawParser::FlatTypes { struct SEMICOLON; }
 namespace PyRawParser::FlatTypes { struct FLOOR_DIV_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct TRUE_BOOL; }
 namespace PyRawParser::FlatTypes { struct SLASH_ASSIGN; }
@@ -2831,9 +3435,6 @@ namespace PyRawParser::FlatTypes { struct TRY; }
 namespace PyRawParser::FlatTypes { struct POWER_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct POWER; }
 namespace PyRawParser::FlatTypes { struct PIPE; }
-namespace PyRawParser::FlatTypes { struct __WS; }
-namespace PyRawParser::FlatTypes { struct FOR; }
-namespace PyRawParser::FlatTypes { struct COLON; }
 namespace PyRawParser::FlatTypes { struct EXCEPT; }
 namespace PyRawParser::FlatTypes { struct NONE_V; }
 namespace PyRawParser::FlatTypes { struct DEDENT; }
@@ -2849,7 +3450,6 @@ namespace PyRawParser::FlatTypes { struct LSHIFT; }
 namespace PyRawParser::FlatTypes { struct GE; }
 namespace PyRawParser::FlatTypes { struct FALSE_BOOL; }
 namespace PyRawParser::FlatTypes { struct EQ; }
-namespace PyRawParser::FlatTypes { struct ARROW; }
 namespace PyRawParser::FlatTypes { struct CARET; }
 namespace PyRawParser::FlatTypes { struct AND; }
 namespace PyRawParser::FlatTypes { struct NUMBER; }
@@ -2865,7 +3465,9 @@ namespace PyRawParser::FlatTypes { struct DOT; }
 namespace PyRawParser::FlatTypes { struct CARET_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct RSHIFT_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct PERCENT; }
+namespace PyRawParser::FlatTypes { struct IMPORT; }
 namespace PyRawParser::FlatTypes { struct FLOOR_DIV; }
+namespace PyRawParser::FlatTypes { struct ARROW; }
 namespace PyRawParser::FlatTypes { struct OR; }
 namespace PyRawParser::FlatTypes { struct PIPE_ASSIGN; }
 namespace PyRawParser::FlatTypes { struct RSHIFT; }
@@ -2873,128 +3475,128 @@ namespace PyRawParser::FlatTypes { struct RETURN; }
 namespace PyRawParser::FlatTypes { struct FROM; }
 namespace PyRawParser::FlatTypes { struct LBRACE; }
 namespace PyRawParser::FlatTypes { struct RBRACKET; }
-namespace PyRawParser::FlatTypes { struct annotated_assignment; }
-namespace PyRawParser::FlatTypes { struct assert_stmt; }
-namespace PyRawParser::FlatTypes { struct assignment_op; }
-namespace PyRawParser::FlatTypes { struct assignment_suffix; }
-namespace PyRawParser::FlatTypes { struct assignment_tail; }
-namespace PyRawParser::FlatTypes { struct assignment_target; }
-namespace PyRawParser::FlatTypes { struct assignment_value; }
-namespace PyRawParser::FlatTypes { struct atom; }
-namespace PyRawParser::FlatTypes { struct attribute_suffix; }
-namespace PyRawParser::FlatTypes { struct bitand_tail; }
-namespace PyRawParser::FlatTypes { struct bitor_tail; }
-namespace PyRawParser::FlatTypes { struct bitwise_and; }
-namespace PyRawParser::FlatTypes { struct bitwise_or; }
-namespace PyRawParser::FlatTypes { struct bitwise_xor; }
-namespace PyRawParser::FlatTypes { struct bitxor_tail; }
-namespace PyRawParser::FlatTypes { struct block; }
-namespace PyRawParser::FlatTypes { struct break_stmt; }
-namespace PyRawParser::FlatTypes { struct call_arg; }
-namespace PyRawParser::FlatTypes { struct call_arg_tail; }
-namespace PyRawParser::FlatTypes { struct call_args; }
-namespace PyRawParser::FlatTypes { struct call_suffix; }
-namespace PyRawParser::FlatTypes { struct class_bases; }
-namespace PyRawParser::FlatTypes { struct class_def; }
-namespace PyRawParser::FlatTypes { struct class_header; }
-namespace PyRawParser::FlatTypes { struct compare_op; }
-namespace PyRawParser::FlatTypes { struct compare_tail; }
-namespace PyRawParser::FlatTypes { struct comparison; }
-namespace PyRawParser::FlatTypes { struct compound_stmt; }
-namespace PyRawParser::FlatTypes { struct conditional_tail; }
-namespace PyRawParser::FlatTypes { struct conjunction; }
-namespace PyRawParser::FlatTypes { struct continue_stmt; }
-namespace PyRawParser::FlatTypes { struct decorated_def; }
-namespace PyRawParser::FlatTypes { struct decorator; }
-namespace PyRawParser::FlatTypes { struct decorators; }
-namespace PyRawParser::FlatTypes { struct def_header; }
-namespace PyRawParser::FlatTypes { struct del_stmt; }
-namespace PyRawParser::FlatTypes { struct dict_expr; }
-namespace PyRawParser::FlatTypes { struct dict_item; }
-namespace PyRawParser::FlatTypes { struct dict_item_tail; }
-namespace PyRawParser::FlatTypes { struct dict_items; }
-namespace PyRawParser::FlatTypes { struct disjunction; }
-namespace PyRawParser::FlatTypes { struct dotted_as_name; }
-namespace PyRawParser::FlatTypes { struct dotted_as_names; }
-namespace PyRawParser::FlatTypes { struct dotted_name; }
-namespace PyRawParser::FlatTypes { struct elif_clause; }
-namespace PyRawParser::FlatTypes { struct else_clause; }
-namespace PyRawParser::FlatTypes { struct except_alias; }
-namespace PyRawParser::FlatTypes { struct except_clause; }
-namespace PyRawParser::FlatTypes { struct except_handlers; }
-namespace PyRawParser::FlatTypes { struct expr; }
-namespace PyRawParser::FlatTypes { struct expr_list; }
-namespace PyRawParser::FlatTypes { struct expr_stmt; }
-namespace PyRawParser::FlatTypes { struct factor; }
-namespace PyRawParser::FlatTypes { struct finally_clause; }
-namespace PyRawParser::FlatTypes { struct for_stmt; }
-namespace PyRawParser::FlatTypes { struct for_targets; }
-namespace PyRawParser::FlatTypes { struct function_def; }
-namespace PyRawParser::FlatTypes { struct function_header; }
-namespace PyRawParser::FlatTypes { struct global_stmt; }
-namespace PyRawParser::FlatTypes { struct if_stmt; }
-namespace PyRawParser::FlatTypes { struct import_alias; }
-namespace PyRawParser::FlatTypes { struct import_from; }
-namespace PyRawParser::FlatTypes { struct import_name; }
-namespace PyRawParser::FlatTypes { struct import_name_item; }
-namespace PyRawParser::FlatTypes { struct import_names; }
-namespace PyRawParser::FlatTypes { struct import_stmt; }
-namespace PyRawParser::FlatTypes { struct import_targets; }
-namespace PyRawParser::FlatTypes { struct indented_block; }
-namespace PyRawParser::FlatTypes { struct index_suffix; }
-namespace PyRawParser::FlatTypes { struct inversion; }
-namespace PyRawParser::FlatTypes { struct is_op; }
-namespace PyRawParser::FlatTypes { struct keyword_arg; }
-namespace PyRawParser::FlatTypes { struct list_expr; }
-namespace PyRawParser::FlatTypes { struct main; }
-namespace PyRawParser::FlatTypes { struct nonlocal_stmt; }
-namespace PyRawParser::FlatTypes { struct not_in; }
-namespace PyRawParser::FlatTypes { struct not_inversion; }
-namespace PyRawParser::FlatTypes { struct or_tail; }
-namespace PyRawParser::FlatTypes { struct parameter; }
-namespace PyRawParser::FlatTypes { struct parameter_annotation; }
-namespace PyRawParser::FlatTypes { struct parameter_default; }
-namespace PyRawParser::FlatTypes { struct parameters; }
-namespace PyRawParser::FlatTypes { struct parenthesized_content; }
-namespace PyRawParser::FlatTypes { struct parenthesized_expr; }
-namespace PyRawParser::FlatTypes { struct parenthesized_imports; }
-namespace PyRawParser::FlatTypes { struct pass_stmt; }
-namespace PyRawParser::FlatTypes { struct postfix; }
-namespace PyRawParser::FlatTypes { struct power; }
-namespace PyRawParser::FlatTypes { struct power_tail; }
-namespace PyRawParser::FlatTypes { struct primary; }
-namespace PyRawParser::FlatTypes { struct raise_from; }
-namespace PyRawParser::FlatTypes { struct raise_stmt; }
-namespace PyRawParser::FlatTypes { struct relative_module; }
-namespace PyRawParser::FlatTypes { struct return_annotation; }
-namespace PyRawParser::FlatTypes { struct return_stmt; }
-namespace PyRawParser::FlatTypes { struct shift_expr; }
 namespace PyRawParser::FlatTypes { struct shift_tail; }
-namespace PyRawParser::FlatTypes { struct simple_stmt; }
-namespace PyRawParser::FlatTypes { struct simple_stmts; }
-namespace PyRawParser::FlatTypes { struct statement; }
-namespace PyRawParser::FlatTypes { struct sum; }
-namespace PyRawParser::FlatTypes { struct sum_tail; }
+namespace PyRawParser::FlatTypes { struct nonlocal_stmt; }
+namespace PyRawParser::FlatTypes { struct import_name_item; }
+namespace PyRawParser::FlatTypes { struct import_targets; }
+namespace PyRawParser::FlatTypes { struct dotted_as_name; }
 namespace PyRawParser::FlatTypes { struct term; }
-namespace PyRawParser::FlatTypes { struct term_tail; }
-namespace PyRawParser::FlatTypes { struct try_stmt; }
-namespace PyRawParser::FlatTypes { struct try_tail; }
-namespace PyRawParser::FlatTypes { struct tuple_elements; }
-namespace PyRawParser::FlatTypes { struct tuple_suffix; }
-namespace PyRawParser::FlatTypes { struct unary_expr; }
-namespace PyRawParser::FlatTypes { struct while_stmt; }
+namespace PyRawParser::FlatTypes { struct import_stmt; }
+namespace PyRawParser::FlatTypes { struct except_alias; }
 namespace PyRawParser::FlatTypes { struct with_as; }
-namespace PyRawParser::FlatTypes { struct with_item; }
+namespace PyRawParser::FlatTypes { struct assignment_tail; }
 namespace PyRawParser::FlatTypes { struct with_items; }
 namespace PyRawParser::FlatTypes { struct with_stmt; }
+namespace PyRawParser::FlatTypes { struct class_bases; }
+namespace PyRawParser::FlatTypes { struct class_header; }
+namespace PyRawParser::FlatTypes { struct decorator; }
+namespace PyRawParser::FlatTypes { struct parameter_default; }
+namespace PyRawParser::FlatTypes { struct parameter; }
+namespace PyRawParser::FlatTypes { struct return_annotation; }
+namespace PyRawParser::FlatTypes { struct function_def; }
+namespace PyRawParser::FlatTypes { struct for_targets; }
+namespace PyRawParser::FlatTypes { struct for_stmt; }
+namespace PyRawParser::FlatTypes { struct else_clause; }
+namespace PyRawParser::FlatTypes { struct elif_clause; }
+namespace PyRawParser::FlatTypes { struct indented_block; }
+namespace PyRawParser::FlatTypes { struct dict_expr; }
+namespace PyRawParser::FlatTypes { struct decorated_def; }
+namespace PyRawParser::FlatTypes { struct assert_stmt; }
+namespace PyRawParser::FlatTypes { struct break_stmt; }
+namespace PyRawParser::FlatTypes { struct dotted_as_names; }
+namespace PyRawParser::FlatTypes { struct pass_stmt; }
+namespace PyRawParser::FlatTypes { struct del_stmt; }
+namespace PyRawParser::FlatTypes { struct raise_from; }
+namespace PyRawParser::FlatTypes { struct try_stmt; }
+namespace PyRawParser::FlatTypes { struct return_stmt; }
+namespace PyRawParser::FlatTypes { struct assignment_suffix; }
+namespace PyRawParser::FlatTypes { struct inversion; }
+namespace PyRawParser::FlatTypes { struct import_name; }
+namespace PyRawParser::FlatTypes { struct assignment_target; }
+namespace PyRawParser::FlatTypes { struct index_suffix; }
+namespace PyRawParser::FlatTypes { struct annotated_assignment; }
+namespace PyRawParser::FlatTypes { struct assignment_value; }
+namespace PyRawParser::FlatTypes { struct simple_stmt; }
+namespace PyRawParser::FlatTypes { struct finally_clause; }
+namespace PyRawParser::FlatTypes { struct function_header; }
+namespace PyRawParser::FlatTypes { struct import_from; }
+namespace PyRawParser::FlatTypes { struct bitwise_and; }
+namespace PyRawParser::FlatTypes { struct raise_stmt; }
+namespace PyRawParser::FlatTypes { struct conjunction; }
+namespace PyRawParser::FlatTypes { struct sum; }
+namespace PyRawParser::FlatTypes { struct main; }
+namespace PyRawParser::FlatTypes { struct bitwise_xor; }
+namespace PyRawParser::FlatTypes { struct parenthesized_imports; }
+namespace PyRawParser::FlatTypes { struct global_stmt; }
+namespace PyRawParser::FlatTypes { struct parenthesized_expr; }
+namespace PyRawParser::FlatTypes { struct or_tail; }
+namespace PyRawParser::FlatTypes { struct relative_module; }
+namespace PyRawParser::FlatTypes { struct compare_op; }
+namespace PyRawParser::FlatTypes { struct continue_stmt; }
+namespace PyRawParser::FlatTypes { struct dict_item_tail; }
+namespace PyRawParser::FlatTypes { struct parameter_annotation; }
+namespace PyRawParser::FlatTypes { struct statement; }
+namespace PyRawParser::FlatTypes { struct dict_item; }
+namespace PyRawParser::FlatTypes { struct keyword_arg; }
+namespace PyRawParser::FlatTypes { struct parenthesized_content; }
+namespace PyRawParser::FlatTypes { struct call_args; }
+namespace PyRawParser::FlatTypes { struct tuple_elements; }
+namespace PyRawParser::FlatTypes { struct tuple_suffix; }
+namespace PyRawParser::FlatTypes { struct call_arg_tail; }
+namespace PyRawParser::FlatTypes { struct power; }
+namespace PyRawParser::FlatTypes { struct primary; }
+namespace PyRawParser::FlatTypes { struct import_alias; }
+namespace PyRawParser::FlatTypes { struct attribute_suffix; }
+namespace PyRawParser::FlatTypes { struct assignment_op; }
+namespace PyRawParser::FlatTypes { struct bitand_tail; }
+namespace PyRawParser::FlatTypes { struct with_item; }
+namespace PyRawParser::FlatTypes { struct while_stmt; }
+namespace PyRawParser::FlatTypes { struct import_names; }
+namespace PyRawParser::FlatTypes { struct if_stmt; }
+namespace PyRawParser::FlatTypes { struct bitxor_tail; }
+namespace PyRawParser::FlatTypes { struct postfix; }
+namespace PyRawParser::FlatTypes { struct list_expr; }
+namespace PyRawParser::FlatTypes { struct simple_stmts; }
+namespace PyRawParser::FlatTypes { struct sum_tail; }
+namespace PyRawParser::FlatTypes { struct is_op; }
+namespace PyRawParser::FlatTypes { struct call_suffix; }
+namespace PyRawParser::FlatTypes { struct class_def; }
+namespace PyRawParser::FlatTypes { struct term_tail; }
+namespace PyRawParser::FlatTypes { struct except_clause; }
+namespace PyRawParser::FlatTypes { struct power_tail; }
+namespace PyRawParser::FlatTypes { struct expr; }
+namespace PyRawParser::FlatTypes { struct shift_expr; }
+namespace PyRawParser::FlatTypes { struct block; }
+namespace PyRawParser::FlatTypes { struct bitor_tail; }
+namespace PyRawParser::FlatTypes { struct factor; }
+namespace PyRawParser::FlatTypes { struct expr_list; }
+namespace PyRawParser::FlatTypes { struct dotted_name; }
+namespace PyRawParser::FlatTypes { struct expr_stmt; }
+namespace PyRawParser::FlatTypes { struct bitwise_or; }
+namespace PyRawParser::FlatTypes { struct compare_tail; }
+namespace PyRawParser::FlatTypes { struct disjunction; }
+namespace PyRawParser::FlatTypes { struct except_handlers; }
+namespace PyRawParser::FlatTypes { struct comparison; }
+namespace PyRawParser::FlatTypes { struct not_inversion; }
+namespace PyRawParser::FlatTypes { struct compound_stmt; }
+namespace PyRawParser::FlatTypes { struct unary_expr; }
+namespace PyRawParser::FlatTypes { struct try_tail; }
+namespace PyRawParser::FlatTypes { struct atom; }
+namespace PyRawParser::FlatTypes { struct def_header; }
+namespace PyRawParser::FlatTypes { struct not_in; }
+namespace PyRawParser::FlatTypes { struct parameters; }
+namespace PyRawParser::FlatTypes { struct conditional_tail; }
+namespace PyRawParser::FlatTypes { struct call_arg; }
+namespace PyRawParser::FlatTypes { struct decorators; }
+namespace PyRawParser::FlatTypes { struct dict_items; }
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, IMPORT value) -> std::ostream &;
+		auto operator<<(std::ostream & os, INDENT value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct IMPORT {
+		struct INDENT {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -3008,10 +3610,330 @@ namespace PyRawParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&IMPORT::write_to_output, &IMPORT::print);
+				return std::make_tuple(&INDENT::write_to_output, &INDENT::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&IMPORT::write_to_output, &IMPORT::print);
+				return std::make_tuple(&INDENT::write_to_output, &INDENT::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, DEL value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct DEL {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&DEL::write_to_output, &DEL::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&DEL::write_to_output, &DEL::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, IS value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct IS {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&IS::write_to_output, &IS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&IS::write_to_output, &IS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, IN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct IN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&IN::write_to_output, &IN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&IN::write_to_output, &IN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, ELSE value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct ELSE {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&ELSE::write_to_output, &ELSE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&ELSE::write_to_output, &ELSE::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, NOT value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct NOT {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&NOT::write_to_output, &NOT::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&NOT::write_to_output, &NOT::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, ASSIGN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct ASSIGN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&ASSIGN::write_to_output, &ASSIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&ASSIGN::write_to_output, &ASSIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, COMMA value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct COMMA {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, RPAREN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct RPAREN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&RPAREN::write_to_output, &RPAREN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&RPAREN::write_to_output, &RPAREN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct SEMICOLON {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, NEWLINE value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct NEWLINE {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&NEWLINE::write_to_output, &NEWLINE::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&NEWLINE::write_to_output, &NEWLINE::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -3501,6 +4423,102 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, COLON value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct COLON {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&COLON::write_to_output, &COLON::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&COLON::write_to_output, &COLON::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, __WS value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct __WS {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&__WS::write_to_output, &__WS::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&__WS::write_to_output, &__WS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, FOR value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct FOR {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&FOR::write_to_output, &FOR::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&FOR::write_to_output, &FOR::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, CONTINUE value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -3556,6 +4574,70 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&RAISE::write_to_output, &RAISE::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, IF value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct IF {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&IF::write_to_output, &IF::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&IF::write_to_output, &IF::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, MATMUL value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct MATMUL {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&MATMUL::write_to_output, &MATMUL::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&MATMUL::write_to_output, &MATMUL::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -3661,390 +4743,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, INDENT value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct INDENT {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&INDENT::write_to_output, &INDENT::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&INDENT::write_to_output, &INDENT::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, DEL value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct DEL {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&DEL::write_to_output, &DEL::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&DEL::write_to_output, &DEL::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, IS value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct IS {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&IS::write_to_output, &IS::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&IS::write_to_output, &IS::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, IN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct IN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&IN::write_to_output, &IN::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&IN::write_to_output, &IN::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, ELSE value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct ELSE {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&ELSE::write_to_output, &ELSE::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&ELSE::write_to_output, &ELSE::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, IF value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct IF {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&IF::write_to_output, &IF::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&IF::write_to_output, &IF::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, NOT value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct NOT {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&NOT::write_to_output, &NOT::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&NOT::write_to_output, &NOT::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, ASSIGN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct ASSIGN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&ASSIGN::write_to_output, &ASSIGN::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&ASSIGN::write_to_output, &ASSIGN::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, MATMUL value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct MATMUL {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&MATMUL::write_to_output, &MATMUL::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&MATMUL::write_to_output, &MATMUL::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, COMMA value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct COMMA {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&COMMA::write_to_output, &COMMA::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, RPAREN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct RPAREN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&RPAREN::write_to_output, &RPAREN::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&RPAREN::write_to_output, &RPAREN::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, NEWLINE value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct NEWLINE {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&NEWLINE::write_to_output, &NEWLINE::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&NEWLINE::write_to_output, &NEWLINE::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, RBRACE value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -4101,38 +4799,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&STRING::write_to_output, &STRING::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct SEMICOLON {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4357,102 +5023,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&PIPE::write_to_output, &PIPE::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, __WS value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct __WS {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&__WS::write_to_output, &__WS::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&__WS::write_to_output, &__WS::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, FOR value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct FOR {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&FOR::write_to_output, &FOR::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&FOR::write_to_output, &FOR::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, COLON value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct COLON {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&COLON::write_to_output, &COLON::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&COLON::write_to_output, &COLON::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4933,38 +5503,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&EQ::write_to_output, &EQ::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, ARROW value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct ARROW {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&ARROW::write_to_output, &ARROW::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&ARROW::write_to_output, &ARROW::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5457,6 +5995,38 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, IMPORT value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct IMPORT {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&IMPORT::write_to_output, &IMPORT::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&IMPORT::write_to_output, &IMPORT::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, FLOOR_DIV value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -5480,6 +6050,38 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&FLOOR_DIV::write_to_output, &FLOOR_DIV::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, ARROW value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct ARROW {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&ARROW::write_to_output, &ARROW::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&ARROW::write_to_output, &ARROW::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5713,80 +6315,14 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitand_tail value) -> std::ostream &;
+		auto operator<<(std::ostream & os, term value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct bitand_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_expr>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&bitand_tail::write_to_output, &bitand_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&bitand_tail::write_to_output, &bitand_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitor_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct bitor_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_xor>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&bitor_tail::write_to_output, &bitor_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&bitor_tail::write_to_output, &bitor_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitwise_and value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct bitwise_and {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_expr>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitand_tail>>> rest;
+		struct term {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::term_tail>>> rest;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5800,644 +6336,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 2>{{"first", "rest"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&bitwise_and::write_to_output, &bitwise_and::print);
+				return std::make_tuple(&term::write_to_output, &term::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&bitwise_and::write_to_output, &bitwise_and::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitwise_or value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct bitwise_or {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_xor>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitor_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&bitwise_or::write_to_output, &bitwise_or::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&bitwise_or::write_to_output, &bitwise_or::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitwise_xor value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct bitwise_xor {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_and>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitxor_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&bitwise_xor::write_to_output, &bitwise_xor::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&bitwise_xor::write_to_output, &bitwise_xor::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, bitxor_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct bitxor_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_and>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&bitxor_tail::write_to_output, &bitxor_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&bitxor_tail::write_to_output, &bitxor_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, break_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct break_stmt {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&break_stmt::write_to_output, &break_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&break_stmt::write_to_output, &break_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, call_arg value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct call_arg {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::keyword_arg>>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&call_arg::write_to_output, &call_arg::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&call_arg::write_to_output, &call_arg::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, call_arg_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct call_arg_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&call_arg_tail::write_to_output, &call_arg_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&call_arg_tail::write_to_output, &call_arg_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, call_args value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct call_args {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&call_args::write_to_output, &call_args::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&call_args::write_to_output, &call_args::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, call_suffix value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct call_suffix {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_args>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&call_suffix::write_to_output, &call_suffix::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&call_suffix::write_to_output, &call_suffix::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, comparison value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct comparison {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_or>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::compare_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&comparison::write_to_output, &comparison::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&comparison::write_to_output, &comparison::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, compound_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct compound_stmt {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::decorated_def>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::try_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::for_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::while_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::with_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::if_stmt>>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&compound_stmt::write_to_output, &compound_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&compound_stmt::write_to_output, &compound_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, conditional_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct conditional_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::disjunction>> condition;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> otherwise;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(condition, otherwise);
-			}
-			constexpr auto members() const {
-				return std::tie(condition, otherwise);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"condition", "otherwise"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&conditional_tail::write_to_output, &conditional_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&conditional_tail::write_to_output, &conditional_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, conjunction value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct conjunction {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&conjunction::write_to_output, &conjunction::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&conjunction::write_to_output, &conjunction::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, continue_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct continue_stmt {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&continue_stmt::write_to_output, &continue_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&continue_stmt::write_to_output, &continue_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, def_header value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct def_header {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::class_header>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::function_header>>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&def_header::write_to_output, &def_header::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&def_header::write_to_output, &def_header::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, dict_expr value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct dict_expr {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_items>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&dict_expr::write_to_output, &dict_expr::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&dict_expr::write_to_output, &dict_expr::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, dict_item value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct dict_item {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> key;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(key, value);
-			}
-			constexpr auto members() const {
-				return std::tie(key, value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"key", "value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&dict_item::write_to_output, &dict_item::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&dict_item::write_to_output, &dict_item::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, dict_item_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct dict_item_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&dict_item_tail::write_to_output, &dict_item_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&dict_item_tail::write_to_output, &dict_item_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, dict_items value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct dict_items {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&dict_items::write_to_output, &dict_items::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&dict_items::write_to_output, &dict_items::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, disjunction value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct disjunction {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conjunction>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::or_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&disjunction::write_to_output, &disjunction::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&disjunction::write_to_output, &disjunction::print);
+				return std::make_tuple(&term::write_to_output, &term::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6480,175 +6382,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, except_handlers value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct except_handlers {
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::except_clause>>> handlers;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::finally_clause>> finalizer;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(handlers, otherwise, finalizer);
-			}
-			constexpr auto members() const {
-				return std::tie(handlers, otherwise, finalizer);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 3>{{"handlers", "otherwise", "finalizer"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&except_handlers::write_to_output, &except_handlers::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&except_handlers::write_to_output, &except_handlers::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, expr value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct expr {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::disjunction>> value;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conditional_tail>> conditional;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value, conditional);
-			}
-			constexpr auto members() const {
-				return std::tie(value, conditional);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"value", "conditional"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&expr::write_to_output, &expr::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&expr::write_to_output, &expr::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, expr_list value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct expr_list {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&expr_list::write_to_output, &expr_list::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&expr_list::write_to_output, &expr_list::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, factor value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct factor {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::power>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::unary_expr>>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&factor::write_to_output, &factor::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&factor::write_to_output, &factor::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, finally_clause value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct finally_clause {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&finally_clause::write_to_output, &finally_clause::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&finally_clause::write_to_output, &finally_clause::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, indented_block value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -6682,13 +6415,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, index_suffix value) -> std::ostream &;
+		auto operator<<(std::ostream & os, dict_expr value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct index_suffix {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> value;
+		struct dict_expr {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_items>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6702,10 +6435,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&index_suffix::write_to_output, &index_suffix::print);
+				return std::make_tuple(&dict_expr::write_to_output, &dict_expr::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&index_suffix::write_to_output, &index_suffix::print);
+				return std::make_tuple(&dict_expr::write_to_output, &dict_expr::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6715,78 +6448,12 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, inversion value) -> std::ostream &;
+		auto operator<<(std::ostream & os, break_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct inversion {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::comparison>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::not_inversion>>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&inversion::write_to_output, &inversion::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&inversion::write_to_output, &inversion::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, list_expr value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct list_expr {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr_list>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&list_expr::write_to_output, &list_expr::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&list_expr::write_to_output, &list_expr::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, not_in value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct not_in {
+		struct break_stmt {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6800,143 +6467,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&not_in::write_to_output, &not_in::print);
+				return std::make_tuple(&break_stmt::write_to_output, &break_stmt::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&not_in::write_to_output, &not_in::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, not_inversion value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct not_inversion {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&not_inversion::write_to_output, &not_inversion::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&not_inversion::write_to_output, &not_inversion::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, or_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct or_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conjunction>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&or_tail::write_to_output, &or_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&or_tail::write_to_output, &or_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parenthesized_content value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parenthesized_content {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> first;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::tuple_suffix>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parenthesized_content::write_to_output, &parenthesized_content::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parenthesized_content::write_to_output, &parenthesized_content::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parenthesized_expr value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parenthesized_expr {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_content>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parenthesized_expr::write_to_output, &parenthesized_expr::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parenthesized_expr::write_to_output, &parenthesized_expr::print);
+				return std::make_tuple(&break_stmt::write_to_output, &break_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6969,209 +6503,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&pass_stmt::write_to_output, &pass_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, power value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct power {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::primary>> base;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::power_tail>> exponent;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(base, exponent);
-			}
-			constexpr auto members() const {
-				return std::tie(base, exponent);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"base", "exponent"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&power::write_to_output, &power::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&power::write_to_output, &power::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, power_tail value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct power_tail {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&power_tail::write_to_output, &power_tail::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&power_tail::write_to_output, &power_tail::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, primary value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct primary {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::atom>> base;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::postfix>>> suffixes;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(base, suffixes);
-			}
-			constexpr auto members() const {
-				return std::tie(base, suffixes);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"base", "suffixes"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&primary::write_to_output, &primary::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&primary::write_to_output, &primary::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, shift_expr value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct shift_expr {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::sum>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&shift_expr::write_to_output, &shift_expr::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&shift_expr::write_to_output, &shift_expr::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, sum value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct sum {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::term>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::sum_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&sum::write_to_output, &sum::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&sum::write_to_output, &sum::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, term value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct term {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> first;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::term_tail>>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&term::write_to_output, &term::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&term::write_to_output, &term::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7215,13 +6546,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, try_tail value) -> std::ostream &;
+		auto operator<<(std::ostream & os, inversion value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct try_tail {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::finally_clause>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::except_handlers>>> value;
+		struct inversion {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::not_inversion>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::comparison>>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -7235,10 +6566,445 @@ namespace PyRawParser {
 				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&try_tail::write_to_output, &try_tail::print);
+				return std::make_tuple(&inversion::write_to_output, &inversion::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&try_tail::write_to_output, &try_tail::print);
+				return std::make_tuple(&inversion::write_to_output, &inversion::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, index_suffix value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct index_suffix {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&index_suffix::write_to_output, &index_suffix::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&index_suffix::write_to_output, &index_suffix::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, finally_clause value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct finally_clause {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&finally_clause::write_to_output, &finally_clause::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&finally_clause::write_to_output, &finally_clause::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitwise_and value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitwise_and {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_expr>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitand_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitwise_and::write_to_output, &bitwise_and::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitwise_and::write_to_output, &bitwise_and::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, conjunction value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct conjunction {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&conjunction::write_to_output, &conjunction::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&conjunction::write_to_output, &conjunction::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, sum value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct sum {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::term>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::sum_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&sum::write_to_output, &sum::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&sum::write_to_output, &sum::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitwise_xor value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitwise_xor {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_and>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitxor_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitwise_xor::write_to_output, &bitwise_xor::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitwise_xor::write_to_output, &bitwise_xor::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, parenthesized_expr value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct parenthesized_expr {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_content>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&parenthesized_expr::write_to_output, &parenthesized_expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&parenthesized_expr::write_to_output, &parenthesized_expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, or_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct or_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conjunction>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&or_tail::write_to_output, &or_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&or_tail::write_to_output, &or_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, continue_stmt value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct continue_stmt {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&continue_stmt::write_to_output, &continue_stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&continue_stmt::write_to_output, &continue_stmt::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, dict_item_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct dict_item_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&dict_item_tail::write_to_output, &dict_item_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&dict_item_tail::write_to_output, &dict_item_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, dict_item value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct dict_item {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> key;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(key, value);
+			}
+			constexpr auto members() const {
+				return std::tie(key, value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"key", "value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&dict_item::write_to_output, &dict_item::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&dict_item::write_to_output, &dict_item::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, parenthesized_content value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct parenthesized_content {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> first;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::tuple_suffix>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&parenthesized_content::write_to_output, &parenthesized_content::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&parenthesized_content::write_to_output, &parenthesized_content::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, call_args value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct call_args {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&call_args::write_to_output, &call_args::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&call_args::write_to_output, &call_args::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7315,6 +7081,842 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, call_arg_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct call_arg_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_arg>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&call_arg_tail::write_to_output, &call_arg_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&call_arg_tail::write_to_output, &call_arg_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, power value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct power {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::primary>> base;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::power_tail>> exponent;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(base, exponent);
+			}
+			constexpr auto members() const {
+				return std::tie(base, exponent);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"base", "exponent"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&power::write_to_output, &power::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&power::write_to_output, &power::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, primary value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct primary {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::atom>> base;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::postfix>>> suffixes;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(base, suffixes);
+			}
+			constexpr auto members() const {
+				return std::tie(base, suffixes);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"base", "suffixes"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&primary::write_to_output, &primary::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&primary::write_to_output, &primary::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitand_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitand_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_expr>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitand_tail::write_to_output, &bitand_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitand_tail::write_to_output, &bitand_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitxor_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitxor_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_and>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitxor_tail::write_to_output, &bitxor_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitxor_tail::write_to_output, &bitxor_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, list_expr value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct list_expr {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr_list>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&list_expr::write_to_output, &list_expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&list_expr::write_to_output, &list_expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, call_suffix value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct call_suffix {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_args>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&call_suffix::write_to_output, &call_suffix::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&call_suffix::write_to_output, &call_suffix::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, power_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct power_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&power_tail::write_to_output, &power_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&power_tail::write_to_output, &power_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, expr value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct expr {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::disjunction>> value;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conditional_tail>> conditional;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value, conditional);
+			}
+			constexpr auto members() const {
+				return std::tie(value, conditional);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"value", "conditional"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&expr::write_to_output, &expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&expr::write_to_output, &expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, shift_expr value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct shift_expr {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::sum>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::shift_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&shift_expr::write_to_output, &shift_expr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&shift_expr::write_to_output, &shift_expr::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitor_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitor_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_xor>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitor_tail::write_to_output, &bitor_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitor_tail::write_to_output, &bitor_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, factor value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct factor {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::unary_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::power>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&factor::write_to_output, &factor::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&factor::write_to_output, &factor::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, expr_list value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct expr_list {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&expr_list::write_to_output, &expr_list::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&expr_list::write_to_output, &expr_list::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, bitwise_or value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct bitwise_or {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_xor>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitor_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&bitwise_or::write_to_output, &bitwise_or::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&bitwise_or::write_to_output, &bitwise_or::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, disjunction value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct disjunction {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::conjunction>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::or_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&disjunction::write_to_output, &disjunction::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&disjunction::write_to_output, &disjunction::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, except_handlers value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct except_handlers {
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::except_clause>>> handlers;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::finally_clause>> finalizer;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(handlers, otherwise, finalizer);
+			}
+			constexpr auto members() const {
+				return std::tie(handlers, otherwise, finalizer);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 3>{{"handlers", "otherwise", "finalizer"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&except_handlers::write_to_output, &except_handlers::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&except_handlers::write_to_output, &except_handlers::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, comparison value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct comparison {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::bitwise_or>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::compare_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&comparison::write_to_output, &comparison::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&comparison::write_to_output, &comparison::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, not_inversion value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct not_inversion {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::inversion>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&not_inversion::write_to_output, &not_inversion::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&not_inversion::write_to_output, &not_inversion::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, compound_stmt value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct compound_stmt {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::if_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::while_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::for_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::with_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::try_stmt>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::decorated_def>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&compound_stmt::write_to_output, &compound_stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&compound_stmt::write_to_output, &compound_stmt::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, try_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct try_tail {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::except_handlers>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::finally_clause>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&try_tail::write_to_output, &try_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&try_tail::write_to_output, &try_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, def_header value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct def_header {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::function_header>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::class_header>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&def_header::write_to_output, &def_header::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&def_header::write_to_output, &def_header::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, not_in value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct not_in {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&not_in::write_to_output, &not_in::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&not_in::write_to_output, &not_in::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, conditional_tail value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct conditional_tail {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::disjunction>> condition;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> otherwise;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(condition, otherwise);
+			}
+			constexpr auto members() const {
+				return std::tie(condition, otherwise);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"condition", "otherwise"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&conditional_tail::write_to_output, &conditional_tail::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&conditional_tail::write_to_output, &conditional_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, call_arg value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct call_arg {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::keyword_arg>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&call_arg::write_to_output, &call_arg::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&call_arg::write_to_output, &call_arg::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, dict_items value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct dict_items {
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item>> first;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_item_tail>>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&dict_items::write_to_output, &dict_items::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&dict_items::write_to_output, &dict_items::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, is_op value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -7348,78 +7950,12 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, atom value) -> std::ostream &;
+		auto operator<<(std::ostream & os, nonlocal_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct atom {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NONE_V>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::list_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FALSE_BOOL>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TRUE_BOOL>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_expr>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NUMBER>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STRING>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&atom::write_to_output, &atom::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&atom::write_to_output, &atom::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, attribute_suffix value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct attribute_suffix {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&attribute_suffix::write_to_output, &attribute_suffix::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&attribute_suffix::write_to_output, &attribute_suffix::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, dotted_name value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct dotted_name {
+		struct nonlocal_stmt {
 			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> first;
 			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>> rest;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
@@ -7435,10 +7971,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 2>{{"first", "rest"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&dotted_name::write_to_output, &dotted_name::print);
+				return std::make_tuple(&nonlocal_stmt::write_to_output, &nonlocal_stmt::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&dotted_name::write_to_output, &dotted_name::print);
+				return std::make_tuple(&nonlocal_stmt::write_to_output, &nonlocal_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7515,39 +8051,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_alias value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct import_alias {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&import_alias::write_to_output, &import_alias::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&import_alias::write_to_output, &import_alias::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, keyword_arg value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -7582,12 +8085,78 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, nonlocal_stmt value) -> std::ostream &;
+		auto operator<<(std::ostream & os, import_alias value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct nonlocal_stmt {
+		struct import_alias {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&import_alias::write_to_output, &import_alias::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&import_alias::write_to_output, &import_alias::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, attribute_suffix value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct attribute_suffix {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&attribute_suffix::write_to_output, &attribute_suffix::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&attribute_suffix::write_to_output, &attribute_suffix::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, dotted_name value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct dotted_name {
 			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> first;
 			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>> rest;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
@@ -7603,10 +8172,43 @@ namespace PyRawParser {
 				return std::array<std::string_view, 2>{{"first", "rest"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&nonlocal_stmt::write_to_output, &nonlocal_stmt::print);
+				return std::make_tuple(&dotted_name::write_to_output, &dotted_name::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&nonlocal_stmt::write_to_output, &nonlocal_stmt::print);
+				return std::make_tuple(&dotted_name::write_to_output, &dotted_name::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, atom value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct atom {
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ID>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NUMBER>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STRING>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TRUE_BOOL>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FALSE_BOOL>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NONE_V>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::list_expr>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::dict_expr>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&atom::write_to_output, &atom::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&atom::write_to_output, &atom::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7622,7 +8224,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct sum_tail {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS>> op;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS>> op;
 			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::term>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
@@ -7656,7 +8258,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct unary_expr {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TILDE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS>> op;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::TILDE>> op;
 			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
@@ -7690,7 +8292,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct term_tail {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PERCENT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::SLASH>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MATMUL>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FLOOR_DIV>> op;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FLOOR_DIV>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::SLASH>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PERCENT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MATMUL>> op;
 			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::factor>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
@@ -7724,7 +8326,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct assignment_op {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::RSHIFT_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::CARET_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::AMP_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::POWER_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::SLASH_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PIPE_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MATMUL_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PERCENT_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LSHIFT_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS_ASSIGN>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PLUS_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MINUS_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::MATMUL_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::SLASH_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::FLOOR_DIV_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PERCENT_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::POWER_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::AMP_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::PIPE_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::CARET_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LSHIFT_ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::RSHIFT_ASSIGN>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -7757,7 +8359,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct shift_tail {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::RSHIFT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LSHIFT>> op;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LSHIFT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::RSHIFT>> op;
 			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::sum>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
@@ -7818,31 +8420,30 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, annotated_assignment value) -> std::ostream &;
+		auto operator<<(std::ostream & os, decorator value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct annotated_assignment {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> annotation;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
+		struct decorator {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::primary> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(annotation, value);
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie(annotation, value);
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"annotation", "value"}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&annotated_assignment::write_to_output, &annotated_assignment::print);
+				return std::make_tuple(&decorator::write_to_output, &decorator::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&annotated_assignment::write_to_output, &annotated_assignment::print);
+				return std::make_tuple(&decorator::write_to_output, &decorator::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7852,31 +8453,63 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, assert_stmt value) -> std::ostream &;
+		auto operator<<(std::ostream & os, parameter_default value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct assert_stmt {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> condition;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> message;
+		struct parameter_default {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(condition, message);
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie(condition, message);
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"condition", "message"}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&assert_stmt::write_to_output, &assert_stmt::print);
+				return std::make_tuple(&parameter_default::write_to_output, &parameter_default::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&assert_stmt::write_to_output, &assert_stmt::print);
+				return std::make_tuple(&parameter_default::write_to_output, &parameter_default::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, return_annotation value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct return_annotation {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&return_annotation::write_to_output, &return_annotation::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&return_annotation::write_to_output, &return_annotation::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7911,6 +8544,208 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&elif_clause::write_to_output, &elif_clause::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, assert_stmt value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct assert_stmt {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> condition;
+			std::pair<::ISPA_STD::Node<::PyRawParser::FlatTypes::COMMA>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::expr>> message;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(condition, message);
+			}
+			constexpr auto members() const {
+				return std::tie(condition, message);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"condition", "message"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&assert_stmt::write_to_output, &assert_stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&assert_stmt::write_to_output, &assert_stmt::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, raise_from value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct raise_from {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&raise_from::write_to_output, &raise_from::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&raise_from::write_to_output, &raise_from::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, return_stmt value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct return_stmt {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&return_stmt::write_to_output, &return_stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&return_stmt::write_to_output, &return_stmt::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, annotated_assignment value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct annotated_assignment {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> annotation;
+			std::pair<::ISPA_STD::Node<::PyRawParser::FlatTypes::ASSIGN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::expr>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(annotation, value);
+			}
+			constexpr auto members() const {
+				return std::tie(annotation, value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"annotation", "value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&annotated_assignment::write_to_output, &annotated_assignment::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&annotated_assignment::write_to_output, &annotated_assignment::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, parameter_annotation value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct parameter_annotation {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&parameter_annotation::write_to_output, &parameter_annotation::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&parameter_annotation::write_to_output, &parameter_annotation::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, while_stmt value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct while_stmt {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> condition;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> body;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(condition, body, otherwise);
+			}
+			constexpr auto members() const {
+				return std::tie(condition, body, otherwise);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 3>{{"condition", "body", "otherwise"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&while_stmt::write_to_output, &while_stmt::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&while_stmt::write_to_output, &while_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7956,246 +8791,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parameter_annotation value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parameter_annotation {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parameter_annotation::write_to_output, &parameter_annotation::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parameter_annotation::write_to_output, &parameter_annotation::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parameter_default value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parameter_default {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parameter_default::write_to_output, &parameter_default::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parameter_default::write_to_output, &parameter_default::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, raise_from value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct raise_from {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&raise_from::write_to_output, &raise_from::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&raise_from::write_to_output, &raise_from::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, return_annotation value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct return_annotation {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&return_annotation::write_to_output, &return_annotation::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&return_annotation::write_to_output, &return_annotation::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, return_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct return_stmt {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&return_stmt::write_to_output, &return_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&return_stmt::write_to_output, &return_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, while_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct while_stmt {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> condition;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> body;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(condition, body, otherwise);
-			}
-			constexpr auto members() const {
-				return std::tie(condition, body, otherwise);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 3>{{"condition", "body", "otherwise"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&while_stmt::write_to_output, &while_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&while_stmt::write_to_output, &while_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, decorator value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct decorator {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::primary> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&decorator::write_to_output, &decorator::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&decorator::write_to_output, &decorator::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, compare_op value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct compare_op {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::is_op>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::not_in>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::GT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::IN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::GE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::EQ>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::EQ>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::NE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::LT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::GE>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::GT>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::not_in>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::IN>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::is_op>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -8213,106 +8815,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&compare_op::write_to_output, &compare_op::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, assignment_suffix value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct assignment_suffix {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::index_suffix>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::attribute_suffix>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&assignment_suffix::write_to_output, &assignment_suffix::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&assignment_suffix::write_to_output, &assignment_suffix::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, postfix value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct postfix {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::index_suffix>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_suffix>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::attribute_suffix>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&postfix::write_to_output, &postfix::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&postfix::write_to_output, &postfix::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, relative_module value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct relative_module {
-			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::DOT>> relative;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::dotted_name> name;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(relative, name);
-			}
-			constexpr auto members() const {
-				return std::tie(relative, name);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"relative", "name"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&relative_module::write_to_output, &relative_module::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&relative_module::write_to_output, &relative_module::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8357,6 +8859,106 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, import_name_item value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct import_name_item {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> name;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_alias> alias;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(name, alias);
+			}
+			constexpr auto members() const {
+				return std::tie(name, alias);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"name", "alias"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&import_name_item::write_to_output, &import_name_item::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&import_name_item::write_to_output, &import_name_item::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, assignment_suffix value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct assignment_suffix {
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::attribute_suffix>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::index_suffix>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&assignment_suffix::write_to_output, &assignment_suffix::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&assignment_suffix::write_to_output, &assignment_suffix::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, postfix value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct postfix {
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::attribute_suffix>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::call_suffix>>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::index_suffix>>> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&postfix::write_to_output, &postfix::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&postfix::write_to_output, &postfix::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, dotted_as_name value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -8391,31 +8993,31 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_name_item value) -> std::ostream &;
+		auto operator<<(std::ostream & os, relative_module value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct import_name_item {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> name;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_alias> alias;
+		struct relative_module {
+			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::DOT>> relative;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::dotted_name> name;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(name, alias);
+				return std::tie(relative, name);
 			}
 			constexpr auto members() const {
-				return std::tie(name, alias);
+				return std::tie(relative, name);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"name", "alias"}};
+				return std::array<std::string_view, 2>{{"relative", "name"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&import_name_item::write_to_output, &import_name_item::print);
+				return std::make_tuple(&relative_module::write_to_output, &relative_module::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&import_name_item::write_to_output, &import_name_item::print);
+				return std::make_tuple(&relative_module::write_to_output, &relative_module::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8494,32 +9096,30 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parameter value) -> std::ostream &;
+		auto operator<<(std::ostream & os, decorators value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct parameter {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> name;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter_annotation> annotation;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter_default> def;
+		struct decorators {
+			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::decorator>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(name, annotation, def);
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie(name, annotation, def);
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 3>{{"name", "annotation", "def"}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&parameter::write_to_output, &parameter::print);
+				return std::make_tuple(&decorators::write_to_output, &decorators::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&parameter::write_to_output, &parameter::print);
+				return std::make_tuple(&decorators::write_to_output, &decorators::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8563,30 +9163,32 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, decorators value) -> std::ostream &;
+		auto operator<<(std::ostream & os, parameter value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct decorators {
-			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::decorator>> value;
+		struct parameter {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::ID> name;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter_annotation> annotation;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter_default> def;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(value);
+				return std::tie(name, annotation, def);
 			}
 			constexpr auto members() const {
-				return std::tie(value);
+				return std::tie(name, annotation, def);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
+				return std::array<std::string_view, 3>{{"name", "annotation", "def"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&decorators::write_to_output, &decorators::print);
+				return std::make_tuple(&parameter::write_to_output, &parameter::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&decorators::write_to_output, &decorators::print);
+				return std::make_tuple(&parameter::write_to_output, &parameter::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8621,6 +9223,40 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&compare_tail::write_to_output, &compare_tail::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, import_names value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct import_names {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name_item> first;
+			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name_item>> rest;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first, rest);
+			}
+			constexpr auto members() const {
+				return std::tie(first, rest);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first", "rest"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&import_names::write_to_output, &import_names::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&import_names::write_to_output, &import_names::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8698,47 +9334,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_names value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct import_names {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name_item> first;
-			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name_item>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&import_names::write_to_output, &import_names::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&import_names::write_to_output, &import_names::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, assignment_value value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct assignment_value {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::annotated_assignment>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_tail>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_tail>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::annotated_assignment>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -8756,74 +9358,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&assignment_value::write_to_output, &assignment_value::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parameters value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parameters {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter> first;
-			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter>> rest;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(first, rest);
-			}
-			constexpr auto members() const {
-				return std::tie(first, rest);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"first", "rest"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parameters::write_to_output, &parameters::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parameters::write_to_output, &parameters::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, class_def value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct class_def {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::decorators> decorators;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::class_header> definition;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(decorators, definition);
-			}
-			constexpr auto members() const {
-				return std::tie(decorators, definition);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"decorators", "definition"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&class_def::write_to_output, &class_def::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&class_def::write_to_output, &class_def::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8867,14 +9401,48 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, del_stmt value) -> std::ostream &;
+		auto operator<<(std::ostream & os, class_def value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct del_stmt {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target> first;
-			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target>> rest;
+		struct class_def {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::decorators> decorators;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::class_header> definition;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(decorators, definition);
+			}
+			constexpr auto members() const {
+				return std::tie(decorators, definition);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"decorators", "definition"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&class_def::write_to_output, &class_def::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&class_def::write_to_output, &class_def::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, parameters value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct parameters {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter> first;
+			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::parameter>> rest;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -8888,10 +9456,76 @@ namespace PyRawParser {
 				return std::array<std::string_view, 2>{{"first", "rest"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&del_stmt::write_to_output, &del_stmt::print);
+				return std::make_tuple(&parameters::write_to_output, &parameters::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&del_stmt::write_to_output, &del_stmt::print);
+				return std::make_tuple(&parameters::write_to_output, &parameters::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, parenthesized_imports value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct parenthesized_imports {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_names> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&parenthesized_imports::write_to_output, &parenthesized_imports::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&parenthesized_imports::write_to_output, &parenthesized_imports::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, with_as value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct with_as {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&with_as::write_to_output, &with_as::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&with_as::write_to_output, &with_as::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8935,30 +9569,31 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, with_as value) -> std::ostream &;
+		auto operator<<(std::ostream & os, del_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct with_as {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target> value;
+		struct del_stmt {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target> first;
+			std::vector<::ISPA_STD::Node<::PyRawParser::FlatTypes::assignment_target>> rest;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(value);
+				return std::tie(first, rest);
 			}
 			constexpr auto members() const {
-				return std::tie(value);
+				return std::tie(first, rest);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
+				return std::array<std::string_view, 2>{{"first", "rest"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&with_as::write_to_output, &with_as::print);
+				return std::make_tuple(&del_stmt::write_to_output, &del_stmt::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&with_as::write_to_output, &with_as::print);
+				return std::make_tuple(&del_stmt::write_to_output, &del_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -8992,39 +9627,6 @@ namespace PyRawParser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&import_name::write_to_output, &import_name::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, parenthesized_imports value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct parenthesized_imports {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_names> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&parenthesized_imports::write_to_output, &parenthesized_imports::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&parenthesized_imports::write_to_output, &parenthesized_imports::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9105,34 +9707,30 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, for_stmt value) -> std::ostream &;
+		auto operator<<(std::ostream & os, import_targets value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct for_stmt {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::ASYNC> async;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::for_targets> targets;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> iterable;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> body;
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
+		struct import_targets {
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::parenthesized_imports>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_names>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(async, targets, iterable, body, otherwise);
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie(async, targets, iterable, body, otherwise);
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 5>{{"async", "targets", "iterable", "body", "otherwise"}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&for_stmt::write_to_output, &for_stmt::print);
+				return std::make_tuple(&import_targets::write_to_output, &import_targets::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&for_stmt::write_to_output, &for_stmt::print);
+				return std::make_tuple(&import_targets::write_to_output, &import_targets::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9176,30 +9774,34 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_targets value) -> std::ostream &;
+		auto operator<<(std::ostream & os, for_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct import_targets {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_names>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::parenthesized_imports>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::STAR>> value;
+		struct for_stmt {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::ASYNC> async;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::for_targets> targets;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::expr> iterable;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::block>> body;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::else_clause>> otherwise;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(value);
+				return std::tie(async, targets, iterable, body, otherwise);
 			}
 			constexpr auto members() const {
-				return std::tie(value);
+				return std::tie(async, targets, iterable, body, otherwise);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
+				return std::array<std::string_view, 5>{{"async", "targets", "iterable", "body", "otherwise"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&import_targets::write_to_output, &import_targets::print);
+				return std::make_tuple(&for_stmt::write_to_output, &for_stmt::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&import_targets::write_to_output, &import_targets::print);
+				return std::make_tuple(&for_stmt::write_to_output, &for_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9243,6 +9845,40 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, import_from value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
+		struct import_from {
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::relative_module> module;
+			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_targets> names;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(module, names);
+			}
+			constexpr auto members() const {
+				return std::tie(module, names);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"module", "names"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&import_from::write_to_output, &import_from::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&import_from::write_to_output, &import_from::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, with_items value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
@@ -9277,31 +9913,30 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_from value) -> std::ostream &;
+		auto operator<<(std::ostream & os, import_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct import_from {
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::relative_module> module;
-			::ISPA_STD::Node<::PyRawParser::FlatTypes::import_targets> names;
+		struct import_stmt {
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_from>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(module, names);
+				return std::tie(value);
 			}
 			constexpr auto members() const {
-				return std::tie(module, names);
+				return std::tie(value);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"module", "names"}};
+				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&import_from::write_to_output, &import_from::print);
+				return std::make_tuple(&import_stmt::write_to_output, &import_stmt::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&import_from::write_to_output, &import_from::print);
+				return std::make_tuple(&import_stmt::write_to_output, &import_stmt::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9346,46 +9981,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, import_stmt value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
-		struct import_stmt {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_from>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_name>> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&import_stmt::write_to_output, &import_stmt::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&import_stmt::write_to_output, &import_stmt::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, simple_stmt value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct simple_stmt {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::expr_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::continue_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::assert_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::break_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::nonlocal_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::pass_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::global_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::return_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::del_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::raise_stmt>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::return_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::raise_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::del_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::pass_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::break_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::continue_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::assert_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::global_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::nonlocal_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::import_stmt>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::expr_stmt>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -9446,13 +10048,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, block value) -> std::ostream &;
+		auto operator<<(std::ostream & os, statement value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct block {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::simple_stmts>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::indented_block>>> value;
+		struct statement {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::compound_stmt>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::simple_stmts>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -9466,10 +10068,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&block::write_to_output, &block::print);
+				return std::make_tuple(&statement::write_to_output, &statement::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&block::write_to_output, &block::print);
+				return std::make_tuple(&statement::write_to_output, &statement::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9479,13 +10081,13 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, statement value) -> std::ostream &;
+		auto operator<<(std::ostream & os, block value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace FlatTypes {
-		struct statement {
-			std::variant<std::monostate, ::ISPA_STD::Node<::PyRawParser::FlatTypes::simple_stmts>, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::compound_stmt>>> value;
+		struct block {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::indented_block>>, ::ISPA_STD::Node<::PyRawParser::FlatTypes::simple_stmts>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -9499,10 +10101,10 @@ namespace PyRawParser {
 				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&statement::write_to_output, &statement::print);
+				return std::make_tuple(&block::write_to_output, &block::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&statement::write_to_output, &statement::print);
+				return std::make_tuple(&block::write_to_output, &block::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -9545,7 +10147,57 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using IMPORT = ::PyRawParser::FlatTypes::IMPORT;
+		using INDENT = ::PyRawParser::FlatTypes::INDENT;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using DEL = ::PyRawParser::FlatTypes::DEL;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using IS = ::PyRawParser::FlatTypes::IS;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using IN = ::PyRawParser::FlatTypes::IN;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using ELSE = ::PyRawParser::FlatTypes::ELSE;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using NOT = ::PyRawParser::FlatTypes::NOT;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using ASSIGN = ::PyRawParser::FlatTypes::ASSIGN;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using COMMA = ::PyRawParser::FlatTypes::COMMA;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using RPAREN = ::PyRawParser::FlatTypes::RPAREN;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using SEMICOLON = ::PyRawParser::FlatTypes::SEMICOLON;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using NEWLINE = ::PyRawParser::FlatTypes::NEWLINE;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -9625,12 +10277,37 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
+		using COLON = ::PyRawParser::FlatTypes::COLON;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using __WS = ::PyRawParser::FlatTypes::__WS;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using FOR = ::PyRawParser::FlatTypes::FOR;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
 		using CONTINUE = ::PyRawParser::FlatTypes::CONTINUE;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
 		using RAISE = ::PyRawParser::FlatTypes::RAISE;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using IF = ::PyRawParser::FlatTypes::IF;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using MATMUL = ::PyRawParser::FlatTypes::MATMUL;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -9650,77 +10327,12 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using INDENT = ::PyRawParser::FlatTypes::INDENT;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using DEL = ::PyRawParser::FlatTypes::DEL;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using IS = ::PyRawParser::FlatTypes::IS;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using IN = ::PyRawParser::FlatTypes::IN;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using ELSE = ::PyRawParser::FlatTypes::ELSE;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using IF = ::PyRawParser::FlatTypes::IF;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using NOT = ::PyRawParser::FlatTypes::NOT;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using ASSIGN = ::PyRawParser::FlatTypes::ASSIGN;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using MATMUL = ::PyRawParser::FlatTypes::MATMUL;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using COMMA = ::PyRawParser::FlatTypes::COMMA;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using RPAREN = ::PyRawParser::FlatTypes::RPAREN;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using NEWLINE = ::PyRawParser::FlatTypes::NEWLINE;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
 		using RBRACE = ::PyRawParser::FlatTypes::RBRACE;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
 		using STRING = ::PyRawParser::FlatTypes::STRING;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using SEMICOLON = ::PyRawParser::FlatTypes::SEMICOLON;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -9756,21 +10368,6 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace Types {
 		using PIPE = ::PyRawParser::FlatTypes::PIPE;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using __WS = ::PyRawParser::FlatTypes::__WS;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using FOR = ::PyRawParser::FlatTypes::FOR;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using COLON = ::PyRawParser::FlatTypes::COLON;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -9850,11 +10447,6 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using ARROW = ::PyRawParser::FlatTypes::ARROW;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
 		using CARET = ::PyRawParser::FlatTypes::CARET;
 	} // namespace Types
 } // namespace PyRawParser
@@ -9930,7 +10522,17 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
+		using IMPORT = ::PyRawParser::FlatTypes::IMPORT;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
 		using FLOOR_DIV = ::PyRawParser::FlatTypes::FLOOR_DIV;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using ARROW = ::PyRawParser::FlatTypes::ARROW;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -9970,372 +10572,7 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using annotated_assignment = ::PyRawParser::FlatTypes::annotated_assignment;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assert_stmt = ::PyRawParser::FlatTypes::assert_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assignment_op = ::PyRawParser::FlatTypes::assignment_op;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assignment_suffix = ::PyRawParser::FlatTypes::assignment_suffix;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assignment_tail = ::PyRawParser::FlatTypes::assignment_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assignment_target = ::PyRawParser::FlatTypes::assignment_target;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using assignment_value = ::PyRawParser::FlatTypes::assignment_value;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using atom = ::PyRawParser::FlatTypes::atom;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using attribute_suffix = ::PyRawParser::FlatTypes::attribute_suffix;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitand_tail = ::PyRawParser::FlatTypes::bitand_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitor_tail = ::PyRawParser::FlatTypes::bitor_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitwise_and = ::PyRawParser::FlatTypes::bitwise_and;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitwise_or = ::PyRawParser::FlatTypes::bitwise_or;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitwise_xor = ::PyRawParser::FlatTypes::bitwise_xor;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using bitxor_tail = ::PyRawParser::FlatTypes::bitxor_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using block = ::PyRawParser::FlatTypes::block;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using break_stmt = ::PyRawParser::FlatTypes::break_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using call_arg = ::PyRawParser::FlatTypes::call_arg;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using call_arg_tail = ::PyRawParser::FlatTypes::call_arg_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using call_args = ::PyRawParser::FlatTypes::call_args;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using call_suffix = ::PyRawParser::FlatTypes::call_suffix;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using class_bases = ::PyRawParser::FlatTypes::class_bases;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using class_def = ::PyRawParser::FlatTypes::class_def;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using class_header = ::PyRawParser::FlatTypes::class_header;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using compare_op = ::PyRawParser::FlatTypes::compare_op;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using compare_tail = ::PyRawParser::FlatTypes::compare_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using comparison = ::PyRawParser::FlatTypes::comparison;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using compound_stmt = ::PyRawParser::FlatTypes::compound_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using conditional_tail = ::PyRawParser::FlatTypes::conditional_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using conjunction = ::PyRawParser::FlatTypes::conjunction;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using continue_stmt = ::PyRawParser::FlatTypes::continue_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using decorated_def = ::PyRawParser::FlatTypes::decorated_def;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using decorator = ::PyRawParser::FlatTypes::decorator;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using decorators = ::PyRawParser::FlatTypes::decorators;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using def_header = ::PyRawParser::FlatTypes::def_header;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using del_stmt = ::PyRawParser::FlatTypes::del_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dict_expr = ::PyRawParser::FlatTypes::dict_expr;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dict_item = ::PyRawParser::FlatTypes::dict_item;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dict_item_tail = ::PyRawParser::FlatTypes::dict_item_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dict_items = ::PyRawParser::FlatTypes::dict_items;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using disjunction = ::PyRawParser::FlatTypes::disjunction;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dotted_as_name = ::PyRawParser::FlatTypes::dotted_as_name;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dotted_as_names = ::PyRawParser::FlatTypes::dotted_as_names;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using dotted_name = ::PyRawParser::FlatTypes::dotted_name;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using elif_clause = ::PyRawParser::FlatTypes::elif_clause;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using else_clause = ::PyRawParser::FlatTypes::else_clause;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using except_alias = ::PyRawParser::FlatTypes::except_alias;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using except_clause = ::PyRawParser::FlatTypes::except_clause;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using except_handlers = ::PyRawParser::FlatTypes::except_handlers;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using expr = ::PyRawParser::FlatTypes::expr;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using expr_list = ::PyRawParser::FlatTypes::expr_list;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using expr_stmt = ::PyRawParser::FlatTypes::expr_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using factor = ::PyRawParser::FlatTypes::factor;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using finally_clause = ::PyRawParser::FlatTypes::finally_clause;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using for_stmt = ::PyRawParser::FlatTypes::for_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using for_targets = ::PyRawParser::FlatTypes::for_targets;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using function_def = ::PyRawParser::FlatTypes::function_def;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using function_header = ::PyRawParser::FlatTypes::function_header;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using global_stmt = ::PyRawParser::FlatTypes::global_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using if_stmt = ::PyRawParser::FlatTypes::if_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_alias = ::PyRawParser::FlatTypes::import_alias;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_from = ::PyRawParser::FlatTypes::import_from;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_name = ::PyRawParser::FlatTypes::import_name;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_name_item = ::PyRawParser::FlatTypes::import_name_item;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_names = ::PyRawParser::FlatTypes::import_names;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_stmt = ::PyRawParser::FlatTypes::import_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using import_targets = ::PyRawParser::FlatTypes::import_targets;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using indented_block = ::PyRawParser::FlatTypes::indented_block;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using index_suffix = ::PyRawParser::FlatTypes::index_suffix;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using inversion = ::PyRawParser::FlatTypes::inversion;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using is_op = ::PyRawParser::FlatTypes::is_op;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using keyword_arg = ::PyRawParser::FlatTypes::keyword_arg;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using list_expr = ::PyRawParser::FlatTypes::list_expr;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using main = ::PyRawParser::FlatTypes::main;
+		using shift_tail = ::PyRawParser::FlatTypes::shift_tail;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -10345,137 +10582,17 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using not_in = ::PyRawParser::FlatTypes::not_in;
+		using import_name_item = ::PyRawParser::FlatTypes::import_name_item;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using not_inversion = ::PyRawParser::FlatTypes::not_inversion;
+		using import_targets = ::PyRawParser::FlatTypes::import_targets;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using or_tail = ::PyRawParser::FlatTypes::or_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parameter = ::PyRawParser::FlatTypes::parameter;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parameter_annotation = ::PyRawParser::FlatTypes::parameter_annotation;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parameter_default = ::PyRawParser::FlatTypes::parameter_default;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parameters = ::PyRawParser::FlatTypes::parameters;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parenthesized_content = ::PyRawParser::FlatTypes::parenthesized_content;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parenthesized_expr = ::PyRawParser::FlatTypes::parenthesized_expr;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using parenthesized_imports = ::PyRawParser::FlatTypes::parenthesized_imports;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using pass_stmt = ::PyRawParser::FlatTypes::pass_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using postfix = ::PyRawParser::FlatTypes::postfix;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using power = ::PyRawParser::FlatTypes::power;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using power_tail = ::PyRawParser::FlatTypes::power_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using primary = ::PyRawParser::FlatTypes::primary;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using raise_from = ::PyRawParser::FlatTypes::raise_from;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using raise_stmt = ::PyRawParser::FlatTypes::raise_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using relative_module = ::PyRawParser::FlatTypes::relative_module;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using return_annotation = ::PyRawParser::FlatTypes::return_annotation;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using return_stmt = ::PyRawParser::FlatTypes::return_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using shift_expr = ::PyRawParser::FlatTypes::shift_expr;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using shift_tail = ::PyRawParser::FlatTypes::shift_tail;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using simple_stmt = ::PyRawParser::FlatTypes::simple_stmt;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using simple_stmts = ::PyRawParser::FlatTypes::simple_stmts;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using statement = ::PyRawParser::FlatTypes::statement;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using sum = ::PyRawParser::FlatTypes::sum;
-	} // namespace Types
-} // namespace PyRawParser
-namespace PyRawParser {
-	namespace Types {
-		using sum_tail = ::PyRawParser::FlatTypes::sum_tail;
+		using dotted_as_name = ::PyRawParser::FlatTypes::dotted_as_name;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -10485,7 +10602,132 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using term_tail = ::PyRawParser::FlatTypes::term_tail;
+		using import_stmt = ::PyRawParser::FlatTypes::import_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using except_alias = ::PyRawParser::FlatTypes::except_alias;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using with_as = ::PyRawParser::FlatTypes::with_as;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assignment_tail = ::PyRawParser::FlatTypes::assignment_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using with_items = ::PyRawParser::FlatTypes::with_items;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using with_stmt = ::PyRawParser::FlatTypes::with_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using class_bases = ::PyRawParser::FlatTypes::class_bases;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using class_header = ::PyRawParser::FlatTypes::class_header;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using decorator = ::PyRawParser::FlatTypes::decorator;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parameter_default = ::PyRawParser::FlatTypes::parameter_default;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parameter = ::PyRawParser::FlatTypes::parameter;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using return_annotation = ::PyRawParser::FlatTypes::return_annotation;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using function_def = ::PyRawParser::FlatTypes::function_def;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using for_targets = ::PyRawParser::FlatTypes::for_targets;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using for_stmt = ::PyRawParser::FlatTypes::for_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using else_clause = ::PyRawParser::FlatTypes::else_clause;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using elif_clause = ::PyRawParser::FlatTypes::elif_clause;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using indented_block = ::PyRawParser::FlatTypes::indented_block;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dict_expr = ::PyRawParser::FlatTypes::dict_expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using decorated_def = ::PyRawParser::FlatTypes::decorated_def;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assert_stmt = ::PyRawParser::FlatTypes::assert_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using break_stmt = ::PyRawParser::FlatTypes::break_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dotted_as_names = ::PyRawParser::FlatTypes::dotted_as_names;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using pass_stmt = ::PyRawParser::FlatTypes::pass_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using del_stmt = ::PyRawParser::FlatTypes::del_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using raise_from = ::PyRawParser::FlatTypes::raise_from;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -10495,7 +10737,162 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using try_tail = ::PyRawParser::FlatTypes::try_tail;
+		using return_stmt = ::PyRawParser::FlatTypes::return_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assignment_suffix = ::PyRawParser::FlatTypes::assignment_suffix;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using inversion = ::PyRawParser::FlatTypes::inversion;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using import_name = ::PyRawParser::FlatTypes::import_name;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assignment_target = ::PyRawParser::FlatTypes::assignment_target;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using index_suffix = ::PyRawParser::FlatTypes::index_suffix;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using annotated_assignment = ::PyRawParser::FlatTypes::annotated_assignment;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assignment_value = ::PyRawParser::FlatTypes::assignment_value;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using simple_stmt = ::PyRawParser::FlatTypes::simple_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using finally_clause = ::PyRawParser::FlatTypes::finally_clause;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using function_header = ::PyRawParser::FlatTypes::function_header;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using import_from = ::PyRawParser::FlatTypes::import_from;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitwise_and = ::PyRawParser::FlatTypes::bitwise_and;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using raise_stmt = ::PyRawParser::FlatTypes::raise_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using conjunction = ::PyRawParser::FlatTypes::conjunction;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using sum = ::PyRawParser::FlatTypes::sum;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using main = ::PyRawParser::FlatTypes::main;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitwise_xor = ::PyRawParser::FlatTypes::bitwise_xor;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parenthesized_imports = ::PyRawParser::FlatTypes::parenthesized_imports;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using global_stmt = ::PyRawParser::FlatTypes::global_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parenthesized_expr = ::PyRawParser::FlatTypes::parenthesized_expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using or_tail = ::PyRawParser::FlatTypes::or_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using relative_module = ::PyRawParser::FlatTypes::relative_module;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using compare_op = ::PyRawParser::FlatTypes::compare_op;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using continue_stmt = ::PyRawParser::FlatTypes::continue_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dict_item_tail = ::PyRawParser::FlatTypes::dict_item_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parameter_annotation = ::PyRawParser::FlatTypes::parameter_annotation;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using statement = ::PyRawParser::FlatTypes::statement;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dict_item = ::PyRawParser::FlatTypes::dict_item;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using keyword_arg = ::PyRawParser::FlatTypes::keyword_arg;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parenthesized_content = ::PyRawParser::FlatTypes::parenthesized_content;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using call_args = ::PyRawParser::FlatTypes::call_args;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -10510,17 +10907,37 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using unary_expr = ::PyRawParser::FlatTypes::unary_expr;
+		using call_arg_tail = ::PyRawParser::FlatTypes::call_arg_tail;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using while_stmt = ::PyRawParser::FlatTypes::while_stmt;
+		using power = ::PyRawParser::FlatTypes::power;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using with_as = ::PyRawParser::FlatTypes::with_as;
+		using primary = ::PyRawParser::FlatTypes::primary;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using import_alias = ::PyRawParser::FlatTypes::import_alias;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using attribute_suffix = ::PyRawParser::FlatTypes::attribute_suffix;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using assignment_op = ::PyRawParser::FlatTypes::assignment_op;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitand_tail = ::PyRawParser::FlatTypes::bitand_tail;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
@@ -10530,19 +10947,207 @@ namespace PyRawParser {
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using with_items = ::PyRawParser::FlatTypes::with_items;
+		using while_stmt = ::PyRawParser::FlatTypes::while_stmt;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
 	namespace Types {
-		using with_stmt = ::PyRawParser::FlatTypes::with_stmt;
+		using import_names = ::PyRawParser::FlatTypes::import_names;
 	} // namespace Types
 } // namespace PyRawParser
 namespace PyRawParser {
-	using Token = ::ISPA_STD::RawToken<Types::IMPORT, Types::TILDE, Types::LSHIFT_ASSIGN, Types::BREAK, Types::NONLOCAL, Types::GLOBAL, Types::ELIF, Types::ASSERT, Types::COMMENT, Types::PASS, Types::DEF, Types::FINALLY, Types::WHILE, Types::WITH, Types::MATMUL_ASSIGN, Types::ASYNC, Types::CONTINUE, Types::RAISE, Types::PERCENT_ASSIGN, Types::PLUS_ASSIGN, Types::STAR_ASSIGN, Types::INDENT, Types::DEL, Types::IS, Types::IN, Types::ELSE, Types::IF, Types::NOT, Types::ASSIGN, Types::MATMUL, Types::COMMA, Types::RPAREN, Types::NEWLINE, Types::RBRACE, Types::STRING, Types::SEMICOLON, Types::FLOOR_DIV_ASSIGN, Types::TRUE_BOOL, Types::SLASH_ASSIGN, Types::TRY, Types::POWER_ASSIGN, Types::POWER, Types::PIPE, Types::__WS, Types::FOR, Types::COLON, Types::EXCEPT, Types::NONE_V, Types::DEDENT, Types::NE, Types::LT, Types::LE, Types::STAR, Types::SLASH, Types::LBRACKET, Types::GT, Types::PLUS, Types::LSHIFT, Types::GE, Types::FALSE_BOOL, Types::EQ, Types::ARROW, Types::CARET, Types::AND, Types::NUMBER, Types::AS, Types::MINUS_ASSIGN, Types::LPAREN, Types::ID, Types::AMP, Types::AMP_ASSIGN, Types::CLASS, Types::MINUS, Types::DOT, Types::CARET_ASSIGN, Types::RSHIFT_ASSIGN, Types::PERCENT, Types::FLOOR_DIV, Types::OR, Types::PIPE_ASSIGN, Types::RSHIFT, Types::RETURN, Types::FROM, Types::LBRACE, Types::RBRACKET>;
+	namespace Types {
+		using if_stmt = ::PyRawParser::FlatTypes::if_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitxor_tail = ::PyRawParser::FlatTypes::bitxor_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using postfix = ::PyRawParser::FlatTypes::postfix;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using list_expr = ::PyRawParser::FlatTypes::list_expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using simple_stmts = ::PyRawParser::FlatTypes::simple_stmts;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using sum_tail = ::PyRawParser::FlatTypes::sum_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using is_op = ::PyRawParser::FlatTypes::is_op;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using call_suffix = ::PyRawParser::FlatTypes::call_suffix;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using class_def = ::PyRawParser::FlatTypes::class_def;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using term_tail = ::PyRawParser::FlatTypes::term_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using except_clause = ::PyRawParser::FlatTypes::except_clause;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using power_tail = ::PyRawParser::FlatTypes::power_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using expr = ::PyRawParser::FlatTypes::expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using shift_expr = ::PyRawParser::FlatTypes::shift_expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using block = ::PyRawParser::FlatTypes::block;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitor_tail = ::PyRawParser::FlatTypes::bitor_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using factor = ::PyRawParser::FlatTypes::factor;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using expr_list = ::PyRawParser::FlatTypes::expr_list;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dotted_name = ::PyRawParser::FlatTypes::dotted_name;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using expr_stmt = ::PyRawParser::FlatTypes::expr_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using bitwise_or = ::PyRawParser::FlatTypes::bitwise_or;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using compare_tail = ::PyRawParser::FlatTypes::compare_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using disjunction = ::PyRawParser::FlatTypes::disjunction;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using except_handlers = ::PyRawParser::FlatTypes::except_handlers;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using comparison = ::PyRawParser::FlatTypes::comparison;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using not_inversion = ::PyRawParser::FlatTypes::not_inversion;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using compound_stmt = ::PyRawParser::FlatTypes::compound_stmt;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using unary_expr = ::PyRawParser::FlatTypes::unary_expr;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using try_tail = ::PyRawParser::FlatTypes::try_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using atom = ::PyRawParser::FlatTypes::atom;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using def_header = ::PyRawParser::FlatTypes::def_header;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using not_in = ::PyRawParser::FlatTypes::not_in;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using parameters = ::PyRawParser::FlatTypes::parameters;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using conditional_tail = ::PyRawParser::FlatTypes::conditional_tail;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using call_arg = ::PyRawParser::FlatTypes::call_arg;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using decorators = ::PyRawParser::FlatTypes::decorators;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	namespace Types {
+		using dict_items = ::PyRawParser::FlatTypes::dict_items;
+	} // namespace Types
+} // namespace PyRawParser
+namespace PyRawParser {
+	using Token = ::ISPA_STD::RawToken<Types::INDENT, Types::DEL, Types::IS, Types::IN, Types::ELSE, Types::NOT, Types::ASSIGN, Types::COMMA, Types::RPAREN, Types::SEMICOLON, Types::NEWLINE, Types::TILDE, Types::LSHIFT_ASSIGN, Types::BREAK, Types::NONLOCAL, Types::GLOBAL, Types::ELIF, Types::ASSERT, Types::COMMENT, Types::PASS, Types::DEF, Types::FINALLY, Types::WHILE, Types::WITH, Types::MATMUL_ASSIGN, Types::ASYNC, Types::COLON, Types::__WS, Types::FOR, Types::CONTINUE, Types::RAISE, Types::IF, Types::MATMUL, Types::PERCENT_ASSIGN, Types::PLUS_ASSIGN, Types::STAR_ASSIGN, Types::RBRACE, Types::STRING, Types::FLOOR_DIV_ASSIGN, Types::TRUE_BOOL, Types::SLASH_ASSIGN, Types::TRY, Types::POWER_ASSIGN, Types::POWER, Types::PIPE, Types::EXCEPT, Types::NONE_V, Types::DEDENT, Types::NE, Types::LT, Types::LE, Types::STAR, Types::SLASH, Types::LBRACKET, Types::GT, Types::PLUS, Types::LSHIFT, Types::GE, Types::FALSE_BOOL, Types::EQ, Types::CARET, Types::AND, Types::NUMBER, Types::AS, Types::MINUS_ASSIGN, Types::LPAREN, Types::ID, Types::AMP, Types::AMP_ASSIGN, Types::CLASS, Types::MINUS, Types::DOT, Types::CARET_ASSIGN, Types::RSHIFT_ASSIGN, Types::PERCENT, Types::IMPORT, Types::FLOOR_DIV, Types::ARROW, Types::OR, Types::PIPE_ASSIGN, Types::RSHIFT, Types::RETURN, Types::FROM, Types::LBRACE, Types::RBRACKET>;
 } // namespace PyRawParser
 namespace PyRawParser {
 	class Lexer : public ::ISPA_STD::Lexer_base<Token> {
+	public:
+		auto clone() const -> std::shared_ptr<::ISPA_STD::Lexer_base<Token>> override;
+	private:
 		static ::ISPA_STD::DFA::API::CharToClass char_class_table;
 		static ::ISPA_STD::DFA::API::Table<178, 58> dfa_table;
 		static ::ISPA_STD::DFA::API::Table<202, 4> action_table;
@@ -10564,133 +11169,133 @@ namespace PyRawParser {
 			return std::array<std::string_view, 0>{{}};
 		}
 		constexpr auto methods() {
-			return std::make_tuple(&Lexer::makeToken);
+			return std::make_tuple(&Lexer::clone, &Lexer::makeToken);
 		}
 		constexpr auto methods() const {
-			return std::make_tuple(&Lexer::makeToken);
+			return std::make_tuple(&Lexer::clone, &Lexer::makeToken);
 		}
 		static constexpr auto methods_str() {
-			return std::array<std::string_view, 1>{{"makeToken"}};
+			return std::array<std::string_view, 2>{{"clone", "makeToken"}};
 		}
 	};
 } // namespace PyRawParser
 namespace PyRawParser {
 	class Parser : public ::ISPA_STD::LLParser<Types::main, Token> {
 	protected:
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_op(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_target(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_value(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto atom(IT pos) -> ::ISPA_STD::MatchResult<Types::atom, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto attribute_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitand_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_and(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_or(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_xor(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitxor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto block(IT pos) -> ::ISPA_STD::MatchResult<Types::block, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto break_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_arg_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_args(IT pos) -> ::ISPA_STD::MatchResult<Types::call_args, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_bases(IT pos) -> ::ISPA_STD::MatchResult<Types::class_bases, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_def(IT pos) -> ::ISPA_STD::MatchResult<Types::class_def, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_header(IT pos) -> ::ISPA_STD::MatchResult<Types::class_header, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compare_op(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_op, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compare_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto comparison(IT pos) -> ::ISPA_STD::MatchResult<Types::comparison, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compound_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto conditional_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto conjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::conjunction, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto continue_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorated_def(IT pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorator(IT pos) -> ::ISPA_STD::MatchResult<Types::decorator, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorators(IT pos) -> ::ISPA_STD::MatchResult<Types::decorators, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto def_header(IT pos) -> ::ISPA_STD::MatchResult<Types::def_header, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto del_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_item(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_item_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_items(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_items, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto disjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::disjunction, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_as_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_as_names(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto elif_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto else_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::else_clause, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::except_alias, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::except_clause, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_handlers(IT pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr_list(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto factor(IT pos) -> ::ISPA_STD::MatchResult<Types::factor, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto finally_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto for_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto for_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::for_targets, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto function_def(IT pos) -> ::ISPA_STD::MatchResult<Types::function_def, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto function_header(IT pos) -> ::ISPA_STD::MatchResult<Types::function_header, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto global_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto if_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::import_alias, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_from(IT pos) -> ::ISPA_STD::MatchResult<Types::import_from, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_name(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_name_item(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_names(IT pos) -> ::ISPA_STD::MatchResult<Types::import_names, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::import_targets, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto indented_block(IT pos) -> ::ISPA_STD::MatchResult<Types::indented_block, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto index_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::inversion, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto is_op(IT pos) -> ::ISPA_STD::MatchResult<Types::is_op, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto keyword_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto list_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::list_expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto nonlocal_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto not_in(IT pos) -> ::ISPA_STD::MatchResult<Types::not_in, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto not_inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto or_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::or_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter_default(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameters(IT pos) -> ::ISPA_STD::MatchResult<Types::parameters, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_content(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_imports(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto pass_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto postfix(IT pos) -> ::ISPA_STD::MatchResult<Types::postfix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto power(IT pos) -> ::ISPA_STD::MatchResult<Types::power, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto power_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::power_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto primary(IT pos) -> ::ISPA_STD::MatchResult<Types::primary, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto raise_from(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_from, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto raise_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto relative_module(IT pos) -> ::ISPA_STD::MatchResult<Types::relative_module, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto return_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto return_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto shift_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto shift_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto simple_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto simple_stmts(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto statement(IT pos) -> ::ISPA_STD::MatchResult<Types::statement, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto sum(IT pos) -> ::ISPA_STD::MatchResult<Types::sum, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto sum_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto nonlocal_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::nonlocal_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_name_item(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name_item, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::import_targets, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_as_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_name, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto term(IT pos) -> ::ISPA_STD::MatchResult<Types::term, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto term_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::term_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto try_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto try_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::try_tail, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto tuple_elements(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto tuple_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto unary_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto while_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::import_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::except_alias, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto with_as(IT pos) -> ::ISPA_STD::MatchResult<Types::with_as, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto with_item(IT pos) -> ::ISPA_STD::MatchResult<Types::with_item, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_tail, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto with_items(IT pos) -> ::ISPA_STD::MatchResult<Types::with_items, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto with_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::with_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_bases(IT pos) -> ::ISPA_STD::MatchResult<Types::class_bases, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_header(IT pos) -> ::ISPA_STD::MatchResult<Types::class_header, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorator(IT pos) -> ::ISPA_STD::MatchResult<Types::decorator, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter_default(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_default, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto return_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::return_annotation, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto function_def(IT pos) -> ::ISPA_STD::MatchResult<Types::function_def, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto for_targets(IT pos) -> ::ISPA_STD::MatchResult<Types::for_targets, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto for_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::for_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto else_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::else_clause, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto elif_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::elif_clause, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto indented_block(IT pos) -> ::ISPA_STD::MatchResult<Types::indented_block, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorated_def(IT pos) -> ::ISPA_STD::MatchResult<Types::decorated_def, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assert_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::assert_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto break_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::break_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_as_names(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_as_names, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto pass_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::pass_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto del_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::del_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto raise_from(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_from, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto try_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::try_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto return_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::return_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_suffix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::inversion, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_name(IT pos) -> ::ISPA_STD::MatchResult<Types::import_name, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_target(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_target, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto index_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::index_suffix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto annotated_assignment(IT pos) -> ::ISPA_STD::MatchResult<Types::annotated_assignment, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_value(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_value, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto simple_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto finally_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::finally_clause, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto function_header(IT pos) -> ::ISPA_STD::MatchResult<Types::function_header, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_from(IT pos) -> ::ISPA_STD::MatchResult<Types::import_from, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_and(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_and, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto raise_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::raise_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto conjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::conjunction, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto sum(IT pos) -> ::ISPA_STD::MatchResult<Types::sum, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_xor(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_xor, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_imports(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_imports, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto global_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::global_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto or_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::or_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto relative_module(IT pos) -> ::ISPA_STD::MatchResult<Types::relative_module, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compare_op(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_op, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto continue_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::continue_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_item_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameter_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::parameter_annotation, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto statement(IT pos) -> ::ISPA_STD::MatchResult<Types::statement, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_item(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_item, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto keyword_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::keyword_arg, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parenthesized_content(IT pos) -> ::ISPA_STD::MatchResult<Types::parenthesized_content, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_args(IT pos) -> ::ISPA_STD::MatchResult<Types::call_args, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto tuple_elements(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_elements, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto tuple_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::tuple_suffix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_arg_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto power(IT pos) -> ::ISPA_STD::MatchResult<Types::power, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto primary(IT pos) -> ::ISPA_STD::MatchResult<Types::primary, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_alias(IT pos) -> ::ISPA_STD::MatchResult<Types::import_alias, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto attribute_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::attribute_suffix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto assignment_op(IT pos) -> ::ISPA_STD::MatchResult<Types::assignment_op, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitand_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitand_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto with_item(IT pos) -> ::ISPA_STD::MatchResult<Types::with_item, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto while_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::while_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto import_names(IT pos) -> ::ISPA_STD::MatchResult<Types::import_names, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto if_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::if_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitxor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitxor_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto postfix(IT pos) -> ::ISPA_STD::MatchResult<Types::postfix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto list_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::list_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto simple_stmts(IT pos) -> ::ISPA_STD::MatchResult<Types::simple_stmts, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto sum_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::sum_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto is_op(IT pos) -> ::ISPA_STD::MatchResult<Types::is_op, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_suffix(IT pos) -> ::ISPA_STD::MatchResult<Types::call_suffix, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto class_def(IT pos) -> ::ISPA_STD::MatchResult<Types::class_def, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto term_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::term_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_clause(IT pos) -> ::ISPA_STD::MatchResult<Types::except_clause, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto power_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::power_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr(IT pos) -> ::ISPA_STD::MatchResult<Types::expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto shift_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::shift_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto block(IT pos) -> ::ISPA_STD::MatchResult<Types::block, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitor_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::bitor_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto factor(IT pos) -> ::ISPA_STD::MatchResult<Types::factor, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr_list(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_list, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dotted_name(IT pos) -> ::ISPA_STD::MatchResult<Types::dotted_name, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto expr_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::expr_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto bitwise_or(IT pos) -> ::ISPA_STD::MatchResult<Types::bitwise_or, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compare_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::compare_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto disjunction(IT pos) -> ::ISPA_STD::MatchResult<Types::disjunction, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto except_handlers(IT pos) -> ::ISPA_STD::MatchResult<Types::except_handlers, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto comparison(IT pos) -> ::ISPA_STD::MatchResult<Types::comparison, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto not_inversion(IT pos) -> ::ISPA_STD::MatchResult<Types::not_inversion, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto compound_stmt(IT pos) -> ::ISPA_STD::MatchResult<Types::compound_stmt, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto unary_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::unary_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto try_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::try_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto atom(IT pos) -> ::ISPA_STD::MatchResult<Types::atom, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto def_header(IT pos) -> ::ISPA_STD::MatchResult<Types::def_header, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto not_in(IT pos) -> ::ISPA_STD::MatchResult<Types::not_in, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto parameters(IT pos) -> ::ISPA_STD::MatchResult<Types::parameters, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto conditional_tail(IT pos) -> ::ISPA_STD::MatchResult<Types::conditional_tail, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto call_arg(IT pos) -> ::ISPA_STD::MatchResult<Types::call_arg, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto decorators(IT pos) -> ::ISPA_STD::MatchResult<Types::decorators, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::PyRawParser::Lexer::lazy_iterator>>> auto dict_items(IT pos) -> ::ISPA_STD::MatchResult<Types::dict_items, IT>;
 	public:
 		auto parseFromTokens() -> void override;
 		auto lazyParse() -> void override;
@@ -10714,6 +11319,1003 @@ namespace PyRawParser {
 		}
 	};
 } // namespace PyRawParser
+
+#include <ispastdlib/external.hpp>
+namespace PyRawParser::Exports {
+struct symbol_0 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::AMP;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_1 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::AMP_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_2 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::AND;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_3 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ARROW;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_4 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::AS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_5 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ASSERT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_6 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_7 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ASYNC;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_8 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::BREAK;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_9 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::CARET;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_10 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::CARET_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_11 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::CLASS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_12 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::COLON;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_13 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::COMMA;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_14 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::COMMENT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_15 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::CONTINUE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_16 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::DEDENT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_17 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::DEF;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_18 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::DEL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_19 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::DOT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_20 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ELIF;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_21 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ELSE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_22 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::EQ;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_23 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::EXCEPT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_24 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FALSE_BOOL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_25 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FINALLY;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_26 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FLOOR_DIV;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_27 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FLOOR_DIV_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_28 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FOR;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_29 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::FROM;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_30 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::GE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_31 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::GLOBAL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_32 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::GT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_33 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::ID;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_34 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::IF;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_35 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::IMPORT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_36 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::IN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_37 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::INDENT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_38 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::IS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_39 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LBRACE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_40 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LBRACKET;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_41 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_42 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LPAREN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_43 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LSHIFT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_44 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LSHIFT_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_45 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::LT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_46 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::MATMUL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_47 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::MATMUL_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_48 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::MINUS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_49 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::MINUS_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_50 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_51 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NEWLINE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_52 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NONE_V;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_53 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NONLOCAL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_54 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NOT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_55 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::NUMBER;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_56 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::OR;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_57 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PASS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_58 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PERCENT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_59 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PERCENT_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_60 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PIPE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_61 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PIPE_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_62 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PLUS;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_63 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::PLUS_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_64 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::POWER;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_65 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::POWER_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_66 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RAISE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_67 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RBRACE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_68 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RBRACKET;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_69 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RETURN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_70 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RPAREN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_71 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RSHIFT;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_72 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::RSHIFT_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_73 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::SEMICOLON;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_74 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::SLASH;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_75 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::SLASH_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_76 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::STAR;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_77 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::STAR_ASSIGN;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_78 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::STRING;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_79 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::TILDE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_80 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::TRUE_BOOL;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_81 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::TRY;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_82 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::WHILE;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_83 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::WITH;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_84 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::annotated_assignment;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_85 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assert_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_86 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assignment_op;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_87 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assignment_suffix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_88 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assignment_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_89 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assignment_target;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_90 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::assignment_value;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_91 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::atom;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_92 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::attribute_suffix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_93 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitand_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_94 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitor_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_95 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitwise_and;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_96 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitwise_or;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_97 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitwise_xor;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_98 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::bitxor_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_99 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::block;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_100 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::break_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_101 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::call_arg;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_102 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::call_arg_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_103 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::call_args;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_104 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::call_suffix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_105 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::class_bases;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_106 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::class_def;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_107 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::class_header;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_108 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::compare_op;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_109 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::compare_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_110 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::comparison;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_111 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::compound_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_112 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::conditional_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_113 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::conjunction;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_114 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::continue_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_115 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::decorated_def;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_116 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::decorator;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_117 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::decorators;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_118 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::def_header;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_119 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::del_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_120 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dict_expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_121 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dict_item;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_122 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dict_item_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_123 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dict_items;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_124 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::disjunction;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_125 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dotted_as_name;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_126 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dotted_as_names;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_127 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::dotted_name;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_128 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::elif_clause;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_129 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::else_clause;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_130 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::except_alias;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_131 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::except_clause;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_132 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::except_handlers;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_133 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_134 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::expr_list;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_135 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::expr_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_136 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::factor;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_137 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::finally_clause;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_138 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::for_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_139 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::for_targets;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_140 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::function_def;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_141 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::function_header;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_142 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::global_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_143 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::if_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_144 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_alias;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_145 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_from;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_146 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_name;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_147 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_name_item;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_148 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_names;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_149 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_150 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::import_targets;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_151 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::indented_block;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_152 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::index_suffix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_153 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::inversion;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_154 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::is_op;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_155 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::keyword_arg;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_156 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::list_expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_157 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::main;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_158 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::nonlocal_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_159 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::not_in;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_160 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::not_inversion;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_161 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::or_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_162 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parameter;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_163 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parameter_annotation;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_164 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parameter_default;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_165 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parameters;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_166 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parenthesized_content;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_167 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parenthesized_expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_168 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::parenthesized_imports;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_169 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::pass_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_170 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::postfix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_171 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::power;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_172 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::power_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_173 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::primary;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_174 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::raise_from;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_175 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::raise_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_176 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::relative_module;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_177 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::return_annotation;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_178 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::return_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_179 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::shift_expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_180 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::shift_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_181 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::simple_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_182 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::simple_stmts;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_183 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::statement;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_184 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::sum;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_185 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::sum_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_186 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::term;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_187 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::term_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_188 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::try_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_189 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::try_tail;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_190 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::tuple_elements;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_191 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::tuple_suffix;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_192 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::unary_expr;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_193 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::while_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_194 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::with_as;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_195 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::with_item;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_196 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::with_items;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_197 : ::PyRawParser::Parser {
+using node_type = ::PyRawParser::Types::with_stmt;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+}
+
+#pragma once
+#include <PyRawParser.h>
 
 // External entry points use the parser's original node types and implementation.
 #include <ispastdlib/external.hpp>
