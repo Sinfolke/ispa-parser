@@ -445,8 +445,8 @@ private:
         if (k == "TRUE_BOOL") return mk(n->position, pyast::Constant{ConstantKind::Bool, "True"});
         if (k == "FALSE_BOOL") return mk(n->position, pyast::Constant{ConstantKind::Bool, "False"});
         if (k == "NONE_V") return mk(n->position, pyast::Constant{ConstantKind::None, "None"});
-        if (k == "parenthesized_expr") {
-            auto content = value_of(n);
+        if (k == "parenthesized_expr" || k == "parenthesized_content") {
+            auto content = k == "parenthesized_content" ? n : value_of(n);
             if (absent(content)) return mk(n->position, pyast::Tuple{});
             auto first = expr(field(content, "first"));
             auto suffix = field(content, "rest");

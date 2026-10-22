@@ -7,6 +7,7 @@
 #ifndef ISPA_STD_LIB_CPP
 #define ISPA_STD_LIB_CPP
 #include <ispastdlib/core.hpp>
+#include <ispastdlib/python_collections.hpp>
 #include <ispastdlib/variant_io.hpp>
 #include <ispastdlib/span.hpp>
 #include <ispastdlib/traits.hpp>

@@ -5,6 +5,25 @@ import constants;
 import std;
 
 namespace {
+    std::set<std::string> pythonClasses(const LangAPI::Declarations& declarations, const std::string& prefix = "") {
+        std::set<std::string> names;
+        for (const auto& declaration : declarations) {
+            if (declaration.isNamespace()) {
+                const auto& ns = declaration.getNamespace();
+                const auto nested = pythonClasses(ns.declarations, prefix + ns.name + ".");
+                names.insert(nested.begin(), nested.end());
+            } else if (declaration.isClass()) {
+                const auto& cls = declaration.getClass();
+                std::string name = prefix;
+                for (const auto& part : cls.name.path) if (const auto* value = std::get_if<std::string>(&part)) {
+                    if (name.size() > prefix.size()) name += ".";
+                    name += *value;
+                }
+                names.insert(name);
+            }
+        }
+        return names;
+    }
     // A repeated production may itself own indentation/newline tokens. Do not
     // consume its separator before entering that production on the next pass.
     bool explicitWhitespaceBoundary(const AST::Tree& tree, const AST::RuleMember& member,
@@ -201,7 +220,7 @@ auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
     const auto capture_begin = fun_ctx->captures.size();
     Parser::LowerMeta meta;
     for (const auto& feature : mem.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) {
-        for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals)) push(statement);
+        for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals, false, pythonClasses(tree->getPythonDeclarations()), &fun_ctx->action_objects)) push(statement);
     }
     if (isWhitespaceRef(mem)) {
         const auto& members = tree->getTreeMap().at(fun_ctx->rule_name).rule_members;
@@ -312,7 +331,8 @@ auto MemLower::failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression
                 body.push_back(LangAPI::Variable{.name = "ispa_action_" + block->parameters[i], .type = LangAPI::Type{LangAPI::ValueType::Undef}, .value = symbol(temporary)});
                 locals.insert(block->parameters[i]);
             }
-            const auto code = convertPythonAction(block->action, locals, true);
+            auto objects = fun_ctx->action_objects;
+            const auto code = convertPythonAction(block->action, locals, true, pythonClasses(tree->getPythonDeclarations()), &objects);
             body.insert(body.end(), code.begin(), code.end());
             callback.statements.push_back(LangAPI::If{LangAPI::Bool::createExpression(LangAPI::Bool{.value = true}), std::move(body)});
         }

@@ -6585,7 +6585,7 @@ namespace PyRawParser {
 namespace PyRawParser {
 	namespace FlatTypes {
 		struct index_suffix {
-			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::expr>> value;
+			::ISPA_STD::Node<std::shared_ptr<::PyRawParser::FlatTypes::parenthesized_content>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;

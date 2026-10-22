@@ -26,6 +26,9 @@ la::Symbol pythonSymbol(const std::string& name) {
 struct PythonConverter {
     std::set<std::string> locals;
     bool action_context = false, failure_context = false;
+    std::string self_name;
+    std::set<std::string> class_names, objects;
+    std::map<std::string, la::Type> local_types;
     std::string localName(const std::string& name) const {
         return action_context && locals.contains(name) ? "ispa_action_" + name : name;
     }
@@ -71,22 +74,79 @@ struct PythonConverter {
             if (n->id == "float") return la::Type{la::ValueType::Float};
             if (n->id == "bool") return la::Type{la::ValueType::Bool};
             if (n->id == "str") return la::Type{la::ValueType::String};
-            return la::Type{la::Symbol{n->id}};
+            return la::Type{pythonSymbol(n->id)};
+        }
+        if (auto sub = p->template get<py::Subscript>(); sub && sub->value) {
+            auto name = sub->value->template get<py::Name>();
+            if (name && name->id == "list") return la::Type{la::ValueType::Array, type(sub->slice)};
+            if (name && name->id == "dict") {
+                auto args = sub->slice ? sub->slice->template get<py::Tuple>() : nullptr;
+                if (!args || args->elts.size() != 2) unsupported(p->pos, "dict requires key and value types");
+                return la::Type{la::ValueType::Map, type(args->elts[0]), type(args->elts[1])};
+            }
+            if (name && (name->id.starts_with("ISPA_STD.") || name->id.starts_with("__ispa_parser__."))) {
+                la::Type result{pythonSymbol(name->id)};
+                if (auto args = sub->slice ? sub->slice->template get<py::Tuple>() : nullptr) {
+                    for (const auto& arg : args->elts) result.template_parameters.emplace_back(type(arg));
+                } else result.template_parameters.emplace_back(type(sub->slice));
+                return result;
+            }
         }
         if (auto c = p->template get<py::Constant>(); c && c->kind == py::ConstantKind::None)
             return la::Type{la::ValueType::Void};
         unsupported(p->pos, "unsupported type annotation");
+    }
+    bool object(const py::ExprPtr& value) const {
+        if (!value) return false;
+        if (auto n = value->template get<py::Name>()) return objects.contains(n->id) || class_names.contains(n->id) || (action_context && n->id == "ctx");
+        if (auto c = value->template get<py::Call>(); c && c->func)
+            if (auto n = c->func->template get<py::Name>()) return class_names.contains(n->id);
+        return false;
+    }
+    la::Type inferred(const py::ExprPtr& value) {
+        if (!value) return la::Type{la::ValueType::Undef};
+        if (auto n = value->template get<py::Name>()) {
+            if (auto found = local_types.find(n->id); found != local_types.end()) return found->second;
+        }
+        if (auto c = value->template get<py::Constant>()) {
+            switch (c->kind) {
+                case py::ConstantKind::Int: return la::Type{la::ValueType::Int};
+                case py::ConstantKind::Float: return la::Type{la::ValueType::Float};
+                case py::ConstantKind::Bool: return la::Type{la::ValueType::Bool};
+                case py::ConstantKind::Str: return la::Type{la::ValueType::String};
+                default: break;
+            }
+        }
+        if (auto list = value->template get<py::List>(); list && !list->elts.empty())
+            return la::Type{la::ValueType::Array, inferred(list->elts.front())};
+        if (auto dict = value->template get<py::Dict>(); dict && !dict->keys.empty())
+            return la::Type{la::ValueType::Map, inferred(dict->keys.front()), inferred(dict->values.front())};
+        return la::Type{la::ValueType::Undef};
+    }
+    la::Expression initializer(const py::ExprPtr& value, const la::Type& expected) {
+        auto result = expr(value);
+        if (result.size() == 1 && result.front().isRvalue()) {
+            auto& literal = result.front().getRValue();
+            if (literal.isArray() || literal.isMap()) {
+                decltype(la::Array::template_parameters) params;
+                for (const auto& item : expected.template_parameters) if (auto t = std::get_if<la::Type>(&item))
+                    params.push_back(std::make_shared<la::Type>(*t));
+                if (literal.isArray()) literal.getArray().template_parameters = params;
+                else literal.getMap().template_parameters = params;
+            }
+        }
+        return result;
     }
     std::variant<la::Symbol, la::StorageSymbol> target(const py::ExprPtr& p) {
         if (action_context) {
             const py::Expr* root = p.get();
             const py::Attribute* property = nullptr;
             while (root) {
-                if (auto a = root->get<py::Attribute>()) { property = a; root = a->value.get(); }
-                else if (auto s = root->get<py::Subscript>()) root = s->value.get();
+                if (auto a = root->template get<py::Attribute>()) { property = a; root = a->value.get(); }
+                else if (auto s = root->template get<py::Subscript>()) root = s->value.get();
                 else break;
             }
-            if (root) if (auto n = root->get<py::Name>(); n && n->id == "ctx") {
+            if (root) if (auto n = root->template get<py::Name>(); n && n->id == "ctx") {
                 if (!property || (property->attr != "pos" && property->attr != "ast"))
                     unsupported(p->pos, "ctx and its metadata are read-only; only ctx.pos and ctx.ast are writable");
             }
@@ -102,7 +162,7 @@ struct PythonConverter {
     la::Expression expr(const py::Expr& e) {
         return std::visit([&](const auto& x) -> la::Expression {
             using T = std::decay_t<decltype(x)>;
-            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(pythonSymbol(localName(x.id)));
+            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(pythonSymbol(x.id == self_name ? "__ispa_python_self" : localName(x.id)));
             else if constexpr (std::is_same_v<T, py::Constant>) {
                 switch (x.kind) {
                     case py::ConstantKind::Bool: return la::Bool::createExpression(la::Bool{.value = x.value == "True"});
@@ -164,6 +224,73 @@ struct PythonConverter {
                 else s.path.emplace_back(la::StorageOffset{.offset = expr(x.slice)});
                 return la::StorageSymbol::createExpression(s);
             } else if constexpr (std::is_same_v<T, py::Call>) {
+                if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr; method && !object(method->value)) {
+                    if (method->attr == "fromkeys") {
+                        auto owner = method->value ? method->value->template get<py::Name>() : nullptr;
+                        if (owner && owner->id == "dict") {
+                            if (x.args.size() != 2 || !x.keywords.empty()) unsupported(e.pos, "dict.fromkeys requires keys and an explicit default");
+                            la::FunctionCall call;
+                            call.name = std::make_shared<la::Symbol>(pythonSymbol("ISPA_STD.python_fromkeys"));
+                            for (const auto& arg : x.args) call.args.push_back(expr(arg));
+                            return la::FunctionCall::createExpression(call);
+                        }
+                    }
+                    static const std::map<std::string, std::tuple<la::ArrayMethods, std::size_t, std::size_t>> methods{
+                        {"append", {la::ArrayMethods::PythonAppend, 1, 1}},
+                        {"extend", {la::ArrayMethods::PythonExtend, 1, 1}},
+                        {"insert", {la::ArrayMethods::PythonInsert, 2, 2}},
+                        {"remove", {la::ArrayMethods::PythonRemove, 1, 1}},
+                        {"pop", {la::ArrayMethods::PythonPop, 0, 2}},
+                        {"clear", {la::ArrayMethods::PythonClear, 0, 0}},
+                        {"copy", {la::ArrayMethods::PythonCopy, 0, 0}},
+                        {"count", {la::ArrayMethods::PythonCount, 1, 1}},
+                        {"index", {la::ArrayMethods::PythonIndex, 1, 3}},
+                        {"reverse", {la::ArrayMethods::PythonReverse, 0, 0}},
+                        {"sort", {la::ArrayMethods::PythonSort, 0, 0}},
+                        {"get", {la::ArrayMethods::PythonGet, 2, 2}},
+                        {"setdefault", {la::ArrayMethods::PythonSetDefault, 2, 2}},
+                        {"update", {la::ArrayMethods::PythonUpdate, 0, 1}},
+                        {"keys", {la::ArrayMethods::PythonKeys, 0, 0}},
+                        {"values", {la::ArrayMethods::PythonValues, 0, 0}},
+                        {"items", {la::ArrayMethods::PythonItems, 0, 0}},
+                        {"fromkeys", {la::ArrayMethods::PythonFromKeys, 2, 2}},
+                    };
+                    if (auto found = methods.find(method->attr); found != methods.end()) {
+                        const auto& [kind, minimum, maximum] = found->second;
+                        if (x.args.size() < minimum || x.args.size() > maximum)
+                            unsupported(e.pos, "wrong argument count for collection method " + method->attr);
+                        la::ArrayMethodCall call;
+                        call.method = kind;
+                        for (const auto& arg : x.args) call.args.push_back(expr(arg));
+                        if (!x.keywords.empty()) {
+                            if (method->attr == "update") {
+                                std::set<std::string> names;
+                                for (const auto& keyword : x.keywords) {
+                                    if (!names.insert(keyword.arg).second) unsupported(e.pos, "duplicate update keyword");
+                                    la::MakeTuple item;
+                                    item.args = {la::String::createExpression(la::String{.value = keyword.arg}), expr(keyword.value)};
+                                    call.args.push_back(la::MakeTuple::createExpression(item));
+                                }
+                            } else {
+                                if (method->attr != "sort") unsupported(e.pos, "unsupported collection keyword arguments");
+                                py::ExprPtr reverse, key;
+                                for (const auto& keyword : x.keywords) {
+                                    if (keyword.arg == "reverse" && !reverse) reverse = keyword.value;
+                                    else if (keyword.arg == "key" && !key) key = keyword.value;
+                                    else unsupported(e.pos, "sort accepts key and reverse once each");
+                                }
+                                call.args.push_back(reverse ? expr(reverse) : la::Bool::createExpression(la::Bool{.value = false}));
+                                if (key) call.args.push_back(expr(key));
+                            }
+                        }
+                        la::StorageSymbol storage;
+                        storage.what = group(expr(method->value));
+                        storage.path.emplace_back(call);
+                        return la::StorageSymbol::createExpression(storage);
+                    }
+                    if (method->attr == "popitem")
+                        unsupported(e.pos, "collection method requires insertion ordering or a concrete dictionary type");
+                }
                 if (!x.keywords.empty()) unsupported(e.pos, "keyword arguments are unsupported");
                 if (action_context) if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr) {
                     if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr; owner && owner->id == "ctx") {
@@ -213,6 +340,10 @@ struct PythonConverter {
                     return la::FunctionCall::createExpression(call);
                 }
                 if (auto a = x.func ? x.func->template get<py::Attribute>() : nullptr) {
+                    if (auto owner = a->value ? a->value->template get<py::Name>() : nullptr; owner && class_names.contains(owner->id)) {
+                        call.name = std::make_shared<la::Symbol>(pythonSymbol(owner->id + "." + a->attr));
+                        return la::FunctionCall::createExpression(call);
+                    }
                     call.name = std::make_shared<la::Symbol>(a->attr);
                     la::StorageSymbol s;
                     s.what = group(expr(a->value));
@@ -259,6 +390,8 @@ struct PythonConverter {
             } else if constexpr (std::is_same_v<T, py::List>) {
                 la::Array out;
                 for (auto& item : x.elts) out.values.push_back(expr(item));
+                for (const auto& item : inferred(std::make_shared<py::Expr>(e)).template_parameters)
+                    if (auto t = std::get_if<la::Type>(&item)) out.template_parameters.push_back(std::make_shared<la::Type>(*t));
                 return la::Array::createExpression(out);
             } else if constexpr (std::is_same_v<T, py::Dict>) {
                 if (x.keys.size() != x.values.size()) unsupported(e.pos, "invalid dictionary");
@@ -272,6 +405,8 @@ struct PythonConverter {
                     else unsupported(e.pos, "dictionary keys must be integer or string literals");
                     out.values.push_back(expr(x.values[i]));
                 }
+                for (const auto& item : inferred(std::make_shared<py::Expr>(e)).template_parameters)
+                    if (auto t = std::get_if<la::Type>(&item)) out.template_parameters.push_back(std::make_shared<la::Type>(*t));
                 return la::Map::createExpression(out);
             } else unsupported(e.pos, "conditional expression is unsupported");
         }, e.kind);
@@ -322,12 +457,14 @@ struct PythonConverter {
                     if (action_context && n->id == "ctx") unsupported(s.pos, "ctx cannot be rebound");
                     if (block_depth) unsupported(s.pos, "declare local before entering a branch or loop");
                     locals.insert(n->id);
+                    if (object(x.value)) objects.insert(n->id);
+                    local_types.insert_or_assign(n->id, inferred(x.value));
                     return la::Statements{la::Variable{.name = localName(n->id), .type = la::Type{la::ValueType::Undef}, .value = value}};
                 }
                 return la::VariableAssignment::createStatements(la::VariableAssignment{.name = target(x.targets[0]), .value = value});
             } else if constexpr (std::is_same_v<T, py::AnnAssign>) {
                 auto n = x.target ? x.target->template get<py::Name>() : nullptr;
-                if (!n && action_context) {
+                if (!n && (action_context || !self_name.empty())) {
                     const auto destination = target(x.target);
                     if (!x.value) return {};
                     return la::VariableAssignment::createStatements(la::VariableAssignment{.name = destination, .value = expr(x.value)});
@@ -336,7 +473,10 @@ struct PythonConverter {
                 if (action_context && n->id == "ctx") unsupported(s.pos, "ctx cannot be rebound");
                 if (block_depth || locals.contains(n->id)) unsupported(s.pos, "annotated declaration must introduce a local outside branches and loops");
                 locals.insert(n->id);
-                return la::Statements{la::Variable{.name = localName(n->id), .type = type(x.annotation), .value = x.value ? expr(x.value) : la::Expression{}}};
+                local_types.insert_or_assign(n->id, type(x.annotation));
+                if (auto annotation = x.annotation ? x.annotation->template get<py::Name>() : nullptr;
+                    annotation && class_names.contains(annotation->id)) objects.insert(n->id);
+                return la::Statements{la::Variable{.name = localName(n->id), .type = type(x.annotation), .value = x.value ? initializer(x.value, type(x.annotation)) : la::Expression{}}};
             } else if constexpr (std::is_same_v<T, py::AugAssign>) {
                 la::OperatorType op;
                 switch (x.op) {
@@ -361,12 +501,20 @@ struct PythonConverter {
             la::Function out;
             out.name = f->name;
             out.type = type(f->returns);
+            scope.self_name = self_name;
+            scope.class_names = class_names;
+            if (!self_name.empty()) scope.objects.insert(self_name);
             for (auto& p : f->params) {
+                if (!self_name.empty() && p.name == self_name && &p == &f->params.front()) continue;
                 if (p.default_value) unsupported(p.pos, "default parameters are unsupported");
                 out.parameters.emplace_back(type(p.annotation), p.name);
                 scope.locals.insert(p.name);
+                scope.local_types.insert_or_assign(p.name, type(p.annotation));
+                if (auto annotation = p.annotation ? p.annotation->template get<py::Name>() : nullptr;
+                    annotation && class_names.contains(annotation->id)) scope.objects.insert(p.name);
             }
             out.statements = scope.body(f->body);
+            if (out.statements.empty() && (out.type == la::ValueType::Void || f->name == "__init__")) out.statements = la::Return::createStatements(la::Return{});
             return la::Declaration{out};
         }
         if (auto c = s.get<py::ClassDef>()) {
@@ -376,13 +524,80 @@ struct PythonConverter {
             for (auto& b : c->bases) {
                 auto n = b ? b->template get<py::Name>() : nullptr;
                 if (!n) unsupported(s.pos, "base class must be a name");
-                out.inherit_members.emplace_back(la::Visibility::Public, la::Symbol{n->id});
+                out.inherit_members.emplace_back(la::Visibility::Public, pythonSymbol(n->id));
             }
             PythonConverter scope;
+            scope.class_names = class_names;
+            std::set<std::string> fields;
+            for (const auto& member : c->body) if (auto a = member->template get<py::AnnAssign>(); a && a->target)
+                if (auto n = a->target->template get<py::Name>()) fields.insert(n->id);
+            // Discover fixed instance fields from __init__. Explicit annotations
+            // win; otherwise a typed parameter or scalar literal supplies the type.
+            for (const auto& member : c->body) if (auto init = member->template get<py::FunctionDef>();
+                init && init->name == "__init__" && !init->params.empty()) {
+                for (const auto& line : init->body) {
+                    py::ExprPtr destination, value, annotation;
+                    if (auto a = line->template get<py::Assign>(); a && a->targets.size() == 1) {
+                        destination = a->targets[0]; value = a->value;
+                    } else if (auto a = line->template get<py::AnnAssign>()) {
+                        destination = a->target; value = a->value; annotation = a->annotation;
+                    } else continue;
+                    auto attr = destination ? destination->template get<py::Attribute>() : nullptr;
+                    auto owner = attr && attr->value ? attr->value->template get<py::Name>() : nullptr;
+                    if (!owner || owner->id != init->params.front().name || fields.contains(attr->attr)) continue;
+                    la::Type field_type{la::ValueType::Undef};
+                    if (annotation) field_type = type(annotation);
+                    else if (auto name = value ? value->template get<py::Name>() : nullptr) {
+                        for (const auto& p : init->params) if (p.name == name->id) field_type = type(p.annotation);
+                    } else if (auto literal = value ? value->template get<py::Constant>() : nullptr) {
+                        switch (literal->kind) {
+                            case py::ConstantKind::Int: field_type = la::Type{la::ValueType::Int}; break;
+                            case py::ConstantKind::Float: field_type = la::Type{la::ValueType::Float}; break;
+                            case py::ConstantKind::Bool: field_type = la::Type{la::ValueType::Bool}; break;
+                            case py::ConstantKind::Str: field_type = la::Type{la::ValueType::String}; break;
+                            default: break;
+                        }
+                    }
+                    if (field_type == la::ValueType::Undef) unsupported(line->pos, "instance field requires an annotation or a typed parameter initializer");
+                    fields.insert(attr->attr);
+                    out.data.emplace_back(std::make_shared<la::Declaration>(la::Variable{.name = attr->attr, .type = field_type}), la::Visibility::Public);
+                }
+            }
             for (auto& member : c->body) {
                 if (!member) unsupported(s.pos, "missing class member");
                 if (member->template get<py::Pass>()) continue;
-                out.data.emplace_back(std::make_shared<la::Declaration>(scope.declaration(*member)), la::Visibility::Public);
+                if (auto text = member->template get<py::ExprStmt>(); text && text->value && text->value->template get<py::Constant>() &&
+                    text->value->template get<py::Constant>()->kind == py::ConstantKind::Str) continue;
+                if (auto f = member->template get<py::FunctionDef>()) {
+                    auto method = *f;
+                    bool is_static = false;
+                    if (method.decorators.size() == 1) {
+                        auto name = method.decorators[0]->template get<py::Name>();
+                        if (name && name->id == "staticmethod") { is_static = true; method.decorators.clear(); }
+                    }
+                    if (!is_static && method.params.empty()) unsupported(member->pos, "instance methods require a self parameter");
+                    scope.self_name = is_static ? "" : method.params.front().name;
+                    py::Stmt syntax{member->pos, method};
+                    auto lowered = scope.declaration(syntax);
+                    auto& function = lowered.getFunction();
+                    function.is_static = is_static;
+                    if (f->name == "__init__") {
+                        if (is_static || (f->returns && function.type != la::ValueType::Void))
+                            unsupported(member->pos, "__init__ must be an instance method returning None");
+                        function.name = c->name;
+                        if (out.constructor) unsupported(member->pos, "duplicate constructor");
+                        out.constructor = std::move(function);
+                        scope.self_name.clear();
+                        continue;
+                    }
+                    out.data.emplace_back(std::make_shared<la::Declaration>(std::move(lowered)), la::Visibility::Public);
+                    scope.self_name.clear();
+                } else {
+                    auto lowered = scope.declaration(*member);
+                    if (lowered.isVariable() && lowered.getVariable().type == la::ValueType::Undef)
+                        unsupported(member->pos, "class fields require type annotations");
+                    out.data.emplace_back(std::make_shared<la::Declaration>(std::move(lowered)), la::Visibility::Public);
+                }
             }
             return la::Declaration{out};
         }
@@ -395,9 +610,14 @@ struct PythonConverter {
 auto ParserBase::convertPython(const UAST::py::Expr& e) -> LangAPI::Expression { return PythonConverter{}.expr(e); }
 auto ParserBase::convertPython(const UAST::py::Stmt& s, const std::set<std::string>& variables) -> LangAPI::Statements { return PythonConverter{variables}.stmt(s); }
 auto ParserBase::convertPython(const UAST::py::Module& m, const std::set<std::string>& variables) -> LangAPI::Statements { return PythonConverter{variables}.body(m.body); }
-auto ParserBase::convertPythonDeclaration(const UAST::py::Stmt& s) -> LangAPI::Declaration { return PythonConverter{}.declaration(s); }
+auto ParserBase::convertPythonDeclaration(const UAST::py::Stmt& s, const std::set<std::string>& classes) -> LangAPI::Declaration {
+    PythonConverter converter;
+    converter.class_names = classes;
+    return converter.declaration(s);
+}
 auto ParserBase::convertPythonDeclarations(const UAST::py::Module& m) -> LangAPI::Declarations {
     PythonConverter converter;
+    for (const auto& s : m.body) if (s) if (auto cls = s->template get<py::ClassDef>()) converter.class_names.insert(cls->name);
     LangAPI::Declarations out;
     for (auto& s : m.body) {
         if (!s) unsupported(m.pos, "missing declaration");
@@ -406,8 +626,11 @@ auto ParserBase::convertPythonDeclarations(const UAST::py::Module& m) -> LangAPI
     }
     return out;
 }
-auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<std::string>& variables, bool failure) -> LangAPI::Statements {
+auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<std::string>& variables, bool failure,
+    const std::set<std::string>& classes, std::set<std::string>* objects) -> LangAPI::Statements {
     PythonConverter converter{variables, true, failure};
+    converter.class_names = classes;
+    if (objects) converter.objects = *objects;
     auto result = std::visit([&](const auto& code) -> LangAPI::Statements {
         using T = std::decay_t<decltype(code)>;
         if constexpr (std::is_same_v<T, UAST::py::Module>) return converter.body(code.body);
@@ -415,6 +638,7 @@ auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<s
         else throw std::invalid_argument("Python action has no executable syntax");
     }, action.code);
     variables = std::move(converter.locals);
+    if (objects) *objects = std::move(converter.objects);
     return result;
 }
 }

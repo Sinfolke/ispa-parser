@@ -186,3 +186,46 @@ TEST(PythonConversion, ActionContextValidatesMetadataAndPreservesLocals) {
                                "ctx.sync_tokens()\n", "ctx.sync_tokens('')\n", "ctx.sync_tokens(42)\n"})
         EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals, true), std::invalid_argument);
 }
+
+TEST(PythonConversion, CollectionMethodsUsePortableIR) {
+    for (const auto* source : {"xs.append(1)", "xs.extend([2, 3])", "xs.insert(-1, 4)", "xs.remove(2)",
+        "xs.pop()", "xs.pop(0)", "xs.clear()", "xs.copy()", "xs.count(2)", "xs.index(2, 0, 4)",
+        "xs.reverse()", "xs.sort(reverse=True)", "xs.sort(key=f, reverse=True)", "d.get('k', 0)", "d.setdefault('k', 0)",
+        "d.update({'k': 1})", "d.update(k=1)", "d.fromkeys(['k'], 0)", "d.keys()", "d.values()", "d.items()", "d.pop('k', 0)"}) {
+        const auto value = expression(source);
+        ASSERT_EQ(value.size(), 1u) << source;
+        const auto& storage = value.front().getRValue().getStorageSymbol();
+        EXPECT_TRUE(std::holds_alternative<LangAPI::ArrayMethodCall>(storage.path.back())) << source;
+    }
+    for (const auto* source : {"xs.append()", "xs.clear(1)", "xs.index()", "xs.sort(unknown=f)", "d.get('k')", "d.popitem()"})
+        EXPECT_THROW(expression(source), std::invalid_argument) << source;
+}
+
+TEST(PythonConversion, ClassesLowerConstructorsAndInstanceMethods) {
+    const auto module = UAST::parsePythonModule(R"py(class Box:
+    def __init__(self, value: int):
+        self.value = value
+    def read(self) -> int:
+        return self.value
+    @staticmethod
+    def twice(value: int) -> int:
+        return value * 2
+)py", position);
+    const auto declarations = Parser::ParserBase::convertPythonDeclarations(module);
+    const auto& cls = declarations.front().getClass();
+    ASSERT_EQ(cls.data.size(), 3u);
+    EXPECT_EQ(cls.data[0].first->getVariable().name, "value");
+    ASSERT_TRUE(cls.constructor);
+    const auto& constructor = *cls.constructor;
+    EXPECT_EQ(constructor.name, "Box");
+    EXPECT_EQ(constructor.parameters.size(), 1u);
+    EXPECT_TRUE(cls.data[2].first->getFunction().is_static);
+    LangRepr::Holder holder{declarations};
+    LangRepr::Converter converter(holder, "cpp", "ClassConversionTest", false);
+    converter.init(); converter.construct();
+    std::string output;
+    for (const auto& [name, source] : converter.get()) output += source;
+    EXPECT_NE(output.find("Box(long long value)"), std::string::npos);
+    EXPECT_NE(output.find("(*this)"), std::string::npos);
+    EXPECT_EQ(output.find("auto Box("), std::string::npos);
+}

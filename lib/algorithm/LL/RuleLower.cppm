@@ -29,6 +29,7 @@ export struct FunctionCtx {
     std::size_t next_id = 0;                     // unique suffixes for generated names
     utype::unordered_map<std::vector<std::string>, std::size_t> variables_lowered;
     std::set<std::string> action_locals;
+    std::set<std::string> action_objects;
 
     auto uid() -> std::size_t { return next_id++; }
 };

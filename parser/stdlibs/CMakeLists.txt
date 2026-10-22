@@ -63,6 +63,6 @@ if(TARGET ispastdlib)
     endif()
 
     if(MSVC)
-        target_compile_options(ispastdlib PRIVATE /MP)
+        target_compile_options(ispastdlib PRIVATE /MP /bigobj)
     endif()
 endif()

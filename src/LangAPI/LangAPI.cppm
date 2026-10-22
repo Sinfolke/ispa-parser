@@ -95,7 +95,9 @@ export namespace LangAPI {
         ResetPosCounter, PushPosCounter, PopPosCounter, SkipSpaces, DfaLookup, ReportError, Lambda, DFADebug
     };
     enum class ArrayMethods {
-        Push, Pop, Size
+        Push, Pop, Size, PythonAppend, PythonExtend, PythonInsert, PythonRemove, PythonPop,
+        PythonClear, PythonCopy, PythonCount, PythonIndex, PythonReverse, PythonSort,
+        PythonGet, PythonSetDefault, PythonUpdate, PythonKeys, PythonValues, PythonItems, PythonFromKeys
     };
     enum class Visibility {
         Private, Public, Protected
@@ -1294,16 +1296,18 @@ export namespace LangAPI {
         stdu::vector<std::pair<std::shared_ptr<Declaration>, Visibility>> data;
         stdu::vector<std::pair<Visibility, std::variant<Symbol, IspaLibSymbol>>> inherit_members;
         Visibility default_visibility = Visibility::Public;
+        std::optional<Function> constructor;
         std::optional<Function> to_str_fun;
         std::optional<Function> output_fun;
         stdu::vector<Symbol> dependecies;
         bool operator==(const Class& other) const {
-            return name == other.name && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility;
+            return name == other.name && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility && constructor == other.constructor;
         }
         bool operator!=(const Class& other) const {
             return !(*this == other);
         }
         bool operator<(const Class& other) const {
+            if (constructor != other.constructor) return constructor < other.constructor;
             if (name != other.name) return name < other.name;
             else if (data != other.data) return data < other.data;
             else if (inherit_members != other.inherit_members) return inherit_members < other.inherit_members;
@@ -1314,10 +1318,10 @@ export namespace LangAPI {
         friend struct ::uhash;
         friend struct ::LangAPI::MembersAccess;
         auto members() const {
-            return std::tie(name, data, inherit_members, default_visibility);
+            return std::tie(name, data, inherit_members, default_visibility, constructor);
         }
         auto members() {
-            return std::tie(name, data, inherit_members, default_visibility);
+            return std::tie(name, data, inherit_members, default_visibility, constructor);
         }
     };
     struct Namespace : DeclarationLevel {

@@ -137,12 +137,15 @@ auto Core::convertTemplates(const stdu::vector<std::variant<std::shared_ptr<Lang
 
 auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
     if (symbol.path.empty()) return "";
+    if (symbol.path.size() == 1 && std::holds_alternative<std::string>(symbol.path.front()) &&
+        std::get<std::string>(symbol.path.front()) == "__ispa_python_self") return "(*this)";
     std::string res;
     bool first = true;
     for (const auto &part : symbol.path) {
         std::string piece;
         if (std::holds_alternative<std::string>(part)) {
             piece = std::get<std::string>(part);
+            if (first && piece == "__ispa_parser__") piece = name;
         } else if (std::holds_alternative<LangAPI::IspaLibSymbol>(part)) {
             piece = convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(part));
         } else {
@@ -162,6 +165,43 @@ auto Core::convertSymbol(const LangAPI::Symbol &symbol) -> std::string {
 auto Core::convertStorageSymbol(const LangAPI::StorageSymbol &symbol) -> std::string {
     std::string res = convertExpression(symbol.what);
     for (const auto &part : symbol.path) {
+        if (auto method = std::get_if<LangAPI::ArrayMethodCall>(&part);
+            method && method->method >= LangAPI::ArrayMethods::PythonAppend) {
+            std::string name;
+            switch (method->method) {
+                case LangAPI::ArrayMethods::PythonAppend: name = "append"; break;
+                case LangAPI::ArrayMethods::PythonExtend: name = "extend"; break;
+                case LangAPI::ArrayMethods::PythonInsert: name = "insert"; break;
+                case LangAPI::ArrayMethods::PythonRemove: name = "remove"; break;
+                case LangAPI::ArrayMethods::PythonPop: name = "pop"; break;
+                case LangAPI::ArrayMethods::PythonClear: name = "clear"; break;
+                case LangAPI::ArrayMethods::PythonCopy: name = "copy"; break;
+                case LangAPI::ArrayMethods::PythonCount: name = "count"; break;
+                case LangAPI::ArrayMethods::PythonIndex: name = "index"; break;
+                case LangAPI::ArrayMethods::PythonReverse: name = "reverse"; break;
+                case LangAPI::ArrayMethods::PythonSort: name = "sort"; break;
+                case LangAPI::ArrayMethods::PythonGet: name = "get"; break;
+                case LangAPI::ArrayMethods::PythonSetDefault: name = "setdefault"; break;
+                case LangAPI::ArrayMethods::PythonUpdate: name = "update"; break;
+                case LangAPI::ArrayMethods::PythonKeys: name = "keys"; break;
+                case LangAPI::ArrayMethods::PythonValues: name = "values"; break;
+                case LangAPI::ArrayMethods::PythonItems: name = "items"; break;
+                case LangAPI::ArrayMethods::PythonFromKeys: name = "fromkeys"; break;
+                default: throw Error("Unknown Python collection method");
+            }
+            if (method->method == LangAPI::ArrayMethods::PythonAppend) {
+                res += ".push_back(" + convertExpression(method->args.front()) + ")";
+                continue;
+            }
+            if (method->method == LangAPI::ArrayMethods::PythonClear) {
+                res += ".clear()";
+                continue;
+            }
+            std::string call = "ISPA_STD::python_" + name + "(" + res;
+            for (const auto& arg : method->args) call += ", " + convertExpression(arg);
+            res = call + ")";
+            continue;
+        }
         if (!std::holds_alternative<LangAPI::StorageOffset>(part))
             res += ".";
         if (std::holds_alternative<std::string>(part)) {

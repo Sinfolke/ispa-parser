@@ -164,7 +164,7 @@ call_suffix:
 ;
 
 index_suffix:
-    LBRACKET @ expr %missing_rbracket RBRACKET
+    LBRACKET @ parenthesized_content %missing_rbracket RBRACKET
 
     {@}
 ;

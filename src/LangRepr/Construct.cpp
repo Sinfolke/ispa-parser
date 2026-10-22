@@ -80,9 +80,10 @@ namespace LangRepr {
         ns.declarations = std::move(holder.get());
         holder.get().clear();
         holder.push(ns);
-        // Imported helpers live outside the generated parser's namespace.
+        // Imported helpers live outside the generated parser's namespace and
+        // may refer to its Token, Types, Lexer, and other generated names.
         auto& declarations = holder.get();
-        declarations.insert(declarations.begin(), tree.getPythonDeclarations().begin(), tree.getPythonDeclarations().end());
+        declarations.insert(declarations.end(), tree.getPythonDeclarations().begin(), tree.getPythonDeclarations().end());
         return holder;
     }
     auto Construct::construct(LexerBuilder &&lexer_builder, ParserIR::IR &&ir, AST::Tree &tree, LangAPI::Language lang, const std::string &namespace_name) -> Holder {

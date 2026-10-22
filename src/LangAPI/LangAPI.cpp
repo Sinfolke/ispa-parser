@@ -175,6 +175,26 @@ namespace LangAPI {
         switch (m) {
             case ArrayMethods::Push: os << "Push"; break;
             case ArrayMethods::Pop: os << "Pop"; break;
+            case ArrayMethods::Size: os << "Size"; break;
+            case ArrayMethods::PythonAppend: os << "PythonAppend"; break;
+            case ArrayMethods::PythonExtend: os << "PythonExtend"; break;
+            case ArrayMethods::PythonInsert: os << "PythonInsert"; break;
+            case ArrayMethods::PythonRemove: os << "PythonRemove"; break;
+            case ArrayMethods::PythonPop: os << "PythonPop"; break;
+            case ArrayMethods::PythonClear: os << "PythonClear"; break;
+            case ArrayMethods::PythonCopy: os << "PythonCopy"; break;
+            case ArrayMethods::PythonCount: os << "PythonCount"; break;
+            case ArrayMethods::PythonIndex: os << "PythonIndex"; break;
+            case ArrayMethods::PythonReverse: os << "PythonReverse"; break;
+            case ArrayMethods::PythonSort: os << "PythonSort"; break;
+            case ArrayMethods::PythonGet: os << "PythonGet"; break;
+            case ArrayMethods::PythonSetDefault: os << "PythonSetDefault"; break;
+            case ArrayMethods::PythonUpdate: os << "PythonUpdate"; break;
+            case ArrayMethods::PythonKeys: os << "PythonKeys"; break;
+            case ArrayMethods::PythonValues: os << "PythonValues"; break;
+            case ArrayMethods::PythonItems: os << "PythonItems"; break;
+            case ArrayMethods::PythonFromKeys: os << "PythonFromKeys"; break;
+
         }
         return os;
     }

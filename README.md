@@ -39,7 +39,7 @@ The backend lowers **plain EBNF plus AST captures** to C++. LL also executes adv
 
 ## 🔁 Bootstrap
 
-ISPA is self-hosting for its own grammar. The `.isc` grammar that describes ISPA's input language was compiled by ISPA into the parser that ISPA now uses to read grammars, replacing the original hand-written parser. A Python-subset parser (all statements except classes) and a small module-scanner parser are generated the same way.
+ISPA is self-hosting for its own grammar. The `.isc` grammar that describes ISPA's input language was compiled by ISPA into the parser that ISPA now uses to read grammars, replacing the original hand-written parser. A Python-subset parser and a small module-scanner parser are generated the same way.
 
 The generated bootstrap parser is committed to the repository in `parser/ispa/bootstrapped_0`. It consists of two monolithic files (not incrementally compiled) that ship with the repo and are compiled as part of the ISPA build, before ISPA can compile any other grammar.
 
@@ -182,11 +182,33 @@ main {
 
 The initial subset supports functions with annotated parameters and returns,
 initialized module variables, and the expressions and control flow supported
-by ISPA's Python lowering. Types are `int`, `float`, `bool`, and `str`; function
-returns can also be `None`. Literal module variables can omit their annotation.
-Classes, Python imports inside helper files, decorators, default parameters,
-and keyword arguments are rejected with source locations. Imported function
-return types participate in AST field inference.
+by ISPA's Python lowering. Types include `int`, `float`, `bool`, `str`,
+`list[T]`, `dict[K, V]`, and imported class names; function returns can also be
+`None`. Literal module variables can omit their annotation. Classes support
+fixed typed fields, `__init__`, instance methods, `@staticmethod`, and public
+inheritance. Constructor assignments can infer a field from a typed parameter
+or scalar literal; use `self.field: T = value` for other initializers.
+Helper files may use `from .internals import Token, RawToken, TokensToString`
+to access the native parser and ISPA standard library names declared in
+`parser/pystdlib/internals.py`. The file uses `__ispa_internal__("Cxx.Name")`
+directives; `__ispa_parser__` denotes the generated parser namespace. The
+converter resolves these names to C++ symbols without
+emitting Python declarations. Native template types can be annotated as
+`RawToken[T]`. Other Python imports inside helper files, other decorators,
+default parameters, and general keyword arguments are rejected with source locations. Imported
+function return types participate in AST field inference.
+
+Lists support `append`, `extend`, `insert`, `remove`, `pop`, `clear`, `copy`,
+`count`, `index` (including start/stop bounds), `reverse`, and stable `sort`
+(including a function `key` and `reverse=True`). Dictionaries support `clear`, `copy`, `get`,
+`setdefault`, `pop`, `update`, `keys`, `values`, `items`, and
+`fromkeys(keys, default)` (on `dict` or a dictionary instance).
+`update` also accepts keyword entries. `get` and `setdefault` require an explicit
+non-None default. `keys`, `values`, and `items` return snapshots. ISPA maps
+are unordered: insertion ordering, live dictionary views, and `popitem` are
+unsupported. Collection calls
+use LangAPI method operations; target converters emit native operations or
+ISPA standard-library helpers for Python-specific behavior.
 
 Fail blocks run for required matches selected by `%handler` or a rule's
 `%{handler}` binding. Their context shares the owning rule's AST and the failure

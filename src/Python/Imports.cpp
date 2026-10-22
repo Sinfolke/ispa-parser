@@ -27,12 +27,33 @@ template<class T, class Visitor> void walk(T& value, Visitor& visitor) {
 struct Validate {
     void expression(py::Expr& e) { walk(e.kind, *this); }
     void statement(py::Stmt& s) {
-        if (s.get<py::ClassDef>()) fail(s.pos, "classes are not supported");
-        if (s.get<py::Import>() || s.get<py::ImportFrom>())
-            fail(s.pos, "Python imports inside imported files are not supported");
+        if (s.get<py::Import>())
+            fail(s.pos, "only sibling imports from internals are supported in imported Python files");
         walk(s.kind, *this);
     }
 };
+std::optional<std::pair<std::string, std::optional<std::size_t>>> native(const py::Stmt& statement) {
+    auto assignment = statement.get<py::Assign>();
+    if (!assignment || !assignment->value) return std::nullopt;
+    auto call = assignment->value->get<py::Call>();
+    if (!call || !call->func || call->func->get<py::Name>() == nullptr ||
+        call->func->get<py::Name>()->id != "__ispa_internal__") return std::nullopt;
+    if (call->args.empty() || call->args.size() > 2 || !call->keywords.empty())
+        fail(statement.pos, "__ispa_internal__ expects a native name and optional arity");
+    auto name = call->args[0] ? call->args[0]->get<py::Constant>() : nullptr;
+    if (!name || name->kind != py::ConstantKind::Str ||
+        !(name->value.starts_with("__ispa_parser__.") || name->value.starts_with("ISPA_STD.")) ||
+        name->value.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.") != std::string::npos)
+        fail(statement.pos, "invalid native name in __ispa_internal__");
+    std::optional<std::size_t> arity;
+    if (call->args.size() == 2) {
+        auto number = call->args[1] ? call->args[1]->get<py::Constant>() : nullptr;
+        if (!number || number->kind != py::ConstantKind::Int) fail(statement.pos, "native arity must be an integer");
+        try { arity = std::stoull(number->value); }
+        catch (const std::exception&) { fail(statement.pos, "invalid native arity"); }
+    }
+    return std::make_pair(name->value, arity);
+}
 std::string path(const py::Expr& e) {
     if (auto n = e.get<py::Name>()) return n->id;
     if (auto a = e.get<py::Attribute>(); a && a->value) {
@@ -40,6 +61,9 @@ std::string path(const py::Expr& e) {
         if (!prefix.empty()) return prefix + "." + a->attr;
     }
     return {};
+}
+bool nativeName(const std::string& name) {
+    return name.starts_with("__ispa_parser__.") || name.starts_with("ISPA_STD.");
 }
 struct Locals {
     std::set<std::string> names;
@@ -63,30 +87,38 @@ template<class Bindings> struct Bind {
                 e.kind = py::Name{found->second.qualified};
                 return;
             }
+            for (const auto& [binding, target] : bindings) {
+                if (nativeName(target.qualified) && name.starts_with(binding + ".")) {
+                    e.kind = py::Name{target.qualified + name.substr(binding.size())};
+                    return;
+                }
+            }
             for (const auto& [binding, target] : bindings)
-                if (name == binding.substr(0, binding.find('.')) || name.starts_with(binding.substr(0, binding.find('.')) + "."))
+                if (name == binding.substr(0, binding.find('.')) && !bindings.contains(name))
                     fail(e.pos, "unknown imported declaration " + name);
         }
         walk(e.kind, *this);
         if (auto call = e.get<py::Call>(); call && call->func) {
             const auto target = path(*call->func);
             for (const auto& [binding, item] : bindings) if (item.qualified == target) {
-                if (!item.arity) fail(e.pos, "imported variable is not callable: " + binding);
+                if (!item.arity) {
+                    if (nativeName(item.qualified)) continue;
+                    fail(e.pos, "imported variable is not callable: " + binding);
+                }
                 if (!call->keywords.empty() || call->args.size() != *item.arity)
                     fail(e.pos, binding + " expects " + std::to_string(*item.arity) + " positional arguments");
             }
         }
     }
     void statement(py::Stmt& s) {
-        if (s.get<py::ClassDef>()) fail(s.pos, "classes are not supported");
         walk(s.kind, *this);
     }
 };
 void annotation(const py::ExprPtr& e, const UAST::SourcePosition& at, bool returns = false) {
     if (!e) fail(at, "function parameters and returns require type annotations");
-    if (auto n = e->get<py::Name>(); n && (n->id == "int" || n->id == "float" || n->id == "bool" || n->id == "str")) return;
+    if (e->get<py::Name>() || e->get<py::Attribute>() || e->get<py::Subscript>()) return;
     if (returns) if (auto c = e->get<py::Constant>(); c && c->kind == py::ConstantKind::None) return;
-    fail(e->pos, "supported types are int, float, bool, str, and None for returns");
+    fail(e->pos, "unsupported type annotation");
 }
 }
 
@@ -117,8 +149,58 @@ void Imports::load(const Modules::Source& source, const Modules::PythonImport& i
         auto syntax = UAST::parsePythonModule(text, {canonical.string(), 0, text.size(), 1, 1});
         Validate validate;
         walk(syntax, validate);
+        Bindings dependencies;
+        for (const auto& statement : syntax.body) if (auto from = statement->get<py::ImportFrom>()) {
+            if (from->module_name != "internals" || from->level > 1)
+                fail(statement->pos, "only sibling imports from internals are supported");
+            const auto internal_file = canonical.parent_path() / "internals.py";
+            std::ifstream internal_input(internal_file, std::ios::binary);
+            if (!internal_input) fail(statement->pos, "cannot read " + internal_file.string());
+            const std::string internal_text(std::istreambuf_iterator<char>{internal_input}, {});
+            auto internal_syntax = UAST::parsePythonModule(internal_text,
+                {internal_file.string(), 0, internal_text.size(), 1, 1});
+            Bindings available;
+            for (const auto& line : internal_syntax.body) {
+                if (auto spec = native(*line)) {
+                    auto assignment = line->get<py::Assign>();
+                    if (assignment->targets.size() != 1 || !assignment->targets[0] ||
+                        !assignment->targets[0]->get<py::Name>())
+                        fail(line->pos, "native declaration needs one name");
+                    available.emplace(assignment->targets[0]->get<py::Name>()->id,
+                        Export{spec->first, spec->second});
+                } else if (auto expr = line->get<py::ExprStmt>(); expr && expr->value &&
+                    expr->value->get<py::Constant>() && expr->value->get<py::Constant>()->kind == py::ConstantKind::Str) {
+                    continue;
+                } else fail(line->pos, "internals.py may only contain native declarations");
+            }
+            for (const auto& item : from->names) {
+                if (item.name == "*") {
+                    for (const auto& [key, value] : available)
+                        if (!dependencies.emplace(key, value).second) fail(item.pos, "duplicate imported name " + key);
+                } else {
+                    auto found = available.find(item.name);
+                    if (found == available.end()) fail(item.pos, "unknown internal name " + item.name);
+                    const auto key = item.asname.empty() ? item.name : item.asname;
+                    if (!dependencies.emplace(key, found->second).second)
+                        fail(item.pos, "duplicate imported name " + key);
+                }
+            }
+        }
         Bindings symbols;
         for (const auto& statement : syntax.body) {
+            if (statement->get<py::ImportFrom>()) continue;
+            if (auto spec = native(*statement)) {
+                if (canonical.filename() != "internals.py")
+                    fail(statement->pos, "native declarations belong in internals.py");
+                auto assignment = statement->get<py::Assign>();
+                if (assignment->targets.size() != 1 || !assignment->targets[0] ||
+                    !assignment->targets[0]->get<py::Name>())
+                    fail(statement->pos, "native declaration needs one name");
+                const auto key = assignment->targets[0]->get<py::Name>()->id;
+                if (!symbols.emplace(key, Export{spec->first, spec->second}).second)
+                    fail(statement->pos, "duplicate declaration " + key);
+                continue;
+            }
             std::string symbol;
             std::optional<std::size_t> arity;
             if (auto f = statement->get<py::FunctionDef>()) {
@@ -126,6 +208,20 @@ void Imports::load(const Modules::Source& source, const Modules::PythonImport& i
                 arity = f->params.size();
                 annotation(f->returns, statement->pos, true);
                 for (const auto& p : f->params) annotation(p.annotation, p.pos);
+            } else if (auto c = statement->get<py::ClassDef>()) {
+                symbol = c->name;
+                arity = 0;
+                for (const auto& member : c->body) if (auto f = member->get<py::FunctionDef>()) {
+                    if (f->name == "__init__") {
+                        if (f->params.empty()) fail(member->pos, "__init__ requires self");
+                        arity = f->params.size() - 1;
+                    }
+                    const bool is_static = f->decorators.size() == 1 && f->decorators[0]->get<py::Name>() &&
+                        f->decorators[0]->get<py::Name>()->id == "staticmethod";
+                    for (std::size_t i = is_static ? 0 : 1; i < f->params.size(); ++i)
+                        annotation(f->params[i].annotation, f->params[i].pos);
+                    if (f->name != "__init__") annotation(f->returns, member->pos, true);
+                }
             } else if (auto a = statement->get<py::AnnAssign>(); a && a->target) {
                 if (auto n = a->target->get<py::Name>()) symbol = n->id;
                 annotation(a->annotation, statement->pos);
@@ -137,26 +233,62 @@ void Imports::load(const Modules::Source& source, const Modules::PythonImport& i
                 // Plain Python module docstrings do not generate declarations.
                 if (auto c = e->value->get<py::Constant>(); c && c->kind == py::ConstantKind::Str) continue;
             }
-            if (symbol.empty()) fail(statement->pos, "expected a function or initialized module variable");
+            if (symbol.empty()) fail(statement->pos, "expected a function, class or initialized module variable");
             if (!symbols.emplace(symbol, Export{"python." + name + "." + symbol, arity}).second)
                 fail(statement->pos, "duplicate declaration " + symbol);
         }
+        std::set<std::string> classes;
+        for (const auto& statement : syntax.body) if (auto c = statement->get<py::ClassDef>()) {
+            classes.insert(c->name);
+            classes.insert(symbols.at(c->name).qualified);
+            for (const auto& member : c->body) if (auto f = member->get<py::FunctionDef>(); f &&
+                f->decorators.size() == 1 && f->decorators[0]->get<py::Name>() && f->decorators[0]->get<py::Name>()->id == "staticmethod") {
+                const auto key = c->name + "." + f->name;
+                symbols.emplace(key, Export{"python." + name + "." + key, f->params.size()});
+            }
+        }
         LangAPI::Declarations lowered;
         for (auto& statement : syntax.body) {
+            if (statement->get<py::ImportFrom>() || native(*statement)) continue;
             if (auto f = statement->get<py::FunctionDef>()) {
                 Locals local;
                 for (const auto& p : f->params) local.names.insert(p.name);
                 walk(f->body, local);
-                Bind bind{symbols, std::move(local.names)};
+                auto bindings = symbols;
+                bindings.insert(dependencies.begin(), dependencies.end());
+                Bind bind{bindings, std::move(local.names)};
                 walk(f->body, bind);
+                Bind type_bind{bindings};
+                walk(f->returns, type_bind);
+                for (auto& p : f->params) walk(p.annotation, type_bind);
+            } else if (auto c = statement->get<py::ClassDef>()) {
+                auto bindings = symbols;
+                bindings.insert(dependencies.begin(), dependencies.end());
+                Bind type_bind{bindings};
+                walk(c->bases, type_bind);
+                for (auto& member : c->body) {
+                    if (auto f = member->get<py::FunctionDef>()) {
+                        Locals local;
+                        for (const auto& p : f->params) local.names.insert(p.name);
+                        walk(f->body, local);
+                        Bind bind{bindings, std::move(local.names)};
+                        walk(f->body, bind);
+                        walk(f->returns, type_bind);
+                        for (auto& p : f->params) walk(p.annotation, type_bind);
+                    } else walk(*member, type_bind);
+                }
             } else if (auto a = statement->get<py::AnnAssign>()) {
-                Bind bind{symbols};
+                auto bindings = symbols;
+                bindings.insert(dependencies.begin(), dependencies.end());
+                Bind bind{bindings};
                 walk(a->value, bind);
             } else if (auto a = statement->get<py::Assign>()) {
-                Bind bind{symbols};
+                auto bindings = symbols;
+                bindings.insert(dependencies.begin(), dependencies.end());
+                Bind bind{bindings};
                 walk(a->value, bind);
             } else continue;
-            auto declaration = Parser::ParserBase::convertPythonDeclaration(*statement);
+            auto declaration = Parser::ParserBase::convertPythonDeclaration(*statement, classes);
             if (declaration.isFunction() && declaration.getFunction().statements.empty()) {
                 auto& function = declaration.getFunction();
                 if (function.type != LangAPI::ValueType::Void)

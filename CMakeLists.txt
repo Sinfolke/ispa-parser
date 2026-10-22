@@ -12,6 +12,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 
 project(ISPA LANGUAGES CXX)
+
+if(MSVC)
+    add_compile_options(/bigobj)
+endif()
 # =============================================
 # Compile Definitions
 # =============================================

@@ -174,7 +174,7 @@ namespace Cpp {
         };
 
         auto buildSignature(const LangAPI::Function &func, SigKind kind, const std::string &qualifier,
-                            bool keep_static, const std::vector<std::string> &targs) -> std::string {
+                            bool keep_static, const std::vector<std::string> &targs, bool constructor = false) -> std::string {
             const auto &tps = func.template_parameters;
             std::string out;
 
@@ -200,7 +200,7 @@ namespace Cpp {
             if (kind == SigKind::Declaration && keep_static && func.is_static)
                 out += "static ";
 
-            out += "auto " + qualifier + func.name;
+            out += (constructor ? "" : "auto ") + qualifier + func.name;
             if (kind == SigKind::Instantiation)
                 out += std::string(func.name.back() == '<' ? " <" : "<") + joinStrings(targs, ", ") + ">";   // `operator< <T>`
 
@@ -220,7 +220,7 @@ namespace Cpp {
 
             out += "(" + plist + ")";
             if (func.is_const) out += " const";
-            out += " -> " + ret;
+            if (!constructor) out += " -> " + ret;
             if (kind == SigKind::Declaration && func.override) out += " override";
             return out;
         }
@@ -646,7 +646,7 @@ namespace Cpp {
     // to include the complete class. Includes: see buildPrefix. Overloads get a _2, _3 ... suffix.
     // The standalone main header gets the declarations of free functions and (at its very end) the bodies of
     // the inline templates; it never includes anything from incremental/.
-    auto Construct::produceFunction(const LangAPI::Function &func, OutputSrc &o) -> void {
+    auto Construct::produceFunction(const LangAPI::Function &func, OutputSrc &o, bool constructor) -> void {
         const bool is_template = !func.template_parameters.empty();
         const bool has_body = !func.statements.empty();
         const bool offload = determineOffloadCompatible(func);
@@ -659,7 +659,7 @@ namespace Cpp {
             : fileBase(context.symbol_path, fileSafe(func.name));
         ++context.next_function;
 
-        const std::string decl = buildSignature(func, SigKind::Declaration, "", o.in_class, {});
+        const std::string decl = buildSignature(func, SigKind::Declaration, "", o.in_class, {}, constructor);
         Converter::Writer fdecl;  // free function declaration
         Converter::Writer fext;   // extern template lines (free functions)
         Converter::Writer fdef;   // inline template definition
@@ -684,7 +684,7 @@ namespace Cpp {
             } guard{context.symbol_path};
 
             auto writeDefinition = [&](Converter::Writer &w) {
-                emitLine(w, buildSignature(func, SigKind::Definition, qualifier, false, {}) + " {");
+                emitLine(w, buildSignature(func, SigKind::Definition, qualifier, false, {}, constructor) + " {");
                 w.increaseIndentation();
                 convertStatements(func.statements, w);
                 w.decreaseIndentation();
@@ -697,7 +697,7 @@ namespace Cpp {
                 writeDefinition(fcpp);
                 if (constrained_def) {
                     for (const auto &targs : instantiationSets(func)) {
-                        const std::string inst = buildSignature(func, SigKind::Instantiation, qualifier, false, targs);
+                        const std::string inst = buildSignature(func, SigKind::Instantiation, qualifier, false, targs, constructor);
                         emitLine(fcpp, "template " + inst + ";");
                         if (!o.in_class) emitLine(fext, "extern template " + inst + ";");
                     }
@@ -772,6 +772,13 @@ namespace Cpp {
         OutputSrc member(o.h, o.cpp);
         member.in_class = true;
 
+        if (cls.constructor) {
+            emitLine(*o.h, "public:");
+            auto constructor = *cls.constructor;
+            constructor.name = split.leaf;
+            produceFunction(constructor, member, true);
+            if (cls.default_visibility != LangAPI::Visibility::Public) emitLine(*o.h, getVisibility(cls.default_visibility));
+        }
         auto current = cls.default_visibility;
         for (const auto &[declaration, visibility] : cls.data) {
             if (visibility != current) {                    // label only when the access actually changes
@@ -1117,6 +1124,11 @@ namespace Cpp {
                 reg(name, std::move(info));
                 scope.push_back(name);
 
+                if (cls.constructor) {
+                    auto constructor = *cls.constructor;
+                    constructor.name = name;
+                    collect(LangAPI::Function::createDeclaration(constructor), header);
+                }
                 // 1. Ordinary member declarations
                 for (const auto &[declaration, visibility] : cls.data) {
                     collect(*declaration, header);

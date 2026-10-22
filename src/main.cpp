@@ -211,7 +211,6 @@ int generate(Args args) {
     std::vector<std::string> source_files;
     if (args.no_dep) generateDependencies(args);
     dumper.setArgsPointer(&args);
-    dumper.setDumpDirectory(args.dump_dir);
     dumper.initDumpDirectory();
     logger.clearLogDirectory();
     if (args.version) {

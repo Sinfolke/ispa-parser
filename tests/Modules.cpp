@@ -257,12 +257,11 @@ TEST(Modules, PythonImportsAreErasedWithoutChangingSourcePositions) {
     EXPECT_EQ(source.declarations.at({"main"}).line, 2u);
 }
 
-TEST(Modules, PythonImportsRejectClassesAndUnsupportedModulesAtTheirSource) {
+TEST(Modules, PythonImportsRejectUnsupportedModulesAtTheirSource) {
     ModuleFiles files;
     files.write("main.isc", "import py helpers; main: 'x';");
     const auto python = files.write("helpers.py", "class Box:\n    pass\n");
     for (const auto* code : {
-        "class Box:\n    pass\n",
         "def helper() -> int:\n    class Box:\n        pass\n    return 1\n",
         "import math\n",
         "def helper(value):\n    return value\n",
@@ -272,8 +271,6 @@ TEST(Modules, PythonImportsRejectClassesAndUnsupportedModulesAtTheirSource) {
         try { build(files.preprocess()); FAIL() << code; }
         catch (const std::exception& error) {
             EXPECT_NE(std::string(error.what()).find(python + ":"), std::string::npos) << error.what();
-            if (std::string_view(code).find("class Box") != std::string_view::npos)
-                EXPECT_NE(std::string(error.what()).find("classes are not supported"), std::string::npos);
         }
     }
 }
@@ -308,9 +305,44 @@ TEST(Modules, PythonImportsResolveDottedPathsRelativeToTheirGrammarAndDeduplicat
     EXPECT_EQ(package.declarations.front().getNamespace().name, "helpers");
 }
 
+TEST(Modules, PythonStdlibInternalsBindNativeParserNames) {
+    ModuleFiles files;
+    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/pystdlib/internals.py");
+    ASSERT_TRUE(manifest.good());
+    files.write("internals.py", std::string(std::istreambuf_iterator<char>{manifest}, {}));
+    files.write("helpers.py", R"py(from .internals import Token, RawToken, Tokens, TokensToString as token_name
+def spelling(value: int) -> str:
+    return token_name(value)
+def identity(value: Token) -> Token:
+    return value
+def symbolic() -> int:
+    return Tokens.EXAMPLE
+def raw_identity(value: RawToken[int]) -> RawToken[int]:
+    return value
+)py");
+    files.write("main.isc", "import py helpers; main: 'x';");
+    auto tree = build(files.preprocess());
+    ASSERT_EQ(tree.getPythonDeclarations().size(), 1u);
+    const auto& python = tree.getPythonDeclarations().front().getNamespace();
+    ASSERT_EQ(python.declarations.size(), 1u);
+    const auto& helpers = python.declarations.front().getNamespace();
+    ASSERT_EQ(helpers.declarations.size(), 4u);
+    const auto& identity = helpers.declarations[1].getFunction();
+    ASSERT_TRUE(identity.type.isSymbol());
+    EXPECT_EQ(identity.type.getSymbol(), (LangAPI::Symbol{std::string("__ispa_parser__"), std::string("Token")}));
+    const auto& raw = helpers.declarations[3].getFunction();
+    ASSERT_TRUE(raw.type.isSymbol());
+    EXPECT_EQ(raw.type.getSymbol(), (LangAPI::Symbol{std::string("ISPA_STD"), std::string("RawToken")}));
+    ASSERT_EQ(raw.type.template_parameters.size(), 1u);
+}
+
 TEST(Modules, GeneratedParserCallsImportedPythonFunctionsAndVariables) {
     ModuleFiles files;
+    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/pystdlib/internals.py");
+    ASSERT_TRUE(manifest.good());
+    files.write("internals.py", std::string(std::istreambuf_iterator<char>{manifest}, {}));
     files.write("helpers.py", R"py("""Helpers compiled into the generated parser."""
+from .internals import Token, RawToken, TokensToString
 FACTOR = 2
 OFFSET: int = 1
 def add(value: int) -> int:
@@ -322,11 +354,70 @@ def local(value: int) -> int:
     return value * FACTOR
 def noop() -> None:
     pass
+def negate(value: int) -> int:
+    return -value
+def token_name(value: int) -> str:
+    return TokensToString(value)
+def token_identity(value: Token) -> Token:
+    return value
+def raw_identity(value: RawToken[int]) -> RawToken[int]:
+    return value
+class Box:
+    def __init__(self, value: int):
+        self.value: int = add(value) - OFFSET
+    def get(self) -> int:
+        return self.value
+    def add(self, amount: int) -> int:
+        self.value += amount
+        return self.value
+    @staticmethod
+    def twice(value: int) -> int:
+        return value * 2
+class Child(Box):
+    pass
+def collections() -> int:
+    box = Box(10)
+    xs: list[int] = [3, 1, 2]
+    xs.append(box.add(4))
+    xs.extend(xs)
+    xs.insert(0, 5)
+    xs.remove(5)
+    xs.sort(reverse=True)
+    removed = xs.pop()
+    ignored = box.get()
+    count = xs.count(14)
+    where = xs.index(14)
+    xs.reverse()
+    copied = xs.copy()
+    copied.sort(key=negate, reverse=True)
+    copied.clear()
+    d: dict[str, int] = {'a': 1}
+    d.update({'a': 3}, b=4)
+    other = d.fromkeys(['unused'], 9)
+    other.clear()
+    from_type = dict.fromkeys(['unused'], 9)
+    from_type.clear()
+    existing = d.setdefault('a', 9)
+    inserted = d.setdefault('c', 5)
+    missing = d.get('missing', 7)
+    popped = d.pop('b')
+    fallback = d.pop('absent', 8)
+    keys = d.keys()
+    values = d.values()
+    items = d.items()
+    duplicate = d.copy()
+    duplicate.clear()
+    empty: list[int] = []
+    empty.append(9)
+    return removed + count + where + existing + inserted + missing + popped + fallback + empty.pop()
 )py");
     files.write("main.isc", R"isc(import py helpers as h;
 import py helpers;
 main {
     match 'x';
+    box = h.Box(3)
+    match 'y';
+    box.get()
     h.noop()
     ctx.ast.result = h.scale(20)
     ctx.ast.again = helpers.scale(20)
@@ -354,12 +445,35 @@ main {
     for (const auto& [name, text] : converter.get()) files.write("generated/" + name, text);
     files.write("generated/run.cpp", R"cpp(
 #include "PythonRuntime.h"
+#include <ispastdlib/python_collections.hpp>
+#include <cassert>
 int main() {
     PythonRuntime::Parser parser;
-    const auto& ast = parser.parse("x").value.data();
+    const auto& ast = parser.parse("xy").value.data();
     if (ast.result != 42 || ast.again != 42 || ast.local != 12 || ast.factor != 2) return 1;
     if (python::helpers::scale(20) != 42) return 2;
     if (!parser.getErrors().empty()) return 3;
+    python::helpers::Box box(3);
+    if (box.add(4) != 7 || box.get() != 7 || python::helpers::Box::twice(5) != 10) return 4;
+    if (python::helpers::collections() != 39) return 5;
+    std::vector<int> values{3, 1, 2};
+    ISPA_STD::python_extend(values, values);
+    assert(values.size() == 6);
+    ISPA_STD::python_insert(values, -100, 9);
+    assert(ISPA_STD::python_pop(values, 0) == 9);
+    assert(ISPA_STD::python_pop(values, -1) == 2);
+    bool failed = false;
+    try { ISPA_STD::python_index(values, 3, 3, 1); } catch (const std::invalid_argument&) { failed = true; }
+    assert(failed);
+    failed = false;
+    try { ISPA_STD::python_pop(values, 100); } catch (const std::out_of_range&) { failed = true; }
+    assert(failed);
+    int calls = 0;
+    std::vector<int> stable{12, 11, 22, 21};
+    ISPA_STD::python_sort(stable, true, [&](int value) { ++calls; return value / 10; });
+    assert(calls == 4 && stable == (std::vector<int>{22, 21, 12, 11}));
+    auto dict = ISPA_STD::python_fromkeys(std::vector<std::string>{"x", "y"}, "value");
+    assert(dict.at("x") == "value");
 }
 )cpp");
     const auto generated = files.root / "generated";

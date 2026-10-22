@@ -284,6 +284,7 @@ template<> struct Children<LangAPI::Class> {
                 detail::descend(node.name, f);
         detail::descend(node.data, f);
         detail::descend(node.inherit_members, f);
+        detail::descend(node.constructor, f);
         detail::descend(node.to_str_fun, f);
         detail::descend(node.output_fun, f);
         detail::descend(node.dependecies, f);
