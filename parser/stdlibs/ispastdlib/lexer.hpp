@@ -511,9 +511,6 @@ namespace ISPA_STD {
             }
 
             std::string str;
-            file.seekg(0, std::ios::end);
-            str.reserve(static_cast<std::size_t>(file.tellg()));
-            file.seekg(0, std::ios::beg);
             str.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
             return makeTokens(str);
         }

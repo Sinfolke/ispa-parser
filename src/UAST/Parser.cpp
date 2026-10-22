@@ -9,14 +9,33 @@ struct Snapshot {
     using R = UAST::PythonNode;
     std::string file;
     template<class T> static consteval std::string_view type_name() {
+#if defined(_MSC_VER)
+        constexpr std::string_view signature = __FUNCSIG__;
+        auto start = signature.find("type_name<");
+        if (start == std::string_view::npos) return "unknown";
+        start += 10;
+        auto finish = signature.find(">(void)", start);
+        if (finish == std::string_view::npos) return "unknown";
+        auto name = signature.substr(start, finish - start);
+#else
         constexpr std::string_view signature = __PRETTY_FUNCTION__;
         auto start = signature.find("T = ");
         if (start == std::string_view::npos) return "unknown";
         start += 4;
         auto finish = signature.find_first_of(";]", start);
         auto name = signature.substr(start, finish - start);
+#endif
         auto ns = name.rfind("::");
         return ns == std::string_view::npos ? name : name.substr(ns + 2);
+    }
+    R operator()(const P& x, const P&) const {
+        return {"SourcePosition", {}, {}, x, false, {
+            {"string", "file", x.file, x, false, {}},
+            {"integer", "offset", std::to_string(x.offset), x, false, {}},
+            {"integer", "length", std::to_string(x.length), x, false, {}},
+            {"integer", "line", std::to_string(x.line), x, false, {}},
+            {"integer", "column", std::to_string(x.column), x, false, {}}
+        }};
     }
     R operator()(std::monostate, const P& p) const { return {"absent", {}, {}, p, true, {}}; }
     R operator()(const std::string& x, const P& p) const { return {"string", {}, x, p, false, {}}; }

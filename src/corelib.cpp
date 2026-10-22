@@ -4,6 +4,7 @@ module;
 module corelib;
 import logging;
 import cpuf.printf;
+import cpuf.op;
 import std;
 
 

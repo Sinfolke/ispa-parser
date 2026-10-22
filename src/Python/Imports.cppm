@@ -1,0 +1,33 @@
+export module Python.Imports;
+import Modules;
+import UAST.PyAST;
+import LangAPI;
+import std;
+
+export namespace Python {
+// Imported Python is compiled, never executed by the generator.
+class Imports {
+    struct Export {
+        std::string qualified;
+        std::optional<std::size_t> arity;
+    };
+    using Bindings = std::map<std::string, Export>;
+    std::map<std::string, Bindings> files;
+    std::map<std::pair<std::string, std::string>, std::string> aliases;
+    std::map<std::string, std::filesystem::path> paths;
+    std::map<std::string, Bindings> exports;
+    LangAPI::Declarations declarations;
+    void load(const Modules::Source& source, const Modules::PythonImport& imp);
+public:
+    explicit Imports(const Modules::Project* project);
+    void bind(UAST::py::Expr& expression, const std::string& file) const;
+    void bind(UAST::py::Module& module, const std::string& file) const;
+    auto takeDeclarations() -> LangAPI::Declarations {
+        if (declarations.empty()) return {};
+        LangAPI::Namespace ns;
+        ns.name = "python";
+        ns.declarations = std::move(declarations);
+        return LangAPI::Declarations{ {LangAPI::Declaration{std::move(ns)}} };
+    }
+};
+}

@@ -9,6 +9,7 @@ import DFA.API;
 import constants;
 import corelib;
 import cpuf.printf;
+import cpuf.op;
 import logging;
 import hash;
 import DFA.Base;

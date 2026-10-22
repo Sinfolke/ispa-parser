@@ -62,7 +62,11 @@ namespace Cpp::LibraryDeps {
             constexpr void ws() { while (i < s.size() && (s[i] == ' ' || s[i] == '\n' || s[i] == '\r' || s[i] == '\t')) ++i; }
             constexpr bool peek(char c) { ws(); return i < s.size() && s[i] == c; }
             constexpr bool eat(char c) { if (peek(c)) { ++i; return true; } return false; }
-            constexpr void expect(char c) { if (!eat(c)) fail("expected"); }
+            constexpr void expect(char c) { 
+                if (!eat(c)) {
+                    throw "LibraryDeps: malformed JSON (unexpected character)";
+                }
+            }
             constexpr sv string() {
                 expect('"');
                 const std::size_t b = i;
@@ -146,6 +150,7 @@ namespace Cpp::LibraryDeps {
                                     else if (k == "includes") f.includes = string_list();
                                     else if (k == "closure") f.closure = string_list();
                                     else if (k == "depends_on") f.depends_on = string_list();
+                                    else if (k == "system_includes" || k == "uses" || k == "defines") (void)string_list();
                                     else r.skip_value();
                                 } while (r.eat(','));
                                 r.expect('}');

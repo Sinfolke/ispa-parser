@@ -85,7 +85,7 @@ add_subdirectory(parser)
 # =============================================
 # ISPA Modules Library
 # =============================================
-add_library(ispa_modules SHARED)
+add_library(ispa_modules STATIC)
 set_target_properties(ispa_modules PROPERTIES
     POSITION_INDEPENDENT_CODE ON
     WINDOWS_EXPORT_ALL_SYMBOLS ON

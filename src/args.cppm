@@ -4,6 +4,7 @@ import LangAPI;
 import dstd;
 import std;
 import cpuf.printf;
+import cpuf.op;
 export struct Args {
     enum class Algorithm {
         LL, LR, LALR, LR_STAR

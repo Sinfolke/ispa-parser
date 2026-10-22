@@ -1,9 +1,10 @@
 module rule.regular -> regular_rule;
 import grammar;
-import {name, expr, ID, NUMBER} from common;
+import {name, ID, NUMBER} from common;
+import {expr} from ispa_python;
 
 regular_rule:
-    ':' @ value+ @ ast? @ f_binding? @ nested_rule* ';'
+    ':' @ value+ @ ast? @ f_binding? @ nested_rule* % ';'
     @{v, ast_pointer, fail_pointer, nested}
     %{missing_colon}
 ;
@@ -12,12 +13,12 @@ ast:
     {@}
 
     #full:
-        '&' '{' @ part+ '}'
+        '&=' '{' @ part+ '}'
 
         {@}
 
         #part:
-            @ ID ':' @ expr
+            @ ID %ast_field_separator ':' @ expr
             @{key, e}
         ;
     ;
@@ -126,6 +127,13 @@ nested_rule:
     '#' \s0 @ grammar
     {@}
 ;
-fail rule.missing_colon {
-    raise Error("Missing colon")
+
+// Assignment arrows belong to other ISPA constructs. In an AST field they
+// almost always mean ':': replace the separator without eating its expression.
+fail ast_field_separator {
+    ctx.error("expected ':' after AST field name; '=' and '=>' are not AST field separators")
+    if ctx.at("=") or ctx.at("=>"):
+        ctx.replace()
+    else:
+        ctx.insert()
 }

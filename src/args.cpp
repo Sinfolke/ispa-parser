@@ -2,6 +2,7 @@ module;
 module args;
 import logging;
 import cpuf.printf;
+import cpuf.op;
 import CLI;
 import std;
 

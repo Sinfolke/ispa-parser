@@ -1,5 +1,6 @@
 export module utils;
 import cpuf.printf;
+import cpuf.op;
 import std;
 export namespace utils {
     template<typename ...Args>

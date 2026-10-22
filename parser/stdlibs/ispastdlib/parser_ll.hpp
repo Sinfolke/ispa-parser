@@ -55,15 +55,69 @@ namespace ISPA_STD {
             const IT start_pos;
             const std::string rule;
             const std::string failed_rule;
+            Recovery::State& recovery;
+            const char* source;
+            const std::size_t diagnostic_begin;
+            std::optional<Recovery::Mode> requested;
+            std::size_t skipped = 0;
+
+            // Custom diagnostics use the same collection as automatic repairs.
+            void error(const std::string& message) {
+                if (recovery.exhausted()) { abort(); return; }
+                Recovery::Diagnostic diagnostic;
+                diagnostic.rule = rule;
+                diagnostic.expected_text = failed_rule;
+                diagnostic.message = message;
+                if (!pos.isEnd()) {
+                    diagnostic.unexpected = Recovery::tokenId(*pos);
+                    diagnostic.offset = pos->meta().startpos();
+                    diagnostic.length = pos->meta().length();
+                } else if (source) {
+                    diagnostic.offset = std::char_traits<char>::length(source);
+                }
+                recovery.diagnostics.push_back(std::move(diagnostic));
+            }
+            bool at(std::string_view spelling) const {
+                if (pos.isEnd()) return false;
+                const auto& meta = pos->meta();
+                return meta.start() && std::string_view(meta.start(), meta.length()) == spelling;
+            }
+            void skip() {
+                if (recovery.exhausted()) { abort(); return; }
+                if (!pos.isEnd()) { ++pos; ++skipped; ++recovery.total_skipped; }
+            }
+            void insert() { if (requested != Recovery::Mode::Abort) requested = Recovery::Mode::Insert; }
+            void replace() { skip(); insert(); }
+            void retry() { if (requested != Recovery::Mode::Abort) requested = Recovery::Mode::Retry; }
+            void abort() { requested = Recovery::Mode::Abort; }
+
+            Recovery::Decision finish(const IT& before) {
+                const auto begin = cursor_position(before), end = cursor_position(pos);
+                const auto moved = end > begin ? end - begin : 0;
+                // Also account for legacy handlers that change ctx.pos directly.
+                if (moved > skipped) recovery.total_skipped += moved - skipped;
+                Recovery::Decision decision;
+                decision.mode = recovery.exhausted() ? Recovery::Mode::Abort :
+                    requested.value_or(begin == end ? Recovery::Mode::Insert : Recovery::Mode::Retry);
+                if (decision.mode == Recovery::Mode::Insert && moved) decision.mode = Recovery::Mode::Replace;
+                decision.skipped = moved;
+                for (auto i = diagnostic_begin; i < recovery.diagnostics.size(); ++i) {
+                    auto& diagnostic = recovery.diagnostics[i];
+                    diagnostic.decision = decision;
+                    diagnostic.decision.unexpected = diagnostic.unexpected;
+                }
+                return decision;
+            }
         };
         template<class IT, class AST>
         static auto rule_context(IT& pos, AST& ast, IT start, std::string rule) {
             return RuleContext<IT, AST>{pos, ast, start, std::move(rule)};
         }
         template<class IT, class AST>
-        static auto fail_context(IT& pos, AST& ast, IT start,
+        auto fail_context(IT& pos, AST& ast, IT start,
                                  std::string rule, std::string failed_rule) {
-            return FailContext<IT, AST>{pos, ast, start, std::move(rule), std::move(failed_rule)};
+            return FailContext<IT, AST>{pos, ast, start, std::move(rule), std::move(failed_rule),
+                recovery_state_, this->text, recovery_state_.diagnostics.size()};
         }
         template<class IT>
         static auto custom_failure_decision(const IT& before, const IT& after) {
@@ -71,6 +125,10 @@ namespace ISPA_STD {
             decision.mode = cursor_position(before) == cursor_position(after)
                 ? Recovery::Mode::Insert : Recovery::Mode::Retry;
             return decision;
+        }
+        template<class IT, class AST>
+        static auto custom_failure_decision(const IT& before, const IT&, FailContext<IT, AST>& ctx) {
+            return ctx.finish(before);
         }
         template<class Action>
         struct ActionFailure {

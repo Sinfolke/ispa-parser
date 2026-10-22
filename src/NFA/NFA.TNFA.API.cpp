@@ -1,4 +1,5 @@
 module NFA.TNFA.API;
+import cpuf.op;
 
 namespace NFA::TNFA {
     std::ostream &

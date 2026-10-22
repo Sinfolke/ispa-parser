@@ -6,6 +6,7 @@ import hash;
 import logging;
 import corelib;
 import cpuf.printf;
+import cpuf.op;
 import dstd;
 import std;
 

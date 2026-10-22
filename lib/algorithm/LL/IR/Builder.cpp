@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 module LLIR.Builder;
 import RuleLower;
 import Parser.Base;
@@ -59,11 +61,11 @@ struct ActionFields {
                     default: return la::ValueType::Undef;
                 }
             } else if constexpr (std::is_same_v<T, py::Name>) {
-                if (locals.contains(x.id)) return locals.at(x.id);
-                if (imported_types.contains(x.id)) return imported_types.at(x.id);
+                if (locals.contains(x.id)) return locals.find(x.id)->second;
+                if (imported_types.contains(x.id)) return imported_types.find(x.id)->second;
             } else if constexpr (std::is_same_v<T, py::Call>) {
                 if (auto name = x.func ? x.func->template get<py::Name>() : nullptr;
-                    name && imported_types.contains(name->id)) return imported_types.at(name->id);
+                    name && imported_types.contains(name->id)) return imported_types.find(name->id)->second;
             } else if constexpr (std::is_same_v<T, py::Compare> || std::is_same_v<T, py::BoolExpr>) return la::ValueType::Bool;
             else if constexpr (std::is_same_v<T, py::UnaryExpr>) return x.op == py::UnaryOp::Not ? la::Type{la::ValueType::Bool} : infer(x.operand);
             else if constexpr (std::is_same_v<T, py::BinaryExpr>) {
@@ -77,7 +79,7 @@ struct ActionFields {
                 }
             } else if constexpr (std::is_same_v<T, py::Attribute>) {
                 const auto field = astField(expression);
-                if (fields.contains(field)) return fields.at(field).second;
+                if (fields.contains(field)) return fields.find(field)->second.second;
                 if (auto n = x.value ? x.value->template get<py::Name>() : nullptr; n && n->id == "ctx" &&
                     (x.attr == "rule" || x.attr == "failed_rule")) return la::ValueType::String;
             }
@@ -90,7 +92,7 @@ struct ActionFields {
         if (type == la::ValueType::Void) error(target->pos, "a function returning None cannot initialize an AST field");
         if (!field.empty()) {
             if (fields.contains(field)) {
-                if (annotated && !(fields.at(field).second == type)) error(target->pos, "conflicting annotation for ctx.ast." + field);
+                if (annotated && !(fields.find(field)->second.second == type)) error(target->pos, "conflicting annotation for ctx.ast." + field);
                 return;
             }
             if (type == la::ValueType::Undef)
@@ -174,7 +176,7 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
             }
             if (resolved) {
                 for (std::size_t i = 0; i < arguments.size() && i < resolved->parameters.size(); ++i)
-                    if (action_fields.locals.contains(arguments[i])) action_fields.locals.insert_or_assign(resolved->parameters[i], action_fields.locals.at(arguments[i]));
+                    if (action_fields.locals.contains(arguments[i])) action_fields.locals.insert_or_assign(resolved->parameters[i], action_fields.locals.find(arguments[i])->second);
                 action_fields.action(resolved->action);
             }
         }
@@ -193,10 +195,10 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
             if (production.block.is_regular_data_block())
                 production.block.getRegularDataBlock().first = std::move(expression);
             else if (production.block.is_inclosed_map()) {
-                if (rule.data_block.type) production.block.getInclosedMap().at("value").first = std::move(expression);
+                if (rule.data_block.type) production.block.getInclosedMap().find("value").value().first = std::move(expression);
                 else if (capture < rule.data_block.fields.size()) {
-                    const auto& field = rule.data_block.fields.at(capture).first;
-                    production.block.getInclosedMap().at(field).first = std::move(expression);
+                    const auto& field = rule.data_block.fields[capture].first;
+                    production.block.getInclosedMap().find(field).value().first = std::move(expression);
                 }
             }
             ++capture;

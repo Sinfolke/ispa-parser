@@ -165,6 +165,16 @@ struct PythonConverter {
                 return la::StorageSymbol::createExpression(s);
             } else if constexpr (std::is_same_v<T, py::Call>) {
                 if (!x.keywords.empty()) unsupported(e.pos, "keyword arguments are unsupported");
+                if (action_context) if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr) {
+                    if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr; owner && owner->id == "ctx") {
+                        const auto& name = method->attr;
+                        const bool argument = name == "error" || name == "at";
+                        if (!failure_context || (!argument && name != "skip" && name != "insert" &&
+                            name != "replace" && name != "retry" && name != "abort"))
+                            unsupported(e.pos, "unknown context method: " + name);
+                        if (x.args.size() != (argument ? 1u : 0u)) unsupported(e.pos, "wrong argument count for ctx." + name);
+                    }
+                }
                 la::FunctionCall call;
                 for (const auto& a : x.args) call.args.push_back(expr(a));
                 if (auto n = x.func ? x.func->template get<py::Name>() : nullptr) {
@@ -254,7 +264,7 @@ struct PythonConverter {
                 if (failure_context && x.value) unsupported(s.pos, "fail blocks use a bare return");
                 la::FunctionCall call;
                 call.name = std::make_shared<la::Symbol>(failure_context ? "custom_failure_decision" : "action_result");
-                if (failure_context) call.args = {la::Symbol::createExpression(la::Symbol{"before_failure"}), la::Symbol::createExpression(la::Symbol{"failed_pos"})};
+                if (failure_context) call.args = {la::Symbol::createExpression(la::Symbol{"before_failure"}), la::Symbol::createExpression(la::Symbol{"failed_pos"}), la::Symbol::createExpression(la::Symbol{"ctx"})};
                 else {
                     la::StorageSymbol ast{"ast"}, pos{"pos"};
                     ast.what = pos.what = la::Symbol::createExpression(la::Symbol{"ctx"});

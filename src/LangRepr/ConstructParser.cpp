@@ -1,6 +1,9 @@
+module;
+#include <tsl/ordered_map.h>
 module LangRepr.ConstructParser;
 
 import cpuf.printf;
+import cpuf.op;
 import NFA.TNFA.API;
 import Parser.Base;
 import DFA;
@@ -245,8 +248,8 @@ namespace LangRepr {
                 function.statements = LangAPI::Return::createStatements(LangAPI::Return{
                     .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
                         .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"::ISPA_STD", "external_match"}),
-                        .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})},
-                        .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"::" + external.cpp_binding}})}})});
+                        .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"::" + external.cpp_binding}})},
+                        .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}})});
                 parser.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(function)), LangAPI::Visibility::Protected);
                 continue;
             }

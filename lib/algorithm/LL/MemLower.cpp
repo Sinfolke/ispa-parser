@@ -158,8 +158,8 @@ auto MemLower::tokenKindIs(const AST::LLkToken &token) -> LangAPI::Expression {
     for (const auto& [name, rule] : tree->getTreeMap()) if (rule.external && rule.external->marker == token) {
         return LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
             .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"::ISPA_STD", "external_starts"}),
-            .args = {LangAPI::Pos::createExpression(LangAPI::Pos{.dereference = false})},
-            .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"::" + rule.external->cpp_binding}})}});
+            .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"::" + rule.external->cpp_binding}})},
+            .args = {LangAPI::Pos::createExpression(LangAPI::Pos{.dereference = false})}});
     }
     auto expr = kindOfCurrent();
     expr.push_back(op(LangAPI::ExpressionElement::Equal));
@@ -300,7 +300,7 @@ auto MemLower::failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression
             callback.statements.push_back(LangAPI::If{LangAPI::Bool::createExpression(LangAPI::Bool{.value = true}), std::move(body)});
         }
         callback.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
-            .value = call("custom_failure_decision", {symbol("before_failure"), symbol("failed_pos")})}));
+            .value = call("custom_failure_decision", {symbol("before_failure"), symbol("failed_pos"), symbol("ctx")})}));
         return call("custom_failure", {LangAPI::Lambda::createExpression(std::move(callback))});
     }
     return recoveryHandler(*tree, fun_ctx->rule_name, mem_idx, {

@@ -1,4 +1,5 @@
 module LangAPI;
+import cpuf.op;
 
 namespace LangAPI {
     template<typename Param>

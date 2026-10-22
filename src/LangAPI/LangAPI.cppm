@@ -5,6 +5,7 @@ import constants;
 import hash;
 import dstd;
 import cpuf.printf;
+import cpuf.op;
 import std;
 // forward declarations
 export namespace LangAPI {

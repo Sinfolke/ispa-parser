@@ -1,6 +1,7 @@
 module;
 export module logging;
 import cpuf.printf;
+import cpuf.op;
 import cpuf.color;
 import dstd;
 export import Tlog.Logger;

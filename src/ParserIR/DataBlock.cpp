@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 module ParserIR.API;
 import Parser.Base;
 import std;

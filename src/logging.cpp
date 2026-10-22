@@ -7,6 +7,7 @@ module;
 #endif
 module logging;
 import cpuf.printf;
+import cpuf.op;
 import cpuf.color;
 import std;
 

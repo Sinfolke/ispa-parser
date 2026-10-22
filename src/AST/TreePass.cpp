@@ -6,6 +6,7 @@ import corelib;
 import AST.Tree;
 import AST.API;
 import cpuf.printf;
+import cpuf.op;
 import logging;
 import constants;
 import std;

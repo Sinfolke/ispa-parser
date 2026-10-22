@@ -3,6 +3,7 @@ import corelib;
 import hash;
 import logging;
 import cpuf.printf;
+import cpuf.op;
 import std;
 
 auto ParserIR::IR::begin() -> ::stdu::vector<Production>::iterator {

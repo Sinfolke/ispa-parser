@@ -1,6 +1,7 @@
 module LangRepr.ConstructLexer;
 
 import cpuf.printf;
+import cpuf.op;
 import NFA.TNFA.API;
 import NFA.IR.API;
 import DFA.API;

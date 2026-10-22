@@ -1,5 +1,6 @@
 module ConstructBase;
 import cpuf.printf;
+import cpuf.op;
 namespace LangRepr {
     auto ConstructBase::createTypeToken() -> LangAPI::TypeAlias {
         LangAPI::Type variant_type = LangAPI::ValueType::RawToken;          // was LargeVariant
@@ -29,8 +30,8 @@ namespace LangRepr {
         clone.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
             .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
                 .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"std", "make_shared"}),
-                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"*this"})},
-                .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"Lexer"}})}})}));
+                .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"Lexer"}})},
+                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"*this"})}})}));
         result.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(clone)), LangAPI::Visibility::Public);
         return result;
     }

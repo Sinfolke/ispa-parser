@@ -3,6 +3,7 @@ import Algorithm.API;
 import LangRepr.Construct;
 import LRBase;
 import cpuf.printf;
+import cpuf.op;
 import std;
 
 export namespace Algorithm {

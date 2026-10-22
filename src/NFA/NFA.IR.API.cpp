@@ -1,4 +1,5 @@
 module NFA.IR.API;
+import cpuf.op;
 
 import AST.API;
 import corelib;
