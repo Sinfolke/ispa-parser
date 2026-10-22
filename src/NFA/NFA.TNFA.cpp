@@ -22,7 +22,8 @@ namespace NFA::TNFA {
 
     auto generateVariable(const TokenID &source) {
         std::ostringstream v;
-        v << source.member << "#" << source.token_name;
+        v << source.member << "#";
+        ::operator<<(v, source.token_name);
         if (source.group != NULL_STATE) {
             v << "$group" << source.group;
         }

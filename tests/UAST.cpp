@@ -252,7 +252,7 @@ x = {'brace': '}'}
 if x:
     x = 2
 }
-T: ${p{(a + 2) * b}} 'a'+=p{3};
+T: ${(a + 2) * b} 'a'+=3;
 U: 'b';
 )");
     ASSERT_TRUE(parser.getErrors().empty());
@@ -266,15 +266,18 @@ U: 'b';
 }
 
 TEST(UAST, PythonExpressionInDynamicPatternAndCounter) {
-    auto tree = convert("T: ${p{py}} 'a'+=p{py};");
+    auto tree = convert("T: ${py} 'a'+=(py + 1);");
     const auto& members = tree.getTreeMap().at({"T"}).rule_members;
     ASSERT_EQ(members.size(), 2u);
-    EXPECT_EQ(feature<AST::DynamicPattern>(*members[0]).expression.python.kind, "expr");
-    EXPECT_EQ(feature<AST::Counter>(*members[1]).expression.python.kind, "expr");
+    EXPECT_EQ(feature<AST::DynamicPattern>(*members[0]).expression.python.kind, "Name");
+    EXPECT_EQ(feature<AST::Counter>(*members[1]).expression.python.kind, "BinaryExpr");
 }
 
 TEST(UAST, ConvertsBootstrapGrammar) {
-    const auto project = Modules::preprocess({std::string(ROOT_DIR) + "/parser/ispa/grammar"});
+    const auto root = std::string(ROOT_DIR);
+    const auto project = Modules::preprocess({root + "/parser/ispa/grammar"},
+        {root + "/parser/ispa/entry.isc"},
+        {{"python", root + "/parser/python/bootstrapped/PyRawParser"}});
     UAST::main syntax;
     std::vector<std::string> files;
     for (const auto& source : project.sources) {
@@ -291,10 +294,10 @@ TEST(UAST, ConvertsBootstrapGrammar) {
     ASSERT_NO_THROW(builder.build());
     auto tree = builder.get();
     EXPECT_GT(tree.getTreeMap().size(), 30u);
-    EXPECT_TRUE(tree.contains({"modules", "rule", "value", "mul_capture"}));
-    EXPECT_TRUE(tree.contains({"modules", "advanced_rule", "advanced_rule"}));
-    EXPECT_TRUE(tree.contains({"modules", "rule", "ast", "abbr"}));
-    EXPECT_TRUE(tree.contains({"modules", "rule", "ast", "single_value"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "regular", "value", "mul_capture"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "advanced", "advanced_rule"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "regular", "ast", "abbr"}));
+    EXPECT_TRUE(tree.contains({"modules", "rule", "regular", "ast", "single_value"}));
 }
 
 TEST(UAST, AdvancedRuleKeepsPythonActions) {
@@ -338,15 +341,58 @@ A: 'a';
 }
 
 TEST(UAST, PythonAstBlocksKeepTargets) {
-    auto tree = convert("T: 'a' &{ result: p{py} }; S: 'b' {p{py}};");
+    auto tree = convert("T: 'a' &= { result: py }; S: 'b' {py};");
     const auto& keyed = tree.getTreeMap().at({"T"}).features;
     ASSERT_EQ(keyed.size(), 1u);
     const auto& action = std::get<AST::PythonAction>(keyed.front());
     EXPECT_EQ(action.target, "result");
-    EXPECT_EQ(action.python.kind, "expr");
+    EXPECT_EQ(action.python.kind, "Name");
     const auto& single = tree.getTreeMap().at({"S"}).features;
     ASSERT_EQ(single.size(), 1u);
     EXPECT_TRUE(std::get<AST::PythonAction>(single.front()).target.empty());
+}
+
+TEST(UAST, ExpressionFailBlocksPreserveFollowingDeclarationsAndRejectInvalidAst) {
+    for (const auto* source : {
+        "item: ${f({'k': 1}, +)} 'suffix'; next: 'n';",
+        "item: 'x' &= { bad: f({'k': 1}, +) later: 2 }; next: 'n';",
+        "item: ${f( + ; next: 'n';"
+    }) {
+        SCOPED_TRACE(source);
+        IspaParser parser;
+        const auto& syntax = parser.parse(source);
+        ASSERT_FALSE(parser.getErrors().empty());
+        EXPECT_NE(parser.getErrors().front().message.find("invalid Python expression"), std::string::npos);
+        const auto& declarations = syntax.value.data().value;
+        ASSERT_EQ(declarations.size(), 2u);
+        const auto& next = std::get<UAST::Node<UAST::grammar>>(declarations.back());
+        EXPECT_EQ(next.data().name.data().primary.data().value, "next");
+        AST::Builder builder(syntax, "invalid.isc");
+        EXPECT_THROW(builder.build(), std::runtime_error);
+    }
+}
+
+TEST(UAST, DirectExpressionsPreserveFieldsAndRejectWrappedExpressions) {
+    IspaParser parser;
+    parser.parse("item: 'x' &= { first: 1 second: (2 + 3) }; next: ${count + 1};");
+    EXPECT_TRUE(parser.getErrors().empty());
+    for (const auto* source : {"item: ${p{1}};", "item: 'x' {p{1}};"}) {
+        IspaParser invalid;
+        bool rejected = false;
+        try {
+            invalid.parse(source);
+            rejected = !invalid.getErrors().empty() || !invalid.getContextErrors().empty();
+        } catch (const std::exception&) { rejected = true; }
+        EXPECT_TRUE(rejected) << source;
+    }
+}
+
+TEST(UAST, UnterminatedExpressionStringsReachBoundHandlerAndAbort) {
+    IspaParser parser;
+    EXPECT_THROW(parser.parse("item: ${'unterminated\n}; next: 'n';"), std::exception);
+    ASSERT_FALSE(parser.getErrors().empty());
+    EXPECT_NE(parser.getErrors().front().message.find("invalid Python expression in dynamic pattern"), std::string::npos);
+    EXPECT_EQ(parser.getErrors().front().decision.mode, ISPA_STD::Recovery::Mode::Abort);
 }
 
 TEST(UAST, DataBlockMetadataUsesResolvedNamesAndFieldOrder) {

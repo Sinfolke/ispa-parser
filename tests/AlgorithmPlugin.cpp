@@ -112,6 +112,8 @@ fail oops>(previous) {
     ctx.ast.owner = ctx.rule
     ctx.ast.recovered = True
     ctx.ast.had_previous = not previous.empty()
+    ctx.ast.named: bool = ctx.at(X)
+    ctx.ast.named_string: bool = ctx.at("X")
     ctx.pos += 1
 }
 regular: @ A suffix @{token} %{missing};
@@ -159,6 +161,7 @@ int main() {
     if (good.total != 7 || good.first.empty() || !good.failed.empty()) return 1;
     const auto& repaired = parser.parse("axb").value.data();
     if (repaired.total != 7 || !repaired.recovered || !repaired.had_previous || repaired.failed != "B" || repaired.owner != "item") return 2;
+    if (!repaired.named || !repaired.named_string) return 8;
     const auto& again = parser.parse("ab").value.data();
     if (again.total != 7 || !again.failed.empty()) return 3;
     PluginTest::Lexer lexer;

@@ -69,7 +69,6 @@ using COMMA = ::Parser::Types::COMMA;
 using RIGHT_PARENTHESIS = ::Parser::Types::RIGHT_PARENTHESIS;
 using LEFT_PARENTHESIS = ::Parser::Types::LEFT_PARENTHESIS;
 using RIGHT_CURLY_BRACKET = ::Parser::Types::RIGHT_CURLY_BRACKET;
-using NUMBER = ::Parser::Types::modules::common::NUMBER;
 #ifndef ISPA_EXTERNAL_PYTHON
 using PY_RAW = ::Parser::Types::modules::common::PY_RAW;
 #endif

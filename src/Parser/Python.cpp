@@ -169,10 +169,41 @@ struct PythonConverter {
                     if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr; owner && owner->id == "ctx") {
                         const auto& name = method->attr;
                         const bool argument = name == "error" || name == "at";
-                        if (!failure_context || (!argument && name != "skip" && name != "insert" &&
+                        if (!failure_context || (!argument && name != "sync" && name != "skip" && name != "insert" &&
                             name != "replace" && name != "retry" && name != "abort"))
                             unsupported(e.pos, "unknown context method: " + name);
-                        if (x.args.size() != (argument ? 1u : 0u)) unsupported(e.pos, "wrong argument count for ctx." + name);
+                        if (name == "sync") {
+                            if (x.args.empty()) unsupported(e.pos, "ctx.sync requires at least one boundary");
+                            for (const auto& arg : x.args) {
+                                auto literal = arg ? arg->template get<py::Constant>() : nullptr;
+                                if (!literal || literal->kind != py::ConstantKind::Str || literal->value.empty())
+                                    unsupported(e.pos, "ctx.sync boundaries must be nonempty string literals");
+                            }
+                        } else if (x.args.size() != (argument ? 1u : 0u)) unsupported(e.pos, "wrong argument count for ctx." + name);
+                        if (name == "at" && x.args.size() == 1) {
+                            // Bare and dotted token names are strings in this API;
+                            // ordinary bound variables remain ordinary expressions.
+                            std::function<std::string(const py::ExprPtr&)> tokenName = [&](const py::ExprPtr& arg) -> std::string {
+                                if (!arg) return {};
+                                if (auto n = arg->template get<py::Name>())
+                                    return locals.contains(n->id) || n->id == "ctx" ? "" : n->id;
+                                if (auto a = arg->template get<py::Attribute>()) {
+                                    auto prefix = tokenName(a->value);
+                                    return prefix.empty() ? "" : prefix + "." + a->attr;
+                                }
+                                return {};
+                            };
+                            const auto token = tokenName(x.args.front());
+                            if (!token.empty()) {
+                                la::FunctionCall call;
+                                call.name = std::make_shared<la::Symbol>("at");
+                                call.args = {la::String::createExpression(la::String{.value = token})};
+                                la::StorageSymbol storage;
+                                storage.what = group(expr(method->value));
+                                storage.path.emplace_back(call);
+                                return la::StorageSymbol::createExpression(storage);
+                            }
+                        }
                     }
                 }
                 la::FunctionCall call;

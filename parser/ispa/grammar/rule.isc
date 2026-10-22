@@ -4,9 +4,8 @@ import {name, ID, NUMBER} from common;
 import {expr} from ispa_python;
 
 regular_rule:
-    ':' @ value+ @ ast? @ f_binding? @ nested_rule* % ';'
+    ':' @ value+ @ ast? @ f_binding? @ nested_rule* ';'
     @{v, ast_pointer, fail_pointer, nested}
-    %{missing_colon}
 ;
 ast:
     @ abbr | full | single_value
@@ -18,7 +17,7 @@ ast:
         {@}
 
         #part:
-            @ ID %ast_field_separator ':' @ expr
+            @ ID %ast_field_separator ':' @ %ast_field_expression expr
             @{key, e}
         ;
     ;
@@ -93,7 +92,7 @@ value:
         {@}
 
         #dyn_expr:
-            '{' @ expr '}'
+            '{' @ %dynamic_expression expr '}'
             {@}
         ;
     ;
@@ -113,7 +112,7 @@ value:
            @{quantifier, repetitions}
        ;
        #bounded:
-             '=' @ NUMBER | ID | expr
+             '=' @ expr
 
              {@}
        ;
@@ -136,4 +135,20 @@ fail ast_field_separator {
         ctx.replace()
     else:
         ctx.insert()
+}
+
+// Abandon the remaining AST fields when a Python expression is malformed.
+// Braces in nested dicts must not be mistaken for the AST object's closing brace.
+fail ast_field_expression {
+    ctx.error("invalid Python expression in AST field; discarding the remaining AST fields")
+    ctx.sync("}", ";")
+    ctx.insert()
+}
+
+// Preserve the dynamic expression's closing brace and the enclosing grammar
+// boundary, even when the broken Python expression contains nested delimiters.
+fail dynamic_expression {
+    ctx.error("invalid Python expression in dynamic pattern '${...}'")
+    ctx.sync("}", ")", ";")
+    ctx.insert()
 }

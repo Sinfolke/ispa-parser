@@ -25,7 +25,7 @@ TEST(UAST, BackendGuardRejectsUnsupportedFeaturesWithPositions) {
     for (const auto* source : {
         "T: $name;", "T: @=('a');", "T: % 'a';",
         "T: 'a' %{handler};", "T: 'a'+=3;", "T: 'a' => count;",
-        "fail handler {py} T: 'a';", "T: 'a' {p{py}};", "T: \\s;"
+        "fail handler {py} T: 'a';", "T: 'a' {py};", "T: \\s;"
     }) {
         auto tree = convert(source);
         try {

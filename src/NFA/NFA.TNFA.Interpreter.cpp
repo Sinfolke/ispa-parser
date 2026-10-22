@@ -182,11 +182,23 @@ namespace NFA::Interpreter {
         return best_match.value_or(TNFAInterpreterResult{.matched = false});
     }
   std::ostream& operator<<(std::ostream &os, TNFAInterpreterResult &res) {
-      os << "variables = " << res.captured_variables << '\n';
+      os << "variables = ";
+      ::operator<<(os, res.captured_variables) << '\n';
       os << "consumed_length = " << res.consumed_length << '\n';
       os << "matched = " << res.matched << '\n';
-      os << "array_captures = " << res.array_captures << '\n';
-      os << "instance = " << res.constructed_instance << '\n';
+      os << "array_captures = [";
+      bool first = true;
+      for (const auto& [name, captures] : res.array_captures) {
+          if (!first) os << ", ";
+          first = false;
+          os << '(' << name << ", ";
+          ::operator<<(os, captures) << ')';
+      }
+      os << "]\n";
+      os << "instance = ";
+      if (res.constructed_instance) os << *res.constructed_instance;
+      else os << "<none>";
+      os << '\n';
       os << "matched_token = " << (res.matched_token.has_value() ? std::to_string(res.matched_token.value().token_id) : "<none>") << '\n';
       os << "final_state = " << res.final_state << '\n';
       return os;

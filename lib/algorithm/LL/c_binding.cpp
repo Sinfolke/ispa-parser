@@ -16,7 +16,7 @@ auto build(const Algorithm::BuildRequest& request, Algorithm::Metadata& metadata
     // those dependencies are tracked, invalidate all productions on any change.
     std::ostringstream grammar;
     // Recovery sets include the complete reachable production suffix.
-    grammar << "LL metadata lowering v12 action contexts\n";
+    grammar << "LL metadata lowering v13 source recovery contexts\n";
     for (const auto& [name, rule] : request.tree.getTreeMap()) {
         grammar << corelib::text::join(name, ".") << '\n' << rule << '\n';
     }

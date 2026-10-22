@@ -65,7 +65,7 @@ name<modules_rule_regular_value_dyn_DOLLAR_SIGN> : Rule {
 }name<modules_rule_regular_value_counter_bounded> : Rule {
    EQUALS_SIGN
    __WS?;
-  @  ( modules::common::NUMBER |  modules::common::ID |  modules::ispa_python::expr)
+  @  modules::ispa_python::expr
   Data: [RegularDataBlock: CllExpr]
 }name<modules_rule_regular_value_shared_counter_registration> : Rule {
    modules::rule::regular::value::shared_counter_registration::AUTO
@@ -406,10 +406,6 @@ external PyRawParser::Types::main PyRawParser::Exports::RawStatements <PyRawPars
 external PyRawParser::Types::expr PyRawParser::Exports::ExpressionBlock <PyRawParser.h>
    __ISPA_EXTERNAL_54
   Data: EmptyDataBlock
-}name<modules_common_NUMBER> : Rule {
-  @  [0-9]+;
-   ( "." @  [0-9]+;)?;
-  Data: TemplatedDataBlock(full, floating)
 }name<main> : Rule {
   @  modules::main::main
   Data: [RegularDataBlock: CllExpr]

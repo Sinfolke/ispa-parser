@@ -204,6 +204,22 @@ auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
         for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals)) push(statement);
     }
     if (isWhitespaceRef(mem)) {
+        const auto& members = tree->getTreeMap().at(fun_ctx->rule_name).rule_members;
+        if (mem_idx + 1 < members.size() && members[mem_idx].get() == &mem) {
+            const auto heads = firstTokens(*members[mem_idx + 1]);
+            const bool foreign = std::ranges::any_of(heads, [&](const auto& head) {
+                return std::ranges::any_of(tree->getTreeMap(), [&](const auto& entry) {
+                    return entry.second.external && entry.second.external->marker == head;
+                });
+            });
+            if (foreign) {
+                push(LangAPI::FunctionCall::createStatement(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>("skip_external_spaces"),
+                    .template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"Types", "__WS"}})},
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}}));
+                return meta;
+            }
+        }
         // Inserted by TreePass::addSpaceToken between members. Same effect as
         // optional<__WS>, without creating a value.
         push(LangAPI::SkipSpaces::createStatement(LangAPI::SkipSpaces {.isToken = false}));
@@ -273,7 +289,8 @@ auto MemLower::failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression
         callback.statements.push_back(LangAPI::Variable{.name = "ctx", .type = LangAPI::Type{LangAPI::ValueType::Undef},
             .value = call("fail_context", {symbol("failed_pos"), symbol("result"), symbol("start_pos"),
                 LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(fun_ctx->rule_name, ".")}),
-                LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(mem.getName().name, ".")})})});
+                LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(mem.getName().name, ".")}),
+                symbol("TokensToString")})});
         for (const auto& [name, arguments] : handlers) {
             const AST::FailBlock* block = nullptr;
             // Resolve in the containing rule's lexical scopes, then globally.

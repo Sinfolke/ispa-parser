@@ -2,6 +2,7 @@
 #include "parser.hpp"
 #include <ispa/lexical.hpp>
 #include <cctype>
+#include <ispastdlib/recovery_scan.hpp>
 
 namespace PyRawParser::Exports {
 namespace {
@@ -51,10 +52,41 @@ auto parseBlock(const char* origin, const char* start) {
 }
 bool ExpressionBlock::starts(const char*, const char* start) {
     start = blockStart(start);
+    if (!start || !*start) return false;
+    const auto first = static_cast<unsigned char>(*start);
+    return std::isalnum(first) || first == '_' ||
+        std::string_view("'\"([{+-~").find(*start) != std::string_view::npos;
+}
+bool StatementsBlock::starts(const char*, const char* start) {
+    start = blockStart(start);
     return start && start[0] == 'p' && start[1] == '{';
 }
-bool StatementsBlock::starts(const char* origin, const char* start) { return ExpressionBlock::starts(origin, start); }
-ISPA_STD::ExternalResult<ExpressionBlock::node_type> ExpressionBlock::parse(const char* origin, const char* start) { return parseBlock<true>(origin, start); }
+ISPA_STD::ExternalResult<ExpressionBlock::node_type> ExpressionBlock::parse(const char* origin, const char* start) {
+    start = blockStart(start);
+    if (!starts(origin, start)) return {};
+    if (start[0] == 'p' && start[1] == '{')
+        throw std::runtime_error("use a direct Python expression; p{...} wrappers are unsupported");
+    const std::string_view stops[]{"}", ")", ";"};
+    const auto boundary = ISPA_STD::Recovery::scanBalanced(start, stops, std::char_traits<char>::length(start));
+    if (boundary.exhausted) throw std::runtime_error("unterminated string in Python expression");
+    PyLexer lexer;
+    lexer.setBoundary(boundary.end);
+    Parser parser;
+    auto result = parser.expr(PyLexer::lazy_iterator(lexer, origin, start));
+    const char* end = result.status ? result.it.sourcePosition() : start;
+    const char* tail = blockStart(end);
+    // The legacy Python parser records failed optional suffix probes even on
+    // valid expressions. Check the returned span instead of those diagnostics.
+    // A leftover Python operator/opener means a committed suffix was broken.
+    const bool incomplete = tail < boundary.end && *tail &&
+        std::string_view("([{.+-*/%@&|^<>=!,").find(*tail) != std::string_view::npos;
+    if (!result.status || incomplete) {
+        std::string message = "invalid Python expression";
+        if (!parser.getErrors().empty()) message += ": " + parser.getErrors().front().message;
+        throw std::runtime_error(message);
+    }
+    return {true, ISPA_STD::external_node(origin, start, end, std::move(result.node)), end};
+}
 ISPA_STD::ExternalResult<StatementsBlock::node_type> StatementsBlock::parse(const char* origin, const char* start) { return parseBlock<false>(origin, start); }
 bool RawStatements::starts(const char*, const char* start) {
     start = blockStart(start);

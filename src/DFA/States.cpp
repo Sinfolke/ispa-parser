@@ -48,7 +48,7 @@ auto DFA::States<State>::clear() -> void {
 
 template<typename StateType>
 auto DFA::operator<<(std::ostream &os, const States<StateType> &states) -> std::ostream & {
-    os << states.get();
+    ::operator<<(os, states.get());
     return os;
 }
 

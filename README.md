@@ -196,6 +196,24 @@ entry. Moving the failure cursor requests a retry of the required match; leaving
 it unchanged accepts a missing value and continues. Retries are bounded by the
 runtime. Optional or zero-or-more matches do not invoke fail blocks.
 
+`ctx.at("=")` checks literal spelling. `ctx.at(ID)` and `ctx.at("ID")` also
+check token names; dotted or `::` qualified names are accepted. An unqualified
+name matches the token's final name component, while a qualified name matches
+the corresponding suffix of its full name. Bound variables passed to `at`
+retain their values.
+
+`ctx.sync("}", ";")` scans a lazy source cursor to an enclosing boundary,
+respecting nested Python delimiters, quoted strings and comments. It leaves
+the boundary for its owner. A listed semicolon is a hard boundary even inside
+an unclosed container. Scanning is limited to 4096 source bytes and the shared
+skip budget; exhaustion aborts recovery. Follow it with `ctx.insert()` to accept
+a missing expression instead of retrying the boundary. Eager token streams
+cannot use `sync`.
+
+Python expressions are direct: `${(a + 2) * b}`, `&= { count: 3 }`, and
+`{value}`. Expression entry points do not accept `p{...}` wrappers. Recovered
+missing expressions remain invalid and cannot be compiled.
+
 ```isc
 fail missing {
     ctx.ast.missing = ctx.failed_rule

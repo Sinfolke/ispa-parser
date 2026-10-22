@@ -21,13 +21,13 @@ auto statements(const std::string& source) {
 TEST(PythonConversion, ExternalExpressionUsesOriginalParserTypeAndSource) {
     using Binding = PyRawParser::Exports::ExpressionBlock;
     static_assert(std::is_same_v<Binding::node_type, PyRawParser::Types::expr>);
-    const std::string source = "host\np{(a + 2) * b} trailing";
+    const std::string source = "host\n(a + 2) * b} trailing";
     auto result = Binding::parse(source.c_str(), source.c_str() + 5);
     ASSERT_TRUE(result.status);
-    EXPECT_EQ(result.node.start(), source.c_str() + 7);
+    EXPECT_EQ(result.node.start(), source.c_str() + 5);
     EXPECT_EQ(result.node.line(), 2u);
-    EXPECT_EQ(std::string_view(result.end), " trailing");
-    const auto syntax = UAST::convertPythonExpr(result.node, {"extern.isc", 7, result.node.length(), 2, 3});
+    EXPECT_EQ(std::string_view(result.end), "} trailing");
+    const auto syntax = UAST::convertPythonExpr(result.node, {"extern.isc", 5, result.node.length(), 2, 1});
     ASSERT_TRUE(syntax);
     EXPECT_FALSE(Parser::ParserBase::convertPython(*syntax).empty());
 }
@@ -168,4 +168,8 @@ TEST(PythonConversion, ActionContextValidatesMetadataAndPreservesLocals) {
     for (const auto* source : {"ctx = 1\n", "ctx: int = 1\n", "ctx.rule = 'x'\n", "ctx.start_pos += 1\n", "x = ctx.unknown\n", "x = ctx.failed_rule\n"})
         EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals), std::invalid_argument) << source;
     EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("name = ctx.failed_rule\nreturn\n"), locals, true));
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("ctx.sync('}', ';')\nctx.insert()\n"), locals, true));
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(action("x = ctx.at(ID) or ctx.at(common.ID) or ctx.at('=')\n"), locals, true));
+    for (const auto* source : {"ctx.sync()\n", "ctx.sync('')\n", "ctx.sync(42)\n"})
+        EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals, true), std::invalid_argument);
 }

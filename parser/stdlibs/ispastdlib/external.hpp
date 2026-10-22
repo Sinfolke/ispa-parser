@@ -4,6 +4,10 @@
 #include <algorithm>
 
 namespace ISPA_STD {
+class ExternalParseError : public std::runtime_error {
+public:
+    using std::runtime_error::runtime_error;
+};
 template<class Data> struct ExternalResult {
     bool status = false;
     Node<Data> node;
@@ -31,7 +35,11 @@ template<class Binding, class IT>
 auto external_match(IT pos) -> MatchResult<typename Binding::node_type, IT> {
     if constexpr (requires { pos.sourceOrigin(); pos.sourcePosition(); }) {
         if (!Binding::starts(pos.sourceOrigin(), pos.sourcePosition())) return {};
-        auto result = Binding::parse(pos.sourceOrigin(), pos.sourcePosition());
+        auto result = [&] {
+            try { return Binding::parse(pos.sourceOrigin(), pos.sourcePosition()); }
+            catch (const ExternalParseError&) { throw; }
+            catch (const std::runtime_error& error) { throw ExternalParseError(error.what()); }
+        }();
         if (!result.status) return {};
         pos.consumeExternal(result.end);
         return {true, std::move(result.node), std::move(pos)};

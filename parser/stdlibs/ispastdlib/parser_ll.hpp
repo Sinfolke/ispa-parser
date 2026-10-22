@@ -14,12 +14,15 @@
 #include <ispastdlib/ispa_recovery.hpp>
 #include <ispastdlib/ispa_recovery_context.hpp>
 #include <ispastdlib/counter.hpp>
+#include <ispastdlib/recovery_scan.hpp>
+#include <ispastdlib/external.hpp>
 
 #include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 #include <map>
+#include <cctype>
 
 namespace ISPA_STD {
     /* PARSER */
@@ -58,6 +61,7 @@ namespace ISPA_STD {
             Recovery::State& recovery;
             const char* source;
             const std::size_t diagnostic_begin;
+            const char* (*token_name)(std::size_t) = nullptr;
             std::optional<Recovery::Mode> requested;
             std::size_t skipped = 0;
 
@@ -68,7 +72,14 @@ namespace ISPA_STD {
                 diagnostic.rule = rule;
                 diagnostic.expected_text = failed_rule;
                 diagnostic.message = message;
-                if (!pos.isEnd()) {
+                if constexpr (requires { pos.sourcePosition(); pos.sourceOrigin(); }) {
+                    // Do not force host tokenization of a broken foreign payload.
+                    const auto* p = pos.sourcePosition();
+                    if (p) {
+                        diagnostic.offset = p - pos.sourceOrigin();
+                        diagnostic.length = *p ? 1 : 0;
+                    }
+                } else if (!pos.isEnd()) {
                     diagnostic.unexpected = Recovery::tokenId(*pos);
                     diagnostic.offset = pos->meta().startpos();
                     diagnostic.length = pos->meta().length();
@@ -80,7 +91,37 @@ namespace ISPA_STD {
             bool at(std::string_view spelling) const {
                 if (pos.isEnd()) return false;
                 const auto& meta = pos->meta();
-                return meta.start() && std::string_view(meta.start(), meta.length()) == spelling;
+                if (meta.start() && std::string_view(meta.start(), meta.length()) == spelling) return true;
+                if (!token_name) return false;
+                if constexpr (requires { Token::ambiguous_id; })
+                    if (Recovery::tokenId(*pos) == Token::ambiguous_id) return false;
+                std::string name(spelling);
+                for (std::size_t i = 0; (i = name.find("::", i)) != std::string::npos;)
+                    name.replace(i, 2, ".");
+                const std::string_view actual = token_name(Recovery::tokenId(*pos));
+                return actual == name || (actual.size() > name.size() && actual.ends_with(name) &&
+                    actual[actual.size() - name.size() - 1] == '.');
+            }
+            template<class... Boundaries>
+            void sync(Boundaries... boundaries) {
+                static_assert(sizeof...(Boundaries) > 0);
+                if (recovery.exhausted() || requested == Recovery::Mode::Abort) { abort(); return; }
+                const std::string_view stops[]{boundaries...};
+                for (auto stop : stops) if (stop.empty())
+                    throw std::invalid_argument("ctx.sync requires nonempty boundaries");
+                if constexpr (requires { pos.sourcePosition(); pos.consumeExternal(pos.sourcePosition()); }) {
+                    const char* begin = pos.sourcePosition();
+                    const auto budget = std::min<std::size_t>(4096,
+                        recovery.max_total_skipped - recovery.total_skipped);
+                    const auto scanned = Recovery::scanBalanced(begin, stops, budget);
+                    const auto count = static_cast<std::size_t>(scanned.end - begin);
+                    if (count) pos.consumeExternal(scanned.end);
+                    skipped += count;
+                    recovery.total_skipped += count;
+                    if (scanned.exhausted || recovery.exhausted()) abort();
+                } else {
+                    throw std::logic_error("ctx.sync requires a lazy source cursor");
+                }
             }
             void skip() {
                 if (recovery.exhausted()) { abort(); return; }
@@ -100,7 +141,7 @@ namespace ISPA_STD {
                 decision.mode = recovery.exhausted() ? Recovery::Mode::Abort :
                     requested.value_or(begin == end ? Recovery::Mode::Insert : Recovery::Mode::Retry);
                 if (decision.mode == Recovery::Mode::Insert && moved) decision.mode = Recovery::Mode::Replace;
-                decision.skipped = moved;
+                decision.skipped = std::max(moved, skipped);
                 for (auto i = diagnostic_begin; i < recovery.diagnostics.size(); ++i) {
                     auto& diagnostic = recovery.diagnostics[i];
                     diagnostic.decision = decision;
@@ -115,9 +156,10 @@ namespace ISPA_STD {
         }
         template<class IT, class AST>
         auto fail_context(IT& pos, AST& ast, IT start,
-                                 std::string rule, std::string failed_rule) {
+                          std::string rule, std::string failed_rule,
+                          const char* (*token_name)(std::size_t) = nullptr) {
             return FailContext<IT, AST>{pos, ast, start, std::move(rule), std::move(failed_rule),
-                recovery_state_, this->text, recovery_state_.diagnostics.size()};
+                recovery_state_, this->text, recovery_state_.diagnostics.size(), token_name};
         }
         template<class IT>
         static auto custom_failure_decision(const IT& before, const IT& after) {
@@ -569,6 +611,7 @@ namespace ISPA_STD {
                         RuleProbe probe(*this, cursor_position(attempt));
                         try { result = rec(attempt); }
                         catch (const NoMatch&) { /* invoke the explicitly bound parent handler */ }
+                        catch (const ExternalParseError&) { /* parent owns foreign syntax recovery */ }
                         return result;
                     } else return rec(attempt);
                 }();
@@ -609,6 +652,15 @@ namespace ISPA_STD {
         void skip_spaces(IT& pos) {
             if ((*pos).template holds<SpaceTokenType>())
                 ++pos;
+        }
+        template <typename SpaceTokenType, typename IT>
+        void skip_external_spaces(IT& pos) {
+            if constexpr (requires { pos.sourcePosition(); pos.consumeExternal(pos.sourcePosition()); }) {
+                const char* begin = pos.sourcePosition();
+                const char* end = begin;
+                while (end && *end && std::isspace(static_cast<unsigned char>(*end))) ++end;
+                if (end != begin) pos.consumeExternal(end);
+            } else skip_spaces<SpaceTokenType>(pos);
         }
         void raise_error(const Token& node, const std::string& message) {
             reject_absent_rule();

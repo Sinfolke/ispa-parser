@@ -68,6 +68,9 @@ struct AnchorParser : Parser {
     using LLParser::recovery_frame;
     using LLParser::recovery_at;
     using LLParser::recovery_state_;
+    using LLParser::fail_context;
+    using LLParser::required_rule_recovering;
+    using LLParser::custom_failure;
 };
 struct HandoffLexer : ISPA_STD::Lexer_base<Token> {
     std::size_t scanned = 0;
@@ -354,4 +357,72 @@ TEST(LLRuntime, ExternalHandoffPreservesPrefetchedAndFailedProbeCursors) {
     EXPECT_EQ(original->kind(), 1u);
     EXPECT_GT(result.it.distance(), original.distance());
     EXPECT_EQ(lookahead.sourcePosition(), source + 2);
+}
+
+TEST(LLRuntime, FailContextMatchesTokenNamesAndLiteralSpellings) {
+    const char source[] = "abc";
+    const Token tokens[]{Token{{0, source, source + 3, 3, 1, 1, 1}, Leaf{}}, Token{}};
+    Iter pos{tokens};
+    AnchorParser parser;
+    Leaf ast;
+    auto ctx = parser.fail_context(pos, ast, pos, "owner", "expected",
+        +[](std::size_t) -> const char* { return "modules.common.ID"; });
+    EXPECT_TRUE(ctx.at("abc"));
+    EXPECT_TRUE(ctx.at("ID"));
+    EXPECT_TRUE(ctx.at("common.ID"));
+    EXPECT_TRUE(ctx.at("modules::common::ID"));
+    EXPECT_FALSE(ctx.at("OTHER"));
+    EXPECT_FALSE(ctx.at("D"));
+    ++pos;
+    EXPECT_FALSE(ctx.at("ID"));
+}
+
+TEST(LLRuntime, FailSyncSkipsPythonContainersStringsAndCommentsWithoutLexing) {
+    for (const char* source : {"f({'k': '};'}, +)}tail", "f(\"\"\"};\"\"\", +)}tail",
+                               "f(1, # };\n +)}tail", "f([1, 2], +)}tail"}) {
+        SCOPED_TRACE(source);
+        HandoffLexer lexer;
+        HandoffLexer::lazy_iterator pos(lexer, source);
+        AnchorParser parser;
+        Leaf ast;
+        const auto before = pos;
+        auto ctx = parser.fail_context(pos, ast, pos, "owner", "expr");
+        ctx.error("broken expression");
+        ctx.sync("}", ";");
+        ctx.insert();
+        const auto decision = ctx.finish(before);
+        EXPECT_EQ(std::string_view(pos.sourcePosition()), "}tail");
+        EXPECT_EQ(decision.mode, ISPA_STD::Recovery::Mode::Replace);
+        EXPECT_EQ(decision.skipped, static_cast<std::size_t>(pos.sourcePosition() - source));
+        EXPECT_EQ(parser.recovery_state_.total_skipped, decision.skipped);
+        ASSERT_EQ(parser.getErrors().size(), 1u);
+        EXPECT_EQ(parser.getErrors()[0].offset, 0u);
+        EXPECT_EQ(lexer.scanned, 0u);
+        EXPECT_EQ(before.sourcePosition(), source);
+    }
+}
+
+TEST(LLRuntime, FailSyncPreservesHardBoundariesAndBoundsBrokenStrings) {
+    for (const char* source : {"f( + ;next: 'n';", "f( + }next", "f( + )]next"}) {
+        HandoffLexer lexer;
+        HandoffLexer::lazy_iterator pos(lexer, source);
+        AnchorParser parser;
+        Leaf ast;
+        auto ctx = parser.fail_context(pos, ast, pos, "owner", "expr");
+        ctx.sync("}", ";");
+        EXPECT_TRUE(*pos.sourcePosition() == ';' || *pos.sourcePosition() == '}' || *pos.sourcePosition() == ']');
+    }
+    for (const char* source : {"'unterminated\nnext", "\"\"\"unterminated", "long_payload"}) {
+        HandoffLexer lexer;
+        HandoffLexer::lazy_iterator pos(lexer, source);
+        AnchorParser parser;
+        parser.recovery_state_.max_total_skipped = 4;
+        Leaf ast;
+        const auto before = pos;
+        auto ctx = parser.fail_context(pos, ast, pos, "owner", "expr");
+        ctx.sync("}");
+        ctx.insert();
+        EXPECT_EQ(ctx.finish(before).mode, ISPA_STD::Recovery::Mode::Abort);
+        EXPECT_LE(parser.recovery_state_.total_skipped, 4u);
+    }
 }

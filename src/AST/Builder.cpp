@@ -218,7 +218,9 @@ namespace {
     // External Python actions carry the original PyRawParser nodes.
     // `at` is the node whose position labels the resulting action.
     template<class T, class At> AST::PythonAction action(const UAST::Node<T>& code, const At& at) {
+        if (code.empty()) throw std::runtime_error("Cannot build AST from a missing Python expression or action");
         const auto& n = payload(code);
+        if (n.value.empty()) throw std::runtime_error("Cannot build AST from an invalid Python expression or action");
         if constexpr (std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonExpression> ||
                       std::is_same_v<std::remove_cvref_t<decltype(payload(n.value))>, UAST::ExternalPythonStatements>) {
             const auto body = where(n.value);
@@ -403,12 +405,37 @@ AST::RuleMember AST::Builder::convertCapture(const UAST::rule_value_one_capture&
         auto bounded = [&](const auto& repetitions) {
             AST::Counter counter;
             counter.position = position(repetitions);
-            std::visit([&](const auto& n) {
+            auto convertBound = [&](const auto& n) {
                 using T = std::decay_t<decltype(n)>;
                 if constexpr (std::is_same_v<T, UAST::Node<UAST::ID>>) { counter.kind = "name"; counter.bound = id(n); }
-                else if constexpr (std::is_same_v<T, UAST::Node<UAST::NUMBER>>) { counter.kind = "number"; counter.bound = payload(n).full; if (!payload(n).floating.empty()) counter.bound += "." + payload(n).floating; }
-                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) { counter.kind = "expression"; counter.expression = action(n); }
-            }, payload(repetitions).value);
+                else if constexpr (requires { payload(n).full; payload(n).floating; }) {
+                    // Accept the previous bootstrap's numeric counter nodes
+                    // while bootstrapping the direct-expression grammar.
+                    counter.kind = "number";
+                    counter.bound = payload(n).full;
+                    if (!payload(n).floating.empty()) counter.bound += "." + payload(n).floating;
+                }
+                else if constexpr (std::is_same_v<T, UAST::Node<UAST::expr>>) {
+                    counter.kind = "expression";
+                    counter.expression = action(n);
+                    if (const auto* e = std::get_if<UAST::py::Expr>(&counter.expression.code)) {
+                        if (auto name = e->template get<UAST::py::Name>()) {
+                            counter.kind = "name";
+                            counter.bound = name->id;
+                            counter.expression = {};
+                        } else if (auto number = e->template get<UAST::py::Constant>(); number &&
+                            (number->kind == UAST::py::ConstantKind::Int || number->kind == UAST::py::ConstantKind::Float)) {
+                            counter.kind = "number";
+                            counter.bound = number->value;
+                            counter.expression = {};
+                        }
+                    }
+                }
+            };
+            const auto& bound = payload(repetitions).value;
+            if constexpr (std::is_same_v<std::remove_cvref_t<decltype(bound)>, UAST::Node<UAST::expr>>)
+                convertBound(bound);
+            else std::visit(convertBound, bound);
             output.features.push_back(std::move(counter));
         };
         std::visit([&](const auto& node) {
