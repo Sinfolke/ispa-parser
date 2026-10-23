@@ -441,8 +441,6 @@ auto ParserBase::dataType(const AST::DataType& type) -> LangAPI::Type {
         LangAPI::Type node_type{LangAPI::Symbol{type.name}};
         for (std::size_t i = 0; i < type.templateArguments.size(); ++i) {
             auto path = type.templateArguments[i];
-            const bool parameter = i < type.templateArgumentIsParameter.size() && type.templateArgumentIsParameter[i];
-            if (!parameter) path.insert(path.begin(), "Types");
             node_type.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{path}});
         }
         result.template_parameters.emplace_back(std::move(node_type));

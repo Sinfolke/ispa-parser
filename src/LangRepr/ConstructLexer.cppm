@@ -14,6 +14,11 @@ import dstd;
 import std;
 export namespace LangRepr {
     class ConstructLexer : ConstructBase {
+        struct ParameterBinding {
+            std::string name;
+            LangAPI::Variable field;
+        };
+        std::map<stdu::vector<std::string>, stdu::vector<ParameterBinding>> parameter_bindings;
     public:
         struct DfaSpan {
             std::size_t start;

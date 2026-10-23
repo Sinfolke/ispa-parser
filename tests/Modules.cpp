@@ -93,6 +93,33 @@ TEST(Modules, RecursiveCaptureDeduplicatesAndRestrictsImports) {
     EXPECT_TRUE(tree.getTreeMap().contains(name({"modules", "lib", "expr", "NUMBER"})));
     EXPECT_FALSE(tree.getTreeMap().contains(name({"modules", "lib", "expr", "unused"})));
 }
+
+TEST(Modules, TypedParameterHeadersAndCallsSurvivePreprocessing) {
+    ModuleFiles files;
+    const auto source = files.write("main.isc",
+        "module main; TOKEN&(value: str): 'x'; item&(count: int): TOKEN=count; main: item &(amount);");
+    auto project = files.preprocess();
+    const auto& module = project.source(source);
+    EXPECT_TRUE(module.declarations.contains({"TOKEN"}));
+    EXPECT_TRUE(module.declarations.contains({"item"}));
+    auto tree = build(project);
+    const auto& rule = tree.getTreeMap().at(name({"modules", "main", "item"}));
+    const auto& declaration = std::get<AST::DeclarationSyntax>(rule.features.front());
+    EXPECT_EQ(declaration.parameters, (std::vector<std::string>{"count"}));
+    EXPECT_EQ(declaration.parameterAnnotations.size(), 1u);
+}
+
+TEST(Modules, TemplateArgumentsKeepTheirDeclaringScopes) {
+    ModuleFiles files;
+    files.write("lib.isc", "wrap<T>: @ T {@};");
+    const auto main = files.write("main.isc", "import {wrap} from lib; TOKEN:'x'; main: @ wrap<TOKEN> {@};");
+    auto tree = build(files.preprocess({main}));
+    const auto& reference = tree.getTreeMap().at(name({"modules", "main", "main"})).rule_members.front()->getName();
+    EXPECT_EQ(reference.name, name({"modules", "lib", "wrap"}));
+    ASSERT_EQ(reference.templateArguments.size(), 1u);
+    EXPECT_EQ(reference.templateArguments.front(), name({"modules", "main", "TOKEN"}));
+    EXPECT_TRUE(tree.contains(name({"modules", "main", "TOKEN"})));
+}
 TEST(Modules, AliasesAndNestedRuleScopes) {
     ModuleFiles files;
     files.write("lib.isc", "main: inner #inner: 'x'; ;");
@@ -307,7 +334,7 @@ TEST(Modules, PythonImportsResolveDottedPathsRelativeToTheirGrammarAndDeduplicat
 
 TEST(Modules, PythonStdlibInternalsBindNativeParserNames) {
     ModuleFiles files;
-    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/pystdlib/internals.py");
+    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/stdlibs/python/internals.py");
     ASSERT_TRUE(manifest.good());
     files.write("internals.py", std::string(std::istreambuf_iterator<char>{manifest}, {}));
     files.write("helpers.py", R"py(from .internals import Token, RawToken, Tokens, TokensToString as token_name
@@ -338,7 +365,7 @@ def raw_identity(value: RawToken[int]) -> RawToken[int]:
 
 TEST(Modules, GeneratedParserCallsImportedPythonFunctionsAndVariables) {
     ModuleFiles files;
-    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/pystdlib/internals.py");
+    std::ifstream manifest(std::string(ROOT_DIR) + "/parser/stdlibs/python/internals.py");
     ASSERT_TRUE(manifest.good());
     files.write("internals.py", std::string(std::istreambuf_iterator<char>{manifest}, {}));
     files.write("helpers.py", R"py("""Helpers compiled into the generated parser."""
@@ -478,10 +505,10 @@ int main() {
 )cpp");
     const auto generated = files.root / "generated";
     const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
-        "/parser/stdlibs\" -I\"" + generated.string() + "\" \"" +
+        "/parser/stdlibs/target\" -I\"" + generated.string() + "\" \"" +
         (generated / "PythonRuntime.cpp").string() + "\" \"" +
         (generated / "run.cpp").string() + "\" \"" + ROOT_DIR +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (generated / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (generated / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (generated / "run").string() + '"').c_str()), 0);
 }
@@ -535,10 +562,10 @@ int main() {
 )driver");
     const auto generated = files.root / "generated";
     const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
-        "/parser/stdlibs\" -I\"" + generated.string() + "\" \"" +
+        "/parser/stdlibs/target\" -I\"" + generated.string() + "\" \"" +
         (generated / "ModuleRuntime.cpp").string() + "\" \"" +
         (generated / "run.cpp").string() + "\" \"" + ROOT_DIR +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (generated / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (generated / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (generated / "run").string() + '"').c_str()), 0);
 }

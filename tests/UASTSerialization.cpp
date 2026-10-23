@@ -98,7 +98,7 @@ static_assert(reflectsAllMembers<AST::DynamicPattern, 3>);
 static_assert(reflectsAllMembers<AST::Counter, 4>);
 static_assert(reflectsAllMembers<AST::SharedCounterRegistration, 2>);
 static_assert(reflectsAllMembers<AST::VariableCapture, 2>);
-static_assert(reflectsAllMembers<AST::DeclarationSyntax, 4>);
+static_assert(reflectsAllMembers<AST::DeclarationSyntax, 5>);
 static_assert(reflectsAllMembers<AST::AdvancedRule, 2>);
 static_assert(reflectsAllMembers<AST::SpacePattern, 1>);
 }

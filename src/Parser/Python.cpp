@@ -707,7 +707,16 @@ auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<s
     auto result = std::visit([&](const auto& code) -> LangAPI::Statements {
         using T = std::decay_t<decltype(code)>;
         if constexpr (std::is_same_v<T, UAST::py::Module>) return converter.body(code.body);
-        else if constexpr (std::is_same_v<T, UAST::py::Expr>) return {LangAPI::Statement{converter.expr(code)}};
+        else if constexpr (std::is_same_v<T, UAST::py::Expr>) {
+            auto value = converter.expr(code);
+            if (action.target.empty()) return {LangAPI::Statement{std::move(value)}};
+            LangAPI::StorageSymbol destination{action.target};
+            destination.what = LangAPI::Symbol::createExpression(LangAPI::Symbol{
+                token_rule.empty() ? "result" : "ispa_token_result"});
+            return LangAPI::IspaLibFunctionCall::createStatements(LangAPI::IspaLibFunctionCall{
+                .symbol = LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::AssignCompatible},
+                .args = {LangAPI::StorageSymbol::createExpression(std::move(destination)), std::move(value)}});
+        }
         else throw std::invalid_argument("Python action has no executable syntax");
     }, action.code);
     variables = std::move(converter.locals);

@@ -84,7 +84,10 @@ template<class T> void write(std::ostream& os, const T& value) {
         write(os, static_cast<std::underlying_type_t<U>>(value));
     } else if constexpr (is_vector<U>::value) {
         write(os, value.size());
-        for (const auto& item : value) write(os, item);
+        for (const auto& item : value) {
+            if constexpr (std::is_same_v<typename U::value_type, bool>) write(os, static_cast<bool>(item));
+            else write(os, item);
+        }
     } else if constexpr (is_pair<U>::value) {
         write(os, value.first); write(os, value.second);
     } else if constexpr (is_shared_ptr<U>::value || is_optional<U>::value) {

@@ -9,7 +9,7 @@ import std;
 
 export namespace LLIR::Serialize {
 using namespace ParserIR;
-    constexpr std::uint32_t FORMAT_VERSION = 3;
+    constexpr std::uint32_t FORMAT_VERSION = 4;
 
     // Writes one Production as a length-prefixed record.
     // Returns false (and writes nothing) if the Production contains a

@@ -253,6 +253,7 @@ TEST(LLRuntime, RepetitionPreservesInitialAndExplicitNoSpaceBoundaries) {
 }
 
 TEST(LLRuntime, FixedCountsMeasureTokensAndLeaveTheNextToken) {
+    EXPECT_THROW(ISPA_STD::CountSpec::fixed(-1), std::invalid_argument);
     const Token tokens[]{Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{{}, Leaf{}}, Token{}};
     Parser parser;
     Iter pos{tokens};

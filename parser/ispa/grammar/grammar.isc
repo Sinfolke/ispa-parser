@@ -1,10 +1,10 @@
 module grammar -> grammar;
-import {name} from common;
+import {name, rule_params} from common;
 import rule.regular;
 import rule.advanced;
 
 grammar:
-    @ modifier* @ name @ rule.regular | rule.advanced
+    @ modifier* @ name<rule_params> @ rule.regular | rule.advanced
 
     @{mod, name, entry}
 

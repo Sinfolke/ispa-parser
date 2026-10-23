@@ -3,6 +3,8 @@
 #include "ispastdlib/external.hpp"
 
 #include <ispastdlib/variant_io.hpp>
+#include <ispastdlib/assign.hpp>
+#include <ispastdlib/to_string.hpp>
 #include <ispastdlib/parser_ll.hpp>
 
 namespace Parser {
@@ -63,16 +65,16 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace GREATER_THAN_SIGN {
-			inline const std::size_t id = 1714061562373632498;
-		} // namespace GREATER_THAN_SIGN
+		namespace FULL_STOP {
+			inline const std::size_t id = 8364106775412004068;
+		} // namespace FULL_STOP
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace GREATER_THAN_SIGN {
+		namespace FULL_STOP {
 			inline const bool shared = true;
-		} // namespace GREATER_THAN_SIGN
+		} // namespace FULL_STOP
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
@@ -161,30 +163,30 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace __ISPA_EXTERNAL_54 {
-			inline const std::size_t id = 4573742956882217349;
-		} // namespace __ISPA_EXTERNAL_54
+		namespace __ISPA_EXTERNAL_58 {
+			inline const std::size_t id = 4701049054088279777;
+		} // namespace __ISPA_EXTERNAL_58
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace __ISPA_EXTERNAL_54 {
+		namespace __ISPA_EXTERNAL_58 {
 			inline const bool shared = true;
-		} // namespace __ISPA_EXTERNAL_54
+		} // namespace __ISPA_EXTERNAL_58
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace __ISPA_EXTERNAL_56 {
-			inline const std::size_t id = 89808853182143607;
-		} // namespace __ISPA_EXTERNAL_56
+		namespace __ISPA_EXTERNAL_60 {
+			inline const std::size_t id = 8985429242027114600;
+		} // namespace __ISPA_EXTERNAL_60
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
 	namespace Tokens {
-		namespace __ISPA_EXTERNAL_56 {
+		namespace __ISPA_EXTERNAL_60 {
 			inline const bool shared = true;
-		} // namespace __ISPA_EXTERNAL_56
+		} // namespace __ISPA_EXTERNAL_60
 	} // namespace Tokens
 } // namespace Parser
 namespace Parser {
@@ -204,7 +206,7 @@ namespace Parser {
 namespace Parser {
 	namespace Tokens {
 		namespace modules {
-			inline const std::size_t id = 40;
+			inline const std::size_t id = 41;
 		} // namespace modules
 	} // namespace Tokens
 } // namespace Parser
@@ -219,7 +221,7 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace common {
-				inline const std::size_t id = 41;
+				inline const std::size_t id = 42;
 			} // namespace common
 		} // namespace modules
 	} // namespace Tokens
@@ -259,9 +261,9 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace common {
-				namespace name {
-					inline const std::size_t id = 42;
-				} // namespace name
+				namespace call_params {
+					inline const std::size_t id = 43;
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace Tokens
@@ -270,9 +272,9 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace common {
-				namespace name {
+				namespace call_params {
 					inline const bool shared = true;
-				} // namespace name
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace Tokens
@@ -281,11 +283,11 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace common {
-				namespace name {
-					namespace FULL_STOP {
-						inline const std::size_t id = 8364106775412004068;
-					} // namespace FULL_STOP
-				} // namespace name
+				namespace call_params {
+					namespace AUTO {
+						inline const std::size_t id = 8914139521465690601;
+					} // namespace AUTO
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace Tokens
@@ -294,11 +296,11 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace common {
-				namespace name {
-					namespace FULL_STOP {
+				namespace call_params {
+					namespace AUTO {
 						inline const bool shared = true;
-					} // namespace FULL_STOP
-				} // namespace name
+					} // namespace AUTO
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace Tokens
@@ -308,7 +310,7 @@ namespace Parser {
 		namespace modules {
 			namespace common {
 				namespace template_params {
-					inline const std::size_t id = 43;
+					inline const std::size_t id = 44;
 				} // namespace template_params
 			} // namespace common
 		} // namespace modules
@@ -320,6 +322,32 @@ namespace Parser {
 			namespace common {
 				namespace template_params {
 					inline const bool shared = true;
+				} // namespace template_params
+			} // namespace common
+		} // namespace modules
+	} // namespace Tokens
+} // namespace Parser
+namespace Parser {
+	namespace Tokens {
+		namespace modules {
+			namespace common {
+				namespace template_params {
+					namespace GREATER_THAN_SIGN {
+						inline const std::size_t id = 1714061562373632498;
+					} // namespace GREATER_THAN_SIGN
+				} // namespace template_params
+			} // namespace common
+		} // namespace modules
+	} // namespace Tokens
+} // namespace Parser
+namespace Parser {
+	namespace Tokens {
+		namespace modules {
+			namespace common {
+				namespace template_params {
+					namespace GREATER_THAN_SIGN {
+						inline const bool shared = true;
+					} // namespace GREATER_THAN_SIGN
 				} // namespace template_params
 			} // namespace common
 		} // namespace modules
@@ -355,7 +383,7 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace fail_block {
-				inline const std::size_t id = 44;
+				inline const std::size_t id = 45;
 			} // namespace fail_block
 		} // namespace modules
 	} // namespace Tokens
@@ -374,7 +402,7 @@ namespace Parser {
 		namespace modules {
 			namespace fail_block {
 				namespace fail_block {
-					inline const std::size_t id = 45;
+					inline const std::size_t id = 46;
 				} // namespace fail_block
 			} // namespace fail_block
 		} // namespace modules
@@ -421,7 +449,7 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace forward_declaration {
-				inline const std::size_t id = 46;
+				inline const std::size_t id = 47;
 			} // namespace forward_declaration
 		} // namespace modules
 	} // namespace Tokens
@@ -440,7 +468,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace cls {
-					inline const std::size_t id = 47;
+					inline const std::size_t id = 48;
 				} // namespace cls
 			} // namespace forward_declaration
 		} // namespace modules
@@ -489,7 +517,7 @@ namespace Parser {
 			namespace forward_declaration {
 				namespace cls {
 					namespace class_method {
-						inline const std::size_t id = 48;
+						inline const std::size_t id = 49;
 					} // namespace class_method
 				} // namespace cls
 			} // namespace forward_declaration
@@ -545,7 +573,7 @@ namespace Parser {
 			namespace forward_declaration {
 				namespace cls {
 					namespace class_property {
-						inline const std::size_t id = 49;
+						inline const std::size_t id = 50;
 					} // namespace class_property
 				} // namespace cls
 			} // namespace forward_declaration
@@ -600,7 +628,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace fun {
-					inline const std::size_t id = 50;
+					inline const std::size_t id = 51;
 				} // namespace fun
 			} // namespace forward_declaration
 		} // namespace modules
@@ -647,7 +675,7 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace grammar {
-				inline const std::size_t id = 51;
+				inline const std::size_t id = 52;
 			} // namespace grammar
 		} // namespace modules
 	} // namespace Tokens
@@ -666,7 +694,7 @@ namespace Parser {
 		namespace modules {
 			namespace grammar {
 				namespace modifier {
-					inline const std::size_t id = 52;
+					inline const std::size_t id = 53;
 				} // namespace modifier
 			} // namespace grammar
 		} // namespace modules
@@ -765,7 +793,7 @@ namespace Parser {
 	namespace Tokens {
 		namespace modules {
 			namespace rule {
-				inline const std::size_t id = 53;
+				inline const std::size_t id = 54;
 			} // namespace rule
 		} // namespace modules
 	} // namespace Tokens
@@ -784,7 +812,7 @@ namespace Parser {
 		namespace modules {
 			namespace rule {
 				namespace advanced {
-					inline const std::size_t id = 54;
+					inline const std::size_t id = 55;
 				} // namespace advanced
 			} // namespace rule
 		} // namespace modules
@@ -807,7 +835,7 @@ namespace Parser {
 			namespace rule {
 				namespace advanced {
 					namespace advanced_rule {
-						inline const std::size_t id = 55;
+						inline const std::size_t id = 56;
 					} // namespace advanced_rule
 				} // namespace advanced
 			} // namespace rule
@@ -834,7 +862,7 @@ namespace Parser {
 				namespace advanced {
 					namespace advanced_rule {
 						namespace dep_decl {
-							inline const std::size_t id = 56;
+							inline const std::size_t id = 57;
 						} // namespace dep_decl
 					} // namespace advanced_rule
 				} // namespace advanced
@@ -898,7 +926,7 @@ namespace Parser {
 				namespace advanced {
 					namespace advanced_rule {
 						namespace regular_match {
-							inline const std::size_t id = 57;
+							inline const std::size_t id = 58;
 						} // namespace regular_match
 					} // namespace advanced_rule
 				} // namespace advanced
@@ -963,7 +991,7 @@ namespace Parser {
 					namespace advanced_rule {
 						namespace regular_match {
 							namespace unpack {
-								inline const std::size_t id = 58;
+								inline const std::size_t id = 59;
 							} // namespace unpack
 						} // namespace regular_match
 					} // namespace advanced_rule
@@ -1032,7 +1060,7 @@ namespace Parser {
 		namespace modules {
 			namespace rule {
 				namespace regular {
-					inline const std::size_t id = 59;
+					inline const std::size_t id = 60;
 				} // namespace regular
 			} // namespace rule
 		} // namespace modules
@@ -1055,7 +1083,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace ast {
-						inline const std::size_t id = 60;
+						inline const std::size_t id = 61;
 					} // namespace ast
 				} // namespace regular
 			} // namespace rule
@@ -1082,7 +1110,7 @@ namespace Parser {
 				namespace regular {
 					namespace ast {
 						namespace full {
-							inline const std::size_t id = 61;
+							inline const std::size_t id = 62;
 						} // namespace full
 					} // namespace ast
 				} // namespace regular
@@ -1145,7 +1173,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace nested_rule {
-						inline const std::size_t id = 62;
+						inline const std::size_t id = 63;
 					} // namespace nested_rule
 				} // namespace regular
 			} // namespace rule
@@ -1201,7 +1229,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace value {
-						inline const std::size_t id = 63;
+						inline const std::size_t id = 64;
 					} // namespace value
 				} // namespace regular
 			} // namespace rule
@@ -1408,7 +1436,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace alternative {
-							inline const std::size_t id = 64;
+							inline const std::size_t id = 65;
 						} // namespace alternative
 					} // namespace value
 				} // namespace regular
@@ -1472,7 +1500,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace dyn {
-							inline const std::size_t id = 65;
+							inline const std::size_t id = 66;
 						} // namespace dyn
 					} // namespace value
 				} // namespace regular
@@ -1536,7 +1564,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace shared_counter_registration {
-							inline const std::size_t id = 66;
+							inline const std::size_t id = 67;
 						} // namespace shared_counter_registration
 					} // namespace value
 				} // namespace regular
@@ -1600,7 +1628,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace var_capture {
-							inline const std::size_t id = 67;
+							inline const std::size_t id = 68;
 						} // namespace var_capture
 					} // namespace value
 				} // namespace regular
@@ -1687,9 +1715,9 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace TokensStr {
-		namespace GREATER_THAN_SIGN {
-			inline const char* const id = "GREATER_THAN_SIGN";
-		} // namespace GREATER_THAN_SIGN
+		namespace FULL_STOP {
+			inline const char* const id = "FULL_STOP";
+		} // namespace FULL_STOP
 	} // namespace TokensStr
 } // namespace Parser
 namespace Parser {
@@ -1736,16 +1764,16 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace TokensStr {
-		namespace __ISPA_EXTERNAL_54 {
-			inline const char* const id = "__ISPA_EXTERNAL_54";
-		} // namespace __ISPA_EXTERNAL_54
+		namespace __ISPA_EXTERNAL_58 {
+			inline const char* const id = "__ISPA_EXTERNAL_58";
+		} // namespace __ISPA_EXTERNAL_58
 	} // namespace TokensStr
 } // namespace Parser
 namespace Parser {
 	namespace TokensStr {
-		namespace __ISPA_EXTERNAL_56 {
-			inline const char* const id = "__ISPA_EXTERNAL_56";
-		} // namespace __ISPA_EXTERNAL_56
+		namespace __ISPA_EXTERNAL_60 {
+			inline const char* const id = "__ISPA_EXTERNAL_60";
+		} // namespace __ISPA_EXTERNAL_60
 	} // namespace TokensStr
 } // namespace Parser
 namespace Parser {
@@ -1786,9 +1814,9 @@ namespace Parser {
 	namespace TokensStr {
 		namespace modules {
 			namespace common {
-				namespace name {
-					inline const char* const id = "modules.common.name";
-				} // namespace name
+				namespace call_params {
+					inline const char* const id = "modules.common.call_params";
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace TokensStr
@@ -1797,11 +1825,11 @@ namespace Parser {
 	namespace TokensStr {
 		namespace modules {
 			namespace common {
-				namespace name {
-					namespace FULL_STOP {
-						inline const char* const id = "modules.common.name.FULL_STOP";
-					} // namespace FULL_STOP
-				} // namespace name
+				namespace call_params {
+					namespace AUTO {
+						inline const char* const id = "modules.common.call_params.AUTO";
+					} // namespace AUTO
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace TokensStr
@@ -1812,6 +1840,19 @@ namespace Parser {
 			namespace common {
 				namespace template_params {
 					inline const char* const id = "modules.common.template_params";
+				} // namespace template_params
+			} // namespace common
+		} // namespace modules
+	} // namespace TokensStr
+} // namespace Parser
+namespace Parser {
+	namespace TokensStr {
+		namespace modules {
+			namespace common {
+				namespace template_params {
+					namespace GREATER_THAN_SIGN {
+						inline const char* const id = "modules.common.template_params.GREATER_THAN_SIGN";
+					} // namespace GREATER_THAN_SIGN
 				} // namespace template_params
 			} // namespace common
 		} // namespace modules
@@ -2486,14 +2527,14 @@ namespace Parser {
 namespace Parser {
 	namespace Rules {
 		namespace main {
-			inline const std::size_t id = 43;
+			inline const std::size_t id = 32;
 		} // namespace main
 	} // namespace Rules
 } // namespace Parser
 namespace Parser {
 	namespace Rules {
 		namespace modules {
-			inline const std::size_t id = 46;
+			inline const std::size_t id = 50;
 		} // namespace modules
 	} // namespace Rules
 } // namespace Parser
@@ -2501,7 +2542,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace __external {
-				inline const std::size_t id = 47;
+				inline const std::size_t id = 51;
 			} // namespace __external
 		} // namespace modules
 	} // namespace Rules
@@ -2511,7 +2552,7 @@ namespace Parser {
 		namespace modules {
 			namespace __external {
 				namespace python {
-					inline const std::size_t id = 48;
+					inline const std::size_t id = 52;
 				} // namespace python
 			} // namespace __external
 		} // namespace modules
@@ -2523,7 +2564,7 @@ namespace Parser {
 			namespace __external {
 				namespace python {
 					namespace symbol_0 {
-						inline const std::size_t id = 42;
+						inline const std::size_t id = 49;
 					} // namespace symbol_0
 				} // namespace python
 			} // namespace __external
@@ -2536,7 +2577,7 @@ namespace Parser {
 			namespace __external {
 				namespace python {
 					namespace symbol_1 {
-						inline const std::size_t id = 13;
+						inline const std::size_t id = 42;
 					} // namespace symbol_1
 				} // namespace python
 			} // namespace __external
@@ -2547,7 +2588,18 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace common {
-				inline const std::size_t id = 49;
+				inline const std::size_t id = 53;
+			} // namespace common
+		} // namespace modules
+	} // namespace Rules
+} // namespace Parser
+namespace Parser {
+	namespace Rules {
+		namespace modules {
+			namespace common {
+				namespace call_params {
+					inline const std::size_t id = 46;
+				} // namespace call_params
 			} // namespace common
 		} // namespace modules
 	} // namespace Rules
@@ -2557,7 +2609,7 @@ namespace Parser {
 		namespace modules {
 			namespace common {
 				namespace name {
-					inline const std::size_t id = 40;
+					inline const std::size_t id = 47;
 				} // namespace name
 			} // namespace common
 		} // namespace modules
@@ -2568,7 +2620,7 @@ namespace Parser {
 		namespace modules {
 			namespace common {
 				namespace param {
-					inline const std::size_t id = 39;
+					inline const std::size_t id = 36;
 				} // namespace param
 			} // namespace common
 		} // namespace modules
@@ -2578,9 +2630,31 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace common {
-				namespace params {
-					inline const std::size_t id = 28;
-				} // namespace params
+				namespace parameter {
+					inline const std::size_t id = 34;
+				} // namespace parameter
+			} // namespace common
+		} // namespace modules
+	} // namespace Rules
+} // namespace Parser
+namespace Parser {
+	namespace Rules {
+		namespace modules {
+			namespace common {
+				namespace rule_params {
+					inline const std::size_t id = 8;
+				} // namespace rule_params
+			} // namespace common
+		} // namespace modules
+	} // namespace Rules
+} // namespace Parser
+namespace Parser {
+	namespace Rules {
+		namespace modules {
+			namespace common {
+				namespace template_param {
+					inline const std::size_t id = 39;
+				} // namespace template_param
 			} // namespace common
 		} // namespace modules
 	} // namespace Rules
@@ -2599,8 +2673,19 @@ namespace Parser {
 namespace Parser {
 	namespace Rules {
 		namespace modules {
+			namespace common {
+				namespace type_annotation {
+					inline const std::size_t id = 15;
+				} // namespace type_annotation
+			} // namespace common
+		} // namespace modules
+	} // namespace Rules
+} // namespace Parser
+namespace Parser {
+	namespace Rules {
+		namespace modules {
 			namespace fail_block {
-				inline const std::size_t id = 50;
+				inline const std::size_t id = 54;
 			} // namespace fail_block
 		} // namespace modules
 	} // namespace Rules
@@ -2610,7 +2695,7 @@ namespace Parser {
 		namespace modules {
 			namespace fail_block {
 				namespace fail_block {
-					inline const std::size_t id = 36;
+					inline const std::size_t id = 41;
 				} // namespace fail_block
 			} // namespace fail_block
 		} // namespace modules
@@ -2620,7 +2705,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace forward_declaration {
-				inline const std::size_t id = 51;
+				inline const std::size_t id = 55;
 			} // namespace forward_declaration
 		} // namespace modules
 	} // namespace Rules
@@ -2630,7 +2715,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace cls {
-					inline const std::size_t id = 33;
+					inline const std::size_t id = 31;
 				} // namespace cls
 			} // namespace forward_declaration
 		} // namespace modules
@@ -2642,7 +2727,7 @@ namespace Parser {
 			namespace forward_declaration {
 				namespace cls {
 					namespace class_method {
-						inline const std::size_t id = 32;
+						inline const std::size_t id = 30;
 					} // namespace class_method
 				} // namespace cls
 			} // namespace forward_declaration
@@ -2655,7 +2740,7 @@ namespace Parser {
 			namespace forward_declaration {
 				namespace cls {
 					namespace class_property {
-						inline const std::size_t id = 30;
+						inline const std::size_t id = 28;
 					} // namespace class_property
 				} // namespace cls
 			} // namespace forward_declaration
@@ -2667,7 +2752,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace fun {
-					inline const std::size_t id = 25;
+					inline const std::size_t id = 24;
 				} // namespace fun
 			} // namespace forward_declaration
 		} // namespace modules
@@ -2678,7 +2763,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace fun_forward {
-					inline const std::size_t id = 27;
+					inline const std::size_t id = 26;
 				} // namespace fun_forward
 			} // namespace forward_declaration
 		} // namespace modules
@@ -2689,7 +2774,7 @@ namespace Parser {
 		namespace modules {
 			namespace forward_declaration {
 				namespace fwd {
-					inline const std::size_t id = 34;
+					inline const std::size_t id = 38;
 				} // namespace fwd
 			} // namespace forward_declaration
 		} // namespace modules
@@ -2699,7 +2784,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace grammar {
-				inline const std::size_t id = 52;
+				inline const std::size_t id = 56;
 			} // namespace grammar
 		} // namespace modules
 	} // namespace Rules
@@ -2709,7 +2794,7 @@ namespace Parser {
 		namespace modules {
 			namespace grammar {
 				namespace grammar {
-					inline const std::size_t id = 24;
+					inline const std::size_t id = 23;
 				} // namespace grammar
 			} // namespace grammar
 		} // namespace modules
@@ -2720,7 +2805,7 @@ namespace Parser {
 		namespace modules {
 			namespace grammar {
 				namespace modifier {
-					inline const std::size_t id = 38;
+					inline const std::size_t id = 35;
 				} // namespace modifier
 			} // namespace grammar
 		} // namespace modules
@@ -2730,7 +2815,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace ispa_python {
-				inline const std::size_t id = 53;
+				inline const std::size_t id = 57;
 			} // namespace ispa_python
 		} // namespace modules
 	} // namespace Rules
@@ -2740,7 +2825,7 @@ namespace Parser {
 		namespace modules {
 			namespace ispa_python {
 				namespace expr {
-					inline const std::size_t id = 44;
+					inline const std::size_t id = 33;
 				} // namespace expr
 			} // namespace ispa_python
 		} // namespace modules
@@ -2751,7 +2836,7 @@ namespace Parser {
 		namespace modules {
 			namespace ispa_python {
 				namespace stmt {
-					inline const std::size_t id = 22;
+					inline const std::size_t id = 21;
 				} // namespace stmt
 			} // namespace ispa_python
 		} // namespace modules
@@ -2761,7 +2846,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace main {
-				inline const std::size_t id = 54;
+				inline const std::size_t id = 58;
 			} // namespace main
 		} // namespace modules
 	} // namespace Rules
@@ -2771,7 +2856,7 @@ namespace Parser {
 		namespace modules {
 			namespace main {
 				namespace main {
-					inline const std::size_t id = 41;
+					inline const std::size_t id = 48;
 				} // namespace main
 			} // namespace main
 		} // namespace modules
@@ -2781,7 +2866,7 @@ namespace Parser {
 	namespace Rules {
 		namespace modules {
 			namespace rule {
-				inline const std::size_t id = 55;
+				inline const std::size_t id = 59;
 			} // namespace rule
 		} // namespace modules
 	} // namespace Rules
@@ -2791,7 +2876,7 @@ namespace Parser {
 		namespace modules {
 			namespace rule {
 				namespace advanced {
-					inline const std::size_t id = 56;
+					inline const std::size_t id = 60;
 				} // namespace advanced
 			} // namespace rule
 		} // namespace modules
@@ -2803,7 +2888,7 @@ namespace Parser {
 			namespace rule {
 				namespace advanced {
 					namespace advanced_rule {
-						inline const std::size_t id = 35;
+						inline const std::size_t id = 40;
 					} // namespace advanced_rule
 				} // namespace advanced
 			} // namespace rule
@@ -2817,7 +2902,7 @@ namespace Parser {
 				namespace advanced {
 					namespace advanced_rule {
 						namespace dep_decl {
-							inline const std::size_t id = 26;
+							inline const std::size_t id = 25;
 						} // namespace dep_decl
 					} // namespace advanced_rule
 				} // namespace advanced
@@ -2832,7 +2917,7 @@ namespace Parser {
 				namespace advanced {
 					namespace advanced_rule {
 						namespace regular_match {
-							inline const std::size_t id = 31;
+							inline const std::size_t id = 29;
 						} // namespace regular_match
 					} // namespace advanced_rule
 				} // namespace advanced
@@ -2848,7 +2933,7 @@ namespace Parser {
 					namespace advanced_rule {
 						namespace regular_match {
 							namespace unpack {
-								inline const std::size_t id = 18;
+								inline const std::size_t id = 17;
 							} // namespace unpack
 						} // namespace regular_match
 					} // namespace advanced_rule
@@ -2862,7 +2947,7 @@ namespace Parser {
 		namespace modules {
 			namespace rule {
 				namespace regular {
-					inline const std::size_t id = 57;
+					inline const std::size_t id = 61;
 				} // namespace regular
 			} // namespace rule
 		} // namespace modules
@@ -2874,7 +2959,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace ast {
-						inline const std::size_t id = 19;
+						inline const std::size_t id = 18;
 					} // namespace ast
 				} // namespace regular
 			} // namespace rule
@@ -2888,7 +2973,7 @@ namespace Parser {
 				namespace regular {
 					namespace ast {
 						namespace abbr {
-							inline const std::size_t id = 16;
+							inline const std::size_t id = 45;
 						} // namespace abbr
 					} // namespace ast
 				} // namespace regular
@@ -2903,7 +2988,7 @@ namespace Parser {
 				namespace regular {
 					namespace ast {
 						namespace full {
-							inline const std::size_t id = 14;
+							inline const std::size_t id = 43;
 						} // namespace full
 					} // namespace ast
 				} // namespace regular
@@ -2919,7 +3004,7 @@ namespace Parser {
 					namespace ast {
 						namespace full {
 							namespace part {
-								inline const std::size_t id = 17;
+								inline const std::size_t id = 16;
 							} // namespace part
 						} // namespace full
 					} // namespace ast
@@ -2935,7 +3020,7 @@ namespace Parser {
 				namespace regular {
 					namespace ast {
 						namespace single_value {
-							inline const std::size_t id = 29;
+							inline const std::size_t id = 27;
 						} // namespace single_value
 					} // namespace ast
 				} // namespace regular
@@ -2949,7 +3034,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace f_binding {
-						inline const std::size_t id = 12;
+						inline const std::size_t id = 14;
 					} // namespace f_binding
 				} // namespace regular
 			} // namespace rule
@@ -2975,7 +3060,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace regular_rule {
-						inline const std::size_t id = 20;
+						inline const std::size_t id = 19;
 					} // namespace regular_rule
 				} // namespace regular
 			} // namespace rule
@@ -2988,7 +3073,7 @@ namespace Parser {
 			namespace rule {
 				namespace regular {
 					namespace value {
-						inline const std::size_t id = 23;
+						inline const std::size_t id = 22;
 					} // namespace value
 				} // namespace regular
 			} // namespace rule
@@ -3017,7 +3102,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace ast_capture {
-							inline const std::size_t id = 9;
+							inline const std::size_t id = 11;
 						} // namespace ast_capture
 					} // namespace value
 				} // namespace regular
@@ -3032,7 +3117,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace counter {
-							inline const std::size_t id = 10;
+							inline const std::size_t id = 12;
 						} // namespace counter
 					} // namespace value
 				} // namespace regular
@@ -3081,7 +3166,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace dyn {
-							inline const std::size_t id = 45;
+							inline const std::size_t id = 6;
 						} // namespace dyn
 					} // namespace value
 				} // namespace regular
@@ -3113,7 +3198,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace fail_capture {
-							inline const std::size_t id = 8;
+							inline const std::size_t id = 10;
 						} // namespace fail_capture
 					} // namespace value
 				} // namespace regular
@@ -3128,7 +3213,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace group {
-							inline const std::size_t id = 6;
+							inline const std::size_t id = 7;
 						} // namespace group
 					} // namespace value
 				} // namespace regular
@@ -3143,7 +3228,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace mul_capture {
-							inline const std::size_t id = 21;
+							inline const std::size_t id = 20;
 						} // namespace mul_capture
 					} // namespace value
 				} // namespace regular
@@ -3158,7 +3243,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace one_capture {
-							inline const std::size_t id = 15;
+							inline const std::size_t id = 44;
 						} // namespace one_capture
 					} // namespace value
 				} // namespace regular
@@ -3173,7 +3258,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace pattern {
-							inline const std::size_t id = 7;
+							inline const std::size_t id = 9;
 						} // namespace pattern
 					} // namespace value
 				} // namespace regular
@@ -3203,7 +3288,7 @@ namespace Parser {
 				namespace regular {
 					namespace value {
 						namespace var_capture {
-							inline const std::size_t id = 11;
+							inline const std::size_t id = 13;
 						} // namespace var_capture
 					} // namespace value
 				} // namespace regular
@@ -3284,6 +3369,17 @@ namespace Parser {
 	namespace RulesStr {
 		namespace modules {
 			namespace common {
+				namespace call_params {
+					inline const char* const id = "modules.common.call_params";
+				} // namespace call_params
+			} // namespace common
+		} // namespace modules
+	} // namespace RulesStr
+} // namespace Parser
+namespace Parser {
+	namespace RulesStr {
+		namespace modules {
+			namespace common {
 				namespace name {
 					inline const char* const id = "modules.common.name";
 				} // namespace name
@@ -3306,9 +3402,31 @@ namespace Parser {
 	namespace RulesStr {
 		namespace modules {
 			namespace common {
-				namespace params {
-					inline const char* const id = "modules.common.params";
-				} // namespace params
+				namespace parameter {
+					inline const char* const id = "modules.common.parameter";
+				} // namespace parameter
+			} // namespace common
+		} // namespace modules
+	} // namespace RulesStr
+} // namespace Parser
+namespace Parser {
+	namespace RulesStr {
+		namespace modules {
+			namespace common {
+				namespace rule_params {
+					inline const char* const id = "modules.common.rule_params";
+				} // namespace rule_params
+			} // namespace common
+		} // namespace modules
+	} // namespace RulesStr
+} // namespace Parser
+namespace Parser {
+	namespace RulesStr {
+		namespace modules {
+			namespace common {
+				namespace template_param {
+					inline const char* const id = "modules.common.template_param";
+				} // namespace template_param
 			} // namespace common
 		} // namespace modules
 	} // namespace RulesStr
@@ -3320,6 +3438,17 @@ namespace Parser {
 				namespace template_params {
 					inline const char* const id = "modules.common.template_params";
 				} // namespace template_params
+			} // namespace common
+		} // namespace modules
+	} // namespace RulesStr
+} // namespace Parser
+namespace Parser {
+	namespace RulesStr {
+		namespace modules {
+			namespace common {
+				namespace type_annotation {
+					inline const char* const id = "modules.common.type_annotation";
+				} // namespace type_annotation
 			} // namespace common
 		} // namespace modules
 	} // namespace RulesStr
@@ -3945,42 +4074,41 @@ namespace Parser {
 namespace Parser {
 	auto RulesToString(std::size_t id) -> const char*;
 } // namespace Parser
-namespace Parser::FlatTypes { struct modules_rule_regular_value_dyn_DOLLAR_SIGN; }
-namespace Parser::FlatTypes { struct modules; }
-namespace Parser::FlatTypes { struct modules_rule; }
-namespace Parser::FlatTypes { struct modules_rule_regular; }
-namespace Parser::FlatTypes { struct modules_rule_regular_value; }
-namespace Parser::FlatTypes { struct modules_rule_regular_value_dyn; }
 namespace Parser::FlatTypes { struct __WS; }
-namespace Parser::FlatTypes { struct modules_common_name_FULL_STOP; }
-namespace Parser::FlatTypes { struct modules_common; }
-namespace Parser::FlatTypes { struct modules_common_name; }
-namespace Parser::FlatTypes { struct modules_grammar_modifier_AUTO; }
-namespace Parser::FlatTypes { struct modules_grammar; }
-namespace Parser::FlatTypes { struct modules_grammar_modifier; }
 namespace Parser::FlatTypes { struct modules_common_template_params_LESS_THAN_SIGN; }
+namespace Parser::FlatTypes { struct modules; }
+namespace Parser::FlatTypes { struct modules_common; }
 namespace Parser::FlatTypes { struct modules_common_template_params; }
-namespace Parser::FlatTypes { struct modules_grammar_modifier_RIGHT_SQUARE_BRACKET; }
 namespace Parser::FlatTypes { struct modules_fail_block_fail_block_FAIL; }
 namespace Parser::FlatTypes { struct modules_fail_block; }
 namespace Parser::FlatTypes { struct modules_fail_block_fail_block; }
+namespace Parser::FlatTypes { struct modules_grammar_modifier_RIGHT_SQUARE_BRACKET; }
+namespace Parser::FlatTypes { struct modules_grammar; }
+namespace Parser::FlatTypes { struct modules_grammar_modifier; }
+namespace Parser::FlatTypes { struct modules_grammar_modifier_AUTO; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls_class_method_METHOD; }
 namespace Parser::FlatTypes { struct modules_forward_declaration; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls_class_method; }
-namespace Parser::FlatTypes { struct GREATER_THAN_SIGN; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_dep_decl_DEPENDS; }
+namespace Parser::FlatTypes { struct modules_rule; }
 namespace Parser::FlatTypes { struct modules_rule_advanced; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_dep_decl; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_regular_match_unpack_AUTO; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_regular_match; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_regular_match_unpack; }
+namespace Parser::FlatTypes { struct FULL_STOP; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_var_capture_AMPERSAND; }
+namespace Parser::FlatTypes { struct modules_rule_regular; }
+namespace Parser::FlatTypes { struct modules_rule_regular_value; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_var_capture; }
 namespace Parser::FlatTypes { struct PERCENT_SIGN; }
+namespace Parser::FlatTypes { struct modules_rule_regular_value_dyn_DOLLAR_SIGN; }
+namespace Parser::FlatTypes { struct modules_rule_regular_value_dyn; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_alternative_VERTICAL_LINE; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_alternative; }
+namespace Parser::FlatTypes { struct modules_common_template_params_GREATER_THAN_SIGN; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_shared_counter_registration_AUTO; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_shared_counter_registration; }
 namespace Parser::FlatTypes { struct COLON; }
@@ -3994,15 +4122,18 @@ namespace Parser::FlatTypes { struct modules_rule_regular_value_CGROUP; }
 namespace Parser::FlatTypes { struct modules_rule_regular_ast_full_AUTO; }
 namespace Parser::FlatTypes { struct modules_rule_regular_ast; }
 namespace Parser::FlatTypes { struct modules_rule_regular_ast_full; }
+namespace Parser::FlatTypes { struct modules_grammar_modifier_MOD; }
 namespace Parser::FlatTypes { struct RIGHT_CURLY_BRACKET; }
+namespace Parser::FlatTypes { struct modules_common_call_params_AUTO; }
+namespace Parser::FlatTypes { struct modules_common_call_params; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_QUANTIFIER; }
 namespace Parser::FlatTypes { struct modules_common_ID; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_fun_FN; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_fun; }
-namespace Parser::FlatTypes { struct SEMICOLON; }
+namespace Parser::FlatTypes { struct COMMERCIAL_AT; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls_class_property_PROPERTY; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls_class_property; }
-namespace Parser::FlatTypes { struct COMMERCIAL_AT; }
+namespace Parser::FlatTypes { struct SEMICOLON; }
 namespace Parser::FlatTypes { struct modules_forward_declaration_cls_CLASS; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_STRING; }
 namespace Parser::FlatTypes { struct modules_rule_advanced_advanced_rule_regular_match_MATCH; }
@@ -4010,16 +4141,31 @@ namespace Parser::FlatTypes { struct modules_rule_regular_value_ANY; }
 namespace Parser::FlatTypes { struct COMMA; }
 namespace Parser::FlatTypes { struct RIGHT_PARENTHESIS; }
 namespace Parser::FlatTypes { struct LEFT_PARENTHESIS; }
-namespace Parser::FlatTypes { struct modules_grammar_modifier_MOD; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_counter_bounded; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_counter; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_counter_quantified; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_dyn_dyn_expr; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_group; }
+namespace Parser::FlatTypes { struct modules_common_rule_params; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_pattern; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_fail_capture; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_ast_capture; }
 namespace Parser::FlatTypes { struct modules_rule_regular_f_binding; }
+namespace Parser::FlatTypes { struct modules_common_type_annotation; }
+namespace Parser::FlatTypes { struct modules_rule_regular_ast_full_part; }
+namespace Parser::FlatTypes { struct modules_rule_regular_regular_rule; }
+namespace Parser::FlatTypes { struct modules_rule_regular_value_mul_capture; }
+namespace Parser::FlatTypes { struct modules_ispa_python_stmt; }
+namespace Parser::FlatTypes { struct modules_ispa_python; }
+namespace Parser::FlatTypes { struct modules_grammar_grammar; }
+namespace Parser::FlatTypes { struct modules_forward_declaration_fun_forward; }
+namespace Parser::FlatTypes { struct modules_rule_regular_ast_single_value; }
+namespace Parser::FlatTypes { struct main; }
+namespace Parser::FlatTypes { struct modules_ispa_python_expr; }
+namespace Parser::FlatTypes { struct modules_common_parameter; }
+namespace Parser::FlatTypes { struct modules_common_param; }
+namespace Parser::FlatTypes { struct modules_forward_declaration_fwd; }
+namespace Parser::FlatTypes { struct modules_common_template_param; }
 namespace Parser {
 	namespace FlatTypes {
 		using modules___external_python_symbol_1 = ::PyRawParser::Types::main;
@@ -4029,217 +4175,12 @@ namespace Parser::FlatTypes { struct modules___external; }
 namespace Parser::FlatTypes { struct modules___external_python; }
 namespace Parser::FlatTypes { struct modules_rule_regular_value_one_capture; }
 namespace Parser::FlatTypes { struct modules_rule_regular_ast_abbr; }
-namespace Parser::FlatTypes { struct modules_rule_regular_ast_full_part; }
-namespace Parser::FlatTypes { struct modules_rule_regular_regular_rule; }
-namespace Parser::FlatTypes { struct modules_rule_regular_value_mul_capture; }
-namespace Parser::FlatTypes { struct modules_ispa_python_stmt; }
-namespace Parser::FlatTypes { struct modules_ispa_python; }
-namespace Parser::FlatTypes { struct modules_grammar_grammar; }
-namespace Parser::FlatTypes { struct modules_forward_declaration_fun_forward; }
-namespace Parser::FlatTypes { struct modules_common_params; }
-namespace Parser::FlatTypes { struct modules_rule_regular_ast_single_value; }
-namespace Parser::FlatTypes { struct modules_forward_declaration_fwd; }
-namespace Parser::FlatTypes { struct modules_common_param; }
+namespace Parser::FlatTypes { template<typename params> struct modules_common_name; }
 namespace Parser::FlatTypes { struct modules_main_main; }
 namespace Parser::FlatTypes { struct modules_main; }
 namespace Parser {
 	namespace FlatTypes {
 		using modules___external_python_symbol_0 = ::PyRawParser::Types::expr;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser::FlatTypes { struct main; }
-namespace Parser::FlatTypes { struct modules_ispa_python_expr; }
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_value_dyn_DOLLAR_SIGN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule_regular_value_dyn_DOLLAR_SIGN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_value_dyn_DOLLAR_SIGN::write_to_output, &modules_rule_regular_value_dyn_DOLLAR_SIGN::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_value_dyn_DOLLAR_SIGN::write_to_output, &modules_rule_regular_value_dyn_DOLLAR_SIGN::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules {
-			using rule = ::Parser::FlatTypes::modules_rule;
-			using common = ::Parser::FlatTypes::modules_common;
-			using grammar = ::Parser::FlatTypes::modules_grammar;
-			using fail_block = ::Parser::FlatTypes::modules_fail_block;
-			using forward_declaration = ::Parser::FlatTypes::modules_forward_declaration;
-			using __external = ::Parser::FlatTypes::modules___external;
-			using ispa_python = ::Parser::FlatTypes::modules_ispa_python;
-			using main = ::Parser::FlatTypes::modules_main;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules::write_to_output, &modules::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules::write_to_output, &modules::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule {
-			using regular = ::Parser::FlatTypes::modules_rule_regular;
-			using advanced = ::Parser::FlatTypes::modules_rule_advanced;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule::write_to_output, &modules_rule::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule::write_to_output, &modules_rule::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule_regular {
-			using value = ::Parser::FlatTypes::modules_rule_regular_value;
-			using nested_rule = ::Parser::FlatTypes::modules_rule_regular_nested_rule;
-			using ast = ::Parser::FlatTypes::modules_rule_regular_ast;
-			using f_binding = ::Parser::FlatTypes::modules_rule_regular_f_binding;
-			using regular_rule = ::Parser::FlatTypes::modules_rule_regular_regular_rule;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular::write_to_output, &modules_rule_regular::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular::write_to_output, &modules_rule_regular::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_value value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule_regular_value {
-			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_one_capture>>, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_mul_capture>>> value;
-			using dyn = ::Parser::FlatTypes::modules_rule_regular_value_dyn;
-			using var_capture = ::Parser::FlatTypes::modules_rule_regular_value_var_capture;
-			using alternative = ::Parser::FlatTypes::modules_rule_regular_value_alternative;
-			using shared_counter_registration = ::Parser::FlatTypes::modules_rule_regular_value_shared_counter_registration;
-			using NOSPACE = ::Parser::FlatTypes::modules_rule_regular_value_NOSPACE;
-			using SPACE = ::Parser::FlatTypes::modules_rule_regular_value_SPACE;
-			using CGROUP = ::Parser::FlatTypes::modules_rule_regular_value_CGROUP;
-			using QUANTIFIER = ::Parser::FlatTypes::modules_rule_regular_value_QUANTIFIER;
-			using STRING = ::Parser::FlatTypes::modules_rule_regular_value_STRING;
-			using ANY = ::Parser::FlatTypes::modules_rule_regular_value_ANY;
-			using counter = ::Parser::FlatTypes::modules_rule_regular_value_counter;
-			using group = ::Parser::FlatTypes::modules_rule_regular_value_group;
-			using pattern = ::Parser::FlatTypes::modules_rule_regular_value_pattern;
-			using fail_capture = ::Parser::FlatTypes::modules_rule_regular_value_fail_capture;
-			using ast_capture = ::Parser::FlatTypes::modules_rule_regular_value_ast_capture;
-			using one_capture = ::Parser::FlatTypes::modules_rule_regular_value_one_capture;
-			using mul_capture = ::Parser::FlatTypes::modules_rule_regular_value_mul_capture;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_value::write_to_output, &modules_rule_regular_value::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_value::write_to_output, &modules_rule_regular_value::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
@@ -4267,141 +4208,6 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&__WS::write_to_output, &__WS::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name_FULL_STOP value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_common_name_FULL_STOP {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_name_FULL_STOP::write_to_output, &modules_common_name_FULL_STOP::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_name_FULL_STOP::write_to_output, &modules_common_name_FULL_STOP::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_common {
-			using name = ::Parser::FlatTypes::modules_common_name;
-			using template_params = ::Parser::FlatTypes::modules_common_template_params;
-			using ID = ::Parser::FlatTypes::modules_common_ID;
-			using params = ::Parser::FlatTypes::modules_common_params;
-			using param = ::Parser::FlatTypes::modules_common_param;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common::write_to_output, &modules_common::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common::write_to_output, &modules_common::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_grammar_modifier_AUTO value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_grammar_modifier_AUTO {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_grammar_modifier_AUTO::write_to_output, &modules_grammar_modifier_AUTO::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_grammar_modifier_AUTO::write_to_output, &modules_grammar_modifier_AUTO::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_grammar value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_grammar {
-			using modifier = ::Parser::FlatTypes::modules_grammar_modifier;
-			using grammar = ::Parser::FlatTypes::modules_grammar_grammar;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_grammar::write_to_output, &modules_grammar::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_grammar::write_to_output, &modules_grammar::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4443,12 +4249,20 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_grammar_modifier_RIGHT_SQUARE_BRACKET value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct modules_grammar_modifier_RIGHT_SQUARE_BRACKET {
+		struct modules {
+			using common = ::Parser::FlatTypes::modules_common;
+			using fail_block = ::Parser::FlatTypes::modules_fail_block;
+			using grammar = ::Parser::FlatTypes::modules_grammar;
+			using forward_declaration = ::Parser::FlatTypes::modules_forward_declaration;
+			using rule = ::Parser::FlatTypes::modules_rule;
+			using ispa_python = ::Parser::FlatTypes::modules_ispa_python;
+			using __external = ::Parser::FlatTypes::modules___external;
+			using main = ::Parser::FlatTypes::modules_main;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -4462,10 +4276,52 @@ namespace Parser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &modules_grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+				return std::make_tuple(&modules::write_to_output, &modules::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &modules_grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+				return std::make_tuple(&modules::write_to_output, &modules::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common {
+			using template_params = ::Parser::FlatTypes::modules_common_template_params;
+			using call_params = ::Parser::FlatTypes::modules_common_call_params;
+			using ID = ::Parser::FlatTypes::modules_common_ID;
+			using rule_params = ::Parser::FlatTypes::modules_common_rule_params;
+			using type_annotation = ::Parser::FlatTypes::modules_common_type_annotation;
+			using parameter = ::Parser::FlatTypes::modules_common_parameter;
+			using param = ::Parser::FlatTypes::modules_common_param;
+			using template_param = ::Parser::FlatTypes::modules_common_template_param;
+			template<typename params>
+			using name = ::Parser::FlatTypes::modules_common_name<params>;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common::write_to_output, &modules_common::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common::write_to_output, &modules_common::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4531,6 +4387,104 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_fail_block::write_to_output, &modules_fail_block::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_grammar_modifier_RIGHT_SQUARE_BRACKET value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_grammar_modifier_RIGHT_SQUARE_BRACKET {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &modules_grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_grammar_modifier_RIGHT_SQUARE_BRACKET::write_to_output, &modules_grammar_modifier_RIGHT_SQUARE_BRACKET::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_grammar value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_grammar {
+			using modifier = ::Parser::FlatTypes::modules_grammar_modifier;
+			using grammar = ::Parser::FlatTypes::modules_grammar_grammar;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_grammar::write_to_output, &modules_grammar::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_grammar::write_to_output, &modules_grammar::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_grammar_modifier_AUTO value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_grammar_modifier_AUTO {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_grammar_modifier_AUTO::write_to_output, &modules_grammar_modifier_AUTO::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_grammar_modifier_AUTO::write_to_output, &modules_grammar_modifier_AUTO::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4608,38 +4562,6 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, GREATER_THAN_SIGN value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct GREATER_THAN_SIGN {
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&GREATER_THAN_SIGN::write_to_output, &GREATER_THAN_SIGN::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&GREATER_THAN_SIGN::write_to_output, &GREATER_THAN_SIGN::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_rule_advanced_advanced_rule_dep_decl_DEPENDS value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -4663,6 +4585,40 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_rule_advanced_advanced_rule_dep_decl_DEPENDS::write_to_output, &modules_rule_advanced_advanced_rule_dep_decl_DEPENDS::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule {
+			using advanced = ::Parser::FlatTypes::modules_rule_advanced;
+			using regular = ::Parser::FlatTypes::modules_rule_regular;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule::write_to_output, &modules_rule::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule::write_to_output, &modules_rule::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4737,6 +4693,38 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, FULL_STOP value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct FULL_STOP {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&FULL_STOP::write_to_output, &FULL_STOP::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&FULL_STOP::write_to_output, &FULL_STOP::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_rule_regular_value_var_capture_AMPERSAND value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -4769,6 +4757,93 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular {
+			using value = ::Parser::FlatTypes::modules_rule_regular_value;
+			using nested_rule = ::Parser::FlatTypes::modules_rule_regular_nested_rule;
+			using ast = ::Parser::FlatTypes::modules_rule_regular_ast;
+			using f_binding = ::Parser::FlatTypes::modules_rule_regular_f_binding;
+			using regular_rule = ::Parser::FlatTypes::modules_rule_regular_regular_rule;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular::write_to_output, &modules_rule_regular::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular::write_to_output, &modules_rule_regular::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular_value value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular_value {
+			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_one_capture>>, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_mul_capture>>> value;
+			using var_capture = ::Parser::FlatTypes::modules_rule_regular_value_var_capture;
+			using dyn = ::Parser::FlatTypes::modules_rule_regular_value_dyn;
+			using alternative = ::Parser::FlatTypes::modules_rule_regular_value_alternative;
+			using shared_counter_registration = ::Parser::FlatTypes::modules_rule_regular_value_shared_counter_registration;
+			using NOSPACE = ::Parser::FlatTypes::modules_rule_regular_value_NOSPACE;
+			using SPACE = ::Parser::FlatTypes::modules_rule_regular_value_SPACE;
+			using CGROUP = ::Parser::FlatTypes::modules_rule_regular_value_CGROUP;
+			using QUANTIFIER = ::Parser::FlatTypes::modules_rule_regular_value_QUANTIFIER;
+			using STRING = ::Parser::FlatTypes::modules_rule_regular_value_STRING;
+			using ANY = ::Parser::FlatTypes::modules_rule_regular_value_ANY;
+			using counter = ::Parser::FlatTypes::modules_rule_regular_value_counter;
+			using group = ::Parser::FlatTypes::modules_rule_regular_value_group;
+			using pattern = ::Parser::FlatTypes::modules_rule_regular_value_pattern;
+			using fail_capture = ::Parser::FlatTypes::modules_rule_regular_value_fail_capture;
+			using ast_capture = ::Parser::FlatTypes::modules_rule_regular_value_ast_capture;
+			using mul_capture = ::Parser::FlatTypes::modules_rule_regular_value_mul_capture;
+			using one_capture = ::Parser::FlatTypes::modules_rule_regular_value_one_capture;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular_value::write_to_output, &modules_rule_regular_value::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular_value::write_to_output, &modules_rule_regular_value::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, PERCENT_SIGN value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -4792,6 +4867,38 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&PERCENT_SIGN::write_to_output, &PERCENT_SIGN::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular_value_dyn_DOLLAR_SIGN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular_value_dyn_DOLLAR_SIGN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular_value_dyn_DOLLAR_SIGN::write_to_output, &modules_rule_regular_value_dyn_DOLLAR_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular_value_dyn_DOLLAR_SIGN::write_to_output, &modules_rule_regular_value_dyn_DOLLAR_SIGN::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -4858,6 +4965,38 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_rule_regular_value_alternative::write_to_output, &modules_rule_regular_value_alternative::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_template_params_GREATER_THAN_SIGN value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_template_params_GREATER_THAN_SIGN {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_template_params_GREATER_THAN_SIGN::write_to_output, &modules_common_template_params_GREATER_THAN_SIGN::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_template_params_GREATER_THAN_SIGN::write_to_output, &modules_common_template_params_GREATER_THAN_SIGN::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5191,6 +5330,39 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_grammar_modifier_MOD value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_grammar_modifier_MOD {
+			std::string value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_grammar_modifier_MOD::write_to_output, &modules_grammar_modifier_MOD::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_grammar_modifier_MOD::write_to_output, &modules_grammar_modifier_MOD::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, RIGHT_CURLY_BRACKET value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -5214,6 +5386,38 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&RIGHT_CURLY_BRACKET::write_to_output, &RIGHT_CURLY_BRACKET::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_call_params_AUTO value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_call_params_AUTO {
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_call_params_AUTO::write_to_output, &modules_common_call_params_AUTO::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_call_params_AUTO::write_to_output, &modules_common_call_params_AUTO::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5321,12 +5525,12 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
+		auto operator<<(std::ostream & os, COMMERCIAL_AT value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct SEMICOLON {
+		struct COMMERCIAL_AT {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5340,10 +5544,10 @@ namespace Parser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
+				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5385,12 +5589,12 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, COMMERCIAL_AT value) -> std::ostream &;
+		auto operator<<(std::ostream & os, SEMICOLON value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct COMMERCIAL_AT {
+		struct SEMICOLON {
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -5404,10 +5608,10 @@ namespace Parser {
 				return std::array<std::string_view, 0>{{}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&COMMERCIAL_AT::write_to_output, &COMMERCIAL_AT::print);
+				return std::make_tuple(&SEMICOLON::write_to_output, &SEMICOLON::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5642,39 +5846,6 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_grammar_modifier_MOD value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_grammar_modifier_MOD {
-			std::string value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_grammar_modifier_MOD::write_to_output, &modules_grammar_modifier_MOD::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_grammar_modifier_MOD::write_to_output, &modules_grammar_modifier_MOD::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_rule_regular_value_group value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -5699,6 +5870,40 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_rule_regular_value_group::write_to_output, &modules_rule_regular_value_group::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_ispa_python value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_ispa_python {
+			using stmt = ::Parser::FlatTypes::modules_ispa_python_stmt;
+			using expr = ::Parser::FlatTypes::modules_ispa_python_expr;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie();
+			}
+			constexpr auto members() const {
+				return std::tie();
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 0>{{}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_ispa_python::write_to_output, &modules_ispa_python::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_ispa_python::write_to_output, &modules_ispa_python::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -5775,40 +5980,6 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_ispa_python value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_ispa_python {
-			using stmt = ::Parser::FlatTypes::modules_ispa_python_stmt;
-			using expr = ::Parser::FlatTypes::modules_ispa_python_expr;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie();
-			}
-			constexpr auto members() const {
-				return std::tie();
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 0>{{}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_ispa_python::write_to_output, &modules_ispa_python::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_ispa_python::write_to_output, &modules_ispa_python::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_main value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -5833,6 +6004,42 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_main::write_to_output, &modules_main::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_grammar_modifier value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_grammar_modifier {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_grammar_modifier_MOD> value;
+			using RIGHT_SQUARE_BRACKET = ::Parser::FlatTypes::modules_grammar_modifier_RIGHT_SQUARE_BRACKET;
+			using AUTO = ::Parser::FlatTypes::modules_grammar_modifier_AUTO;
+			using MOD = ::Parser::FlatTypes::modules_grammar_modifier_MOD;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_grammar_modifier::write_to_output, &modules_grammar_modifier::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_grammar_modifier::write_to_output, &modules_grammar_modifier::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6046,31 +6253,31 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_ast_abbr value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_common_type_annotation value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct modules_rule_regular_ast_abbr {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> f;
-			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID>> seq;
+		struct modules_common_type_annotation {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> base;
+			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID>> nested;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
 			constexpr auto members() {
-				return std::tie(f, seq);
+				return std::tie(base, nested);
 			}
 			constexpr auto members() const {
-				return std::tie(f, seq);
+				return std::tie(base, nested);
 			}
 			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"f", "seq"}};
+				return std::array<std::string_view, 2>{{"base", "nested"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_ast_abbr::write_to_output, &modules_rule_regular_ast_abbr::print);
+				return std::make_tuple(&modules_common_type_annotation::write_to_output, &modules_common_type_annotation::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_ast_abbr::write_to_output, &modules_rule_regular_ast_abbr::print);
+				return std::make_tuple(&modules_common_type_annotation::write_to_output, &modules_common_type_annotation::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6115,12 +6322,12 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_param value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_common_template_param value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct modules_common_param {
+		struct modules_common_template_param {
 			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> first_p;
 			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID>> following_p;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
@@ -6136,10 +6343,44 @@ namespace Parser {
 				return std::array<std::string_view, 2>{{"first_p", "following_p"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
+				return std::make_tuple(&modules_common_template_param::write_to_output, &modules_common_template_param::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
+				return std::make_tuple(&modules_common_template_param::write_to_output, &modules_common_template_param::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular_ast_abbr value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular_ast_abbr {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> f;
+			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID>> seq;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(f, seq);
+			}
+			constexpr auto members() const {
+				return std::tie(f, seq);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"f", "seq"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular_ast_abbr::write_to_output, &modules_rule_regular_ast_abbr::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular_ast_abbr::write_to_output, &modules_rule_regular_ast_abbr::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6174,42 +6415,6 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_rule_regular_value_mul_capture::write_to_output, &modules_rule_regular_value_mul_capture::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_grammar_modifier value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_grammar_modifier {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_grammar_modifier_MOD> value;
-			using AUTO = ::Parser::FlatTypes::modules_grammar_modifier_AUTO;
-			using RIGHT_SQUARE_BRACKET = ::Parser::FlatTypes::modules_grammar_modifier_RIGHT_SQUARE_BRACKET;
-			using MOD = ::Parser::FlatTypes::modules_grammar_modifier_MOD;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_grammar_modifier::write_to_output, &modules_grammar_modifier::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_grammar_modifier::write_to_output, &modules_grammar_modifier::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6321,6 +6526,40 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_parameter value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_parameter {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> name;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_type_annotation> annotation;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(name, annotation);
+			}
+			constexpr auto members() const {
+				return std::tie(name, annotation);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"name", "annotation"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_parameter::write_to_output, &modules_common_parameter::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_parameter::write_to_output, &modules_common_parameter::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_forward_declaration_cls_class_method value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -6395,8 +6634,9 @@ namespace Parser {
 namespace Parser {
 	namespace FlatTypes {
 		struct modules_common_template_params {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_param> value;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_template_param> value;
 			using LESS_THAN_SIGN = ::Parser::FlatTypes::modules_common_template_params_LESS_THAN_SIGN;
+			using GREATER_THAN_SIGN = ::Parser::FlatTypes::modules_common_template_params_GREATER_THAN_SIGN;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6414,39 +6654,6 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_common_template_params::write_to_output, &modules_common_template_params::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_params value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_common_params {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_param> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_common_params::write_to_output, &modules_common_params::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6589,6 +6796,40 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_param value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_param {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_parameter> first_p;
+			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_parameter>> following_p;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(first_p, following_p);
+			}
+			constexpr auto members() const {
+				return std::tie(first_p, following_p);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"first_p", "following_p"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_param::write_to_output, &modules_common_param::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_forward_declaration_cls value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -6626,20 +6867,37 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_common_name value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
+		template<typename params>
 		struct modules_common_name {
 			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID> primary;
 			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_common_ID>> nested;
 			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_template_params> temp_params;
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_params> param;
-			using FULL_STOP = ::Parser::FlatTypes::modules_common_name_FULL_STOP;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
+			::ISPA_STD::Node<params> param;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void {
+				printer.node("modules_common_name", false);
+				printer.up(false);
+				printer.node("primary", false);
+				printer.up(true);
+				primary.print(printer);
+				printer.down();
+				printer.subtree("nested", nested, false);
+				printer.node("temp_params", false);
+				printer.up(true);
+				temp_params.print(printer);
+				printer.down();
+				printer.node("param", true);
+				printer.up(false);
+				param.print(printer);
+				printer.down();
+				printer.down();
+			}
+			auto print(std::ostream& os) const -> void {
+				::ISPA_STD::ASTPrinter<std::ostream> printer = ::ISPA_STD::ASTPrinter<std::ostream>{os};
+				write_to_output(printer);
+			}
+			auto to_string() const -> std::string {
+				return ::ISPA_STD::concat("modules_common_name {", "primary = ", primary.to_string(), ", ", "nested = ", nested, ", ", "temp_params = ", temp_params.to_string(), ", ", "param = ", param.to_string(), "}");
+			}
 			constexpr auto members() {
 				return std::tie(primary, nested, temp_params, param);
 			}
@@ -6767,6 +7025,73 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_call_params value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_call_params {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_param> value;
+			using AUTO = ::Parser::FlatTypes::modules_common_call_params_AUTO;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_call_params::write_to_output, &modules_common_call_params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_call_params::write_to_output, &modules_common_call_params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_common_rule_params value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_common_rule_params {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_param> value;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_common_rule_params::write_to_output, &modules_common_rule_params::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_common_rule_params::write_to_output, &modules_common_rule_params::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_forward_declaration_fwd value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -6791,74 +7116,6 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_forward_declaration_fwd::write_to_output, &modules_forward_declaration_fwd::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_fail_block_fail_block value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_fail_block_fail_block {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name> name;
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_ispa_python_stmt> val;
-			using FAIL = ::Parser::FlatTypes::modules_fail_block_fail_block_FAIL;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(name, val);
-			}
-			constexpr auto members() const {
-				return std::tie(name, val);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 2>{{"name", "val"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_fail_block_fail_block::write_to_output, &modules_fail_block_fail_block::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_fail_block_fail_block::write_to_output, &modules_fail_block_fail_block::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_value_fail_capture value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule_regular_value_fail_capture {
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name> value;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(value);
-			}
-			constexpr auto members() const {
-				return std::tie(value);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 1>{{"value"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_value_fail_capture::write_to_output, &modules_rule_regular_value_fail_capture::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_value_fail_capture::write_to_output, &modules_rule_regular_value_fail_capture::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -6903,13 +7160,49 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular_ast value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular_ast {
+			std::variant<std::monostate, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_abbr>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_full>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_single_value>> value;
+			using full = ::Parser::FlatTypes::modules_rule_regular_ast_full;
+			using single_value = ::Parser::FlatTypes::modules_rule_regular_ast_single_value;
+			using abbr = ::Parser::FlatTypes::modules_rule_regular_ast_abbr;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(value);
+			}
+			constexpr auto members() const {
+				return std::tie(value);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 1>{{"value"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular_ast::write_to_output, &modules_rule_regular_ast::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular_ast::write_to_output, &modules_rule_regular_ast::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_rule_regular_value_pattern value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
 		struct modules_rule_regular_value_pattern {
-			std::variant<std::monostate, ::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name>, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_group>>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_dyn>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_STRING>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_CGROUP>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_ANY>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_SPACE>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_NOSPACE>> value;
+			std::variant<std::monostate, ::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name<::Parser::FlatTypes::modules_common_call_params>>, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_value_group>>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_dyn>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_STRING>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_CGROUP>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_ANY>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_SPACE>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value_NOSPACE>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6936,16 +7229,13 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_ast value) -> std::ostream &;
+		auto operator<<(std::ostream & os, modules_rule_regular_value_fail_capture value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
-		struct modules_rule_regular_ast {
-			std::variant<std::monostate, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_abbr>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_full>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast_single_value>> value;
-			using full = ::Parser::FlatTypes::modules_rule_regular_ast_full;
-			using abbr = ::Parser::FlatTypes::modules_rule_regular_ast_abbr;
-			using single_value = ::Parser::FlatTypes::modules_rule_regular_ast_single_value;
+		struct modules_rule_regular_value_fail_capture {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name<::Parser::FlatTypes::modules_common_call_params>> value;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
 			auto to_string() const -> std::string;
@@ -6959,10 +7249,45 @@ namespace Parser {
 				return std::array<std::string_view, 1>{{"value"}};
 			}
 			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_ast::write_to_output, &modules_rule_regular_ast::print);
+				return std::make_tuple(&modules_rule_regular_value_fail_capture::write_to_output, &modules_rule_regular_value_fail_capture::print);
 			}
 			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_ast::write_to_output, &modules_rule_regular_ast::print);
+				return std::make_tuple(&modules_rule_regular_value_fail_capture::write_to_output, &modules_rule_regular_value_fail_capture::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_fail_block_fail_block value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_fail_block_fail_block {
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name<::Parser::FlatTypes::modules_common_rule_params>> name;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_ispa_python_stmt> val;
+			using FAIL = ::Parser::FlatTypes::modules_fail_block_fail_block_FAIL;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(name, val);
+			}
+			constexpr auto members() const {
+				return std::tie(name, val);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 2>{{"name", "val"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_fail_block_fail_block::write_to_output, &modules_fail_block_fail_block::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_fail_block_fail_block::write_to_output, &modules_fail_block_fail_block::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7006,6 +7331,42 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace FlatTypes {
+		auto operator<<(std::ostream & os, modules_rule_regular_regular_rule value) -> std::ostream &;
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
+		struct modules_rule_regular_regular_rule {
+			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value>> v;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast> ast_pointer;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_f_binding> fail_pointer;
+			std::vector<::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_nested_rule>>> nested;
+			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
+			auto print(std::ostream& os) const -> void;
+			auto to_string() const -> std::string;
+			constexpr auto members() {
+				return std::tie(v, ast_pointer, fail_pointer, nested);
+			}
+			constexpr auto members() const {
+				return std::tie(v, ast_pointer, fail_pointer, nested);
+			}
+			static constexpr auto members_str() {
+				return std::array<std::string_view, 4>{{"v", "ast_pointer", "fail_pointer", "nested"}};
+			}
+			constexpr auto methods() {
+				return std::make_tuple(&modules_rule_regular_regular_rule::write_to_output, &modules_rule_regular_regular_rule::print);
+			}
+			constexpr auto methods() const {
+				return std::make_tuple(&modules_rule_regular_regular_rule::write_to_output, &modules_rule_regular_regular_rule::print);
+			}
+			static constexpr auto methods_str() {
+				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
+			}
+		};
+	} // namespace FlatTypes
+} // namespace Parser
+namespace Parser {
+	namespace FlatTypes {
 		auto operator<<(std::ostream & os, modules_rule_regular_value_one_capture value) -> std::ostream &;
 	} // namespace FlatTypes
 } // namespace Parser
@@ -7036,42 +7397,6 @@ namespace Parser {
 			}
 			constexpr auto methods() const {
 				return std::make_tuple(&modules_rule_regular_value_one_capture::write_to_output, &modules_rule_regular_value_one_capture::print);
-			}
-			static constexpr auto methods_str() {
-				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
-			}
-		};
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		auto operator<<(std::ostream & os, modules_rule_regular_regular_rule value) -> std::ostream &;
-	} // namespace FlatTypes
-} // namespace Parser
-namespace Parser {
-	namespace FlatTypes {
-		struct modules_rule_regular_regular_rule {
-			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_value>> v;
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_ast> ast_pointer;
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_regular_f_binding> fail_pointer;
-			std::vector<::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_nested_rule>>> nested;
-			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
-			auto print(std::ostream& os) const -> void;
-			auto to_string() const -> std::string;
-			constexpr auto members() {
-				return std::tie(v, ast_pointer, fail_pointer, nested);
-			}
-			constexpr auto members() const {
-				return std::tie(v, ast_pointer, fail_pointer, nested);
-			}
-			static constexpr auto members_str() {
-				return std::array<std::string_view, 4>{{"v", "ast_pointer", "fail_pointer", "nested"}};
-			}
-			constexpr auto methods() {
-				return std::make_tuple(&modules_rule_regular_regular_rule::write_to_output, &modules_rule_regular_regular_rule::print);
-			}
-			constexpr auto methods() const {
-				return std::make_tuple(&modules_rule_regular_regular_rule::write_to_output, &modules_rule_regular_regular_rule::print);
 			}
 			static constexpr auto methods_str() {
 				return std::array<std::string_view, 2>{{"write_to_output", "print"}};
@@ -7124,7 +7449,7 @@ namespace Parser {
 	namespace FlatTypes {
 		struct modules_grammar_grammar {
 			std::vector<::ISPA_STD::Node<::Parser::FlatTypes::modules_grammar_modifier>> mod;
-			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name> name;
+			::ISPA_STD::Node<::Parser::FlatTypes::modules_common_name<::Parser::FlatTypes::modules_common_rule_params>> name;
 			std::variant<std::monostate, ::ISPA_STD::Node<std::shared_ptr<::Parser::FlatTypes::modules_rule_regular_regular_rule>>, ::ISPA_STD::Node<::Parser::FlatTypes::modules_rule_advanced_advanced_rule>> entry;
 			auto write_to_output(::ISPA_STD::ASTPrinter<std::ostream>& printer) const -> void;
 			auto print(std::ostream& os) const -> void;
@@ -7218,17 +7543,17 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace Types {
-		using modules = ::Parser::FlatTypes::modules;
-	} // namespace Types
-} // namespace Parser
-namespace Parser {
-	namespace Types {
 		using __WS = ::Parser::FlatTypes::__WS;
 	} // namespace Types
 } // namespace Parser
 namespace Parser {
 	namespace Types {
-		using GREATER_THAN_SIGN = ::Parser::FlatTypes::GREATER_THAN_SIGN;
+		using modules = ::Parser::FlatTypes::modules;
+	} // namespace Types
+} // namespace Parser
+namespace Parser {
+	namespace Types {
+		using FULL_STOP = ::Parser::FlatTypes::FULL_STOP;
 	} // namespace Types
 } // namespace Parser
 namespace Parser {
@@ -7258,12 +7583,12 @@ namespace Parser {
 } // namespace Parser
 namespace Parser {
 	namespace Types {
-		using SEMICOLON = ::Parser::FlatTypes::SEMICOLON;
+		using COMMERCIAL_AT = ::Parser::FlatTypes::COMMERCIAL_AT;
 	} // namespace Types
 } // namespace Parser
 namespace Parser {
 	namespace Types {
-		using COMMERCIAL_AT = ::Parser::FlatTypes::COMMERCIAL_AT;
+		using SEMICOLON = ::Parser::FlatTypes::SEMICOLON;
 	} // namespace Types
 } // namespace Parser
 namespace Parser {
@@ -7287,18 +7612,26 @@ namespace Parser {
 	} // namespace Types
 } // namespace Parser
 namespace Parser {
-	using Token = ::ISPA_STD::RawToken<Types::modules::rule::regular::value::dyn::DOLLAR_SIGN, Types::__WS, Types::modules::common::name::FULL_STOP, Types::modules::grammar::modifier::AUTO, Types::modules::common::template_params::LESS_THAN_SIGN, Types::modules::grammar::modifier::RIGHT_SQUARE_BRACKET, Types::modules::fail_block::fail_block::FAIL, Types::modules::forward_declaration::cls::class_method::METHOD, Types::GREATER_THAN_SIGN, Types::modules::rule::advanced::advanced_rule::dep_decl::DEPENDS, Types::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO, Types::modules::rule::regular::value::var_capture::AMPERSAND, Types::PERCENT_SIGN, Types::modules::rule::regular::value::alternative::VERTICAL_LINE, Types::modules::rule::regular::value::shared_counter_registration::AUTO, Types::COLON, Types::EQUALS_SIGN, Types::modules::rule::regular::nested_rule::NUMBER_SIGN, Types::modules::rule::regular::value::NOSPACE, Types::modules::rule::regular::value::SPACE, Types::LEFT_CURLY_BRACKET, Types::modules::rule::regular::value::CGROUP, Types::modules::rule::regular::ast::full::AUTO, Types::RIGHT_CURLY_BRACKET, Types::modules::rule::regular::value::QUANTIFIER, Types::modules::common::ID, Types::modules::forward_declaration::fun::FN, Types::SEMICOLON, Types::modules::forward_declaration::cls::class_property::PROPERTY, Types::COMMERCIAL_AT, Types::modules::forward_declaration::cls::CLASS, Types::modules::rule::regular::value::STRING, Types::modules::rule::advanced::advanced_rule::regular_match::MATCH, Types::modules::rule::regular::value::ANY, Types::COMMA, Types::RIGHT_PARENTHESIS, Types::LEFT_PARENTHESIS, Types::modules::grammar::modifier::MOD>;
+	using Token = ::ISPA_STD::RawToken<Types::__WS, Types::modules::common::template_params::LESS_THAN_SIGN, Types::modules::fail_block::fail_block::FAIL, Types::modules::grammar::modifier::RIGHT_SQUARE_BRACKET, Types::modules::grammar::modifier::AUTO, Types::modules::forward_declaration::cls::class_method::METHOD, Types::modules::rule::advanced::advanced_rule::dep_decl::DEPENDS, Types::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO, Types::FULL_STOP, Types::modules::rule::regular::value::var_capture::AMPERSAND, Types::PERCENT_SIGN, Types::modules::rule::regular::value::dyn::DOLLAR_SIGN, Types::modules::rule::regular::value::alternative::VERTICAL_LINE, Types::modules::common::template_params::GREATER_THAN_SIGN, Types::modules::rule::regular::value::shared_counter_registration::AUTO, Types::COLON, Types::EQUALS_SIGN, Types::modules::rule::regular::nested_rule::NUMBER_SIGN, Types::modules::rule::regular::value::NOSPACE, Types::modules::rule::regular::value::SPACE, Types::LEFT_CURLY_BRACKET, Types::modules::rule::regular::value::CGROUP, Types::modules::rule::regular::ast::full::AUTO, Types::modules::grammar::modifier::MOD, Types::RIGHT_CURLY_BRACKET, Types::modules::common::call_params::AUTO, Types::modules::rule::regular::value::QUANTIFIER, Types::modules::common::ID, Types::modules::forward_declaration::fun::FN, Types::COMMERCIAL_AT, Types::modules::forward_declaration::cls::class_property::PROPERTY, Types::SEMICOLON, Types::modules::forward_declaration::cls::CLASS, Types::modules::rule::regular::value::STRING, Types::modules::rule::advanced::advanced_rule::regular_match::MATCH, Types::modules::rule::regular::value::ANY, Types::COMMA, Types::RIGHT_PARENTHESIS, Types::LEFT_PARENTHESIS>;
 } // namespace Parser
 namespace Parser {
 	class Lexer : public ::ISPA_STD::Lexer_base<Token> {
 	public:
 		auto clone() const -> std::shared_ptr<::ISPA_STD::Lexer_base<Token>> override;
+	private:
+		std::vector<Token> ispa_pending_tokens;
+		bool ispa_skip_token = false;
+		auto ispa_skip_current_token() -> void;
+		auto ispa_token_error(std::string message) -> void;
+	public:
+		auto on_token(Token&& token) -> void override;
+		auto on_eof() -> void override;
 		auto hasExternalRules() const -> bool override;
 	private:
 		static ::ISPA_STD::DFA::API::CharToClass char_class_table;
-		static ::ISPA_STD::DFA::API::Table<104, 53> dfa_table;
+		static ::ISPA_STD::DFA::API::Table<105, 53> dfa_table;
 		static ::ISPA_STD::DFA::API::Table<139, 4> action_table;
-		static auto semantic_action_exec(long long state, const ::ISPA_STD::DFA::API::Captures& captures, long long start_pos, const char* start, long long length, long long line) -> std::pair<long long, Token>;
+		auto semantic_action_exec(long long state, const ::ISPA_STD::DFA::API::Captures& captures, long long start_pos, const char* start, long long length, long long line) -> std::pair<long long, Token>;
 		bool init_done = false;
 		auto init() -> void override;
 		::ISPA_STD::DFA::API::TdfaLayout<23, 22> tdfa_registers;
@@ -7316,13 +7649,13 @@ namespace Parser {
 			return std::array<std::string_view, 0>{{}};
 		}
 		constexpr auto methods() {
-			return std::make_tuple(&Lexer::clone, &Lexer::hasExternalRules, &Lexer::makeToken);
+			return std::make_tuple(&Lexer::clone, &Lexer::on_token, &Lexer::on_eof, &Lexer::hasExternalRules, &Lexer::makeToken);
 		}
 		constexpr auto methods() const {
-			return std::make_tuple(&Lexer::clone, &Lexer::hasExternalRules, &Lexer::makeToken);
+			return std::make_tuple(&Lexer::clone, &Lexer::on_token, &Lexer::on_eof, &Lexer::hasExternalRules, &Lexer::makeToken);
 		}
 		static constexpr auto methods_str() {
-			return std::array<std::string_view, 3>{{"clone", "hasExternalRules", "makeToken"}};
+			return std::array<std::string_view, 5>{{"clone", "on_token", "on_eof", "hasExternalRules", "makeToken"}};
 		}
 	};
 } // namespace Parser
@@ -7335,17 +7668,16 @@ namespace Parser {
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueCounterQuantified(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::counter::quantified, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueAlternative(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::alternative, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueDynDyn_expr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::dyn::dyn_expr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueDyn(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::dyn, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueGroup(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::group, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonRule_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::rule_params, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValuePattern(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::pattern, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueFail_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::fail_capture, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueAst_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::ast_capture, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueCounter(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::counter, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueVar_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::var_capture, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularF_binding(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::f_binding, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modules__externalPythonSymbol_1(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::__external::python::symbol_1, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstFull(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::full, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueOne_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::one_capture, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstAbbr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::abbr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonType_annotation(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::type_annotation, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstFullPart(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::full::part, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleAdvancedAdvanced_ruleRegular_matchUnpack(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::advanced::advanced_rule::regular_match::unpack, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAst(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast, IT>;
@@ -7357,24 +7689,31 @@ namespace Parser {
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationFun(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::fun, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleAdvancedAdvanced_ruleDep_decl(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::advanced::advanced_rule::dep_decl, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationFun_forward(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::fun_forward, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonParams(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::params, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstSingle_value(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::single_value, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationClsClass_property(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::cls::class_property, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleAdvancedAdvanced_ruleRegular_match(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::advanced::advanced_rule::regular_match, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationClsClass_method(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::cls::class_method, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationCls(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::cls, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationFwd(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::fwd, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleAdvancedAdvanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::advanced::advanced_rule, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesFail_blockFail_block(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonTemplate_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesGrammarModifier(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::modifier, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonParam(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonName(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesMainMain(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::main::main, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modules__externalPythonSymbol_0(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::__external::python::symbol_0, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto main(IT pos) -> ::ISPA_STD::MatchResult<Types::main, IT>;
 		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesIspa_pythonExpr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::ispa_python::expr, IT>;
-		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueDyn(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::dyn, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonParameter(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::parameter, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesGrammarModifier(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::grammar::modifier, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonParam(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::param, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonTemplate_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_params, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesForward_declarationFwd(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::forward_declaration::fwd, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonTemplate_param(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::template_param, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleAdvancedAdvanced_rule(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::advanced::advanced_rule, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesFail_blockFail_block(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::fail_block::fail_block, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modules__externalPythonSymbol_1(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::__external::python::symbol_1, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstFull(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::full, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularValueOne_capture(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::value::one_capture, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesRuleRegularAstAbbr(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::rule::regular::ast::abbr, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonCall_params(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::call_params, IT>;
+		template<typename params, typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesCommonName(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name<params>, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modulesMainMain(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::main::main, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto modules__externalPythonSymbol_0(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::__external::python::symbol_0, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto ispa_match_template(std::type_identity<Types::modules::common::call_params> tag, IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::call_params, IT>;
+		template<typename IT, class = std::enable_if_t<std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::iterator> || std::is_same_v<std::remove_const_t<std::remove_reference_t<IT>>, ::Parser::Lexer::lazy_iterator>>> auto ispa_match_template(std::type_identity<Types::modules::common::rule_params> tag, IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::rule_params, IT>;
 	public:
 		auto parseFromTokens() -> void override;
 		auto lazyParse() -> void override;
@@ -7398,6 +7737,73 @@ namespace Parser {
 		}
 	};
 } // namespace Parser
+template<typename params, typename IT, class> auto Parser::Parser::modulesCommonName(IT pos) -> ::ISPA_STD::MatchResult<Types::modules::common::name<params>, IT> {
+	Types::modules::common::name<params> result = {};
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID;
+	::ISPA_STD::Node<Types::FULL_STOP> value_FULL_STOP;
+	::ISPA_STD::Node<Types::modules::common::ID> value_modules_common_ID_1;
+	std::pair<::ISPA_STD::Node<Types::FULL_STOP>, ::ISPA_STD::Node<Types::modules::common::ID>> group0;
+	std::vector<std::pair<::ISPA_STD::Node<Types::FULL_STOP>, ::ISPA_STD::Node<Types::modules::common::ID>>> group_list1;
+	std::vector<::ISPA_STD::Node<Types::modules::common::ID>> capture_list2;
+	::ISPA_STD::Node<Types::modules::common::template_params> value_modules_common_template_params;
+	::ISPA_STD::Node<params> value_modules_common_name_ispa_template_params;
+	auto recovery_scope = recovery_frame("modules::common::name");
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::FULL_STOP::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::modules::common::ID::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("modules::common::ID", "modules::common::ID", "__WS", "<group>", "__WS", "modules::common::template_params", "__WS", "modules::common::name::ispa_template_params");
+	value_modules_common_ID = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::modules::common::ID::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::FULL_STOP::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::Policy<true, true, true, 32>>("modules::common::name", "modules::common::ID"));
+	::ISPA_STD::assign_compatible(result.primary, value_modules_common_ID);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::FULL_STOP::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::modules::common::ID::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("__WS", "__WS", "<group>", "__WS", "modules::common::template_params", "__WS", "modules::common::name::ispa_template_params");
+	skip_spaces<Types::__WS>(pos);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::Tokens<Tokens::FULL_STOP::id, Tokens::modules::common::ID::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::modules::common::ID::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("<group>", "<group>", "__WS", "modules::common::template_params", "__WS", "modules::common::name::ispa_template_params");
+	// grammar ` ( FULL_STOP  __WS?; @  modules::common::ID)*;`: repeat while lookahead is in FIRST
+	while (((*pos).kind() == Tokens::FULL_STOP::id)) {
+		value_FULL_STOP = required<Types::FULL_STOP>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FULL_STOP::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::name", "<group>"));
+		skip_spaces<Types::__WS>(pos);
+		value_modules_common_ID_1 = required<Types::modules::common::ID>(pos, ISPA_STD::Recovery::handler<ISPA_STD::Recovery::Tokens<Tokens::FULL_STOP::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMERCIAL_AT::id, Tokens::EQUALS_SIGN::id, Tokens::LEFT_CURLY_BRACKET::id, Tokens::LEFT_PARENTHESIS::id, Tokens::PERCENT_SIGN::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::SEMICOLON::id, Tokens::modules::common::ID::id, Tokens::modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO::id, Tokens::modules::rule::regular::ast::full::AUTO::id, Tokens::modules::rule::regular::nested_rule::NUMBER_SIGN::id, Tokens::modules::rule::regular::value::ANY::id, Tokens::modules::rule::regular::value::CGROUP::id, Tokens::modules::rule::regular::value::NOSPACE::id, Tokens::modules::rule::regular::value::QUANTIFIER::id, Tokens::modules::rule::regular::value::SPACE::id, Tokens::modules::rule::regular::value::STRING::id, Tokens::modules::rule::regular::value::alternative::VERTICAL_LINE::id, Tokens::modules::rule::regular::value::dyn::DOLLAR_SIGN::id, Tokens::modules::rule::regular::value::shared_counter_registration::AUTO::id, Tokens::modules::rule::regular::value::var_capture::AMPERSAND::id>, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::Policy<false, true, false, 32>>("modules::common::name", "<group>"));
+		group0 = std::make_pair(value_FULL_STOP, value_modules_common_ID_1);
+		group_list1.push_back(group0);
+		capture_list2.push_back(value_modules_common_ID_1);
+		skip_spaces<Types::__WS>(pos);
+	}
+	::ISPA_STD::assign_compatible(result.nested, capture_list2);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::modules::common::ID::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("__WS", "__WS", "modules::common::template_params", "__WS", "modules::common::name::ispa_template_params");
+	skip_spaces<Types::__WS>(pos);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::Tokens<Tokens::COMMA::id, Tokens::modules::common::ID::id, Tokens::modules::common::template_params::GREATER_THAN_SIGN::id, Tokens::modules::common::template_params::LESS_THAN_SIGN::id>, ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("modules::common::template_params", "modules::common::template_params", "__WS", "modules::common::name::ispa_template_params");
+	value_modules_common_template_params = optional<Types::modules::common::template_params>(pos, [this](auto cursor) { return this->modulesCommonTemplate_params(cursor); });
+	::ISPA_STD::assign_compatible(result.temp_params, value_modules_common_template_params);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::EmptyTokens, ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("__WS", "__WS", "modules::common::name::ispa_template_params");
+	skip_spaces<Types::__WS>(pos);
+	if (unwinding()) {
+		return action_result(result, pos);
+	}
+	recovery_at<ISPA_STD::Recovery::Tokens<Tokens::COLON::id, Tokens::COMMA::id, Tokens::FULL_STOP::id, Tokens::LEFT_PARENTHESIS::id, Tokens::RIGHT_PARENTHESIS::id, Tokens::modules::common::ID::id, Tokens::modules::common::call_params::AUTO::id>>("modules::common::name::ispa_template_params", "modules::common::name::ispa_template_params");
+	value_modules_common_name_ispa_template_params = optional<params>(pos, [&](IT rule_pos) {
+return ispa_match_template(std::type_identity<params>{}, rule_pos);
+});
+	::ISPA_STD::assign_compatible(result.param, value_modules_common_name_ispa_template_params);
+	::ISPA_STD::MatchResult<Types::modules::common::name<params>, IT> match_result;
+	match_result.status = true;
+	match_result.node.set_data(result);
+	match_result.it = pos;
+	return match_result;
+}
 
 #include <ispastdlib/external.hpp>
 namespace Parser::Exports {
@@ -7432,7 +7838,7 @@ static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_6 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::common::name;
+using node_type = ::Parser::Types::modules::common::call_params;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
@@ -7442,216 +7848,231 @@ static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_8 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::common::params;
+using node_type = ::Parser::Types::modules::common::parameter;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_9 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::common::template_params;
+using node_type = ::Parser::Types::modules::common::rule_params;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_10 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::fail_block::fail_block;
+using node_type = ::Parser::Types::modules::common::template_param;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_11 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::cls;
+using node_type = ::Parser::Types::modules::common::template_params;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_12 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::cls::class_method;
+using node_type = ::Parser::Types::modules::common::type_annotation;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_13 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::cls::class_property;
+using node_type = ::Parser::Types::modules::fail_block::fail_block;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_14 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::fun;
+using node_type = ::Parser::Types::modules::forward_declaration::cls;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_15 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::fun_forward;
+using node_type = ::Parser::Types::modules::forward_declaration::cls::class_method;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_16 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::forward_declaration::fwd;
+using node_type = ::Parser::Types::modules::forward_declaration::cls::class_property;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_17 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::grammar::grammar;
+using node_type = ::Parser::Types::modules::forward_declaration::fun;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_18 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::grammar::modifier;
+using node_type = ::Parser::Types::modules::forward_declaration::fun_forward;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_19 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::grammar::modifier::MOD;
+using node_type = ::Parser::Types::modules::forward_declaration::fwd;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_20 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::ispa_python::expr;
+using node_type = ::Parser::Types::modules::grammar::grammar;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_21 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::ispa_python::stmt;
+using node_type = ::Parser::Types::modules::grammar::modifier;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_22 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::ast;
+using node_type = ::Parser::Types::modules::grammar::modifier::MOD;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_23 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::ast::abbr;
+using node_type = ::Parser::Types::modules::ispa_python::expr;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_24 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::ast::full;
+using node_type = ::Parser::Types::modules::ispa_python::stmt;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_25 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::ast::full::part;
+using node_type = ::Parser::Types::modules::rule::regular::ast;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_26 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::ast::single_value;
+using node_type = ::Parser::Types::modules::rule::regular::ast::abbr;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_27 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::f_binding;
+using node_type = ::Parser::Types::modules::rule::regular::ast::full;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_28 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::nested_rule;
+using node_type = ::Parser::Types::modules::rule::regular::ast::full::part;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_29 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::regular_rule;
+using node_type = ::Parser::Types::modules::rule::regular::ast::single_value;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_30 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value;
+using node_type = ::Parser::Types::modules::rule::regular::f_binding;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_31 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::ANY;
+using node_type = ::Parser::Types::modules::rule::regular::nested_rule;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_32 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::CGROUP;
+using node_type = ::Parser::Types::modules::rule::regular::regular_rule;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_33 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::NOSPACE;
+using node_type = ::Parser::Types::modules::rule::regular::value;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_34 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::QUANTIFIER;
+using node_type = ::Parser::Types::modules::rule::regular::value::ANY;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_35 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::SPACE;
+using node_type = ::Parser::Types::modules::rule::regular::value::CGROUP;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_36 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::STRING;
+using node_type = ::Parser::Types::modules::rule::regular::value::NOSPACE;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_37 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::alternative;
+using node_type = ::Parser::Types::modules::rule::regular::value::QUANTIFIER;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_38 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::ast_capture;
+using node_type = ::Parser::Types::modules::rule::regular::value::SPACE;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_39 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::counter;
+using node_type = ::Parser::Types::modules::rule::regular::value::STRING;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_40 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::counter::bounded;
+using node_type = ::Parser::Types::modules::rule::regular::value::alternative;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_41 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::counter::quantified;
+using node_type = ::Parser::Types::modules::rule::regular::value::ast_capture;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_42 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::dyn;
+using node_type = ::Parser::Types::modules::rule::regular::value::counter;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_43 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::dyn::dyn_expr;
+using node_type = ::Parser::Types::modules::rule::regular::value::counter::bounded;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_44 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::fail_capture;
+using node_type = ::Parser::Types::modules::rule::regular::value::counter::quantified;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_45 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::group;
+using node_type = ::Parser::Types::modules::rule::regular::value::dyn;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_46 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::mul_capture;
+using node_type = ::Parser::Types::modules::rule::regular::value::dyn::dyn_expr;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_47 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::one_capture;
+using node_type = ::Parser::Types::modules::rule::regular::value::fail_capture;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_48 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::pattern;
+using node_type = ::Parser::Types::modules::rule::regular::value::group;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_49 : ::Parser::Parser {
-using node_type = ::Parser::Types::modules::rule::regular::value::shared_counter_registration;
+using node_type = ::Parser::Types::modules::rule::regular::value::mul_capture;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
 };
 struct symbol_50 : ::Parser::Parser {
+using node_type = ::Parser::Types::modules::rule::regular::value::one_capture;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_51 : ::Parser::Parser {
+using node_type = ::Parser::Types::modules::rule::regular::value::pattern;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_52 : ::Parser::Parser {
+using node_type = ::Parser::Types::modules::rule::regular::value::shared_counter_registration;
+static bool starts(const char* origin, const char* start);
+static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);
+};
+struct symbol_53 : ::Parser::Parser {
 using node_type = ::Parser::Types::modules::rule::regular::value::var_capture;
 static bool starts(const char* origin, const char* start);
 static ISPA_STD::ExternalResult<node_type> parse(const char* origin, const char* start);

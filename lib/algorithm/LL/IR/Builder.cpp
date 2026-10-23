@@ -110,6 +110,12 @@ struct ActionFields {
     }
     void action(const AST::PythonAction& action) {
         if (const auto* module = std::get_if<py::Module>(&action.code)) body(module->body);
+        else if (const auto* expression = std::get_if<py::Expr>(&action.code); expression && !action.target.empty()) {
+            auto type = infer(std::make_shared<py::Expr>(*expression));
+            if (type == la::ValueType::Undef)
+                error(expression->pos, "cannot infer AST field " + action.target);
+            fields.insert_or_assign(action.target, regular_data_block{{}, std::move(type)});
+        }
     }
     void member(const AST::RuleMember& member) {
         for (const auto& feature : member.features) {
@@ -129,7 +135,7 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
     Parser::Ctx ctx{};
     RuleLower lower(ctx, tree);
     for (const auto& [name, rule] : tree) {
-        if (rule.isTemplatePlaceholder) continue;
+        if (rule.isTemplatePlaceholder || rule.isTemplateDefinition) continue;
         if (corelib::text::isUpper(name.back())) continue;
         if (rule.external) {
             Production production;
@@ -152,6 +158,12 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
         production.rule_members = lowered.function.statements;
         ActionFields action_fields;
         action_fields.imports(tree.getPythonDeclarations());
+        for (const auto& feature : rule.features)
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                for (std::size_t i = 0; i < syntax->parameters.size() && i < syntax->parameterAnnotations.size(); ++i)
+                    if (const auto* annotation = std::get_if<py::Expr>(&syntax->parameterAnnotations[i].code))
+                        action_fields.locals.emplace(syntax->parameters[i],
+                            Parser::ParserBase::convertPythonType(std::make_shared<py::Expr>(*annotation)));
         if (production.block.is_inclosed_map()) action_fields.fields = production.block.getInclosedMap();
         for (const auto& member : rule.rule_members) action_fields.member(*member);
         for (const auto& feature : rule.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) action_fields.action(*action);

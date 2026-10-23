@@ -162,6 +162,21 @@ TEST(UAST, ExplicitParametersDoNotConsumeFollowingGrammarGroups) {
     EXPECT_TRUE(plain_members[1]->isGroup());
 }
 
+TEST(UAST, AmpersandParametersRetainTypeAnnotations) {
+    auto tree = convert("ITEM&(value: str, count: int): 'x'; main: ITEM;");
+    const auto& rule = tree.getTreeMap().at({"ITEM"});
+    const auto& declaration = std::get<AST::DeclarationSyntax>(rule.features.front());
+    EXPECT_EQ(declaration.parameters, (std::vector<std::string>{"value", "count"}));
+    ASSERT_EQ(declaration.parameterAnnotations.size(), 2u);
+    EXPECT_EQ(std::get<UAST::py::Expr>(declaration.parameterAnnotations[0].code).get<UAST::py::Name>()->id, "str");
+    EXPECT_EQ(std::get<UAST::py::Expr>(declaration.parameterAnnotations[1].code).get<UAST::py::Name>()->id, "int");
+    auto grouped = convert("main: item &(arg) (OTHER)*; item&(value): 'a'; OTHER:'b';");
+    const auto& members = grouped.getTreeMap().at({"main"}).rule_members;
+    ASSERT_EQ(members.size(), 2u);
+    EXPECT_EQ(feature<AST::DeclarationSyntax>(*members[0]).parameters, (std::vector<std::string>{"arg"}));
+    EXPECT_TRUE(members[1]->isGroup());
+}
+
 TEST(UAST, NestedSiblingRulesMayBeSeparatedByWhitespace) {
     auto tree = convert("outer: ID #a: ID;\n  #b: ID;\n; ID: 'x';");
     EXPECT_TRUE(tree.contains({"outer", "a"}));

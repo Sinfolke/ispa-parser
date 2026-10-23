@@ -1,9 +1,9 @@
 module fail_block -> fail_block;
-import {name} from common;
+import {name, rule_params} from common;
 import {stmt} from ispa_python;
 
 fail_block:
-    'fail' @ name '{' @ stmt? '}'
+    'fail' @ name<rule_params> '{' @ stmt? '}'
 
     @{name, val}
 ;

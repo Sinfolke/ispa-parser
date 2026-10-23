@@ -1,6 +1,6 @@
 module rule.regular -> regular_rule;
 import grammar;
-import {name, ID, NUMBER} from common;
+import {name, ID, NUMBER, call_params} from common;
 import {expr} from ispa_python;
 
 regular_rule:
@@ -47,11 +47,11 @@ value:
         {@}
     ;
     #fail_capture:
-        '%' \s0 @ name?
+        '%' \s0 @ name<call_params>?
         {@}
     ;
     #pattern:
-        @ name | group | dyn | STRING | CGROUP | ANY | SPACE | NOSPACE
+        @ name<call_params> | group | dyn | STRING | CGROUP | ANY | SPACE | NOSPACE
         {@}
     ;
     #one_capture:

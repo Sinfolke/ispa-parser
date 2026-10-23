@@ -35,7 +35,7 @@ std::vector<std::pair<std::string, std::string>> exports(AST::Tree& tree,
             bool needs_arguments = false;
             for (const auto& feature : tree[path].features)
                 if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
-                    needs_arguments = !syntax->parameters.empty();
+                    needs_arguments = !syntax->parameters.empty() || !syntax->templateParameters.empty();
             if (needs_arguments) continue;
             const bool token = AST::RuleMemberName{.name = path}.isTerminal();
             const auto qualified = corelib::text::join(path, "::");

@@ -27,6 +27,9 @@ public:
         // their byte spans in the source, without feeding trivia to the parser.
         if (token.template holds<DepParser::Types::__WS>()) return;
         const auto& meta = token.meta();
+        if (meta.start() && meta.length() == 2 &&
+            (meta.start()[0] == '&' || meta.start()[0] == '>') && meta.start()[1] == '(')
+            delimiters.push_back({'(', meta.startpos() + 1});
         if (meta.start() && meta.length() == 1) {
             const char value = *meta.start();
             if (value == '(' || value == '{') delimiters.push_back({value, meta.startpos()});

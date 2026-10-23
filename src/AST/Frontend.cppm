@@ -138,11 +138,12 @@ struct DeclarationSyntax {
     stdu::vector<std::string> parameters{};
     stdu::vector<std::string> templateParameters{};
     SourcePosition position{};
+    stdu::vector<PythonAction> parameterAnnotations{};
 private:
     friend struct ::uhash;
     friend struct ::LangAPI::MembersAccess;
-    auto members() const { return std::tie(modifiers, parameters, templateParameters, position); }
-    auto members() { return std::tie(modifiers, parameters, templateParameters, position); }
+    auto members() const { return std::tie(modifiers, parameters, templateParameters, position, parameterAnnotations); }
+    auto members() { return std::tie(modifiers, parameters, templateParameters, position, parameterAnnotations); }
 };
 struct AdvancedRule {
     PythonNode syntax{};

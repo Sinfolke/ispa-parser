@@ -19,11 +19,10 @@ auto collectReferencedNames(const LangAPI::Type &type) -> std::pair<utype::unord
                 n.push_back(std::get<std::string>(part));
             }
             if (!n.empty()) ++out[n];
-        } else {
-            for (const auto &param : t.template_parameters) {
-                if (std::holds_alternative<LangAPI::Type>(param)) {
-                    walk(std::get<LangAPI::Type>(param));
-                }
+        }
+        for (const auto &param : t.template_parameters) {
+            if (std::holds_alternative<LangAPI::Type>(param)) {
+                walk(std::get<LangAPI::Type>(param));
             }
         }
     };
@@ -718,6 +717,12 @@ namespace LangRepr {
                 type.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{parameter}});
             return type;
         };
+        auto instanceType = [&](const AST::RuleMemberName& origin) -> LangAPI::Type {
+            LangAPI::Type type{flatSymbol(origin.name)};
+            for (const auto& argument : origin.templateArguments)
+                type.template_parameters.emplace_back(LangAPI::Type{flatSymbol(argument)});
+            return type;
+        };
 
         // Requires your LangAPI's real alias declaration API; see note below.
         auto emitTypeAlias = [&](LangAPI::Class& owner,
@@ -751,6 +756,10 @@ namespace LangRepr {
         NameSet explicitly_boxed;
         for (const Name& n : names) {
             deps[n];
+            if (tree.contains(n) && tree[n].templateOrigin) {
+                deps[n].insert(tree[n].templateOrigin->name);
+                for (const auto& argument : tree[n].templateOrigin->templateArguments) deps[n].insert(argument);
+            }
             const Node* node = root.find(n);
             if (!node) continue;
             auto absorb = [&](const LangAPI::Type& field_type) {
@@ -890,6 +899,7 @@ namespace LangRepr {
         // Emit all canonical forward declarations before any fields/aliases.
         LangAPI::Declarations flatForwards;
         for (const Name& n : names) {
+            if (tree.contains(n) && tree[n].templateOrigin) continue;
             if (tree.contains(n) && tree[n].external) {
                 flatForwards.push_back(LangAPI::TypeAlias::createDeclaration(LangAPI::TypeAlias{
                     .name = flattenName(n), .type = LangAPI::Type{LangAPI::Symbol{"::" + tree[n].external->cpp_type}}}));
@@ -899,6 +909,9 @@ namespace LangRepr {
                 LangAPI::ForwardDeclaredClass{.name = flattenName(n), .isStruct = true,
                     .template_parameters = templateNames(n)}));
         }
+        for (const Name& n : names) if (tree.contains(n) && tree[n].templateOrigin)
+            flatForwards.push_back(LangAPI::TypeAlias::createDeclaration(LangAPI::TypeAlias{
+                .name = flattenName(n), .type = instanceType(*tree[n].templateOrigin)}));
         holder.push(LangAPI::Namespace{
             .name = "FlatTypes", .declarations = std::move(flatForwards)
         });
@@ -906,7 +919,7 @@ namespace LangRepr {
         // LangAPI class names in this namespace are SIMPLE flat identifiers.
         // The types' generated printer methods stay on the canonical classes.
         for (const Name& fullName : sorted) {
-            if (tree.contains(fullName) && tree[fullName].external) continue;
+            if (tree.contains(fullName) && (tree[fullName].external || tree[fullName].templateOrigin)) continue;
             const Node* old = root.find(fullName);
             if (!old) throw std::runtime_error("ISPA: missing type tree node");
 

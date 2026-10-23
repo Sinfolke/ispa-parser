@@ -43,7 +43,13 @@ namespace {
     std::string id(const UAST::Node<UAST::ID>& node) {
         return payload(node).value;
     }
-    stdu::vector<std::string> qualifiedName(const UAST::name& n) {
+    stdu::vector<std::string> qualifiedName(const UAST::rule_name& n) {
+        stdu::vector<std::string> result;
+        result.push_back(id(n.primary));
+        for (const auto& segment : n.nested) result.push_back(id(segment));
+        return result;
+    }
+    stdu::vector<std::string> qualifiedName(const UAST::call_name& n) {
         stdu::vector<std::string> result;
         result.push_back(id(n.primary));
         for (const auto& segment : n.nested) result.push_back(id(segment));
@@ -211,8 +217,12 @@ namespace {
         stdu::vector<std::string> out;
         if (p.empty() || payload(p).value.empty()) return out;
         const auto& args = payload(payload(p).value);
-        if (!args.first_p.empty()) out.push_back(id(args.first_p));
-        for (const auto& arg : args.following_p) out.push_back(id(arg));
+        const auto parameterName = [](const auto& arg) {
+            if constexpr (requires { payload(arg).name; }) return id(payload(arg).name);
+            else return id(arg);
+        };
+        if (!args.first_p.empty()) out.push_back(parameterName(args.first_p));
+        for (const auto& arg : args.following_p) out.push_back(parameterName(arg));
         return out;
     }
     // External Python actions carry the original PyRawParser nodes.
@@ -250,6 +260,30 @@ namespace {
         }
     }
     template<class T> AST::PythonAction action(const UAST::Node<T>& code) { return action(code, code); }
+    template<class Params> stdu::vector<AST::PythonAction> parameterAnnotations(const Params& p) {
+        stdu::vector<AST::PythonAction> out;
+        if (p.empty() || payload(p).value.empty()) return out;
+        const auto& args = payload(payload(p).value);
+        const auto append = [&](const auto& arg) {
+            if constexpr (requires { payload(arg).annotation; }) {
+                const auto& annotation = payload(arg).annotation;
+                if (annotation.empty()) out.push_back(AST::PythonAction{});
+                else if constexpr (requires { payload(annotation).base; }) {
+                    std::string spelling = id(payload(annotation).base);
+                    for (const auto& part : payload(annotation).nested) spelling += "." + id(part);
+                    AST::PythonAction converted;
+                    converted.position = position(annotation);
+                    converted.code = *UAST::parsePythonExpr(spelling, where(annotation));
+                    converted.python = python(std::get<UAST::py::Expr>(converted.code), where(annotation));
+                    bindPython(converted);
+                    out.push_back(std::move(converted));
+                } else out.push_back(action(annotation));
+            }
+        };
+        if (!args.first_p.empty()) append(args.first_p);
+        for (const auto& arg : args.following_p) append(arg);
+        return out;
+    }
     [[noreturn]] void unsupported(const std::string& message) {
         throw std::runtime_error("ISPA bootstrap converter: unsupported " + message);
     }
@@ -313,7 +347,7 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
             output.value = AST::RuleMemberNospace{};
         } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_value_SPACE>>) {
             output.features.push_back(AST::SpacePattern{position(item)});
-        } else if constexpr (std::is_same_v<T, UAST::Node<UAST::name>>) {
+        } else if constexpr (std::is_same_v<T, UAST::Node<UAST::rule_name>> || std::is_same_v<T, UAST::Node<UAST::call_name>>) {
             const auto& n = payload(item);
             if (!n.temp_params.empty() || !n.param.empty())
                 output.features.push_back(AST::DeclarationSyntax{{}, parameters(n.param), parameters(n.temp_params), position(item)});
@@ -481,7 +515,9 @@ AST::DataBlock AST::Builder::convertData(
                     if (value != '@') unsupported("invalid data block marker");
                     result.value = makeAtDataBlock();
                 } else if constexpr (std::is_same_v<Value, UAST::Node<UAST::expr>>) {
-                    rule_features.push_back(action(value));
+                    auto initializer = action(value);
+                    initializer.target = "value";
+                    rule_features.push_back(std::move(initializer));
                 } else unsupported("absent data block value");
             }, single.value);
         } else if constexpr (std::is_same_v<
@@ -533,7 +569,17 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
     AST::DeclarationSyntax declaration;
     declaration.position = position(grammar.name);
     declaration.parameters = parameters(payload(grammar.name).param);
+    declaration.parameterAnnotations = parameterAnnotations(payload(grammar.name).param);
     declaration.templateParameters = parameters(payload(grammar.name).temp_params);
+    std::set<std::string> parameter_names;
+    for (const auto& parameter : declaration.templateParameters) {
+        if (parameter == "IT") unsupported("reserved template parameter name IT");
+        if (!parameter_names.insert(parameter).second) unsupported("duplicate template parameter " + parameter);
+    }
+    for (const auto& parameter : declaration.parameters) {
+        if (parameter == "ctx") unsupported("reserved rule parameter name ctx");
+        if (!parameter_names.insert(parameter).second) unsupported("duplicate rule parameter " + parameter);
+    }
     for (const auto& mod : grammar.mod) declaration.modifiers.push_back(payload(payload(mod).value).value);
     if (!declaration.modifiers.empty() || !declaration.parameters.empty() || !declaration.templateParameters.empty())
         rule_features.push_back(std::move(declaration));
@@ -682,6 +728,18 @@ void AST::Builder::build() {
             }
         };
         const auto resolve = [&](const auto& self, AST::RuleMember& member) -> void {
+            for (const auto& feature : member.features) if (const auto* dynamic = std::get_if<AST::DynamicPattern>(&feature)) {
+                auto parameter = dynamic->name;
+                if (const auto* expression = std::get_if<UAST::py::Expr>(&dynamic->expression.code))
+                    if (const auto* variable = expression->get<UAST::py::Name>()) parameter = variable->id;
+                if (std::ranges::find(template_parameters, parameter) != template_parameters.end()) {
+                    member.value = AST::RuleMemberName{.name = {parameter}};
+                    break;
+                }
+            }
+            if (member.isName()) std::erase_if(member.features, [](const auto& feature) {
+                return std::holds_alternative<AST::DynamicPattern>(feature);
+            });
             if (member.isName()) {
                 auto& reference = member.getName();
                 if (reference.name.size() == 1 &&
@@ -704,6 +762,95 @@ void AST::Builder::build() {
         inferDataTypes(rule);
     }
     if (module_project && module_project->modular) specializeModules();
+
+    // A lexer is one finite automaton. Instantiate its grammar templates
+    // before NFA construction, while retaining a shared templated node type.
+    using TemplateName = stdu::vector<std::string>;
+    for (auto& [name, rule] : tree_map) if (AST::RuleMemberName{.name = name}.isTerminal())
+        for (const auto& feature : rule.features)
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                rule.isTemplateDefinition = !syntax->templateParameters.empty();
+    const auto cloneMember = [&](const auto& self, const AST::RuleMember& source) -> std::shared_ptr<AST::RuleMember> {
+        auto result = std::make_shared<AST::RuleMember>(source);
+        if (result->isGroup()) for (auto& child : result->getGroup().values) child = self(self, *child);
+        if (result->isOp()) for (auto& child : result->getOp().options) child = self(self, *child);
+        return result;
+    };
+    std::map<std::pair<TemplateName, stdu::vector<TemplateName>>, TemplateName> instances;
+    std::set<TemplateName> instance_names;
+    std::map<TemplateName, AST::Rule> lexer_instances;
+    std::function<void(AST::RuleMember&)> instantiateCalls;
+    std::function<TemplateName(const AST::RuleMemberName&)> instantiate = [&](const AST::RuleMemberName& call) {
+        const auto key = std::make_pair(call.name, call.templateArguments);
+        if (auto found = instances.find(key); found != instances.end()) return found->second;
+        const auto& definition = tree_map.at(call.name);
+        const AST::DeclarationSyntax* syntax = nullptr;
+        for (const auto& feature : definition.features)
+            if (const auto* declaration = std::get_if<AST::DeclarationSyntax>(&feature)) syntax = declaration;
+        if (!syntax || call.templateArguments.size() != syntax->templateParameters.size())
+            throw std::runtime_error("wrong number of lexer template arguments for " + corelib::text::join(call.name, "."));
+        if (std::ranges::any_of(call.templateArgumentIsParameter, [](bool parameter) { return parameter; }))
+            throw std::runtime_error("lexer template arguments must name concrete rules: " + corelib::text::join(call.name, "."));
+        TemplateName instance;
+        for (std::size_t index = instances.size();; ++index) {
+            instance = {"ISPA_TEMPLATE_INSTANCE_" + std::to_string(index)};
+            if (!tree_map.contains(instance) && !instance_names.contains(instance)) break;
+        }
+        instance_names.insert(instance);
+        instances.emplace(key, instance);
+        auto specialized = definition;
+        specialized.isTemplateDefinition = false;
+        specialized.isTopLevel = false;
+        specialized.templateOrigin = call;
+        specialized.rule_members.clear();
+        for (const auto& member : definition.rule_members) specialized.rule_members.push_back(cloneMember(cloneMember, *member));
+        for (auto& feature : specialized.features)
+            if (auto* declaration = std::get_if<AST::DeclarationSyntax>(&feature)) declaration->templateParameters.clear();
+        const auto substitute = [&](const auto& self, AST::RuleMember& member) -> void {
+            if (member.isName()) {
+                auto& reference = member.getName();
+                if (!reference.templateParameter.empty()) {
+                    const auto parameter = std::ranges::find(syntax->templateParameters, reference.templateParameter);
+                    reference.name = call.templateArguments.at(parameter - syntax->templateParameters.begin());
+                    reference.templateParameter.clear();
+                }
+                for (std::size_t i = 0; i < reference.templateArguments.size(); ++i)
+                    if (i < reference.templateArgumentIsParameter.size() && reference.templateArgumentIsParameter[i]) {
+                        const auto parameter = std::ranges::find(syntax->templateParameters, reference.templateArguments[i].front());
+                        reference.templateArguments[i] = call.templateArguments.at(parameter - syntax->templateParameters.begin());
+                        reference.templateArgumentIsParameter[i] = false;
+                    }
+            }
+            if (member.isGroup()) for (auto& child : member.getGroup().values) self(self, *child);
+            if (member.isOp()) for (auto& child : member.getOp().options) self(self, *child);
+            instantiateCalls(member);
+        };
+        for (auto& member : specialized.rule_members) substitute(substitute, *member);
+        inferDataTypes(specialized);
+        lexer_instances.emplace(instance, std::move(specialized));
+        return instance;
+    };
+    instantiateCalls = [&](AST::RuleMember& member) {
+        if (member.isName() && tree_map.contains(member.getName().name) && tree_map.at(member.getName().name).isTemplateDefinition) {
+            member.getName().name = instantiate(member.getName());
+            member.getName().templateArguments.clear();
+            member.getName().templateArgumentIsParameter.clear();
+            std::erase_if(member.features, [](const auto& feature) {
+                const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                return syntax && syntax->parameters.empty();
+            });
+        }
+    };
+    const auto visitCalls = [&](const auto& self, AST::RuleMember& member) -> void {
+        instantiateCalls(member);
+        if (member.isGroup()) for (auto& child : member.getGroup().values) self(self, *child);
+        if (member.isOp()) for (auto& child : member.getOp().options) self(self, *child);
+    };
+    for (auto& [name, rule] : tree_map) if (!rule.isTemplateDefinition) {
+        for (auto& member : rule.rule_members) visitCalls(visitCalls, *member);
+        inferDataTypes(rule);
+    }
+    for (auto& [name, rule] : lexer_instances) tree_map.emplace(std::move(name), std::move(rule));
 
     // Grammar template names need FIRST sets during LL lowering. Give each
     // placeholder a lightweight analysis rule whose alternatives are the
@@ -745,8 +892,20 @@ void AST::Builder::build() {
                 for (const auto& candidate : candidates[source])
                     changed |= candidates[target].insert(candidate).second;
     } while (changed);
+    for (auto& [owner, rule] : tree_map) {
+        if (AST::RuleMemberName{.name = owner}.isTerminal()) continue;
+        for (const auto& feature : rule.features)
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                syntax && !syntax->templateParameters.empty()) {
+                const bool instantiated = std::ranges::any_of(syntax->templateParameters, [&](const auto& parameter) {
+                    return !candidates[placeholder(owner, parameter)].empty();
+                });
+                rule.isTemplateDefinition = !instantiated;
+            }
+    }
     std::map<RuleName, AST::Rule> placeholders;
     for (auto& [owner, rule] : tree_map) {
+        if (rule.isTemplateDefinition) continue;
         const auto rewrite = [&](const auto& self, AST::RuleMember& member) -> void {
             if (member.isName() && !member.getName().templateParameter.empty()) {
                 auto key = placeholder(owner, member.getName().templateParameter);

@@ -9,20 +9,36 @@ NUMBER:
 
     @{full, floating}
 ;
-name:
+name<params>:
     @ ID ('.' @ ID)* @ template_params? @ params?
 
     @{primary, nested, temp_params, param}
 ;
-params:
-    '>' '(' @ param? ')'
+call_params:
+    '&(' @ param? ')'
+    {@}
+;
+rule_params:
+    '(' @ param? ')'
     {@}
 ;
 template_params:
-    '<' @ param? '>'
+    '<' @ template_param? '>'
     {@}
 ;
 param:
+    @ parameter (',' @ parameter)*
+    @{first_p, following_p}
+;
+parameter:
+    @ ID (':' @ type_annotation)?
+    @{name, annotation}
+;
+type_annotation:
+    @ ID ('.' @ ID)*
+    @{base, nested}
+;
+template_param:
     @ ID (',' @ ID)*
     @{first_p, following_p}
 ;

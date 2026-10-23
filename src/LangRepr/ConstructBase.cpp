@@ -5,6 +5,7 @@ namespace LangRepr {
     auto ConstructBase::createTypeToken() -> LangAPI::TypeAlias {
         LangAPI::Type variant_type = LangAPI::ValueType::RawToken;          // was LargeVariant
         for (const auto &[name, dtb] : lexer_builder.getDataBlocks()) {
+            if (tree.contains(name) && tree[name].isTemplateDefinition) continue;
             LangAPI::Symbol tn = name;
             tn.path.insert(tn.path.begin(), "Types");
             variant_type.template_parameters.push_back(LangAPI::Type {tn});  // was Token<tn> (= Node<Tokens,tn>)
@@ -139,8 +140,8 @@ namespace LangRepr {
             insideTypeCount++;
             s.name = ensureTypesNs(std::get<LangAPI::Symbol>(s.name));
             insideTypeCount--;
-        } else if (std::holds_alternative<LangAPI::Type>(s.name)) {
-            s.name = ensureTypesNs(std::get<LangAPI::Type>(s.name));
+        } else if (std::holds_alternative<std::shared_ptr<LangAPI::Type>>(s.name)) {
+            s.name = std::make_shared<LangAPI::Type>(ensureTypesNs(*std::get<std::shared_ptr<LangAPI::Type>>(s.name)));
         }
         for (auto &arg : s.args) {
             arg = ensureTypesNs(arg);

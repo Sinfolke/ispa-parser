@@ -79,10 +79,10 @@ int main() {
 }
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -90,8 +90,14 @@ int main() {
 TEST(AlgorithmPlugin, LLRuleArgumentsAndIntegerBounds) {
     dlib library("libispa-algorithm-LL");
     const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
-    auto tree = pluginGrammar(
-        "A: 'a'; main: A child>(value_A); child>(arg): A; item>(count): @ A=count {@};");
+    auto tree = pluginGrammar(R"(
+A: 'a'; main: A child&(value_A); child&(arg): A; item&(count: int): @ A=count {@};
+astParam&(number: int) {
+    ctx.ast.number = number
+    match A;
+}
+regularParam&(number: int): A &= { number: number };
+)");
     const auto directory = std::filesystem::temp_directory_path() /
         ("ispa-rule-parameters-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
     struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
@@ -104,20 +110,129 @@ struct Harness : PluginTest::Parser {
         PluginTest::Lexer lexer;
         return item(PluginTest::Lexer::lazy_iterator(lexer, input), count);
     }
+    auto astValue(const char* input, long long number) {
+        PluginTest::Lexer lexer;
+        return astParam(PluginTest::Lexer::lazy_iterator(lexer, input), number);
+    }
+    auto regularValue(const char* input, long long number) {
+        PluginTest::Lexer lexer;
+        return regularParam(PluginTest::Lexer::lazy_iterator(lexer, input), number);
+    }
 };
 int main() {
     PluginTest::Parser parser;
     parser.parse("aa");
     Harness harness;
     const auto result = harness.counted("aa", 2);
-    return result.status && result.node.data().value.size() == 2 ? 0 : 1;
+    if (!result.status || result.node.data().value.size() != 2) return 1;
+    const auto ast = harness.astValue("a", 7);
+    if (!ast.status || ast.node.data().number != 7) return 2;
+    const auto regular = harness.regularValue("a", 9);
+    return regular.status && regular.node.data().number == 9 ? 0 : 3;
 }
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
-        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
         (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLGrammarTemplatesKeepTheirNodeTypesAndForwardArguments) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"(
+A:'a'; B:'b'; leaf: @ A {@}; outer<T>: @ T {@};
+WRAP<T>: '[' @ ${T} ']' {@};
+forwarded<U>: @ outer<U> {@};
+unused<V>: V;
+main: @ forwarded<leaf> @ outer<B> @ WRAP<A> @ WRAP<B> @{first, second, third, fourth};
+repeat<T>&(count: int): @ T=count {@};
+driver {
+    n = 2
+    match repeat<B>&(n);
+}
+)");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-rule-templates-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+#include <type_traits>
+struct Harness : PluginTest::Parser {
+    auto combined(const char* input) {
+        PluginTest::Lexer lexer;
+        return driver(PluginTest::Lexer::lazy_iterator(lexer, input));
+    }
+};
+int main() {
+    PluginTest::Parser parser;
+    const auto& result = parser.parse("ab[a][b]");
+    static_assert(std::is_same_v<std::remove_cvref_t<decltype(result.first.data())>,
+        PluginTest::Types::forwarded<PluginTest::Types::leaf>>);
+    static_assert(std::is_same_v<std::remove_cvref_t<decltype(result.second.data())>,
+        PluginTest::Types::outer<PluginTest::Types::B>>);
+    static_assert(std::is_same_v<std::remove_cvref_t<decltype(result.third.data())>,
+        PluginTest::Types::WRAP<PluginTest::Types::A>>);
+    if (result.first.data().value.data().value.empty() || result.second.data().value.empty()) return 1;
+    if (result.third.data().value.empty() || result.fourth.data().value.empty()) return 4;
+    if (result.third.data().value.startpos() != 3 || result.third.data().value.length() != 1) return 5;
+    Harness harness;
+    if (!harness.combined("bb").status || !harness.getErrors().empty()) return 3;
+    return parser.getErrors().empty() ? 0 : 2;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLTypedLexerParametersSupportRegularAndAdvancedTokens) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"(
+FIRST&(text: str, number: int): 'a' &= { text: text number: number };
+SECOND&(number: int, text: str) {
+    match 'b';
+    ctx.ast.text = text
+    ctx.ast.number = number
+}
+main: FIRST SECOND;
+)");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-lexer-parameters-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Lexer lexer;
+    lexer.setFIRSTParameters("alpha", 3);
+    const char* first = "a";
+    lexer.setInput(first);
+    const auto one = lexer.makeToken(first).to_node<PluginTest::Types::FIRST>();
+    if (one.data().text != "alpha" || one.data().number != 3) return 1;
+    lexer.setSECONDParameters(4, "beta");
+    const char* second = "b";
+    lexer.setInput(second);
+    const auto two = lexer.makeToken(second).to_node<PluginTest::Types::SECOND>();
+    return two.data().text == "beta" && two.data().number == 4 ? 0 : 2;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -214,9 +329,9 @@ int main() {
 }
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
-        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" + (directory / "PluginTest.cpp").string() +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" + (directory / "PluginTest.cpp").string() +
         "\" \"" + (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -252,10 +367,10 @@ int main() {
 }
 )cpp";
     const auto command = std::string("clang++ -std=c++23 -I\"") + std::string(ROOT_DIR) +
-        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
         (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -346,10 +461,10 @@ int main() {
 }
 )cpp";
     const auto command = std::string("clang++ -std=c++23 -I\"") + std::string(ROOT_DIR) +
-        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
         (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -401,10 +516,10 @@ int main() {
 }
 )";
         const auto command = std::string("clang++ -std=c++23 -I\"") +
-            std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+            std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
             "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
             (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-            "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+            "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
         ASSERT_EQ(std::system(command.c_str()), 0);
         EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
     }
@@ -538,7 +653,7 @@ TEST(AlgorithmPlugin, LLGeneratedRecoveryAndRuleCallbacksCompile) {
     Algorithm::Metadata metadata;
     convert(*descriptor, tree, metadata, directory);
     const auto command = std::string("clang++ -std=c++23 -fsyntax-only -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\"";
     EXPECT_EQ(std::system(command.c_str()), 0);
 }
@@ -584,10 +699,10 @@ int main() {
 }
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -634,10 +749,10 @@ int main() {
 
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -668,10 +783,10 @@ int main() {
 
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
@@ -739,10 +854,10 @@ int main() {
 }
 )";
     const auto command = std::string("clang++ -std=c++23 -I\"") +
-        std::string(ROOT_DIR) + "/parser/stdlibs\" -I\"" + directory.string() +
+        std::string(ROOT_DIR) + "/parser/stdlibs/target\" -I\"" + directory.string() +
         "\" \"" + (directory / "PluginTest.cpp").string() + "\" \"" +
         (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
-        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }

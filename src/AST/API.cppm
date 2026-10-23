@@ -433,6 +433,8 @@ export namespace AST {
         std::optional<ExternalRule> external;
         bool external_token = false;
         bool isTemplatePlaceholder = false;
+        bool isTemplateDefinition = false;
+        std::optional<RuleMemberName> templateOrigin;
 
 
     private:

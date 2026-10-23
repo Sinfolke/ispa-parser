@@ -1147,7 +1147,7 @@ namespace Cpp {
 
                 // a nested structure can't be forward declared (`namespace A::B { struct C; }` is wrong when B is
                 // a class), so it keeps an empty keyword and is always #included
-                if (outer.empty() && split.prefix.empty()) {
+                if (outer.empty() && split.prefix.empty() && cls.template_parameters.empty()) {
                     info.keyword =
                         getDefaultVisibility(cls.default_visibility);
                 }
@@ -1183,7 +1183,7 @@ namespace Cpp {
 
                 // 3. Namespace-level output operator
                 // produceClass() emits it AFTER leaving the class scope.
-                if (cls.output_fun.has_value()) {
+                if (cls.output_fun.has_value() && cls.template_parameters.empty()) {
                     auto output_operator = cls.output_fun.value();
 
                     output_operator.name = "operator<<";

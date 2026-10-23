@@ -848,7 +848,7 @@ namespace NFA::TNFA {
                 const LangAPI::Type t = Parser::ParserBase::dataType(type);
 
                 // Nested token: its reduction was built when it was wired.
-                if (member.isName() && !member.getName().isTerminal()) {
+                if (member.isName()) {
                     const auto it = nested_reductions.find(generateVariable(sym));
                     if (it == nested_reductions.end()) {
                         throw Error(
@@ -856,11 +856,39 @@ namespace NFA::TNFA {
                             sym.token_name, tail.token_name
                         );
                     }
+                    if (!cap || !t.isValueType() ||
+                        (t.getValueType() != LangAPI::ValueType::Token && t.getValueType() != LangAPI::ValueType::Rule))
+                        throw Error("NFA.TNFA: composite nested token captures are not supported yet ('{}')", sym.token_name);
                     out.insert(out.end(), it->second.statements.begin(), it->second.statements.end());
+                    const auto k = captureId(*cap);
+                    auto offset = symbol("start_pos");
+                    offset.emplace_back(LangAPI::ExpressionElement::Add);
+                    offset.emplace_back(LangAPI::ExpressionElement::GroupOpen);
+                    const auto begin = capture_call("begin", k);
+                    offset.insert(offset.end(), begin.begin(), begin.end());
+                    offset.emplace_back(LangAPI::ExpressionElement::Minus);
+                    const auto start = symbol("start");
+                    offset.insert(offset.end(), start.begin(), start.end());
+                    offset.emplace_back(LangAPI::ExpressionElement::GroupClose);
+                    auto length = capture_call("end", k);
+                    length.emplace_back(LangAPI::ExpressionElement::Minus);
+                    length.insert(length.end(), begin.begin(), begin.end());
+                    LangAPI::Symbol token_id{"Tokens", member.getName().name};
+                    token_id.path.emplace_back("id");
+                    const auto size_value = [](LangAPI::Expression value) {
+                        return LangAPI::Cast::createExpression(LangAPI::Cast{
+                            .type = std::make_shared<LangAPI::Type>(LangAPI::ValueType::LargeUInt),
+                            .what = std::move(value)});
+                    };
                     out.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
                         .name = name,
                         .type = t,
-                        .value = symbol(it->second.result),
+                        .value = LangAPI::Inheritance::createExpression(LangAPI::Inheritance{
+                            .name = std::make_shared<LangAPI::Type>(t),
+                            .args = {size_value(std::move(offset)), begin, capture_call("end", k), size_value(std::move(length)),
+                                size_value(capture_call("line", k)), LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                                    .name = std::make_shared<LangAPI::Symbol>("__column"), .args = {begin}}),
+                                LangAPI::Symbol::createExpression(std::move(token_id)), symbol(it->second.result)}}),
                     }));
                     return;
                 }

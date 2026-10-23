@@ -1,5 +1,5 @@
 module ispa_dep_scanner;
-import {name, ID, NUMBER, template_params, params} from common;
+import {name, ID, NUMBER, template_params, rule_params, call_params} from common;
 import * from scanner_tokens;
 mod_module:
     @ 'module' @ module_path @ template_params? ('->' @ source_name)? @ ';'
@@ -59,7 +59,7 @@ module_path:
 ;
 // Keep common's name/parameter grammar, including for declaration headers.
 source_name:
-    @ name
+    @ name<rule_params>
     {@}
 ;
 symbol_list:
@@ -70,7 +70,7 @@ declaration:
     @ modifier* @ form
     @{modifiers, value}
     #form:
-        @ name @ body
+        @ name<rule_params> @ body
         @{name, body}
     ;
 ;
@@ -93,7 +93,7 @@ nested_rule:
     {@}
 ;
 parentheses:
-    '(' balanced_item* ')'
+    ('(' | '&(' | '>(') balanced_item* ')'
 ;
 braces: '{' balanced_item* '}';
 balanced_item: parentheses | braces | atom | ';' | '#';

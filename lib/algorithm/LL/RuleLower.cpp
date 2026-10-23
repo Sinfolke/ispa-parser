@@ -16,6 +16,13 @@ void RuleLower::build(const std::vector<std::string> name, const AST::Rule &rule
     FunctionCtx fun_ctx;
     fun_ctx.statements = &fun.statements;
     fun_ctx.rule_name = AST::LLkToken(name.begin(), name.end());
+    for (const auto& feature : rule.features)
+        if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+            for (const auto& parameter : syntax->parameters) {
+                if (parameter == "ctx") throw std::invalid_argument("ctx is reserved and cannot be a rule parameter");
+                if (!fun_ctx.action_locals.insert(parameter).second)
+                    throw std::invalid_argument("duplicate rule parameter: " + parameter);
+            }
 
     auto hasCounter = [&](auto&& self, const AST::RuleMember& member) -> bool {
         for (const auto& feature : member.features)
@@ -80,6 +87,11 @@ void RuleLower::build(const std::vector<std::string> name, const AST::Rule &rule
         ++idx;
     }
     fun_ctx.statements = &fun.statements;
+    for (const auto& feature : rule.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature);
+        action && !action->target.empty()) {
+        auto statements = convertPythonAction(*action, fun_ctx.action_locals, false, {}, &fun_ctx.action_objects);
+        fun.statements.insert(fun.statements.end(), statements.begin(), statements.end());
+    }
 
     // Member lowering hoists every value variable so that values produced
     // inside optional / repeated / chosen blocks stay visible to later members

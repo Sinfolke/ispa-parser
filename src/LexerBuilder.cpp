@@ -127,6 +127,12 @@ auto LexerBuilder::getDataBlocks() const -> ParserIR::DataBlockList {
         if (rule.external_token || corelib::text::isLower(name.back())) continue;
         auto data = ParserIR::dataBlock(rule.data_block);
         std::map<std::string, LangAPI::Type> locals;
+        for (const auto& feature : rule.features)
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                for (std::size_t i = 0; i < syntax->parameters.size() && i < syntax->parameterAnnotations.size(); ++i)
+                    if (const auto* annotation = std::get_if<py::Expr>(&syntax->parameterAnnotations[i].code))
+                        locals.emplace(syntax->parameters[i],
+                            Parser::ParserBase::convertPythonType(std::make_shared<py::Expr>(*annotation)));
         auto infer = [&](auto&& self, const py::ExprPtr& value) -> LangAPI::Type {
             if (!value) return LangAPI::ValueType::Undef;
             if (auto literal = value->get<py::Constant>()) {
@@ -196,8 +202,16 @@ auto LexerBuilder::getDataBlocks() const -> ParserIR::DataBlockList {
                 }
             }, statement->kind);
         };
-        for (const auto& feature : rule.features) if (auto action = std::get_if<AST::PythonAction>(&feature))
+        for (const auto& feature : rule.features) if (auto action = std::get_if<AST::PythonAction>(&feature)) {
             if (auto module = std::get_if<py::Module>(&action->code)) walk(walk, module->body);
+            else if (auto expression = std::get_if<py::Expr>(&action->code); expression && !action->target.empty()) {
+                const auto type = infer(infer, std::make_shared<py::Expr>(*expression));
+                if (type == LangAPI::ValueType::Undef)
+                    throw std::invalid_argument("cannot infer token AST field " + action->target);
+                if (!data.is_inclosed_map()) data.value = ParserIR::inclosed_map{};
+                data.getInclosedMap().insert_or_assign(action->target, ParserIR::regular_data_block{{}, type});
+            }
+        }
         list.emplace(name, std::move(data));
     }
     return list;

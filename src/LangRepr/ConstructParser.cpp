@@ -7,6 +7,7 @@ import cpuf.op;
 import NFA.TNFA.API;
 import Parser.Base;
 import DFA;
+import UAST.PyAST;
 
 import corelib;
 
@@ -230,7 +231,28 @@ namespace LangRepr {
         return ConstructBase::ensureTypesNs(stmt);
     }
     auto ConstructParser::constructParser() -> void {
+        if (tree.contains({"main"})) for (const auto& feature : tree[{"main"}].features)
+            if (const auto* declaration = std::get_if<AST::DeclarationSyntax>(&feature);
+                declaration && (!declaration->parameters.empty() || !declaration->templateParameters.empty()))
+                throw std::invalid_argument("the parser entry rule main cannot require arguments");
         auto parser = createParserClass();
+        const auto appendRuntimeParameters = [](LangAPI::Function& function, const AST::DeclarationSyntax* declaration) {
+            if (!declaration) return;
+            for (std::size_t i = 0; i < declaration->parameters.size(); ++i) {
+                LangAPI::Type type;
+                if (i < declaration->parameterAnnotations.size())
+                    if (const auto* annotation = std::get_if<UAST::py::Expr>(&declaration->parameterAnnotations[i].code))
+                        type = Parser::ParserBase::convertPythonType(std::make_shared<UAST::py::Expr>(*annotation));
+                if (type == LangAPI::ValueType::Undef) {
+                    const auto type_name = "ISPAParam" + std::to_string(i);
+                    function.template_parameters.emplace_back(type_name, stdu::vector<LangAPI::Type>{});
+                    type = LangAPI::Type{LangAPI::Symbol{type_name}};
+                }
+                if (type == LangAPI::ValueType::Void)
+                    throw std::invalid_argument("rule parameter cannot have type None: " + declaration->parameters[i]);
+                function.parameters.emplace_back(std::move(type), "ispa_action_" + declaration->parameters[i]);
+            }
+        };
         if (lr) constructLRParser(parser);
         // constructTokenMachineDFA(parser);
         if (!lr) for (const auto &prod : ir) {
@@ -254,11 +276,7 @@ namespace LangRepr {
                 if (declaration) for (const auto& parameter : declaration->templateParameters)
                     function.template_parameters.insert(function.template_parameters.end() - 1,
                         std::make_pair(parameter, stdu::vector<LangAPI::Type>{}));
-                if (declaration) for (std::size_t i = 0; i < declaration->parameters.size(); ++i) {
-                    const auto type_name = "ISPAParam" + std::to_string(i);
-                    function.template_parameters.emplace_back(type_name, stdu::vector<LangAPI::Type>{});
-                    function.parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{type_name}}, declaration->parameters[i]);
-                }
+                appendRuntimeParameters(function, declaration);
                 function.statements = LangAPI::Return::createStatements(LangAPI::Return{
                     .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
                         .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"::ISPA_STD", "external_match"}),
@@ -377,11 +395,7 @@ namespace LangRepr {
             if (declaration) for (const auto& parameter : declaration->templateParameters)
                 prod_fun.template_parameters.insert(prod_fun.template_parameters.end() - 1,
                     std::make_pair(parameter, stdu::vector<LangAPI::Type>{}));
-            if (declaration) for (std::size_t i = 0; i < declaration->parameters.size(); ++i) {
-                const auto type_name = "ISPAParam" + std::to_string(i);
-                prod_fun.template_parameters.emplace_back(type_name, stdu::vector<LangAPI::Type>{});
-                prod_fun.parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{type_name}}, declaration->parameters[i]);
-            }
+            appendRuntimeParameters(prod_fun, declaration);
             parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Protected));
         }
 
@@ -426,7 +440,7 @@ namespace LangRepr {
                     status.insert(status.end(), empty_call.begin(), empty_call.end());
                     function.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
                         .value = LangAPI::Inheritance::createExpression(LangAPI::Inheritance{
-                            .name = result_type,
+                            .name = std::make_shared<LangAPI::Type>(result_type),
                             .args = {std::move(status),
                                 LangAPI::Symbol::createExpression(LangAPI::Symbol{"node"}),
                                 LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}})}));

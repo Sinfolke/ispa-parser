@@ -30,7 +30,13 @@ Rule copyRule(const Rule& rule) {
     return copy;
 }
 template<class F> void names(RuleMember& member, const F& f) {
-    if (member.isName()) f(member.getName().name);
+    if (member.isName()) {
+        auto& reference = member.getName();
+        if (reference.templateParameter.empty()) f(reference.name);
+        for (std::size_t i = 0; i < reference.templateArguments.size(); ++i)
+            if (i >= reference.templateArgumentIsParameter.size() || !reference.templateArgumentIsParameter[i])
+                f(reference.templateArguments[i]);
+    }
     else if (member.isGroup()) for (auto& child : member.getGroup().values) names(*child, f);
     else if (member.isOp()) for (auto& child : member.getOp().options) names(*child, f);
 }
@@ -51,7 +57,7 @@ bool possible(const RuleMember& member, const std::set<Name>& removed, bool quan
 }
 bool productive(const RuleMember& member, const std::set<Name>& ready) {
     if (optional(member)) return true;
-    if (member.isName()) return ready.contains(member.getName().name);
+    if (member.isName()) return !member.getName().templateParameter.empty() || ready.contains(member.getName().name);
     if (member.isGroup()) {
         for (const auto& child : member.getGroup().values) if (!productive(*child, ready)) return false;
     } else if (member.isOp()) {

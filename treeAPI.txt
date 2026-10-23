@@ -1,18 +1,313 @@
 name<__WS> : Rule {
    [ \t\n\r\v\f]*;
   Data: EmptyDataBlock
-}name<item> : Rule {
-  @  A*; count(name:count)
+}name<modules_ispa_dep_scanner_mod_python_import_PY> : Rule {
+   "py"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_module_MODULE> : Rule {
+   "module"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_detach_DETACH> : Rule {
+   "detach"
+  Data: EmptyDataBlock
+}name<IMPORT> : Rule {
+   "import"
+  Data: EmptyDataBlock
+}name<AS> : Rule {
+   "as"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_FROM> : Rule {
+   "from"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_parentheses_AUTO_1> : Rule {
+   ">("
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_parentheses_AUTO> : Rule {
+   "&("
+  Data: EmptyDataBlock
+}name<RIGHT_CURLY_BRACKET> : Rule {
+   "}"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_fail_decl_FAIL> : Rule {
+   "fail"
+  Data: EmptyDataBlock
+}name<LEFT_CURLY_BRACKET> : Rule {
+   "{"
+  Data: EmptyDataBlock
+}name<LESS_THAN_SIGN> : Rule {
+   "<"
+  Data: EmptyDataBlock
+}name<FULL_STOP> : Rule {
+   "."
+  Data: EmptyDataBlock
+}name<AUTO> : Rule {
+   "->"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_detach_detach_value> : Rule {
+  @  ( modules::ispa_dep_scanner::mod_detach::detach_value::feature_ref |  modules::ispa_dep_scanner::source_name)
   Data: [RegularDataBlock: CllExpr]
-}name<child> : Rule {
-   A
-  Data: EmptyDataBlock
-}name<main> : Rule {
-   A
+}name<modules_common_param> : Rule {
+  @  modules::common::parameter
    __WS?;
-   child
+   ( COMMA  __WS?; @  modules::common::parameter)*;
+  Data: TemplatedDataBlock(first_p, following_p)
+}name<modules_common_name_ispa_template_params> : Rule {
+   ( modules::common::rule_params)
   Data: EmptyDataBlock
-}name<A> : Rule {
-   "a"
+}name<modules_scanner_tokens_OTHER> : Rule {
+  @  [^_ (){};'"#\0\t\r\n\[\\]a-zA-Z0-9]
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_mod_import_import_value_from_import> : Rule {
+  @  modules::ispa_dep_scanner::mod_import::import_value::from_import::selection
+   __WS?;
+   modules::ispa_dep_scanner::mod_import::import_value::from_import::FROM
+   __WS?;
+  @  modules::ispa_dep_scanner::module_path
+  Data: TemplatedDataBlock(sel, source)
+}name<modules_ispa_dep_scanner_atom> : Rule {
+   ( modules::common::ID |  modules::common::NUMBER |  modules::scanner_tokens::STRING |  modules::scanner_tokens::CGROUP |  modules::scanner_tokens::COMMENT |  modules::scanner_tokens::OTHER |  AUTO |  COMMA |  FULL_STOP |  LESS_THAN_SIGN |  GREATER_THAN_SIGN |  COLON |  ASTERISK)
   Data: EmptyDataBlock
+}name<GREATER_THAN_SIGN> : Rule {
+   ">"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_braces> : Rule {
+   LEFT_CURLY_BRACKET
+   __WS?;
+   modules::ispa_dep_scanner::balanced_item*;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_symbol_list> : Rule {
+  @  modules::ispa_dep_scanner::source_name
+   __WS?;
+   ( COMMA  __WS?; @  modules::ispa_dep_scanner::source_name)*;
+  Data: TemplatedDataBlock(first, following)
+}name<modules_ispa_dep_scanner_parentheses> : Rule {
+   ( LEFT_PARENTHESIS |  modules::ispa_dep_scanner::parentheses::AUTO |  modules::ispa_dep_scanner::parentheses::AUTO_1)
+   __WS?;
+   modules::ispa_dep_scanner::balanced_item*;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_nested_rule> : Rule {
+   NUMBER_SIGN
+   __WS?;
+  @  modules::ispa_dep_scanner::declaration
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_body_regular> : Rule {
+   COLON
+   __WS?;
+  @  modules::ispa_dep_scanner::member*;
+   __WS?;
+   SEMICOLON
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_body> : Rule {
+  @  ( modules::ispa_dep_scanner::body::regular |  modules::ispa_dep_scanner::braces)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_fail_decl> : Rule {
+   modules::ispa_dep_scanner::fail_decl::FAIL
+   __WS?;
+   modules::ispa_dep_scanner::source_name
+   __WS?;
+   modules::ispa_dep_scanner::braces
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_declaration_form> : Rule {
+  @  modules::common::name
+   __WS?;
+  @  modules::ispa_dep_scanner::body
+  Data: TemplatedDataBlock(name, body)
+}name<modules_ispa_dep_scanner_declaration> : Rule {
+  @  modules::ispa_dep_scanner::modifier*;
+   __WS?;
+  @  modules::ispa_dep_scanner::declaration::form
+  Data: TemplatedDataBlock(modifiers, value)
+}name<modules_ispa_dep_scanner_member> : Rule {
+  @  ( modules::ispa_dep_scanner::nested_rule |  modules::ispa_dep_scanner::parentheses |  modules::ispa_dep_scanner::braces |  modules::ispa_dep_scanner::atom)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_source_name> : Rule {
+  @  modules::common::name
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_mod_detach_detach_value_feature_ref> : Rule {
+   FEATURE
+   __WS?;
+  @  modules::ispa_dep_scanner::source_name
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_modifier> : Rule {
+   NUMBER_SIGN
+   __WS?;
+   modules::scanner_tokens::CGROUP
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_import_import_value_module_import> : Rule {
+  @  modules::ispa_dep_scanner::module_path
+   __WS?;
+   ( AS  __WS?; @  modules::common::ID)?;
+  Data: TemplatedDataBlock(source, alias)
+}name<modules_common_name> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( FULL_STOP  __WS?; @  modules::common::ID)*;
+   __WS?;
+  @  modules::common::template_params?;
+   __WS?;
+  @  modules::common::name::ispa_template_params?;
+  Data: TemplatedDataBlock(primary, nested, temp_params, param)
+}name<modules_ispa_dep_scanner_mod_import_import_value> : Rule {
+  @  ( modules::ispa_dep_scanner::mod_import::import_value::module_import |  modules::ispa_dep_scanner::mod_import::import_value::from_import)
+  Data: [RegularDataBlock: CllExpr]
+}name<RIGHT_PARENTHESIS> : Rule {
+   ")"
+  Data: EmptyDataBlock
+}name<LEFT_PARENTHESIS> : Rule {
+   "("
+  Data: EmptyDataBlock
+}name<modules_common_NUMBER> : Rule {
+  @  [0-9]+;
+   ( "." @  [0-9]+;)?;
+  Data: TemplatedDataBlock(full, floating)
+}name<COMMA> : Rule {
+   ","
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_import_external_import> : Rule {
+   modules::ispa_dep_scanner::mod_import::external_import::EXTERN
+   __WS?;
+  @  modules::common::ID
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_scanner_tokens_STRING> : Rule {
+  @  ( ( [']  ( ( [^'\\\\0] |  ( "\\"  [^\0])))*;  [']) |  ( ["]  ( ( [^"\\\\0] |  ( "\\"  [^\0])))*;  ["]))
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_mod_import> : Rule {
+  @  IMPORT
+   __WS?;
+  @  modules::ispa_dep_scanner::mod_import::external_import?;
+   __WS?;
+  @  modules::ispa_dep_scanner::mod_import::import_value
+   __WS?;
+  @  SEMICOLON
+  Data: TemplatedDataBlock(begin, external, value, end)
+}name<modules_common_rule_params> : Rule {
+   LEFT_PARENTHESIS
+   __WS?;
+  @  modules::common::param?;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_common_type_annotation> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( FULL_STOP  __WS?; @  modules::common::ID)*;
+  Data: TemplatedDataBlock(base, nested)
+}name<modules_ispa_dep_scanner_module_path> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( FULL_STOP  __WS?; @  modules::common::ID)*;
+  Data: TemplatedDataBlock(primary, nested)
+}name<modules_entry_main> : Rule {
+  @  ( ( modules::ispa_dep_scanner::mod_module |  modules::ispa_dep_scanner::mod_python_import |  modules::ispa_dep_scanner::mod_import |  modules::ispa_dep_scanner::mod_detach |  modules::ispa_dep_scanner::feature_decl |  modules::ispa_dep_scanner::declaration |  modules::ispa_dep_scanner::fail_decl |  modules::scanner_tokens::COMMENT))*;
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_feature_decl> : Rule {
+  @  FEATURE
+   __WS?;
+  @  modules::ispa_dep_scanner::source_name
+   __WS?;
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::ispa_dep_scanner::symbol_list?;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+   __WS?;
+  @  SEMICOLON
+  Data: TemplatedDataBlock(begin, name, symbols, end)
+}name<modules_common_template_params> : Rule {
+   LESS_THAN_SIGN
+   __WS?;
+  @  modules::common::template_param?;
+   __WS?;
+   GREATER_THAN_SIGN
+  Data: [RegularDataBlock: CllExpr]
+}name<FEATURE> : Rule {
+   "feature"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items> : Rule {
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::ispa_dep_scanner::source_name
+   __WS?;
+   ( COMMA  __WS?; @  modules::ispa_dep_scanner::source_name)*;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(first, sequence)
+}name<SEMICOLON> : Rule {
+   ";"
+  Data: EmptyDataBlock
+}name<modules_scanner_tokens_COMMENT> : Rule {
+  @  ( ( "//"  [^\r\n\0]*;) |  ( "/*"  ( ( [^*\0] |  ( "*"+;  [^*/\0])))*;  "*"+;  "/"))
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_common_template_param> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( COMMA  __WS?; @  modules::common::ID)*;
+  Data: TemplatedDataBlock(first_p, following_p)
+}name<modules_ispa_dep_scanner_mod_detach> : Rule {
+  @  modules::ispa_dep_scanner::mod_detach::DETACH
+   __WS?;
+  @  modules::ispa_dep_scanner::mod_detach::detach_value
+   __WS?;
+  @  SEMICOLON
+  Data: TemplatedDataBlock(begin, value, end)
+}name<modules_ispa_dep_scanner_mod_module> : Rule {
+  @  modules::ispa_dep_scanner::mod_module::MODULE
+   __WS?;
+  @  modules::ispa_dep_scanner::module_path
+   __WS?;
+  @  modules::common::template_params?;
+   __WS?;
+   ( AUTO  __WS?; @  modules::ispa_dep_scanner::source_name)?;
+   __WS?;
+  @  SEMICOLON
+  Data: TemplatedDataBlock(begin, name, parameters, entry, end)
+}name<NUMBER_SIGN> : Rule {
+   "#"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_balanced_item> : Rule {
+   ( modules::ispa_dep_scanner::parentheses |  modules::ispa_dep_scanner::braces |  modules::ispa_dep_scanner::atom |  SEMICOLON |  NUMBER_SIGN)
+  Data: EmptyDataBlock
+}name<modules_common_ID> : Rule {
+  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_mod_python_import> : Rule {
+  @  IMPORT
+   __WS?;
+   modules::ispa_dep_scanner::mod_python_import::PY
+   __WS?;
+  @  modules::ispa_dep_scanner::module_path
+   __WS?;
+   ( AS  __WS?; @  modules::common::ID)?;
+   __WS?;
+  @  SEMICOLON
+  Data: TemplatedDataBlock(begin, source, alias, end)
+}name<ASTERISK> : Rule {
+   "*"
+  Data: EmptyDataBlock
+}name<modules_common_parameter> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( COLON  __WS?; @  modules::common::type_annotation)?;
+  Data: TemplatedDataBlock(name, annotation)
+}name<main> : Rule {
+  @  modules::entry::main
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_dep_scanner_mod_import_external_import_EXTERN> : Rule {
+   "extern"
+  Data: EmptyDataBlock
+}name<modules_scanner_tokens_CGROUP> : Rule {
+  @  "["
+   ( ( [^\\\\\]\0] |  ( "\\"  [^\0])))*;
+   "]"
+  Data: [RegularDataBlock: CllExpr]
+}name<COLON> : Rule {
+   ":"
+  Data: EmptyDataBlock
+}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_selection> : Rule {
+  @  ( ASTERISK |  modules::ispa_dep_scanner::mod_import::import_value::from_import::selection::items)
+  Data: [RegularDataBlock: CllExpr]
 }

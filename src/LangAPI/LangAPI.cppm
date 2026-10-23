@@ -1262,7 +1262,7 @@ export namespace LangAPI {
             return !(*this == other);
         }
         auto operator<(const ForwardDeclaredClass& other) const {
-            return name < other.name;
+            return std::tie(name, template_parameters) < std::tie(other.name, other.template_parameters);
         }
         friend auto operator<<(std::ostream& os, const ForwardDeclaredClass &c) -> std::ostream&;
     };
@@ -1309,6 +1309,7 @@ export namespace LangAPI {
             return !(*this == other);
         }
         bool operator<(const Class& other) const {
+            if (template_parameters != other.template_parameters) return template_parameters < other.template_parameters;
             if (constructor != other.constructor) return constructor < other.constructor;
             if (name != other.name) return name < other.name;
             else if (data != other.data) return data < other.data;
@@ -1357,17 +1358,18 @@ export namespace LangAPI {
         }
         bool operator<(const TypeAlias& other) const {
             if (name != other.name) return name < other.name;
-            else return type < other.type;
+            if (type != other.type) return type < other.type;
+            return template_parameters < other.template_parameters;
         }
         friend auto operator<<(std::ostream& os, const TypeAlias &c) -> std::ostream&;
     private:
         friend struct ::uhash;
         friend struct ::LangAPI::MembersAccess;
         auto members() const {
-            return std::tie(name, type);
+            return std::tie(name, type, template_parameters);
         }
         auto members() {
-            return std::tie(name, type);
+            return std::tie(name, type, template_parameters);
         }
     };
     struct Enum : DeclarationLevel {

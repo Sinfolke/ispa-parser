@@ -287,9 +287,23 @@ the input. An advanced `END_INPUT` token with
 emitted. Together these let grammar actions maintain an indentation stack and
 emit `INDENT` and `DEDENT` without a custom lexer subclass.
 
-Parameters use an explicit `>` marker: `name>(arg)` supplies parameters, while
-`name (other_rule)*` starts a separate grammar group. This also applies to
-declarations and fail-block names; with template parameters, write `name<T>>(arg)`.
+Runtime parameters use an explicit `&(` marker: `name&(arg)` supplies arguments,
+while `name (other_rule)*` starts a separate grammar group. Declare types with
+`name&(arg: str, count: int)`. The existing `name>(arg)` spelling is also accepted.
+The same syntax applies to regular rules, advanced rules, tokens, and fail-block
+names. Combine grammar templates and runtime parameters as `name<T>&(arg)`.
+
+With the LL backend, rule parameters are ordinary generated function arguments.
+They can initialize AST fields and integer parameters can bound repetitions, as
+in `item&(count: int): @ A=count {@};`. A grammar template such as
+`wrapper<T>: @ T {@};` accepts a rule or token name, for example `wrapper<item>`;
+its generated node type retains that template argument.
+`${T}` also denotes a supplied grammar chunk. Lexer templates instantiate their
+automata for the supplied token rules and retain a shared templated node type.
+Typed token parameters are stored in lexer fields, configured through generated
+methods such as `lexer.setSTRINGParameters(quote)`. Acceptance actions and regular
+AST initializers can read those parameters; fields are reused by type across
+token declarations.
 
 ![Syntax Example](assets/syntax_example.png)
 

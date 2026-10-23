@@ -366,7 +366,7 @@ auto MemLower::ruleCallable(const AST::RuleMember &mem) -> LangAPI::Expression {
         LangAPI::FunctionCall call;
         call.name = std::make_shared<LangAPI::Symbol>("ispa_match_template");
         call.args = {
-            LangAPI::Inheritance::createExpression(LangAPI::Inheritance{.name = tag}),
+            LangAPI::Inheritance::createExpression(LangAPI::Inheritance{.name = std::make_shared<LangAPI::Type>(tag)}),
             LangAPI::Symbol::createExpression(LangAPI::Symbol{"rule_pos"})};
         LangAPI::Lambda lambda;
         lambda.parameters = {{LangAPI::Type{LangAPI::Symbol{"IT"}}, "rule_pos"}};
@@ -447,7 +447,7 @@ auto MemLower::lowerName(const AST::RuleMember &mem) -> Parser::LowerMeta {
         if (counter->kind == "number")
             spec.args.push_back(LangAPI::Int::createExpression(LangAPI::Int{.value = std::stoll(counter->bound)}));
         else if (parameter_bound)
-            spec.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{counter->bound}));
+            spec.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_action_" + counter->bound}));
         else {
             spec.args.push_back(LangAPI::String::createExpression(LangAPI::String{.value = counter->bound}));
         }

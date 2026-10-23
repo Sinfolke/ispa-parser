@@ -60,7 +60,7 @@ class SourceSyntax {
         for (const auto& part : value.nested) result.push_back(data(part).value);
         return result;
     }
-    Path path(const Common::name& value) const {
+    Path path(const Common::name<Common::rule_params>& value) const {
         Path result{data(value.primary).value};
         for (const auto& part : value.nested) result.push_back(data(part).value);
         return result;
@@ -68,7 +68,7 @@ class SourceSyntax {
     Path path(const Syntax::source_name& value) const {
         return path(data(value.value));
     }
-    Position namePosition(const Common::name& value) const { return position(value.primary); }
+    Position namePosition(const Common::name<Common::rule_params>& value) const { return position(value.primary); }
     Position namePosition(const Syntax::source_name& value) const {
         return namePosition(data(value.value));
     }

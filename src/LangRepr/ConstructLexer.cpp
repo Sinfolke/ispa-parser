@@ -408,6 +408,13 @@ namespace LangRepr {
             if (auto found = tree.getTreeMap().find(token_name); found != tree.getTreeMap().end()) {
                 std::set<std::string> locals;
                 std::set<std::string> objects;
+                if (auto bindings = parameter_bindings.find(token_name); bindings != parameter_bindings.end())
+                    for (const auto& binding : bindings->second) {
+                        locals.insert(binding.name);
+                        statements.push_back(LangAPI::Variable{.name = "ispa_action_" + binding.name,
+                            .type = binding.field.type,
+                            .value = LangAPI::Symbol::createExpression(LangAPI::Symbol{binding.field.name})});
+                    }
                 const auto classes = pythonClasses(tree.getPythonDeclarations());
                 for (const auto& feature : found->second.features) if (auto action = std::get_if<AST::PythonAction>(&feature)) {
                     if (!has_token_actions) {
@@ -499,6 +506,43 @@ namespace LangRepr {
         holder.push(LangAPI::TypeAlias::createDeclaration(createTypeToken()));
         Tlog::Branch b(logger, "LangRepr/ConstructLexer.log");
         auto lexer = createLexerClass();
+        parameter_bindings.clear();
+        stdu::vector<LangAPI::Variable> parameter_fields;
+        for (const auto& [name, rule] : tree.getTreeMap()) {
+            if (!AST::RuleMemberName{.name = name}.isTerminal()) continue;
+            for (const auto& feature : rule.features) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature)) {
+                std::set<std::size_t> used;
+                LangAPI::Function setter;
+                setter.name = "set" + Parser::ParserBase::fun_name(name) + "Parameters";
+                setter.type = LangAPI::ValueType::Void;
+                for (std::size_t i = 0; i < syntax->parameters.size(); ++i) {
+                    const auto* annotation = i < syntax->parameterAnnotations.size()
+                        ? std::get_if<UAST::py::Expr>(&syntax->parameterAnnotations[i].code) : nullptr;
+                    if (!annotation) throw std::invalid_argument("lexer parameter needs a type annotation: " + syntax->parameters[i]);
+                    auto type = Parser::ParserBase::convertPythonType(std::make_shared<UAST::py::Expr>(*annotation));
+                    if (type == LangAPI::ValueType::Undef || type == LangAPI::ValueType::Void)
+                        throw std::invalid_argument("lexer parameter needs a concrete type: " + syntax->parameters[i]);
+                    std::size_t slot = 0;
+                    while (slot < parameter_fields.size() && (used.contains(slot) || parameter_fields[slot].type != type)) ++slot;
+                    if (slot == parameter_fields.size())
+                        parameter_fields.push_back(LangAPI::Variable{.name = "ispa_parameter_" + std::to_string(slot),
+                            .type = type, .value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer{})});
+                    used.insert(slot);
+                    parameter_bindings[name].push_back(ParameterBinding{syntax->parameters[i], parameter_fields[slot]});
+                    const auto argument = "argument_" + std::to_string(i);
+                    setter.parameters.emplace_back(type, argument);
+                    setter.statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment{
+                        .name = LangAPI::Symbol{parameter_fields[slot].name},
+                        .value = LangAPI::Symbol::createExpression(LangAPI::Symbol{argument})}));
+                }
+                if (!setter.parameters.empty())
+                    lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(std::move(setter))),
+                        LangAPI::Visibility::Public);
+            }
+        }
+        for (auto& field : parameter_fields)
+            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(std::move(field))),
+                LangAPI::Visibility::Private);
         const auto memberCall = [](const std::string& object, const std::string& method,
                                    stdu::vector<LangAPI::Expression> args = {}) -> LangAPI::Expression {
             LangAPI::StorageSymbol storage;

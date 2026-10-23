@@ -30,8 +30,8 @@ void check(const AST::FrontendFeature& feature) {
 
 void check(const AST::RuleMember& member, bool token, bool actions) {
     for (const auto& f : member.features) {
-        if (actions && !token) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&f);
-            syntax && syntax->modifiers.empty() && syntax->templateParameters.empty()) continue;
+        if (actions && !token && member.isName() && member.getName().isNonterminal()) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&f);
+            syntax && syntax->modifiers.empty()) continue;
         if (actions && !token && (std::holds_alternative<AST::PythonAction>(f) ||
             std::holds_alternative<AST::VariableCapture>(f) || std::holds_alternative<AST::FailMarker>(f) ||
             std::holds_alternative<AST::AdvancedRule>(f))) continue;
@@ -83,13 +83,13 @@ void AST::requireCppSupport(const Tree& tree, bool ll_actions) {
             rule.rule_members.front()->isGroup() && rule.rule_members.front()->getGroup().values.empty())
             reject(rule.position, "advanced token without a match");
         for (const auto& feature : rule.features) {
-            if (ll_actions && !token) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
-                syntax && syntax->modifiers.empty() && syntax->templateParameters.empty()) continue;
+            if (ll_actions) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                syntax && syntax->modifiers.empty() && (!token || rule.isTemplateDefinition || syntax->templateParameters.empty())) continue;
             if (ll_actions) if (const auto* syntax = std::get_if<AST::AdvancedRule>(&feature))
                 for (const auto& child : syntax->syntax.children)
                     if (child.field == "dep" && !child.children.empty()) reject(syntax->position, "advanced rule dependencies");
             if (ll_actions && (std::holds_alternative<AST::AdvancedRule>(feature) ||
-                (advanced && std::holds_alternative<AST::PythonAction>(feature)))) continue;
+                std::holds_alternative<AST::PythonAction>(feature))) continue;
             if (ll_actions && !token && std::holds_alternative<AST::FailBinding>(feature)) continue;
             check(feature);
         }

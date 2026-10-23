@@ -249,7 +249,7 @@ namespace NFA {
         capture_anchor_pool.clear();
 
         for (const auto &[name, rule] : *tree) {
-            if (rule.external_token || corelib::text::isLower(name.back())) {
+            if (rule.external_token || rule.isTemplateDefinition || corelib::text::isLower(name.back())) {
                 continue;
             }
             Token token;

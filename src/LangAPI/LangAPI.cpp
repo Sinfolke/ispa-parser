@@ -115,6 +115,7 @@ namespace LangAPI {
             case ValueType::Box: os << "Box"; break;
             case ValueType::Any: os << "Any"; break;
             case ValueType::Const: os << "Const"; break;
+            case ValueType::TypeTag: os << "TypeTag"; break;
         }
         return os;
     }
