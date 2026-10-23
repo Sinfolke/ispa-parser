@@ -108,6 +108,7 @@ namespace {
     void registerFeatures(AST::SemanticRuleInfo& info, const auto& features) {
         for (const auto& feature : features) {
             if (const auto* declaration = std::get_if<AST::DeclarationSyntax>(&feature)) {
+                info.modifiers = declaration->modifiers;
                 for (const auto& name : declaration->parameters)
                     info.parameters.push_back({name, semanticPosition(declaration->position), std::nullopt});
                 for (const auto& name : declaration->templateParameters)

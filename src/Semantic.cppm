@@ -28,6 +28,7 @@ export namespace AST {
         const Rule* rule = nullptr;                // borrowed until check()
         std::vector<SemanticParameter> parameters;
         std::vector<SemanticParameter> templateParameters;
+        std::vector<std::string> modifiers;
         std::vector<SemanticCounter> counters;
         std::vector<SemanticFailure> failures;
         std::set<std::string> externalASTReads;  // actual reads from downstream code
@@ -907,6 +908,27 @@ struct AST::Semantic::Impl {
         for (const auto& r : rules) {
             if (!r.rule) continue;
             const Rule& rule = *r.rule;
+            if (std::ranges::find(r.modifiers, "inline") != r.modifiers.end()) {
+                std::size_t captures = 0;
+                bool valid = true;
+                const auto countCaptures = [&](const auto& self, const RuleMember& member) -> void {
+                    if (member.prefix.present) {
+                        ++captures;
+                        if (member.quantifier) valid = false;
+                    }
+                    if (member.isGroup()) for (const auto& child : member.getGroup().values)
+                        if (child) self(self, *child); else valid = false;
+                    if (member.isOp()) for (const auto& child : member.getOp().options)
+                        if (child) self(self, *child); else valid = false;
+                };
+                for (const auto& member : rule.rule_members)
+                    if (member) countCaptures(countCaptures, *member); else valid = false;
+                valid = valid && captures == 1;
+                if (!valid) out.error("GRM101", "[inline] requires exactly one captured rule reference", at(rule.position));
+            }
+            if (std::ranges::find(r.modifiers, "skip") != r.modifiers.end() &&
+                (r.name.empty() || !std::isupper(static_cast<unsigned char>(leaf(r.name)[0]))))
+                out.error("GRM102", "[skip] can only be applied to token rules", at(rule.position));
             std::set<std::string> references = r.externalCaptureReads;
             std::set<std::string> captureNames;
             std::set<std::string> parametersUsed;
