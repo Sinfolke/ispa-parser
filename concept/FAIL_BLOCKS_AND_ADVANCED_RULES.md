@@ -1,5 +1,8 @@
 # Advanced Rules & Fail Blocks
 
+> This early design note is superseded by the current implementation guide:
+> [Advanced Rules and Fail Blocks](ADVANCED_RULES_AND_FAIL_BLOCKS.md).
+
 ## Overview
 Advanced rules and fail blocks are build on embedded Python-like pseudocode.
 They are aimed to be as possible more compatible to Python.

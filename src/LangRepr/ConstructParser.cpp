@@ -312,7 +312,8 @@ namespace LangRepr {
                     .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"}),
                         LangAPI::Symbol::createExpression(LangAPI::Symbol{"result"}),
                         LangAPI::Symbol::createExpression(LangAPI::Symbol{"start_pos"}),
-                        LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(prod.name, ".")})}})});
+                        LangAPI::String::createExpression(LangAPI::String{.value = corelib::text::join(prod.name, ".")}),
+                        LangAPI::Symbol::createExpression(LangAPI::Symbol{"TokensToString"})}})});
             for (const auto &stmt : prod.rule_members) {
                 stmts.push_back(finalizeReturnStatement(finalizeTypes(stmt)));
             }
