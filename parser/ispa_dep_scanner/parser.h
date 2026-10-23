@@ -27,7 +27,7 @@ public:
         // their byte spans in the source, without feeding trivia to the parser.
         if (token.template holds<DepParser::Types::__WS>()) return;
         const auto& meta = token.meta();
-        if (meta.start() && meta.length() == 1 && !token.template holds<DepParser::Types::modules::scanner_tokens::PY_RAW>()) {
+        if (meta.start() && meta.length() == 1) {
             const char value = *meta.start();
             if (value == '(' || value == '{') delimiters.push_back({value, meta.startpos()});
             else if (value == ')' || value == '}') {
@@ -54,14 +54,6 @@ public:
 
     Token makeToken(const char*& pos) override {
         offset = getCurrentPos(pos);
-        if (opaque_end && pos < opaque_end) {
-            const char* begin = pos;
-            pos = opaque_end;
-            opaque_end = nullptr;
-            return Token::create(offset, begin, pos - begin, 0,
-                DepParser::Tokens::modules::scanner_tokens::PY_RAW::id,
-                DepParser::Types::modules::scanner_tokens::PY_RAW{std::string(begin, pos)});
-        }
         opaque_end = nullptr;
         if (delimiters.empty()) {
             if (IspaSyntax::keyword(pos, "import") || IspaSyntax::keyword(pos, "feature")) directive_braces = true;
@@ -70,13 +62,6 @@ public:
         // Module directive selections remain structured. Every grammar body
         // brace is opaque to dependency discovery, including direct Python.
         if (*pos == '{' && !directive_braces) opaque_end = IspaSyntax::scanBracedPython(pos) - 1;
-        if (pos[0] == 'p' && pos[1] == '{') {
-            const char* begin = pos;
-            pos = IspaSyntax::scanPythonBlock(begin);
-            return Token::create(offset, begin, pos - begin, 0,
-                DepParser::Tokens::modules::scanner_tokens::PY_RAW::id,
-                ::DepParser::Types::modules::scanner_tokens::PY_RAW{std::string(begin, pos)});
-        }
         auto token = DepParser::Lexer::makeToken(pos);
         if (token.empty() || pos == _in + offset)
             throw std::runtime_error("unterminated or unrecognized token in ISPA source");

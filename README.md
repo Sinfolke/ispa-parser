@@ -23,7 +23,7 @@ It is built around one idea: **easy to use, without giving up performance, exten
 |---|---|
 | Compiler (frontend + backend) | Implemented; builds on **Windows** and **Linux** |
 | Bootstrap | **Done.** ISPA's own grammar is parsed by an ISPA-generated parser, which fully replaced the hand-written one |
-| Lexer (TDFA, AST-building tokens, semantic actions anywhere) | **Done** |
+| Lexer (TDFA, AST-building tokens, acceptance-time Python actions) | **Done** |
 | Parser (default mode) | Mostly correct; needs some changes and more tests |
 | Parser (LR-family modes) | Experimental; not yet stable |
 | Incremental generation | Implemented (regenerates changed parts only) |
@@ -261,8 +261,31 @@ item {
 }
 ```
 
-Contexts belong to one invocation and must not escape it. Advanced lexer rules
-and advanced rules in the LR-family backends remain unsupported.
+Parser action contexts belong to one invocation and must not escape it. With
+the LL C++ backend, advanced token rules may combine `match` patterns with Python actions.
+The actions run in source order when the complete token is accepted, after its
+capture values are available. They may update fields on `ctx.ast`; `ctx.rule`
+and `ctx.start_pos` are read-only. A new field needs a primitive annotation
+when its type cannot be inferred from a literal or local expression. Token
+actions cannot move `ctx.pos` or return early, and cannot change which pattern
+matches. An advanced token must contain a `match` and cannot be embedded inside
+another token. Advanced rules in the LR-family backends remain unsupported.
+
+Token actions may also use `ctx.shared.<field>` for state shared by successive
+tokens of one lexer instance. Declare a field with a Python type annotation,
+such as `ctx.shared.indents: list[int]`, in a token rule that uses it. Declarations
+of the same field across rules must agree. A literal assignment also provides a
+type for existing grammars. `ctx.text` contains the accepted token's source text,
+`ctx.line_prefix` the text before it on the current line, and `ctx.next_char`
+the character immediately after it (or an empty string at EOF). Calling
+`ctx.emit('TOKEN')` queues a zero-width token after the current token, and
+resolves its name in the current grammar module; a dotted name selects a token
+in another module.
+`ctx.skip()` suppresses the current token, while `ctx.error('message')` rejects
+the input. An advanced `END_INPUT` token with
+`match '';` runs its actions at EOF, before queued tokens and the EOF marker are
+emitted. Together these let grammar actions maintain an indentation stack and
+emit `INDENT` and `DEDENT` without a custom lexer subclass.
 
 Parameters use an explicit `>` marker: `name>(arg)` supplies parameters, while
 `name (other_rule)*` starts a separate grammar group. This also applies to

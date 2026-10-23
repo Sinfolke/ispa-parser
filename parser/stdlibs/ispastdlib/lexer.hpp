@@ -43,19 +43,37 @@ namespace ISPA_STD {
         }
 
         std::size_t __line(const char* pos) const {
+            if (!_in || !pos) throw std::logic_error("Lexer line lookup has no source position");
             std::size_t count = 1;
-            for (const char* in = _in; in < pos; in++) {
+            const char* in = _in;
+            for (; in < pos && *in != '\0'; in++) {
                 if (*in == '\n') count++;
             }
+            if (in != pos) throw std::out_of_range("Lexer line lookup exceeds source input");
             return count;
         }
 
         std::size_t __column(const char* pos) const {
+            if (!_in || !pos) throw std::logic_error("Lexer column lookup has no source position");
             std::size_t count = 1;
-            for (const char* in = _in; in < pos; in++) {
+            const char* in = _in;
+            for (; in < pos && *in != '\0'; in++) {
                 count = (*in == '\n') ? 0 : count + 1;
             }
+            if (in != pos) throw std::out_of_range("Lexer column lookup exceeds source input");
             return count;
+        }
+
+        std::string __line_prefix(const char* pos) const {
+            if (!_in || !pos) throw std::logic_error("Lexer line prefix has no source position");
+            const char* begin = pos;
+            while (begin > _in && begin[-1] != '\n' && begin[-1] != '\r') --begin;
+            return {begin, pos};
+        }
+
+        std::string __next_char(const char* pos) const {
+            if (!pos) throw std::logic_error("Lexer next character has no source position");
+            return *pos == '\0' ? std::string{} : std::string(1, *pos);
         }
 
         void panic_mode(const char*& pos) {
@@ -463,9 +481,11 @@ namespace ISPA_STD {
         TokenFlow<Token>& getTokensReference() { return tokens; }
         void clearTokens() { tokens.clear(); }
 
-        virtual void push(Token&& t) { tokens.push_back(std::move(t)); }
-        virtual void push(const Token &t) { tokens.push_back(t); }
-        virtual void push() { tokens.emplace_back(); }
+        virtual void on_token(Token&& t) { tokens.push_back(std::move(t)); }
+        virtual void on_eof() { tokens.emplace_back(); }
+        virtual void push(Token&& t) { on_token(std::move(t)); }
+        virtual void push(const Token &t) { on_token(Token(t)); }
+        virtual void push() { on_eof(); }
 
         virtual TokenFlow<Token>& makeTokens() {
             if (hasExternalRules()) throw std::logic_error("AMBIGUOUS eager token stream: use lazy tokenization with external parsers");

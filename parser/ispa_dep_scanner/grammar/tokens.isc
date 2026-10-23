@@ -1,6 +1,4 @@
 module scanner_tokens;
-PY_RAW: @ 'p{' [^}]* '}' {@};
-
 // Opaque Python action blocks are lexed using IspaLexer's shared boundary code.
 STRING:
     @ (['] ([^'\\\0] | ('\\' [^\0]))* [']) | (["] ([^"\\\0] | ('\\' [^\0]))* ["])

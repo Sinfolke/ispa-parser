@@ -93,10 +93,12 @@ export namespace Parser {
         static auto convertPython(const UAST::py::Module& module, const std::set<std::string>& variables = {}) -> LangAPI::Statements;
         static auto convertPythonDeclaration(const UAST::py::Stmt& declaration, const std::set<std::string>& classes = {}) -> LangAPI::Declaration;
         static auto convertPythonDeclarations(const UAST::py::Module& module) -> LangAPI::Declarations;
+        static auto convertPythonType(const UAST::py::ExprPtr& annotation) -> LangAPI::Type;
         // Action scopes reserve ctx; locals persist across sequential blocks.
         static auto convertPythonAction(const AST::PythonAction& action,
             std::set<std::string>& variables, bool failure = false,
-            const std::set<std::string>& classes = {}, std::set<std::string>* objects = nullptr) -> LangAPI::Statements;
+            const std::set<std::string>& classes = {}, std::set<std::string>* objects = nullptr,
+            const std::string& token_rule = {}) -> LangAPI::Statements;
 
         static auto dataType(const AST::DataType& type) -> LangAPI::Type;
 

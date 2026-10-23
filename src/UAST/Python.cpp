@@ -587,7 +587,8 @@ private:
 
     pyast::StmtPtr import_from(const Node* n) {
         pyast::ImportFrom imp;
-        auto rel = field(n, "module");
+        auto rel = field(n, "mod");
+        if (!rel) rel = field(n, "module");
         imp.level = find_all(field(rel, "relative"), "DOT").size();
         if (auto name = field(rel, "name"); !absent(name)) imp.module_name = dotted(name);
         auto targets = unwrap(field(n, "names"));

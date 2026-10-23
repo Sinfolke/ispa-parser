@@ -619,7 +619,10 @@ void AST::TreePass::addSpaceToken(AST::Tree &ast) {
     if (!ast.getTreeMap().contains(constants::whitespace)) {
         AST::Rule spaceTokenRule;
         AST::RuleMemberCsequence csequence;
-        csequence.escaped = {'t', 'n', 'r', 'v', 'f'};
+        const bool has_newline_token = std::ranges::any_of(ast.getTreeMap(), [](const auto& entry) {
+            return !entry.first.empty() && entry.first.back() == "NEWLINE";
+        });
+        csequence.escaped = has_newline_token ? stdu::vector<char>{'t', 'v', 'f'} : stdu::vector<char>{'t', 'n', 'r', 'v', 'f'};
         csequence.characters = {' '};
         spaceTokenRule.rule_members = {
             std::make_shared<AST::RuleMember>(AST::RuleMember{ .quantifier = '*', .value = csequence })

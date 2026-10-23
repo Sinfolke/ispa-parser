@@ -27,6 +27,7 @@ struct PythonConverter {
     std::set<std::string> locals;
     bool action_context = false, failure_context = false;
     std::string self_name;
+    std::string token_rule;
     std::set<std::string> class_names, objects;
     std::map<std::string, la::Type> local_types;
     std::string localName(const std::string& name) const {
@@ -147,8 +148,11 @@ struct PythonConverter {
                 else break;
             }
             if (root) if (auto n = root->template get<py::Name>(); n && n->id == "ctx") {
-                if (!property || (property->attr != "pos" && property->attr != "ast"))
-                    unsupported(p->pos, "ctx and its metadata are read-only; only ctx.pos and ctx.ast are writable");
+                if (!property || (token_rule.empty() ? property->attr != "pos" && property->attr != "ast" :
+                    property->attr != "ast" && property->attr != "shared"))
+                    unsupported(p->pos, token_rule.empty() ?
+                        "ctx and its metadata are read-only; only ctx.pos and ctx.ast are writable" :
+                        "token ctx metadata are read-only; only ctx.ast and ctx.shared fields are writable");
             }
         }
         auto e = expr(p);
@@ -162,7 +166,10 @@ struct PythonConverter {
     la::Expression expr(const py::Expr& e) {
         return std::visit([&](const auto& x) -> la::Expression {
             using T = std::decay_t<decltype(x)>;
-            if constexpr (std::is_same_v<T, py::Name>) return la::Symbol::createExpression(pythonSymbol(x.id == self_name ? "__ispa_python_self" : localName(x.id)));
+            if constexpr (std::is_same_v<T, py::Name>) {
+                if (!token_rule.empty() && x.id == "ctx") unsupported(e.pos, "token context needs a property");
+                return la::Symbol::createExpression(pythonSymbol(x.id == self_name ? "__ispa_python_self" : localName(x.id)));
+            }
             else if constexpr (std::is_same_v<T, py::Constant>) {
                 switch (x.kind) {
                     case py::ConstantKind::Bool: return la::Bool::createExpression(la::Bool{.value = x.value == "True"});
@@ -212,6 +219,24 @@ struct PythonConverter {
                 }
             } else if constexpr (std::is_same_v<T, py::Attribute> || std::is_same_v<T, py::Subscript>) {
                 if constexpr (std::is_same_v<T, py::Attribute>) {
+                    if (!token_rule.empty() && x.value)
+                        if (auto shared = x.value->template get<py::Attribute>(); shared && shared->attr == "shared" && shared->value)
+                            if (auto ctx = shared->value->template get<py::Name>(); ctx && ctx->id == "ctx")
+                                return la::Symbol::createExpression(la::Symbol{"ispa_shared_" + x.attr});
+                    if (!token_rule.empty() && x.value) if (auto n = x.value->template get<py::Name>(); n && n->id == "ctx") {
+                        if (x.attr == "ast") return la::Symbol::createExpression(la::Symbol{"ispa_token_result"});
+                        if (x.attr == "start_pos") return la::Symbol::createExpression(la::Symbol{"start_pos"});
+                        if (x.attr == "rule") return la::String::createExpression(la::String{.value = token_rule});
+                        if (x.attr == "text") return la::Symbol::createExpression(la::Symbol{"ispa_token_text"});
+                        if (x.attr == "line_prefix") return la::FunctionCall::createExpression(la::FunctionCall{
+                            .name = std::make_shared<la::Symbol>(la::Symbol{"__line_prefix"}),
+                            .args = {la::Symbol::createExpression(la::Symbol{"start"})}});
+                        if (x.attr == "next_char") return la::FunctionCall::createExpression(la::FunctionCall{
+                            .name = std::make_shared<la::Symbol>(la::Symbol{"__next_char"}),
+                            .args = {binary(la::Symbol::createExpression(la::Symbol{"start"}),
+                                la::ExpressionElement::Add, la::Symbol::createExpression(la::Symbol{"length"}))}});
+                        unsupported(e.pos, "unknown token ctx property: " + x.attr);
+                    }
                     if (action_context && x.value) if (auto n = x.value->template get<py::Name>(); n && n->id == "ctx") {
                         if (x.attr != "pos" && x.attr != "ast" && x.attr != "start_pos" && x.attr != "rule" &&
                             !(failure_context && x.attr == "failed_rule"))
@@ -224,6 +249,48 @@ struct PythonConverter {
                 else s.path.emplace_back(la::StorageOffset{.offset = expr(x.slice)});
                 return la::StorageSymbol::createExpression(s);
             } else if constexpr (std::is_same_v<T, py::Call>) {
+                if (!token_rule.empty()) if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr)
+                    if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr;
+                        owner && owner->id == "ctx") {
+                        if (method->attr == "skip" && x.args.empty() && x.keywords.empty()) {
+                            return la::FunctionCall::createExpression(la::FunctionCall{
+                                .name = std::make_shared<la::Symbol>(la::Symbol{"ispa_skip_current_token"})});
+                        }
+                        if (method->attr == "error" && x.args.size() == 1 && x.keywords.empty()) {
+                            return la::FunctionCall::createExpression(la::FunctionCall{
+                                .name = std::make_shared<la::Symbol>(la::Symbol{"ispa_token_error"}),
+                                .args = {expr(x.args.front())}});
+                        }
+                        if (method->attr == "emit" && x.args.size() == 1 && x.keywords.empty()) {
+                            auto literal = x.args.front() ? x.args.front()->template get<py::Constant>() : nullptr;
+                            if (!literal || literal->kind != py::ConstantKind::Str || literal->value.empty() ||
+                                !std::ranges::all_of(literal->value, [](unsigned char c) {
+                                    return std::isalnum(c) || c == '_' || c == '.';
+                                })) unsupported(e.pos, "ctx.emit requires a token-name string literal");
+                            const auto scope_end = token_rule.rfind('.');
+                            const auto qualified = literal->value.find('.') != std::string::npos || scope_end == std::string::npos ?
+                                literal->value : token_rule.substr(0, scope_end + 1) + literal->value;
+                            auto end = binary(la::Symbol::createExpression(la::Symbol{"start"}),
+                                la::ExpressionElement::Add, la::Symbol::createExpression(la::Symbol{"length"}));
+                            la::FunctionCall create;
+                            create.name = std::make_shared<la::Symbol>(la::Symbol{"Token", "create"});
+                            create.args = {binary(la::Symbol::createExpression(la::Symbol{"start_pos"}),
+                                    la::ExpressionElement::Add, la::Symbol::createExpression(la::Symbol{"length"})),
+                                end,
+                                la::Int::createExpression(la::Int{.value = 0}),
+                                la::FunctionCall::createExpression(la::FunctionCall{
+                                    .name = std::make_shared<la::Symbol>(la::Symbol{"__line"}), .args = {end}}),
+                                la::Symbol::createExpression(pythonSymbol("Tokens." + qualified + ".id")),
+                                la::Inheritance::createExpression(la::Inheritance{.name = pythonSymbol("Types." + qualified)})};
+                            la::StorageSymbol queue;
+                            queue.what = la::Symbol::createExpression(la::Symbol{"ispa_pending_tokens"});
+                            queue.path.emplace_back(la::FunctionCall{
+                                .name = std::make_shared<la::Symbol>(la::Symbol{"push_back"}),
+                                .args = {la::FunctionCall::createExpression(create)}});
+                            return la::StorageSymbol::createExpression(queue);
+                        }
+                        unsupported(e.pos, "unknown token context method: " + method->attr);
+                    }
                 if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr; method && !object(method->value)) {
                     if (method->attr == "fromkeys") {
                         auto owner = method->value ? method->value->template get<py::Name>() : nullptr;
@@ -426,6 +493,7 @@ struct PythonConverter {
             if constexpr (std::is_same_v<T, py::Pass>) return {};
             else if constexpr (std::is_same_v<T, py::ExprStmt>) return la::Statements{la::Statement{expr(x.value)}};
             else if constexpr (std::is_same_v<T, py::Return>) {
+                if (!token_rule.empty()) unsupported(s.pos, "token actions cannot return; update ctx.ast instead");
                 if (!action_context) return la::Return::createStatements(la::Return{.value = x.value ? expr(x.value) : la::Expression{}});
                 if (failure_context && x.value) unsupported(s.pos, "fail blocks use a bare return");
                 la::FunctionCall call;
@@ -467,7 +535,8 @@ struct PythonConverter {
                 if (!n && (action_context || !self_name.empty())) {
                     const auto destination = target(x.target);
                     if (!x.value) return {};
-                    return la::VariableAssignment::createStatements(la::VariableAssignment{.name = destination, .value = expr(x.value)});
+                    return la::VariableAssignment::createStatements(la::VariableAssignment{
+                        .name = destination, .value = initializer(x.value, type(x.annotation))});
                 }
                 if (!n) unsupported(s.pos, "annotated target must be a name");
                 if (action_context && n->id == "ctx") unsupported(s.pos, "ctx cannot be rebound");
@@ -626,10 +695,14 @@ auto ParserBase::convertPythonDeclarations(const UAST::py::Module& m) -> LangAPI
     }
     return out;
 }
+auto ParserBase::convertPythonType(const UAST::py::ExprPtr& annotation) -> LangAPI::Type {
+    return PythonConverter{}.type(annotation);
+}
 auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<std::string>& variables, bool failure,
-    const std::set<std::string>& classes, std::set<std::string>* objects) -> LangAPI::Statements {
+    const std::set<std::string>& classes, std::set<std::string>* objects, const std::string& token_rule) -> LangAPI::Statements {
     PythonConverter converter{variables, true, failure};
     converter.class_names = classes;
+    converter.token_rule = token_rule;
     if (objects) converter.objects = *objects;
     auto result = std::visit([&](const auto& code) -> LangAPI::Statements {
         using T = std::decay_t<decltype(code)>;

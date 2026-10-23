@@ -45,11 +45,14 @@ for those Python rules.
 Regenerate the committed bootstrap after building the generator:
 
 ```sh
-python3 parser/python/generate.py cmake-build-debug/ispa
+python3 parser/python/generate.py cmake-build-release/ispa
 ```
 
 `--output /tmp/python-bootstrap` generates a separate copy. The script flattens
 module/import directives to preserve the existing public `PyRawParser::Types`
-names, appends the custom entry declarations from `exports.hpp`, and retains
-the external manifest bindings implemented in `extern.cpp`. Generator dumps
-stay in a temporary directory. Rebuild consumers after regeneration.
+names, appends the custom entry declarations from `exports.hpp`, and copies
+the `ispa_python` external bindings from `ispa-compat.ispa-export`. Those
+bindings refer to the entry points implemented in `extern.cpp` and are needed
+by `parser/ispa/grammar/python.isc`. A direct modular generator run exports
+different module names and cannot replace this compatibility bootstrap.
+Generator dumps stay in a temporary directory. Rebuild consumers after regeneration.

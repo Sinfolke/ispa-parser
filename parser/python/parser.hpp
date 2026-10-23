@@ -103,6 +103,10 @@ public:
             if (*pos++ == '\r' && *pos == '\n') ++pos;
             return make(PyRawParser::Tokens::NEWLINE::id, PyRawParser::Types::NEWLINE{});
         }
+        if (*pos == '#') {
+            while (*pos && *pos != '\n' && *pos != '\r') ++pos;
+            return make(PyRawParser::Tokens::COMMENT::id, PyRawParser::Types::COMMENT{});
+        }
         if (*pos == '\'' || *pos == '"') {
             const char quote = *pos++;
             const bool triple = pos[0] == quote && pos[1] == quote;

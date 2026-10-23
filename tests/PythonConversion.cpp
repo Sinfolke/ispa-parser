@@ -185,6 +185,14 @@ TEST(PythonConversion, ActionContextValidatesMetadataAndPreservesLocals) {
     for (const auto* source : {"ctx.sync()\n", "ctx.sync('')\n", "ctx.sync(42)\n",
                                "ctx.sync_tokens()\n", "ctx.sync_tokens('')\n", "ctx.sync_tokens(42)\n"})
         EXPECT_THROW(Parser::ParserBase::convertPythonAction(action(source), locals, true), std::invalid_argument);
+    std::set<std::string> token_locals;
+    EXPECT_NO_THROW(Parser::ParserBase::convertPythonAction(
+        action("ctx.ast.count: int = 1\nctx.ast.owner: str = ctx.rule\nctx.shared.stack = [0]\nctx.emit('INDENT')\nctx.skip()\n"), token_locals,
+        false, {}, nullptr, "TOKEN"));
+    for (const auto* source : {"ctx.pos = 1\n", "ctx.start_pos = 1\n", "ctx.rule = 'other'\n",
+                               "return\n", "ctx.emit('bad-name')\n"})
+        EXPECT_THROW(Parser::ParserBase::convertPythonAction(
+            action(source), token_locals, false, {}, nullptr, "TOKEN"), std::invalid_argument);
 }
 
 TEST(PythonConversion, CollectionMethodsUsePortableIR) {

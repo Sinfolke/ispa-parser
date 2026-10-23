@@ -19,6 +19,13 @@ TEST(UAST, BackendGuardAllowsSupportedGrammar) {
     EXPECT_NO_THROW(AST::requireCppSupport(tree));
     auto counted = convert("A:'a'; main: A=x A=3 A* => saved;");
     EXPECT_NO_THROW(AST::requireCppSupport(counted));
+    auto advanced_token = convert("T { ctx.ast.seen: bool = True\n match 'x'; } main: T;");
+    EXPECT_NO_THROW(AST::requireCppSupport(advanced_token, true));
+    EXPECT_THROW(AST::requireCppSupport(advanced_token, false), std::runtime_error);
+    auto empty_token = convert("T { ctx.ast.seen: bool = True } main: T;");
+    EXPECT_THROW(AST::requireCppSupport(empty_token, true), std::runtime_error);
+    auto nested_token = convert("T { match 'x'; ctx.ast.seen: bool = True } U: T; main: U;");
+    EXPECT_THROW(AST::requireCppSupport(nested_token, true), std::runtime_error);
 }
 
 TEST(UAST, BackendGuardRejectsUnsupportedFeaturesWithPositions) {

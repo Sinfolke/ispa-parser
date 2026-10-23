@@ -21,9 +21,8 @@ int main(int argc, const char** argv) {
     } else {
         i = argv[1];
     }
-    PyParser parser;
-    lexer.makeTokens(i);
-    PyRawParser::Types::main node = parser.parse(lexer);
+    PyRawParser::Parser parser;
+    PyRawParser::Types::main node = parser.parse(i.c_str());
     for (const auto &e : parser.getErrors()) {
         std::cout << "Error: " << e.message << std::endl;
     }

@@ -308,7 +308,7 @@ import_name:
 
 import_from:
     FROM @ relative_module IMPORT @ import_targets
-    @{module, names}
+    @{mod, names}
 ;
 
 relative_module:

@@ -11,8 +11,16 @@ FLOOR_DIV: '//';
 FLOOR_DIV_ASSIGN: '//=';
 GE: '>=';
 GT: '>';
-LBRACE: '{';
-LBRACKET: '[';
+LBRACE {
+    match '{';
+    ctx.shared.bracket_depth: int
+    ctx.shared.bracket_depth += 1
+}
+LBRACKET {
+    match '[';
+    ctx.shared.bracket_depth: int
+    ctx.shared.bracket_depth += 1
+}
 LE: '<=';
 LSHIFT: '<<';
 LSHIFT_ASSIGN: '<<=';
@@ -31,8 +39,18 @@ PLUS: '+';
 PLUS_ASSIGN: '+=';
 POWER: '**';
 POWER_ASSIGN: '**=';
-RBRACE: '}';
-RBRACKET: ']';
+RBRACE {
+    match '}';
+    ctx.shared.bracket_depth: int
+    if ctx.shared.bracket_depth > 0:
+        ctx.shared.bracket_depth -= 1
+}
+RBRACKET {
+    match ']';
+    ctx.shared.bracket_depth: int
+    if ctx.shared.bracket_depth > 0:
+        ctx.shared.bracket_depth -= 1
+}
 RSHIFT: '>>';
 RSHIFT_ASSIGN: '>>=';
 SLASH: '/';

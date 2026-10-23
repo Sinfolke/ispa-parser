@@ -98,6 +98,6 @@ parentheses:
 braces: '{' balanced_item* '}';
 balanced_item: parentheses | braces | atom | ';' | '#';
 atom:
-    ID | NUMBER | STRING | CGROUP | PY_RAW | COMMENT | OTHER |
+    ID | NUMBER | STRING | CGROUP | COMMENT | OTHER |
     '->' | ',' | '.' | '<' | '>' | ':' | '*'
 ;

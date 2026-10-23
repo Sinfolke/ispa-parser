@@ -63,12 +63,30 @@ void AST::requireCppSupport(const Tree& tree, bool ll_actions) {
         const bool advanced = std::ranges::any_of(rule.features, [](const auto& feature) {
             return std::holds_alternative<AST::AdvancedRule>(feature);
         });
+        if (ll_actions && token && advanced) {
+            const auto uses = [&](auto&& self, const AST::RuleMember& member) -> bool {
+                if (member.isName() && member.getName().name == name) return true;
+                if (member.isGroup()) for (const auto& child : member.getGroup().values)
+                    if (self(self, *child)) return true;
+                if (member.isOp()) for (const auto& child : member.getOp().options)
+                    if (self(self, *child)) return true;
+                return false;
+            };
+            for (const auto& [other_name, other] : tree.getTreeMap())
+                if (other_name != name && AST::RuleMemberName{.name = other_name}.isTerminal())
+                    for (const auto& member : other.rule_members)
+                        if (uses(uses, *member)) reject(rule.position, "advanced token embedded in another token");
+        }
+        if (ll_actions && token && advanced && rule.rule_members.size() == 1 &&
+            rule.rule_members.front()->isGroup() && rule.rule_members.front()->getGroup().values.empty())
+            reject(rule.position, "advanced token without a match");
         for (const auto& feature : rule.features) {
             if (ll_actions) if (const auto* syntax = std::get_if<AST::AdvancedRule>(&feature))
                 for (const auto& child : syntax->syntax.children)
                     if (child.field == "dep" && !child.children.empty()) reject(syntax->position, "advanced rule dependencies");
-            if (ll_actions && !token && (std::holds_alternative<AST::AdvancedRule>(feature) ||
-                (advanced && std::holds_alternative<AST::PythonAction>(feature)) || std::holds_alternative<AST::FailBinding>(feature))) continue;
+            if (ll_actions && (std::holds_alternative<AST::AdvancedRule>(feature) ||
+                (advanced && std::holds_alternative<AST::PythonAction>(feature)))) continue;
+            if (ll_actions && !token && std::holds_alternative<AST::FailBinding>(feature)) continue;
             check(feature);
         }
         for (const auto& member : rule.rule_members) check(*member, token, ll_actions);

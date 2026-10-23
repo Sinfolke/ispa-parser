@@ -107,6 +107,7 @@ item {
     return ctx.ast
     ctx.ast.total = 999
 }
+
 fail oops>(previous) {
     ctx.ast.failed = ctx.failed_rule
     ctx.ast.owner = ctx.rule
@@ -183,6 +184,159 @@ int main() {
         "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
     ASSERT_EQ(std::system(command.c_str()), 0);
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLAdvancedTokenActionsRunAtAcceptance) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"isc(
+TOKEN {
+    ctx.ast.count: int = 7
+    match 'x';
+    ctx.ast.count += 2
+    ctx.ast.active = True
+    ctx.ast.owner: str = ctx.rule
+    ctx.ast.offset: int = ctx.start_pos
+}
+
+main: @ TOKEN {@};
+)isc");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-token-action-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"cpp(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Lexer lexer;
+    const auto& tokens = lexer.makeTokens("x");
+    if (tokens.size() != 2 || !tokens.front().holds<PluginTest::Types::TOKEN>()) return 1;
+    const auto& value = tokens.front().get<PluginTest::Types::TOKEN>();
+    if (value.count != 9 || !value.active || value.owner != "TOKEN" || value.offset != 0) return 2;
+}
+)cpp";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + std::string(ROOT_DIR) +
+        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLAdvancedTokensEmitIndentAndDedent) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"isc(
+INDENT: '';
+DEDENT: '';
+A: 'a';
+B: 'b';
+IGNORE { match 'z'; ctx.skip() }
+NEWLINE {
+    match '\n' [ \t]*;
+    ctx.shared.stack: list[int]
+    if ctx.shared.stack.size() == 0:
+        ctx.shared.stack.append(0)
+    width = 0
+    i = 1
+    while i < ctx.text.size():
+        if ctx.text.substr(i, 1) == ' ':
+            width += 1
+        if ctx.text.substr(i, 1) == '\t':
+            width = (width / 8 + 1) * 8
+        i += 1
+    if width > ctx.shared.stack[ctx.shared.stack.size() - 1]:
+        ctx.shared.stack.append(width)
+        ctx.emit('INDENT')
+    else:
+        while width < ctx.shared.stack[ctx.shared.stack.size() - 1] and ctx.shared.stack.size() > 1:
+            ctx.shared.stack.pop()
+            ctx.emit('DEDENT')
+        if width != ctx.shared.stack[ctx.shared.stack.size() - 1]:
+            ctx.error('invalid dedent')
+}
+END_INPUT {
+    match '';
+    ctx.shared.stack: list[int]
+    while ctx.shared.stack.size() > 1:
+        ctx.shared.stack.pop()
+        ctx.emit('DEDENT')
+}
+main: A;
+)isc");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-layout-action-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"cpp(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Lexer lexer;
+    const auto& tokens = lexer.makeTokens("a\n  b\n    b\n  b\na\n");
+    const std::size_t expected[] = {
+        PluginTest::Tokens::A::id, PluginTest::Tokens::NEWLINE::id,
+        PluginTest::Tokens::INDENT::id, PluginTest::Tokens::B::id, PluginTest::Tokens::NEWLINE::id,
+        PluginTest::Tokens::INDENT::id, PluginTest::Tokens::B::id, PluginTest::Tokens::NEWLINE::id,
+        PluginTest::Tokens::DEDENT::id, PluginTest::Tokens::B::id, PluginTest::Tokens::NEWLINE::id,
+        PluginTest::Tokens::DEDENT::id, PluginTest::Tokens::A::id, PluginTest::Tokens::NEWLINE::id
+    };
+    if (tokens.size() != std::size(expected) + 1) return 1;
+    for (std::size_t i = 0; i < std::size(expected); ++i)
+        if (tokens[i].meta().name() != expected[i]) return 2;
+    if (tokens[2].meta().startpos() != 4 || tokens[2].meta().line() != 2) return 5;
+    PluginTest::Lexer lazy_lexer;
+    PluginTest::Lexer::lazy_iterator lazy(lazy_lexer, "a\n  b\n    b\n  b\na\n");
+    for (std::size_t i = 0; i < std::size(expected); ++i, ++lazy)
+        if (lazy.isEnd() || lazy->meta().name() != expected[i]) return 8;
+    if (!lazy.isEnd()) return 9;
+    PluginTest::Lexer at_eof;
+    const auto& unfinished = at_eof.makeTokens("a\n  b");
+    if (unfinished.size() < 2 || unfinished[unfinished.size() - 2].meta().name() != PluginTest::Tokens::DEDENT::id) return 3;
+    PluginTest::Lexer skipped;
+    const auto& without_ignored = skipped.makeTokens("azb");
+    if (without_ignored.size() != 3 || without_ignored[0].meta().name() != PluginTest::Tokens::A::id ||
+        without_ignored[1].meta().name() != PluginTest::Tokens::B::id) return 4;
+    PluginTest::Lexer tabs;
+    const auto& tabbed = tabs.makeTokens("a\n\tb\n");
+    if (tabbed.size() != 7 || tabbed[2].meta().name() != PluginTest::Tokens::INDENT::id ||
+        tabbed[5].meta().name() != PluginTest::Tokens::DEDENT::id) return 6;
+    try {
+        PluginTest::Lexer invalid;
+        invalid.makeTokens("a\n    b\n  b");
+        return 7;
+    } catch (const std::runtime_error&) {}
+}
+)cpp";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + std::string(ROOT_DIR) +
+        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + std::string(ROOT_DIR) +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLSharedTokenDeclarationsRejectConflictingTypes) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"isc(
+A { match 'a'; ctx.shared.level: int }
+B { match 'b'; ctx.shared.level: str }
+main: A B;
+)isc");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-shared-types-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    try {
+        convert(*descriptor, tree, metadata, directory);
+        FAIL() << "conflicting ctx.shared declarations were accepted";
+    } catch (const std::invalid_argument& error) {
+        EXPECT_NE(std::string(error.what()).find("conflicting types for ctx.shared.level"), std::string::npos);
+    }
 }
 
 TEST(AlgorithmPlugin, CapturedLiteralChoiceRetainsRuleAndTokenPayloads) {

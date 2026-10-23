@@ -547,11 +547,13 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
             if (const auto* statement = std::get_if<UAST::Node<UAST::stmt>>(&entry)) {
                 auto code = action(*statement);
                 out.features.push_back(code);
-                auto member = std::make_shared<AST::RuleMember>();
-                member->value = AST::RuleMemberGroup{}; // zero-width action, preserves source order
-                member->position = position(*statement);
-                member->features.push_back(std::move(code));
-                out.rule_members.push_back(std::move(member));
+                if (!corelib::text::isUpper(fullname.back())) {
+                    auto member = std::make_shared<AST::RuleMember>();
+                    member->value = AST::RuleMemberGroup{}; // zero-width parser action
+                    member->position = position(*statement);
+                    member->features.push_back(std::move(code));
+                    out.rule_members.push_back(std::move(member));
+                }
             } else if (const auto* match = std::get_if<UAST::Node<UAST::advanced_rule_regular_match>>(&entry)) {
                 const auto& syntax = payload(*match);
                 auto members = convertValues(syntax.patterns, [this](const Value& v) { return convertValue(v); });

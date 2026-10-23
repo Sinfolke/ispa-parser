@@ -10,6 +10,8 @@ import hash;
 import logging;
 import corelib;
 import constants;
+import Parser.Base;
+import UAST.PyAST;
 import std;
 
 // -----------------------------------------------------------------------
@@ -57,6 +59,26 @@ import std;
 // bit-for-bit.
 // -----------------------------------------------------------------------
 namespace {
+
+    std::set<std::string> pythonClasses(const LangAPI::Declarations& declarations, const std::string& prefix = "") {
+        std::set<std::string> names;
+        for (const auto& declaration : declarations) {
+            if (declaration.isNamespace()) {
+                const auto& ns = declaration.getNamespace();
+                const auto nested = pythonClasses(ns.declarations, prefix + ns.name + ".");
+                names.insert(nested.begin(), nested.end());
+            } else if (declaration.isClass()) {
+                const auto& cls = declaration.getClass();
+                std::string name = prefix;
+                for (const auto& part : cls.name.path) if (const auto* value = std::get_if<std::string>(&part)) {
+                    if (name.size() > prefix.size()) name += ".";
+                    name += *value;
+                }
+                names.insert(name);
+            }
+        }
+        return names;
+    }
 
     // Cheap key for the part of DFADebug that comes from char_origin.
     struct OriginKey {
@@ -376,6 +398,40 @@ namespace LangRepr {
         // change semantic table to raw Statements
         for (const auto &semantic_state : semantic_table) {
             LangAPI::Statements statements = semantic_state.statements;
+            const auto &instance_symbol = std::get<LangAPI::Symbol>(semantic_state.instance_value.name);
+            stdu::vector<std::string> token_name;
+            for (const auto& part : instance_symbol.path) {
+                if (!std::holds_alternative<std::string>(part)) { token_name.clear(); break; }
+                token_name.push_back(std::get<std::string>(part));
+            }
+            bool has_token_actions = false;
+            if (auto found = tree.getTreeMap().find(token_name); found != tree.getTreeMap().end()) {
+                std::set<std::string> locals;
+                std::set<std::string> objects;
+                const auto classes = pythonClasses(tree.getPythonDeclarations());
+                for (const auto& feature : found->second.features) if (auto action = std::get_if<AST::PythonAction>(&feature)) {
+                    if (!has_token_actions) {
+                        LangAPI::Expression end = LangAPI::Symbol::createExpression(LangAPI::Symbol{"start"});
+                        end.emplace_back(LangAPI::ExpressionElement::Add);
+                        auto length = LangAPI::Symbol::createExpression(LangAPI::Symbol{"length"});
+                        end.insert(end.end(), length.begin(), length.end());
+                        statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                            .name = "ispa_token_text", .type = LangAPI::ValueType::String,
+                            .value = LangAPI::Inheritance::createExpression(LangAPI::Inheritance{
+                                .name = LangAPI::Symbol{"std", "string"},
+                                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"start"}),
+                                    end}})}));
+                        statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                            .name = "ispa_token_result",
+                            .type = LangAPI::Type{instance_symbol},
+                            .value = LangAPI::Inheritance::createExpression(semantic_state.instance_value)}));
+                        has_token_actions = true;
+                    }
+                    auto code = Parser::ParserBase::convertPythonAction(*action, locals, false, classes, &objects,
+                        corelib::text::join(token_name, "."));
+                    statements.insert(statements.end(), code.begin(), code.end());
+                }
+            }
             LangAPI::RValue next_state;
             std::visit([&](const auto &target) {
                 using T = std::decay_t<decltype(target)>;
@@ -394,7 +450,6 @@ namespace LangRepr {
                 }
 
             }, semantic_state.next_state);
-            const auto &instance_symbol = std::get<LangAPI::Symbol>(semantic_state.instance_value.name);
             LangAPI::Symbol tokens_enum_value = {instance_symbol.path};
             tokens_enum_value.path.insert(tokens_enum_value.path.begin(), "Tokens");
             tokens_enum_value.path.insert(tokens_enum_value.path.end(), "id");
@@ -409,7 +464,8 @@ namespace LangRepr {
                             LangAPI::Symbol::createExpression(LangAPI::Symbol {"length"}),
                             LangAPI::Symbol::createExpression(LangAPI::Symbol {"line"}),
                             LangAPI::Symbol::createExpression(tokens_enum_value),
-                            LangAPI::Inheritance::createExpression(semantic_state.instance_value)
+                            has_token_actions ? LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_token_result"}) :
+                                LangAPI::Inheritance::createExpression(semantic_state.instance_value)
                         }
                     })
                 }}
@@ -427,7 +483,7 @@ namespace LangRepr {
                 std::make_pair(LangAPI::Type {LangAPI::ValueType::Int}, "length"),
                 std::make_pair(LangAPI::Type {LangAPI::ValueType::Int}, "line"),
             },
-            .is_static = true
+            .is_static = false
         };
         LangAPI::Switch switch_;
         switch_.expression = LangAPI::Symbol::createExpression(LangAPI::Symbol {"state"});
@@ -443,6 +499,211 @@ namespace LangRepr {
         holder.push(LangAPI::TypeAlias::createDeclaration(createTypeToken()));
         Tlog::Branch b(logger, "LangRepr/ConstructLexer.log");
         auto lexer = createLexerClass();
+        const auto memberCall = [](const std::string& object, const std::string& method,
+                                   stdu::vector<LangAPI::Expression> args = {}) -> LangAPI::Expression {
+            LangAPI::StorageSymbol storage;
+            storage.what = LangAPI::Symbol::createExpression(LangAPI::Symbol{object});
+            storage.path.emplace_back(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{method}), .args = std::move(args)});
+            return LangAPI::StorageSymbol::createExpression(storage);
+        };
+        const auto callStatement = [](const LangAPI::Expression& expression) {
+            return LangAPI::Expression::createStatement(expression);
+        };
+        LangAPI::Type pending_type{LangAPI::Symbol{"std", "vector"}};
+        pending_type.template_parameters.push_back(LangAPI::Type{LangAPI::Symbol{"Token"}});
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(
+            LangAPI::Variable{.name = "ispa_pending_tokens", .type = pending_type})), LangAPI::Visibility::Private);
+        namespace py = UAST::py;
+        const auto sharedName = [](const py::ExprPtr& expression) -> std::string {
+            auto field = expression ? expression->get<py::Attribute>() : nullptr;
+            auto shared = field && field->value ? field->value->get<py::Attribute>() : nullptr;
+            auto ctx = shared && shared->value ? shared->value->get<py::Name>() : nullptr;
+            return ctx && ctx->id == "ctx" && shared->attr == "shared" ? field->attr : std::string{};
+        };
+        const auto literalType = [&](auto&& self, const py::ExprPtr& expression) -> LangAPI::Type {
+            if (!expression) return LangAPI::ValueType::Undef;
+            if (auto constant = expression->get<py::Constant>()) {
+                switch (constant->kind) {
+                    case py::ConstantKind::Bool: return LangAPI::ValueType::Bool;
+                    case py::ConstantKind::Int: return LangAPI::ValueType::Int;
+                    case py::ConstantKind::Float: return LangAPI::ValueType::Float;
+                    case py::ConstantKind::Str: return LangAPI::ValueType::String;
+                    default: return LangAPI::ValueType::Undef;
+                }
+            }
+            if (auto list = expression->get<py::List>(); list && !list->elts.empty()) {
+                auto element = self(self, list->elts.front());
+                if (element == LangAPI::ValueType::Undef ||
+                    !std::ranges::all_of(list->elts, [&](const auto& value) { return self(self, value) == element; }))
+                    return LangAPI::ValueType::Undef;
+                LangAPI::Type result{LangAPI::ValueType::Array};
+                result.template_parameters.push_back(element);
+                return result;
+            }
+            if (auto dict = expression->get<py::Dict>(); dict && !dict->keys.empty() && !dict->values.empty()) {
+                auto key = self(self, dict->keys.front()), value = self(self, dict->values.front());
+                if (key == LangAPI::ValueType::Undef || value == LangAPI::ValueType::Undef ||
+                    !std::ranges::all_of(dict->keys, [&](const auto& item) { return self(self, item) == key; }) ||
+                    !std::ranges::all_of(dict->values, [&](const auto& item) { return self(self, item) == value; }))
+                    return LangAPI::ValueType::Undef;
+                LangAPI::Type result{LangAPI::ValueType::Map};
+                result.template_parameters.push_back(key);
+                result.template_parameters.push_back(value);
+                return result;
+            }
+            return LangAPI::ValueType::Undef;
+        };
+        std::set<std::string> shared_names;
+        std::map<std::string, LangAPI::Type> declared_types;
+        std::map<std::string, std::vector<LangAPI::Type>> inferred_types;
+        const auto recordDeclaredType = [&](const std::string& name, const LangAPI::Type& type) {
+            shared_names.insert(name);
+            if (auto found = declared_types.find(name); found != declared_types.end() && found->second != type)
+                throw std::invalid_argument("conflicting types for ctx.shared." + name);
+            declared_types.insert_or_assign(name, type);
+        };
+        const auto recordInferredType = [&](const std::string& name, const LangAPI::Type& type) {
+            shared_names.insert(name);
+            if (type != LangAPI::ValueType::Undef) inferred_types[name].push_back(type);
+        };
+        const auto scanStatements = [&](auto&& self, const py::StmtList& statements) -> void {
+            for (const auto& statement : statements) if (statement) std::visit([&](const auto& item) {
+                using T = std::decay_t<decltype(item)>;
+                if constexpr (std::is_same_v<T, py::Assign>) {
+                    for (const auto& target : item.targets) if (auto name = sharedName(target); !name.empty()) {
+                        recordInferredType(name, literalType(literalType, item.value));
+                    }
+                } else if constexpr (std::is_same_v<T, py::AnnAssign>) {
+                    if (auto name = sharedName(item.target); !name.empty()) {
+                        const auto declared = Parser::ParserBase::convertPythonType(item.annotation);
+                        if (declared == LangAPI::ValueType::Undef || declared == LangAPI::ValueType::Void)
+                            throw std::invalid_argument("ctx.shared." + name + " needs a concrete type");
+                        recordDeclaredType(name, declared);
+                        recordInferredType(name, literalType(literalType, item.value));
+                    }
+                } else if constexpr (std::is_same_v<T, py::If> || std::is_same_v<T, py::While>) {
+                    self(self, item.body); self(self, item.orelse);
+                }
+            }, statement->kind);
+        };
+        for (const auto& [name, rule] : tree.getTreeMap())
+            if (AST::RuleMemberName{.name = name}.isTerminal())
+                for (const auto& feature : rule.features)
+                    if (auto action = std::get_if<AST::PythonAction>(&feature))
+                        if (auto module = std::get_if<py::Module>(&action->code))
+                            scanStatements(scanStatements, module->body);
+        for (const auto& name : shared_names) {
+            auto declared = declared_types.find(name);
+            auto inferred = inferred_types.find(name);
+            if (declared == declared_types.end() && inferred == inferred_types.end())
+                throw std::invalid_argument("ctx.shared." + name + " requires a type annotation or literal assignment");
+            if (declared == declared_types.end() && !std::ranges::all_of(inferred->second,
+                [&](const auto& type) { return type == inferred->second.front(); }))
+                throw std::invalid_argument("conflicting inferred types for ctx.shared." + name);
+            const auto& type = declared != declared_types.end() ? declared->second : inferred->second.front();
+            LangAPI::Expression initial;
+            if (type == LangAPI::ValueType::Int) initial = LangAPI::Int::createExpression(LangAPI::Int{.value = 0});
+            else if (type == LangAPI::ValueType::Float) initial = LangAPI::Float::createExpression(LangAPI::Float{.value = 0});
+            else if (type == LangAPI::ValueType::Bool) initial = LangAPI::Bool::createExpression(LangAPI::Bool{.value = false});
+            else if (type == LangAPI::ValueType::String) initial = LangAPI::String::createExpression(LangAPI::String{.value = ""});
+            lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(
+                LangAPI::Variable{.name = "ispa_shared_" + name, .type = type, .value = initial})),
+                LangAPI::Visibility::Private);
+        }
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Variable::createDeclaration(
+            LangAPI::Variable{.name = "ispa_skip_token", .type = LangAPI::ValueType::Bool,
+                .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = false})})), LangAPI::Visibility::Private);
+        LangAPI::Function skip_token;
+        skip_token.name = "ispa_skip_current_token";
+        skip_token.type = LangAPI::ValueType::Void;
+        skip_token.statements = LangAPI::VariableAssignment::createStatements(LangAPI::VariableAssignment{
+            .name = LangAPI::Symbol{"ispa_skip_token"},
+            .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = true})});
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(skip_token)),
+            LangAPI::Visibility::Private);
+        LangAPI::Function token_error;
+        token_error.name = "ispa_token_error";
+        token_error.type = LangAPI::ValueType::Void;
+        token_error.parameters = {{LangAPI::Type{LangAPI::ValueType::String}, "message"}};
+        token_error.statements = LangAPI::Throw::createStatements(LangAPI::Throw{
+            .throw_value = LangAPI::IspaLibFunctionCall::createExpression(LangAPI::IspaLibFunctionCall{
+                .symbol = LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::Error},
+                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"message"})}})});
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(token_error)),
+            LangAPI::Visibility::Private);
+        LangAPI::Statements flush;
+        flush.push_back(callStatement(memberCall("tokens", "insert", {
+            memberCall("tokens", "end"), memberCall("ispa_pending_tokens", "begin"),
+            memberCall("ispa_pending_tokens", "end")})));
+        flush.push_back(callStatement(memberCall("ispa_pending_tokens", "clear")));
+        LangAPI::Function push_token;
+        push_token.name = "on_token";
+        push_token.type = LangAPI::ValueType::Void;
+        push_token.parameters = {{LangAPI::Type{LangAPI::Symbol{"Token&&"}}, "token"}};
+        push_token.override = true;
+        push_token.statements.push_back(LangAPI::If::createStatement(LangAPI::If{
+            LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_skip_token"}), {},
+            {callStatement(LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"append_token"}),
+                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"token"})}}))}}));
+        push_token.statements.push_back(LangAPI::VariableAssignment::createStatement(LangAPI::VariableAssignment{
+            .name = LangAPI::Symbol{"ispa_skip_token"},
+            .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = false})}));
+        push_token.statements.insert(push_token.statements.end(), flush.begin(), flush.end());
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(push_token)),
+            LangAPI::Visibility::Public);
+        LangAPI::Function push_eof;
+        push_eof.name = "on_eof";
+        push_eof.type = LangAPI::ValueType::Void;
+        push_eof.override = true;
+        auto eof = tree.getTreeMap().end();
+        for (auto it = tree.getTreeMap().begin(); it != tree.getTreeMap().end(); ++it)
+            if (!it->first.empty() && it->first.back() == "END_INPUT") {
+                if (eof != tree.getTreeMap().end())
+                    throw std::invalid_argument("multiple END_INPUT token rules");
+                eof = it;
+            }
+        if (eof != tree.getTreeMap().end()) {
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "start", .type = LangAPI::ValueType::NonOwnedString,
+                .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"std", "strchr"}),
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"_in"}),
+                        LangAPI::Int::createExpression(LangAPI::Int{.value = 0})}})}));
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "start_pos", .type = LangAPI::ValueType::Int,
+                .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"std", "strlen"}),
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"_in"})}})}));
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "length", .type = LangAPI::ValueType::Int,
+                .value = LangAPI::Int::createExpression(LangAPI::Int{.value = 0})}));
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "line", .type = LangAPI::ValueType::Int,
+                .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                    .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"__line"}),
+                    .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"start"})}})}));
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "ispa_token_text", .type = LangAPI::ValueType::String,
+                .value = LangAPI::String::createExpression(LangAPI::String{.value = ""})}));
+            LangAPI::Symbol eof_type{"Types"};
+            for (const auto& part : eof->first) eof_type.path.emplace_back(part);
+            push_eof.statements.push_back(LangAPI::Variable::createStatement(LangAPI::Variable{
+                .name = "ispa_token_result", .type = LangAPI::Type{eof_type}}));
+            std::set<std::string> locals, objects;
+            const auto classes = pythonClasses(tree.getPythonDeclarations());
+            for (const auto& feature : eof->second.features)
+                if (auto action = std::get_if<AST::PythonAction>(&feature)) {
+                    auto code = Parser::ParserBase::convertPythonAction(*action, locals, false, classes, &objects,
+                        corelib::text::join(eof->first, "."));
+                    push_eof.statements.insert(push_eof.statements.end(), code.begin(), code.end());
+                }
+        }
+        push_eof.statements.insert(push_eof.statements.end(), flush.begin(), flush.end());
+        push_eof.statements.push_back(callStatement(memberCall("tokens", "emplace_back")));
+        lexer.data.emplace_back(std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(push_eof)),
+            LangAPI::Visibility::Public);
         if (std::ranges::any_of(tree.getTreeMap(), [](const auto& entry) { return entry.second.external.has_value(); })) {
             LangAPI::Function external;
             external.name = "hasExternalRules";
@@ -505,6 +766,26 @@ namespace LangRepr {
             }
         }
 
+        LangAPI::Lambda semantic_callback;
+        semantic_callback.parameters = {
+            {LangAPI::Type{LangAPI::ValueType::Int}, "state"},
+            {LangAPI::Type{LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::DfaCaptures,
+                .Const = true, .Reference = true}}, "captures"},
+            {LangAPI::Type{LangAPI::ValueType::Int}, "start_pos"},
+            {LangAPI::Type{LangAPI::ValueType::NonOwnedString}, "start"},
+            {LangAPI::Type{LangAPI::ValueType::Int}, "length"},
+            {LangAPI::Type{LangAPI::ValueType::Int}, "line"}
+        };
+        semantic_callback.statements = LangAPI::Return::createStatements(LangAPI::Return{
+            .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"semantic_action_exec"}),
+                .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"state"}),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{"captures"}),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{"start_pos"}),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{"start"}),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{"length"}),
+                    LangAPI::Symbol::createExpression(LangAPI::Symbol{"line"})}})});
+
         lexer.data.push_back(
             std::make_pair(
                 std::make_shared<LangAPI::Declaration>(LangAPI::Function::createDeclaration(LangAPI::Function {
@@ -527,7 +808,7 @@ namespace LangRepr {
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"char_class_table"}),
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"action_table"}),
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"tdfa_registers"}),
-                                    LangAPI::Symbol::createExpression(LangAPI::Symbol {"semantic_action_exec"}),
+                                    LangAPI::Lambda::createExpression(semantic_callback),
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"debug_array"}),
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"debug_index"}),
                                     LangAPI::Symbol::createExpression(LangAPI::Symbol {"pos"}),

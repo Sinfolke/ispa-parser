@@ -15,7 +15,7 @@ def main():
     generator = args.generator.resolve()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    manifest = (root / "bootstrapped" / "PyRawParser.ispa-export").read_bytes()
+    manifest = (root / "ispa-compat.ispa-export").read_bytes()
     sources = [root / "entry.isc", *sorted((root / "grammar").rglob("*.isc"))]
     # The bootstrap API predates module-qualified types. These modules have
     # unique declarations; flatten only their module/import directives.

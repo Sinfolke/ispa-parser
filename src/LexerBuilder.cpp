@@ -12,6 +12,7 @@ import Dump;
 import args;
 import logging;
 import constants;
+import UAST.PyAST;
 import cpuf.op;
 import cpuf.printf;
 import std;
@@ -115,9 +116,89 @@ void LexerBuilder::build() {
 }
 auto LexerBuilder::getDataBlocks() const -> ParserIR::DataBlockList {
     ParserIR::DataBlockList list;
+    namespace py = UAST::py;
+    const auto fieldName = [](const py::ExprPtr& expression) -> std::string {
+        auto field = expression ? expression->get<py::Attribute>() : nullptr;
+        auto ast = field && field->value ? field->value->get<py::Attribute>() : nullptr;
+        auto ctx = ast && ast->value ? ast->value->get<py::Name>() : nullptr;
+        return ctx && ctx->id == "ctx" && ast->attr == "ast" ? field->attr : std::string{};
+    };
     for (const auto& [name, rule] : ast) {
         if (rule.external_token || corelib::text::isLower(name.back())) continue;
-        list.emplace(name, ParserIR::dataBlock(rule.data_block));
+        auto data = ParserIR::dataBlock(rule.data_block);
+        std::map<std::string, LangAPI::Type> locals;
+        auto infer = [&](auto&& self, const py::ExprPtr& value) -> LangAPI::Type {
+            if (!value) return LangAPI::ValueType::Undef;
+            if (auto literal = value->get<py::Constant>()) {
+                switch (literal->kind) {
+                    case py::ConstantKind::Int: return LangAPI::ValueType::Int;
+                    case py::ConstantKind::Float: return LangAPI::ValueType::Float;
+                    case py::ConstantKind::Bool: return LangAPI::ValueType::Bool;
+                    case py::ConstantKind::Str: return LangAPI::ValueType::String;
+                    default: return LangAPI::ValueType::Undef;
+                }
+            }
+            if (auto variable = value->get<py::Name>()) {
+                if (auto found = locals.find(variable->id); found != locals.end()) return found->second;
+            }
+            if (auto unary = value->get<py::UnaryExpr>())
+                return unary->op == py::UnaryOp::Not ? LangAPI::Type{LangAPI::ValueType::Bool} : self(self, unary->operand);
+            if (auto binary = value->get<py::BinaryExpr>()) {
+                auto left = self(self, binary->left), right = self(self, binary->right);
+                return left == LangAPI::ValueType::Float || right == LangAPI::ValueType::Float ?
+                    LangAPI::Type{LangAPI::ValueType::Float} : left;
+            }
+            if (value->get<py::Compare>() || value->get<py::BoolExpr>()) return LangAPI::ValueType::Bool;
+            if (auto field = fieldName(value); !field.empty() && data.is_inclosed_map()) {
+                auto& fields = data.getInclosedMap();
+                if (auto found = fields.find(field); found != fields.end()) return found->second.second;
+            }
+            return LangAPI::ValueType::Undef;
+        };
+        const auto add = [&](const py::ExprPtr& target, const py::ExprPtr& value,
+                             const py::ExprPtr& annotation) {
+            auto type = infer(infer, value);
+            const auto field = fieldName(target);
+            const auto variable = target ? target->get<py::Name>() : nullptr;
+            if (!field.empty() || variable) {
+                if (annotation) {
+                    auto named = annotation->get<py::Name>();
+                    if (!named) throw std::invalid_argument("token field annotation must be int, float, bool or str");
+                    if (named->id == "int") type = LangAPI::ValueType::Int;
+                    else if (named->id == "float") type = LangAPI::ValueType::Float;
+                    else if (named->id == "bool") type = LangAPI::ValueType::Bool;
+                    else if (named->id == "str") type = LangAPI::ValueType::String;
+                    else throw std::invalid_argument("token field annotation must be int, float, bool or str");
+                }
+            }
+            if (!field.empty()) {
+                if (type == LangAPI::ValueType::Undef)
+                    throw std::invalid_argument("cannot infer token ctx.ast." + field + "; add a field annotation");
+                if (data.is_regular_data_block())
+                    throw std::invalid_argument("token action fields cannot extend a scalar token value");
+                if (!data.is_inclosed_map()) data.value = ParserIR::inclosed_map{};
+                auto& fields = data.getInclosedMap();
+                if (auto found = fields.find(field); found != fields.end()) {
+                    if (annotation && found->second.second != type)
+                        throw std::invalid_argument("conflicting annotation for token ctx.ast." + field);
+                } else fields.emplace(field, ParserIR::regular_data_block{{}, type});
+            } else if (variable)
+                locals.insert_or_assign(variable->id, std::move(type));
+        };
+        const auto walk = [&](auto&& self, const py::StmtList& statements) -> void {
+            for (const auto& statement : statements) if (statement) std::visit([&](const auto& item) {
+                using T = std::decay_t<decltype(item)>;
+                if constexpr (std::is_same_v<T, py::Assign>) {
+                    for (const auto& target : item.targets) add(target, item.value, {});
+                } else if constexpr (std::is_same_v<T, py::AnnAssign>) add(item.target, item.value, item.annotation);
+                else if constexpr (std::is_same_v<T, py::If> || std::is_same_v<T, py::While>) {
+                    self(self, item.body); self(self, item.orelse);
+                }
+            }, statement->kind);
+        };
+        for (const auto& feature : rule.features) if (auto action = std::get_if<AST::PythonAction>(&feature))
+            if (auto module = std::get_if<py::Module>(&action->code)) walk(walk, module->body);
+        list.emplace(name, std::move(data));
     }
     return list;
 }
