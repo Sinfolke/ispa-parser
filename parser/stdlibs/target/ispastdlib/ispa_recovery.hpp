@@ -50,6 +50,8 @@ struct Diagnostic {
     std::size_t offset = std::numeric_limits<std::size_t>::max();
     std::size_t length = 0;
     std::string message;
+    std::string code;
+    std::vector<std::string> notes;
 };
 
 struct State {

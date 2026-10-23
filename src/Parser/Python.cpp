@@ -362,9 +362,10 @@ struct PythonConverter {
                 if (action_context) if (auto method = x.func ? x.func->template get<py::Attribute>() : nullptr) {
                     if (auto owner = method->value ? method->value->template get<py::Name>() : nullptr; owner && owner->id == "ctx") {
                         const auto& name = method->attr;
-                        const bool argument = name == "error" || name == "at";
-                        if (!failure_context || (!argument && name != "sync" && name != "sync_tokens" && name != "skip" && name != "insert" &&
-                            name != "replace" && name != "retry" && name != "abort"))
+                        const bool failure_method = name == "error" || name == "note" || name == "sync" || name == "sync_tokens" ||
+                            name == "skip" || name == "insert" || name == "replace" || name == "retry" || name == "abort";
+                        const bool action_method = name == "at" || name == "mark" || name == "restore" || name == "commit";
+                        if ((failure_method && !failure_context) || (!failure_method && !action_method))
                             unsupported(e.pos, "unknown context method: " + name);
                         if (name == "sync" || name == "sync_tokens") {
                             if (x.args.empty()) unsupported(e.pos, "ctx." + name + " requires at least one boundary");
@@ -373,8 +374,25 @@ struct PythonConverter {
                                 if (!literal || literal->kind != py::ConstantKind::Str || literal->value.empty())
                                     unsupported(e.pos, "ctx." + name + " boundaries must be nonempty string literals");
                             }
-                        } else if (x.args.size() != (argument ? 1u : 0u)) unsupported(e.pos, "wrong argument count for ctx." + name);
-                        if (name == "at" && x.args.size() == 1) {
+                        } else if (name == "error") {
+                            if (x.args.empty() || x.args.size() == 3 || x.args.size() > 4)
+                                unsupported(e.pos, "ctx.error requires a message, optional code, and optional offset/length pair");
+                            if (x.args.size() == 2 || x.args.size() == 4) {
+                                auto code = x.args[1] ? x.args[1]->template get<py::Constant>() : nullptr;
+                                if (!code || code->kind != py::ConstantKind::Str || code->value.empty())
+                                    unsupported(e.pos, "ctx.error diagnostic code must be a nonempty string literal");
+                            }
+                        } else if (name == "note") {
+                            if (x.args.size() != 1) unsupported(e.pos, "ctx.note requires one message");
+                        } else if (name == "at") {
+                            if (x.args.empty() || x.args.size() > 2) unsupported(e.pos, "ctx.at requires a token and optional lookahead offset");
+                        } else if (name == "mark" || name == "restore" || name == "commit") {
+                            if (x.args.size() != 1) unsupported(e.pos, "ctx." + name + " requires one checkpoint name");
+                            auto label = x.args.front() ? x.args.front()->template get<py::Constant>() : nullptr;
+                            if (!label || label->kind != py::ConstantKind::Str || label->value.empty())
+                                unsupported(e.pos, "ctx." + name + " checkpoint name must be a nonempty string literal");
+                        } else if (x.args.size() != 0) unsupported(e.pos, "ctx." + name + " takes no arguments");
+                        if (name == "at") {
                             // Bare and dotted token names are strings in this API;
                             // ordinary bound variables remain ordinary expressions.
                             std::function<std::string(const py::ExprPtr&)> tokenName = [&](const py::ExprPtr& arg) -> std::string {
@@ -392,6 +410,7 @@ struct PythonConverter {
                                 la::FunctionCall call;
                                 call.name = std::make_shared<la::Symbol>("at");
                                 call.args = {la::String::createExpression(la::String{.value = token})};
+                                if (x.args.size() == 2) call.args.push_back(expr(x.args[1]));
                                 la::StorageSymbol storage;
                                 storage.what = group(expr(method->value));
                                 storage.path.emplace_back(call);

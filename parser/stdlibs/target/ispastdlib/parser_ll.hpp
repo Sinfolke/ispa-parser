@@ -18,8 +18,12 @@
 #include <ispastdlib/external.hpp>
 
 #include <optional>
+#include <algorithm>
+#include <cstddef>
+#include <stdexcept>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 #include <map>
 #include <cctype>
@@ -42,17 +46,78 @@ namespace ISPA_STD {
         }
 
     protected:
+        static constexpr std::size_t max_action_lookahead = 64;
+        static constexpr std::size_t max_action_checkpoints = 32;
+
+        template<class IT>
+        static bool context_at(IT candidate, std::string_view spelling, std::size_t lookahead,
+                               const char* (*token_name)(std::size_t)) {
+            if (lookahead > max_action_lookahead)
+                throw std::out_of_range("ctx.at lookahead exceeds 64 tokens");
+            for (std::size_t i = 0; i < lookahead; ++i) {
+                if (candidate.isEnd()) return false;
+                ++candidate;
+            }
+            if (candidate.isEnd()) return false;
+            const auto& meta = candidate->meta();
+            if (meta.start() && std::string_view(meta.start(), meta.length()) == spelling) return true;
+            if (!token_name) return false;
+            if constexpr (requires { Token::ambiguous_id; })
+                if (Recovery::tokenId(*candidate) == Token::ambiguous_id) return false;
+            std::string name(spelling);
+            for (std::size_t i = 0; (i = name.find("::", i)) != std::string::npos;)
+                name.replace(i, 2, ".");
+            const std::string_view actual = token_name(Recovery::tokenId(*candidate));
+            return actual == name || (actual.size() > name.size() && actual.ends_with(name) &&
+                actual[actual.size() - name.size() - 1] == '.');
+        }
+
+        template<class IT, class AST>
+        struct ActionCheckpoint {
+            IT& pos;
+            std::vector<std::pair<std::string, IT>> checkpoints;
+
+            void mark(const std::string& name) {
+                if (name.empty()) throw std::invalid_argument("checkpoint name cannot be empty");
+                if (checkpoints.size() >= max_action_checkpoints)
+                    throw std::length_error("action checkpoint limit (32) exceeded");
+                checkpoints.emplace_back(name, pos);
+            }
+            void restore(const std::string& name) {
+                const auto found = std::find_if(checkpoints.rbegin(), checkpoints.rend(),
+                    [&](const auto& checkpoint) { return checkpoint.first == name; });
+                if (found == checkpoints.rend())
+                    throw std::logic_error("unknown action checkpoint '" + name + "'");
+                const auto index = checkpoints.size() - 1 - static_cast<std::size_t>(found - checkpoints.rbegin());
+                pos = checkpoints[index].second;
+                checkpoints.erase(checkpoints.begin() + static_cast<std::ptrdiff_t>(index + 1), checkpoints.end());
+            }
+            void commit(const std::string& name) {
+                const auto found = std::find_if(checkpoints.rbegin(), checkpoints.rend(),
+                    [&](const auto& checkpoint) { return checkpoint.first == name; });
+                if (found == checkpoints.rend())
+                    throw std::logic_error("unknown action checkpoint '" + name + "'");
+                const auto index = checkpoints.size() - 1 - static_cast<std::size_t>(found - checkpoints.rbegin());
+                checkpoints.erase(checkpoints.begin() + static_cast<std::ptrdiff_t>(index), checkpoints.end());
+            }
+        };
+
         // Contexts borrow invocation-local storage. Cursor and AST changes are
         // immediately visible to subsequent matches and to the rule's caller.
         template<class IT, class AST>
-        struct RuleContext {
+        struct RuleContext : ActionCheckpoint<IT, AST> {
             IT& pos;
             AST& ast;
             const IT start_pos;
             const std::string rule;
+            const char* (*token_name)(std::size_t) = nullptr;
+
+            bool at(std::string_view spelling, std::size_t lookahead = 0) const {
+                return LLParser::template context_at<IT>(pos, spelling, lookahead, token_name);
+            }
         };
         template<class IT, class AST>
-        struct FailContext {
+        struct FailContext : ActionCheckpoint<IT, AST> {
             IT& pos;
             AST& ast;
             const IT start_pos;
@@ -65,13 +130,22 @@ namespace ISPA_STD {
             std::optional<Recovery::Mode> requested;
             std::size_t skipped = 0;
 
+            bool at(std::string_view spelling, std::size_t lookahead = 0) const {
+                return LLParser::template context_at<IT>(pos, spelling, lookahead, token_name);
+            }
+
             // Custom diagnostics use the same collection as automatic repairs.
-            void error(const std::string& message) {
+            void error(const std::string& message, const std::string& code = {},
+                       std::optional<std::size_t> source_offset = {},
+                       std::optional<std::size_t> source_length = {}) {
+                if (source_offset.has_value() != source_length.has_value())
+                    throw std::invalid_argument("ctx.error source span requires both offset and length");
                 if (recovery.exhausted()) { abort(); return; }
                 Recovery::Diagnostic diagnostic;
                 diagnostic.rule = rule;
                 diagnostic.expected_text = failed_rule;
                 diagnostic.message = message;
+                diagnostic.code = code;
                 if constexpr (requires { pos.sourcePosition(); pos.sourceOrigin(); }) {
                     // Do not force host tokenization of a broken foreign payload.
                     const auto* p = pos.sourcePosition();
@@ -86,21 +160,19 @@ namespace ISPA_STD {
                 } else if (source) {
                     diagnostic.offset = std::char_traits<char>::length(source);
                 }
+                if (source_offset) {
+                    const auto input_length = source ? std::char_traits<char>::length(source) : 0;
+                    if (*source_offset > input_length || *source_length > input_length - *source_offset)
+                        throw std::out_of_range("ctx.error source span is outside parser input");
+                    diagnostic.offset = *source_offset;
+                    diagnostic.length = *source_length;
+                }
                 recovery.diagnostics.push_back(std::move(diagnostic));
             }
-            bool at(std::string_view spelling) const {
-                if (pos.isEnd()) return false;
-                const auto& meta = pos->meta();
-                if (meta.start() && std::string_view(meta.start(), meta.length()) == spelling) return true;
-                if (!token_name) return false;
-                if constexpr (requires { Token::ambiguous_id; })
-                    if (Recovery::tokenId(*pos) == Token::ambiguous_id) return false;
-                std::string name(spelling);
-                for (std::size_t i = 0; (i = name.find("::", i)) != std::string::npos;)
-                    name.replace(i, 2, ".");
-                const std::string_view actual = token_name(Recovery::tokenId(*pos));
-                return actual == name || (actual.size() > name.size() && actual.ends_with(name) &&
-                    actual[actual.size() - name.size() - 1] == '.');
+            void note(const std::string& message) {
+                if (recovery.diagnostics.size() <= diagnostic_begin)
+                    throw std::logic_error("ctx.note requires a preceding ctx.error in this fail block");
+                recovery.diagnostics.back().notes.push_back(message);
             }
             template<class... Boundaries>
             void sync(Boundaries... boundaries) {
@@ -167,13 +239,18 @@ namespace ISPA_STD {
         };
         template<class IT, class AST>
         static auto rule_context(IT& pos, AST& ast, IT start, std::string rule) {
-            return RuleContext<IT, AST>{pos, ast, start, std::move(rule)};
+            return RuleContext<IT, AST>{{pos, {}}, pos, ast, start, std::move(rule)};
+        }
+        template<class IT, class AST>
+        static auto rule_context(IT& pos, AST& ast, IT start, std::string rule,
+                                 const char* (*token_name)(std::size_t)) {
+            return RuleContext<IT, AST>{{pos, {}}, pos, ast, start, std::move(rule), token_name};
         }
         template<class IT, class AST>
         auto fail_context(IT& pos, AST& ast, IT start,
                           std::string rule, std::string failed_rule,
                           const char* (*token_name)(std::size_t) = nullptr) {
-            return FailContext<IT, AST>{pos, ast, start, std::move(rule), std::move(failed_rule),
+            return FailContext<IT, AST>{{pos, {}}, pos, ast, start, std::move(rule), std::move(failed_rule),
                 recovery_state_, this->text, recovery_state_.diagnostics.size(), token_name};
         }
         template<class IT>

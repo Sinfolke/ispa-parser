@@ -11,7 +11,7 @@ It is built around one idea: **easy to use, without giving up performance, exten
 1. **Static generation.** Everything is computed at generation time. The grammar is compiled to DFA tables and plain code. Nothing is generated, interpreted, or compiled at runtime.
 2. **No dependencies.** A generated parser is self-contained. Drop the output into your project and build it; there is no runtime library to link or install.
 3. **Multi-language output.** Code generation goes through **LangAPI**, a language-agnostic IR, so the same grammar can target different languages. **C++17** is the only emitter today; Python is next.
-4. **Actions and error handling live next to the grammar, not inside it.** Semantic actions and fail blocks are separate constructs attached to rules by reference, so the grammar stays readable. *(Syntax is parsed; code generation for these is in progress, see [Status](#-current-state).)*
+4. **Extensible grammar descriptions.** Rules describe language structure and connect to generated parser code.
 5. **Scales from trivial to very large projects.** Incremental compilation regenerates only the parts that changed, and the planned module system lets you import, parametrize, and disable features of large shared grammars.
 6. **Works out of the box.** Generate, include, call. The generated API returns a typed AST with no post-parsing step or callbacks required.
 
@@ -23,17 +23,15 @@ It is built around one idea: **easy to use, without giving up performance, exten
 |---|---|
 | Compiler (frontend + backend) | Implemented; builds on **Windows** and **Linux** |
 | Bootstrap | **Done.** ISPA's own grammar is parsed by an ISPA-generated parser, which fully replaced the hand-written one |
-| Lexer (TDFA, AST-building tokens, acceptance-time Python actions) | **Done** |
+| Lexer (TDFA, AST-building tokens) | **Done** |
 | Parser (default mode) | Mostly correct; needs some changes and more tests |
 | Parser (LR-family modes) | Experimental; not yet stable |
 | Incremental generation | Implemented (regenerates changed parts only) |
 | C++17 target | Implemented; output compiles and runs |
-| Python semantic actions | Executable in LL advanced parser rules; Python subset supported by LangAPI |
-| Fail blocks (`fail name>(...) { ... }`) | Executable for required LL parser matches |
 | Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |
 | Grammar syntax error reporting | Automatic LL recovery and source diagnostics; syntax errors stop generation |
 
-The backend lowers **plain EBNF plus AST captures** to C++. LL also executes advanced parser rules and fail blocks with direct Python bodies and invocation-local `ctx` objects. The remaining grammar features above are being integrated into lowering.
+The backend lowers **plain EBNF plus AST captures** to C++. The remaining grammar features above are being integrated into lowering.
 
 ---
 
@@ -117,7 +115,6 @@ Flex + bison figures are steady state over 10 iterations.
 ## Lexer Capabilities
 - Matches tokens with a compact **TDFA** (tagged DFA) table, which keeps captures and actions inside a single automaton
 - Builds AST-like tokens natively during lexing. **Capture only what you need**
-- Semantic actions can be placed anywhere in a token; context-sensitive lexing is possible *(needs Advanced Rules)*
 - Matches tokens inside other tokens without losing structure, preserving each capture's data type
 - Matches non-terminals inside terminals during lexing, separately from parsing *(not yet implemented)*
 
@@ -125,187 +122,11 @@ Flex + bison figures are steady state over 10 iterations.
 - Generates parsers from the grammar ahead of time. The default parser mode is the stability target; alternative LR-family modes are experimental
 - Builds a fully typed, easy-to-traverse AST during parsing. No post-parsing pass or callbacks required
 
-## Shared by both
-- Nested rules, where one rule can encapsulate another
-- Semantic actions written as in-grammar Python pseudocode, with advanced rules *(in progress)*
-- Custom, context-sensitive error messages and recovery through fail blocks *(in progress)*
+## Advanced rules and fail blocks
 
-## Syntax example
+See the separate [Advanced Rules and Fail Blocks guide](concept/ADVANCED_RULES_AND_FAIL_BLOCKS.md).
 
-Advanced parser rules execute Python blocks between `match` statements when
-using the LL C++ backend. Their `ctx.ast` object becomes the rule's returned AST,
-so another rule can capture it in the usual way:
-
-```isc
-A: 'a';
-main: @ item {@};
-item {
-    ctx.ast.count = 0
-    match A -> captured;
-    ctx.ast.token = captured
-    ctx.ast.count += 1
-}
-```
-
-`ctx.pos` is the writable current token cursor; saving and restoring it controls
-where the next match starts. `ctx.ast` is the writable result being built.
-`ctx.start_pos` is a read-only copy of the rule-entry cursor, and `ctx.rule` is
-the read-only qualified name of the current rule. AST fields are inferred from
-assignments of literals, match bindings, and simple expressions. For other
-expressions, declare a field with a Python annotation, for example
-`ctx.ast.count: int = compute_count()`. Supported primitive annotations are
-`int`, `float`, `bool`, and `str`. A bare `return` or `return ctx.ast` returns the
-current result early. Locals persist between sequential Python blocks.
-
-Python helpers can also live in ordinary `.py` files next to the importing
-grammar. `import py helpers;` loads `helpers.py`; dotted paths such as
-`import py package.helpers as h;` load `package/helpers.py`. Imports are scoped
-to the grammar file that declares them. Imported functions and variables are
-lowered into generated C++ under `python::helpers` (or
-`python::package::helpers`), without a Python runtime.
-
-```python
-# helpers.py
-FACTOR = 2
-
-def scale(value: int) -> int:
-    return value * FACTOR
-```
-
-```isc
-import py helpers as h;
-main {
-    match 'x';
-    ctx.ast.result = h.scale(21)
-}
-```
-
-The initial subset supports functions with annotated parameters and returns,
-initialized module variables, and the expressions and control flow supported
-by ISPA's Python lowering. Types include `int`, `float`, `bool`, `str`,
-`list[T]`, `dict[K, V]`, and imported class names; function returns can also be
-`None`. Literal module variables can omit their annotation. Classes support
-fixed typed fields, `__init__`, instance methods, `@staticmethod`, and public
-inheritance. Constructor assignments can infer a field from a typed parameter
-or scalar literal; use `self.field: T = value` for other initializers.
-Helper files may use `from .internals import Token, RawToken, TokensToString`
-to access the native parser and ISPA standard library names declared in
-`parser/pystdlib/internals.py`. The file uses `__ispa_internal__("Cxx.Name")`
-directives; `__ispa_parser__` denotes the generated parser namespace. The
-converter resolves these names to C++ symbols without
-emitting Python declarations. Native template types can be annotated as
-`RawToken[T]`. Other Python imports inside helper files, other decorators,
-default parameters, and general keyword arguments are rejected with source locations. Imported
-function return types participate in AST field inference.
-
-Lists support `append`, `extend`, `insert`, `remove`, `pop`, `clear`, `copy`,
-`count`, `index` (including start/stop bounds), `reverse`, and stable `sort`
-(including a function `key` and `reverse=True`). Dictionaries support `clear`, `copy`, `get`,
-`setdefault`, `pop`, `update`, `keys`, `values`, `items`, and
-`fromkeys(keys, default)` (on `dict` or a dictionary instance).
-`update` also accepts keyword entries. `get` and `setdefault` require an explicit
-non-None default. `keys`, `values`, and `items` return snapshots. ISPA maps
-are unordered: insertion ordering, live dictionary views, and `popitem` are
-unsupported. Collection calls
-use LangAPI method operations; target converters emit native operations or
-ISPA standard-library helpers for Python-specific behavior.
-
-Fail blocks run for required matches selected by `%handler` or a rule's
-`%{handler}` binding. Their context shares the owning rule's AST and the failure
-cursor, and additionally exposes the read-only `ctx.failed_rule` qualified name
-of the expected production. `ctx.start_pos` still identifies the owning rule's
-entry. Moving the failure cursor requests a retry of the required match; leaving
-it unchanged accepts a missing value and continues. Retries are bounded by the
-runtime. Optional or zero-or-more matches do not invoke fail blocks.
-
-`ctx.at("=")` checks literal spelling. `ctx.at(ID)` and `ctx.at("ID")` also
-check token names; dotted or `::` qualified names are accepted. An unqualified
-name matches the token's final name component, while a qualified name matches
-the corresponding suffix of its full name. Bound variables passed to `at`
-retain their values.
-
-`ctx.sync("}", ";")` scans a lazy source cursor to an enclosing boundary,
-respecting nested Python delimiters, quoted strings and comments. It leaves
-the boundary for its owner. A listed semicolon is a hard boundary even inside
-an unclosed container. Scanning is limited to 4096 source bytes and the shared
-skip budget; exhaustion aborts recovery. Follow it with `ctx.insert()` to accept
-a missing expression instead of retrying the boundary. Eager token streams
-cannot use `sync`.
-
-`ctx.sync_tokens("NEWLINE", "DEDENT")` scans tokens instead of source bytes.
-It accepts one or more nonempty string literals, matched by spelling or token
-name with the same qualification rules as `ctx.at`. It leaves the first matching
-token for its owner and stops at EOF. It works with eager and lazy token streams,
-including synthetic indentation tokens. Every skipped token counts against the
-shared skip budget; exhaustion aborts recovery. It does not balance delimiters:
-include all boundaries that must be preserved. Follow it with `ctx.insert()` to
-accept a missing value, or `ctx.retry()` to retry at the boundary.
-
-Fail blocks can report `ctx.error("message")` and explicitly choose a repair:
-`ctx.skip()` skips one token; `ctx.insert()` accepts a missing value;
-`ctx.replace()` skips one token and accepts a missing value; `ctx.retry()` retries
-the required match; `ctx.abort()` stops recovery. An abort cannot be undone by
-`insert`, `retry`, or another synchronization call. These methods are available
-only in fail blocks, and diagnostics remain in the owning parser's `getErrors()`.
-
-Python expressions are direct: `${(a + 2) * b}`, `&= { count: 3 }`, and
-`{value}`. Expression entry points do not accept `p{...}` wrappers. Recovered
-missing expressions remain invalid and cannot be compiled.
-
-```isc
-fail missing {
-    ctx.ast.missing = ctx.failed_rule
-}
-item {
-    match %missing A;
-}
-```
-
-Parser action contexts belong to one invocation and must not escape it. With
-the LL C++ backend, advanced token rules may combine `match` patterns with Python actions.
-The actions run in source order when the complete token is accepted, after its
-capture values are available. They may update fields on `ctx.ast`; `ctx.rule`
-and `ctx.start_pos` are read-only. A new field needs a primitive annotation
-when its type cannot be inferred from a literal or local expression. Token
-actions cannot move `ctx.pos` or return early, and cannot change which pattern
-matches. An advanced token must contain a `match` and cannot be embedded inside
-another token. Advanced rules in the LR-family backends remain unsupported.
-
-Token actions may also use `ctx.shared.<field>` for state shared by successive
-tokens of one lexer instance. Declare a field with a Python type annotation,
-such as `ctx.shared.indents: list[int]`, in a token rule that uses it. Declarations
-of the same field across rules must agree. A literal assignment also provides a
-type for existing grammars. `ctx.text` contains the accepted token's source text,
-`ctx.line_prefix` the text before it on the current line, and `ctx.next_char`
-the character immediately after it (or an empty string at EOF). Calling
-`ctx.emit('TOKEN')` queues a zero-width token after the current token, and
-resolves its name in the current grammar module; a dotted name selects a token
-in another module.
-`ctx.skip()` suppresses the current token, while `ctx.error('message')` rejects
-the input. An advanced `END_INPUT` token with
-`match '';` runs its actions at EOF, before queued tokens and the EOF marker are
-emitted. Together these let grammar actions maintain an indentation stack and
-emit `INDENT` and `DEDENT` without a custom lexer subclass.
-
-Runtime parameters use an explicit `&(` marker: `name&(arg)` supplies arguments,
-while `name (other_rule)*` starts a separate grammar group. Declare types with
-`name&(arg: str, count: int)`. The existing `name>(arg)` spelling is also accepted.
-The same syntax applies to regular rules, advanced rules, tokens, and fail-block
-names. Combine grammar templates and runtime parameters as `name<T>&(arg)`.
-
-With the LL backend, rule parameters are ordinary generated function arguments.
-They can initialize AST fields and integer parameters can bound repetitions, as
-in `item&(count: int): @ A=count {@};`. A grammar template such as
-`wrapper<T>: @ T {@};` accepts a rule or token name, for example `wrapper<item>`;
-its generated node type retains that template argument.
-`${T}` also denotes a supplied grammar chunk. Lexer templates instantiate their
-automata for the supplied token rules and retain a shared templated node type.
-Typed token parameters are stored in lexer fields, configured through generated
-methods such as `lexer.setSTRINGParameters(quote)`. Acceptance actions and regular
-AST initializers can read those parameters; fields are reused by type across
-token declarations.
-
-![Syntax Example](assets/syntax_example.png)
+---
 
 ## Quick start
 
@@ -336,7 +157,6 @@ python3 examples/json/generate_json.py -o huge_100mb.json -s 100 -d 2
 
 ## 🔮 Future Roadmap
 
-- [x] **LL advanced parser actions and fail blocks** with writable cursor and AST contexts
 - [ ] **Lexer/LR actions and dynamic regex** in generated code
 - [ ] **Clean grammar syntax error reporting**
 - [ ] **PLL algorithm**: finalize the custom Predictive LL algorithm to resolve left recursion in LL parsers while keeping structural parity with LR parsers
