@@ -6,6 +6,8 @@ import std;
 namespace Python {
 namespace {
 namespace py = UAST::py;
+namespace fs = std::filesystem;
+
 [[noreturn]] void fail(const UAST::SourcePosition& p, const std::string& message) {
     throw std::invalid_argument(p.file + ":" + std::to_string(p.line) + ":" +
         std::to_string(p.column) + ": Python import: " + message);
@@ -124,17 +126,70 @@ void annotation(const py::ExprPtr& e, const UAST::SourcePosition& at, bool retur
 
 Imports::Imports(const Modules::Project* project) {
     if (project) for (const auto& source : project->sources)
-        for (const auto& imp : source.python_imports) load(source, imp);
+        for (const auto& imp : source.imports)
+            if (imp.python_import)
+                load(source, imp, *project);
 }
-void Imports::load(const Modules::Source& source, const Modules::PythonImport& imp) {
-    namespace fs = std::filesystem;
+void Imports::load(const Modules::Source& source, const Modules::Import& imp,
+                   const Modules::Project& project) {
     const auto at = UAST::SourcePosition{imp.position.file, imp.position.offset, 0, imp.position.line, imp.position.column};
-    auto file = fs::path(source.file).parent_path();
-    for (const auto& part : imp.source) file /= part;
-    file += ".py";
-    std::error_code error;
-    const auto canonical = fs::canonical(file, error);
-    if (error || !fs::is_regular_file(canonical)) fail(at, "cannot read " + file.string());
+
+    // Resolve only Python modules here; grammar modules are handled by Modules::preprocess.
+    fs::path relative;
+    for (const auto& part : imp.source) {
+        if (part.empty() || part == "." || part == ".." ||
+            part.find('/') != std::string::npos ||
+            part.find('\\') != std::string::npos)
+            fail(at, "invalid Python module component: " + part);
+        relative /= part;
+    }
+    if (relative.empty()) fail(at, "empty Python module path");
+
+    std::vector<fs::path> roots;
+    roots.reserve(project.search_directories.size() + 1);
+    for (const auto& directory : project.search_directories)
+        roots.emplace_back(directory);
+    roots.push_back(fs::path(source.file).parent_path());
+
+    auto tryFile = [](const fs::path& candidate) -> fs::path {
+        std::error_code error;
+        if (!fs::is_regular_file(candidate, error) || error) return {};
+        auto canonical = fs::canonical(candidate, error);
+        return error ? fs::path{} : canonical;
+    };
+
+    fs::path canonical;
+    // Explicit .py files can be outside the directory search roots.
+    for (const auto& input : project.input_files) {
+        const fs::path file(input);
+        if (file.extension() != ".py") continue;
+        const auto actual = tryFile(file);
+        if (actual.empty()) continue;
+        bool matches = imp.source.size() == 1 && actual.stem() == imp.source.front();
+        for (const auto& root : roots) {
+            std::error_code error;
+            const auto relative_file = fs::relative(actual, root, error);
+            if (!error && (relative_file == fs::path(relative.string() + ".py") ||
+                           relative_file == relative / "__init__.py"))
+                matches = true;
+        }
+        if (matches) {
+            if (!canonical.empty() && canonical != actual)
+                fail(at, "ambiguous Python module: " + Modules::spelling(imp.source));
+            canonical = actual;
+        }
+    }
+    if (canonical.empty()) {
+        for (const auto& root : roots) {
+            auto file = relative;
+            file += ".py";
+            canonical = tryFile(root / file);
+            if (canonical.empty()) canonical = tryFile(root / relative / "__init__.py");
+            if (!canonical.empty()) break;
+        }
+    }
+    if (canonical.empty())
+        fail(at, "Python module not found: " + Modules::spelling(imp.source));
     const auto name = Modules::spelling(imp.source);
     const auto local = imp.alias.empty() ? name : imp.alias;
     if (local == "ctx") fail(at, "ctx is reserved for the action context");

@@ -18,7 +18,8 @@ import UAST;
 import Modules;
 import External.Exports;
 import AST.Pass;
-import Semantic;
+import AST.Semantic;
+import ISPA.Diagnostics;
 import LangRepr.Converter;
 import Algorithm.API;
 import Algorithm.Cache;
@@ -47,6 +48,92 @@ std::unordered_map<std::string_view, int> parameters_with_fixes_arguments_amount
 };
 
 namespace {
+    namespace diagnostics = ISPA::Diagnostics;
+
+    void printDiagnostics(const diagnostics::Reporter& reporter) {
+        reporter.print(std::cerr);
+        reporter.printSummary(std::cerr);
+    }
+
+    void printExceptionDiagnostic(std::string code, const std::exception& error) {
+        const std::string message = error.what();
+        diagnostics::Reporter reporter;
+        diagnostics::Location location;
+        std::string display_message = message;
+        for (std::size_t colon = message.find(':'); colon != std::string::npos;
+             colon = message.find(':', colon + 1)) {
+            const std::string file = message.substr(0, colon);
+            std::size_t cursor = colon + 1;
+            auto number = [&](std::size_t& value) {
+                const auto begin = cursor;
+                while (cursor < message.size() && message[cursor] >= '0' && message[cursor] <= '9') ++cursor;
+                if (begin == cursor || cursor >= message.size() || message[cursor] != ':') return false;
+                value = std::stoull(message.substr(begin, cursor - begin));
+                ++cursor;
+                return true;
+            };
+            std::size_t line = 0, column = 0;
+            if (!number(line) || !number(column) || cursor >= message.size() || message[cursor] != ' ' ||
+                !std::filesystem::is_regular_file(file))
+                continue;
+            location = {file, std::string::npos, 1, line, column};
+            std::ifstream input(file, std::ios::binary);
+            if (input) reporter.source(file, {std::istreambuf_iterator<char>{input}, {}});
+            display_message = message.substr(cursor + 1);
+            break;
+        }
+        reporter.error(std::move(code), std::move(display_message), std::move(location));
+        printDiagnostics(reporter);
+    }
+
+    std::string sourceSnapshot(const Modules::Source& source) {
+        std::ifstream input(source.file, std::ios::binary);
+        if (!input) return source.grammar;
+        return {std::istreambuf_iterator<char>{input}, {}};
+    }
+
+    UAST::SourcePosition semanticPosition(const AST::SourcePosition& position) {
+        return {position.file, position.offset, position.length, position.line, position.column};
+    }
+
+    void registerAction(AST::SemanticRuleInfo& info, const AST::PythonAction& action) {
+        if (const auto* expression = std::get_if<UAST::py::Expr>(&action.code))
+            info.embeddedExpressions.push_back(*expression);
+        if (const auto* statements = std::get_if<UAST::py::Module>(&action.code))
+            info.embeddedStatements.push_back(*statements);
+        for (const auto& binding : action.bindings)
+            info.externalCaptureReads.insert(binding.name);
+    }
+
+    void registerFeatures(AST::SemanticRuleInfo& info, const auto& features) {
+        for (const auto& feature : features) {
+            if (const auto* declaration = std::get_if<AST::DeclarationSyntax>(&feature)) {
+                for (const auto& name : declaration->parameters)
+                    info.parameters.push_back({name, semanticPosition(declaration->position), std::nullopt});
+                for (const auto& name : declaration->templateParameters)
+                    info.templateParameters.push_back({name, semanticPosition(declaration->position), std::nullopt});
+                for (const auto& action : declaration->parameterAnnotations) registerAction(info, action);
+            } else if (const auto* action = std::get_if<AST::PythonAction>(&feature)) {
+                registerAction(info, *action);
+            } else if (const auto* dynamic = std::get_if<AST::DynamicPattern>(&feature)) {
+                registerAction(info, dynamic->expression);
+            } else if (const auto* counter = std::get_if<AST::Counter>(&feature)) {
+                registerAction(info, counter->expression);
+            }
+        }
+    }
+
+    void registerMemberActions(AST::SemanticRuleInfo& info, const AST::RuleMember& member) {
+        registerFeatures(info, member.features);
+        registerAction(info, member.failure_handler.action);
+        if (const auto* group = std::get_if<AST::RuleMemberGroup>(&member.value))
+            for (const auto& child : group->values)
+                if (child) registerMemberActions(info, *child);
+        if (const auto* alternatives = std::get_if<AST::RuleMemberOp>(&member.value))
+            for (const auto& child : alternatives->options)
+                if (child) registerMemberActions(info, *child);
+    }
+
     // --- generic "key \t hash" manifest, shared by the rule-cache and
     // the output-content-cache below (same file format, different keys) ---
     auto loadKeyHashMap(const std::filesystem::path &path) -> std::unordered_map<std::string, std::size_t> {
@@ -243,36 +330,42 @@ int generate(Args args) {
             }
         }
     } catch (const std::exception& error) {
-        cpuf::printf("{}\n", error.what());
+        printExceptionDiagnostic("P000", error);
         return 1;
     }
+    diagnostics::Reporter parse_diagnostics;
     for (const auto& source : module_project.sources) {
-        cpuf::printf("file: {}\n", source.file);
+        parse_diagnostics.source(source.file, sourceSnapshot(source));
         IspaParser parser;
-        const auto print_errors = [&] {
+        const auto collect_errors = [&] {
             for (const auto& e : parser.getErrors()) {
-                const auto offset = std::min(e.offset, source.grammar.size());
-                std::size_t line = 1, column = 1;
-                for (std::size_t i = 0; i < offset; ++i) {
-                    if (source.grammar[i] == '\n') { ++line; column = 1; }
-                    else ++column;
-                }
-                cpuf::printf("{}:{}:{}: {}\n", source.file, line, column, e.message);
+                const auto offset = e.offset <= source.grammar.size()
+                    ? e.offset : std::string::npos;
+                parse_diagnostics.error("P001", e.message,
+                    {source.file, offset, e.length});
             }
-            for (const auto& e : parser.getContextErrors())
-                cpuf::printf("[{}] {}\n", source.file, e.message);
+            for (const auto& e : parser.getContextErrors()) {
+                const auto offset = e.offset <= source.grammar.size()
+                    ? e.offset : std::string::npos;
+                parse_diagnostics.error("P002", e.message,
+                    {source.file, offset, e.length});
+            }
         };
         decltype(&parser.parse(source.grammar.c_str()).value.data()) syntax = nullptr;
         try {
             syntax = &parser.parse(source.grammar.c_str()).value.data();
         } catch (const std::exception& error) {
-            print_errors();
+            collect_errors();
             if (parser.getErrors().empty() && parser.getContextErrors().empty())
-                cpuf::printf("{}: {}\n", source.file, error.what());
+                parse_diagnostics.error("P000", error.what(), {source.file});
+            printDiagnostics(parse_diagnostics);
             return 1;
         }
-        print_errors();
-        if (!parser.getErrors().empty() || !parser.getContextErrors().empty()) return 1;
+        collect_errors();
+        if (!parser.getErrors().empty() || !parser.getContextErrors().empty()) {
+            printDiagnostics(parse_diagnostics);
+            return 1;
+        }
         modules.value.insert(modules.value.end(), syntax->value.begin(), syntax->value.end());
         source_files.insert(source_files.end(), syntax->value.size(), source.file);
     }
@@ -289,8 +382,48 @@ int generate(Args args) {
     auto ast = ast_builder.get();
     AST::requireCppSupport(ast, args.algorithm == Args::Algorithm::LL);
 
-    Semantic semantic(ast);
-    semantic.checkTokenRecursion();
+    AST::Semantic semantic_checker;
+    for (const auto& source : module_project.sources)
+        semantic_checker.addSource(source.file, sourceSnapshot(source));
+    std::set<std::string> registered_python;
+    for (const auto& source : module_project.sources)
+        for (const auto& imported : source.imports) {
+            if (!imported.python_import) continue;
+            const auto module_name = Modules::spelling(imported.source);
+            if (!registered_python.insert(module_name).second) continue;
+            std::filesystem::path relative;
+            for (const auto& part : imported.source) relative /= part;
+            std::vector<std::filesystem::path> roots{std::filesystem::path(source.file).parent_path()};
+            for (const auto& dir : module_project.search_directories) roots.emplace_back(dir);
+            for (const auto& input : module_project.input_files)
+                if (std::filesystem::path(input).extension() == ".py") roots.push_back(input);
+            for (const auto& root : roots) {
+                auto file = root;
+                if (file.extension() != ".py") {
+                    file /= relative;
+                    file += ".py";
+                    if (!std::filesystem::is_regular_file(file)) file = root / relative / "__init__.py";
+                } else if (file.stem() != relative.filename()) continue;
+                std::ifstream input(file, std::ios::binary);
+                if (!input) continue;
+                semantic_checker.addPythonSource(module_name, std::filesystem::canonical(file).string(),
+                    std::string(std::istreambuf_iterator<char>{input}, {}));
+                break;
+            }
+        }
+    for (const auto& [path, rule] : ast.getTreeMap()) {
+        AST::SemanticRuleInfo info;
+        info.name = corelib::text::join(path, "::");
+        info.rule = &rule;
+        registerFeatures(info, rule.features);
+        for (const auto& member : rule.rule_members)
+            if (member) registerMemberActions(info, *member);
+        semantic_checker.addRule(std::move(info));
+    }
+    semantic_checker.check();
+    if (!semantic_checker.diagnostics().diagnostics().empty())
+        printDiagnostics(semantic_checker.diagnostics());
+    if (semantic_checker.diagnostics().hasErrors()) return 1;
     AST::TreePass pass(ast);
     pass.work();
     {
@@ -309,7 +442,7 @@ int generate(Args args) {
         output_path.append(ast.getName());
     } else {
         name = std::filesystem::path(args.output).filename().string();
-        cpuf::printf("args.output: {} using filename: {}\n", args.output, name.c_str());
+        cpuf::printf("Output directory: {}; using filename: {}\n", std::filesystem::path(args.output).parent_path().string(), name.c_str());
     }
 
     const auto dir_path = output_path.has_parent_path() ? output_path.parent_path() : std::filesystem::path{"."};
@@ -385,7 +518,7 @@ int generate(Args args) {
 int main(int argc, char** argv) {
     try { return generate(init(argc, argv)); }
     catch (const std::exception& error) {
-        std::cerr << error.what() << '\n';
+        printExceptionDiagnostic("E000", error);
         return 1;
     }
 }

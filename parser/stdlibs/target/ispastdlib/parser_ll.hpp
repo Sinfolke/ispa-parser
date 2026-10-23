@@ -405,6 +405,19 @@ namespace ISPA_STD {
             Recovery::ContextDiagnostic d;
             d.kind = kind;
             d.position = cursor_position(pos);
+            if constexpr (requires { pos.sourcePosition(); pos.sourceOrigin(); }) {
+                if (const auto* at = pos.sourcePosition()) {
+                    d.offset = at - pos.sourceOrigin();
+                    d.length = *at ? 1 : 0;
+                }
+            } else if (!pos.isEnd()) {
+                if constexpr (requires { pos->meta().startpos(); pos->meta().length(); }) {
+                    d.offset = pos->meta().startpos();
+                    d.length = pos->meta().length();
+                }
+            }
+            if (d.offset == std::numeric_limits<std::size_t>::max() && pos.isEnd() && this->text)
+                d.offset = std::char_traits<char>::length(this->text);
             d.skipped = r.skip;
             d.rule = std::string(inner.rule);
             d.resume_rule = std::string(target.rule);

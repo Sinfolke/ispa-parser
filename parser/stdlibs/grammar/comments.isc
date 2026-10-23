@@ -1,3 +1,5 @@
+module std.comments;
+
 LINE_COMMENT<begin>:
     begin [^\n]?
 ;

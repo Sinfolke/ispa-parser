@@ -1,147 +1,418 @@
 name<__WS> : Rule {
    [ \t\n\r\v\f]*;
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_python_import_PY> : Rule {
-   "py"
+}name<modules_common_template_params_LESS_THAN_SIGN> : Rule {
+   "<"
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_module_MODULE> : Rule {
-   "module"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_detach_DETACH> : Rule {
-   "detach"
-  Data: EmptyDataBlock
-}name<IMPORT> : Rule {
-   "import"
-  Data: EmptyDataBlock
-}name<AS> : Rule {
-   "as"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_FROM> : Rule {
-   "from"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_parentheses_AUTO_1> : Rule {
-   ">("
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_parentheses_AUTO> : Rule {
-   "&("
-  Data: EmptyDataBlock
-}name<RIGHT_CURLY_BRACKET> : Rule {
-   "}"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_fail_decl_FAIL> : Rule {
+}name<modules_fail_block_fail_block_FAIL> : Rule {
    "fail"
   Data: EmptyDataBlock
-}name<LEFT_CURLY_BRACKET> : Rule {
-   "{"
+}name<modules_grammar_modifier_RIGHT_SQUARE_BRACKET> : Rule {
+   "]"
   Data: EmptyDataBlock
-}name<LESS_THAN_SIGN> : Rule {
-   "<"
+}name<modules_grammar_modifier_AUTO> : Rule {
+   "#["
+  Data: EmptyDataBlock
+}name<modules_forward_declaration_cls_class_method_METHOD> : Rule {
+   "method"
+  Data: EmptyDataBlock
+}name<modules_rule_advanced_advanced_rule_dep_decl_DEPENDS> : Rule {
+   "depends"
+  Data: EmptyDataBlock
+}name<modules_rule_advanced_advanced_rule_regular_match_unpack_AUTO> : Rule {
+   "->"
   Data: EmptyDataBlock
 }name<FULL_STOP> : Rule {
    "."
   Data: EmptyDataBlock
-}name<AUTO> : Rule {
-   "->"
+}name<modules_rule_regular_value_var_capture_AMPERSAND> : Rule {
+   "&"
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_detach_detach_value> : Rule {
-  @  ( modules::ispa_dep_scanner::mod_detach::detach_value::feature_ref |  modules::ispa_dep_scanner::source_name)
+}name<PERCENT_SIGN> : Rule {
+   "%"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_dyn_DOLLAR_SIGN> : Rule {
+   "$"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_alternative_VERTICAL_LINE> : Rule {
+   "|"
+  Data: EmptyDataBlock
+}name<modules_common_template_params_GREATER_THAN_SIGN> : Rule {
+   ">"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_shared_counter_registration_AUTO> : Rule {
+   "=>"
+  Data: EmptyDataBlock
+}name<COLON> : Rule {
+   ":"
+  Data: EmptyDataBlock
+}name<EQUALS_SIGN> : Rule {
+   "="
+  Data: EmptyDataBlock
+}name<modules_rule_regular_nested_rule_NUMBER_SIGN> : Rule {
+   "#"
+  Data: EmptyDataBlock
+}name<__ISPA_EXTERNAL_60> : Rule {
+   .
+  Data: EmptyDataBlock
+}name<__ISPA_EXTERNAL_58> : Rule {
+   .
+  Data: EmptyDataBlock
+}name<modules_rule_regular_nested_rule> : Rule {
+   modules::rule::regular::nested_rule::NUMBER_SIGN
+  @  modules::grammar::grammar
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_counter_bounded> : Rule {
+   EQUALS_SIGN
+   __WS?;
+  @  modules::ispa_python::expr
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_shared_counter_registration> : Rule {
+   modules::rule::regular::value::shared_counter_registration::AUTO
+   __WS?;
+  @  modules::common::ID
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_counter_quantified> : Rule {
+  @  modules::rule::regular::value::QUANTIFIER
+   __WS?;
+  @  modules::rule::regular::value::counter::bounded?;
+  Data: TemplatedDataBlock(quantifier, repetitions)
+}name<modules_rule_regular_value_alternative> : Rule {
+   modules::rule::regular::value::alternative::VERTICAL_LINE
+   __WS?;
+  @  modules::rule::regular::value::pattern
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_dyn_dyn_expr> : Rule {
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::ispa_python::expr
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_dyn> : Rule {
+   modules::rule::regular::value::dyn::DOLLAR_SIGN
+   __WS?;
+  @  ( modules::rule::regular::value::dyn::dyn_expr |  modules::common::ID)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_group> : Rule {
+   LEFT_PARENTHESIS
+   __WS?;
+  @  modules::rule::regular::value+;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_NOSPACE> : Rule {
+   "\\s0"
+  Data: EmptyDataBlock
+}name<modules_common_rule_params> : Rule {
+   LEFT_PARENTHESIS
+   __WS?;
+  @  modules::common::param?;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_SPACE> : Rule {
+   "\\s"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_pattern> : Rule {
+  @  ( modules::common::name |  modules::rule::regular::value::group |  modules::rule::regular::value::dyn |  modules::rule::regular::value::STRING |  modules::rule::regular::value::CGROUP |  modules::rule::regular::value::ANY |  modules::rule::regular::value::SPACE |  modules::rule::regular::value::NOSPACE)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_fail_capture> : Rule {
+   PERCENT_SIGN
+  @  modules::common::name?;
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_ast_capture> : Rule {
+   COMMERCIAL_AT
+  @  modules::common::ID?;
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_counter> : Rule {
+  @  ( modules::rule::regular::value::counter::bounded |  modules::rule::regular::value::counter::quantified)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_var_capture> : Rule {
+   modules::rule::regular::value::var_capture::AMPERSAND
+   __WS?;
+  @  modules::common::ID
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_f_binding> : Rule {
+   PERCENT_SIGN
+   __WS?;
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::common::ID
+   __WS?;
+   ( COMMA  __WS?; @  modules::common::ID)*;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(f, seq)
+}name<modules_common_type_annotation> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( FULL_STOP  __WS?; @  modules::common::ID)*;
+  Data: TemplatedDataBlock(base, nested)
+}name<modules_rule_regular_ast_full_part> : Rule {
+  @  modules::common::ID
+   __WS?;
+   COLON
+   __WS?;
+  @  modules::ispa_python::expr
+  Data: TemplatedDataBlock(key, e)
+}name<modules_rule_advanced_advanced_rule_regular_match_unpack> : Rule {
+   modules::rule::advanced::advanced_rule::regular_match::unpack::AUTO
+   __WS?;
+  @  modules::common::ID+;
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_ast> : Rule {
+  @  ( modules::rule::regular::ast::abbr |  modules::rule::regular::ast::full |  modules::rule::regular::ast::single_value)
+  Data: [RegularDataBlock: CllExpr]
+}name<LEFT_CURLY_BRACKET> : Rule {
+   "{"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_regular_rule> : Rule {
+   COLON
+   __WS?;
+  @  modules::rule::regular::value+;
+   __WS?;
+  @  modules::rule::regular::ast?;
+   __WS?;
+  @  modules::rule::regular::f_binding?;
+   __WS?;
+  @  modules::rule::regular::nested_rule*;
+   __WS?;
+   SEMICOLON
+  Data: TemplatedDataBlock(v, ast_pointer, fail_pointer, nested)
+}name<modules_rule_regular_value_mul_capture> : Rule {
+  @  ( COMMERCIAL_AT |  PERCENT_SIGN)
+   __WS?;
+   EQUALS_SIGN
+   __WS?;
+   LEFT_PARENTHESIS
+   __WS?;
+  @  modules::rule::regular::value::one_capture+;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: TemplatedDataBlock(type, cap)
+}name<modules_rule_regular_value_CGROUP> : Rule {
+   "["
+  @  "^"?;
+  @  ( ( [^\\\\\]] |  ( "\\"  [*])))+;
+   "]"
+  Data: TemplatedDataBlock(negative, v)
+}name<modules_rule_regular_ast_full_AUTO> : Rule {
+   "&="
+  Data: EmptyDataBlock
+}name<modules_ispa_python_stmt> : Rule {
+  @  modules::__external::python::symbol_1
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_grammar_modifier_MOD> : Rule {
+  @  ( "inline" |  "skip" |  "extern" |  "global")
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value> : Rule {
+  @  ( modules::rule::regular::value::one_capture |  modules::rule::regular::value::mul_capture)
+  Data: [RegularDataBlock: CllExpr]
+}name<RIGHT_CURLY_BRACKET> : Rule {
+   "}"
+  Data: EmptyDataBlock
+}name<modules_grammar_grammar> : Rule {
+  @  modules::grammar::modifier*;
+   __WS?;
+  @  modules::common::name
+   __WS?;
+  @  ( modules::rule::regular::regular_rule |  modules::rule::advanced::advanced_rule)
+  Data: TemplatedDataBlock(mod, name, entry)
+}name<modules_forward_declaration_fun> : Rule {
+   modules::forward_declaration::fun::FN
+   __WS?;
+  @  modules::forward_declaration::fun_forward
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_advanced_advanced_rule_dep_decl> : Rule {
+   modules::rule::advanced::advanced_rule::dep_decl::DEPENDS
+   __WS?;
+  @  modules::forward_declaration::fwd
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_forward_declaration_fun_forward> : Rule {
+  @  modules::common::ID
+   __WS?;
+   LEFT_PARENTHESIS
+   __WS?;
+   (@  modules::common::ID  __WS?;  COLON  __WS?; @  modules::common::ID  __WS?;  COMMA)*;
+   __WS?;
+   RIGHT_PARENTHESIS
+  Data: TemplatedDataBlock(name, param_names, param_types)
+}name<modules_common_call_params_AUTO> : Rule {
+   "&("
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_QUANTIFIER> : Rule {
+  @  ( "?" |  "+" |  "*")
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_ast_single_value> : Rule {
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  ( modules::ispa_python::expr |  COMMERCIAL_AT)
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_common_ID> : Rule {
+  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_forward_declaration_cls_class_property> : Rule {
+   modules::forward_declaration::cls::class_property::PROPERTY
+   __WS?;
+  @  modules::common::ID
+   __WS?;
+   COLON
+   __WS?;
+  @  modules::common::ID
+  Data: TemplatedDataBlock(name, type)
+}name<modules_rule_advanced_advanced_rule_regular_match> : Rule {
+   modules::rule::advanced::advanced_rule::regular_match::MATCH
+   __WS?;
+  @  modules::rule::regular::value+;
+   __WS?;
+  @  modules::rule::advanced::advanced_rule::regular_match::unpack?;
+   __WS?;
+   SEMICOLON
+  Data: TemplatedDataBlock(patterns, assign_names)
+}name<modules_forward_declaration_cls_class_method> : Rule {
+   modules::forward_declaration::cls::class_method::METHOD
+   __WS?;
+  @  modules::forward_declaration::fun_forward
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_forward_declaration_fun_FN> : Rule {
+   "fn"
+  Data: EmptyDataBlock
+}name<modules_forward_declaration_cls> : Rule {
+   modules::forward_declaration::cls::CLASS
+   __WS?;
+  @  modules::common::ID
+   __WS?;
+   COLON
+   __WS?;
+  @  ( modules::forward_declaration::cls::class_method |  modules::forward_declaration::cls::class_property)
+  Data: TemplatedDataBlock(name, decls)
+}name<main> : Rule {
+  @  modules::main::main
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_ispa_python_expr> : Rule {
+  @  modules::__external::python::symbol_0
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_common_parameter> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( COLON  __WS?; @  modules::common::type_annotation)?;
+  Data: TemplatedDataBlock(name, annotation)
+}name<COMMERCIAL_AT> : Rule {
+   "@"
+  Data: EmptyDataBlock
+}name<modules_common_name_ispa_template_params> : Rule {
+   ( modules::common::call_params |  modules::common::rule_params)
+  Data: EmptyDataBlock
+}name<modules_grammar_modifier> : Rule {
+   modules::grammar::modifier::AUTO
+   __WS?;
+  @  modules::grammar::modifier::MOD
+   __WS?;
+   modules::grammar::modifier::RIGHT_SQUARE_BRACKET
   Data: [RegularDataBlock: CllExpr]
 }name<modules_common_param> : Rule {
   @  modules::common::parameter
    __WS?;
    ( COMMA  __WS?; @  modules::common::parameter)*;
   Data: TemplatedDataBlock(first_p, following_p)
-}name<modules_common_name_ispa_template_params> : Rule {
-   ( modules::common::rule_params)
+}name<modules_forward_declaration_cls_class_property_PROPERTY> : Rule {
+   "property"
   Data: EmptyDataBlock
-}name<modules_scanner_tokens_OTHER> : Rule {
-  @  [^_ (){};'"#\0\t\r\n\[\\]a-zA-Z0-9]
+}name<modules_common_template_params> : Rule {
+   modules::common::template_params::LESS_THAN_SIGN
+   __WS?;
+  @  modules::common::template_param?;
+   __WS?;
+   modules::common::template_params::GREATER_THAN_SIGN
   Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_mod_import_import_value_from_import> : Rule {
-  @  modules::ispa_dep_scanner::mod_import::import_value::from_import::selection
-   __WS?;
-   modules::ispa_dep_scanner::mod_import::import_value::from_import::FROM
-   __WS?;
-  @  modules::ispa_dep_scanner::module_path
-  Data: TemplatedDataBlock(sel, source)
-}name<modules_ispa_dep_scanner_atom> : Rule {
-   ( modules::common::ID |  modules::common::NUMBER |  modules::scanner_tokens::STRING |  modules::scanner_tokens::CGROUP |  modules::scanner_tokens::COMMENT |  modules::scanner_tokens::OTHER |  AUTO |  COMMA |  FULL_STOP |  LESS_THAN_SIGN |  GREATER_THAN_SIGN |  COLON |  ASTERISK)
+}name<SEMICOLON> : Rule {
+   ";"
   Data: EmptyDataBlock
-}name<GREATER_THAN_SIGN> : Rule {
-   ">"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_braces> : Rule {
+}name<modules_forward_declaration_fwd> : Rule {
+  @  ( modules::forward_declaration::cls |  modules::forward_declaration::fun)
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_common_template_param> : Rule {
+  @  modules::common::ID
+   __WS?;
+   ( COMMA  __WS?; @  modules::common::ID)*;
+  Data: TemplatedDataBlock(first_p, following_p)
+}name<modules_rule_advanced_advanced_rule> : Rule {
    LEFT_CURLY_BRACKET
    __WS?;
-   modules::ispa_dep_scanner::balanced_item*;
+  @  modules::rule::advanced::advanced_rule::dep_decl*;
+   __WS?;
+  @  ( ( modules::rule::advanced::advanced_rule::regular_match |  modules::ispa_python::stmt))*;
    __WS?;
    RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(dep, body)
+}name<modules_fail_block_fail_block> : Rule {
+   modules::fail_block::fail_block::FAIL
+   __WS?;
+  @  modules::common::name
+   __WS?;
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::ispa_python::stmt?;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(name, val)
+}name<modules___external_python_symbol_1> : Rule {
+external PyRawParser::Types::main PyRawParser::Exports::RawStatements <PyRawParser.h>
+   __ISPA_EXTERNAL_60
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_symbol_list> : Rule {
-  @  modules::ispa_dep_scanner::source_name
+}name<modules_rule_regular_ast_full> : Rule {
+   modules::rule::regular::ast::full::AUTO
    __WS?;
-   ( COMMA  __WS?; @  modules::ispa_dep_scanner::source_name)*;
-  Data: TemplatedDataBlock(first, following)
-}name<modules_ispa_dep_scanner_parentheses> : Rule {
-   ( LEFT_PARENTHESIS |  modules::ispa_dep_scanner::parentheses::AUTO |  modules::ispa_dep_scanner::parentheses::AUTO_1)
+   LEFT_CURLY_BRACKET
    __WS?;
-   modules::ispa_dep_scanner::balanced_item*;
+  @  modules::rule::regular::ast::full::part+;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_regular_value_one_capture> : Rule {
+  @  modules::rule::regular::value::var_capture?;
+   __WS?;
+  @  modules::rule::regular::value::ast_capture?;
+   __WS?;
+  @  modules::rule::regular::value::fail_capture?;
+   __WS?;
+  @  modules::rule::regular::value::pattern
+   __WS?;
+  @  modules::rule::regular::value::alternative*;
+   __WS?;
+  @  modules::rule::regular::value::counter?;
+   __WS?;
+  @  modules::rule::regular::value::shared_counter_registration?;
+  Data: TemplatedDataBlock(v_cap, ast_cap, fail_cap, val, alts, quantifier, registration)
+}name<modules_rule_regular_ast_abbr> : Rule {
+   COMMERCIAL_AT
+   __WS?;
+   LEFT_CURLY_BRACKET
+   __WS?;
+  @  modules::common::ID
+   __WS?;
+   ( COMMA  __WS?; @  modules::common::ID)*;
+   __WS?;
+   RIGHT_CURLY_BRACKET
+  Data: TemplatedDataBlock(f, seq)
+}name<modules_common_call_params> : Rule {
+   modules::common::call_params::AUTO
+   __WS?;
+  @  modules::common::param?;
    __WS?;
    RIGHT_PARENTHESIS
+  Data: [RegularDataBlock: CllExpr]
+}name<modules_forward_declaration_cls_CLASS> : Rule {
+   "class"
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_nested_rule> : Rule {
-   NUMBER_SIGN
-   __WS?;
-  @  modules::ispa_dep_scanner::declaration
+}name<modules_rule_regular_value_STRING> : Rule {
+   ['"]
+  @  ( ( ( "\\"  [*]) |  [^'\\\]))*;
+   ['"]
   Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_body_regular> : Rule {
-   COLON
-   __WS?;
-  @  modules::ispa_dep_scanner::member*;
-   __WS?;
-   SEMICOLON
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_body> : Rule {
-  @  ( modules::ispa_dep_scanner::body::regular |  modules::ispa_dep_scanner::braces)
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_fail_decl> : Rule {
-   modules::ispa_dep_scanner::fail_decl::FAIL
-   __WS?;
-   modules::ispa_dep_scanner::source_name
-   __WS?;
-   modules::ispa_dep_scanner::braces
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_declaration_form> : Rule {
-  @  modules::common::name
-   __WS?;
-  @  modules::ispa_dep_scanner::body
-  Data: TemplatedDataBlock(name, body)
-}name<modules_ispa_dep_scanner_declaration> : Rule {
-  @  modules::ispa_dep_scanner::modifier*;
-   __WS?;
-  @  modules::ispa_dep_scanner::declaration::form
-  Data: TemplatedDataBlock(modifiers, value)
-}name<modules_ispa_dep_scanner_member> : Rule {
-  @  ( modules::ispa_dep_scanner::nested_rule |  modules::ispa_dep_scanner::parentheses |  modules::ispa_dep_scanner::braces |  modules::ispa_dep_scanner::atom)
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_source_name> : Rule {
-  @  modules::common::name
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_mod_detach_detach_value_feature_ref> : Rule {
-   FEATURE
-   __WS?;
-  @  modules::ispa_dep_scanner::source_name
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_modifier> : Rule {
-   NUMBER_SIGN
-   __WS?;
-   modules::scanner_tokens::CGROUP
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_import_import_value_module_import> : Rule {
-  @  modules::ispa_dep_scanner::module_path
-   __WS?;
-   ( AS  __WS?; @  modules::common::ID)?;
-  Data: TemplatedDataBlock(source, alias)
 }name<modules_common_name> : Rule {
   @  modules::common::ID
    __WS?;
@@ -151,163 +422,28 @@ name<__WS> : Rule {
    __WS?;
   @  modules::common::name::ispa_template_params?;
   Data: TemplatedDataBlock(primary, nested, temp_params, param)
-}name<modules_ispa_dep_scanner_mod_import_import_value> : Rule {
-  @  ( modules::ispa_dep_scanner::mod_import::import_value::module_import |  modules::ispa_dep_scanner::mod_import::import_value::from_import)
+}name<modules_main_main> : Rule {
+  @  ( ( modules::grammar::grammar |  modules::fail_block::fail_block))*;
   Data: [RegularDataBlock: CllExpr]
+}name<modules_rule_advanced_advanced_rule_regular_match_MATCH> : Rule {
+   "match"
+  Data: EmptyDataBlock
+}name<modules_rule_regular_value_ANY> : Rule {
+   "["
+   "*"
+   "]"
+  Data: EmptyDataBlock
+}name<COMMA> : Rule {
+   ","
+  Data: EmptyDataBlock
 }name<RIGHT_PARENTHESIS> : Rule {
    ")"
   Data: EmptyDataBlock
 }name<LEFT_PARENTHESIS> : Rule {
    "("
   Data: EmptyDataBlock
-}name<modules_common_NUMBER> : Rule {
-  @  [0-9]+;
-   ( "." @  [0-9]+;)?;
-  Data: TemplatedDataBlock(full, floating)
-}name<COMMA> : Rule {
-   ","
+}name<modules___external_python_symbol_0> : Rule {
+external PyRawParser::Types::expr PyRawParser::Exports::ExpressionBlock <PyRawParser.h>
+   __ISPA_EXTERNAL_58
   Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_import_external_import> : Rule {
-   modules::ispa_dep_scanner::mod_import::external_import::EXTERN
-   __WS?;
-  @  modules::common::ID
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_scanner_tokens_STRING> : Rule {
-  @  ( ( [']  ( ( [^'\\\\0] |  ( "\\"  [^\0])))*;  [']) |  ( ["]  ( ( [^"\\\\0] |  ( "\\"  [^\0])))*;  ["]))
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_mod_import> : Rule {
-  @  IMPORT
-   __WS?;
-  @  modules::ispa_dep_scanner::mod_import::external_import?;
-   __WS?;
-  @  modules::ispa_dep_scanner::mod_import::import_value
-   __WS?;
-  @  SEMICOLON
-  Data: TemplatedDataBlock(begin, external, value, end)
-}name<modules_common_rule_params> : Rule {
-   LEFT_PARENTHESIS
-   __WS?;
-  @  modules::common::param?;
-   __WS?;
-   RIGHT_PARENTHESIS
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_common_type_annotation> : Rule {
-  @  modules::common::ID
-   __WS?;
-   ( FULL_STOP  __WS?; @  modules::common::ID)*;
-  Data: TemplatedDataBlock(base, nested)
-}name<modules_ispa_dep_scanner_module_path> : Rule {
-  @  modules::common::ID
-   __WS?;
-   ( FULL_STOP  __WS?; @  modules::common::ID)*;
-  Data: TemplatedDataBlock(primary, nested)
-}name<modules_entry_main> : Rule {
-  @  ( ( modules::ispa_dep_scanner::mod_module |  modules::ispa_dep_scanner::mod_python_import |  modules::ispa_dep_scanner::mod_import |  modules::ispa_dep_scanner::mod_detach |  modules::ispa_dep_scanner::feature_decl |  modules::ispa_dep_scanner::declaration |  modules::ispa_dep_scanner::fail_decl |  modules::scanner_tokens::COMMENT))*;
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_feature_decl> : Rule {
-  @  FEATURE
-   __WS?;
-  @  modules::ispa_dep_scanner::source_name
-   __WS?;
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  modules::ispa_dep_scanner::symbol_list?;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-   __WS?;
-  @  SEMICOLON
-  Data: TemplatedDataBlock(begin, name, symbols, end)
-}name<modules_common_template_params> : Rule {
-   LESS_THAN_SIGN
-   __WS?;
-  @  modules::common::template_param?;
-   __WS?;
-   GREATER_THAN_SIGN
-  Data: [RegularDataBlock: CllExpr]
-}name<FEATURE> : Rule {
-   "feature"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_selection_items> : Rule {
-   LEFT_CURLY_BRACKET
-   __WS?;
-  @  modules::ispa_dep_scanner::source_name
-   __WS?;
-   ( COMMA  __WS?; @  modules::ispa_dep_scanner::source_name)*;
-   __WS?;
-   RIGHT_CURLY_BRACKET
-  Data: TemplatedDataBlock(first, sequence)
-}name<SEMICOLON> : Rule {
-   ";"
-  Data: EmptyDataBlock
-}name<modules_scanner_tokens_COMMENT> : Rule {
-  @  ( ( "//"  [^\r\n\0]*;) |  ( "/*"  ( ( [^*\0] |  ( "*"+;  [^*/\0])))*;  "*"+;  "/"))
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_common_template_param> : Rule {
-  @  modules::common::ID
-   __WS?;
-   ( COMMA  __WS?; @  modules::common::ID)*;
-  Data: TemplatedDataBlock(first_p, following_p)
-}name<modules_ispa_dep_scanner_mod_detach> : Rule {
-  @  modules::ispa_dep_scanner::mod_detach::DETACH
-   __WS?;
-  @  modules::ispa_dep_scanner::mod_detach::detach_value
-   __WS?;
-  @  SEMICOLON
-  Data: TemplatedDataBlock(begin, value, end)
-}name<modules_ispa_dep_scanner_mod_module> : Rule {
-  @  modules::ispa_dep_scanner::mod_module::MODULE
-   __WS?;
-  @  modules::ispa_dep_scanner::module_path
-   __WS?;
-  @  modules::common::template_params?;
-   __WS?;
-   ( AUTO  __WS?; @  modules::ispa_dep_scanner::source_name)?;
-   __WS?;
-  @  SEMICOLON
-  Data: TemplatedDataBlock(begin, name, parameters, entry, end)
-}name<NUMBER_SIGN> : Rule {
-   "#"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_balanced_item> : Rule {
-   ( modules::ispa_dep_scanner::parentheses |  modules::ispa_dep_scanner::braces |  modules::ispa_dep_scanner::atom |  SEMICOLON |  NUMBER_SIGN)
-  Data: EmptyDataBlock
-}name<modules_common_ID> : Rule {
-  @  ( [_a-zA-Z]  [_a-zA-Z0-9]*;)
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_mod_python_import> : Rule {
-  @  IMPORT
-   __WS?;
-   modules::ispa_dep_scanner::mod_python_import::PY
-   __WS?;
-  @  modules::ispa_dep_scanner::module_path
-   __WS?;
-   ( AS  __WS?; @  modules::common::ID)?;
-   __WS?;
-  @  SEMICOLON
-  Data: TemplatedDataBlock(begin, source, alias, end)
-}name<ASTERISK> : Rule {
-   "*"
-  Data: EmptyDataBlock
-}name<modules_common_parameter> : Rule {
-  @  modules::common::ID
-   __WS?;
-   ( COLON  __WS?; @  modules::common::type_annotation)?;
-  Data: TemplatedDataBlock(name, annotation)
-}name<main> : Rule {
-  @  modules::entry::main
-  Data: [RegularDataBlock: CllExpr]
-}name<modules_ispa_dep_scanner_mod_import_external_import_EXTERN> : Rule {
-   "extern"
-  Data: EmptyDataBlock
-}name<modules_scanner_tokens_CGROUP> : Rule {
-  @  "["
-   ( ( [^\\\\\]\0] |  ( "\\"  [^\0])))*;
-   "]"
-  Data: [RegularDataBlock: CllExpr]
-}name<COLON> : Rule {
-   ":"
-  Data: EmptyDataBlock
-}name<modules_ispa_dep_scanner_mod_import_import_value_from_import_selection> : Rule {
-  @  ( ASTERISK |  modules::ispa_dep_scanner::mod_import::import_value::from_import::selection::items)
-  Data: [RegularDataBlock: CllExpr]
 }

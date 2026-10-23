@@ -15,6 +15,7 @@ struct Import {
     std::string external;
     std::vector<Path> symbols;
     Position position;
+    bool python_import = false;
 };
 struct ExternalSymbol {
     std::string cpp_type, cpp_binding, header;
@@ -30,11 +31,6 @@ struct Detach {
     bool feature = false;
     Position position;
 };
-struct PythonImport {
-    Path source;
-    std::string alias;
-    Position position;
-};
 struct Source {
     std::string file;
     Path name;
@@ -43,7 +39,6 @@ struct Source {
     std::string grammar;
     std::map<Path, Position> declarations;
     std::vector<Import> imports;
-    std::vector<PythonImport> python_imports;
     std::vector<Detach> detach;
     std::map<Path, std::vector<Path>> features;
     // Local spelling -> canonical declaration. No transitive re-exports.
@@ -61,6 +56,8 @@ struct Project {
     std::optional<Path> entry;
     std::optional<Path> root;
     std::map<Path, ExternalSymbol> external_symbols;
+    std::vector<std::string> search_directories;
+    std::vector<std::string> input_files;
     const Source& source(const std::string& file) const;
 };
 Project discover(const std::vector<std::string>& directories,

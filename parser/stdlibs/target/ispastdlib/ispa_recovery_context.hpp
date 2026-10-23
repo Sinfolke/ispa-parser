@@ -6,6 +6,7 @@
  */
 #pragma once
 #include <cstddef>
+#include <limits>
 #include <string>
 #include <string_view>
 
@@ -28,6 +29,8 @@ namespace ISPA_STD::Recovery {
         ContextKind kind = ContextKind::Mismatch;
         std::string message;
         std::size_t position = 0;        // cursor position where the error was detected
+        std::size_t offset = std::numeric_limits<std::size_t>::max(); // source byte offset, when available
+        std::size_t length = 0;          // offending token length
         std::size_t skipped = 0;         // tokens skipped to reach the resume point
         std::string rule;                // innermost rule when the error was detected
         std::string resume_rule;         // frame that resumes parsing

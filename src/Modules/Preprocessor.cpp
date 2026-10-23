@@ -85,14 +85,15 @@ class SourceSyntax {
         Import imp;
         imp.position = position(value.begin);
         if (!value.external.empty()) imp.external = data(data(value.external).value).value;
+        imp.python_import = !value.py_import.empty();
         std::visit([&](const auto& node) {
             using T = std::decay_t<decltype(node)>;
             if constexpr (!std::is_same_v<T, std::monostate>) {
-                const auto& import = data(node);
-                using D = std::decay_t<decltype(import)>;
-                imp.source = path(data(import.source));
+                const auto& import_d = data(node);
+                using D = std::decay_t<decltype(import_d)>;
+                imp.source = path(data(import_d.source));
                 if constexpr (std::is_same_v<D, Syntax::mod_import::import_value::module_import>) {
-                    if (!import.alias.empty()) imp.alias = data(import.alias).value;
+                    if (!import_d.alias.empty()) imp.alias = data(import_d.alias).value;
                 } else {
                     std::visit([&](const auto& selection) {
                         using S = std::decay_t<decltype(selection)>;
@@ -104,19 +105,11 @@ class SourceSyntax {
                                 for (const auto& item : data(selection).sequence) imp.symbols.push_back(path(data(item)));
                             } else imp.kind = Import::Kind::All;
                         }
-                    }, data(import.sel).value);
+                    }, data(import_d.sel).value);
                 }
             }
         }, data(value.value).value);
         out.imports.push_back(std::move(imp));
-        erase(value.begin, value.end);
-    }
-    void visit(const Syntax::mod_python_import& value) {
-        PythonImport imp;
-        imp.position = position(value.begin);
-        imp.source = path(data(value.source));
-        if (!value.alias.empty()) imp.alias = data(value.alias).value;
-        out.python_imports.push_back(std::move(imp));
         erase(value.begin, value.end);
     }
     void visit(const Syntax::mod_detach& value) {
@@ -231,6 +224,8 @@ Project discover(const std::vector<std::string>& directories, const std::vector<
         project.modular |= source.has_directives;
         project.sources.push_back(std::move(source));
     }
+    project.input_files = files;
+    project.search_directories = directories;
     return project;
 }
 
@@ -316,6 +311,8 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
     // traversing dependency edges: mutually recursive rules need no build order.
     for (auto& source : project.sources) {
         for (const auto& imp : source.imports) {
+            if (imp.python_import)
+                continue;
             if (!imp.external.empty()) {
                 if (!resolve.contains(imp.external)) fail(imp.position, "external parser needs --dep " + imp.external + " OUTPUT_PREFIX (or --no-dep with its grammar sources)");
                 if (!packages.contains(imp.external)) packages.emplace(imp.external, readExternal(resolve.at(imp.external)));
@@ -372,10 +369,27 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
     }
     for (auto& source : project.sources) {
         for (const auto& imp : source.imports) {
-            if (!imp.external.empty()) continue;
-            const auto& target = project.sources[modules.at(imp.source)];
-            for (const auto& [name, symbols] : target.features)
-                if (selected(imp, name)) bind_feature(source, joined(prefix(imp), name), target.allowed_features.at(name), imp.position);
+            if (imp.python_import || !imp.external.empty())
+                continue;
+
+            auto found = modules.find(imp.source);
+            if (found == modules.end()) {
+                fail(imp.position,
+                     "module not found: " + spelling(imp.source));
+            }
+
+            const auto& target = project.sources[found->second];
+
+            for (const auto& [name, symbols] : target.features) {
+                if (selected(imp, name)) {
+                    bind_feature(
+                        source,
+                        joined(prefix(imp), name),
+                        target.allowed_features.at(name),
+                        imp.position
+                    );
+                }
+            }
         }
         for (const auto& detached : source.detach) {
             if (detached.feature) {

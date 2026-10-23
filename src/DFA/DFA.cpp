@@ -13,8 +13,8 @@ import std;
 namespace DFA {
 // DFA::build() lives in DFA_build.cpp (TDFA construction).
 void DFA::optimizeRegistersAndLRTable() {
-  std::cout << "optimizeRegistersAndLRTable: action_table.size(): "
-            << action_table.size() << std::endl;
+  // std::cout << "optimizeRegistersAndLRTable: action_table.size(): "
+  //           << action_table.size() << std::endl;
   std::vector<bool> used(action_table.size(), false);
 
   auto mark_action = [&](auto self, std::size_t idx) -> void {
@@ -1357,7 +1357,7 @@ auto DFA::check_dfa() -> void {
       ++index;
     }
   } catch (Error &e) {
-    std::cout << "[MDFA] Check Failed > " << e.what() << '\n';
+    std::cout << "[DFA] Check Failed > " << e.what() << '\n';
     std::abort();
   }
 }

@@ -2,6 +2,6 @@
 import * from ispa_dep_scanner;
 import {COMMENT} from scanner_tokens;
 main:
-    @ (mod_module | mod_python_import | mod_import | mod_detach | feature_decl | declaration | fail_decl | COMMENT)*
+    @ (mod_module | mod_import | mod_detach | feature_decl | declaration | fail_decl | COMMENT)*
     {@}
 ;

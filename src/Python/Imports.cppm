@@ -17,7 +17,8 @@ class Imports {
     std::map<std::string, std::filesystem::path> paths;
     std::map<std::string, Bindings> exports;
     LangAPI::Declarations declarations;
-    void load(const Modules::Source& source, const Modules::PythonImport& imp);
+    void load(const Modules::Source& source, const Modules::Import& imp,
+                   const Modules::Project& project);
 public:
     explicit Imports(const Modules::Project* project);
     void bind(UAST::py::Expr& expression, const std::string& file) const;

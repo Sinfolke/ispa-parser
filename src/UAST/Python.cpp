@@ -878,7 +878,19 @@ std::string UAST::py::dump(const Module& m) { PyDumper d; d.module_(m); return s
 // END-DUMP
 
 namespace {
+struct SnapshotFailure {
+    std::string message;
+    std::size_t offset;
+};
+
 UAST::PythonNode parse_snapshot(const std::string& source, const UAST::SourcePosition& position, bool expression) {
+    auto failureOffset = [&](const auto& parser) {
+        if (!parser.getErrors().empty() && parser.getErrors().front().offset <= source.size())
+            return parser.getErrors().front().offset;
+        if (!parser.getContextErrors().empty() && parser.getContextErrors().front().offset <= source.size())
+            return parser.getContextErrors().front().offset;
+        return source.size();
+    };
     try {
         PyLexer lexer;
         ActionParser parser;
@@ -886,16 +898,28 @@ UAST::PythonNode parse_snapshot(const std::string& source, const UAST::SourcePos
         if (expression) {
             auto result = parser.parseExpression(begin);
             if (!result.status || !parser.getErrors().empty() || !parser.getContextErrors().empty())
-                throw std::runtime_error(parser.getErrors().empty() ? "invalid Python expression" : parser.getErrors().front().message);
+                throw SnapshotFailure{parser.getErrors().empty() ? "invalid Python expression" : parser.getErrors().front().message,
+                                      failureOffset(parser)};
             auto end = result.it;
             if ((*end).template holds<PyRawParser::Types::NEWLINE>()) ++end;
-            if (!end.isEnd()) throw std::runtime_error("trailing tokens in Python expression");
+            if (!end.isEnd()) throw SnapshotFailure{"trailing tokens in Python expression", failureOffset(parser)};
             return Snapshot{source}(result.node, position);
         }
         auto result = parser.main(begin);
         if (!result.status || !result.it.isEnd() || !parser.getErrors().empty() || !parser.getContextErrors().empty())
-            throw std::runtime_error(parser.getErrors().empty() ? "invalid Python action or trailing tokens" : parser.getErrors().front().message);
+            throw SnapshotFailure{parser.getErrors().empty() ? "invalid Python action or trailing tokens" : parser.getErrors().front().message,
+                                  failureOffset(parser)};
         return Snapshot{source}(result.node, position);
+    } catch (const SnapshotFailure& error) {
+        const auto offset = std::min(error.offset, source.size());
+        std::size_t line = position.line ? position.line : 1;
+        std::size_t column = position.column ? position.column : 1;
+        for (std::size_t i = 0; i < offset; ++i) {
+            if (source[i] == '\n') { ++line; column = 1; }
+            else ++column;
+        }
+        throw std::runtime_error(position.file + ":" + std::to_string(line) + ":" +
+                                 std::to_string(column) + ": " + error.message);
     } catch (const std::exception& error) {
         throw std::runtime_error(position.file + ":" + std::to_string(position.line) + ":" + std::to_string(position.column) + ": " + error.what());
     }

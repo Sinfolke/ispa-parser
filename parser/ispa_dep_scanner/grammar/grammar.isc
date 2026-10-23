@@ -6,8 +6,8 @@ mod_module:
     @{begin, name, parameters, entry, end}
 ;
 mod_import:
-    @ 'import' @ external_import? @ import_value @ ';'
-    @{begin, external, value, end}
+    @ 'import' @ 'py'? @ external_import? @ import_value @ ';'
+    @{begin, py_import, external, value, end}
     #external_import:
         'extern' @ ID
         {@}
@@ -32,10 +32,6 @@ mod_import:
             ;
         ;
     ;
-;
-mod_python_import:
-    @ 'import' 'py' @ module_path ('as' @ ID)? @ ';'
-    @{begin, source, alias, end}
 ;
 mod_detach:
     @ 'detach' @ detach_value @ ';'
