@@ -203,7 +203,16 @@ auto MemLower::ismemberOptional(char quantifier) -> bool {
 
 // Node type argument of the stdlib combinators.
 auto MemLower::nodeType(const AST::RuleMemberName &name) -> LangAPI::Type {
-    return LangAPI::Type {LangAPI::Symbol {"Types", name.name}};
+    if (!name.templateParameter.empty())
+        return LangAPI::Type{LangAPI::Symbol{name.templateParameter}};
+    LangAPI::Type result{LangAPI::Symbol{"Types", name.name}};
+    for (std::size_t i = 0; i < name.templateArguments.size(); ++i) {
+        auto path = name.templateArguments[i];
+        const bool parameter = i < name.templateArgumentIsParameter.size() && name.templateArgumentIsParameter[i];
+        if (!parameter) path.insert(path.begin(), "Types");
+        result.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{path}});
+    }
+    return result;
 }
 
 // ------------------------------------------------------------- entry point ----
@@ -349,12 +358,66 @@ auto MemLower::failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression
 }
 
 // Argument order: pos, [rec], [fail]
+auto MemLower::ruleCallable(const AST::RuleMember &mem) -> LangAPI::Expression {
+    const auto &name = mem.getName();
+    if (!name.templateParameter.empty()) {
+        LangAPI::Type tag{LangAPI::ValueType::TypeTag};
+        tag.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{name.templateParameter}});
+        LangAPI::FunctionCall call;
+        call.name = std::make_shared<LangAPI::Symbol>("ispa_match_template");
+        call.args = {
+            LangAPI::Inheritance::createExpression(LangAPI::Inheritance{.name = tag}),
+            LangAPI::Symbol::createExpression(LangAPI::Symbol{"rule_pos"})};
+        LangAPI::Lambda lambda;
+        lambda.parameters = {{LangAPI::Type{LangAPI::Symbol{"IT"}}, "rule_pos"}};
+        lambda.statements = LangAPI::Return::createStatements(LangAPI::Return{
+            .value = LangAPI::FunctionCall::createExpression(std::move(call))});
+        return LangAPI::Lambda::createExpression(std::move(lambda));
+    }
+    const AST::DeclarationSyntax *call_syntax = nullptr;
+    for (const auto &feature : mem.features)
+        if (const auto *syntax = std::get_if<AST::DeclarationSyntax>(&feature)) call_syntax = syntax;
+    const auto &rule = tree->getTreeMap().at(name.name);
+    const AST::DeclarationSyntax *declaration = nullptr;
+    for (const auto &feature : rule.features)
+        if (const auto *syntax = std::get_if<AST::DeclarationSyntax>(&feature)) declaration = syntax;
+    const auto argument_count = call_syntax ? call_syntax->parameters.size() : 0;
+    const auto parameter_count = declaration ? declaration->parameters.size() : 0;
+    const auto template_argument_count = name.templateArguments.size();
+    const auto template_parameter_count = declaration ? declaration->templateParameters.size() : 0;
+    if (argument_count != parameter_count)
+        throw Error("Rule {} requires {} arguments, got {}", name.name, parameter_count, argument_count);
+    if (template_argument_count != template_parameter_count)
+        throw Error("Rule {} requires {} template arguments, got {}", name.name,
+            template_parameter_count, template_argument_count);
+    if (argument_count == 0 && template_argument_count == 0)
+        return LangAPI::Symbol::createExpression(LangAPI::Symbol{fun_name(name.name)});
+    LangAPI::FunctionCall call;
+    call.name = std::make_shared<LangAPI::Symbol>(fun_name(name.name));
+    for (std::size_t i = 0; i < template_argument_count; ++i) {
+        auto path = name.templateArguments[i];
+        const bool parameter = i < name.templateArgumentIsParameter.size() && name.templateArgumentIsParameter[i];
+        if (!parameter) path.insert(path.begin(), "Types");
+        call.template_parameters.push_back(std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{path}}));
+    }
+    call.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{"rule_pos"}));
+    for (const auto &argument : call_syntax->parameters) {
+        const auto variable = fun_ctx->action_locals.contains(argument) ? "ispa_action_" + argument : argument;
+        call.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{variable}));
+    }
+    LangAPI::Lambda lambda;
+    lambda.parameters = {{LangAPI::Type{LangAPI::Symbol{"IT"}}, "rule_pos"}};
+    lambda.statements = LangAPI::Return::createStatements(LangAPI::Return{
+        .value = LangAPI::FunctionCall::createExpression(std::move(call))});
+    return LangAPI::Lambda::createExpression(std::move(lambda));
+}
+
 auto MemLower::combinatorArgs(const AST::RuleMember &mem) -> stdu::vector<LangAPI::Expression> {
     const auto &name = mem.getName();
     stdu::vector<LangAPI::Expression> args;
     args.push_back(LangAPI::Pos::createExpression(LangAPI::Pos {.dereference = false, .offset = 0}));
     if (name.isNonterminal())    // rule calls pass the rule function as `rec`
-        args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol {fun_name(name.name)}));
+        args.push_back(ruleCallable(mem));
     if (!ismemberOptional(mem.quantifier))
         args.push_back(failureHandler(mem));
     return args;
@@ -374,11 +437,17 @@ auto MemLower::lowerName(const AST::RuleMember &mem) -> Parser::LowerMeta {
         if (const auto* value = std::get_if<AST::SharedCounterRegistration>(&feature)) registration = value;
     }
     if (counter) {
+        bool parameter_bound = false;
+        for (const auto &feature : tree->getTreeMap().at(fun_ctx->rule_name).features)
+            if (const auto *syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                parameter_bound = std::ranges::find(syntax->parameters, counter->bound) != syntax->parameters.end();
         LangAPI::FunctionCall spec;
         spec.name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{
-            "ISPA_STD", "CountSpec", counter->kind == "number" ? "fixed" : "named"});
+            "ISPA_STD", "CountSpec", counter->kind == "number" || parameter_bound ? "fixed" : "named"});
         if (counter->kind == "number")
             spec.args.push_back(LangAPI::Int::createExpression(LangAPI::Int{.value = std::stoll(counter->bound)}));
+        else if (parameter_bound)
+            spec.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{counter->bound}));
         else {
             spec.args.push_back(LangAPI::String::createExpression(LangAPI::String{.value = counter->bound}));
         }
@@ -391,7 +460,7 @@ auto MemLower::lowerName(const AST::RuleMember &mem) -> Parser::LowerMeta {
                 LangAPI::Type{LangAPI::Symbol{"Types", constants::whitespace}}));
         call.args = {LangAPI::Pos::createExpression(LangAPI::Pos{.dereference = false}), LangAPI::FunctionCall::createExpression(spec)};
         if (name.isNonterminal())
-            call.args.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{fun_name(name.name)}));
+            call.args.push_back(ruleCallable(mem));
         auto var = bind(vname, deduceVarTypeByRuleMember(mem), LangAPI::IspaLibFunctionCall::createExpression(call));
         meta.value_list = var;
         if (registration) push(LangAPI::FunctionCall::createStatement(LangAPI::FunctionCall{

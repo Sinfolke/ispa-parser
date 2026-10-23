@@ -34,7 +34,7 @@ function(ispa_apply_compile_options target)
     endif()
 endfunction()
 
-set(STDLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs")
+set(STDLIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/stdlibs/target")
 if(NOT TARGET ispastdlib::ispastdlib)
     add_subdirectory("${STDLIB_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ispastdlib_build")
 endif()

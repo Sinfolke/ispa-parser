@@ -319,7 +319,10 @@ AST::RuleMember AST::Builder::convertPattern(const Pattern& pattern) {
                 output.features.push_back(AST::DeclarationSyntax{{}, parameters(n.param), parameters(n.temp_params), position(item)});
             // Resolve references after all declarations have been collected.
             auto path = qualifiedName(n);
-            output.value = AST::RuleMemberName{path};
+            AST::RuleMemberName reference{path};
+            for (const auto& argument : parameters(n.temp_params))
+                reference.templateArguments.push_back({argument});
+            output.value = std::move(reference);
         } else if constexpr (std::is_same_v<T, UAST::Node<std::shared_ptr<UAST::rule_value_group>>>) {
             auto children = convertValues(payload(item).value, [this](const Value& v) { return convertValue(v); });
             output.value = AST::RuleMemberGroup{std::move(children)};
@@ -651,29 +654,45 @@ void AST::Builder::build() {
         const Modules::Source* source = module_project && module_project->modular
             ? &module_project->source(rule.position.file) : nullptr;
         const std::size_t minimum_scope = source ? source->name.size() + 1 : 0;
+        stdu::vector<std::string> template_parameters;
+        for (const auto& feature : rule.features)
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                template_parameters = syntax->templateParameters;
+        const auto resolveName = [&](stdu::vector<std::string>& reference) {
+            bool resolved = false;
+            for (std::size_t size = scope.size();; --size) {
+                stdu::vector<std::string> candidate(scope.begin(), scope.begin() + size);
+                candidate.insert(candidate.end(), reference.begin(), reference.end());
+                if (tree_map.contains(candidate) && (!source || tree_map.at(candidate).position.file == source->file)) {
+                    reference = std::move(candidate);
+                    resolved = true;
+                    break;
+                }
+                if (size == minimum_scope) break;
+            }
+            if (!resolved && source) {
+                Modules::Path local(reference.begin(), reference.end());
+                const auto found = source->resolved_symbols.find(local);
+                if (found == source->resolved_symbols.end())
+                    throw std::runtime_error(source->file + ":" + std::to_string(rule.position.line) +
+                        ": unknown or unimported symbol " + Modules::spelling(local));
+                reference = {"modules"};
+                reference.insert(reference.end(), found->second.begin(), found->second.end());
+                if (!tree_map.contains(reference)) throw std::runtime_error("Missing module declaration: " + Modules::spelling(found->second));
+            }
+        };
         const auto resolve = [&](const auto& self, AST::RuleMember& member) -> void {
             if (member.isName()) {
-                auto& reference = member.getName().name;
-                bool resolved = false;
-                for (std::size_t size = scope.size();; --size) {
-                    stdu::vector<std::string> candidate(scope.begin(), scope.begin() + size);
-                    candidate.insert(candidate.end(), reference.begin(), reference.end());
-                    if (tree_map.contains(candidate) && (!source || tree_map.at(candidate).position.file == source->file)) {
-                        reference = std::move(candidate);
-                        resolved = true;
-                        break;
-                    }
-                    if (size == minimum_scope) break;
-                }
-                if (!resolved && source) {
-                    Modules::Path local(reference.begin(), reference.end());
-                    const auto found = source->resolved_symbols.find(local);
-                    if (found == source->resolved_symbols.end())
-                        throw std::runtime_error(source->file + ":" + std::to_string(rule.position.line) +
-                            ": unknown or unimported symbol " + Modules::spelling(local));
-                    reference = {"modules"};
-                    reference.insert(reference.end(), found->second.begin(), found->second.end());
-                    if (!tree_map.contains(reference)) throw std::runtime_error("Missing module declaration: " + Modules::spelling(found->second));
+                auto& reference = member.getName();
+                if (reference.name.size() == 1 &&
+                    std::ranges::find(template_parameters, reference.name.front()) != template_parameters.end())
+                    reference.templateParameter = reference.name.front();
+                else resolveName(reference.name);
+                for (auto& argument : reference.templateArguments) {
+                    const bool parameter = argument.size() == 1 &&
+                        std::ranges::find(template_parameters, argument.front()) != template_parameters.end();
+                    reference.templateArgumentIsParameter.push_back(parameter);
+                    if (!parameter) resolveName(argument);
                 }
             } else if (member.isGroup()) {
                 for (auto& child : member.getGroup().values) self(self, *child);
@@ -685,4 +704,73 @@ void AST::Builder::build() {
         inferDataTypes(rule);
     }
     if (module_project && module_project->modular) specializeModules();
+
+    // Grammar template names need FIRST sets during LL lowering. Give each
+    // placeholder a lightweight analysis rule whose alternatives are the
+    // concrete rules supplied at call sites; it is never emitted as a parser
+    // function or AST node.
+    using RuleName = stdu::vector<std::string>;
+    const auto placeholder = [](RuleName owner, const std::string& parameter) {
+        owner.push_back("ispa_template_" + parameter);
+        return owner;
+    };
+    std::map<RuleName, std::set<RuleName>> candidates;
+    std::map<RuleName, std::set<RuleName>> forwards;
+    for (const auto& [owner, rule] : tree_map) {
+        const auto gather = [&](const auto& self, const AST::RuleMember& member) -> void {
+            if (member.isName() && tree_map.contains(member.getName().name)) {
+                const auto& reference = member.getName();
+                for (const auto& feature : tree_map.at(reference.name).features)
+                    if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature)) {
+                        for (std::size_t i = 0; i < reference.templateArguments.size() &&
+                            i < syntax->templateParameters.size(); ++i) {
+                            const auto target = placeholder(reference.name, syntax->templateParameters[i]);
+                            if (i < reference.templateArgumentIsParameter.size() &&
+                                reference.templateArgumentIsParameter[i])
+                                forwards[target].insert(placeholder(owner, reference.templateArguments[i].front()));
+                            else candidates[target].insert(reference.templateArguments[i]);
+                        }
+                    }
+            }
+            if (member.isGroup()) for (const auto& child : member.getGroup().values) self(self, *child);
+            if (member.isOp()) for (const auto& child : member.getOp().options) self(self, *child);
+        };
+        for (const auto& member : rule.rule_members) gather(gather, *member);
+    }
+    bool changed;
+    do {
+        changed = false;
+        for (const auto& [target, sources] : forwards)
+            for (const auto& source : sources)
+                for (const auto& candidate : candidates[source])
+                    changed |= candidates[target].insert(candidate).second;
+    } while (changed);
+    std::map<RuleName, AST::Rule> placeholders;
+    for (auto& [owner, rule] : tree_map) {
+        const auto rewrite = [&](const auto& self, AST::RuleMember& member) -> void {
+            if (member.isName() && !member.getName().templateParameter.empty()) {
+                auto key = placeholder(owner, member.getName().templateParameter);
+                member.getName().name = key;
+                if (!placeholders.contains(key)) {
+                    if (candidates[key].empty())
+                        throw std::runtime_error("unbound grammar template parameter " +
+                            member.getName().templateParameter + " in " + corelib::text::join(owner, "."));
+                    AST::Rule analysis;
+                    analysis.isTemplatePlaceholder = true;
+                    analysis.isTopLevel = false;
+                    AST::RuleMemberOp options;
+                    for (const auto& candidate : candidates[key])
+                        options.options.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{
+                            .value = AST::RuleMemberName{.name = candidate}}));
+                    analysis.rule_members.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{
+                        .value = std::move(options)}));
+                    placeholders.emplace(std::move(key), std::move(analysis));
+                }
+            }
+            if (member.isGroup()) for (auto& child : member.getGroup().values) self(self, *child);
+            if (member.isOp()) for (auto& child : member.getOp().options) self(self, *child);
+        };
+        for (auto& member : rule.rule_members) rewrite(rewrite, *member);
+    }
+    for (auto& [name, rule] : placeholders) tree_map.emplace(std::move(name), std::move(rule));
 }

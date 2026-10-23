@@ -139,6 +139,8 @@ namespace LangRepr {
             insideTypeCount++;
             s.name = ensureTypesNs(std::get<LangAPI::Symbol>(s.name));
             insideTypeCount--;
+        } else if (std::holds_alternative<LangAPI::Type>(s.name)) {
+            s.name = ensureTypesNs(std::get<LangAPI::Type>(s.name));
         }
         for (auto &arg : s.args) {
             arg = ensureTypesNs(arg);

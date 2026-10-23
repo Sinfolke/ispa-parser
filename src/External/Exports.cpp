@@ -31,6 +31,12 @@ std::vector<std::pair<std::string, std::string>> exports(AST::Tree& tree,
         for (const auto& [relative, position] : source.declarations) {
             const auto path = canonical(relative);
             if (!tree.contains(path)) continue;
+            // An external parser has no arguments to supply to a parameterized rule.
+            bool needs_arguments = false;
+            for (const auto& feature : tree[path].features)
+                if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                    needs_arguments = !syntax->parameters.empty();
+            if (needs_arguments) continue;
             const bool token = AST::RuleMemberName{.name = path}.isTerminal();
             const auto qualified = corelib::text::join(path, "::");
             const auto binding = "symbol_" + std::to_string(index++);

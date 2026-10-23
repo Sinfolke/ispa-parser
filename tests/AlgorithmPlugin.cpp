@@ -87,6 +87,41 @@ int main() {
     EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
 }
 
+TEST(AlgorithmPlugin, LLRuleArgumentsAndIntegerBounds) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(
+        "A: 'a'; main: A child>(value_A); child>(arg): A; item>(count): @ A=count {@};");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-rule-parameters-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+struct Harness : PluginTest::Parser {
+    auto counted(const char* input, long long count) {
+        PluginTest::Lexer lexer;
+        return item(PluginTest::Lexer::lazy_iterator(lexer, input), count);
+    }
+};
+int main() {
+    PluginTest::Parser parser;
+    parser.parse("aa");
+    Harness harness;
+    const auto result = harness.counted("aa", 2);
+    return result.status && result.node.data().value.size() == 2 ? 0 : 1;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
 TEST(AlgorithmPlugin, LLAdvancedContextsExecuteAndReturnTheirAst) {
     dlib library("libispa-algorithm-LL");
     const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();

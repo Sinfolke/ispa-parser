@@ -26,6 +26,7 @@ namespace Cpp {
         bool src_empty = true;
         bool self_containing = false;
         bool in_class = false;  // true while emitting the members of a class body
+        bool in_templated_class = false;
         void delete_if() {
             if (self_containing) {
                 delete h;

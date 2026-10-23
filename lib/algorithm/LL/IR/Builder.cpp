@@ -129,6 +129,7 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
     Parser::Ctx ctx{};
     RuleLower lower(ctx, tree);
     for (const auto& [name, rule] : tree) {
+        if (rule.isTemplatePlaceholder) continue;
         if (corelib::text::isUpper(name.back())) continue;
         if (rule.external) {
             Production production;

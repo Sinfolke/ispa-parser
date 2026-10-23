@@ -258,7 +258,9 @@ namespace AST {
     }
 
     bool operator==(const RuleMemberName &first, const RuleMemberName &second) {
-        return first.name == second.name;
+        return first.name == second.name && first.templateArguments == second.templateArguments &&
+            first.templateArgumentIsParameter == second.templateArgumentIsParameter &&
+            first.templateParameter == second.templateParameter;
     }
 
     bool operator==(const RuleMemberGroup &first, const RuleMemberGroup &second) {
@@ -393,7 +395,8 @@ namespace AST {
     }
 
     bool operator<(const RuleMemberName &lhs, const RuleMemberName &rhs) {
-        return lhs.name < rhs.name;
+        return std::tie(lhs.name, lhs.templateArguments, lhs.templateArgumentIsParameter, lhs.templateParameter) <
+            std::tie(rhs.name, rhs.templateArguments, rhs.templateArgumentIsParameter, rhs.templateParameter);
     }
 
     bool operator<(const RuleMemberGroup &lhs, const RuleMemberGroup &rhs) {
@@ -658,7 +661,11 @@ auto AST::captureType(const AST::RuleMember& member) -> AST::DataType {
         Type type{Kind::String};
         if (member.isName()) {
             type.kind = member.getName().isTerminal() ? Kind::Token : Kind::Rule;
-            type.name = member.getName().name;
+            type.name = member.getName().templateParameter.empty()
+                ? member.getName().name : stdu::vector<std::string>{member.getName().templateParameter};
+            type.isTemplateParameter = !member.getName().templateParameter.empty();
+            type.templateArguments = member.getName().templateArguments;
+            type.templateArgumentIsParameter = member.getName().templateArgumentIsParameter;
         } else if (member.isGroup() || member.isOp()) {
             const auto& children = member.isGroup() ? member.getGroup().values : member.getOp().options;
             for (const auto& child : children) {

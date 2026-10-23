@@ -647,6 +647,18 @@ namespace Cpp {
     // The standalone main header gets the declarations of free functions and (at its very end) the bodies of
     // the inline templates; it never includes anything from incremental/.
     auto Construct::produceFunction(const LangAPI::Function &func, OutputSrc &o, bool constructor) -> void {
+        if (o.in_templated_class) {
+            const auto signature = buildSignature(func, SigKind::Declaration, "", true, {}, constructor);
+            emitLine(*o.h, signature + (func.statements.empty() ? ";" : " {"));
+            if (!func.statements.empty()) {
+                o.h->increaseIndentation();
+                convertStatements(func.statements, *o.h);
+                o.h->decreaseIndentation();
+                emitLine(*o.h, "}");
+            }
+            ++context.next_function;
+            return;
+        }
         const bool is_template = !func.template_parameters.empty();
         const bool has_body = !func.statements.empty();
         const bool offload = determineOffloadCompatible(func);
@@ -760,6 +772,12 @@ namespace Cpp {
             }
             head += " : " + joinStrings(bases, ", ");
         }
+        if (!cls.template_parameters.empty()) {
+            std::vector<std::string> parameters;
+            for (const auto& parameter : cls.template_parameters)
+                parameters.push_back("typename " + parameter);
+            emitLine(*o.h, "template<" + joinStrings(parameters, ", ") + ">");
+        }
         emitLine(*o.h, head + " {");
         o.h->increaseIndentation();
 
@@ -771,6 +789,7 @@ namespace Cpp {
         context.symbol_path.push_back(split.leaf);
         OutputSrc member(o.h, o.cpp);
         member.in_class = true;
+        member.in_templated_class = o.in_templated_class || !cls.template_parameters.empty();
 
         if (cls.constructor) {
             emitLine(*o.h, "public:");
@@ -824,7 +843,7 @@ namespace Cpp {
         context.symbol_path = parent_path;
         if (!member.src_empty) o.src_empty = false;
         context.visibility = saved_visibility;
-        if (cls.output_fun.has_value()) {
+        if (cls.output_fun.has_value() && cls.template_parameters.empty()) {
             auto output_operator = cls.output_fun.value();
             output_operator.name = "operator<<";
             output_operator.parameters.insert(output_operator.parameters.begin(), std::make_pair(LangAPI::Type {LangAPI::Symbol {"std::ostream &"}}, "os"));
@@ -837,6 +856,12 @@ namespace Cpp {
     }
 
     auto Construct::produceTypeAlias(const LangAPI::TypeAlias &alias, OutputSrc &o) -> void {
+        if (!alias.template_parameters.empty()) {
+            std::vector<std::string> parameters;
+            for (const auto& parameter : alias.template_parameters)
+                parameters.push_back("typename " + parameter);
+            emitLine(*o.h, "template<" + joinStrings(parameters, ", ") + ">");
+        }
         emitLine(*o.h, "using " + alias.name + " = " + Core::convertType(alias.type) + ";");   // used to miss the newline
     }
 
@@ -884,11 +909,18 @@ namespace Cpp {
         if (decl.isForwardDeclaredClass()) {
             const std::string n = Core::convertSymbol(decl.getForwardDeclaredClass().name);
             std::string def_visibility = decl.getForwardDeclaredClass().isStruct ? "struct " : "class ";
+            std::string template_prefix;
+            if (!decl.getForwardDeclaredClass().template_parameters.empty()) {
+                std::vector<std::string> parameters;
+                for (const auto& parameter : decl.getForwardDeclaredClass().template_parameters)
+                    parameters.push_back("typename " + parameter);
+                template_prefix = "template<" + joinStrings(parameters, ", ") + "> ";
+            }
             if (o.in_class) {
-                emitLine(*o.h, def_visibility + n + ";");
+                emitLine(*o.h, template_prefix + def_visibility + n + ";");
             } else {
                 const std::string ns = joinStrings(context.namespace_path, "::");
-                emitLine(context.main_h, ns.empty() ? def_visibility + n + ";" : "namespace " + ns + " { " + def_visibility + n + "; }");
+                emitLine(context.main_h, ns.empty() ? template_prefix + def_visibility + n + ";" : "namespace " + ns + " { " + template_prefix + def_visibility + n + "; }");
             }
             return;
         }

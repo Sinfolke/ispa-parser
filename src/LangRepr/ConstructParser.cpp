@@ -234,7 +234,13 @@ namespace LangRepr {
         if (lr) constructLRParser(parser);
         // constructTokenMachineDFA(parser);
         if (!lr) for (const auto &prod : ir) {
-            LangAPI::Type rule_type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
+            const AST::DeclarationSyntax *declaration = nullptr;
+            if (tree.contains(prod.name)) for (const auto &feature : tree[prod.name].features)
+                if (const auto *syntax = std::get_if<AST::DeclarationSyntax>(&feature)) declaration = syntax;
+            LangAPI::Type raw_rule_type{LangAPI::Symbol{prod.name}};
+            if (declaration) for (const auto& parameter : declaration->templateParameters)
+                raw_rule_type.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{parameter}});
+            LangAPI::Type rule_type = ensureTypesNs(raw_rule_type);
             LangAPI::Type fun_type = ensureTypesNs(LangAPI::Type {LangAPI::ValueType::RuleResult, rule_type, LangAPI::Type {LangAPI::Symbol {"IT"}}});
             if (tree.contains(prod.name) && tree[prod.name].external) {
                 const auto& external = *tree[prod.name].external;
@@ -245,6 +251,14 @@ namespace LangRepr {
                 function.template_parameters = {{"IT", {
                     LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerTokenIterator},
                     LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerLazyIterator}}}};
+                if (declaration) for (const auto& parameter : declaration->templateParameters)
+                    function.template_parameters.insert(function.template_parameters.end() - 1,
+                        std::make_pair(parameter, stdu::vector<LangAPI::Type>{}));
+                if (declaration) for (std::size_t i = 0; i < declaration->parameters.size(); ++i) {
+                    const auto type_name = "ISPAParam" + std::to_string(i);
+                    function.template_parameters.emplace_back(type_name, stdu::vector<LangAPI::Type>{});
+                    function.parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{type_name}}, declaration->parameters[i]);
+                }
                 function.statements = LangAPI::Return::createStatements(LangAPI::Return{
                     .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
                         .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"::ISPA_STD", "external_match"}),
@@ -255,7 +269,7 @@ namespace LangRepr {
             }
             LangAPI::Statements stmts;
             LangAPI::Variable result_v;
-            result_v.type = ensureTypesNs(LangAPI::Type {LangAPI::Symbol {prod.name} });
+            result_v.type = rule_type;
             result_v.name = "result";
             result_v.value = LangAPI::EmptyInitializer::createExpression(LangAPI::EmptyInitializer{});
             stmts.push_back(LangAPI::Variable::createStatement(result_v));
@@ -360,7 +374,71 @@ namespace LangRepr {
                     LangAPI::IspaLibSymbol {.exports = LangAPI::StdlibExports::LexerLazyIterator}
                 })},
             };
+            if (declaration) for (const auto& parameter : declaration->templateParameters)
+                prod_fun.template_parameters.insert(prod_fun.template_parameters.end() - 1,
+                    std::make_pair(parameter, stdu::vector<LangAPI::Type>{}));
+            if (declaration) for (std::size_t i = 0; i < declaration->parameters.size(); ++i) {
+                const auto type_name = "ISPAParam" + std::to_string(i);
+                prod_fun.template_parameters.emplace_back(type_name, stdu::vector<LangAPI::Type>{});
+                prod_fun.parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{type_name}}, declaration->parameters[i]);
+            }
             parser.data.push_back(std::make_pair(std::make_shared<LangAPI::Declaration>(std::move(prod_fun)), LangAPI::Visibility::Protected));
+        }
+
+        if (!lr) {
+            std::set<stdu::vector<std::string>> template_candidates;
+            for (const auto& [name, rule] : tree.getTreeMap()) if (rule.isTemplatePlaceholder)
+                for (const auto& member : rule.rule_members)
+                    if (member->isOp()) for (const auto& option : member->getOp().options)
+                        if (option->isName()) template_candidates.insert(option->getName().name);
+            for (const auto& candidate : template_candidates) {
+                if (!tree.contains(candidate)) continue;
+                for (const auto& feature : tree[candidate].features)
+                    if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                        syntax && (!syntax->parameters.empty() || !syntax->templateParameters.empty()))
+                        throw std::invalid_argument("grammar template argument requires parameters: " +
+                            corelib::text::join(candidate, "."));
+                LangAPI::Type node_type = ensureTypesNs(LangAPI::Type{LangAPI::Symbol{candidate}});
+                LangAPI::Type tag_type{LangAPI::ValueType::TypeTag};
+                tag_type.template_parameters.emplace_back(node_type);
+                LangAPI::Type result_type{LangAPI::ValueType::RuleResult, node_type,
+                    LangAPI::Type{LangAPI::Symbol{"IT"}}};
+                LangAPI::Function function;
+                function.name = "ispa_match_template";
+                function.type = result_type;
+                function.parameters = {{tag_type, "tag"}, {LangAPI::Type{LangAPI::Symbol{"IT"}}, "pos"}};
+                function.template_parameters = {{"IT", {
+                    LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerTokenIterator},
+                    LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::LexerLazyIterator}}}};
+                if (AST::RuleMemberName{.name = candidate}.isTerminal()) {
+                    LangAPI::IspaLibFunctionCall match;
+                    match.symbol = LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::ParserOptional};
+                    match.template_parameters.push_back(std::make_shared<LangAPI::Type>(node_type));
+                    match.args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})};
+                    function.statements.push_back(LangAPI::Variable{.name = "node", .type = LangAPI::Type{LangAPI::ValueType::Rule, node_type},
+                        .value = LangAPI::IspaLibFunctionCall::createExpression(std::move(match))});
+                    LangAPI::StorageSymbol empty;
+                    empty.what = LangAPI::Symbol::createExpression(LangAPI::Symbol{"node"});
+                    empty.path.emplace_back(LangAPI::FunctionCall{
+                        .name = std::make_shared<LangAPI::Symbol>("empty")});
+                    LangAPI::Expression status{LangAPI::ExpressionValue{LangAPI::ExpressionElement::Not}};
+                    auto empty_call = LangAPI::StorageSymbol::createExpression(std::move(empty));
+                    status.insert(status.end(), empty_call.begin(), empty_call.end());
+                    function.statements.push_back(LangAPI::Return::createStatement(LangAPI::Return{
+                        .value = LangAPI::Inheritance::createExpression(LangAPI::Inheritance{
+                            .name = result_type,
+                            .args = {std::move(status),
+                                LangAPI::Symbol::createExpression(LangAPI::Symbol{"node"}),
+                                LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}})}));
+                } else {
+                    function.statements = LangAPI::Return::createStatements(LangAPI::Return{
+                        .value = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                            .name = std::make_shared<LangAPI::Symbol>(Parser::ParserBase::fun_name(candidate)),
+                            .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"pos"})}})});
+                }
+                parser.data.emplace_back(std::make_shared<LangAPI::Declaration>(
+                    LangAPI::Function::createDeclaration(std::move(function))), LangAPI::Visibility::Protected);
+            }
         }
 
         auto add_parse_wrapper = [&](

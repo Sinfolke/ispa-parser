@@ -705,6 +705,20 @@ namespace LangRepr {
             return LangAPI::Symbol{"::" + namespace_name + "::FlatTypes::" + flattenName(n)};
         };
 
+        auto templateNames = [&](const Name& n) -> stdu::vector<std::string> {
+            if (!tree.contains(n)) return {};
+            for (const auto& feature : tree[n].features)
+                if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))
+                    return syntax->templateParameters;
+            return {};
+        };
+        auto flatType = [&](const Name& n) -> LangAPI::Type {
+            LangAPI::Type type{flatSymbol(n)};
+            for (const auto& parameter : templateNames(n))
+                type.template_parameters.emplace_back(LangAPI::Type{LangAPI::Symbol{parameter}});
+            return type;
+        };
+
         // Requires your LangAPI's real alias declaration API; see note below.
         auto emitTypeAlias = [&](LangAPI::Class& owner,
                                  const std::string& alias,
@@ -714,7 +728,8 @@ namespace LangRepr {
                     LangAPI::TypeAlias::createDeclaration(
                         LangAPI::TypeAlias{
                             .name = alias,
-                            .type = LangAPI::Type{flatSymbol(target)}
+                            .type = flatType(target),
+                            .template_parameters = templateNames(target)
                         })),
                 LangAPI::Visibility::Public
             });
@@ -853,6 +868,11 @@ namespace LangRepr {
                 const bool box = isCyclicEdge(owner, target) ||
                                  explicitly_boxed.contains(target);
                 auto canonical = LangAPI::Type{flatSymbol(target)};
+                canonical.template_parameters = std::move(t.template_parameters);
+                if (canonical.template_parameters.empty() && target == owner)
+                    canonical = flatType(target);
+                for (auto& parameter : canonical.template_parameters)
+                    if (auto* inner = std::get_if<LangAPI::Type>(&parameter)) rewriteType(*inner, owner);
                 if (box) {
                     t.type = LangAPI::ValueType::Box;
                     t.template_parameters = {std::move(canonical)};
@@ -876,7 +896,8 @@ namespace LangRepr {
                 continue;
             }
             flatForwards.push_back(LangAPI::ForwardDeclaredClass::createDeclaration(
-                LangAPI::ForwardDeclaredClass{.name = flattenName(n), .isStruct = true}));
+                LangAPI::ForwardDeclaredClass{.name = flattenName(n), .isStruct = true,
+                    .template_parameters = templateNames(n)}));
         }
         holder.push(LangAPI::Namespace{
             .name = "FlatTypes", .declarations = std::move(flatForwards)
@@ -891,6 +912,7 @@ namespace LangRepr {
 
             LangAPI::Class c;
             c.name = LangAPI::Symbol{flattenName(fullName)};
+            c.template_parameters = templateNames(fullName);
 
             // Keep the class's direct referenced-type dependencies in LangAPI,
             // not only in the temporary graph used to order definitions.
@@ -965,7 +987,8 @@ namespace LangRepr {
             publicAliases.push_back(LangAPI::TypeAlias::createDeclaration(
                 LangAPI::TypeAlias{
                     .name = n[0],
-                    .type = LangAPI::Type{flatSymbol(n)}
+                    .type = flatType(n),
+                    .template_parameters = templateNames(n)
                 }));
         }
         holder.push(LangAPI::Namespace{

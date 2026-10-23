@@ -55,6 +55,7 @@ export class MemLower : Parser::ParserBase {
 
     // ---- name calls ----
     auto combinatorArgs(const AST::RuleMember &mem) -> stdu::vector<LangAPI::Expression>;
+    auto ruleCallable(const AST::RuleMember &mem) -> LangAPI::Expression;
     auto failureHandler(const AST::RuleMember &mem) -> LangAPI::Expression;
     auto getMatchSymbol(char quantifier) -> LangAPI::StdlibExports;
     auto ismemberOptional(char quantifier) -> bool;

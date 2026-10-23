@@ -1,0 +1,6 @@
+LINE_COMMENT<begin>:
+    begin [^\n]?
+;
+BLOCK_COMMENT<begin, end>:
+    begin (BLOCK_COMMENT | [^*])* end
+;

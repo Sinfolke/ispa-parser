@@ -1,0 +1,4 @@
+__WS:
+    [ \t\r\n\v\f]+
+;
+NEWLINE: '\n';

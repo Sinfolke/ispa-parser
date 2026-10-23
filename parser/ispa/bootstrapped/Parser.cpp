@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-#include <ispastdlib.hpp>
+#include <../../stdlibs/target/ispastdlib.hpp>
 
 auto Parser::TokensToString(std::size_t id) -> const char* {
 	switch (id) {

@@ -93,6 +93,8 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
                 return std::string("std::shared_ptr<") + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Span:
                 return "::ISPA_STD::Span<" + convertTemplates(type.template_parameters) + ">";
+            case LangAPI::ValueType::TypeTag:
+                return "std::type_identity<" + convertTemplates(type.template_parameters) + ">";
             case LangAPI::ValueType::Undef:
                 return "auto";
             default:
@@ -827,8 +829,10 @@ auto Core::convertRValue(const LangAPI::RValue &rvalue) -> std::string {
             std::string res;
             if (std::holds_alternative<LangAPI::Symbol>(inheritance.name)) {
                 res += convertSymbol(std::get<LangAPI::Symbol>(inheritance.name));
-            } else {
+            } else if (std::holds_alternative<LangAPI::IspaLibSymbol>(inheritance.name)) {
                 res += convertIspaLibSymbol(std::get<LangAPI::IspaLibSymbol>(inheritance.name));
+            } else {
+                res += convertType(*std::get<std::shared_ptr<LangAPI::Type>>(inheritance.name));
             }
             res += '{';
             res += convertFunctionParams(inheritance.args);

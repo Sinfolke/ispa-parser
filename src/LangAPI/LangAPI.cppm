@@ -85,7 +85,7 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Void, Char, Int, LargeUInt, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, Const, Reference, Tuple
+        Undef, Void, Char, Int, LargeUInt, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, Const, Reference, Tuple, TypeTag
     };
     enum class RValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant, CheckVariant, ToString, CharToStringConstructor, Cast, GetFromBox
@@ -643,7 +643,7 @@ export namespace LangAPI {
         }
     };
     struct Inheritance : RValueLevel {
-        std::variant<Symbol, IspaLibSymbol> name;
+        std::variant<Symbol, IspaLibSymbol, std::shared_ptr<Type>> name;
         stdu::vector<Expression> args;
 
         friend bool operator==(const Inheritance &a, const Inheritance &b);
@@ -1254,8 +1254,9 @@ export namespace LangAPI {
     struct ForwardDeclaredClass : DeclarationLevel {
         std::string name;
         bool isStruct = true;
+        stdu::vector<std::string> template_parameters;
         auto operator==(const ForwardDeclaredClass& other) const {
-            return name == other.name;
+            return name == other.name && template_parameters == other.template_parameters;
         }
         auto operator!=(const ForwardDeclaredClass& other) const {
             return !(*this == other);
@@ -1293,6 +1294,7 @@ export namespace LangAPI {
     };
     struct Class : DeclarationLevel {
         Symbol name;
+        stdu::vector<std::string> template_parameters;
         stdu::vector<std::pair<std::shared_ptr<Declaration>, Visibility>> data;
         stdu::vector<std::pair<Visibility, std::variant<Symbol, IspaLibSymbol>>> inherit_members;
         Visibility default_visibility = Visibility::Public;
@@ -1301,7 +1303,7 @@ export namespace LangAPI {
         std::optional<Function> output_fun;
         stdu::vector<Symbol> dependecies;
         bool operator==(const Class& other) const {
-            return name == other.name && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility && constructor == other.constructor;
+            return name == other.name && template_parameters == other.template_parameters && data == other.data && inherit_members == other.inherit_members && default_visibility == other.default_visibility && constructor == other.constructor;
         }
         bool operator!=(const Class& other) const {
             return !(*this == other);
@@ -1318,10 +1320,10 @@ export namespace LangAPI {
         friend struct ::uhash;
         friend struct ::LangAPI::MembersAccess;
         auto members() const {
-            return std::tie(name, data, inherit_members, default_visibility, constructor);
+            return std::tie(name, template_parameters, data, inherit_members, default_visibility, constructor);
         }
         auto members() {
-            return std::tie(name, data, inherit_members, default_visibility, constructor);
+            return std::tie(name, template_parameters, data, inherit_members, default_visibility, constructor);
         }
     };
     struct Namespace : DeclarationLevel {
@@ -1346,8 +1348,9 @@ export namespace LangAPI {
     struct TypeAlias : DeclarationLevel {
         std::string name;
         Type type;
+        stdu::vector<std::string> template_parameters;
         bool operator==(const TypeAlias& other) const {
-            return name == other.name && type == other.type;
+            return name == other.name && type == other.type && template_parameters == other.template_parameters;
         }
         bool operator!=(const TypeAlias& other) const {
             return !(*this == other);

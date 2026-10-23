@@ -101,7 +101,18 @@ jobs:
             libc++-20-dev \
             libc++abi-20-dev \
             valgrind
-
+      - name: Install ICU build dependencies
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            autoconf \
+            autoconf-archive \
+            automake \
+            libtool \
+            pkg-config \
+            gettext \
+            make
       - name: Fix libc++ modules std path (Ubuntu clang)
         if: matrix.cpp_compiler == 'clang++-20'
         run: |
