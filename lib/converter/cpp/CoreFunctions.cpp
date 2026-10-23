@@ -39,15 +39,17 @@ auto Core::convertType(const LangAPI::Type &type) -> std::string {
         switch (type.getValueType()) {
             case LangAPI::ValueType::Void:
                 return "void";
-            case LangAPI::ValueType::Const: {
+            case LangAPI::ValueType::ImmutableSemantic: {
                 if (isNestedT<LangAPI::ValueType::NonOwnedString>(type)) {
                     return convertTemplates(type.template_parameters) + " const";
                 } else {
                     return "const " + convertTemplates(type.template_parameters);
                 }
             }
-            case LangAPI::ValueType::Reference:
+            case LangAPI::ValueType::BorrowSemantic:
                 return convertTemplates(type.template_parameters) + "&";
+            case LangAPI::ValueType::MoveSemantic:
+                return convertTemplates(type.template_parameters) + "&&";
             case LangAPI::ValueType::Tuple:
                 if (type.template_parameters.size() == 2) {
                     return std::string("std::pair<") + convertTemplates(type.template_parameters) + ">";

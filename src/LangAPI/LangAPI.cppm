@@ -85,7 +85,7 @@ export namespace LangAPI {
         Assign, Add, Minus, Multiply, Divide, Modulo
     };
     enum class ValueType {
-        Undef, Void, Char, Int, LargeUInt, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, Const, Reference, Tuple, TypeTag
+        Undef, Void, Char, Int, LargeUInt, Bool, Float, String, NonOwnedString, Array, FixedSizeArray, Map, Symbol, StorageSymbol, Token, RawToken, Rule, TokenResult, RuleResult, Span, Variant, LargeVariant, Box, Any, ImmutableSemantic, BorrowSemantic, MoveSemantic, Tuple, TypeTag
     };
     enum class RValueType {
         Undef, Char, Int, Bool, Float, String, Array, FixedSizeArray, Map, Pos, Symbol, IspaLibSymbol, StorageSymbol, Inheritance, IspaLibDfaTransition, IspaLibDfaSpanCharState, IspaLibDfaSpanMultiTableState, IspaLibDfaEmptyState, IspaLibDfaSpan, Reference, Span, MakeTuple, GetVariant, CheckVariant, ToString, CharToStringConstructor, Cast, GetFromBox
@@ -230,6 +230,7 @@ export namespace LangAPI {
     };
     struct Expression : stdu::vector<ExpressionValue>, StatementLevel {
         using vector::vector;
+        using vector::push_back;
         Expression();
         Expression(const Expression&);
         Expression(Expression&&) noexcept;
@@ -240,6 +241,8 @@ export namespace LangAPI {
         Expression(const ExpressionValue&);
         Expression(ExpressionValue&&);
         Expression(std::initializer_list<ExpressionValue>);
+        void push_back(const Expression& other);
+        void push_back(Expression&& other);
         ~Expression();
         friend auto operator<<(std::ostream& os, const Expression &expr) -> std::ostream&;
         friend auto operator<(const Expression& a, const Expression& b) -> bool;
@@ -494,13 +497,14 @@ export namespace LangAPI {
                           || std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
     template <typename T>
-    concept DecomposableRange = std::ranges::range<T> && !DirectPathPart<T>;
+    concept DecomposableRange = std::ranges::range<T> && !DirectPathPart<T>
+        && DirectPathPart<std::ranges::range_value_t<T>>;
     struct Symbol : RValueLevel {
         using PathPart = std::variant<FunctionCall, IspaLibSymbol, std::string>;
         stdu::vector<PathPart> path;
 
         template<typename... Args>
-        requires ((std::constructible_from<PathPart, Args> || std::ranges::range<Args> || std::is_same_v<Args, char> || std::is_integral_v<Args>) && ...)
+        requires ((std::constructible_from<PathPart, Args> || DecomposableRange<Args> || std::is_same_v<Args, char> || std::is_integral_v<Args>) && ...)
         Symbol(Args&&... args) {
             (insertElement(args), ...);
         }
@@ -1890,6 +1894,14 @@ export namespace LangAPI {
     inline Expression::Expression(const stdu::vector<ExpressionValue>& v) : vector(v) {}
     inline Expression::Expression(stdu::vector<ExpressionValue>&& v) : vector(std::move(v)) {}
     inline Expression::Expression(std::initializer_list<ExpressionValue> v) : vector(v) {}
+    inline void Expression::push_back(const Expression& other) {
+        const auto& values = static_cast<const stdu::vector<ExpressionValue>&>(other);
+        vector::insert(vector::end(), values.begin(), values.end());
+    }
+    inline void Expression::push_back(Expression&& other) {
+        auto& values = static_cast<stdu::vector<ExpressionValue>&>(other);
+        vector::insert(vector::end(), std::make_move_iterator(values.begin()), std::make_move_iterator(values.end()));
+    }
     inline Expression& Expression::operator=(const Expression&) = default;
     inline Expression& Expression::operator=(Expression&&) noexcept = default;
     inline Expression::~Expression() = default;

@@ -209,7 +209,7 @@ namespace LangRepr {
         print_func.type = LangAPI::ValueType::Void;
         print_func.is_const = true;
         print_func.parameters.emplace_back(
-            LangAPI::Type{LangAPI::ValueType::Reference, LangAPI::Type {LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::ASTPrinter}}},
+            LangAPI::Type{LangAPI::ValueType::BorrowSemantic, LangAPI::Type {LangAPI::IspaLibSymbol{.exports = LangAPI::StdlibExports::ASTPrinter}}},
             "printer"
         );
 
@@ -543,7 +543,7 @@ namespace LangRepr {
                 -> LangAPI::Declaration
             {
                 const auto type = LangAPI::Type {
-                    LangAPI::ValueType::Const,
+                    LangAPI::ValueType::ImmutableSemantic,
                     LangAPI::Type{
                         as_string ? LangAPI::ValueType::NonOwnedString : LangAPI::ValueType::LargeUInt
                     }
@@ -578,7 +578,7 @@ namespace LangRepr {
                     );
                     if (numeric_name == "Tokens" && !as_string) result.declarations.push_back(
                         LangAPI::Variable::createDeclaration(LangAPI::Variable{
-                            .name = "shared", .type = LangAPI::Type{LangAPI::ValueType::Const, LangAPI::Type{LangAPI::ValueType::Bool}},
+                            .name = "shared", .type = LangAPI::Type{LangAPI::ValueType::ImmutableSemantic, LangAPI::Type{LangAPI::ValueType::Bool}},
                             .value = LangAPI::Bool::createExpression(LangAPI::Bool{.value = true})}));
                 }
 

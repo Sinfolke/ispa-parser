@@ -57,7 +57,7 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
     if (lr->skipsAutomaticWhitespace())
         is_space = equals(memberCall("token", "kind"), tokenId(constants::whitespace));
     add("lr_is_space", Type{ValueType::Bool},
-        {{Type{ValueType::Const, Type{ValueType::Reference, Type{Symbol{"Token"}}}}, "token"}},
+        {{Type{ValueType::ImmutableSemantic, Type{ValueType::BorrowSemantic, Type{Symbol{"Token"}}}}, "token"}},
         {returned(std::move(is_space))});
     Statements spaces;
     for (std::size_t i = 1; i < lr->getProductions().size(); ++i) {
@@ -109,7 +109,7 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
     if (dynamic) actions.push_back(returned(integer(-std::numeric_limits<long long>::max())));
     else actions.push_back(fail());
     const stdu::vector<std::pair<Type, std::string>> action_parameters{
-        {size, "state"}, {Type{ValueType::Const, Type{ValueType::Reference, sizes}}, "window"}};
+        {size, "state"}, {Type{ValueType::ImmutableSemantic, Type{ValueType::BorrowSemantic, sizes}}, "window"}};
     add("lr_action", number, action_parameters, std::move(actions));
     if (dynamic) {
         conflicts.push_back(returned(Array::createExpression(Array{})));
@@ -218,7 +218,7 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
     lengths.push_back(fail()); lhs.push_back(fail()); reductions.push_back(fail());
     add("lr_length", size, {{size, "rule"}}, std::move(lengths));
     add("lr_lhs", size, {{size, "rule"}}, std::move(lhs));
-    add("lr_reduce", any, {{size, "rule"}, {Type{ValueType::Const, Type{ValueType::Reference, values}}, "values"}}, std::move(reductions));
+    add("lr_reduce", any, {{size, "rule"}, {Type{ValueType::ImmutableSemantic, Type{ValueType::BorrowSemantic, values}}, "values"}}, std::move(reductions));
 
     Statements shifts;
     for (const auto &[name, block] : lexer_builder.getDataBlocks()) {
@@ -232,7 +232,7 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
             .args = {StorageSymbol::createExpression(node)}}))}}));
     }
     shifts.push_back(fail());
-    add("lr_shift", any, {{Type{ValueType::Const, Type{ValueType::Reference, Type{Symbol{"Token"}}}}, "token"}}, std::move(shifts));
+    add("lr_shift", any, {{Type{ValueType::ImmutableSemantic, Type{ValueType::BorrowSemantic, Type{Symbol{"Token"}}}}, "token"}}, std::move(shifts));
 
     Function main;
     main.type = Type{ValueType::RuleResult, Type{Symbol{"Types", "main"}}, Type{Symbol{"IT"}}};

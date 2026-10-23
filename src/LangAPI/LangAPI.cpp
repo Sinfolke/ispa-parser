@@ -114,7 +114,9 @@ namespace LangAPI {
             case ValueType::Variant: os << "Variant"; break;
             case ValueType::Box: os << "Box"; break;
             case ValueType::Any: os << "Any"; break;
-            case ValueType::Const: os << "Const"; break;
+            case ValueType::ImmutableSemantic: os << "ImmutableSemantic"; break;
+            case ValueType::BorrowSemantic: os << "BorrowSemantic"; break;
+            case ValueType::MoveSemantic: os << "MoveSemantic"; break;
             case ValueType::TypeTag: os << "TypeTag"; break;
         }
         return os;

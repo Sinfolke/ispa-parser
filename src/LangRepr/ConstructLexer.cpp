@@ -684,7 +684,7 @@ namespace LangRepr {
         LangAPI::Function push_token;
         push_token.name = "on_token";
         push_token.type = LangAPI::ValueType::Void;
-        push_token.parameters = {{LangAPI::Type{LangAPI::Symbol{"Token&&"}}, "token"}};
+        push_token.parameters = {{LangAPI::Type{LangAPI::ValueType::MoveSemantic, LangAPI::Type{LangAPI::Symbol{"Token"}}}, "token"}};
         push_token.override = true;
         LangAPI::Expression skip_condition;
         skip_condition.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_skip_token"}));
