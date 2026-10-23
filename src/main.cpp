@@ -393,22 +393,47 @@ int generate(Args args) {
             if (!registered_python.insert(module_name).second) continue;
             std::filesystem::path relative;
             for (const auto& part : imported.source) relative /= part;
-            std::vector<std::filesystem::path> roots{std::filesystem::path(source.file).parent_path()};
+            std::vector<std::filesystem::path> roots;
             for (const auto& dir : module_project.search_directories) roots.emplace_back(dir);
-            for (const auto& input : module_project.input_files)
-                if (std::filesystem::path(input).extension() == ".py") roots.push_back(input);
-            for (const auto& root : roots) {
-                auto file = root;
-                if (file.extension() != ".py") {
-                    file /= relative;
-                    file += ".py";
-                    if (!std::filesystem::is_regular_file(file)) file = root / relative / "__init__.py";
-                } else if (file.stem() != relative.filename()) continue;
-                std::ifstream input(file, std::ios::binary);
-                if (!input) continue;
-                semantic_checker.addPythonSource(module_name, std::filesystem::canonical(file).string(),
+            roots.emplace_back(std::filesystem::path(source.file).parent_path());
+            const auto canonicalFile = [](const std::filesystem::path& path) {
+                std::error_code error;
+                if (!std::filesystem::is_regular_file(path, error) || error) return std::filesystem::path{};
+                auto result = std::filesystem::canonical(path, error);
+                return error ? std::filesystem::path{} : result;
+            };
+            std::filesystem::path resolved;
+            for (const auto& input_path : module_project.input_files) {
+                const std::filesystem::path input_file(input_path);
+                if (input_file.extension() != ".py") continue;
+                auto actual = canonicalFile(input_file);
+                if (actual.empty()) continue;
+                bool matches = imported.source.size() == 1 && actual.stem() == imported.source.front();
+                for (const auto& root : roots) {
+                    std::error_code error;
+                    auto from_root = std::filesystem::relative(actual, root, error);
+                    if (!error && (from_root == std::filesystem::path(relative.string() + ".py") ||
+                                   from_root == relative / "__init__.py")) matches = true;
+                }
+                if (!matches) continue;
+                if (!resolved.empty() && resolved != actual)
+                    throw std::runtime_error("ambiguous Python module: " + module_name);
+                resolved = std::move(actual);
+            }
+            if (resolved.empty()) for (const auto& root : roots) {
+                auto candidate_path = relative;
+                candidate_path += ".py";
+                auto candidate = canonicalFile(root / candidate_path);
+                if (candidate.empty()) candidate = canonicalFile(root / relative / "__init__.py");
+                if (candidate.empty()) continue;
+                if (!resolved.empty() && resolved != candidate)
+                    throw std::runtime_error("ambiguous Python module: " + module_name);
+                resolved = std::move(candidate);
+            }
+            if (!resolved.empty()) {
+                std::ifstream input(resolved, std::ios::binary);
+                if (input) semantic_checker.addPythonSource(module_name, resolved.string(),
                     std::string(std::istreambuf_iterator<char>{input}, {}));
-                break;
             }
         }
     for (const auto& [path, rule] : ast.getTreeMap()) {

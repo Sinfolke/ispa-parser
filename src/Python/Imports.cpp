@@ -183,9 +183,12 @@ void Imports::load(const Modules::Source& source, const Modules::Import& imp,
         for (const auto& root : roots) {
             auto file = relative;
             file += ".py";
-            canonical = tryFile(root / file);
-            if (canonical.empty()) canonical = tryFile(root / relative / "__init__.py");
-            if (!canonical.empty()) break;
+            auto candidate = tryFile(root / file);
+            if (candidate.empty()) candidate = tryFile(root / relative / "__init__.py");
+            if (candidate.empty()) continue;
+            if (!canonical.empty() && candidate != canonical)
+                fail(at, "ambiguous Python module: " + Modules::spelling(imp.source));
+            canonical = std::move(candidate);
         }
     }
     if (canonical.empty())
