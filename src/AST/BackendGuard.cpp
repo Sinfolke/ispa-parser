@@ -21,7 +21,7 @@ void check(const AST::FrontendFeature& feature) {
         else if constexpr (std::is_same_v<T, AST::Counter>) name = "bounded counter";
         else if constexpr (std::is_same_v<T, AST::SharedCounterRegistration>) name = "shared counter registration";
         else if constexpr (std::is_same_v<T, AST::VariableCapture>) name = "variable capture";
-        else if constexpr (std::is_same_v<T, AST::DeclarationSyntax>) name = "rule modifiers or parameters";
+        else if constexpr (std::is_same_v<T, AST::DeclarationSyntax>) name = "rule parameters";
         else if constexpr (std::is_same_v<T, AST::SpacePattern>) name = "explicit whitespace pattern";
         else name = "advanced rule";
         reject(node.position, name);
@@ -83,8 +83,9 @@ void AST::requireCppSupport(const Tree& tree, bool ll_actions) {
             rule.rule_members.front()->isGroup() && rule.rule_members.front()->getGroup().values.empty())
             reject(rule.position, "advanced token without a match");
         for (const auto& feature : rule.features) {
-            if (ll_actions) if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
-                syntax && syntax->modifiers.empty() && (!token || rule.isTemplateDefinition || syntax->templateParameters.empty())) continue;
+            if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                syntax && syntax->parameters.empty() && syntax->templateParameters.empty() &&
+                std::ranges::all_of(syntax->modifiers, [](const auto& m) { return m == "inline" || m == "skip"; })) continue;
             if (ll_actions) if (const auto* syntax = std::get_if<AST::AdvancedRule>(&feature))
                 for (const auto& child : syntax->syntax.children)
                     if (child.field == "dep" && !child.children.empty()) reject(syntax->position, "advanced rule dependencies");

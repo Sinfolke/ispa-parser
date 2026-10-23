@@ -686,8 +686,27 @@ namespace LangRepr {
         push_token.type = LangAPI::ValueType::Void;
         push_token.parameters = {{LangAPI::Type{LangAPI::Symbol{"Token&&"}}, "token"}};
         push_token.override = true;
+        LangAPI::Expression skip_condition;
+        skip_condition.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_skip_token"}));
+        for (const auto& [name, rule] : tree.getTreeMap()) {
+            if (name.empty() || !AST::RuleMemberName{.name = name}.isTerminal()) continue;
+            const bool skip = std::ranges::any_of(rule.features, [](const auto& feature) {
+                const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+                return syntax && std::ranges::find(syntax->modifiers, "skip") != syntax->modifiers.end();
+            });
+            if (!skip) continue;
+            skip_condition.push_back(LangAPI::ExpressionElement::Or);
+            auto kind = LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
+                .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"token", "kind"})});
+            stdu::vector<std::string> token_id{"Parser", "Tokens"};
+            token_id.insert(token_id.end(), name.begin(), name.end());
+            token_id.push_back("id");
+            skip_condition.push_back(std::move(kind));
+            skip_condition.push_back(LangAPI::ExpressionElement::Equal);
+            skip_condition.push_back(LangAPI::Symbol::createExpression(LangAPI::Symbol{token_id}));
+        }
         push_token.statements.push_back(LangAPI::If::createStatement(LangAPI::If{
-            LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_skip_token"}), {},
+            std::move(skip_condition), {},
             {callStatement(LangAPI::FunctionCall::createExpression(LangAPI::FunctionCall{
                 .name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"append_token"}),
                 .args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"token"})}}))}}));
