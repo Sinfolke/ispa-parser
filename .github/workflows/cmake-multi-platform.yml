@@ -241,31 +241,33 @@ jobs:
         run: |
           echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
 
-      - name: Install dependencies (macOS)
+      - name: Install LLVM 23 (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
           set -euo pipefail
-
-          brew install \
-            llvm@23 \
-            ninja \
-            autoconf \
-            autoconf-archive \
-            automake \
-            libtool \
-            pkg-config \
-            gettext
-
-            LLVM_PREFIX="$(brew --prefix llvm@23)"
-        
-            echo "$LLVM_PREFIX/bin" >> "$GITHUB_PATH"
-            echo "LLVM_PREFIX=$LLVM_PREFIX" >> "$GITHUB_ENV"
-            echo "CC=$LLVM_PREFIX/bin/clang" >> "$GITHUB_ENV"
-            echo "CXX=$LLVM_PREFIX/bin/clang++" >> "$GITHUB_ENV"
-        
-            "$LLVM_PREFIX/bin/clang++" --version
-            "$LLVM_PREFIX/bin/llvm-config" --version
+          
+          brew update-reset
+          brew update
+          
+          brew info llvm
+          brew install llvm
+          brew upgrade llvm || true
+          
+          LLVM_PREFIX="$(brew --prefix llvm)"
+          LLVM_VERSION="$("$LLVM_PREFIX/bin/llvm-config" --version)"
+          
+          echo "Installed LLVM: $LLVM_VERSION"
+          
+          if [[ "${LLVM_VERSION%%.*}" != "23" ]]; then
+            echo "::error::Expected LLVM 23, got $LLVM_VERSION"
+            exit 1
+          fi
+          
+          echo "$LLVM_PREFIX/bin" >> "$GITHUB_PATH"
+          echo "LLVM_PREFIX=$LLVM_PREFIX" >> "$GITHUB_ENV"
+          echo "CC=$LLVM_PREFIX/bin/clang" >> "$GITHUB_ENV"
+          echo "CXX=$LLVM_PREFIX/bin/clang++" >> "$GITHUB_ENV"
       - name: Install libc++ module resources (macOS)
         if: runner.os == 'macOS'
         shell: bash
