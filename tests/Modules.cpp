@@ -275,9 +275,14 @@ TEST(Modules, PythonImportsAreErasedWithoutChangingSourcePositions) {
     files.write("main.isc", text);
     const auto project = files.preprocess();
     const auto& source = module(project, {"main"});
-    ASSERT_EQ(source.python_imports.size(), 1u);
-    EXPECT_EQ(source.python_imports.front().source, (Modules::Path{"package", "helpers"}));
-    EXPECT_EQ(source.python_imports.front().alias, "h");
+    std::vector<Modules::Import> py_imports;
+    for (const auto &i : source.imports) {
+        if (i.python_import)
+            py_imports.push_back(i);
+    }
+    ASSERT_EQ(py_imports.size(), 1u);
+    EXPECT_EQ(py_imports.front().source, (Modules::Path{"package", "helpers"}));
+    EXPECT_EQ(py_imports.front().alias, "h");
     EXPECT_TRUE(source.imports.empty());
     EXPECT_EQ(source.grammar.size(), text.size());
     EXPECT_EQ(source.grammar.find("main:"), text.find("main:"));

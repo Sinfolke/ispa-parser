@@ -214,10 +214,12 @@ jobs:
               'ispa-linux-x64.zip': [
                   ('ispa-linux-x64', 'ispa', True),
                   ('libispa-converter-cpp-linux-x64.so', 'libispa-converter-cpp.so', True),
+                  ('libispa-converter-python-linux-x64.so', 'libispa-converter-python.so', True),
               ],
               'ispa-windows-x64.zip': [
                   ('ispa-windows-x64.exe', 'ispa.exe', False),
                   ('ispa-converter-cpp-windows-x64.dll', 'libispa-converter-cpp.dll', False),
+                  ('ispa-converter-python-windows-x64.dll', 'libispa-converter-python.dll', False),
               ],
           }
           for zip_name, files in platforms.items():

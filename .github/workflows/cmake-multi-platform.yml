@@ -11,16 +11,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       SCCACHE_DIR: ${{ matrix.os == 'windows-latest' && 'C:\Users\runneradmin\AppData\Local\Mozilla\sccache' || '/home/runner/.cache/sccache' }}
+
     strategy:
       fail-fast: false
       matrix:
         include:
-          #          - os: ubuntu-26.04
-          #            c_compiler: gcc-15
-          #            cpp_compiler: g++-15
-          #            triplet: x64-linux
-          #            overlay_triplets: ""
-          #            extra_cxx_flags: ""
+          # - os: ubuntu-26.04
+          #   c_compiler: gcc-15
+          #   cpp_compiler: g++-15
+          #   triplet: x64-linux
+          #   overlay_triplets: ""
+          #   extra_cxx_flags: ""
 
           - os: ubuntu-26.04
             c_compiler: clang-20
@@ -43,9 +44,6 @@ jobs:
           submodules: true
           fetch-depth: 1
 
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v5
-
       - name: Setup CMake
         uses: lukka/get-cmake@v4.3.2
 
@@ -53,11 +51,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
-      # 2. Setup sccache action
+      # 1. Setup sccache action
       - name: Setup sccache
         uses: mozilla-actions/sccache-action@v0.0.8
 
-      # 3. Cache sccache directory (SCCACHE_DIR is now non-empty)
+      # 2. Restore/Save sccache disk cache
       - name: Restore / Save sccache cache
         uses: actions/cache@v4
         with:
@@ -66,6 +64,18 @@ jobs:
           restore-keys: |
             sccache-${{ runner.os }}-${{ matrix.triplet }}-
             sccache-${{ runner.os }}-
+
+      # 3. Export GitHub Actions Cache Token for vcpkg
+      - name: Export GitHub Actions Cache Token
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'] || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env['ACTIONS_RUNTIME_TOKEN'] || '');
+      - name: Set vcpkg Binary Caching
+        shell: bash
+        run: |
+          echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
@@ -125,6 +135,13 @@ jobs:
             -S "${{ github.workspace }}"
           )
           
+          # Force /Z7 for MSVC so sccache can cache MSVC compilation targets
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            CMAKE_ARGS+=(
+              "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded"
+            )
+          fi
+
           if [[ -n "${{ matrix.extra_cxx_flags }}" ]]; then
             CMAKE_ARGS+=(
               "-DCMAKE_CXX_FLAGS=${{ matrix.extra_cxx_flags }}"
@@ -147,6 +164,11 @@ jobs:
       - name: Show sccache statistics
         run: sccache --show-stats
 
-#      - name: Test
-#        working-directory: build
-#        run: ctest --build-config Release
+      # 4. Stop daemon to ensure all cached outputs are flushed before actions/cache uploads
+      - name: Stop sccache daemon
+        if: always()
+        run: sccache --stop-server || true
+
+#     - name: Test
+#       working-directory: build
+#       run: ctest --build-config Release
