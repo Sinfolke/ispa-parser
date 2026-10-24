@@ -41,9 +41,16 @@ class Lexer(Generic[T]):
 
     def lookup(self, table, class_table, action_table, layout, semantic,
                debug_array, debug_index, pos: Position) -> T | None:
-        from .dfa import run_tdfa
+        from .dfa import TdfaLayout, run_tdfa
         if pos.at_end():
             return None
+        if layout is None:
+            registers = 0
+            for action, dst, src, _next in action_table:
+                registers = max(registers, dst + 1)
+                if action == 3 and src >= 0:
+                    registers = max(registers, src + 1)
+            layout = TdfaLayout(registers, 0)
         token, self.line = run_tdfa(self.source, pos, table, class_table,
                                     action_table, layout, semantic, self.line)
         return token
@@ -82,6 +89,9 @@ class Lexer(Generic[T]):
             before = self._cursor.index
             token = self.makeToken(self._cursor)
             if self._cursor.index <= before:
+                if self._boundary is not None:
+                    self._finished = True
+                    return
                 raise LexError(before, self._line(self._cursor, before),
                                self._column(self._cursor, before),
                                self.source[before:before + 1])

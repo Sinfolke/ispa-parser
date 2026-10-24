@@ -78,6 +78,9 @@ void Core::restore_pending_lambdas(std::vector<LambdaDefinition> saved) {
 }
 std::string Core::counter() const { return counters_.back(); }
 std::string Core::identifier(const std::string& name) {
+    // Names beginning with two underscores are rewritten by Python inside
+    // class suites, including attribute access such as Types.__WS.
+    if (name.starts_with("__") && !name.ends_with("__")) return "_ispa" + name;
     static const std::unordered_set<std::string> reserved {
         "False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue",
         "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import",
@@ -97,6 +100,7 @@ std::string Core::symbol_path(const std::string& name) {
             result += '.'; ++i;
         } else result += name[i];
     }
+    if (result.starts_with('.')) result.erase(0, 1);
     return result;
 }
 std::string Core::literal(const std::string& value) const {
@@ -133,6 +137,8 @@ std::string Core::templates(const stdu::vector<std::variant<std::shared_ptr<Lang
 std::string Core::type(const LangAPI::Type& t) {
     if (t.isSymbol()) {
         auto name = symbol(t.getSymbol());
+        if (name.find('&') != std::string::npos || name.find('*') != std::string::npos)
+            return "typing.Any";
         return name; // Python erases user-defined C++ template instantiation.
     }
     if (t.isIspaLibSymbol()) return lib(t.getIspaLibSymbol());
@@ -173,15 +179,18 @@ std::string Core::type(const LangAPI::Type& t) {
 }
 std::string Core::symbol(const LangAPI::Symbol& s) {
     std::string result;
+    bool first = true;
     for (const auto& piece : s.path) {
         std::string item;
         if (const auto* str = std::get_if<std::string>(&piece)) {
             item = (*str == "__ispa_parser__") ? module_name_ : member(path_identifiers(*str));
+            if (first && method_members_.contains(*str)) item = "self." + item;
         } else if (const auto* special = std::get_if<LangAPI::IspaLibSymbol>(&piece)) {
             item = lib(*special);
         } else item = call(std::get<LangAPI::FunctionCall>(piece));
         if (!result.empty() && !item.empty()) result += '.';
         result += item;
+        first = false;
     }
     return result;
 }
@@ -280,6 +289,43 @@ std::string Core::call(const LangAPI::FunctionCall& c) {
         [this](const std::shared_ptr<LangAPI::Symbol>& name) { return symbol(*name); },
         [this](const std::shared_ptr<LangAPI::IspaLibSymbol>& name) { return lib(*name); }
     }, c.name);
+    if (fn == "recover_choice") {
+        if (c.args.size() != 3 || c.template_parameters.size() % 2 != 0)
+            throw std::runtime_error("Python target: invalid recovery choice");
+        std::string alternatives = "[";
+        for (const auto& parameter : c.template_parameters) {
+            const auto* set = std::get_if<std::shared_ptr<LangAPI::Type>>(&parameter);
+            if (!set || !*set || !(**set).isSymbol())
+                throw std::runtime_error("Python target: invalid recovery token set");
+            const auto set_name = symbol((**set).getSymbol());
+            if (set_name != "ISPA_STD.Recovery.Tokens" && set_name != "ISPA_STD.Recovery.EmptyTokens")
+                throw std::runtime_error("Python target: unsupported recovery token set");
+            if (alternatives.size() > 1) alternatives += ", ";
+            alternatives += "(";
+            std::size_t values = 0;
+            for (const auto& item : (**set).template_parameters) {
+                const auto* token = std::get_if<LangAPI::Type>(&item);
+                if (!token) throw std::runtime_error("Python target: invalid recovery token");
+                if (values++) alternatives += ", ";
+                const auto name = type(*token);
+                alternatives += name == "ISPA_STD.Recovery.EndOfInput" ? "None" : name;
+            }
+            if (values == 1) alternatives += ",";
+            alternatives += ")";
+        }
+        alternatives += "]";
+        return "self.recover_choice(" + expression(c.args[0]) + ", " + expression(c.args[1]) +
+            ", " + expression(c.args[2]) + ", " + alternatives + ")";
+    }
+    if (fn == "ISPA_STD.Recovery.handler") return "None";
+    if (fn == "ISPA_STD.external_match") {
+        if (c.template_parameters.size() != 1 || c.args.size() != 1)
+            throw std::runtime_error("Python target: invalid external parser call");
+        const auto* binding = std::get_if<std::shared_ptr<LangAPI::Type>>(&c.template_parameters.front());
+        if (!binding || !*binding) throw std::runtime_error("Python target: invalid external parser binding");
+        return "ispa_std.external_match(" + type(**binding)
+            + ", " + expression(c.args.front()) + ")";
+    }
     return fn + "(" + join(c.args, ", ", [this](const auto& p) { return expression(p); }) + ")";
 }
 std::string Core::lib_call(const LangAPI::IspaLibFunctionCall& c) {
@@ -451,7 +497,7 @@ std::string Core::expression(const LangAPI::Expression& e) {
             case E::ReportError: out += "self.raise_error(" + literal(part.getReportError().message) + ")"; break;
             case E::Lambda: out += lambda(part.getLambda()); break;
             case E::IspaLibFunctionCall: out += lib_call(part.getIspaLibFunctionCall()); break;
-            case E::DFADebug: std::cout << "Node: skipping DFADebug" << std::endl; break;
+            case E::DFADebug: std::cout << "Note: skipping DFADebug" << std::endl; break;
             case E::StringCompare: {
                 const auto compare = part.getStringCompare();
                 if (compare.is_string) {
@@ -473,6 +519,14 @@ std::string Core::statement_expression(const LangAPI::Expression& e) {
         const auto& first = e.front();
         using E = LangAPI::ExpressionValueType;
         switch (first.type()) {
+            case E::IspaLibFunctionCall: {
+                const auto& call = first.getIspaLibFunctionCall();
+                if (call.symbol.exports == LangAPI::StdlibExports::AssignCompatible && call.args.size() == 2) {
+                    const auto lhs = expression(call.args[0]);
+                    return lhs + " = ispa_std.assign_compatible(" + lhs + ", " + expression(call.args[1]) + ")";
+                }
+                break;
+            }
             case E::Return: return "return " + expression(first.getReturn().value);
             case E::Break: return "break";
             case E::Continue: return "continue";

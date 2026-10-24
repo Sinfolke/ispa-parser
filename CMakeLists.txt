@@ -137,9 +137,6 @@ set_target_properties(ispa_modules PROPERTIES
 add_executable(ispa ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 target_link_libraries(ispa PRIVATE ispa_modules)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_link_libraries(ispa PRIVATE c++ c++abi m)
-endif()
 function(add_ispa_lib type lib)
     get_file_range(${type}_${lib}_SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/${type}/${lib}/*.cpp

@@ -6,11 +6,14 @@ import std;
 
 namespace External {
 std::vector<std::pair<std::string, std::string>> exports(AST::Tree& tree,
-    const Modules::Project& project, const std::string& name) {
-    std::ostringstream header, definitions, manifest;
-    header << "\n#include <ispastdlib/external.hpp>\nnamespace " << name << "::Exports {\n";
-    definitions << "\n#include " << std::quoted(name + ".h") << '\n';
-    manifest << "ISPA_EXTERN 1\nheader " << std::quoted(name + ".h") << '\n';
+    const Modules::Project& project, const std::string& name, bool python) {
+    std::ostringstream header, definitions, manifest, python_exports;
+    if (!python) {
+        header << "\n#include <ispastdlib/external.hpp>\nnamespace " << name << "::Exports {\n";
+        definitions << "\n#include " << std::quoted(name + ".h") << '\n';
+    }
+    manifest << "ISPA_EXTERN 1\nheader " << std::quoted(name + (python ? ".py" : ".h")) << '\n';
+    if (python) python_exports << "\nclass Exports:\n";
     std::size_t index = 0;
     const auto& first = tree.getFirstSet(1);
     for (const auto& source : project.sources) {
@@ -40,10 +43,15 @@ std::vector<std::pair<std::string, std::string>> exports(AST::Tree& tree,
             const bool token = AST::RuleMemberName{.name = path}.isTerminal();
             const auto qualified = corelib::text::join(path, "::");
             const auto binding = "symbol_" + std::to_string(index++);
+            if (python) python_exports << "    " << binding << " = ispa_std.ExternalRule(Parser, Lexer, "
+                << std::quoted(Parser::ParserBase::fun_name(path)) << ", Types."
+                << corelib::text::join(path, ".") << ", "
+                << (token ? "True" : "False") << ")\n";
             manifest << "symbol " << std::quoted(Modules::spelling(source.name)) << ' '
                 << std::quoted(Modules::spelling(relative)) << ' '
                 << std::quoted(name + "::Types::" + qualified) << ' '
                 << std::quoted(name + "::Exports::" + binding) << '\n';
+            if (python) continue;
             header << "struct " << binding << " : ::" << name << "::Parser {\n"
                 << "using node_type = ::" << name << "::Types::" << qualified << ";\n"
                 << "static bool starts(const char* origin, const char* start);\n"
@@ -90,7 +98,11 @@ std::vector<std::pair<std::string, std::string>> exports(AST::Tree& tree,
                 << "return {true, ISPA_STD::external_node(origin, start, end, std::move(node)), end};\n}\n";
         }
     }
+    if (python && index == 0) python_exports << "    pass\n";
+    if (python) return {{name + ".ispa-export", manifest.str()}, {name + ".py", python_exports.str()}};
     header << "}\n";
-    return {{name + ".h", header.str()}, {name + ".cpp", definitions.str()}, {name + ".ispa-export", manifest.str()}};
+    std::vector<std::pair<std::string, std::string>> result{
+        {name + ".h", header.str()}, {name + ".cpp", definitions.str()}, {name + ".ispa-export", manifest.str()}};
+    return result;
 }
 }

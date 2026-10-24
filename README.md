@@ -55,7 +55,7 @@ expr: @ python.expr {@};
 
 Use `--dep NAME PREFIX` to select an existing parser. `PREFIX` has no extension;
 ISPA reads `PREFIX.ispa-export` for exported symbols and uses `PREFIX.h` as its
-public header. For example:
+public header for C++ output or `PREFIX.py` for Python output. For example:
 
 ```sh
 ispa -l cpp -a LL --dir parser/ispa/grammar parser/ispa/entry.isc \
@@ -70,7 +70,7 @@ live in the dependency header; their definitions live in its `.cpp` file.
 
 With `--no-dep`, ISPA discovers external grammar modules in the supplied `--dir`
 directories and generates each dependency beside the host, using the external
-dependency name as its output prefix. Dependencies remain separate `.h`/`.cpp`
+dependency name as its output prefix. C++ dependencies remain separate `.h`/`.cpp`
 files and must be compiled and linked by the build system. Nested dependencies
 are generated before their consumers; dependency cycles are diagnosed. Explicit
 `--dep` bindings may supply existing libraries while `--no-dep` builds the rest.
@@ -80,6 +80,17 @@ An eager lexer rejects grammars containing external calls with an `AMBIGUOUS`
 diagnostic. Lazy calls re-lex the imported span with the target lexer so token
 payloads match the target parser, then resume the host lexer at the returned
 source position.
+
+For the Python target, generate with `-l python -a LL`. Put the generated
+modules and `parser/stdlibs/target` on `PYTHONPATH` so `ispa_std` is available:
+
+```sh
+PYTHONPATH=build:parser/stdlibs/target python3 -c 'import Parser; print(Parser.Parser().parse("input"))'
+```
+
+Python external imports use the generated dependency module (for example,
+`import Foreign`) and its exported parser bindings. Keep dependencies on
+`PYTHONPATH` beside the host parser. `--dep` and `--no-dep` work as above.
 
 ---
 

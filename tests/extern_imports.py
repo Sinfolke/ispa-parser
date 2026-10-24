@@ -67,7 +67,7 @@ int main() {
 }
 """.replace("DEPENDENCY", dependency).replace("PAYLOAD",
                 "imported" + ".data().value" * (2 + len(extra))))
-            includes = ["-I" + str(repo / "parser/stdlibs/target"), "-I" + str(output)]
+            includes = ["-I" + str(repo / "parser/stdlibs/target/cpp"), "-I" + str(output)]
             objects = []
             for name in (*extra, dependency, "Host"):
                 obj = output / (name + ".o")
@@ -78,7 +78,7 @@ int main() {
             subprocess.run(["ar", "rcs", str(archive), *objects[:-1]], check=True)
             executable = output / "run"
             subprocess.run(compiler + ["-std=c++23", *includes, str(driver), objects[-1],
-                           str(archive), str(repo / "parser/stdlibs/target/src/core.cpp"),
+                           str(archive), str(repo / "parser/stdlibs/target/cpp/src/core.cpp"),
                            "-o", str(executable)], check=True)
             subprocess.run([str(executable)], check=True)
 

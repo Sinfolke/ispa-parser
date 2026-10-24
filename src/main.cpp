@@ -155,8 +155,8 @@ namespace {
     }
 
     // --- write generated files, skipping unchanged content (so mtimes and
-    // downstream build graphs stay untouched), then prune incremental/
-    // files this run no longer produced ---
+    // downstream build graphs stay untouched), then prune files this run
+    // no longer produces ---
     struct WriteResult {
         std::unordered_map<std::string, std::size_t> hashes;
         std::size_t updated = 0;
@@ -194,7 +194,7 @@ namespace {
         }
 
         for (const auto &[key, hash] : previous_hashes) {
-            if (!key.starts_with("incremental/") || expected.contains(key)) continue;
+            if (expected.contains(key)) continue;
             if (std::filesystem::remove(dir_path / key))
                 cpuf::printf("removed stale -> {}\n", (dir_path / key).string());
         }
@@ -524,7 +524,7 @@ int generate(Args args) {
     const auto previous_hashes = loadKeyHashMap(manifest_path);
     auto generated = converter.get();
     if (args.algorithm == Args::Algorithm::LL) {
-        auto exports = External::exports(ast, module_project, name);
+        auto exports = External::exports(ast, module_project, name, args.language == Args::Language::Python);
         for (auto& [file, code] : exports) {
             auto target = std::ranges::find_if(generated, [&](const auto& item) { return item.first == file; });
             if (target == generated.end()) generated.emplace_back(std::move(file), std::move(code));

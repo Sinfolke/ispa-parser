@@ -1,3 +1,4 @@
+
 name: CMake on multiple platforms
 
 on:
@@ -6,23 +7,21 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+  actions: write
+
+env:
+  CMAKE_VERSION: '4.5.0-rc1'
 jobs:
   build:
+    name: ${{ matrix.os }} / ${{ matrix.cpp_compiler }}
     runs-on: ${{ matrix.os }}
-    env:
-      SCCACHE_DIR: ${{ matrix.os == 'windows-latest' && 'C:\Users\runneradmin\AppData\Local\Mozilla\sccache' || '/home/runner/.cache/sccache' }}
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-26.04
-          #   c_compiler: gcc-15
-          #   cpp_compiler: g++-15
-          #   triplet: x64-linux
-          #   overlay_triplets: ""
-          #   extra_cxx_flags: ""
-
           - os: ubuntu-26.04
             c_compiler: clang-20
             cpp_compiler: clang++-20
@@ -37,73 +36,180 @@ jobs:
             overlay_triplets: ""
             extra_cxx_flags: ""
 
+          - os: macos-26
+            c_compiler: clang
+            cpp_compiler: clang++
+            triplet: arm64-osx
+            overlay_triplets: ""
+            extra_cxx_flags: ""
+
+          - os: macos-26-intel
+            c_compiler: clang
+            cpp_compiler: clang++
+            triplet: x64-osx
+            overlay_triplets: ""
+            extra_cxx_flags: ""
+
     steps:
+      # -------------------------------------------------------
+      # 1. Checkout
+      # -------------------------------------------------------
+
       - name: Checkout code with submodules
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: recursive
           fetch-depth: 1
 
-      - name: Setup CMake
-        uses: lukka/get-cmake@v4.5.0
+      # -------------------------------------------------------
+      # 2. Install CMake 4.5
+      # -------------------------------------------------------
 
-      - name: Setup MSVC Environment
-        if: matrix.os == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
+      - name: Install CMake (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = $env:CMAKE_VERSION
+          $archive = "cmake-$version-windows-x86_64.zip"
+          $url = "https://github.com/Kitware/CMake/releases/download/v$version/$archive"
 
-      - name: Add LLVM bin to PATH (for clang-scan-deps)
-        if: matrix.os == 'windows-latest'
+          Invoke-WebRequest -Uri $url -OutFile $archive
+
+          $destination = "$env:RUNNER_TEMP/cmake"
+          Expand-Archive -Path $archive -DestinationPath $destination
+
+          $cmakeBin = "$destination/cmake-$version-windows-x86_64/bin"
+
+          Add-Content -Path $env:GITHUB_PATH -Value $cmakeBin
+
+          & "$cmakeBin/cmake.exe" --version
+
+      - name: Install CMake (Linux)
+        if: runner.os == 'Linux'
         shell: bash
         run: |
-          # Locate LLVM shipped with Visual Studio Enterprise on GitHub runners
-          LLVM_DIR="C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/Llvm/x64/bin"
-          if [ -d "$LLVM_DIR" ]; then
-            echo "$LLVM_DIR" >> $GITHUB_PATH
+          set -euo pipefail
+
+          version="$CMAKE_VERSION"
+          archive="cmake-${version}-linux-x86_64.sh"
+          url="https://github.com/Kitware/CMake/releases/download/v${version}/${archive}"
+
+          curl -fL "$url" -o cmake-install.sh
+
+          mkdir -p "$RUNNER_TEMP/cmake"
+
+          sh cmake-install.sh \
+            --skip-license \
+            --prefix="$RUNNER_TEMP/cmake" \
+            --exclude-subdir
+
+          echo "$RUNNER_TEMP/cmake/bin" >> "$GITHUB_PATH"
+
+      - name: Install CMake (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="$CMAKE_VERSION"
+          archive="cmake-${version}-macos-universal.tar.gz"
+          url="https://github.com/Kitware/CMake/releases/download/v${version}/${archive}"
+
+          curl -fL "$url" -o "$archive"
+
+          mkdir -p "$RUNNER_TEMP/cmake"
+          tar -xzf "$archive" -C "$RUNNER_TEMP/cmake"
+
+          cmake_bin="$(
+            find "$RUNNER_TEMP/cmake" \
+              -type f -name cmake -print -quit
+          )"
+
+          if [[ -z "$cmake_bin" ]]; then
+            echo "CMake executable not found"
+            exit 1
           fi
 
-      # 1. Setup sccache action
-      - name: Setup sccache
-        uses: mozilla-actions/sccache-action@v0.0.8
+          chmod +x "$cmake_bin"
+          echo "$(dirname "$cmake_bin")" >> "$GITHUB_PATH"
 
-      # 2. Restore/Save sccache disk cache
-      - name: Restore / Save sccache cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.SCCACHE_DIR }}
-          key: sccache-${{ runner.os }}-${{ matrix.triplet }}-${{ github.sha }}
-          restore-keys: |
-            sccache-${{ runner.os }}-${{ matrix.triplet }}-
-            sccache-${{ runner.os }}-
-
-      # 3. Export GitHub Actions Cache Token for vcpkg
-      - name: Export GitHub Actions Cache Token
-        uses: actions/github-script@v7
-        with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'] || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env['ACTIONS_RUNTIME_TOKEN'] || '');
-      - name: Set vcpkg Binary Caching
+      - name: Verify CMake
         shell: bash
         run: |
-          echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
+          cmake --version
+          command -v cmake
+      - name: Verify Ninja
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          if ! command -v ninja >/dev/null 2>&1; then
+            echo "Ninja is missing"
+            exit 1
+          fi
+          
+          NINJA_PATH="$(command -v ninja)"
+          echo "NINJA_PATH=$NINJA_PATH" >> "$GITHUB_ENV"
+          
+          ninja --version
+      # -------------------------------------------------------
+      # 3. Configure compilers and platform dependencies
+      # -------------------------------------------------------
+
+      - name: Setup MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Setup Windows LLVM
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $candidates = @(
+            "C:\Program Files\LLVM\bin",
+            "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin"
+          )
+
+          $selected = $null
+
+          foreach ($candidate in $candidates) {
+            if (
+              (Test-Path "$candidate\clang-cl.exe") -and
+              (Test-Path "$candidate\clang-scan-deps.exe")
+            ) {
+              $selected = $candidate
+              break
+            }
+          }
+
+          if (-not $selected) {
+            throw "Could not find clang-cl and clang-scan-deps together"
+          }
+
+          Add-Content -Path $env:GITHUB_PATH -Value $selected
+
+          Write-Host "LLVM: $selected"
+          & "$selected\clang-cl.exe" --version
+          & "$selected\clang-scan-deps.exe" --version
 
       - name: Install dependencies (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu')
+        if: runner.os == 'Linux'
+        shell: bash
         run: |
+          set -euo pipefail
+
           sudo apt-get update
+
           sudo apt-get install -y \
             clang-20 \
+            clang-tools-20 \
             gcc-15 \
+            ninja-build \
             libboost-all-dev \
             libc++-20-dev \
             libc++abi-20-dev \
-            valgrind
-
-      - name: Install ICU build dependencies
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
+            valgrind \
             autoconf \
             autoconf-archive \
             automake \
@@ -112,77 +218,428 @@ jobs:
             gettext \
             make
 
-      - name: Fix libc++ modules std path (Ubuntu clang)
-        if: matrix.cpp_compiler == 'clang++-20'
+      - name: Add LLVM tools to PATH (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash
         run: |
+          echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          brew install \
+            llvm \
+            ninja \
+            autoconf \
+            autoconf-archive \
+            automake \
+            libtool \
+            pkg-config \
+            gettext
+
+          llvm_prefix="$(brew --prefix llvm)"
+
+          echo "$llvm_prefix/bin" >> "$GITHUB_PATH"
+
+          echo "CC=$llvm_prefix/bin/clang" >> "$GITHUB_ENV"
+          echo "CXX=$llvm_prefix/bin/clang++" >> "$GITHUB_ENV"
+
+          echo "LLVM_PREFIX=$llvm_prefix" >> "$GITHUB_ENV"
+
+          "$llvm_prefix/bin/clang++" --version
+          "$llvm_prefix/bin/clang-scan-deps" --version
+      - name: Install libc++ module resources (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          LLVM_PREFIX="$(brew --prefix llvm)"
+          LLVM_VERSION="$("$LLVM_PREFIX/bin/llvm-config" --version)"
+          
+          echo "LLVM version: $LLVM_VERSION"
+          
+          # Use sources matching Homebrew's LLVM version.
+          git clone --depth 1 \
+            --branch "llvmorg-$LLVM_VERSION" \
+            https://github.com/llvm/llvm-project.git \
+            "$RUNNER_TEMP/llvm-project"
+          
+          MODULE_PREFIX="$RUNNER_TEMP/libcxx-modules"
+          
+          cmake -S "$RUNNER_TEMP/llvm-project/libcxx" \
+            -B "$RUNNER_TEMP/libcxx-build" \
+            -G Ninja \
+            -DCMAKE_C_COMPILER="$LLVM_PREFIX/bin/clang" \
+            -DCMAKE_CXX_COMPILER="$LLVM_PREFIX/bin/clang++" \
+            -DCMAKE_INSTALL_PREFIX="$MODULE_PREFIX" \
+            -DLIBCXX_INSTALL_MODULES=ON \
+            -DLIBCXX_INSTALL_HEADERS=OFF \
+            -DLIBCXX_INSTALL_LIBRARY=OFF \
+            -DLIBCXX_INCLUDE_TESTS=OFF \
+            -DLIBCXX_INCLUDE_BENCHMARKS=OFF
+          
+          cmake --build "$RUNNER_TEMP/libcxx-build" \
+            --target install-cxx-modules \
+            --parallel 3
+          
+          MODULES_JSON="$(
+            find "$MODULE_PREFIX" \
+              -name libc++.modules.json \
+              -type f \
+              -print -quit
+          )"
+          
+          if [[ -z "$MODULES_JSON" ]]; then
+            echo "::error::libc++.modules.json not generated"
+            exit 1
+      # -------------------------------------------------------
+      # 4. Fix libc++ module path for Ubuntu Clang
+      # -------------------------------------------------------
+
+      - name: Fix libc++ modules std path (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+
           real=/usr/lib/llvm-20/share/libc++/v1
           bogus=/lib/share/libc++/v1
+
           if [[ -d "$real" && ! -e "$bogus" ]]; then
             sudo mkdir -p "$(dirname "$bogus")"
             sudo ln -sfn "$real" "$bogus"
           fi
+
           ls -la "$bogus" 2>&1 || true
+      - name: Fix libc++ modules std path (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          LLVM_PREFIX="$(brew --prefix llvm)"
+          CLANG="$LLVM_PREFIX/bin/clang++"
+          
+          echo "Clang-reported manifest:"
+          "$CLANG" -print-file-name=libc++.modules.json
+          
+          real="$(find "$LLVM_PREFIX" -name libc++.modules.json -type f -print -quit)"
+          reported="$("$CLANG" -print-file-name=libc++.modules.json)"
+          
+          if [[ -z "$real" ]]; then
+            echo "::error::libc++.modules.json not installed"
+            exit 1
+          fi
+          
+          if [[ "$reported" == */* && ! -e "$reported" ]]; then
+            sudo mkdir -p "$(dirname "$reported")"
+            sudo ln -s "$real" "$reported"
+          fi
+          
+          test -f "$reported" || {
+            echo "::error::Clang still cannot find libc++.modules.json"
+            exit 1
+          }
+          
+          echo "Manifest: $reported"
+      # -------------------------------------------------------
+      # 5. Setup vcpkg
+      # -------------------------------------------------------
+
+      - name: Install vcpkg
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          VCPKG_ROOT="$RUNNER_TEMP/vcpkg"
+          BASELINE="0c102a84b69c2c923c28a97f756d5ecd9a90c48a"
+          
+          # Full repository history is needed for versioned dependencies.
+          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          
+          cd "$VCPKG_ROOT"
+          
+          # Verify historical baseline is available.
+          git show "$BASELINE:versions/baseline.json" > /dev/null
+          
+          # Verify requested package version exists.
+          python3 -c '
+          import json
+          with open("versions/t-/tsl-ordered-map.json") as f:
+              versions = json.load(f)["versions"]
+          assert any(v.get("version") == "1.2.0" for v in versions), \
+              "tsl-ordered-map 1.2.0 is missing"
+          '
+          
+          # Do NOT checkout the historical baseline.
+          # Keep the newer vcpkg checkout.
+          
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            ./bootstrap-vcpkg.bat -disableMetrics
+          else
+            ./bootstrap-vcpkg.sh -disableMetrics
+          fi
+          
+          echo "VCPKG_ROOT=$VCPKG_ROOT" >> "$GITHUB_ENV"
+          echo "VCPKG_INSTALLATION_ROOT=$VCPKG_ROOT" >> "$GITHUB_ENV"
+          echo "$VCPKG_ROOT" >> "$GITHUB_PATH"
+          
+          git rev-parse HEAD
+
+      - name: Resolve vcpkg installation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          root="${VCPKG_INSTALLATION_ROOT:-${VCPKG_ROOT:-}}"
+
+          if [[ -z "$root" ]]; then
+            echo "VCPKG_INSTALLATION_ROOT is not configured"
+            exit 1
+          fi
+
+          if [[ ! -f "$root/scripts/buildsystems/vcpkg.cmake" ]]; then
+            echo "Invalid vcpkg installation: $root"
+            exit 1
+          fi
+
+          echo "VCPKG_INSTALLATION_ROOT=$root" >> "$GITHUB_ENV"
+
+          echo "Using vcpkg at: $root"
+
+      # -------------------------------------------------------
+      # 6. Setup sccache
+      # -------------------------------------------------------
+      - name: Configure sccache directory
+        shell: bash
+        run: |
+          echo "SCCACHE_DIR=$RUNNER_TEMP/sccache" >> "$GITHUB_ENV"
+      - name: Setup sccache
+        uses: mozilla-actions/sccache-action@v0.0.8
+
+      - name: Restore / Save sccache cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: >-
+            sccache-${{ matrix.os }}-${{ matrix.triplet }}-${{ github.sha }}
+          restore-keys: |
+            sccache-${{ matrix.os }}-${{ matrix.triplet }}-
+            sccache-${{ matrix.os }}-
+
+      - name: Export GitHub Actions Cache Token
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable(
+              'ACTIONS_CACHE_URL',
+              process.env['ACTIONS_CACHE_URL'] || ''
+            );
+            core.exportVariable(
+              'ACTIONS_RUNTIME_TOKEN',
+              process.env['ACTIONS_RUNTIME_TOKEN'] || ''
+            );
+
+      - name: Set vcpkg binary caching
+        shell: bash
+        run: |
+          echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> "$GITHUB_ENV"
 
       - name: Zero sccache statistics
-        run: sccache --zero-stats || true
+        shell: bash
+        run: |
+          sccache --zero-stats || true
+
+      # -------------------------------------------------------
+      # 7. Verify toolchain
+      # -------------------------------------------------------
+
+      - name: Verify build tools
+        shell: bash
+        env:
+          MATRIX_CC: ${{ matrix.c_compiler }}
+          MATRIX_CXX: ${{ matrix.cpp_compiler }}
+        run: |
+          set -euo pipefail
+
+          echo "Operating system: $RUNNER_OS"
+          echo "Architecture: $RUNNER_ARCH"
+
+          cmake --version
+          ninja --version
+
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            "$CC" --version
+            "$CXX" --version
+          else
+            "$MATRIX_CC" --version
+            "$MATRIX_CXX" --version
+          fi
+
+          clang-scan-deps --version
+
+          echo "vcpkg: $VCPKG_INSTALLATION_ROOT"
+
+      # -------------------------------------------------------
+      # 8. Configure CMake
+      # -------------------------------------------------------
 
       - name: Configure CMake
         shell: bash
         env:
-          CC: ${{ matrix.c_compiler }}
-          CXX: ${{ matrix.cpp_compiler }}
+          MATRIX_CC: ${{ matrix.c_compiler }}
+          MATRIX_CXX: ${{ matrix.cpp_compiler }}
+          MATRIX_TRIPLET: ${{ matrix.triplet }}
+          MATRIX_OVERLAY: ${{ matrix.overlay_triplets }}
+          MATRIX_CXX_FLAGS: ${{ matrix.extra_cxx_flags }}
         run: |
+          set -euo pipefail
+          
+          # -------------------------------------------------------
+          # 1. Select compiler
+          # -------------------------------------------------------
+          
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            COMPILER_C="$LLVM_PREFIX/bin/clang"
+            COMPILER_CXX="$LLVM_PREFIX/bin/clang++"
+          else
+            COMPILER_C="$MATRIX_CC"
+            COMPILER_CXX="$MATRIX_CXX"
+          fi
+          
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # Resolve the real Windows executables.
+            COMPILER_C="$(command -v clang-cl.exe)"
+            COMPILER_CXX="$COMPILER_C"
+            
+            # Convert Git Bash paths to native Windows paths.
+            COMPILER_C="$(cygpath -m "$COMPILER_C")"
+            COMPILER_CXX="$(cygpath -m "$COMPILER_CXX")"
+          else
+            COMPILER_C="$(command -v "$COMPILER_C")"
+            COMPILER_CXX="$(command -v "$COMPILER_CXX")"
+          fi
+          
+          # Validate before running CMake.
+          if [[ ! -f "$COMPILER_C" || ! -f "$COMPILER_CXX" ]]; then
+          echo "Compiler paths:"
+          echo "C:   $COMPILER_C"
+          echo "C++: $COMPILER_CXX"
+          
+          echo "Compiler executable not found"
+          exit 1
+          fi
+          
+          export CC="$COMPILER_C"
+          export CXX="$COMPILER_CXX"
+        
+          echo "Selected C compiler:   $CC"
+          echo "Selected C++ compiler: $CXX"
+          
+          "$CC" --version
+          "$CXX" --version
+          
+          # -------------------------------------------------------
+          # 2. Configure CMake
+          # -------------------------------------------------------
+          
           CMAKE_ARGS=(
+            -S "$GITHUB_WORKSPACE"
             -B build
             -G Ninja
+            
+            "-DCMAKE_C_COMPILER=$CC"
+            "-DCMAKE_CXX_COMPILER=$CXX"
+            
+            "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+            "-DVCPKG_TARGET_TRIPLET=$MATRIX_TRIPLET"
+            
             "-DCMAKE_C_COMPILER_LAUNCHER=sccache"
             "-DCMAKE_CXX_COMPILER_LAUNCHER=sccache"
-            "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
-            "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
-            "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
-            "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
+            
             "-DCMAKE_CXX_SCAN_FOR_MODULES=ON"
             "-DCMAKE_BUILD_TYPE=Release"
-            -S "${{ github.workspace }}"
+            "-DCMAKE_MAKE_PROGRAM=$NINJA_PATH"
           )
-                  
-          # Force /Z7 for MSVC so sccache can cache MSVC compilation targets
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            CMAKE_ARGS+=(
-              "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded"
-            )
-          fi
-
-          if [[ -n "${{ matrix.extra_cxx_flags }}" ]]; then
-            CMAKE_ARGS+=(
-              "-DCMAKE_CXX_FLAGS=${{ matrix.extra_cxx_flags }}"
-              "-DCMAKE_EXE_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
-              "-DCMAKE_SHARED_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
-            )
+          
+          # Windows: embedded debug information for sccache.
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+          CMAKE_ARGS+=(
+            "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded"
+          )
           fi
           
-          if [[ -n "${{ matrix.overlay_triplets }}" ]]; then
-            CMAKE_ARGS+=(
-              "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
-            )
+          # Platform-specific C++ and linker flags.
+          if [[ -n "$MATRIX_CXX_FLAGS" ]]; then
+          CMAKE_ARGS+=(
+            "-DCMAKE_CXX_FLAGS=$MATRIX_CXX_FLAGS"
+            "-DCMAKE_EXE_LINKER_FLAGS=$MATRIX_CXX_FLAGS"
+            "-DCMAKE_SHARED_LINKER_FLAGS=$MATRIX_CXX_FLAGS"
+            "-DCMAKE_MODULE_LINKER_FLAGS=$MATRIX_CXX_FLAGS"
+          )
           fi
+          
+          # Custom vcpkg triplets.
+          if [[ -n "$MATRIX_OVERLAY" ]]; then
+          CMAKE_ARGS+=(
+            "-DVCPKG_OVERLAY_TRIPLETS=$GITHUB_WORKSPACE/$MATRIX_OVERLAY"
+          )
+          fi
+          
+          # Linux: share the version-independent libc++ toolchain
+          # between the main project and vcpkg.
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+          CMAKE_ARGS+=(
+            "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/cmake/toolchains/clang-libcxx.cmake"
+          )
+          fi
+          
+          # -------------------------------------------------------
+          # 3. Run configuration
+          # -------------------------------------------------------
           
           cmake "${CMAKE_ARGS[@]}"
-      - name: Flush and save vcpkg binary cache
-        if: always()
-        run: |
-          vcpkg x-check-support --version || true
+
+
+      # -------------------------------------------------------
+      # 9. Build
+      # -------------------------------------------------------
+
       - name: Build
-        run: cmake --build build --config Release
+        shell: bash
+        run: |
+          cmake --build build \
+            --config Release \
+            --parallel 3
+
+      # -------------------------------------------------------
+      # 10. Tests
+      # -------------------------------------------------------
+
+      # - name: Test
+      #   shell: bash
+      #   run: |
+      #     ctest \
+      #       --test-dir build \
+      #       --build-config Release \
+      #       --output-on-failure
+
+      # -------------------------------------------------------
+      # 11. Cache statistics and cleanup
+      # -------------------------------------------------------
 
       - name: Show sccache statistics
-        run: sccache --show-stats
+        if: always()
+        shell: bash
+        run: |
+          sccache --show-stats || true
 
-      # 4. Stop daemon to ensure all cached outputs are flushed before actions/cache uploads
       - name: Stop sccache daemon
         if: always()
-        run: sccache --stop-server || true
-
-#     - name: Test
-#       working-directory: build
-#       run: ctest --build-config Release
+        shell: bash
+        run: |
+          sccache --stop-server || true

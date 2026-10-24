@@ -1,3 +1,7 @@
+# Let CMake select the compiler from:
+# -DCMAKE_C_COMPILER / -DCMAKE_CXX_COMPILER
+# or CC / CXX environment variables.
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(CMAKE_CXX_FLAGS_INIT "-stdlib=libc++")

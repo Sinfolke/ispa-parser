@@ -28,6 +28,20 @@ export namespace LangRepr {
             builder->construct();
             files = builder->get_files();
             for (auto& [name, source] : files) {
+                if (name.ends_with(".py")) {
+                    std::ostringstream imports;
+                    for (const auto& header : holder.getIncludes()) {
+                        std::string file = header;
+                        if (file.starts_with('<') && file.ends_with('>')) file = file.substr(1, file.size() - 2);
+                        if ((!file.ends_with(".h") && !file.ends_with(".py")) || file.find('/') != std::string::npos) continue;
+                        const auto module = file.substr(0, file.rfind('.'));
+                        if (!module.empty()) imports << "import " << module << '\n';
+                    }
+                    constexpr std::string_view future_line = "from __future__ import annotations\n";
+                    const auto future = source.find(future_line);
+                    source.insert(future == std::string::npos ? 0 : future + future_line.size(), imports.str());
+                    continue;
+                }
                 if (!name.ends_with(".h")) continue;
                 std::ostringstream headers;
                 for (const auto& header : holder.getIncludes()) {

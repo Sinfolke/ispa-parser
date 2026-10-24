@@ -202,14 +202,39 @@ void Construct::variable(const LangAPI::Variable& var) {
     // Non-static C++ class fields are instance-specific. Class emission initializes
     // them from __init__ instead of creating shared class attributes here.
     if (class_context_ && !inside_function_ && !var.is_static) return;
-    const auto rhs = var.value.empty() ? "None" : core_.expression(var.value);
+    const bool default_init = var.value.empty() ||
+        (var.value.size() == 1 && var.value.front().type() == LangAPI::ExpressionValueType::EmptyInitializer);
+    std::string rhs;
+    if (!default_init) rhs = core_.expression(var.value);
+    else if (var.name == "match_result") rhs = "ispa_std.MatchResult()";
+    else if (var.type.isSymbol() || var.type.isIspaLibSymbol()) rhs = core_.type(var.type) + "()";
+    else if (var.type.isValueType()) {
+        using V = LangAPI::ValueType;
+        switch (var.type.getValueType()) {
+            case V::Array: case V::FixedSizeArray: case V::Span: rhs = "[]"; break;
+            case V::Map: rhs = "{}"; break;
+            case V::Bool: rhs = "False"; break;
+            case V::Int: case V::LargeUInt: rhs = "0"; break;
+            default: rhs = "None"; break;
+        }
+    } else rhs = "None";
+    if (class_context_ && !inside_function_ && var.is_static &&
+        rhs.starts_with(Core::identifier(namespace_name) + ".FlatTypes.")) {
+        deferred_aliases_.emplace_back(current_scope_ + "." + Core::identifier(var.name), rhs);
+        return;
+    }
     emit_pending_lambdas();
     line(Core::identifier(var.name) + " = " + rhs);
 }
 void Construct::alias(const LangAPI::TypeAlias& value) {
     if (!value.template_parameters.empty())
         comment("Generic alias type parameters erased on Python target");
-    line(Core::identifier(value.name) + " = " + core_.type(value.type));
+    const auto rhs = core_.type(value.type);
+    if (class_context_ && rhs.starts_with(Core::identifier(namespace_name) + ".FlatTypes.")) {
+        deferred_aliases_.emplace_back(current_scope_ + "." + Core::identifier(value.name), rhs);
+        return;
+    }
+    line(Core::identifier(value.name) + " = " + rhs);
 }
 void Construct::enumeration(const LangAPI::Enum& value) {
     line("class " + Core::identifier(value.name) + "(enum.IntEnum):");
@@ -245,6 +270,7 @@ void Construct::function(const LangAPI::Function& fn, bool ctor) {
     ++indentation_;
     const bool saved_inside_function = inside_function_;
     inside_function_ = true;
+    if (is_method || ctor) core_.set_method_members(class_members_);
     bool emitted = false;
     if (ctor) {
         // Initialize every non-static member before custom constructor statements.
@@ -257,6 +283,7 @@ void Construct::function(const LangAPI::Function& fn, bool ctor) {
     }
     if (!emitted) line("pass");
     inside_function_ = saved_inside_function;
+    core_.set_method_members({});
     --indentation_;
 }
 void Construct::cls(const LangAPI::Class& value) {
@@ -285,6 +312,20 @@ void Construct::cls(const LangAPI::Class& value) {
     const bool old_ns = namespace_context_;
     class_context_ = true;
     namespace_context_ = false;
+    const auto saved_scope = current_scope_;
+    current_scope_ = saved_scope.empty() ? name : saved_scope + "." + name;
+    const auto saved_members = class_members_;
+    class_members_.clear();
+    for (const auto& [decl, access] : value.data) {
+        if (decl->isVariable()) class_members_.insert(decl->getVariable().name);
+        if (decl->isFunction()) class_members_.insert(decl->getFunction().name);
+    }
+    if (name == "Lexer") {
+        class_members_.insert({"tokens", "lookup", "append_token", "source", "set_input"});
+    } else if (name == "Parser") {
+        class_members_.insert({"lexer", "tree", "errors", "required", "optional", "range", "counted",
+            "range_optional", "skip_spaces", "recovery_frame", "recovery_at", "unwinding", "action_result"});
+    }
 
     // Keep instance attributes independent even when initializer is a mutable value.
     std::vector<const LangAPI::Variable*> fields;
@@ -303,6 +344,7 @@ void Construct::cls(const LangAPI::Class& value) {
             // Locals declared in the constructor body are real variables, not class fields.
             const bool saved_inside = inside_function_;
             inside_function_ = true;
+            core_.set_method_members(class_members_);
             if (has_lib_base) line("super().__init__()");
             for (const auto* f : fields) {
                 const auto init = f->value.empty() ? std::string("None") : core_.expression(f->value);
@@ -312,6 +354,7 @@ void Construct::cls(const LangAPI::Class& value) {
             if (ctor.statements.empty() && fields.empty() && !has_lib_base) line("pass");
             else statements(ctor.statements);
             inside_function_ = saved_inside;
+            core_.set_method_members({});
             --indentation_;
         } else {
             // Python has no C++ aggregate initialization: provide both positional
@@ -323,12 +366,24 @@ void Construct::cls(const LangAPI::Class& value) {
             line("def __init__(" + params + "):");
             ++indentation_;
             if (has_lib_base) line("super().__init__(*args, **kwargs)");
+            core_.set_method_members(class_members_);
             for (const auto* f : fields) {
                 const auto field = Core::identifier(f->name);
-                const auto def = f->value.empty() ? std::string("None") : core_.expression(f->value);
+                const bool empty = f->value.empty() ||
+                    (f->value.size() == 1 && f->value.front().type() == LangAPI::ExpressionValueType::EmptyInitializer);
+                std::string def = empty ? std::string("None") : core_.expression(f->value);
+                if (empty && f->type.isValueType()) {
+                    switch (f->type.getValueType()) {
+                        case LangAPI::ValueType::Array:
+                        case LangAPI::ValueType::FixedSizeArray: def = "[]"; break;
+                        case LangAPI::ValueType::Map: def = "{}"; break;
+                        default: break;
+                    }
+                }
                 emit_pending_lambdas();
                 line("self." + field + " = " + def + " if " + field + " is _ISPA_UNSET else " + field);
             }
+            core_.set_method_members({});
             --indentation_;
         }
     }
@@ -354,6 +409,8 @@ void Construct::cls(const LangAPI::Class& value) {
     if (!any) line("pass");
     namespace_context_ = old_ns;
     class_context_ = old_class;
+    class_members_ = saved_members;
+    current_scope_ = saved_scope;
     --indentation_;
     if (qualified) {
         std::string target;
@@ -365,8 +422,16 @@ void Construct::cls(const LangAPI::Class& value) {
     }
 }
 void Construct::ns(const LangAPI::Namespace& value) {
+    // The outer C++ namespace is the Python module itself. A class with the
+    // same name would hide the module alias and strand its nested declarations.
+    if (!namespace_context_ && value.name == namespace_name) {
+        declarations(value.declarations);
+        return;
+    }
     line("class " + Core::identifier(value.name) + ":");
     ++indentation_;
+    const auto saved_scope = current_scope_;
+    current_scope_ = saved_scope.empty() ? Core::identifier(value.name) : saved_scope + "." + Core::identifier(value.name);
     const bool saved_ns = namespace_context_;
     const bool saved_class = class_context_;
     namespace_context_ = true;
@@ -375,7 +440,12 @@ void Construct::ns(const LangAPI::Namespace& value) {
     declarations(value.declarations);
     namespace_context_ = saved_ns;
     class_context_ = saved_class;
+    current_scope_ = saved_scope;
     --indentation_;
+    if (saved_scope.empty() && value.name == "FlatTypes") {
+        for (const auto& [target, rhs] : deferred_aliases_) line(target + " = " + rhs);
+        deferred_aliases_.clear();
+    }
 }
 void Construct::declaration(const LangAPI::Declaration& d) {
     if (d.isNamespace()) ns(d.getNamespace());
@@ -396,7 +466,22 @@ void Construct::declarations(const LangAPI::Declarations& decls) {
         if (d.isFunction() && !seen.insert(d.getFunction().name).second)
             repeated.insert(d.getFunction().name);
     overloaded_scopes_.push_back(std::move(repeated));
-    for (const auto& d : decls) declaration(d);
+    std::unordered_set<std::string> emitted_namespaces;
+    for (const auto& d : decls) {
+        if (!d.isNamespace()) {
+            declaration(d);
+            continue;
+        }
+        const auto& name = d.getNamespace().name;
+        if (!emitted_namespaces.insert(name).second) continue;
+        LangAPI::Namespace combined = d.getNamespace();
+        for (const auto& other : decls) {
+            if (&other == &d || !other.isNamespace() || other.getNamespace().name != name) continue;
+            const auto& members = other.getNamespace().declarations;
+            combined.declarations.insert(combined.declarations.end(), members.begin(), members.end());
+        }
+        ns(combined);
+    }
     overloaded_scopes_.pop_back();
 }
 void Construct::construct() {
@@ -419,6 +504,9 @@ void Construct::construct() {
     line();
     rewritten_source_ = rewriter_.run(*source);
     declarations(rewritten_source_);
+    line();
+    line("Parser.lexer_type = Lexer");
+    line("Parser.parser_ws_type = Types._ispa__WS");
     if (!deferred_aliases_.empty()) {
         line();
         line("# Qualified classes (e.g. Types.rule.STRING) defined after their parents");

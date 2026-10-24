@@ -23,6 +23,7 @@ export namespace Python {
         std::size_t switch_counter_ = 0;
         // Per scope: function names declared more than once (only those need ispa_std.overload).
         std::vector<std::unordered_set<std::string>> overloaded_scopes_;
+        std::unordered_set<std::string> class_members_;
 
         void line(const std::string& text = "");
         void emit_pending_lambdas();

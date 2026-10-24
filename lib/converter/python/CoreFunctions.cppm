@@ -10,6 +10,7 @@ export namespace Python {
         std::vector<std::string> counters_{"pos"};
         std::string module_name_;
         std::size_t lambda_number_ = 0;
+        std::unordered_set<std::string> method_members_;
     public:
         struct LambdaDefinition { std::string name, params, body; };
     private:
@@ -28,6 +29,7 @@ export namespace Python {
         std::string counter() const;
     public:
         explicit Core(std::string module_name);
+        void set_method_members(std::unordered_set<std::string> members) { method_members_ = std::move(members); }
         void set_statement_writer(std::function<std::string(const LangAPI::Statements&)> callback);
         std::vector<LambdaDefinition> take_pending_lambdas();
         // Used when a nested statement list is rendered while outer lambdas are still queued.

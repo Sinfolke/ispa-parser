@@ -4,9 +4,6 @@ import std;
 namespace Modules {
 ExternalPackage readExternal(const std::string& prefix) {
     const auto path = std::filesystem::absolute(prefix + ".ispa-export");
-    const auto parser_header = std::filesystem::absolute(prefix + ".h");
-    if (!std::filesystem::is_regular_file(parser_header))
-        throw std::runtime_error("External parser header does not exist: " + parser_header.string());
     std::ifstream in(path);
     std::string magic;
     unsigned version = 0;
@@ -29,9 +26,15 @@ ExternalPackage readExternal(const std::string& prefix) {
         std::string module, name;
         if (record == "header") {
             in >> std::quoted(header);
-            // The dependency prefix selects the public header. Its directory
-            // is supplied by the consumer's build system, never baked into code.
-            header = "<" + parser_header.filename().string() + ">";
+            const auto extension = std::filesystem::path(header).extension().string();
+            if (extension != ".h" && extension != ".py")
+                throw std::runtime_error("Invalid external parser artifact in " + path.string());
+            // The dependency prefix selects the public artifact. Its directory
+            // is supplied by the consumer, never embedded in generated code.
+            const auto artifact = std::filesystem::absolute(prefix + extension);
+            if (!std::filesystem::is_regular_file(artifact))
+                throw std::runtime_error("External parser artifact does not exist: " + artifact.string());
+            header = "<" + artifact.filename().string() + ">";
         } else if (record == "module") {
             in >> std::quoted(module) >> std::quoted(name);
             auto& entry = result[parsePath(module)].entry;

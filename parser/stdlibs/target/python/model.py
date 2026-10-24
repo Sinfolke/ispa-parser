@@ -5,7 +5,7 @@ The generator should use UTF-8 decoded source consistently.
 """
 from __future__ import annotations
 import functools
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, ClassVar, Generic, TypeVar
 
 T = TypeVar('T')
@@ -21,6 +21,10 @@ class CallableInt(int):
 def _callable_metadata(obj) -> None:
     for name in ('startpos', 'length', 'line', 'column'):
         setattr(obj, name, CallableInt(getattr(obj, name)))
+    # Generated grammar conditions use token.kind(), while Python runtime
+    # consumers also read token.kind as an integer.
+    if isinstance(obj.kind, int):
+        obj.kind = CallableInt(obj.kind)
 
 
 @dataclass(slots=True)
@@ -181,7 +185,7 @@ def _specialize_raw_token(base: type, alternatives: tuple) -> type:
 class MatchResult(Generic[T]):
     # Matches C++ `struct MatchResult { bool status; Node node; IT it; }`.
     status: bool = False
-    node: T | None = None
+    node: T | None = field(default_factory=Node)
     it: Any = None
 
     def __bool__(self) -> bool:

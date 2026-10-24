@@ -65,7 +65,10 @@ class LLParser:
         start = lex.lazy_iterator()
         match = (rule or getattr(self, 'main'))(start)
         end = match.it if match.it is not None else start
-        if not match.status or not end.isEnd():
+        if not match.status:
+            raise self._error('complete input', end)
+        self.skip_spaces(end)
+        if not end.isEnd():
             raise self._error('complete input', end)
         self.tree = match.node
         return self.tree
@@ -89,9 +92,53 @@ class LLParser:
             raise TypeError('The generated Parser must set lexer_type = Lexer')
         return lexer_cls(source)
 
+    def recovery_frame(self, _rule: str) -> None:
+        return None
+
+    def recovery_at(self, *_names: str) -> None:
+        return None
+
+    def recover_choice(self, pos: Cursor, rule: str, expected: str,
+                       alternatives: list[tuple[Any, ...]]) -> int:
+        """Select an unambiguous token without crossing the caller's boundary."""
+        if len(alternatives) % 2:
+            raise ValueError(f'invalid recovery alternatives for {rule}')
+        token = pos.peek()
+        kind = token.kind if token is not None else None
+        for phase in (0, 1):
+            matches = [index // 2 for index in range(phase, len(alternatives), 2)
+                       if kind in alternatives[index]]
+            if len(matches) == 1:
+                return matches[0]
+            if len(matches) > 1:
+                break
+        return -1
+
+    def unwinding(self) -> bool:
+        return False
+
     @staticmethod
-    def _match(pos: Cursor, expected: Any, callback: Callable | None) -> Node:
+    def action_result(value: Any, pos: Cursor) -> MatchResult:
+        return MatchResult(False, Node(value=value), pos)
+
+    def _match(self, pos: Cursor, expected: Any, callback: Callable | None) -> Node:
         trial = pos.copy()
+        whitespace = getattr(type(self), 'parser_ws_type', None)
+        if whitespace is not None and expected is not whitespace:
+            while True:
+                if callback is not None and trial.index >= len(trial.lexer.tokens):
+                    offset = trial.lexer._cursor.index
+                    if offset >= len(trial.lexer.source) or not trial.lexer.source[offset].isspace():
+                        break
+                token = trial.peek()
+                if not isinstance(token, RawToken) or not token.holds(whitespace):
+                    break
+                trial.advance()
+                # An external callback owns the next source span; the host
+                # lexer may be unable to tokenize its first character.
+                if callback is not None and trial.index >= len(trial.lexer.tokens):
+                    break
+            pos.commit(trial)
         if callback is not None:
             result = callback(trial)
             if isinstance(result, MatchResult):
