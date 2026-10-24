@@ -1,3 +1,5 @@
+module;
+#include <tsl/ordered_map.h>
 module LexerBuilder;
 import corelib;
 import Parser.Base;
