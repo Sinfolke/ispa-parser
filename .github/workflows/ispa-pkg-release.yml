@@ -1,0 +1,152 @@
+name: Nuitka ispa-pkg release
+
+on:
+  workflow_call:
+    inputs:
+      checkout_ref:
+        description: Git tag to compile
+        type: string
+        required: true
+      release_tag:
+        description: Existing GitHub Release tag for the compiled assets
+        type: string
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-26.04
+            platform: linux-x64
+            executable: ispa-pkg
+            archive: ispa-pkg-linux-x64.tar.gz
+          - os: windows-latest
+            platform: windows-x64
+            executable: ispa-pkg.exe
+            archive: ispa-pkg-windows-x64.zip
+          - os: macos-26
+            platform: macos-arm64
+            executable: ispa-pkg
+            archive: ispa-pkg-macos-arm64.tar.gz
+          - os: macos-26-intel
+            platform: macos-x64
+            executable: ispa-pkg
+            archive: ispa-pkg-macos-x64.tar.gz
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout_ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Linux standalone build dependency
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y patchelf
+
+      - name: Install ispa-pkg and Nuitka
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . nuitka ordered-set zstandard
+
+      - name: Test Python CLI
+        shell: bash
+        run: python -m unittest tests/test_ispa_pkg.py -v
+
+      - name: Compile onefile executable
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          EXECUTABLE: ${{ matrix.executable }}
+        run: |
+          set -euo pipefail
+          python -m nuitka \
+            --mode=onefile \
+            --assume-yes-for-downloads \
+            --include-package=ispa_pkg \
+            --include-package=yaml \
+            --output-dir=dist \
+            "--output-filename=$EXECUTABLE" \
+            cli/pkg/ispa_pkg_entry.py
+
+      - name: Compile Windows onefile executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python -m nuitka `
+            --mode=onefile `
+            --msvc=latest `
+            --assume-yes-for-downloads `
+            --include-package=ispa_pkg `
+            --include-package=yaml `
+            --output-dir=dist `
+            --output-filename=ispa-pkg.exe `
+            cli/pkg/ispa_pkg_entry.py
+
+      - name: Smoke test compiled CLI
+        shell: bash
+        env:
+          EXECUTABLE: ${{ matrix.executable }}
+        run: |
+          set -euo pipefail
+          test -f "dist/$EXECUTABLE"
+          "dist/$EXECUTABLE" --help
+          "dist/$EXECUTABLE" catalog list
+
+      - name: Package executable
+        shell: bash
+        env:
+          EXECUTABLE: ${{ matrix.executable }}
+          ARCHIVE: ${{ matrix.archive }}
+        run: |
+          set -euo pipefail
+          mkdir -p packages
+          python - <<'PY'
+          import os
+          import tarfile
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          executable = Path('dist') / os.environ['EXECUTABLE']
+          archive = Path('packages') / os.environ['ARCHIVE']
+          if os.environ['RUNNER_OS'] == 'Windows':
+              with ZipFile(archive, 'w', compression=ZIP_DEFLATED, compresslevel=9) as output:
+                  output.write(executable, arcname=executable.name)
+          else:
+              with tarfile.open(archive, 'w:gz') as output:
+                  output.add(executable, arcname=executable.name, recursive=False)
+          print(archive)
+          PY
+
+      - name: Save workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ispa-pkg-${{ matrix.platform }}
+          path: packages/${{ matrix.archive }}
+          if-no-files-found: error
+
+      - name: Upload to GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.release_tag }}
+          ARCHIVE: ${{ matrix.archive }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" "packages/$ARCHIVE" --clobber

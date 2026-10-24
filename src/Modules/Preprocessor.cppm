@@ -57,16 +57,20 @@ struct Project {
     std::optional<Path> root;
     std::map<Path, ExternalSymbol> external_symbols;
     std::vector<std::string> search_directories;
+    std::vector<std::string> library_search_directories;
     std::vector<std::string> input_files;
+    std::set<std::string> library_files;
     const Source& source(const std::string& file) const;
 };
 Project discover(const std::vector<std::string>& directories,
-                 const std::vector<std::string>& files = {});
+                 const std::vector<std::string>& files = {},
+                 const std::vector<std::string>& library_directories = {});
 // Recursively discover .isc files in the supplied directories, plus explicit
 // inputs. Discovery is deterministic and overlapping paths are deduplicated.
 // With no module directives, CLI inputs retain their historical shared scope.
 Project preprocess(const std::vector<std::string>& directories,
                    const std::vector<std::string>& files = {},
-                   const std::map<std::string, std::string>& resolve = {});
+                   const std::map<std::string, std::string>& resolve = {},
+                   const std::vector<std::string>& library_directories = {});
 std::string spelling(const Path& path);
 }

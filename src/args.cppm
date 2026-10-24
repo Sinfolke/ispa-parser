@@ -14,6 +14,9 @@ export struct Args {
     Language language = Language::Cpp;
     std::string language_str;
     std::vector<std::string> dir;
+    // Internal: managed package directories discovered beside this installation.
+    std::vector<std::string> library_dirs;
+    std::string executable_dir;
     std::vector<std::string> files;
     std::vector<std::pair<std::string, std::string>> dependencies;
     bool no_dep = false;

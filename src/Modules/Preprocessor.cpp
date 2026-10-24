@@ -193,23 +193,29 @@ public:
 };
 }
 
-Project discover(const std::vector<std::string>& directories, const std::vector<std::string>& files) {
+Project discover(const std::vector<std::string>& directories, const std::vector<std::string>& files,
+                 const std::vector<std::string>& library_directories) {
     namespace fs = std::filesystem;
     Project project;
     std::map<fs::path, fs::path> discovered;
-    for (const auto& directory : directories) {
+    auto scan = [&](const std::string& directory, bool library) {
         auto root = fs::canonical(directory);
         if (!fs::is_directory(root)) throw std::runtime_error("Not a module directory: " + directory);
         std::vector<fs::path> paths;
         for (const auto& item : fs::recursive_directory_iterator(root))
             if (item.is_regular_file() && item.path().extension() == ".isc") paths.push_back(fs::canonical(item.path()));
         std::sort(paths.begin(), paths.end());
-        for (const auto& file : paths) discovered.try_emplace(file, file.lexically_relative(root));
-    }
+        for (const auto& file : paths)
+            if (discovered.try_emplace(file, file.lexically_relative(root)).second && library)
+                project.library_files.insert(file.string());
+    };
+    for (const auto& directory : directories) scan(directory, false);
+    for (const auto& directory : library_directories) scan(directory, true);
     for (const auto& input : files) {
         auto file = fs::canonical(input);
         if (!fs::is_regular_file(file)) throw std::runtime_error("Not a module source file: " + input);
         discovered.try_emplace(file, file.filename());
+        project.library_files.erase(file.string());
     }
     for (auto& [file, relative] : discovered) {
         Source source;
@@ -221,18 +227,35 @@ Project discover(const std::vector<std::string>& directories, const std::vector<
         if (!in) throw std::runtime_error("Cannot read module: " + file.string());
         source.grammar.assign(std::istreambuf_iterator<char>(in), {});
         SourceSyntax(source).run();
-        project.modular |= source.has_directives;
+        project.modular |= source.has_directives && !project.library_files.contains(source.file);
         project.sources.push_back(std::move(source));
     }
     project.input_files = files;
     project.search_directories = directories;
+    project.library_search_directories = library_directories;
     return project;
 }
 
 Project preprocess(const std::vector<std::string>& directories, const std::vector<std::string>& files,
-                   const std::map<std::string, std::string>& resolve) {
+                   const std::map<std::string, std::string>& resolve,
+                   const std::vector<std::string>& library_directories) {
     namespace fs = std::filesystem;
-    auto project = discover(directories, files);
+    auto project = discover(directories, files, library_directories);
+    std::set<Path> local_names;
+    for (const auto& source : project.sources)
+        if (!project.library_files.contains(source.file)) local_names.insert(source.name);
+    std::erase_if(project.sources, [&](const Source& source) {
+        return project.library_files.contains(source.file) && local_names.contains(source.name);
+    });
+    const bool local_modular = std::ranges::any_of(project.sources, [&](const Source& source) {
+        return !project.library_files.contains(source.file) && source.has_directives;
+    });
+    if (!local_modular) {
+        std::erase_if(project.sources, [&](const Source& source) {
+            return project.library_files.contains(source.file);
+        });
+        project.modular = false;
+    }
     // Preserve the shared scope used by existing split grammars that contain
     // no module directives at all.
     if (!project.modular) return project;
@@ -240,15 +263,25 @@ Project preprocess(const std::vector<std::string>& directories, const std::vecto
     if (!files.empty()) root = &project.source(fs::canonical(files.front()).string());
     else {
         for (const auto& source : project.sources)
+            if (!project.library_files.contains(source.file))
             if (source.name == Path{"main"}) { root = &source; break; }
         if (!root) for (const auto& source : project.sources) {
+            if (project.library_files.contains(source.file)) continue;
             if (source.entry || source.declarations.contains(Path{"main"})) {
                 if (root) throw std::runtime_error("Multiple module entries; specify the root source file explicitly");
                 root = &source;
             }
         }
     }
-    if (!root && project.sources.size() == 1) root = &project.sources.front();
+    if (!root) {
+        const Source* only = nullptr;
+        for (const auto& source : project.sources) {
+            if (project.library_files.contains(source.file)) continue;
+            if (only) { only = nullptr; break; }
+            only = &source;
+        }
+        root = only;
+    }
     if (root) {
         project.root = root->name;
         auto entry = root->entry;

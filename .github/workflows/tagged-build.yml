@@ -58,6 +58,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TAG: ${{ needs.resolve-tag.outputs.tag }}
+          PLATFORM: ${{ matrix.artifact_name }}
         run: |
           set -euo pipefail
           if gh release view "$TAG" >/dev/null 2>&1; then
@@ -68,7 +69,7 @@ jobs:
 
   build:
     name: Reuse multi-platform CMake build
-    needs: [resolve-tag, prepare-release]
+    needs: [resolve-tag, prepare-release, pkg]
     permissions:
       contents: write
       actions: write
@@ -76,5 +77,15 @@ jobs:
     with:
       checkout_ref: ${{ needs.resolve-tag.outputs.tag }}
       upload_artifacts: true
+      release_tag: ${{ needs.resolve-tag.outputs.tag }}
+
+  pkg:
+    name: Compile ispa-pkg for release
+    needs: [resolve-tag, prepare-release]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/ispa-pkg-release.yml
+    with:
+      checkout_ref: ${{ needs.resolve-tag.outputs.tag }}
       release_tag: ${{ needs.resolve-tag.outputs.tag }}
 

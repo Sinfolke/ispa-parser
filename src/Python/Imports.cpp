@@ -146,10 +146,13 @@ void Imports::load(const Modules::Source& source, const Modules::Import& imp,
     if (relative.empty()) fail(at, "empty Python module path");
 
     std::vector<fs::path> roots;
-    roots.reserve(project.search_directories.size() + 1);
+    roots.reserve(project.search_directories.size() + project.library_search_directories.size() + 1);
     for (const auto& directory : project.search_directories)
         roots.emplace_back(directory);
     roots.push_back(fs::path(source.file).parent_path());
+    const auto local_root_count = roots.size();
+    for (const auto& directory : project.library_search_directories)
+        roots.emplace_back(directory);
 
     auto tryFile = [](const fs::path& candidate) -> fs::path {
         std::error_code error;
@@ -180,7 +183,9 @@ void Imports::load(const Modules::Source& source, const Modules::Import& imp,
         }
     }
     if (canonical.empty()) {
-        for (const auto& root : roots) {
+        for (std::size_t index = 0; index < roots.size(); ++index) {
+            if (index == local_root_count && !canonical.empty()) break;
+            const auto& root = roots[index];
             auto file = relative;
             file += ".py";
             auto candidate = tryFile(root / file);

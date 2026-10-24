@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ispa-pkg"
+version = "0.1.0"
+description = "ISPA library package manager"
+requires-python = ">=3.9"
+dependencies = ["PyYAML>=6,<7"]
+
+[project.scripts]
+ispa-pkg = "ispa_pkg.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["cli/pkg"]
+include = ["ispa_pkg*"]

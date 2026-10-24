@@ -1,4 +1,12 @@
 #include <ispa/parser.h>
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#endif
 import cpuf.color;
 import cpuf.printf;
 import cpuf.op;
@@ -28,27 +36,30 @@ import AST.Builder;
 import LexerBuilder;
 import DFA;
 import dstd;
-
-void printHelp() {
-    cpuf::printf(R"(
-usage:
-    [parameters] [individual files]
-    -help show this help message
-    -version show version
-    --dir specify the directories where to locate sources
-    --lang specify target language to generate to. Use --help-lang to see all languages
-    )", color::yellow, color::reset);
-    cpuf::printf("\n");
-}
-stdu::vector<const char*> parameters_required { "lang" };
-stdu::vector<const char*> parameters_with_arguments { "lang", "a" };
-std::unordered_map<std::string_view, int> parameters_with_fixes_arguments_amount {
-    { "lang", 1 },
-    { "a", 1 }
-};
+import InstalledLibraries;
 
 namespace {
     namespace diagnostics = ISPA::Diagnostics;
+
+    std::filesystem::path executablePath(const char* argv0) {
+        namespace fs = std::filesystem;
+#ifdef _WIN32
+        std::wstring buffer(32768, L'\0');
+        const auto length = GetModuleFileNameW(nullptr, buffer.data(), static_cast<DWORD>(buffer.size()));
+        if (length && length < buffer.size()) return fs::weakly_canonical(fs::path(buffer.substr(0, length)));
+#elif defined(__APPLE__)
+        std::uint32_t length = 0;
+        _NSGetExecutablePath(nullptr, &length);
+        std::string buffer(length, '\0');
+        if (_NSGetExecutablePath(buffer.data(), &length) == 0)
+            return fs::weakly_canonical(fs::path(buffer.c_str()));
+#else
+        std::error_code error;
+        auto path = fs::canonical("/proc/self/exe", error);
+        if (!error) return path;
+#endif
+        return fs::weakly_canonical(fs::path(argv0));
+    }
 
     void printDiagnostics(const diagnostics::Reporter& reporter) {
         reporter.print(std::cerr);
@@ -209,12 +220,18 @@ int generate(Args args);
 // No generated parser implementation is folded into its consumer.
 void generateDependencies(Args& args) {
     namespace fs = std::filesystem;
-    const auto discovered = Modules::discover(args.dir, args.files);
+    const auto discovered = Modules::discover(args.dir, args.files, args.library_dirs);
     if (!discovered.modular) return;
     std::map<Modules::Path, const Modules::Source*> sources;
-    for (const auto& source : discovered.sources)
-        if (!sources.emplace(source.name, &source).second)
-            throw std::runtime_error("Duplicate module: " + Modules::spelling(source.name));
+    for (const auto& source : discovered.sources) {
+        auto [it, inserted] = sources.emplace(source.name, &source);
+        if (!inserted && discovered.library_files.contains(source.file)) continue;
+        if (!inserted && discovered.library_files.contains(it->second->file)) {
+            it->second = &source;
+            continue;
+        }
+        if (!inserted) throw std::runtime_error("Duplicate module: " + Modules::spelling(source.name));
+    }
     std::map<std::string, std::string> dependencies;
     for (const auto& [name, prefix] : args.dependencies)
         if (!dependencies.emplace(name, prefix).second)
@@ -223,16 +240,24 @@ void generateDependencies(Args& args) {
     if (!args.files.empty()) root = &discovered.source(fs::canonical(args.files.front()).string());
     else {
         for (const auto& source : discovered.sources)
+            if (!discovered.library_files.contains(source.file))
             if (source.name == Modules::Path{"main"}) { root = &source; break; }
         if (!root)
         for (const auto& source : discovered.sources) {
+            if (discovered.library_files.contains(source.file)) continue;
             if (source.entry || source.declarations.contains({"main"})) {
                 if (root) throw std::runtime_error("Multiple module entries; specify the root source file explicitly");
                 root = &source;
             }
         }
     }
-    if (!root && discovered.sources.size() == 1) root = &discovered.sources.front();
+    if (!root) {
+        for (const auto& source : discovered.sources) {
+            if (discovered.library_files.contains(source.file)) continue;
+            if (root) throw std::runtime_error("Multiple source modules; specify the root source file explicitly");
+            root = &source;
+        }
+    }
     if (!root) throw std::runtime_error("--no-dep requires a root grammar source");
 
     auto closure = [&](const std::set<Modules::Path>& roots) {
@@ -314,7 +339,7 @@ int generate(Args args) {
         std::map<std::string, std::string> resolve;
         for (const auto& [name, path] : args.dependencies)
             if (!resolve.emplace(name, path).second) throw std::runtime_error("Duplicate --dep binding: " + name);
-        module_project = Modules::preprocess(args.dir, args.files, resolve);
+        module_project = Modules::preprocess(args.dir, args.files, resolve, args.library_dirs);
         if (args.dependency_build) {
             module_project.root.reset();
             // A library module can export rules without declaring a default
@@ -397,6 +422,8 @@ int generate(Args args) {
             std::vector<std::filesystem::path> roots;
             for (const auto& dir : module_project.search_directories) roots.emplace_back(dir);
             roots.emplace_back(std::filesystem::path(source.file).parent_path());
+            const auto local_root_count = roots.size();
+            for (const auto& dir : module_project.library_search_directories) roots.emplace_back(dir);
             const auto canonicalFile = [](const std::filesystem::path& path) {
                 std::error_code error;
                 if (!std::filesystem::is_regular_file(path, error) || error) return std::filesystem::path{};
@@ -421,7 +448,9 @@ int generate(Args args) {
                     throw std::runtime_error("ambiguous Python module: " + module_name);
                 resolved = std::move(actual);
             }
-            if (resolved.empty()) for (const auto& root : roots) {
+            if (resolved.empty()) for (std::size_t index = 0; index < roots.size(); ++index) {
+                if (index == local_root_count && !resolved.empty()) break;
+                const auto& root = roots[index];
                 auto candidate_path = relative;
                 candidate_path += ".py";
                 auto candidate = canonicalFile(root / candidate_path);
@@ -477,7 +506,7 @@ int generate(Args args) {
 
     // Every algorithm uses the same entry point; output conversion belongs to it.
     const auto algorithm_name = to_string(args.algorithm);
-    dlib algorithm_lib("libispa-algorithm-" + algorithm_name);
+    dlib algorithm_lib(InstalledLibraries::pluginPrefix(args.executable_dir, "algorithm", algorithm_name));
     const auto* algorithm = algorithm_lib.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
     if (!algorithm || algorithm->version != Algorithm::interface_version ||
         !algorithm->id || algorithm_name != algorithm->id || !algorithm->build)
@@ -516,7 +545,8 @@ int generate(Args args) {
 
     // dlib-loads libispa-converter-<lang> and resolves "<lang>_construct"
     // (e.g. the extern "C" cpp_construct in converter.cpp) internally.
-    LangRepr::Converter converter(holder, to_string(args.language), name, args.incremental);
+    LangRepr::Converter converter(holder, to_string(args.language), name, args.incremental,
+        InstalledLibraries::pluginPrefix(args.executable_dir, "converter", to_string(args.language)));
     converter.init();
     converter.construct();
 
@@ -542,7 +572,21 @@ int generate(Args args) {
 }
 
 int main(int argc, char** argv) {
-    try { return generate(init(argc, argv)); }
+    try {
+        auto args = init(argc, argv);
+        const auto executable = executablePath(argv[0]);
+        args.executable_dir = executable.parent_path().string();
+        if (!args.version) {
+            const auto libraries = InstalledLibraries::discover(
+                InstalledLibraries::root(executable));
+            args.library_dirs = libraries.source_directories;
+            std::set<std::string> explicit_names;
+            for (const auto& [name, prefix] : args.dependencies) explicit_names.insert(name);
+            for (const auto& [name, prefix] : libraries.dependencies)
+                if (!explicit_names.contains(name)) args.dependencies.emplace_back(name, prefix);
+        }
+        return generate(std::move(args));
+    }
     catch (const std::exception& error) {
         printExceptionDiagnostic("E000", error);
         return 1;

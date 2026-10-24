@@ -3,8 +3,10 @@
 Run: python3 tests/extern_imports.py --ispa build/ispa --cxx 'clang++ -stdlib=libc++'
 """
 import argparse
+import os
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 import tempfile
 
@@ -87,6 +89,23 @@ int main() {
         generate("-o", linked / "Host", "--dep", "foreign", linked / "Foreign",
                  "--dep", "unused", linked / "Foreign", grammar / "host.isc")
         compile_and_run(linked, "Foreign")
+
+        # Installed manifests supply --dep without an explicit CLI binding.
+        installed_root = root / "installation" / "libraries"
+        installed = installed_root / "foreign" / "ispatarget" / "cpp"
+        installed.mkdir(parents=True)
+        for suffix in (".h", ".ispa-export"):
+            shutil.copy2(linked / ("Foreign" + suffix), installed / ("Foreign" + suffix))
+        env = os.environ.copy()
+        env["ISPA_PKG_ROOT"] = str(installed_root)
+        automatic_binding = subprocess.run(
+            [str(binary), "-l", "cpp", "-a", "LL", "--debug", "false",
+             "--no-nfa-debug", "-o", str(root / "auto-binding/Host"), str(grammar / "host.isc")],
+            cwd=root, env=env, text=True, capture_output=True,
+        )
+        if automatic_binding.returncode:
+            raise AssertionError(automatic_binding.stdout + automatic_binding.stderr)
+        assert "#include <Foreign.h>" in (root / "auto-binding/Host.h").read_text()
 
         automatic = root / "automatic"
         options = ("--no-dep", "--dir", grammar, "-o", automatic / "Host", grammar / "host.isc")

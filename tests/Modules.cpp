@@ -2,6 +2,7 @@
 #include <ispa/parser.h>
 #include <ispa_dep_scanner/parser.h>
 import Modules;
+import InstalledLibraries;
 import UAST;
 import dstd;
 import AST.Builder;
@@ -75,6 +76,80 @@ required: cpp_constexpr 'y';
 caller: required;
 choice: required | declaration;
 )";
+}
+
+TEST(Modules, InstalledGrammarIsDiscoveredWithoutBecomingTheEntry) {
+    ModuleFiles files;
+    const auto package_root = files.root / "libraries" / "std";
+    const auto grammar_root = package_root / "ispalib" / "grammar";
+    std::filesystem::create_directories(grammar_root);
+    std::ofstream(grammar_root / "names.isc") << "module std.names;\nID: [a-z]+;\n";
+    const auto main = files.write("project/main.isc",
+        "module host -> main;\nimport {ID} from std.names;\nmain: ID;\n");
+    const auto installed = InstalledLibraries::discover(files.root / "libraries");
+    ASSERT_EQ(installed.source_directories.size(), 1);
+    const auto project = Modules::preprocess({(files.root / "project").string()}, {main}, {},
+        installed.source_directories);
+    ASSERT_TRUE(project.root.has_value());
+    EXPECT_EQ(Modules::spelling(*project.root), "host");
+    ASSERT_EQ(project.sources.size(), 2);
+}
+
+TEST(Modules, InstalledDependencyManifestUsesPackageNameAndCanBeOverridden) {
+    ModuleFiles files;
+    const auto package = files.root / "libraries" / "foreign" / "ispatarget" / "cpp";
+    std::filesystem::create_directories(package);
+    std::ofstream(package / "Foreign.ispa-export") << "ISPA_EXTERN 1\n";
+    std::ofstream(package / "Foreign.h") << "// generated header\n";
+    const auto installed = InstalledLibraries::discover(files.root / "libraries");
+    const auto expected = (package / "Foreign").string();
+    EXPECT_EQ(installed.dependencies.at("foreign"), expected);
+    EXPECT_EQ(installed.dependencies.at("Foreign"), expected);
+}
+
+TEST(Modules, PluginLibraryIsResolvedBesideExecutable) {
+    ModuleFiles files;
+#ifdef _WIN32
+    const auto filename = "ispa-algorithm-LL.dll";
+#elif defined(__APPLE__)
+    const auto filename = "libispa-algorithm-LL.dylib";
+#else
+    const auto filename = "libispa-algorithm-LL.so";
+#endif
+    std::ofstream(files.root / filename) << "placeholder";
+    const auto expected = (files.root / filename).replace_extension().string();
+    EXPECT_EQ(InstalledLibraries::pluginPrefix(files.root, "algorithm", "LL"), expected);
+}
+
+TEST(Modules, LocalGrammarOverridesInstalledModuleWithSameName) {
+    ModuleFiles files;
+    const auto library = files.root / "libraries" / "std" / "ispalib" / "grammar";
+    std::filesystem::create_directories(library);
+    std::ofstream(library / "names.isc") << "module std.names;\nID: 'installed';\n";
+    const auto local = files.write("project/names.isc", "module std.names;\nID: 'local';\n");
+    const auto main = files.write("project/main.isc",
+        "module host -> main;\nimport {ID} from std.names;\nmain: ID;\n");
+    const auto project = Modules::preprocess({(files.root / "project").string()}, {main}, {},
+        {library.string()});
+    ASSERT_EQ(project.sources.size(), 2);
+    const auto chosen = std::ranges::find_if(project.sources, [](const Modules::Source& source) {
+        return source.name == Modules::Path{"std", "names"};
+    });
+    ASSERT_NE(chosen, project.sources.end());
+    EXPECT_EQ(chosen->file, std::filesystem::canonical(local).string());
+}
+
+TEST(Modules, InstalledModulesDoNotTurnLegacyGrammarIntoModularInput) {
+    ModuleFiles files;
+    const auto library = files.root / "libraries" / "std" / "ispalib" / "grammar";
+    std::filesystem::create_directories(library);
+    std::ofstream(library / "names.isc") << "module std.names;\nID: [a-z]+;\n";
+    const auto main = files.write("project/main.isc", "main: 'x';\n");
+    const auto project = Modules::preprocess({(files.root / "project").string()}, {main}, {},
+        {library.string()});
+    EXPECT_FALSE(project.modular);
+    ASSERT_EQ(project.sources.size(), 1);
+    EXPECT_EQ(project.sources.front().file, std::filesystem::canonical(main).string());
 }
 
 TEST(Modules, RecursiveCaptureDeduplicatesAndRestrictsImports) {

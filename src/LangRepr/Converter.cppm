@@ -16,8 +16,9 @@ export namespace LangRepr {
         std::string lang;
         ::Converter::ConstructBase *builder;
     public:
-        Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name, bool incremental)
-            : converter_lib("libispa-converter-" + lang),
+        Converter(const Holder &holder, const std::string &lang, const std::string &namespace_name,
+                  bool incremental, const std::string& library_prefix = {})
+            : converter_lib(library_prefix.empty() ? "libispa-converter-" + lang : library_prefix),
               holder(holder), namespace_name(namespace_name), incremental(incremental), lang(lang) {}
 
         auto init() -> void {

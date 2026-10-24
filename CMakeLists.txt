@@ -4,6 +4,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
+if(APPLE)
+    set(CMAKE_BUILD_RPATH "@loader_path")
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-stdlib=libc++)
@@ -88,8 +92,8 @@ add_subdirectory(parser)
 # =============================================
 # ISPA Modules Library
 # =============================================
-add_library(ispa_modules STATIC)
-set_target_properties(ispa_modules PROPERTIES
+add_library(ispacore STATIC)
+set_target_properties(ispacore PROPERTIES
     POSITION_INDEPENDENT_CODE ON
     WINDOWS_EXPORT_ALL_SYMBOLS ON
     BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
@@ -107,35 +111,50 @@ get_file_range(ISPA_MODULE_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/runtime/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/external/cpuf/*.cpp
-        EXCLUDE ".*/main\\.cpp$"
-        EXCLUDE "parser/new/.*\\.cpp$"
 )
 get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/converter/*.cppm)
 get_file_range_non_recurse(ISPA_MODULE_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/lib/algorithm/*.cppm)
-list(REMOVE_ITEM ISPA_MODULE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
-target_sources(ispa_modules
+target_sources(ispacore
         PUBLIC
             FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ISPA_MODULE_INTERFACES}
         PRIVATE
             ${ISPA_MODULE_SOURCES}
 )
 
-target_include_directories(ispa_modules PRIVATE
+target_include_directories(ispacore PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/stdlibs/new
         ${CMAKE_CURRENT_SOURCE_DIR}/external
         ${CMAKE_CURRENT_SOURCE_DIR}/parser/python/bootstrapped
 )
 
-target_link_libraries(ispa_modules PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser ISPA::DepScanner)
-set_target_properties(ispa_modules PROPERTIES
+target_link_libraries(ispacore PUBLIC Boost::boost CLI11::CLI11 ICU::uc ISPA::Parser ISPA::DepScanner)
+set_target_properties(ispacore PROPERTIES
         DISABLE_PRECOMPILE_HEADERS ON
 )
 # =============================================
-# Main Executable
+# CLI TOOLS
 # =============================================
-add_executable(ispa ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-target_link_libraries(ispa PRIVATE ispa_modules)
+function(add_cli dir)
+    if(ARGN)
+        set(name ${ARGV0})
+    else()
+        set(name ${dir})
+    endif()
+    if (NOT ${name} STREQUAL "ispa")
+        set(name "ispa-${name}")
+    endif()
+    get_file_range(${name}_SOURCES
+            "${CMAKE_CURRENT_SOURCE_DIR}/cli/${dir}/*.cpp"
+    )
+    add_executable(${name} ${${name}_SOURCES})
+    target_link_libraries(${name} PRIVATE ispacore)
+endfunction()
+add_cli(ispa)
+
+# =============================================
+# ISPA ALGORITHMS/CONVERTERS FUNCTIONS
+# =============================================
 
 function(add_ispa_lib type lib)
     get_file_range(${type}_${lib}_SOURCES
@@ -159,7 +178,7 @@ function(add_ispa_lib type lib)
     # Link language target to shared converter modules and ispa_modules
     target_link_libraries(${target_name}
             PRIVATE
-            ispa_modules
+            ispacore
     )
 
     set_target_properties(${target_name} PROPERTIES
@@ -213,7 +232,7 @@ get_file_range(TEST_MODULE_FILES EXCLUDE "tests/compile/" "tests/*.cppm")
 list(REMOVE_ITEM TEST_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/tests/Diagnostics.cpp")
 
 add_executable(diagnostics_tests tests/Diagnostics.cpp)
-target_link_libraries(diagnostics_tests PRIVATE ispa_modules GTest::gtest_main)
+target_link_libraries(diagnostics_tests PRIVATE ispacore GTest::gtest_main)
 
 add_executable(tests ${TEST_SOURCE_FILES})
 add_dependencies(tests ispa)
@@ -237,7 +256,7 @@ target_compile_definitions(tests PRIVATE
 
 target_link_libraries(tests
         PRIVATE
-        ispa_modules
+        ispacore
         ispa-algorithm-LR
         ispa-algorithm-LALR
         ispa-algorithm-LR_STAR

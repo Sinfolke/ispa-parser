@@ -178,6 +178,126 @@ python3 examples/json/generate_json.py -o huge_100mb.json -s 100 -d 2
 - [ ] **Grammar standard library**: JSON, XML, math expressions, C-like statements
 - [ ] Features described in **concepts/**
 
+## Install ISPA
+
+ISPA has prebuilt GitHub Release archives for Linux x86_64, Windows x64, and macOS Apple Silicon (ARM64). macOS Intel is supported by the installer **only if** its release archive exists. All commands install for the current user, with no administrator privileges needed.
+
+### Library packages (`ispa-pkg`)
+
+Release installers provide `ispa-pkg` alongside `ispa`. For a source checkout,
+install the Python CLI with `python3 -m pip install .` (Python 3.9+ and PyYAML).
+Tagged releases also publish standalone Nuitka builds named
+`ispa-pkg-<platform>.tar.gz` (or `.zip` on Windows) for the four supported
+Linux, Windows, and macOS targets. The ISPA platform archives include the
+corresponding Nuitka executable, which the installers and updaters activate.
+The CLI lives in `cli/pkg`. Libraries are installed under
+`~/.local/share/ispa/libraries` by default on Linux and macOS, or under the
+ISPA installation directory when launched from an installed release; use
+`ISPA_PKG_ROOT` to choose another location for both commands (`ispa-pkg --root`
+changes only the package command). `ispa` searches the matching directory for
+grammar and `import py` libraries automatically.
+It also loads its bundled algorithm and converter plugins beside the executable.
+The installed package has `ispalib/grammar`,
+`ispalib/python`, `ispatarget/<language>`, and `ispaalgorithm` directories.
+When compiling generated target code, add its `ispatarget/<language>` directory
+to your compiler or interpreter search path.
+Installed external parser manifests (`NAME.ispa-export` beside `NAME.h` or
+`NAME.py`) also provide `--dep` bindings automatically. A package with one
+manifest can be referenced by its package name; an explicit `--dep` wins.
+
+```sh
+ispa-pkg install std
+ispa-pkg install owner/repository --ref v1.2.0
+ispa-pkg install https://example.org/mylib.tar.gz --name mylib
+ispa-pkg update
+ispa-pkg list
+ispa-pkg catalog update
+ispa-pkg catalog list
+```
+
+The catalog is [`ispa-libraries.yaml`](ispa-libraries.yaml) at the repository
+root. `catalog update` fetches the current file from GitHub into the local
+package root; `--catalog FILE` selects another YAML catalog. A catalog entry
+specifies `github: owner/repository` with optional `ref`, or `archive: URL`.
+Installed GitHub packages update when their commit changes. Archives and local
+directories update when their contents change. `--force` reinstalls a package.
+
+Library repositories may provide `ispa-package.yaml` at their root. The
+[`ispa-package.yaml`](ispa-package.yaml) in this repository demonstrates the
+standard library: its source is `parser/stdlibs`, with renamed folders mapped
+to their standard destinations. Without a config, package sources are read
+from `ispalib/grammar`, `ispalib/python`, `ispatarget/cpp`,
+`ispatarget/python`, and `ispaalgorithm`. A config can also use `layout.root`
+for a `release` directory, or `archive: release/library.zip` to unpack an
+archive from the repository before applying the layout. An `install` list of
+repository relative `.py` or shell script paths runs after copying files;
+scripts receive the staged destination as their first argument. Pass
+`--allow-scripts` to install or update a package that declares scripts.
+Use `layout.files` to map individual files such as `target/ispa_std.py`.
+LL and LR algorithm plugins are bundled with ISPA; they are not part of `std`.
+
+### Linux and macOS
+
+Review [scripts/install.sh](scripts/install.sh), then install with:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Sinfolke/ispa-parser-generator/main/scripts/install.sh | sh
+```
+
+This downloads the newest **published** GitHub Release for your OS and architecture. The binary is linked as `~/.local/bin/ispa`. Make sure `~/.local/bin` is on your `PATH`, then run:
+
+```sh
+ispa --help
+```
+
+For an exact version:
+
+```sh
+ISPA_VERSION=v1.1.0 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Sinfolke/ispa-parser-generator/main/scripts/install.sh)"
+```
+
+### Windows (PowerShell)
+
+Review [scripts/install.ps1](scripts/install.ps1), then run:
+
+```powershell
+irm https://raw.githubusercontent.com/Sinfolke/ispa-parser-generator/main/scripts/install.ps1 | iex
+```
+
+Open a new terminal and run `ispa --help`. The installer creates `%LOCALAPPDATA%\Programs\ISPA\bin\ispa.cmd` and adds that directory to your **user** PATH.
+
+To install a particular published tag:
+
+```powershell
+$env:ISPA_VERSION = 'v1.1.0'
+irm https://raw.githubusercontent.com/Sinfolke/ispa-parser-generator/main/scripts/install.ps1 | iex
+```
+
+### Change install location
+
+On Linux/macOS, set `ISPA_INSTALL_DIR` and/or `ISPA_BIN_DIR` before running the installer. On Windows, set the same environment variables in PowerShell before executing the script.
+
+### Updating and removing
+
+Rerun the installer to switch the launcher to the latest release. Previously installed versions are retained under `versions/` for rollback.
+
+To remove ISPA on Linux/macOS (with default paths):
+
+```sh
+rm -f "$HOME/.local/bin/ispa"
+rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/ispa"
+```
+
+On Windows (with default paths), remove `%LOCALAPPDATA%\Programs\ISPA`, and delete that folder's `bin` entry from your user PATH.
+
+### Important limitations
+
+- The installer does **not** build LLVM, libc++, Python, or other target-language toolchains. Users who generate C++ will still need a compatible C++ compiler.
+- Archives currently contain the ISPA executable and detected converter shared libraries. Package ISPA's grammar stdlibs, target resources, and any necessary dynamic runtime dependencies in the release workflow before advertising the archives as a complete standalone distribution.
+- A GitHub Release can become public after the first platform finishes building. If an archive for your platform has not been uploaded yet, rerun the installer once it appears.
+- For stronger supply-chain verification, publish a SHA-256 checksum manifest (or signed attestations) alongside each release and verify it inside the installers.
+
+
 ---
 
 ## 🛠️ Build & Requirements

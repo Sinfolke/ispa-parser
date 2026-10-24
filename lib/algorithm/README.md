@@ -55,7 +55,7 @@ by lexer and LangRepr generation for all algorithms. It has no LL builder or cac
 policy. The executable does not import LL implementation modules or link algorithm
 libraries directly.
 
-The host and plugins link the shared `ispa_modules` core so AST types, logging,
+The host and plugins link the shared `ispacore` core so AST types, logging,
 dumper settings, and other process state have one owner across runtime loads.
 
 This is a versioned C++ plugin protocol with an `extern "C"` discovery symbol,

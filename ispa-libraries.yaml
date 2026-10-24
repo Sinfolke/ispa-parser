@@ -1,0 +1,5 @@
+# Public package catalog. Update it with `ispa-pkg catalog update`.
+packages:
+  std:
+    github: Sinfolke/ispa-parser-generator
+    ref: main
