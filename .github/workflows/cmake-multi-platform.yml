@@ -9,17 +9,18 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
+    env:
+      SCCACHE_DIR: ${{ matrix.os == 'windows-latest' && 'C:\Users\runneradmin\AppData\Local\Mozilla\sccache' || '/home/runner/.cache/sccache' }}
     strategy:
       fail-fast: false
       matrix:
         include:
-#          - os: ubuntu-26.04
-#            c_compiler: gcc-15
-#            cpp_compiler: g++-15
-#            triplet: x64-linux
-#            overlay_triplets: ""
-#            extra_cxx_flags: ""
+          #          - os: ubuntu-26.04
+          #            c_compiler: gcc-15
+          #            cpp_compiler: g++-15
+          #            triplet: x64-linux
+          #            overlay_triplets: ""
+          #            extra_cxx_flags: ""
 
           - os: ubuntu-26.04
             c_compiler: clang-20
@@ -52,6 +53,20 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
+      # 2. Setup sccache action
+      - name: Setup sccache
+        uses: mozilla-actions/sccache-action@v0.0.8
+
+      # 3. Cache sccache directory (SCCACHE_DIR is now non-empty)
+      - name: Restore / Save sccache cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.SCCACHE_DIR }}
+          key: sccache-${{ runner.os }}-${{ matrix.triplet }}-${{ github.sha }}
+          restore-keys: |
+            sccache-${{ runner.os }}-${{ matrix.triplet }}-
+            sccache-${{ runner.os }}-
+
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -63,6 +78,7 @@ jobs:
             libc++-20-dev \
             libc++abi-20-dev \
             valgrind
+
       - name: Install ICU build dependencies
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -75,6 +91,7 @@ jobs:
             pkg-config \
             gettext \
             make
+
       - name: Fix libc++ modules std path (Ubuntu clang)
         if: matrix.cpp_compiler == 'clang++-20'
         run: |
@@ -85,6 +102,10 @@ jobs:
             sudo ln -sfn "$real" "$bogus"
           fi
           ls -la "$bogus" 2>&1 || true
+
+      - name: Zero sccache statistics
+        run: sccache --zero-stats || true
+
       - name: Configure CMake
         shell: bash
         env:
@@ -92,34 +113,40 @@ jobs:
           CXX: ${{ matrix.cpp_compiler }}
         run: |
           CMAKE_ARGS=(
-          -B build
-          -G Ninja
-          "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
-          "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
-          "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
-          "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
-          "-DCMAKE_BUILD_TYPE=Release"
-          -S "${{ github.workspace }}"
+            -B build
+            -G Ninja
+            "-DCMAKE_C_COMPILER_LAUNCHER=sccache"
+            "-DCMAKE_CXX_COMPILER_LAUNCHER=sccache"
+            "-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+            "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
+            "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
+            "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
+            "-DCMAKE_BUILD_TYPE=Release"
+            -S "${{ github.workspace }}"
           )
           
           if [[ -n "${{ matrix.extra_cxx_flags }}" ]]; then
-          CMAKE_ARGS+=(
-          "-DCMAKE_CXX_FLAGS=${{ matrix.extra_cxx_flags }}"
-          "-DCMAKE_EXE_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
-          "-DCMAKE_SHARED_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
-          )
+            CMAKE_ARGS+=(
+              "-DCMAKE_CXX_FLAGS=${{ matrix.extra_cxx_flags }}"
+              "-DCMAKE_EXE_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
+              "-DCMAKE_SHARED_LINKER_FLAGS=${{ matrix.extra_cxx_flags }}"
+            )
           fi
           
           if [[ -n "${{ matrix.overlay_triplets }}" ]]; then
-          CMAKE_ARGS+=(
-          "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
-          )
+            CMAKE_ARGS+=(
+              "-DVCPKG_OVERLAY_TRIPLETS=${{ github.workspace }}/${{ matrix.overlay_triplets }}"
+            )
           fi
           
           cmake "${CMAKE_ARGS[@]}"
+
       - name: Build
         run: cmake --build build --config Release
-#
+
+      - name: Show sccache statistics
+        run: sccache --show-stats
+
 #      - name: Test
 #        working-directory: build
 #        run: ctest --build-config Release
