@@ -87,9 +87,13 @@ void AST::requireCppSupport(const Tree& tree, bool ll_actions) {
             if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
                 syntax && syntax->parameters.empty() && syntax->templateParameters.empty() &&
                 std::ranges::all_of(syntax->modifiers, [](const auto& m) { return m == "inline" || m == "skip"; })) continue;
-            if (ll_actions) if (const auto* syntax = std::get_if<AST::AdvancedRule>(&feature))
+            if (const auto* syntax = std::get_if<AST::AdvancedRule>(&feature))
                 for (const auto& child : syntax->syntax.children)
                     if (child.field == "dep" && !child.children.empty()) reject(syntax->position, "advanced rule dependencies");
+            // A parser advanced rule made only of ordinary `match` clauses is
+            // already an LR production after normalization.  Statements and
+            // stream matches still need semantic callbacks and stay rejected.
+            if (!ll_actions && !token && std::holds_alternative<AST::AdvancedRule>(feature)) continue;
             if (ll_actions && (std::holds_alternative<AST::AdvancedRule>(feature) ||
                 std::holds_alternative<AST::PythonAction>(feature) ||
                 std::holds_alternative<AST::DeclarationSyntax>(feature))) continue;

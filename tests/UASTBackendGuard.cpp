@@ -28,6 +28,13 @@ TEST(UAST, BackendGuardAllowsSupportedGrammar) {
     EXPECT_THROW(AST::requireCppSupport(nested_token, true), std::runtime_error);
 }
 
+TEST(UAST, LRBackendGuardAllowsMatchOnlyAdvancedRule) {
+    auto advanced_match = convert("main { match 'a'; match 'b'; }");
+    EXPECT_NO_THROW(AST::requireCppSupport(advanced_match, false));
+    auto advanced_action = convert("main { match 'a'; ctx.ast.seen: bool = True }");
+    EXPECT_THROW(AST::requireCppSupport(advanced_action, false), std::runtime_error);
+}
+
 TEST(UAST, BackendGuardRejectsUnsupportedFeaturesWithPositions) {
     for (const auto* source : {
         "T: $name;", "T: @=('a');", "T: % 'a';",

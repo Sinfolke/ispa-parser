@@ -25,7 +25,7 @@ It is built around one idea: **easy to use, without giving up performance, exten
 | Bootstrap | **Done.** ISPA's own grammar is parsed by an ISPA-generated parser, which fully replaced the hand-written one |
 | Lexer (TDFA, AST-building tokens) | **Done** |
 | Parser (default mode) | Mostly correct; needs some changes and more tests |
-| Parser (LR-family modes) | Experimental; not yet stable |
+| Parser (LR-family modes) | Experimental; see [LR backend status](docs/LR_STATUS.md) |
 | Incremental generation | Implemented (regenerates changed parts only) |
 | C++17 target | Implemented; output compiles and runs |
 | Dynamic regex (back-references, counts from earlier captures) | Syntax parsed, **not yet lowered to output** |

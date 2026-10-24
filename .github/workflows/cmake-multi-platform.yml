@@ -45,7 +45,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setup CMake
-        uses: lukka/get-cmake@v4.3.2
+        uses: lukka/get-cmake@v4.5.0
 
       - name: Setup MSVC Environment
         if: matrix.os == 'windows-latest'

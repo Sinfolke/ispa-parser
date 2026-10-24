@@ -106,11 +106,77 @@ auto ConstructParser::constructLRParser(LangAPI::Class &parser) -> void {
                 {returned(Array::createExpression(std::move(choices)))}}));
         }
     }
-    if (dynamic) actions.push_back(returned(integer(-std::numeric_limits<long long>::max())));
-    else actions.push_back(fail());
+    // A missing ACTION cell is an input error, not a malformed generated table.
+    // Let the runtime report it with the actual token and source rule context.
+    actions.push_back(returned(integer(-std::numeric_limits<long long>::max())));
     const stdu::vector<std::pair<Type, std::string>> action_parameters{
         {size, "state"}, {Type{ValueType::ImmutableSemantic, Type{ValueType::BorrowSemantic, sizes}}, "window"}};
     add("lr_action", number, action_parameters, std::move(actions));
+    Statements expected, contexts, token_names;
+    std::map<std::size_t, std::set<LRBase::Name>> expected_by_state;
+    for (const auto& [state, row] : lr->getKActionTable())
+        for (const auto& [window, action] : row)
+            if (!window.empty()) expected_by_state[state].insert(window.front());
+    for (const auto& resolution : lr->getConflictResolutions()) {
+        if (resolution.lookahead) {
+            for (const auto& decision : resolution.decisions)
+                if (!decision.window.empty()) expected_by_state[decision.state].insert(decision.window.front());
+        } else {
+            const auto& conflict = lr->getConflicts().at(resolution.conflict);
+            if (!conflict.lookahead_sequence.empty())
+                expected_by_state[conflict.state].insert(conflict.lookahead_sequence.front());
+        }
+    }
+    const auto nameText = [](const LRBase::Name& name) {
+        return name == LRBase::Name{"$"} ? std::string{"end of input"} : corelib::text::join(name, "::");
+    };
+    std::set<LRBase::Name> terminals;
+    for (const auto& [state, names] : expected_by_state) {
+        Array ids;
+        for (const auto& name : names) {
+            terminals.insert(name);
+            ids.values.push_back(name == LRBase::Name{"$"}
+                ? Cast::createExpression(Cast{.type = std::make_shared<Type>(size), .what = integer(-1)})
+                : tokenId(name));
+        }
+        expected.push_back(If::createStatement(If{equals(symbol("state"), integer(state)),
+            {returned(Array::createExpression(std::move(ids)))}}));
+    }
+    expected.push_back(returned(Array::createExpression(Array{})));
+    add("lr_expected", sizes, {{size, "state"}}, std::move(expected));
+    for (const auto& [name, block] : lexer_builder.getDataBlocks()) terminals.insert(name);
+    terminals.insert(LRBase::Name{"$"});
+    for (const auto& name : terminals) {
+        auto id = name == LRBase::Name{"$"}
+            ? Cast::createExpression(Cast{.type = std::make_shared<Type>(size), .what = integer(-1)})
+            : tokenId(name);
+        token_names.push_back(If::createStatement(If{equals(symbol("token"), std::move(id)),
+            {returned(String::createExpression(String{.value = nameText(name)}))}}));
+    }
+    token_names.push_back(returned(String::createExpression(String{.value = "unknown token"})));
+    add("lr_token_name", Type{ValueType::String}, {{size, "token"}}, std::move(token_names));
+    const auto& collection = lr->getCanonicalCollection();
+    for (std::size_t state = 0; state < collection.size(); ++state) {
+        std::set<std::string> labels;
+        bool has_kernel = false;
+        for (const auto& [item, lookahead] : collection[state]) if (item.production && item.dot_pos) {
+            const auto& production = lr->getProductions().at(item.production);
+            const auto& name = production.source.original_rules.empty() ? production.lhs : production.source.original_rules;
+            labels.insert(nameText(name));
+            has_kernel = true;
+        }
+        if (!has_kernel) for (const auto& [item, lookahead] : collection[state]) if (item.production) {
+            const auto& production = lr->getProductions().at(item.production);
+            const auto& name = production.source.original_rules.empty() ? production.lhs : production.source.original_rules;
+            labels.insert(nameText(name));
+        }
+        std::string label;
+        for (const auto& name : labels) { if (!label.empty()) label += ", "; label += name; }
+        contexts.push_back(If::createStatement(If{equals(symbol("state"), integer(state)),
+            {returned(String::createExpression(String{.value = std::move(label)}))}}));
+    }
+    contexts.push_back(returned(String::createExpression(String{.value = "<unknown>"})));
+    add("lr_context", Type{ValueType::String}, {{size, "state"}}, std::move(contexts));
     if (dynamic) {
         conflicts.push_back(returned(Array::createExpression(Array{})));
         add("lr_conflict", Type{ValueType::Array, number}, action_parameters, std::move(conflicts));

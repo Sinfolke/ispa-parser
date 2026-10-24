@@ -1,18 +1,54 @@
 #pragma once
 #include <ispastdlib/parser_base.hpp>
+#include <ispastdlib/ispa_recovery.hpp>
 #include <any>
 #include <ispastdlib/traits.hpp>
 #include <tuple>
 #include <limits>
 #include <stdexcept>
 #include <vector>
+#include <sstream>
 
 namespace ISPA_STD {
+// A region owns its recognition stack and the values produced inside it. A
+// continuation identifies where an enclosing semantic program can resume.
+// The deterministic parser currently uses one root region; nested region
+// transitions require generated semantic callbacks.
+enum class LRControlPhase { Decide, Shift, Reduce, Semantic, Recover, Accept };
+struct LRControlState {
+    LRControlPhase phase = LRControlPhase::Decide;
+    std::size_t continuation = 0;
+    std::size_t production = 0;
+};
+
+struct LRRuleSpan {
+    std::size_t begin = 0, end = 0;
+    bool leading = false, trailing = false, empty = true;
+};
+
+template<class IT>
+struct LRRegionFrame {
+    IT pos;
+    std::vector<std::size_t> states{0};
+    std::vector<std::any> values;
+    std::vector<LRRuleSpan> spans;
+    std::vector<std::size_t> capture_destinations;
+    std::size_t cursor = 0;
+    bool recovered_prefix = false;
+    LRControlState control;
+
+    explicit LRRegionFrame(IT start, std::size_t continuation = 0)
+        : pos(std::move(start)) { control.continuation = continuation; }
+};
+
 // Generated callbacks use a signed action: shift = state+1, reduce = -rule-1,
 // accept = 0. Missing cells throw before any stack mutation.
 template<class MainNode, class Token>
 class LRParser : public Parser_base<MainNode, Token> {
+public:
+    [[nodiscard]] const std::vector<Recovery::Diagnostic>& getErrors() const noexcept { return errors_; }
 protected:
+    std::vector<Recovery::Diagnostic> errors_;
     // Synthetic grammar symbols carry captures, never user-visible AST nodes.
     struct LRTokenValue { std::any node; std::string text; };
     template<class T>
@@ -139,14 +175,14 @@ protected:
     }
     template<class Generated, class IT>
     MatchResult<MainNode, IT> lr_parse(IT pos) {
-        std::vector<std::size_t> states{0};
-        std::vector<std::any> values;
-        struct RuleSpan {
-            std::size_t begin, end;
-            bool leading = false, trailing = false, empty = true;
-        };
-        std::vector<RuleSpan> spans;
-        std::size_t cursor = 0;
+        errors_.clear();
+        LRRegionFrame<IT> region(std::move(pos));
+        auto& states = region.states;
+        auto& values = region.values;
+        auto& spans = region.spans;
+        auto& cursor = region.cursor;
+        auto& control = region.control;
+        auto& position = region.pos;
         auto skip = [](IT& it, std::size_t* offset) {
             if constexpr (requires { Generated::lr_is_space(*it); }) {
                 while (!it.isEnd() && Generated::lr_is_space(*it)) {
@@ -161,8 +197,9 @@ protected:
             else return false;
         };
         for (;;) {
-            skip(pos, &cursor);
-            auto peek = pos;
+            control.phase = LRControlPhase::Decide;
+            skip(position, &cursor);
+            auto peek = position;
             std::vector<std::size_t> window;
             for (std::size_t i = 0; i < Generated::lr_k(); ++i) {
                 skip(peek, nullptr);
@@ -171,30 +208,89 @@ protected:
                 if (!end) ++peek;
             }
             const auto action = Generated::lr_action(states.back(), window);
+            if (action == -std::numeric_limits<long long>::max()) {
+                Recovery::Diagnostic diagnostic;
+                diagnostic.unexpected = window.front();
+                if constexpr (requires { Generated::lr_expected(states.back()); })
+                    diagnostic.expected = Generated::lr_expected(states.back());
+                if constexpr (requires { Generated::lr_context(states.back()); })
+                    diagnostic.rule = Generated::lr_context(states.back());
+                else diagnostic.rule = "<rule>";
+                if (!position.isEnd()) {
+                    if constexpr (requires { (*position).meta().startpos(); (*position).meta().length(); }) {
+                        diagnostic.offset = (*position).meta().startpos();
+                        diagnostic.length = (*position).meta().length();
+                    }
+                }
+                std::ostringstream message;
+                message << "Unexpected ";
+                if constexpr (requires { Generated::lr_token_name(diagnostic.unexpected); })
+                    message << Generated::lr_token_name(diagnostic.unexpected);
+                else message << "token " << diagnostic.unexpected;
+                if (diagnostic.offset != std::numeric_limits<std::size_t>::max())
+                    message << " at offset " << diagnostic.offset;
+                message << " in rule " << diagnostic.rule;
+                if (!diagnostic.expected.empty()) {
+                    message << "; expected ";
+                    for (std::size_t i = 0; i < diagnostic.expected.size(); ++i) {
+                        if (i) message << ", ";
+                        if constexpr (requires { Generated::lr_token_name(diagnostic.expected[i]); })
+                            message << Generated::lr_token_name(diagnostic.expected[i]);
+                        else message << "token " << diagnostic.expected[i];
+                    }
+                }
+                diagnostic.message = message.str();
+                diagnostic.code = "lr-unexpected-token";
+                errors_.push_back(std::move(diagnostic));
+                if constexpr (requires(Generated& parser, LRRegionFrame<IT>& frame,
+                                       Recovery::Diagnostic& error) {
+                    parser.lr_recover(frame, error);
+                }) {
+                    control.phase = LRControlPhase::Recover;
+                    const auto old_cursor = cursor;
+                    const auto old_stack_size = states.size();
+                    const auto old_state = states.back();
+                    if (static_cast<Generated&>(*this).lr_recover(region, errors_.back())) {
+                        if (cursor == old_cursor && states.size() == old_stack_size &&
+                            states.back() == old_state)
+                            throw std::runtime_error("LR recovery handler made no progress");
+                        if (cursor != old_cursor) {
+                            if (spans.empty()) region.recovered_prefix = true;
+                            else spans.back().trailing = true;
+                        }
+                        continue;
+                    }
+                }
+                throw std::runtime_error(errors_.back().message);
+            }
             if (action == 0) {
-                if (values.size() != 1 || !pos.isEnd())
+                control.phase = LRControlPhase::Accept;
+                if (values.size() != 1 || !position.isEnd())
                     throw std::runtime_error("Invalid LR accept stack");
-                if ((spans.back().begin && !spans.back().leading) ||
+                if ((spans.back().begin && !spans.back().leading && !region.recovered_prefix) ||
                     (cursor > spans.back().end && !spans.back().trailing))
                     throw std::runtime_error("Whitespace is not allowed at the input boundary");
-                return {true, std::any_cast<Node<MainNode>>(std::move(values.back())), pos};
+                return {true, std::any_cast<Node<MainNode>>(std::move(values.back())), position};
             }
             if (action > 0) {
-                if (pos.isEnd()) throw std::runtime_error("LR shift past end of input");
-                values.push_back(Generated::lr_shift(*pos));
-                spans.push_back(RuleSpan{cursor, cursor + 1, false, false, false});
+                control.phase = LRControlPhase::Shift;
+                if (position.isEnd()) throw std::runtime_error("LR shift past end of input");
+                values.push_back(Generated::lr_shift(*position));
+                spans.push_back(LRRuleSpan{cursor, cursor + 1, false, false, false});
                 ++cursor;
                 states.push_back(static_cast<std::size_t>(action - 1));
-                ++pos;
+                ++position;
             } else {
                 const auto rule = static_cast<std::size_t>(-action - 1);
+                control.phase = LRControlPhase::Reduce;
+                control.production = rule;
                 const auto count = Generated::lr_length(rule);
                 if (count > values.size()) throw std::runtime_error("LR stack underflow");
                 const auto begin = values.size() - count;
                 std::vector<std::any> rhs;
                 rhs.reserve(count);
                 for (auto i = begin; i < values.size(); ++i) rhs.push_back(std::move(values[i]));
-                RuleSpan span{cursor, cursor};
+                LRRuleSpan span{cursor, cursor};
                 bool allowed = gap(rule, 0);
                 for (std::size_t i = 0; i < count; ++i) {
                     const auto& child = spans[begin + i];
@@ -214,7 +310,17 @@ protected:
                 }
                 span.trailing = allowed;
                 if (span.empty) span.leading = allowed;
-                auto value = Generated::lr_reduce(rule, rhs);
+                std::any value;
+                if constexpr (requires(Generated& parser, LRRegionFrame<IT>& frame,
+                                       LRRuleSpan& reduced_span, const std::vector<std::any>& parts) {
+                    parser.lr_semantic_reduce(rule, frame, reduced_span, parts);
+                }) {
+                    // Semantic reductions run at the ACTION table's exact
+                    // reduce point. The callback may update the cursor and
+                    // span, and may enter an independent nested LR region.
+                    control.phase = LRControlPhase::Semantic;
+                    value = static_cast<Generated&>(*this).lr_semantic_reduce(rule, region, span, rhs);
+                } else value = Generated::lr_reduce(rule, rhs);
                 values.resize(begin);
                 spans.resize(begin);
                 states.resize(begin + 1);

@@ -50,6 +50,45 @@ struct EmptyParser : Parser {
     auto run(const std::vector<Token>& tokens) { return lr_parse<EmptyParser>(Iter{&tokens}); }
 };
 
+// S -> LEAF semantic LEAF, semantic -> epsilon. The action must execute
+// between the two shifts, at the epsilon reduction selected by the LR table.
+struct SemanticParser : Parser {
+    bool ran = false;
+    static long long lr_action(std::size_t state, const std::vector<std::size_t>& window) {
+        const auto eof = std::numeric_limits<std::size_t>::max();
+        if (state == 0 && window == std::vector<std::size_t>{7, 7}) return 2;
+        if (state == 1 && window == std::vector<std::size_t>{7, eof}) return -1;
+        if (state == 2 && window == std::vector<std::size_t>{7, eof}) return 4;
+        if (state == 3 && window == std::vector<std::size_t>{eof, eof}) return -2;
+        if (state == 4 && window == std::vector<std::size_t>{eof, eof}) return 0;
+        throw std::runtime_error("unexpected token");
+    }
+    static std::size_t lr_length(std::size_t rule) { return rule == 0 ? 0 : 3; }
+    static std::size_t lr_lhs(std::size_t rule) { return rule == 0 ? 1 : 0; }
+    static std::size_t lr_goto(std::size_t state, std::size_t lhs) {
+        if (state == 1 && lhs == 1) return 2;
+        if (state == 0 && lhs == 0) return 4;
+        throw std::runtime_error("invalid goto");
+    }
+    static std::any lr_reduce(std::size_t rule, const std::vector<std::any>& values) {
+        if (rule != 1) throw std::runtime_error("semantic reduction was skipped");
+        return lr_node(Root{lr_get<Leaf>(values, 0).data().value +
+                            std::any_cast<int>(values.at(1)) +
+                            lr_get<Leaf>(values, 2).data().value});
+    }
+    std::any lr_semantic_reduce(std::size_t rule, ISPA_STD::LRRegionFrame<Iter>& frame,
+                               ISPA_STD::LRRuleSpan&, const std::vector<std::any>& values) {
+        if (rule != 0) return lr_reduce(rule, values);
+        if (frame.control.phase != ISPA_STD::LRControlPhase::Semantic ||
+            frame.pos.index != 1 || frame.states.back() != 1 ||
+            lr_get<Leaf>(frame.values, 0).data().value != 2)
+            throw std::runtime_error("semantic action ran at the wrong LR state");
+        ran = true;
+        return 10;
+    }
+    auto run(const std::vector<Token>& tokens) { return lr_parse<SemanticParser>(Iter{&tokens}); }
+};
+
 struct SpaceParser : Parser {
     static bool lr_is_space(const Token& token) { return token.kind() == 99; }
     static bool lr_space(std::size_t, std::size_t gap) { return gap == 1; }
@@ -79,10 +118,97 @@ TEST(LRRuntime, ReducesCapturedValuesAndCanBeReused) {
     EXPECT_EQ(parser.run({{42}}).node.data().value, 42);
     EXPECT_EQ(parser.run({{11}}).node.data().value, 11);
 }
+TEST(LRRuntime, RunsSemanticReductionBetweenShifts) {
+    SemanticParser parser;
+    EXPECT_EQ(parser.run({{2}, {5}}).node.data().value, 17);
+    EXPECT_TRUE(parser.ran);
+}
+TEST(LRRuntime, RegionFrameOwnsStackValuesAndContinuation) {
+    const std::vector<Token> tokens{{3}};
+    ISPA_STD::LRRegionFrame<Iter> outer(Iter{&tokens}, 7);
+    outer.states.push_back(2);
+    outer.values.push_back(Leaf{3});
+    outer.capture_destinations.push_back(1);
+    ISPA_STD::LRRegionFrame<Iter> inner(outer.pos, 9);
+    inner.states.push_back(4);
+    inner.values.push_back(Leaf{8});
+    inner.control.phase = ISPA_STD::LRControlPhase::Reduce;
+    inner.control.production = 5;
+    EXPECT_EQ(outer.states.back(), 2u);
+    EXPECT_EQ(std::any_cast<Leaf>(outer.values.back()).value, 3);
+    EXPECT_EQ(outer.control.continuation, 7u);
+    EXPECT_EQ(inner.states.back(), 4u);
+    EXPECT_EQ(inner.control.continuation, 9u);
+    EXPECT_EQ(inner.control.production, 5u);
+}
 TEST(LRRuntime, RejectsMissingAndTrailingTokens) {
     Parser parser;
     EXPECT_THROW(parser.run({}), std::runtime_error);
     EXPECT_THROW(parser.run({{1}, {2}}), std::runtime_error);
+}
+
+namespace {
+struct DiagnosticParser : Parser {
+    static long long lr_action(std::size_t state, const std::vector<std::size_t>& window) {
+        const auto eof = std::numeric_limits<std::size_t>::max();
+        if (state == 0 && window == std::vector<std::size_t>{7, eof}) return 2;
+        if (state == 1 && window == std::vector<std::size_t>{eof, eof}) return -1;
+        if (state == 2 && window == std::vector<std::size_t>{eof, eof}) return 0;
+        return -std::numeric_limits<long long>::max();
+    }
+    static std::vector<std::size_t> lr_expected(std::size_t state) {
+        return state == 0 ? std::vector<std::size_t>{7} : std::vector<std::size_t>{std::numeric_limits<std::size_t>::max()};
+    }
+    static std::string lr_context(std::size_t) { return "main"; }
+    static std::string lr_token_name(std::size_t token) {
+        return token == 7 ? "LEAF" : token == std::numeric_limits<std::size_t>::max() ? "end of input" : "OTHER";
+    }
+    auto run(const std::vector<Token>& tokens) { return lr_parse<DiagnosticParser>(Iter{&tokens}); }
+};
+
+struct RecoveryParser : DiagnosticParser {
+    bool stall = false;
+    bool lr_recover(ISPA_STD::LRRegionFrame<Iter>& region, ISPA_STD::Recovery::Diagnostic& error) {
+        if (region.control.phase != ISPA_STD::LRControlPhase::Recover || stall || region.pos.isEnd())
+            return stall;
+        error.decision.mode = ISPA_STD::Recovery::Mode::Delete;
+        error.decision.skipped = 1;
+        ++region.pos;
+        ++region.cursor;
+        return true;
+    }
+    auto run(const std::vector<Token>& tokens) { return lr_parse<RecoveryParser>(Iter{&tokens}); }
+};
+}
+
+TEST(LRRuntime, ReportsExpectedTokenAndRuleOnInvalidAction) {
+    DiagnosticParser parser;
+    try { parser.run({}); FAIL(); }
+    catch (const std::runtime_error& error) {
+        EXPECT_NE(std::string(error.what()).find("expected LEAF"), std::string::npos);
+        EXPECT_NE(std::string(error.what()).find("in rule main"), std::string::npos);
+    }
+    ASSERT_EQ(parser.getErrors().size(), 1u);
+    EXPECT_EQ(parser.getErrors().front().code, "lr-unexpected-token");
+    EXPECT_EQ(parser.getErrors().front().unexpected, std::numeric_limits<std::size_t>::max());
+    EXPECT_EQ(parser.getErrors().front().expected, (std::vector<std::size_t>{7}));
+    EXPECT_EQ(parser.run({{42}}).node.data().value, 42);
+    EXPECT_TRUE(parser.getErrors().empty());
+}
+
+TEST(LRRuntime, RecoveryHookRetriesAfterChangingTheRegionCursor) {
+    RecoveryParser parser;
+    EXPECT_EQ(parser.run({{-1}, {42}}).node.data().value, 42);
+    ASSERT_EQ(parser.getErrors().size(), 1u);
+    EXPECT_EQ(parser.getErrors().front().decision.mode, ISPA_STD::Recovery::Mode::Delete);
+    EXPECT_EQ(parser.getErrors().front().decision.skipped, 1u);
+    parser.stall = true;
+    try {
+        (void)parser.run({{-1}, {42}});
+        FAIL() << "stalled recovery was accepted";
+    } catch (const std::runtime_error& error) {
+        EXPECT_NE(std::string(error.what()).find("made no progress"), std::string::npos);
+    }
 }
 
 TEST(LRRuntime, ReducesEmptyProductionWithoutPoppingInitialState) {

@@ -1,5 +1,6 @@
 export module Algorithm.LRAdapter;
 import Algorithm.API;
+import AST.BackendGuard;
 import LangRepr.Construct;
 import LRBase;
 import cpuf.printf;
@@ -9,6 +10,10 @@ import std;
 export namespace Algorithm {
     template<class Parser>
     auto buildLR(const BuildRequest& request, Metadata& metadata) -> Result {
+        // Plugin clients may bypass the CLI's backend guard.  Reject semantic
+        // constructs before normalization turns actions into epsilon rules;
+        // ordinary match-only advanced rules can use the LR productions.
+        AST::requireCppSupport(request.tree, false);
         std::shared_ptr<Parser> parser;
         if constexpr (requires { Parser(&request.tree, 1, std::string_view{}); }) {
             const auto found = metadata.cache.find("tables");
