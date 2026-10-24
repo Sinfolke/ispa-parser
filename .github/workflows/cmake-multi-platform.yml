@@ -262,40 +262,54 @@ jobs:
           
           echo "LLVM version: $LLVM_VERSION"
           
-          # Use sources matching Homebrew's LLVM version.
+          SOURCE_DIR="$RUNNER_TEMP/llvm-project"
+          BUILD_DIR="$RUNNER_TEMP/libcxx-build"
+          MODULE_PREFIX="$RUNNER_TEMP/libcxx-modules"
+          
           git clone --depth 1 \
             --branch "llvmorg-$LLVM_VERSION" \
             https://github.com/llvm/llvm-project.git \
-            "$RUNNER_TEMP/llvm-project"
+            "$SOURCE_DIR"
           
-          MODULE_PREFIX="$RUNNER_TEMP/libcxx-modules"
-          
-          cmake -S "$RUNNER_TEMP/llvm-project/libcxx" \
-            -B "$RUNNER_TEMP/libcxx-build" \
+          cmake -S "$SOURCE_DIR/libcxx" \
+            -B "$BUILD_DIR" \
             -G Ninja \
             -DCMAKE_C_COMPILER="$LLVM_PREFIX/bin/clang" \
             -DCMAKE_CXX_COMPILER="$LLVM_PREFIX/bin/clang++" \
             -DCMAKE_INSTALL_PREFIX="$MODULE_PREFIX" \
+            -DLIBCXX_CXX_ABI=system-libcxxabi \
             -DLIBCXX_INSTALL_MODULES=ON \
             -DLIBCXX_INSTALL_HEADERS=OFF \
             -DLIBCXX_INSTALL_LIBRARY=OFF \
             -DLIBCXX_INCLUDE_TESTS=OFF \
             -DLIBCXX_INCLUDE_BENCHMARKS=OFF
           
-          cmake --build "$RUNNER_TEMP/libcxx-build" \
+          cmake --build "$BUILD_DIR" \
             --target install-cxx-modules \
             --parallel 3
           
-          MODULES_JSON="$(
-            find "$MODULE_PREFIX" \
-              -name libc++.modules.json \
-              -type f \
-              -print -quit
-          )"
+          MODULES_JSON="$MODULE_PREFIX/lib/libc++.modules.json"
           
-          if [[ -z "$MODULES_JSON" ]]; then
-            echo "::error::libc++.modules.json not generated"
+          if [[ ! -f "$MODULES_JSON" ]]; then
+            echo "::error::libc++.modules.json not found"
             exit 1
+          fi
+          
+          if [[ ! -f "$MODULE_PREFIX/share/libc++/v1/std.cppm" ]]; then
+            echo "::error::std.cppm not found"
+            exit 1
+          fi
+          
+          if [[ ! -f "$MODULE_PREFIX/share/libc++/v1/std.compat.cppm" ]]; then
+            echo "::error::std.compat.cppm not found"
+            exit 1
+          fi
+          
+          echo "LIBCXX_MODULES_JSON=$MODULES_JSON" >> "$GITHUB_ENV"
+          
+          echo "Successfully installed libc++ module resources:"
+          ls -lh "$MODULES_JSON"
+          ls -lh "$MODULE_PREFIX/share/libc++/v1/"
       # -------------------------------------------------------
       # 4. Fix libc++ module path for Ubuntu Clang
       # -------------------------------------------------------
@@ -597,7 +611,12 @@ jobs:
             "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/cmake/toolchains/clang-libcxx.cmake"
           )
           fi
-          
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            CMAKE_ARGS+=(
+            "-DCMAKE_CXX_STDLIB_MODULES_JSON=$LIBCXX_MODULES_JSON"
+            "-DCMAKE_CXX_MODULE_STD=ON"
+            )
+          fi
           # -------------------------------------------------------
           # 3. Run configuration
           # -------------------------------------------------------
