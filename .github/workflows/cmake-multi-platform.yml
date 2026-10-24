@@ -248,7 +248,7 @@ jobs:
           set -euo pipefail
 
           brew install \
-            llvm \
+            llvm@23 \
             ninja \
             autoconf \
             autoconf-archive \
@@ -257,17 +257,15 @@ jobs:
             pkg-config \
             gettext
 
-          llvm_prefix="$(brew --prefix llvm)"
-
-          echo "$llvm_prefix/bin" >> "$GITHUB_PATH"
-
-          echo "CC=$llvm_prefix/bin/clang" >> "$GITHUB_ENV"
-          echo "CXX=$llvm_prefix/bin/clang++" >> "$GITHUB_ENV"
-
-          echo "LLVM_PREFIX=$llvm_prefix" >> "$GITHUB_ENV"
-
-          "$llvm_prefix/bin/clang++" --version
-          "$llvm_prefix/bin/clang-scan-deps" --version
+            LLVM_PREFIX="$(brew --prefix llvm@23)"
+        
+            echo "$LLVM_PREFIX/bin" >> "$GITHUB_PATH"
+            echo "LLVM_PREFIX=$LLVM_PREFIX" >> "$GITHUB_ENV"
+            echo "CC=$LLVM_PREFIX/bin/clang" >> "$GITHUB_ENV"
+            echo "CXX=$LLVM_PREFIX/bin/clang++" >> "$GITHUB_ENV"
+        
+            "$LLVM_PREFIX/bin/clang++" --version
+            "$LLVM_PREFIX/bin/llvm-config" --version
       - name: Install libc++ module resources (macOS)
         if: runner.os == 'macOS'
         shell: bash
@@ -617,6 +615,7 @@ jobs:
             CMAKE_ARGS+=(
             "-DCMAKE_CXX_STDLIB_MODULES_JSON=$LIBCXX_MODULES_JSON"
             "-DCMAKE_CXX_MODULE_STD=ON"
+            "-DCMAKE_CXX_FLAGS=-fno-modules-reduced-bmi"
             )
           fi
           # -------------------------------------------------------
