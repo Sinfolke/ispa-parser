@@ -751,10 +751,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TAG: ${{ inputs.release_tag }}
-          PLATFORM: ${{ matrix.artifact_name }}
+          ISPA_RELEASE_PLATFORM: ${{ matrix.artifact_name }}
         run: |
           set -euo pipefail
-          suffix="${PLATFORM#ispa-}"
+          suffix="${ISPA_RELEASE_PLATFORM#ispa-}"
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             archive="ispa-pkg-$suffix.zip"
             executable="ispa-pkg.exe"
@@ -802,7 +802,7 @@ jobs:
         if: inputs.release_tag != ''
         shell: bash
         env:
-          PLATFORM: ${{ matrix.artifact_name }}
+          ISPA_RELEASE_PLATFORM: ${{ matrix.artifact_name }}
         run: |
           set -euo pipefail
           mkdir -p packages
@@ -812,7 +812,7 @@ jobs:
           from pathlib import Path
           from zipfile import ZipFile, ZIP_DEFLATED
 
-          platform = os.environ['PLATFORM']
+          platform = os.environ['ISPA_RELEASE_PLATFORM']
           release = Path('release')
           files = sorted(p for p in release.iterdir() if p.is_file())
           if not any(p.name in ('ispa', 'ispa.exe') for p in files):
@@ -838,13 +838,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TAG: ${{ inputs.release_tag }}
-          PLATFORM: ${{ matrix.artifact_name }}
+          ISPA_RELEASE_PLATFORM: ${{ matrix.artifact_name }}
         run: |
           set -euo pipefail
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            archive="packages/$PLATFORM.zip"
+            archive="packages/$ISPA_RELEASE_PLATFORM.zip"
           else
-            archive="packages/$PLATFORM.tar.gz"
+            archive="packages/$ISPA_RELEASE_PLATFORM.tar.gz"
           fi
           test -f "$archive"
           gh release upload "$TAG" "$archive" --clobber
