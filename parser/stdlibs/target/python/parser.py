@@ -19,6 +19,10 @@ class ParseError(RuntimeError):
         self.expected, self.offset, self.line, self.column = expected, offset, line, column
 
 
+class _NoMatch(Exception):
+    """A required descendant did not start an optional rule."""
+
+
 @dataclass(slots=True)
 class CountSpec:
     # C++ field order: name, count, minimum.
@@ -56,12 +60,14 @@ class LLParser:
         self.tree: Any = None
         self.errors: list[ParseError] = []
         self.counters: dict[str, int] = {}
+        self._probes: list[list[int | bool]] = []
 
     def parse(self, source: Lexer | str, rule: Callable[[Cursor], MatchResult] | None = None) -> Any:
         lex = source if isinstance(source, Lexer) else self._make_lexer(source)
         self.lexer = lex
         self.errors.clear()
         self.counters.clear()
+        self._probes.clear()
         start = lex.lazy_iterator()
         match = (rule or getattr(self, 'main'))(start)
         end = match.it if match.it is not None else start
@@ -144,11 +150,13 @@ class LLParser:
             if isinstance(result, MatchResult):
                 if result.status:
                     pos.commit(result.it if result.it is not None else trial)
+                    self._commit_probes(pos)
                     return result.node
                 return Node()
             if result is None or result is False:
                 return Node()
             pos.commit(trial)
+            self._commit_probes(pos)
             return result
         token = trial.peek()
         if token is None:
@@ -162,23 +170,45 @@ class LLParser:
             return Node()
         trial.advance()
         pos.commit(trial)
+        self._commit_probes(pos)
         node = token.to_node(expected if isinstance(expected, type) else None) \
             if isinstance(token, RawToken) else token
         return _as_matched(node)
 
+    def _commit_probes(self, pos: Cursor) -> None:
+        for probe in self._probes:
+            if pos.index != probe[0]:
+                probe[1] = True
+
     def required(self, pos: Cursor, expected: Any, callback: Callable | None = None,
                  fail: Callable | None = None) -> Node:
+        if getattr(callback, '_ispa_custom_failure', False):
+            fail, callback = callback, None
         node = self._match(pos, expected, callback)
         if node is not None and not node.empty():
             return node
-        if fail is not None:
+        if fail is not None and not getattr(fail, '_ispa_custom_failure', False):
             fail(pos)
+        if self._probes and not self._probes[-1][1]:
+            raise _NoMatch()
         err = self._error(expected, pos)
         self.errors.append(err)
         raise err
 
     def optional(self, pos: Cursor, expected: Any, callback: Callable | None = None) -> Node:
-        return self._match(pos, expected, callback)
+        if callback is None:
+            return self._match(pos, expected, None)
+        probe: list[int | bool] = [pos.index, False]
+        self._probes.append(probe)
+        try:
+            node = self._match(pos, expected, callback)
+            if node.empty() and probe[1]:
+                raise RuntimeError('ISPA optional(): rule failed after consuming input')
+            return node
+        except _NoMatch:
+            return Node()
+        finally:
+            self._probes.pop()
 
     def counted(self, pos: Cursor, spec: CountSpec | tuple[int, int | None] | int,
                 expected: Any, callback: Callable | None = None) -> list[Node]:

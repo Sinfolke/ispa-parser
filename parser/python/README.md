@@ -56,3 +56,27 @@ bindings refer to the entry points implemented in `extern.cpp` and are needed
 by `parser/ispa/grammar/python.isc`. A direct modular generator run exports
 different module names and cannot replace this compatibility bootstrap.
 Generator dumps stay in a temporary directory. Rebuild consumers after regeneration.
+
+For the Python target, generate the modular bootstrap with:
+
+```sh
+python3 parser/python/generate_python.py cmake-build-release/ispa
+python3 parser/python/test.py
+```
+
+The Python generator emits the runtime imports and translates the generated
+lexer actions itself. `generate_python.py` runs the generator into a fresh
+temporary directory before copying the result. The direct command is:
+
+```sh
+cmake-build-release/ispa -l python -a LL --no-incremental \
+  --dir parser/python/grammar parser/python/entry.isc \
+  -o parser/python/bootstrappedPy/Parser
+```
+
+The generated `bootstrappedPy/Parser.py` runs the grammar's generated lexer and
+its advanced `INDENT`/`DEDENT` actions. `generate_python.py` translates the
+remaining C++ style expressions in those actions, while `bootstrap_runtime.py`
+flushes emitted tokens, handles the same comment/string cases as `PyLexer`,
+and closes indentation at EOF. The Python target does not yet execute the
+grammar's custom error-recovery actions; invalid input raises `ParseError`.

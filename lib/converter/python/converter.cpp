@@ -33,6 +33,23 @@ namespace {
         while (std::getline(in, row)) out += std::string(levels * 4, ' ') + row + '\n';
         return out;
     }
+    void replace_all(std::string& source, std::string_view from, std::string_view to) {
+        std::size_t offset = 0;
+        while ((offset = source.find(from, offset)) != std::string::npos) {
+            source.replace(offset, from.size(), to);
+            offset += to.size();
+        }
+    }
+    std::string bootstrap_newline_action(const std::string& source) {
+        const auto action = source.find("ispa_token_result = Types.modules.tokens.NEWLINE()");
+        if (action == std::string::npos) return {};
+        const auto selected = source.rfind("== ", action);
+        if (selected == std::string::npos) return {};
+        const auto begin = selected + 3;
+        const auto end = source.find_first_not_of("0123456789", begin);
+        if (end == begin) return {};
+        return source.substr(begin, end - begin);
+    }
 }
 Construct::Construct(const LangAPI::Declarations* src, const char* name, bool incremental)
     : ConstructBase(src, name, incremental), core_(name) {
@@ -512,6 +529,35 @@ void Construct::construct() {
         line("# Qualified classes (e.g. Types.rule.STRING) defined after their parents");
         for (const auto& [target, alias_] : deferred_aliases_)
             line(target + " = " + alias_);
+    }
+    // The Python grammar's advanced layout tokens are lowered through the C++
+    // lexer API. Emit runnable Python operations and connect the generated DFA
+    // to the Python bootstrap's EOF/comment/string handling.
+    if (output_.find("ispa_shared_indents") != std::string::npos &&
+        output_.find("Types.modules.tokens.NEWLINE()") != std::string::npos) {
+        const auto newline_action = bootstrap_newline_action(output_);
+        if (newline_action.empty())
+            throw std::runtime_error("Python bootstrap NEWLINE action was not generated");
+        replace_all(output_, "import ispa_std\n",
+                    "import ispa_std\nfrom bootstrap_runtime import custom_failure, make_lexer\n");
+        replace_all(output_, "std.string(start, start + length)",
+                    "start[start_pos:start_pos + length]");
+        replace_all(output_, "_ispa__next_char(((start) + (length)))",
+                    "self._next_char_at(start_pos + length)");
+        replace_all(output_, "_ispa__line(((start) + (length)))",
+                    "self._line(start_pos + length)");
+        replace_all(output_, "((start) + (length))", "start");
+        replace_all(output_, "self.ispa_pending_tokens.push_back(",
+                    "self.ispa_pending_tokens.append(");
+        replace_all(output_, "(self.ispa_shared_indents).size()",
+                    "len(self.ispa_shared_indents)");
+        replace_all(output_, "(ispa_token_text).size()", "len(ispa_token_text)");
+        replace_all(output_, "(ispa_token_text).substr(ispa_action_i, 1)",
+                    "ispa_token_text[ispa_action_i:ispa_action_i + 1]");
+        replace_all(output_, "== (\"\\\\n\")", "== (\"\\n\")");
+        replace_all(output_, "== (\"\\\\t\")", "== (\"\\t\")");
+        replace_all(output_, "Parser.lexer_type = Lexer",
+                    "Parser.lexer_type = make_lexer(_sys.modules[__name__], " + newline_action + ")");
     }
     // Python is already module-incremental: avoid generating 800 import fragments.
     // The incremental flag is accepted so the host may use the same C ABI.

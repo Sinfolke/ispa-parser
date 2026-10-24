@@ -97,7 +97,10 @@ class Lexer(Generic[T]):
                                self.source[before:before + 1])
             if not self._is_skip(token):
                 self._token_offsets.append(before)
-                self.tokens.append(token)
+                if getattr(self, '_use_on_token', False):
+                    self.on_token(token)
+                else:
+                    self.tokens.append(token)
             # else: a lexical skip may return None; progress without a token is fine.
 
     @staticmethod

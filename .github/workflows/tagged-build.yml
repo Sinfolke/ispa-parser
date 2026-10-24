@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  release:
-    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -49,57 +47,12 @@ jobs:
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "Building release tag: $tag"
 
-  build:
-    name: Reuse multi-platform CMake build
+  prepare-release:
+    name: Create draft GitHub Release
     needs: resolve-tag
-    permissions:
-      contents: read
-      actions: write
-    uses: ./.github/workflows/cmake-multi-platform.yml
-    with:
-      checkout_ref: ${{ needs.resolve-tag.outputs.tag }}
-      upload_artifacts: true
-
-  publish:
-    name: Attach platform ZIPs to GitHub Release
-    needs: [resolve-tag, build]
     runs-on: ubuntu-latest
     steps:
-      - name: Download platform artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: ispa-*
-          path: release
-          merge-multiple: false
-
-      - name: Package platform ZIP archives
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PYZIP'
-          from pathlib import Path
-          from zipfile import ZipFile, ZIP_DEFLATED
-
-          base = Path('release')
-          packages = Path('packages')
-          packages.mkdir(exist_ok=True)
-          platforms = ('ispa-linux-x64', 'ispa-windows-x64',
-                       'ispa-macos-arm64', 'ispa-macos-x64')
-          for platform in platforms:
-              folder = base / platform
-              files = sorted(p for p in folder.iterdir() if p.is_file())
-              if not files or not any(p.name in ('ispa', 'ispa.exe') for p in files):
-                  raise RuntimeError(f'Missing executable in {folder}')
-              archive_path = packages / f'{platform}.zip'
-              with ZipFile(archive_path, 'w', compression=ZIP_DEFLATED,
-                           compresslevel=9) as archive:
-                  for path in files:
-                      archive.write(path, arcname=path.name)
-              print(f'Created {archive_path}: {[p.name for p in files]}')
-          PYZIP
-          ls -lh packages/
-
-      - name: Create release if missing and attach ZIP archives
+      - name: Create draft if missing
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -107,7 +60,21 @@ jobs:
           TAG: ${{ needs.resolve-tag.outputs.tag }}
         run: |
           set -euo pipefail
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --verify-tag --generate-notes --title "$TAG"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release already exists for $TAG; keeping its publication state"
+          else
+            gh release create "$TAG" --verify-tag --generate-notes --title "$TAG" --draft
           fi
-          gh release upload "$TAG" packages/*.zip --clobber
+
+  build:
+    name: Reuse multi-platform CMake build
+    needs: [resolve-tag, prepare-release]
+    permissions:
+      contents: write
+      actions: write
+    uses: ./.github/workflows/cmake-multi-platform.yml
+    with:
+      checkout_ref: ${{ needs.resolve-tag.outputs.tag }}
+      upload_artifacts: true
+      release_tag: ${{ needs.resolve-tag.outputs.tag }}
+

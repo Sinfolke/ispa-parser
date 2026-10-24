@@ -14,10 +14,15 @@ on:
         required: false
         default: ''
       upload_artifacts:
-        description: Upload platform binaries for a release
+        description: Also save uncompressed platform artifacts in GitHub Actions
         type: boolean
         required: false
         default: false
+      release_tag:
+        description: GitHub Release tag to publish completed platform ZIPs to
+        type: string
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -27,6 +32,9 @@ env:
   CMAKE_VERSION: '4.5.0-rc1'
 jobs:
   build:
+    permissions:
+      contents: write
+      actions: write
     name: ${{ matrix.os }} / ${{ matrix.cpp_compiler }}
     runs-on: ${{ matrix.os }}
 
@@ -58,13 +66,13 @@ jobs:
             overlay_triplets: ""
             extra_cxx_flags: ""
 
-          - os: macos-26-intel
-            artifact_name: ispa-macos-x64
-            c_compiler: clang
-            cpp_compiler: clang++
-            triplet: x64-osx
-            overlay_triplets: ""
-            extra_cxx_flags: ""
+#          - os: macos-26-intel
+#            artifact_name: ispa-macos-x64
+#            c_compiler: clang
+#            cpp_compiler: clang++
+#            triplet: x64-osx
+#            overlay_triplets: ""
+#            extra_cxx_flags: ""
 
     steps:
       # -------------------------------------------------------
@@ -695,7 +703,7 @@ jobs:
       # -------------------------------------------------------
 
       - name: Stage release binaries
-        if: inputs.upload_artifacts
+        if: inputs.upload_artifacts || inputs.release_tag != ''
         shell: bash
         run: |
           set -euo pipefail
@@ -726,6 +734,47 @@ jobs:
           name: ${{ matrix.artifact_name }}
           path: release/
           if-no-files-found: error
+
+      # Publish as soon as THIS matrix entry has completed. There is no
+      # matrix-wide publication barrier, and each archive has a unique name.
+      - name: Package completed platform
+        if: inputs.release_tag != ''
+        shell: bash
+        env:
+          PLATFORM: ${{ matrix.artifact_name }}
+        run: |
+          set -euo pipefail
+          mkdir -p packages
+          python3 - <<'PYZIP'
+          import os
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+
+          platform = os.environ['PLATFORM']
+          output = Path('packages') / f'{platform}.zip'
+          files = sorted(p for p in Path('release').iterdir() if p.is_file())
+          if not any(p.name in ('ispa', 'ispa.exe') for p in files):
+              raise RuntimeError('Release executable is missing')
+          with ZipFile(output, 'w', compression=ZIP_DEFLATED, compresslevel=9) as archive:
+              for path in files:
+                  archive.write(path, arcname=path.name)
+          print(f'Created {output}')
+          PYZIP
+
+      - name: Publish completed platform to GitHub Release
+        if: inputs.release_tag != ''
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.release_tag }}
+          PLATFORM: ${{ matrix.artifact_name }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" "packages/$PLATFORM.zip" --clobber
+          # The draft is created by tagged-build.yml before matrix builds start.
+          # Publishing is idempotent, so concurrent successful jobs are safe.
+          gh release edit "$TAG" --draft=false
 
       # -------------------------------------------------------
       # 11. Cache statistics and cleanup

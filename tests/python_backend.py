@@ -30,6 +30,12 @@ def main():
             "module host -> main;\nimport extern foreign {value} from expression;\n"
             "main: '[' @ value ']' {@};\n"
         )
+        (grammar / "optional_rule.isc").write_text(
+            "AT: '@';\nCLASS: 'class';\n"
+            "decorator: AT;\n"
+            "decorators: decorator+;\n"
+            "main: decorators? CLASS;\n"
+        )
 
         def generate(name, *options):
             result = subprocess.run(
@@ -48,6 +54,22 @@ def main():
 
         generate("Simple", grammar / "simple.isc")
         execute("import Simple; assert Simple.Parser().parse('  hello  ').data().value.data().value == 'hello'")
+
+        generate("OptionalRule", grammar / "optional_rule.isc")
+        execute("""
+import OptionalRule
+from python.parser import ParseError
+for source in ('class', '@class'):
+    parser = OptionalRule.Parser()
+    parser.parse(source)
+    assert not parser.errors
+try:
+    OptionalRule.Parser().parse('@')
+except ParseError:
+    pass
+else:
+    raise AssertionError('a started optional rule must not hide a missing CLASS')
+""")
 
         generate("Foreign", grammar / "foreign.isc")
         generate("Host", "--dep", "foreign", root / "Foreign", grammar / "host.isc")
@@ -84,7 +106,7 @@ assert isinstance(node.data(), Foreign.FlatTypes.modules_expression_WORD)
 assert node.data().value == 'hello'
 """)
 
-    print("Python backend: simple parse, external rule/token --dep, and --no-dep passed")
+    print("Python backend: simple parse, optional rule, external rule/token --dep, and --no-dep passed")
 
 
 if __name__ == "__main__":
