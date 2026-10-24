@@ -18,7 +18,7 @@ class PackageTests(unittest.TestCase):
             executable = Path(temp) / "versions" / "v1" / "ispa-pkg"
             with patch.dict("os.environ", {"ISPA_PKG_ROOT": "", "ISPA_INSTALL_DIR": ""}), \
                     patch("sys.executable", str(executable)):
-                self.assertEqual(default_root(), Path(temp) / "libraries")
+                self.assertEqual(default_root(), (Path(temp) / "libraries").resolve())
 
     def test_install_dir_override_selects_library_root(self):
         with tempfile.TemporaryDirectory() as temp:
