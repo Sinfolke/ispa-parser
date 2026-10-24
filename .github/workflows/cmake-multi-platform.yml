@@ -272,21 +272,21 @@ jobs:
             "$SOURCE_DIR"
           
           cmake -S "$SOURCE_DIR/libcxx" \
-            -B "$BUILD_DIR" \
-            -G Ninja \
-            -DCMAKE_C_COMPILER="$LLVM_PREFIX/bin/clang" \
-            -DCMAKE_CXX_COMPILER="$LLVM_PREFIX/bin/clang++" \
-            -DCMAKE_INSTALL_PREFIX="$MODULE_PREFIX" \
-            -DLIBCXX_CXX_ABI=system-libcxxabi \
-            -DLIBCXX_INSTALL_MODULES=ON \
-            -DLIBCXX_INSTALL_HEADERS=OFF \
-            -DLIBCXX_INSTALL_LIBRARY=OFF \
-            -DLIBCXX_INCLUDE_TESTS=OFF \
-            -DLIBCXX_INCLUDE_BENCHMARKS=OFF
+          -B "$BUILD_DIR" \
+          -G Ninja \
+          -DCMAKE_C_COMPILER="$LLVM_PREFIX/bin/clang" \
+          -DCMAKE_CXX_COMPILER="$LLVM_PREFIX/bin/clang++" \
+          -DCMAKE_INSTALL_PREFIX="$MODULE_PREFIX" \
+          -DLIBCXX_CXX_ABI=none \
+          -DLIBCXX_INSTALL_MODULES=ON \
+          -DLIBCXX_INSTALL_HEADERS=OFF \
+          -DLIBCXX_INSTALL_LIBRARY=OFF \
+          -DLIBCXX_INCLUDE_TESTS=OFF \
+          -DLIBCXX_INCLUDE_BENCHMARKS=OFF
           
           cmake --build "$BUILD_DIR" \
-            --target install-cxx-modules \
-            --parallel 3
+          --target install-cxx-modules \
+          --parallel 3
           
           MODULES_JSON="$MODULE_PREFIX/lib/libc++.modules.json"
           
