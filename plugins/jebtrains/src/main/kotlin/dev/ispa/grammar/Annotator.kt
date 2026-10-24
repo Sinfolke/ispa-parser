@@ -30,6 +30,15 @@ object NativeParserBridge {
 
     internal fun decode(source: String, json: String): BridgeResult {
         val root = JsonParser.parseString(json).asJsonObject
+        val pythonOffsets = BooleanArray(source.length)
+        val lexer = IspaLexer()
+        lexer.start(source, 0, source.length, 0)
+        while (lexer.tokenType != null) {
+            if (lexer.state ushr 8 != 0) {
+                for (offset in lexer.tokenStart until lexer.tokenEnd) pythonOffsets[offset] = true
+            }
+            lexer.advance()
+        }
         // Native ranges count UTF-8 bytes; editor ranges count UTF-16 code units.
         val offsets = IntArray(source.toByteArray(UTF_8).size + 1)
         var byte = 0
@@ -50,6 +59,7 @@ object NativeParserBridge {
             val obj = element.asJsonObject
             val (start, end) = range(obj["start"].asInt, obj["length"].asInt)
             if (end <= start) return@mapNotNull null
+            if (start < pythonOffsets.size && pythonOffsets[start]) return@mapNotNull null
             val word = source.substring(start, end)
             val upper = word.any { it.isLetter() } && word.all { !it.isLetter() || it.isUpperCase() }
             val kind = obj["kind"].asString.substringAfterLast('.').substringAfterLast('_')

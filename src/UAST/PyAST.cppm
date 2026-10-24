@@ -439,11 +439,19 @@ struct Continue {
     bool operator==(const Continue& other) const { return members() == other.members(); }
     bool operator<(const Continue& other) const { return members() < other.members(); }
 };
+struct IspaMatch {
+    std::string source;
+
+    auto members() { return std::tie(source); }
+    auto members() const { return std::tie(source); }
+    bool operator==(const IspaMatch& other) const { return members() == other.members(); }
+    bool operator<(const IspaMatch& other) const { return members() < other.members(); }
+};
 
 using StmtKind = std::variant<
     FunctionDef, ClassDef, Return, Delete, Assign, AugAssign, AnnAssign,
     For, While, If, With, Raise, Try, Assert, Import, ImportFrom, Global,
-    Nonlocal, ExprStmt, Pass, Break, Continue
+    Nonlocal, ExprStmt, Pass, Break, Continue, IspaMatch
 >;
 struct Stmt {
     SourcePosition pos;

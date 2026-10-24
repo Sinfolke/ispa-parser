@@ -213,6 +213,10 @@ find_package(GTest REQUIRED)
 
 get_file_range(TEST_SOURCE_FILES EXCLUDE "tests/compile/" "tests/*.cpp")
 get_file_range(TEST_MODULE_FILES EXCLUDE "tests/compile/" "tests/*.cppm")
+list(REMOVE_ITEM TEST_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/tests/Diagnostics.cpp")
+
+add_executable(diagnostics_tests tests/Diagnostics.cpp)
+target_link_libraries(diagnostics_tests PRIVATE ispa_modules GTest::gtest_main)
 
 add_executable(tests ${TEST_SOURCE_FILES})
 add_dependencies(tests ispa)
@@ -246,4 +250,5 @@ target_link_libraries(tests
 )
 
 include(GoogleTest)
+gtest_discover_tests(diagnostics_tests)
 gtest_discover_tests(tests)

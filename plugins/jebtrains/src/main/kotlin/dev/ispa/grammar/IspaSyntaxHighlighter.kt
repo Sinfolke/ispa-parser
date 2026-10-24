@@ -26,6 +26,8 @@ object IspaTokens {
     val CHAR_CLASS = IElementType("CHAR_CLASS", IspaLanguage.INSTANCE)
     val OPERATOR = IElementType("OPERATOR", IspaLanguage.INSTANCE)
     val KEYWORD = IElementType("KEYWORD", IspaLanguage.INSTANCE)
+    val PY_IDENTIFIER = IElementType("PY_IDENTIFIER", IspaLanguage.INSTANCE)
+    val PY_CALL = IElementType("PY_CALL", IspaLanguage.INSTANCE)
 }
 
 class IspaLexer : LexerBase() {
@@ -37,7 +39,16 @@ class IspaLexer : LexerBase() {
     private var nextState = 0
     private var token: IElementType? = null
     private val keywords = setOf("module", "import", "from", "as", "detach", "feature", "fail", "depends", "match", "inline", "skip", "extern", "global", "auto")
-    private val pythonKeywords = setOf("False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield")
+    private val pythonKeywords = setOf("False", "None", "True", "and", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "match", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield")
+
+    private fun startsPythonBlock(offset: Int): Boolean {
+        val lineStart = (begin - 1 downTo 0).firstOrNull { buffer[it] == '\n' }?.plus(1) ?: 0
+        val prefix = buffer.subSequence(lineStart, offset).toString()
+        if (Regex("^\\s*(?:import|feature)\\b").containsMatchIn(prefix)) return false
+        val previous = prefix.lastOrNull { !it.isWhitespace() }
+        if (previous in listOf('@', '%', '&')) return false
+        return true
+    }
 
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         this.buffer = buffer; limit = endOffset; begin = startOffset; state = initialState; locate()
@@ -73,6 +84,12 @@ class IspaLexer : LexerBase() {
             python == 0 && c == 'p' && at(end) == '{' -> {
                 end++; nextState = state + 256; IspaTokens.CAPTURE
             }
+            python == 0 && c == '$' && at(end) == '{' -> {
+                end++; nextState = state + 256; IspaTokens.OPERATOR
+            }
+            python == 0 && c == '{' && startsPythonBlock(begin) -> {
+                nextState = state + 256; IspaTokens.OPERATOR
+            }
             python > 0 && c == '{' -> { nextState = state + 256; IspaTokens.OPERATOR }
             python > 0 && c == '}' -> { nextState = state - 256; IspaTokens.OPERATOR }
             c.isDigit() -> {
@@ -85,7 +102,11 @@ class IspaLexer : LexerBase() {
                 var look = end
                 while (look < limit && at(look).isWhitespace()) look++
                 when {
-                    python > 0 -> if (word in pythonKeywords) IspaTokens.KEYWORD else IspaTokens.ID
+                    python > 0 -> when {
+                        word in pythonKeywords -> IspaTokens.KEYWORD
+                        at(look) == '(' -> IspaTokens.PY_CALL
+                        else -> IspaTokens.PY_IDENTIFIER
+                    }
                     word in keywords -> {
                         nextState = when (word) { "module", "import", "from", "as" -> 1; "feature" -> 2; "detach" -> 1; else -> state }
                         IspaTokens.KEYWORD
@@ -142,6 +163,8 @@ object IspaSyntaxHighlighter : SyntaxHighlighterBase() {
     private val operator = TextAttributesKey.createTextAttributesKey("ISPA_OPERATOR", C.OPERATION_SIGN)
     private val quantifier = TextAttributesKey.createTextAttributesKey("ISPA_QUANTIFIER", C.KEYWORD)
     private val characterClass = TextAttributesKey.createTextAttributesKey("ISPA_CHARACTER_CLASS", C.STRING)
+    private val pythonIdentifier = TextAttributesKey.createTextAttributesKey("ISPA_PY_IDENTIFIER", C.IDENTIFIER)
+    private val pythonCall = TextAttributesKey.createTextAttributesKey("ISPA_PY_CALL", C.FUNCTION_CALL)
 
     override fun getHighlightingLexer(): Lexer = IspaLexer()
 
@@ -160,6 +183,8 @@ object IspaSyntaxHighlighter : SyntaxHighlighterBase() {
         IspaTokens.QUANTIFIER -> pack(quantifier)
         IspaTokens.OPERATOR -> pack(operator)
         IspaTokens.KEYWORD -> pack(KEYWORD_KEY)
+        IspaTokens.PY_IDENTIFIER -> pack(pythonIdentifier)
+        IspaTokens.PY_CALL -> pack(pythonCall)
         else -> emptyArray()
     }
 }

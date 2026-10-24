@@ -10,5 +10,7 @@
     <lang.syntaxHighlighterFactory language="ISPA" implementationClass="dev.ispa.grammar.IspaSyntaxHighlighterFactory"/>
     <lang.parserDefinition language="ISPA" implementationClass="dev.ispa.grammar.IspaParserDefinition"/>
     <externalAnnotator language="ISPA" implementationClass="dev.ispa.grammar.IspaNativeAnnotator"/>
+    <completion.contributor language="ISPA" implementationClass="dev.ispa.grammar.IspaCompletionContributor"/>
+    <psi.referenceContributor language="ISPA" implementation="dev.ispa.grammar.IspaReferenceContributor"/>
   </extensions>
 </idea-plugin>

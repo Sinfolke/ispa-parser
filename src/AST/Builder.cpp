@@ -1,3 +1,5 @@
+module;
+#include <ispa/parser.h>
 module AST.Builder;
 import AST.types;
 import AST.Tree;
@@ -208,6 +210,7 @@ namespace {
             PN node(const py::Pass&, std::string f, const Pos& p) const { return make("Pass", std::move(f), p); }
             PN node(const py::Break&, std::string f, const Pos& p) const { return make("Break", std::move(f), p); }
             PN node(const py::Continue&, std::string f, const Pos& p) const { return make("Continue", std::move(f), p); }
+            PN node(const py::IspaMatch& x, std::string f, const Pos& p) const { return make("IspaMatch", std::move(f), p, x.source); }
         };
     }
     AST::PythonNode python(const UAST::py::ExprPtr& e, const UAST::SourcePosition& fallback) { return pylower::Lower{}.expr(e, {}, fallback); }
@@ -606,6 +609,28 @@ void AST::Builder::convertGrammar(const Grammar& grammar) {
             } else if (const auto* match = std::get_if<UAST::Node<UAST::advanced_rule_regular_match>>(&entry)) {
                 const auto& syntax = payload(*match);
                 auto members = convertValues(syntax.patterns, [this](const Value& v) { return convertValue(v); });
+                if (!syntax.stream.empty()) {
+                    if (members.size() != 1 || !members.front()->isName() || members.front()->quantifier != '\0')
+                        unsupported("match(stream) requires one unquantified rule name");
+                    if (!members.front()->getName().templateArguments.empty() ||
+                        std::ranges::any_of(members.front()->features, [](const auto& feature) {
+                            return std::holds_alternative<AST::DeclarationSyntax>(feature);
+                        })) unsupported("match(stream) does not support rule arguments yet");
+                    std::string capture;
+                    if (!syntax.assign_names.empty()) {
+                        const auto& names = payload(syntax.assign_names).value;
+                        if (names.size() != 1) unsupported("match(stream) requires one capture name");
+                        capture = id(names.front());
+                    }
+                    auto action_member = std::make_shared<AST::RuleMember>();
+                    action_member->value = AST::RuleMemberGroup{};
+                    action_member->position = position(*match);
+                    action_member->features.push_back(AST::StreamMatch{
+                        id(payload(syntax.stream).value), members.front()->getName().name,
+                        std::move(capture), position(*match)});
+                    out.rule_members.push_back(std::move(action_member));
+                    continue;
+                }
                 if (!syntax.assign_names.empty()) {
                     const auto& names = payload(syntax.assign_names).value;
                     if (names.size() != members.size()) unsupported("match unpack requires one name per pattern");
@@ -677,6 +702,51 @@ void AST::Builder::build() {
     python_declarations = pythonImports.takeDeclarations();
 
     convertMain(input);
+    if (file != "<embedded match>") {
+        std::set<std::string> existing;
+        const auto collect_literal = [&](auto&& self, const AST::RuleMember& member, std::set<std::string>& into) -> void {
+            if (member.isString()) into.insert(member.getString().value);
+            if (member.isGroup()) for (const auto& child : member.getGroup().values) self(self, *child, into);
+            if (member.isOp()) for (const auto& child : member.getOp().options) self(self, *child, into);
+        };
+        for (const auto& [_, rule] : tree_map)
+            for (const auto& member : rule.rule_members) collect_literal(collect_literal, *member, existing);
+        std::set<std::string> embedded_literals;
+        const auto scan_body = [&](auto&& self, const UAST::py::StmtList& body) -> void {
+            for (const auto& statement : body) if (statement) {
+                if (const auto* match = statement->get<UAST::py::IspaMatch>()) {
+                    const std::string text = "embedded_action { " + match->source + " }";
+                    IspaParser parser;
+                    const auto& syntax = parser.parse(text.c_str());
+                    AST::Builder embedded_builder(syntax, "<embedded match>");
+                    embedded_builder.build();
+                    auto embedded = embedded_builder.get();
+                    for (const auto& member : embedded.getTreeMap().at(stdu::vector<std::string>{"embedded_action"}).rule_members)
+                        collect_literal(collect_literal, *member, embedded_literals);
+                } else if (const auto* branch = statement->get<UAST::py::If>()) {
+                    self(self, branch->body); self(self, branch->orelse);
+                } else if (const auto* loop = statement->get<UAST::py::While>()) {
+                    self(self, loop->body); self(self, loop->orelse);
+                } else if (const auto* loop = statement->get<UAST::py::For>()) {
+                    self(self, loop->body); self(self, loop->orelse);
+                }
+            }
+        };
+        for (const auto& [_, rule] : tree_map)
+            for (const auto& member : rule.rule_members)
+                for (const auto& feature : member->features)
+                    if (const auto* action = std::get_if<AST::PythonAction>(&feature))
+                        if (const auto* module = std::get_if<UAST::py::Module>(&action->code)) scan_body(scan_body, module->body);
+        for (const auto& literal : embedded_literals) if (!existing.contains(literal)) {
+            std::string name = "ISPA_EMBEDDED_";
+            constexpr char digits[] = "0123456789ABCDEF";
+            for (unsigned char c : literal) { name += digits[c >> 4]; name += digits[c & 15]; }
+            if (literal.empty()) name += "EMPTY";
+            AST::Rule token;
+            token.rule_members.push_back(std::make_shared<AST::RuleMember>(AST::RuleMember{.value = AST::String{literal}}));
+            tree_map.emplace(stdu::vector<std::string>{name}, std::move(token));
+        }
+    }
     fullname.clear();
     if (module_project) for (const auto& [name, symbol] : module_project->external_symbols) {
         stdu::vector<std::string> full{"modules"};
@@ -728,6 +798,8 @@ void AST::Builder::build() {
             }
         };
         const auto resolve = [&](const auto& self, AST::RuleMember& member) -> void {
+            for (auto& feature : member.features)
+                if (auto* stream = std::get_if<AST::StreamMatch>(&feature)) resolveName(stream->rule);
             for (const auto& feature : member.features) if (const auto* dynamic = std::get_if<AST::DynamicPattern>(&feature)) {
                 auto parameter = dynamic->name;
                 if (const auto* expression = std::get_if<UAST::py::Expr>(&dynamic->expression.code))

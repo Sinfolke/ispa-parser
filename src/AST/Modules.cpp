@@ -30,6 +30,8 @@ Rule copyRule(const Rule& rule) {
     return copy;
 }
 template<class F> void names(RuleMember& member, const F& f) {
+    for (auto& feature : member.features)
+        if (auto* stream = std::get_if<StreamMatch>(&feature)) f(stream->rule);
     if (member.isName()) {
         auto& reference = member.getName();
         if (reference.templateParameter.empty()) f(reference.name);

@@ -516,6 +516,11 @@ private:
         if (!n) fail(raw, "missing statement");
         const auto& k = n->kind;
         const auto& pos = n->position;
+        if (k == "ispa_match_stmt") {
+            const auto token = find_first(n, "ISPA_MATCH");
+            if (!token || !value_of(token)) fail(n, "missing ISPA match source");
+            return mks(pos, pyast::IspaMatch{value_of(token)->scalar});
+        }
         if (k == "expr_stmt") return expr_stmt(n);
         if (k == "return_stmt") {
             auto v = value_of(n);
@@ -870,6 +875,7 @@ private:
     void node(const pyast::Pass&) { out += "(Pass)"; }
     void node(const pyast::Break&) { out += "(Break)"; }
     void node(const pyast::Continue&) { out += "(Continue)"; }
+    void node(const pyast::IspaMatch& x) { out += "(IspaMatch source='" + x.source + "')"; }
 };
 }
 std::string UAST::py::dump(const Expr& e) { PyDumper d; d.expr(e); return std::move(d.out); }

@@ -154,6 +154,17 @@ private:
     auto members() const { return std::tie(syntax, position); }
     auto members() { return std::tie(syntax, position); }
 };
+struct StreamMatch {
+    std::string stream{};
+    stdu::vector<std::string> rule{};
+    std::string capture{};
+    SourcePosition position{};
+private:
+    friend struct ::uhash;
+    friend struct ::LangAPI::MembersAccess;
+    auto members() const { return std::tie(stream, rule, capture, position); }
+    auto members() { return std::tie(stream, rule, capture, position); }
+};
 struct SpacePattern {
     SourcePosition position{};
 private:
@@ -162,5 +173,5 @@ private:
     auto members() const { return std::tie(position); }
     auto members() { return std::tie(position); }
 };
-using FrontendFeature = std::variant<PythonAction, FailBlock, FailBinding, FailMarker, RegionCapture, DynamicPattern, Counter, SharedCounterRegistration, VariableCapture, DeclarationSyntax, AdvancedRule, SpacePattern>;
+using FrontendFeature = std::variant<PythonAction, FailBlock, FailBinding, FailMarker, RegionCapture, DynamicPattern, Counter, SharedCounterRegistration, VariableCapture, DeclarationSyntax, AdvancedRule, StreamMatch, SpacePattern>;
 }

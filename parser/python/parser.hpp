@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <stdexcept>
+#include <ispa/lexical.hpp>
 
 class PyLexer : public PyRawParser::Lexer {
 public:
@@ -22,6 +23,7 @@ private:
     bool finished = false;
     ISPA_STD::RawTokenMeta anchor;
     const char* boundary = nullptr;
+    bool allow_ispa_match = false;
 
     template<typename T>
     static bool is(const Token& token) {
@@ -84,6 +86,7 @@ private:
 
 public:
     void setBoundary(const char* end) { boundary = end; setExternalBoundary(); }
+    void setIspaMatchEnabled(bool enabled) { allow_ispa_match = enabled; }
     void setBaseIndent(std::size_t indent) {
         indent_stack.assign(1, indent);
         at_line_start = false;
@@ -124,6 +127,12 @@ public:
             }
             throw std::runtime_error("Unterminated Python string");
         }
+        if (allow_ispa_match && at_line_start && bracket_depth == 0)
+            if (const char* end = IspaSyntax::ispaMatchEnd(pos)) {
+                pos = end;
+                return make(PyRawParser::Tokens::ISPA_MATCH::id,
+                    PyRawParser::Types::ISPA_MATCH{std::string(start, end)});
+            }
         return PyRawParser::Lexer::makeToken(pos);
     }
     void push(Token &&token) override {

@@ -65,16 +65,123 @@ namespace {
     }
     std::string_view label(ISPA::Diagnostics::Severity s) {
         using S = ISPA::Diagnostics::Severity;
-        switch (s) { case S::Error: return "error"; case S::Warning: return "warning"; case S::Info: return "info"; }
+        switch (s) { case S::Error: return "error"; case S::Warning: return "warning"; case S::Info: return "note"; }
         return "diagnostic";
     }
     std::string_view tint(ISPA::Diagnostics::Severity s) {
         using S = ISPA::Diagnostics::Severity;
-        switch (s) { case S::Error: return "\033[1;31m"; case S::Warning: return "\033[1;33m"; case S::Info: return "\033[1;36m"; }
+        switch (s) { case S::Error: return "\033[1;31m"; case S::Warning: return "\033[1;33m"; case S::Info: return "\033[1;34m"; }
         return "";
     }
     constexpr std::string_view reset = "\033[0m";
     constexpr std::string_view dim = "\033[2m";
+
+    enum class Syntax { Plain, Keyword, String, Comment, Number, Capture, Operator };
+    std::string_view syntaxTint(Syntax syntax) {
+        switch (syntax) {
+            case Syntax::Keyword: return "\033[35m";
+            case Syntax::String: return "\033[32m";
+            case Syntax::Comment: return "\033[90m";
+            case Syntax::Number: return "\033[36m";
+            case Syntax::Capture: return "\033[34m";
+            case Syntax::Operator: return "\033[33m";
+            case Syntax::Plain: return "";
+        }
+        return "";
+    }
+    bool wordStart(char c) {
+        return c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+    bool wordPart(char c) { return wordStart(c) || (c >= '0' && c <= '9'); }
+    bool digit(char c) { return c >= '0' && c <= '9'; }
+
+    // Scan from the beginning so snippets inside multiline comments and strings keep their style.
+    std::vector<Syntax> syntaxStyles(std::string_view source, std::string_view file) {
+        std::vector<Syntax> styles(source.size(), Syntax::Plain);
+        const bool python = file.ends_with(".py");
+        const auto paint = [&](std::size_t begin, std::size_t end, Syntax style) {
+            std::fill(styles.begin() + begin, styles.begin() + end, style);
+        };
+        constexpr std::string_view ispaKeywords =
+            " module import from as detach feature fail depends match inline skip extern global auto ";
+        constexpr std::string_view pythonKeywords =
+            " False None True and as assert async await break class continue def del elif else except "
+            " finally for from global if import in is lambda nonlocal not or pass raise return try while with yield ";
+        for (std::size_t i = 0; i < source.size();) {
+            const std::size_t begin = i;
+            const char c = source[i];
+            const char next = i + 1 < source.size() ? source[i + 1] : '\0';
+            if ((python && c == '#') || (!python && c == '/' && next == '/')) {
+                while (i < source.size() && source[i] != '\n') ++i;
+                paint(begin, i, Syntax::Comment);
+            } else if (!python && c == '/' && next == '*') {
+                i += 2;
+                while (i < source.size() && !(source[i - 1] == '*' && source[i] == '/')) ++i;
+                if (i < source.size()) ++i;
+                paint(begin, i, Syntax::Comment);
+            } else if (c == '\'' || c == '"') {
+                const bool triple = python && i + 2 < source.size() && source[i + 1] == c && source[i + 2] == c;
+                i += triple ? 3 : 1;
+                while (i < source.size()) {
+                    if (source[i] == '\\') { i = std::min(i + 2, source.size()); continue; }
+                    if (source[i] == c && (!triple || (i + 2 < source.size() &&
+                            source[i + 1] == c && source[i + 2] == c))) {
+                        i += triple ? 3 : 1;
+                        break;
+                    }
+                    if (!triple && source[i] == '\n') break;
+                    ++i;
+                }
+                paint(begin, i, Syntax::String);
+            } else if (!python && c == '[') {
+                ++i;
+                while (i < source.size()) {
+                    if (source[i] == '\\') { i = std::min(i + 2, source.size()); continue; }
+                    if (source[i++] == ']') break;
+                }
+                paint(begin, i, Syntax::String);
+            } else if (digit(c)) {
+                do { ++i; } while (i < source.size() && (wordPart(source[i]) || source[i] == '.'));
+                paint(begin, i, Syntax::Number);
+            } else if (wordStart(c)) {
+                do { ++i; } while (i < source.size() && wordPart(source[i]));
+                const auto word = source.substr(begin, i - begin);
+                const auto keywords = python ? pythonKeywords : ispaKeywords;
+                if (keywords.find(std::string(" ") + std::string(word) + " ") != std::string_view::npos)
+                    paint(begin, i, Syntax::Keyword);
+                else if (!python && begin && (source[begin - 1] == '@' || source[begin - 1] == '%'))
+                    paint(begin, i, Syntax::Capture);
+            } else {
+                ++i;
+                if (!python && (c == '@' || c == '%' || c == '&' || c == '#'))
+                    paint(begin, i, Syntax::Capture);
+                else if (std::string_view("=:;|*+?(){}.,<>").find(c) != std::string_view::npos)
+                    paint(begin, i, Syntax::Operator);
+            }
+        }
+        return styles;
+    }
+    void printSourceLine(std::ostream& out, std::string_view raw,
+                         const std::vector<Syntax>& styles, std::size_t offset, bool color) {
+        std::size_t column = 0;
+        Syntax active = Syntax::Plain;
+        for (std::size_t i = 0; i < raw.size(); ++i) {
+            const Syntax style = color ? styles[offset + i] : Syntax::Plain;
+            if (style != active) {
+                out << reset << syntaxTint(style);
+                active = style;
+            }
+            if (raw[i] == '\t') {
+                const auto width = 4 - column % 4;
+                out << std::string(width, ' ');
+                column += width;
+            } else if (raw[i] != '\r') {
+                out << raw[i];
+                ++column;
+            }
+        }
+        if (active != Syntax::Plain) out << reset;
+    }
 
     // Prefer byte offsets. Some frontends only retain a line and column.
     ISPA::Diagnostics::Location fixLocation(ISPA::Diagnostics::Location p,
@@ -148,6 +255,7 @@ namespace ISPA::Diagnostics {
                 out << '\n';
             }
             if (src && p.offset != std::string::npos && p.offset <= src->size()) {
+                const auto styles = color ? syntaxStyles(*src, p.file) : std::vector<Syntax>{};
                 const auto start = p.offset == 0 ? std::string::npos : src->rfind('\n', p.offset - 1);
                 const auto begin = start == std::string::npos ? 0 : start + 1;
                 auto end = src->find('\n', p.offset);
@@ -160,24 +268,26 @@ namespace ISPA::Diagnostics {
                 const auto n = std::min(std::max<std::size_t>(p.length, 1), raw.size() - local);
                 const std::string before = expandTabs(raw.substr(0, local));
                 const std::string marked = expandTabs(raw.substr(local, n), before.size());
-                const std::string after = expandTabs(raw.substr(local + n), before.size() + marked.size());
                 const std::string gutter = std::to_string(p.line ? p.line : 1);
                 if (begin != 0) {
-                    const auto previous = expandTabs(std::string_view(src->data() + previousBegin,
-                        begin - previousBegin - 1));
-                    out << faint << ' ' << (p.line - 1) << " | " << normal << previous << '\n';
+                    out << faint << ' ' << (p.line - 1) << " | " << normal;
+                    printSourceLine(out, std::string_view(src->data() + previousBegin,
+                        begin - previousBegin - 1), styles, previousBegin, color);
+                    out << '\n';
                 }
-                out << faint << ' ' << gutter << " | " << normal << before
-                    << accent << marked << normal << after << '\n';
+                out << faint << ' ' << gutter << " | " << normal;
+                printSourceLine(out, raw, styles, begin, color);
+                out << '\n';
                 out << faint << std::string(gutter.size() + 2, ' ') << "| " << normal
                     << std::string(before.size(), ' ') << accent
                     << std::string(std::max<std::size_t>(1, marked.size()), '^') << normal << '\n';
                 if (nextBegin < src->size()) {
                     auto nextEnd = src->find('\n', nextBegin);
                     if (nextEnd == std::string::npos) nextEnd = src->size();
-                    const auto next = expandTabs(std::string_view(src->data() + nextBegin,
-                        nextEnd - nextBegin));
-                    out << faint << ' ' << (p.line + 1) << " | " << normal << next << '\n';
+                    out << faint << ' ' << (p.line + 1) << " | " << normal;
+                    printSourceLine(out, std::string_view(src->data() + nextBegin,
+                        nextEnd - nextBegin), styles, nextBegin, color);
+                    out << '\n';
                 }
             }
             for (const auto& note : d.notes) out << "  = note: " << note << '\n';

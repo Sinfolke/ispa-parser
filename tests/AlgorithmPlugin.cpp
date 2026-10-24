@@ -896,3 +896,74 @@ TEST(AlgorithmPlugin, LRFamilyRejectsCountedRepetitions) {
         EXPECT_THROW(convert(*descriptor, tree, metadata), std::invalid_argument);
     }
 }
+
+TEST(AlgorithmPlugin, LLMatchesCompleteNestedTokenStreamsWithoutMovingOuterCursor) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"(
+main {
+    match '{';
+    tokens = ctx.collect_braced()
+    if True:
+        match(tokens) inner -> found;
+        ctx.ast.value = found
+}
+inner: simple | nested;
+simple: 'x';
+nested: '{' 'x' '}';
+)");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-stream-match-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Parser parser;
+    if (parser.parse("{x}").value.empty()) return 1;
+    if (parser.parse("{{x}}").value.empty()) return 2;
+    if (!parser.parse("{xx}").value.empty()) return 3;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}
+
+TEST(AlgorithmPlugin, LLMatchesLiteralInsidePythonBlock) {
+    dlib library("libispa-algorithm-LL");
+    const auto* descriptor = library.load<Algorithm::EntryFn*>("ispa_algorithm_v1")();
+    auto tree = pluginGrammar(R"(
+main {
+    if True:
+        match @ 'x'? -> token;
+        if not token.empty():
+            ctx.ast.value = token
+}
+)");
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("ispa-nested-match-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    struct Cleanup { std::filesystem::path path; ~Cleanup() { std::filesystem::remove_all(path); } } cleanup{directory};
+    Algorithm::Metadata metadata;
+    convert(*descriptor, tree, metadata, directory);
+    std::ofstream(directory / "run.cpp") << R"(
+#include "PluginTest.h"
+int main() {
+    PluginTest::Parser parser;
+    if (parser.parse("x").value.empty()) return 1;
+    if (!parser.parse("").value.empty()) return 2;
+}
+)";
+    const auto command = std::string("clang++ -std=c++23 -I\"") + ROOT_DIR +
+        "/parser/stdlibs/target\" -I\"" + directory.string() + "\" \"" +
+        (directory / "PluginTest.cpp").string() + "\" \"" +
+        (directory / "run.cpp").string() + "\" \"" + ROOT_DIR +
+        "/parser/stdlibs/target/src/core.cpp\" -o \"" + (directory / "run").string() + "\"";
+    ASSERT_EQ(std::system(command.c_str()), 0);
+    EXPECT_EQ(std::system(('"' + (directory / "run").string() + '"').c_str()), 0);
+}

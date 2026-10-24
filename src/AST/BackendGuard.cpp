@@ -23,6 +23,7 @@ void check(const AST::FrontendFeature& feature) {
         else if constexpr (std::is_same_v<T, AST::VariableCapture>) name = "variable capture";
         else if constexpr (std::is_same_v<T, AST::DeclarationSyntax>) name = "rule parameters";
         else if constexpr (std::is_same_v<T, AST::SpacePattern>) name = "explicit whitespace pattern";
+        else if constexpr (std::is_same_v<T, AST::StreamMatch>) name = "token stream match";
         else name = "advanced rule";
         reject(node.position, name);
     }, feature);
@@ -34,7 +35,7 @@ void check(const AST::RuleMember& member, bool token, bool actions) {
             syntax && syntax->modifiers.empty()) continue;
         if (actions && !token && (std::holds_alternative<AST::PythonAction>(f) ||
             std::holds_alternative<AST::VariableCapture>(f) || std::holds_alternative<AST::FailMarker>(f) ||
-            std::holds_alternative<AST::AdvancedRule>(f))) continue;
+            std::holds_alternative<AST::AdvancedRule>(f) || std::holds_alternative<AST::StreamMatch>(f))) continue;
         if (const auto* counter = std::get_if<AST::Counter>(&f); counter && !token) {
             if (!(member.isName() || member.isString()) ||
                 (member.quantifier != '*' && member.quantifier != '+'))
@@ -90,7 +91,8 @@ void AST::requireCppSupport(const Tree& tree, bool ll_actions) {
                 for (const auto& child : syntax->syntax.children)
                     if (child.field == "dep" && !child.children.empty()) reject(syntax->position, "advanced rule dependencies");
             if (ll_actions && (std::holds_alternative<AST::AdvancedRule>(feature) ||
-                std::holds_alternative<AST::PythonAction>(feature))) continue;
+                std::holds_alternative<AST::PythonAction>(feature) ||
+                std::holds_alternative<AST::DeclarationSyntax>(feature))) continue;
             if (ll_actions && !token && std::holds_alternative<AST::FailBinding>(feature)) continue;
             check(feature);
         }

@@ -105,7 +105,7 @@ public:
     Token makeToken(const char*& pos) override {
 #ifdef ISPA_MODULAR_PARSER
         // These delimit the host statements in an otherwise Python body.
-        if (IspaSyntax::keyword(pos, "match")) {
+        if (IspaSyntax::isIspaMatch(pos)) {
             const char* begin = pos; pos += 5;
             return Token::create(getCurrentPos(begin), begin, 5, __line(begin),
                 Parser::Tokens::modules::rule::advanced::advanced_rule::regular_match::MATCH::id,

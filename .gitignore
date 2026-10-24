@@ -58,6 +58,7 @@ boost*
 boost
 
 test
+!plugins/jebtrains/src/test/
 tokens
 * copy
 perf*
@@ -75,3 +76,5 @@ parser/build
 parser/ispa/bootstrapped/.codegen-*
 parser/python/bootstrapped/.codegen-*
 parser/ispa_dep_scanner/bootstrapped/.codegen-*
+tree.txt
+treeAPI.txt

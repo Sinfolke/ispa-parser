@@ -36,6 +36,24 @@ captured by a caller like a regular rule result. Bare `return` and
 it invokes normal grammar matching while the action code handles decisions
 that depend on matched values or parser state.
 
+An ISPA `match` can also appear inside a Python `if` or `while` suite in an
+advanced rule. It runs at that point in the suite, and its capture is available
+to later statements in the same action:
+
+```isc
+item {
+    if ctx.at('x'):
+        match @ 'x' -> token;
+        ctx.ast.value = token
+}
+```
+
+The semicolon belongs to the ISPA match clause. The surrounding suite uses
+Python indentation. Literal patterns in these clauses register lexer tokens
+automatically. Python `for` is parsed by the Python grammar but is not yet
+lowered by the action generator; use `while` for a loop that needs an embedded
+match.
+
 The action language supports the Python constructs lowered by ISPA, not every
 Python feature. AST fields can be inferred from literals and supported local
 expressions; annotate fields when inference is insufficient, for example
@@ -65,6 +83,32 @@ moving the cursor. The offset is optional and defaults to zero (the current
 token); values above 64 throw. It accepts the same token spelling/name forms
 as the fail-block `ctx.at(value)`. It is available in advanced parser rules
 and fail blocks, and checks return false at or beyond EOF.
+
+`ctx.collect_braced()` starts after a matched opening `{`, copies tokens up to
+the matching `}`, and advances the original cursor past that closing token.
+Nested braces remain in the returned vector. An unmatched brace raises an
+error. With a lazy source cursor, strings and comments do not affect brace
+depth. A rule can then parse that vector independently:
+
+```isc
+outer {
+    match '{';
+    tokens = ctx.collect_braced()
+    match(tokens) inner -> parsed;
+    ctx.ast.value = parsed
+}
+inner: 'x' | '}';
+```
+
+`match(tokens) inner` requires one unquantified parser rule. It runs the rule
+against a temporary eager token stream and requires the rule to consume that
+whole stream. The original `ctx.pos` is unaffected by this match. With `->`
+the result is an empty node on failure, so an action can inspect `.empty()`;
+without a capture, failure raises an error. The closing delimiter must be a
+recognized token in the grammar for `collect_braced()` to see it.
+When the target rule contains an external parser, the generated call uses the
+original source span bounded by the collected tokens. That span must be a
+contiguous slice of the original input.
 
 Named checkpoints provide a bounded alternative to storing raw cursors:
 

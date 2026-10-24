@@ -3,6 +3,7 @@ export module MemLower;
 import AST.API;
 import AST.Tree;
 import Parser.Base;
+import UAST.PyAST;
 import hash;
 import dstd;
 import LangAPI;
@@ -34,6 +35,8 @@ export class MemLower : Parser::ParserBase {
     auto lowerName(const AST::RuleMember &mem) -> Parser::LowerMeta;
     auto lowerGroup(const AST::RuleMember &mem) -> Parser::LowerMeta;
     auto lowerOp(const AST::RuleMember &mem) -> Parser::LowerMeta;
+    void lowerStreamMatch(const AST::StreamMatch &match);
+    auto lowerEmbeddedMatch(const UAST::py::IspaMatch &match, std::set<std::string>& locals) -> LangAPI::Statements;
     auto lowerSequence(const AST::RuleMember &mem) -> Parser::LowerMeta;
     auto lowerDispatch(const AST::RuleMember &mem) -> Parser::LowerMeta;
     auto lowerQuantified(const AST::RuleMember &mem) -> Parser::LowerMeta;

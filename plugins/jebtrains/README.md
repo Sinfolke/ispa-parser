@@ -1,8 +1,10 @@
 # ISPA Grammar for JetBrains IDEs
 
-Recognizes `.isc` files with semantic colors for rule and token declarations, references, parameters, and captures. Module directives, features, comments, character classes, and embedded Python have tolerant highlighting while editing. Native parser errors appear in the editor, including the expected symbols and where parsing stopped. Token highlighting remains available after parsing fails; UTF-8 native positions are translated to UTF-16 editor positions.
+Recognizes `.isc` files with semantic colors for rule and token declarations, references, parameters, and captures. Module directives, features, comments, character classes, and embedded Python have tolerant highlighting while editing. Direct Python in `fail` and advanced rule blocks, action expressions, and `${...}` patterns has Python keyword, call, string, number, and identifier colors. Native parser errors appear in the editor, including the expected symbols and where parsing stopped. Token highlighting remains available after parsing fails; UTF-8 native positions are translated to UTF-16 editor positions.
 
-Validation is local to the current file. Import (including `import extern python ispa_python as python;`) and detach directives are checked without resolving external modules. Embedded `p{...}` expressions and statements are validated by the bundled Python parser and highlighted while editing. No Python IDE plugin is required. The native helper has a two-second timeout; lexical highlighting remains available if it cannot run.
+Completion suggests rule and token names declared in the current file. Go to Declaration works for matching local references. The symbol index remains available while the grammar is incomplete; imported symbols are not indexed yet.
+
+Validation is local to the current file. Import (including `import extern python ispa_python as python;`) and detach directives are checked without resolving external modules. Direct embedded Python is validated by the bundled Python parser and highlighted while editing. No Python IDE plugin is required. The native helper has a two-second timeout; lexical highlighting remains available if it cannot run.
 
 ## Build and install
 

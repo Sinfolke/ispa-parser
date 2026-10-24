@@ -16,7 +16,8 @@ simple_stmts:
 ;
 
 simple_stmt:
-    @ return_stmt
+    @ ispa_match_stmt
+    | return_stmt
     | raise_stmt
     | del_stmt
     | pass_stmt
@@ -27,6 +28,11 @@ simple_stmt:
     | nonlocal_stmt
     | import_stmt
     | expr_stmt
+    {@}
+;
+
+ispa_match_stmt:
+    @ ISPA_MATCH
     {@}
 ;
 

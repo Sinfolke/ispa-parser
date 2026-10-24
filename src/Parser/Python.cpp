@@ -30,6 +30,7 @@ struct PythonConverter {
     std::string token_rule;
     std::set<std::string> class_names, objects;
     std::map<std::string, la::Type> local_types;
+    std::function<la::Statements(const py::IspaMatch&, std::set<std::string>&)> embedded_match;
     std::string localName(const std::string& name) const {
         return action_context && locals.contains(name) ? "ispa_action_" + name : name;
     }
@@ -364,7 +365,8 @@ struct PythonConverter {
                         const auto& name = method->attr;
                         const bool failure_method = name == "error" || name == "note" || name == "sync" || name == "sync_tokens" ||
                             name == "skip" || name == "insert" || name == "replace" || name == "retry" || name == "abort";
-                        const bool action_method = name == "at" || name == "mark" || name == "restore" || name == "commit";
+                        const bool action_method = name == "at" || name == "mark" || name == "restore" || name == "commit" ||
+                            name == "collect_braced";
                         if ((failure_method && !failure_context) || (!failure_method && !action_method))
                             unsupported(e.pos, "unknown context method: " + name);
                         if (name == "sync" || name == "sync_tokens") {
@@ -510,6 +512,10 @@ struct PythonConverter {
         return std::visit([&](const auto& x) -> la::Statements {
             using T = std::decay_t<decltype(x)>;
             if constexpr (std::is_same_v<T, py::Pass>) return {};
+            else if constexpr (std::is_same_v<T, py::IspaMatch>) {
+                if (!embedded_match) unsupported(s.pos, "embedded ISPA match requires an advanced rule");
+                return embedded_match(x, locals);
+            }
             else if constexpr (std::is_same_v<T, py::ExprStmt>) return la::Statements{la::Statement{expr(x.value)}};
             else if constexpr (std::is_same_v<T, py::Return>) {
                 if (!token_rule.empty()) unsupported(s.pos, "token actions cannot return; update ctx.ast instead");
@@ -718,10 +724,12 @@ auto ParserBase::convertPythonType(const UAST::py::ExprPtr& annotation) -> LangA
     return PythonConverter{}.type(annotation);
 }
 auto ParserBase::convertPythonAction(const AST::PythonAction& action, std::set<std::string>& variables, bool failure,
-    const std::set<std::string>& classes, std::set<std::string>* objects, const std::string& token_rule) -> LangAPI::Statements {
+    const std::set<std::string>& classes, std::set<std::string>* objects, const std::string& token_rule,
+    const std::function<LangAPI::Statements(const UAST::py::IspaMatch&, std::set<std::string>&)>& match) -> LangAPI::Statements {
     PythonConverter converter{variables, true, failure};
     converter.class_names = classes;
     converter.token_rule = token_rule;
+    converter.embedded_match = match;
     if (objects) converter.objects = *objects;
     auto result = std::visit([&](const auto& code) -> LangAPI::Statements {
         using T = std::decay_t<decltype(code)>;

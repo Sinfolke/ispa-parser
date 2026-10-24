@@ -1,5 +1,7 @@
 module statement_tokens;
 
+ISPA_MATCH: @ '__ispa_match_sentinel__' {@};
+
 WHILE: 'while';
 FOR: 'for';
 DEF: 'def';

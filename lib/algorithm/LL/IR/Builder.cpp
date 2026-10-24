@@ -1,6 +1,8 @@
 module;
 #include <tsl/ordered_map.h>
+#include <ispa/parser.h>
 module LLIR.Builder;
+import AST.Builder;
 import RuleLower;
 import Parser.Base;
 import UAST.PyAST;
@@ -12,6 +14,7 @@ namespace {
 namespace py = UAST::py;
 namespace la = LangAPI;
 struct ActionFields {
+    AST::Tree* tree = nullptr;
     std::map<std::string, la::Type> locals;
     std::map<std::string, la::Type> imported_types;
     inclosed_map fields;
@@ -105,9 +108,57 @@ struct ActionFields {
             using T = std::decay_t<decltype(x)>;
             if constexpr (std::is_same_v<T, py::Assign>) { for (const auto& target : x.targets) assign(target, x.value); }
             else if constexpr (std::is_same_v<T, py::AnnAssign>) assign(x.target, x.value, x.annotation);
+            else if constexpr (std::is_same_v<T, py::IspaMatch>) {
+                const std::string source = "embedded_action { " + x.source + " }";
+                IspaParser parser;
+                const auto& syntax = parser.parse(source.c_str());
+                AST::Builder builder(syntax, "<embedded match>");
+                builder.build();
+                auto embedded = builder.get();
+                const auto& members = embedded.getTreeMap().at(stdu::vector<std::string>{"embedded_action"}).rule_members;
+                const auto resolve = [&](stdu::vector<std::string> name) {
+                    if (tree && !tree->contains(name)) {
+                        for (std::size_t count = current_rule.size(); count != 0; --count) {
+                            stdu::vector<std::string> candidate(current_rule.begin(), current_rule.begin() + count);
+                            candidate.insert(candidate.end(), name.begin(), name.end());
+                            if (tree->contains(candidate)) return candidate;
+                        }
+                    }
+                    return name;
+                };
+                const auto capture = [&](auto&& self, const AST::RuleMember& member) -> void {
+                    for (const auto& feature : member.features) {
+                        if (const auto* stream = std::get_if<AST::StreamMatch>(&feature); stream && !stream->capture.empty()) {
+                            AST::RuleMember target;
+                            target.value = AST::RuleMemberName{.name = resolve(stream->rule)};
+                            locals.insert_or_assign(stream->capture, Parser::ParserBase::dataType(AST::captureType(target)));
+                        }
+                        if (const auto* variable = std::get_if<AST::VariableCapture>(&feature)) {
+                            AST::RuleMember target = member;
+                            if (target.isName()) target.getName().name = resolve(target.getName().name);
+                            if (target.isString() && tree) {
+                                const auto literal = target.getString().value;
+                                for (const auto& [name, rule] : tree->getTreeMap()) {
+                                    if (name.empty() || !corelib::text::isUpper(name.back()) || rule.rule_members.size() != 1) continue;
+                                    const auto& token = *rule.rule_members.front();
+                                    if (token.isString() && token.getString().value == literal) {
+                                        target.value = AST::RuleMemberName{.name = name};
+                                        break;
+                                    }
+                                }
+                            }
+                            locals.insert_or_assign(variable->name, Parser::ParserBase::dataType(AST::captureType(target)));
+                        }
+                    }
+                    if (member.isGroup()) for (const auto& child : member.getGroup().values) self(self, *child);
+                    if (member.isOp()) for (const auto& child : member.getOp().options) self(self, *child);
+                };
+                for (const auto& member : members) capture(capture, *member);
+            }
             else if constexpr (std::is_same_v<T, py::If> || std::is_same_v<T, py::While>) { body(x.body); body(x.orelse); }
         }, statement->kind);
     }
+    stdu::vector<std::string> current_rule;
     void action(const AST::PythonAction& action) {
         if (const auto* module = std::get_if<py::Module>(&action.code)) body(module->body);
         else if (const auto* expression = std::get_if<py::Expr>(&action.code); expression && !action.target.empty()) {
@@ -121,6 +172,11 @@ struct ActionFields {
         for (const auto& feature : member.features) {
             if (const auto* capture = std::get_if<AST::VariableCapture>(&feature))
                 locals.insert_or_assign(capture->name, Parser::ParserBase::dataType(AST::captureType(member)));
+            if (const auto* stream = std::get_if<AST::StreamMatch>(&feature); stream && !stream->capture.empty()) {
+                AST::RuleMember target;
+                target.value = AST::RuleMemberName{.name = stream->rule};
+                locals.insert_or_assign(stream->capture, Parser::ParserBase::dataType(AST::captureType(target)));
+            }
             if (const auto* code = std::get_if<AST::PythonAction>(&feature)) action(*code);
         }
         if (member.isGroup()) for (const auto& child : member.getGroup().values) this->member(*child);
@@ -157,6 +213,8 @@ Builder::Builder(AST::Tree& tree, const AST::TreeMap& changed,
         // semantic exports, regardless of declaration placement or control flow.
         production.rule_members = lowered.function.statements;
         ActionFields action_fields;
+        action_fields.tree = &tree;
+        action_fields.current_rule = name;
         action_fields.imports(tree.getPythonDeclarations());
         for (const auto& feature : rule.features)
             if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature))

@@ -1,4 +1,7 @@
+module;
+#include <ispa/parser.h>
 module MemLower;
+import AST.Builder;
 import logging;
 import corelib;
 import constants;
@@ -225,12 +228,136 @@ auto MemLower::build(const AST::RuleMember &mem) -> void {
     fun_ctx->variables_lowered = ctx.variables_lowered;
 }
 
+auto MemLower::lowerEmbeddedMatch(const UAST::py::IspaMatch& match, std::set<std::string>& locals)
+    -> LangAPI::Statements {
+    const std::string source = "embedded_action { " + match.source + " }";
+    IspaParser parser;
+    const auto& syntax = parser.parse(source.c_str());
+    if (!parser.getErrors().empty())
+        throw Error("Invalid embedded match: {}", parser.getErrors().front().message);
+    AST::Builder builder(syntax, "<embedded match>");
+    builder.build();
+    auto embedded = builder.get();
+    const auto& members = embedded.getTreeMap().at(stdu::vector<std::string>{"embedded_action"}).rule_members;
+    LangAPI::Statements statements;
+    StatementsScope scope(*fun_ctx, statements);
+    fun_ctx->action_locals = locals;
+    const auto exports_before = fun_ctx->exports.size();
+    for (const auto& member : members) {
+        const auto resolve = [&](auto&& self, AST::RuleMember& value) -> void {
+            const auto resolve_name = [&](stdu::vector<std::string>& name) {
+                if (tree->contains(name)) return;
+                const auto& scope_name = fun_ctx->rule_name;
+                for (std::size_t count = scope_name.size(); count != 0; --count) {
+                    stdu::vector<std::string> candidate(scope_name.begin(), scope_name.begin() + count);
+                    candidate.insert(candidate.end(), name.begin(), name.end());
+                    if (tree->contains(candidate)) { name = std::move(candidate); return; }
+                }
+            };
+            if (value.isName()) resolve_name(value.getName().name);
+            if (value.isString()) {
+                const auto literal = value.getString().value;
+                for (const auto& [name, rule] : tree->getTreeMap()) {
+                    if (name.empty() || !corelib::text::isUpper(name.back()) || rule.rule_members.size() != 1) continue;
+                    const auto& token = *rule.rule_members.front();
+                    if (token.isString() && token.getString().value == literal) {
+                        value.value = AST::RuleMemberName{.name = name};
+                        break;
+                    }
+                }
+            }
+            for (auto& feature : value.features)
+                if (auto* stream = std::get_if<AST::StreamMatch>(&feature)) resolve_name(stream->rule);
+            if (value.isGroup()) for (auto& child : value.getGroup().values) self(self, *child);
+            if (value.isOp()) for (auto& child : value.getOp().options) self(self, *child);
+        };
+        resolve(resolve, *member);
+        lower(*member);
+    }
+    fun_ctx->exports.resize(exports_before);
+    locals = fun_ctx->action_locals;
+    return statements;
+}
+
+void MemLower::lowerStreamMatch(const AST::StreamMatch &match) {
+    if (!fun_ctx->action_locals.contains(match.stream))
+        throw Error("match({}) requires a previously declared token stream", match.stream);
+    if (!tree->contains(match.rule) || !AST::RuleMemberName{.name = match.rule}.isNonterminal())
+        throw Error("match({}) requires a parser rule", match.stream);
+    for (const auto& feature : tree->getTreeMap().at(match.rule).features)
+        if (const auto* syntax = std::get_if<AST::DeclarationSyntax>(&feature);
+            syntax && (!syntax->parameters.empty() || !syntax->templateParameters.empty()))
+            throw Error("match({}) cannot call a parameterized parser rule", match.stream);
+    if (!match.capture.empty() && (match.capture == "ctx" || fun_ctx->action_locals.contains(match.capture)))
+        throw Error("Duplicate or reserved action binding {}", match.capture);
+
+    std::set<stdu::vector<std::string>> visited;
+    const auto source_visit = [&](auto&& self, const stdu::vector<std::string>& name) -> bool {
+        if (!tree->contains(name) || !visited.insert(name).second) return false;
+        const auto& rule = tree->getTreeMap().at(name);
+        if (rule.external) return true;
+        const auto member_requires_source = [&](auto&& walk, const AST::RuleMember& member) -> bool {
+            if (member.isName()) return self(self, member.getName().name);
+            if (member.isGroup()) for (const auto& child : member.getGroup().values)
+                if (walk(walk, *child)) return true;
+            if (member.isOp()) for (const auto& child : member.getOp().options)
+                if (walk(walk, *child)) return true;
+            return false;
+        };
+        for (const auto& member : rule.rule_members)
+            if (member_requires_source(member_requires_source, *member)) return true;
+        return false;
+    };
+    const bool requires_source = source_visit(source_visit, match.rule);
+
+    LangAPI::FunctionCall rule_call;
+    rule_call.name = std::make_shared<LangAPI::Symbol>(fun_name(match.rule));
+    rule_call.args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"stream_pos"})};
+    LangAPI::Lambda callback;
+    callback.parameters = {{LangAPI::Type{LangAPI::Symbol{"Lexer", requires_source ? "lazy_iterator" : "iterator"}}, "stream_pos"}};
+    callback.statements = LangAPI::Return::createStatements(LangAPI::Return{
+        .value = LangAPI::FunctionCall::createExpression(std::move(rule_call))});
+
+    LangAPI::FunctionCall parse;
+    parse.name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"ISPA_STD",
+        requires_source ? "parse_source_span" : "parse_token_stream"});
+    parse.template_parameters = {std::make_shared<LangAPI::Type>(LangAPI::Type{LangAPI::Symbol{"Lexer"}})};
+    parse.args = {LangAPI::Symbol::createExpression(LangAPI::Symbol{"ispa_action_" + match.stream}),
+        LangAPI::Lambda::createExpression(std::move(callback))};
+
+    AST::RuleMember named;
+    named.value = AST::RuleMemberName{.name = match.rule};
+    const auto variable = match.capture.empty() ? "ispa_stream_match_" + std::to_string(fun_ctx->uid()) :
+        "ispa_action_" + match.capture;
+    bind(variable, deduceVarTypeByRuleMember(named), LangAPI::FunctionCall::createExpression(std::move(parse)));
+    if (!match.capture.empty()) {
+        fun_ctx->action_locals.insert(match.capture);
+    } else {
+        LangAPI::StorageSymbol empty;
+        empty.what = LangAPI::Symbol::createExpression(LangAPI::Symbol{variable});
+        empty.path.emplace_back(LangAPI::FunctionCall{.name = std::make_shared<LangAPI::Symbol>("empty")});
+        LangAPI::FunctionCall error;
+        error.name = std::make_shared<LangAPI::Symbol>(LangAPI::Symbol{"std", "runtime_error"});
+        error.args = {LangAPI::String::createExpression(LangAPI::String{.value = "stream did not match parser rule"})};
+        push(LangAPI::If::createStatement(LangAPI::If{
+            LangAPI::StorageSymbol::createExpression(std::move(empty)),
+            LangAPI::Throw::createStatements(LangAPI::Throw{
+                .throw_value = LangAPI::FunctionCall::createExpression(std::move(error))})}));
+    }
+}
+
 auto MemLower::lower(const AST::RuleMember &mem) -> Parser::LowerMeta {
     const auto capture_begin = fun_ctx->captures.size();
     Parser::LowerMeta meta;
     for (const auto& feature : mem.features) if (const auto* action = std::get_if<AST::PythonAction>(&feature)) {
-        for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals, false, pythonClasses(tree->getPythonDeclarations()), &fun_ctx->action_objects)) push(statement);
+        auto embedded = [this](const UAST::py::IspaMatch& match, std::set<std::string>& locals) {
+            return lowerEmbeddedMatch(match, locals);
+        };
+        for (const auto& statement : convertPythonAction(*action, fun_ctx->action_locals, false,
+                 pythonClasses(tree->getPythonDeclarations()), &fun_ctx->action_objects, {}, embedded)) push(statement);
     }
+    for (const auto& feature : mem.features) if (const auto* stream = std::get_if<AST::StreamMatch>(&feature))
+        lowerStreamMatch(*stream);
     if (isWhitespaceRef(mem)) {
         const auto& members = tree->getTreeMap().at(fun_ctx->rule_name).rule_members;
         if (mem_idx + 1 < members.size() && members[mem_idx].get() == &mem) {

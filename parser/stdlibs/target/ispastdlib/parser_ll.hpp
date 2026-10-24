@@ -27,8 +27,61 @@
 #include <vector>
 #include <map>
 #include <cctype>
+#include <functional>
+#include <cstring>
 
 namespace ISPA_STD {
+    template<class Lexer, class Token>
+    class BoundedSourceLexer : public Lexer {
+        const char* boundary_ = nullptr;
+    public:
+        explicit BoundedSourceLexer(const char* boundary) : boundary_(boundary) {
+            this->setExternalBoundary(true);
+        }
+        Token makeToken(const char*& pos) override {
+            if (pos >= boundary_) return {};
+            return Lexer::makeToken(pos);
+        }
+        auto clone() const -> std::shared_ptr<Lexer_base<Token>> override {
+            return std::make_shared<BoundedSourceLexer>(*this);
+        }
+    };
+
+    // Run a generated rule against a separate token stream. The returned node
+    // owns its data; the temporary cursor never escapes with the result.
+    template<class Lexer, class Tokens, class Rule>
+    auto parse_token_stream(const Tokens& tokens, Rule&& rule) {
+        Lexer lexer;
+        for (const auto& token : tokens) lexer.append_token(token);
+        lexer.push();
+        typename Lexer::iterator begin(lexer);
+        auto result = std::invoke(std::forward<Rule>(rule), begin);
+        using Node = std::decay_t<decltype(result.node)>;
+        if (!result.status || !result.it.isEnd()) return Node{};
+        return Node{std::move(result.node)};
+    }
+
+    // External rules need the original source bytes. Tokens collected from a
+    // contiguous source region provide its bounds while retaining the source
+    // pointers in the returned AST.
+    template<class Lexer, class Tokens, class Rule>
+    auto parse_source_span(const Tokens& tokens, Rule&& rule) {
+        using Cursor = typename Lexer::lazy_iterator;
+        using Result = std::invoke_result_t<Rule, Cursor>;
+        using Node = std::decay_t<decltype(std::declval<Result>().node)>;
+        if (tokens.empty()) return Node{};
+        const auto& first = tokens.front().meta();
+        const auto& last = tokens.back().meta();
+        if (!first.start() || !last.end() || last.end() < first.start())
+            throw std::invalid_argument("source stream requires tokens with source spans");
+        const char* origin = first.start() - first.startpos();
+        BoundedSourceLexer<Lexer, typename Tokens::value_type> lexer(last.end());
+        Cursor begin(lexer, origin, first.start());
+        auto result = std::invoke(std::forward<Rule>(rule), begin);
+        if (!result.status || !result.it.isEnd() || result.it.sourcePosition() > last.end()) return Node{};
+        return Node{std::move(result.node)};
+    }
+
     /* PARSER */
     template<typename MainNode, typename Token>
     class LLParser : public Parser_base<MainNode, Token> {
@@ -114,6 +167,42 @@ namespace ISPA_STD {
 
             bool at(std::string_view spelling, std::size_t lookahead = 0) const {
                 return LLParser::template context_at<IT>(pos, spelling, lookahead, token_name);
+            }
+
+            // Collect the contents of a braced region after its opening token
+            // has been consumed. The closing token is consumed, but is not
+            // included in the returned stream. Nested braces are preserved.
+            TokenFlow<Token> collect_braced() {
+                TokenFlow<Token> collected;
+                if constexpr (requires { pos.sourcePosition(); }) {
+                    const char* begin = pos.sourcePosition();
+                    const std::string_view stops[]{"}"};
+                    const auto scanned = Recovery::scanBalanced(begin, stops, std::strlen(begin));
+                    if (scanned.exhausted || *scanned.end != '}')
+                        throw std::runtime_error("unterminated braced region in parser action");
+                    while (!pos.isEnd() && pos.sourcePosition() < scanned.end) {
+                        collected.push_back(*pos);
+                        ++pos;
+                    }
+                    if (pos.isEnd() || pos.sourcePosition() != scanned.end || !at("}"))
+                        throw std::runtime_error("braced region boundary is not a token");
+                    ++pos;
+                    return collected;
+                }
+                std::size_t depth = 1;
+                while (!pos.isEnd()) {
+                    if (at("{")) {
+                        ++depth;
+                    } else if (at("}")) {
+                        if (--depth == 0) {
+                            ++pos;
+                            return collected;
+                        }
+                    }
+                    collected.push_back(*pos);
+                    ++pos;
+                }
+                throw std::runtime_error("unterminated braced region in parser action");
             }
         };
         template<class IT, class AST>

@@ -4,7 +4,6 @@ import {name, ID} from common;
 import {stmt} from ispa_python;
 import forward_declaration;
 import rule.regular;
-
 advanced_rule:
     '{' @ dep_decl* @ (regular_match | stmt)* '}'
 
@@ -14,8 +13,13 @@ advanced_rule:
         {@}
     ;
     #regular_match:
-        'match' @ rule.regular.value+ @ unpack? ';'
-        @{patterns, assign_names}
+        'match' @ source? @ rule.regular.value+ @ unpack? ';'
+        @{stream, patterns, assign_names}
+
+        #source:
+            '(' @ ID ')'
+            {@}
+        ;
 
         #unpack:
             '->' @ ID+

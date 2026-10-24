@@ -98,7 +98,8 @@ export namespace Parser {
         static auto convertPythonAction(const AST::PythonAction& action,
             std::set<std::string>& variables, bool failure = false,
             const std::set<std::string>& classes = {}, std::set<std::string>* objects = nullptr,
-            const std::string& token_rule = {}) -> LangAPI::Statements;
+            const std::string& token_rule = {},
+            const std::function<LangAPI::Statements(const UAST::py::IspaMatch&, std::set<std::string>&)>& match = {}) -> LangAPI::Statements;
 
         static auto dataType(const AST::DataType& type) -> LangAPI::Type;
 
