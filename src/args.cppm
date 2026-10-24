@@ -9,8 +9,9 @@ export struct Args {
     enum class Algorithm {
         LL, LR, LALR, LR_STAR
     };
+    using Language = LangAPI::Language;
     Algorithm algorithm = Algorithm::LL;
-    LangAPI::Language language;
+    Language language = Language::Cpp;
     std::string language_str;
     std::vector<std::string> dir;
     std::vector<std::string> files;
@@ -37,3 +38,4 @@ export struct Args {
 };
 export Args parse_args(int argc, char** argv);
 export auto to_string(Args::Algorithm algorithm) -> std::string;
+export auto to_string(Args::Language language) -> std::string;

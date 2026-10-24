@@ -21,7 +21,7 @@ export namespace LangRepr {
               holder(holder), namespace_name(namespace_name), incremental(incremental), lang(lang) {}
 
         auto init() -> void {
-            auto construct = converter_lib.loadfun<::Converter::ConstructBase*, const LangAPI::Declarations *, const char*, bool>("cpp_construct");
+            auto construct = converter_lib.loadfun<::Converter::ConstructBase*, const LangAPI::Declarations *, const char*, bool>(lang + "_construct");
             builder = construct(&holder.get(), namespace_name.c_str(), incremental);
         }
         auto construct() -> void {
@@ -43,7 +43,7 @@ export namespace LangRepr {
             return files;
         }
         ~Converter() {
-            converter_lib.loadfun<void, ::Converter::ConstructBase*>("cpp_construct_finish")(builder);
+            converter_lib.loadfun<void, ::Converter::ConstructBase*>(lang + "_construct_finish")(builder);
         }
     };
 }

@@ -53,7 +53,8 @@ Args parse_args(int argc, char** argv) {
 
     // Map algorithm string to enum
     if (!args.language_str.empty()) {
-        if (args.language_str == "cpp") args.language = LangAPI::Language::Cpp;
+        if (args.language_str == "cpp") args.language = Args::Language::Cpp;
+        else if (args.language_str == "python" || args.language_str == "py") args.language = Args::Language::Python;
         else throw Error("Unknown language {}", args.language_str);
     }
     if (!algorithm.empty()) {
@@ -78,5 +79,15 @@ auto to_string(Args::Algorithm algorithm) -> std::string  {
             return "LR_STAR";
         default:
             throw Error("Undefined algorithm {}: while converting to string representation", (int) algorithm);
+    }
+}
+auto to_string(Args::Language language) -> std::string {
+    switch (language) {
+        case Args::Language::Cpp:
+            return "cpp";
+        case Args::Language::Python:
+            return "python";
+        default:
+            throw Error("Undefined language {}: while converting to string representation", (int) language);
     }
 }

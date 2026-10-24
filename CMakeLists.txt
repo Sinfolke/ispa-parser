@@ -187,6 +187,7 @@ function(add_converter language)
 endfunction()
 
 add_converter(cpp)
+add_converter(python)
 
 # =============================================
 # Algorithms Shared Library

@@ -104,7 +104,7 @@ export namespace LangAPI {
     };
     enum class ObjectMethods {};
     enum class Language {
-        Cpp
+        Cpp, Python
     };
     enum class StdlibExports {
         Node, MatchResult, Lexer, Parser, LRParser, LRGeneralizedParser, LRParse, LRParseGeneralized, LRGet, LRNode, LRPack, LRCaptureAssign, LRToken, LexerMakeTokenParameter,

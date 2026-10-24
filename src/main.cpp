@@ -516,7 +516,7 @@ int generate(Args args) {
 
     // dlib-loads libispa-converter-<lang> and resolves "<lang>_construct"
     // (e.g. the extern "C" cpp_construct in converter.cpp) internally.
-    LangRepr::Converter converter(holder, args.language_str, name, args.incremental);
+    LangRepr::Converter converter(holder, to_string(args.language), name, args.incremental);
     converter.init();
     converter.construct();
 
