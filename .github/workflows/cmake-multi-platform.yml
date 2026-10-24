@@ -329,37 +329,22 @@ jobs:
           fi
 
           ls -la "$bogus" 2>&1 || true
-      - name: Fix libc++ modules std path (macOS)
+      - name: Configure libc++ modules path (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
           set -euo pipefail
           
-          LLVM_PREFIX="$(brew --prefix llvm)"
-          CLANG="$LLVM_PREFIX/bin/clang++"
+          MODULE_PREFIX="$RUNNER_TEMP/libcxx-modules"
+          MODULES_JSON="$MODULE_PREFIX/lib/libc++.modules.json"
           
-          echo "Clang-reported manifest:"
-          "$CLANG" -print-file-name=libc++.modules.json
+          test -f "$MODULES_JSON"
+          test -f "$MODULE_PREFIX/share/libc++/v1/std.cppm"
+          test -f "$MODULE_PREFIX/share/libc++/v1/std.compat.cppm"
           
-          real="$(find "$LLVM_PREFIX" -name libc++.modules.json -type f -print -quit)"
-          reported="$("$CLANG" -print-file-name=libc++.modules.json)"
+          echo "LIBCXX_MODULES_JSON=$MODULES_JSON" >> "$GITHUB_ENV"
           
-          if [[ -z "$real" ]]; then
-            echo "::error::libc++.modules.json not installed"
-            exit 1
-          fi
-          
-          if [[ "$reported" == */* && ! -e "$reported" ]]; then
-            sudo mkdir -p "$(dirname "$reported")"
-            sudo ln -s "$real" "$reported"
-          fi
-          
-          test -f "$reported" || {
-            echo "::error::Clang still cannot find libc++.modules.json"
-            exit 1
-          }
-          
-          echo "Manifest: $reported"
+          echo "Using libc++ module manifest: $MODULES_JSON"
       # -------------------------------------------------------
       # 5. Setup vcpkg
       # -------------------------------------------------------
