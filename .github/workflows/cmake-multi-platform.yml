@@ -31,8 +31,8 @@ jobs:
             extra_cxx_flags: "-stdlib=libc++"
 
           - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
+            c_compiler: clang-cl
+            cpp_compiler: clang-cl
             triplet: x64-windows
             overlay_triplets: ""
             extra_cxx_flags: ""
@@ -47,9 +47,19 @@ jobs:
       - name: Setup CMake
         uses: lukka/get-cmake@v4.3.2
 
-      - name: Setup MSVC
+      - name: Setup MSVC Environment
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Add LLVM bin to PATH (for clang-scan-deps)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          # Locate LLVM shipped with Visual Studio Enterprise on GitHub runners
+          LLVM_DIR="C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/Llvm/x64/bin"
+          if [ -d "$LLVM_DIR" ]; then
+            echo "$LLVM_DIR" >> $GITHUB_PATH
+          fi
 
       # 1. Setup sccache action
       - name: Setup sccache
@@ -131,10 +141,11 @@ jobs:
             "-DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}"
             "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}"
             "-DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}"
+            "-DCMAKE_CXX_SCAN_FOR_MODULES=ON"
             "-DCMAKE_BUILD_TYPE=Release"
             -S "${{ github.workspace }}"
           )
-          
+                  
           # Force /Z7 for MSVC so sccache can cache MSVC compilation targets
           if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
             CMAKE_ARGS+=(
@@ -157,7 +168,10 @@ jobs:
           fi
           
           cmake "${CMAKE_ARGS[@]}"
-
+      - name: Flush and save vcpkg binary cache
+        if: always()
+        run: |
+          vcpkg x-check-support --version || true
       - name: Build
         run: cmake --build build --config Release
 
