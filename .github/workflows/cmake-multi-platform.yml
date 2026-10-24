@@ -6,6 +6,18 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  workflow_call:
+    inputs:
+      checkout_ref:
+        description: Git ref to build; empty uses triggering commit
+        type: string
+        required: false
+        default: ''
+      upload_artifacts:
+        description: Upload platform binaries for a release
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -23,6 +35,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-26.04
+            artifact_name: ispa-linux-x64
             c_compiler: clang-20
             cpp_compiler: clang++-20
             triplet: x64-linux-libcxx
@@ -30,6 +43,7 @@ jobs:
             extra_cxx_flags: "-stdlib=libc++"
 
           - os: windows-latest
+            artifact_name: ispa-windows-x64
             c_compiler: clang-cl
             cpp_compiler: clang-cl
             triplet: x64-windows
@@ -37,6 +51,7 @@ jobs:
             extra_cxx_flags: ""
 
           - os: macos-26
+            artifact_name: ispa-macos-arm64
             c_compiler: clang
             cpp_compiler: clang++
             triplet: arm64-osx
@@ -44,6 +59,7 @@ jobs:
             extra_cxx_flags: ""
 
           - os: macos-26-intel
+            artifact_name: ispa-macos-x64
             c_compiler: clang
             cpp_compiler: clang++
             triplet: x64-osx
@@ -60,6 +76,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
+          ref: ${{ inputs.checkout_ref || github.sha }}
 
       # -------------------------------------------------------
       # 2. Install CMake 4.5
@@ -631,6 +648,43 @@ jobs:
       #       --test-dir build \
       #       --build-config Release \
       #       --output-on-failure
+
+      # -------------------------------------------------------
+      # Release binaries (only when called by tagged-build.yml)
+      # -------------------------------------------------------
+
+      - name: Stage release binaries
+        if: inputs.upload_artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            executable="build/ispa.exe"
+          else
+            executable="build/ispa"
+          fi
+          test -f "$executable"
+          cp "$executable" "release/$(basename "$executable")"
+
+          # Preserve each platform's native shared-library filenames.
+          # Some configurations build a converter statically instead.
+          while IFS= read -r -d '' file; do
+            cp "$file" "release/$(basename "$file")"
+          done < <(find build -maxdepth 3 -type f \
+            \( -name '*ispa-converter-*.so' -o -name '*ispa-converter-*.dylib' -o -name '*ispa-converter-*.dll' \) \
+            -print0)
+
+          ls -lh release/
+
+      - name: Upload release build artifacts
+        if: inputs.upload_artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: release/
+          if-no-files-found: error
 
       # -------------------------------------------------------
       # 11. Cache statistics and cleanup
